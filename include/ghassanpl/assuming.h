@@ -37,10 +37,6 @@
 #endif
 #endif
 
-#ifdef _MSC_VER
-#define __PRETTY_FUNCTION__ __FUNCSIG__
-#endif
-
 #if ASSUMING_DEBUG
 
 #define Assuming(exp, ...) { if (decltype(auto) _assuming_exp_v = (exp); !_assuming_exp_v) [[unlikely]] \

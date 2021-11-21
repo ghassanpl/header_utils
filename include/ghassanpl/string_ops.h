@@ -12,29 +12,7 @@
 
 namespace ghassanpl::string_ops
 {
-	using std::basic_string_view;
 	using std::string_view;
-
-	template <typename T>
-	concept character = std::same_as<char, std::remove_cv_t<T>> || std::same_as<wchar_t, std::remove_cv_t<T>> || std::same_as<char8_t, std::remove_cv_t<T>> || std::same_as<char16_t, std::remove_cv_t<T>> || std::same_as<char32_t, std::remove_cv_t<T>>;
-
-	namespace detail
-	{
-		template <typename T>
-		requires std::ranges::range<T>
-		auto deduce_char() { using std::begin; return typename std::iterator_traits<decltype(begin(T{}))>::value_type{}; }
-
-		template <typename T>
-		requires character<T>
-		auto deduce_char() { return T{}; }
-
-		template <typename T>
-		requires std::is_pointer_v<T> && character<typename std::pointer_traits<T>::element_type>
-		auto deduce_char() { return std::remove_cv_t<typename std::pointer_traits<T>::element_type>{}; }
-
-		template <typename T>
-		using deduce_char_t = decltype(deduce_char<std::decay_t<T>>());
-	}
 
 	/// ///////////////////////////// ///
 	/// ASCII functions
@@ -61,62 +39,65 @@ namespace ghassanpl::string_ops
 		[[nodiscard]] inline constexpr char32_t toupper(char32_t cp) noexcept { return (cp >= 'a' && cp <= 'z') ? (cp ^ 0b100000) : cp; }
 		[[nodiscard]] inline constexpr char32_t tolower(char32_t cp) noexcept { return (cp >= 'A' && cp <= 'Z') ? (cp | 0b100000) : cp; }
 
-		template <character T>
-		[[nodiscard]] inline constexpr T toupper(T cp) noexcept { return (cp >= 'a' && cp <= 'z') ? (cp ^ 0b100000) : cp; }
-		template <character T>
-		[[nodiscard]] inline constexpr T tolower(T cp) noexcept { return (cp >= 'A' && cp <= 'Z') ? (cp | 0b100000) : cp; }
+		[[nodiscard]] inline std::string tolower(std::string str) noexcept { std::for_each(str.begin(), str.end(), [](char& cp) { cp = (char)tolower(cp); }); return str; }
+		[[nodiscard]] inline std::string tolower(std::string_view str) noexcept { return tolower(std::string{str}); }
 
-		template <character T>
-		[[nodiscard]] inline constexpr std::basic_string<T> tolower(std::basic_string<T>&& str) noexcept { std::for_each(str.begin(), str.end(), [](T& cp) { cp = tolower(cp); }); return str; }
-		template <character T>
-		[[nodiscard]] inline constexpr std::basic_string<T> tolower(basic_string_view<T> str) noexcept { return tolower(std::basic_string<T>{str}); }
-
-		template <character T>
-		[[nodiscard]] inline constexpr std::basic_string<T> toupper(std::basic_string<T>&& str) noexcept { std::for_each(str.begin(), str.end(), [](T& cp) { cp = toupper(cp); }); return str; }
-		template <character T>
-		[[nodiscard]] inline constexpr std::basic_string<T> toupper(basic_string_view<T> str) noexcept { return toupper(std::basic_string<T>{str}); }
+		[[nodiscard]] inline std::string toupper(std::string str) noexcept { std::for_each(str.begin(), str.end(), [](char& cp) { cp = (char)toupper(cp); }); return str; }
+		[[nodiscard]] inline std::string toupper(string_view str) noexcept { return toupper(std::string{str}); }
 
 		[[nodiscard]] inline constexpr char32_t todigit(int v) noexcept { return char32_t(v) + U'0'; }
 		[[nodiscard]] inline constexpr char32_t toxdigit(int v) noexcept { return (v > 9) ? (char32_t(v - 10) + U'A') : (char32_t(v) + U'0'); }
 
-		template <character T>
-		[[nodiscard]] constexpr bool strings_equal_ignore_case(basic_string_view<T> a, basic_string_view<T> b)
+		[[nodiscard]] constexpr bool strings_equal_ignore_case(string_view a, string_view b)
 		{
-			return std::equal(a.begin(), a.end(), b.begin(), b.end(), [](T a, T b) { return toupper(a) == toupper(b); });
+			return std::equal(a.begin(), a.end(), b.begin(), b.end(), [](char a, char b) { return toupper(a) == toupper(b); });
 		}
 
-		template <character T>
-		[[nodiscard]] constexpr bool lexicographical_compare_ignore_case(basic_string_view<T> a, basic_string_view<T> b)
+		[[nodiscard]] constexpr bool lexicographical_compare_ignore_case(string_view a, string_view b)
 		{
-			return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), [](T a, T b) { return toupper(a) == toupper(b); });
+			return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), [](char a, char b) { return toupper(a) == toupper(b); });
 		}
 
 	}
 
-	template <character T>
-	[[nodiscard]] constexpr basic_string_view<T> make_sv(const T* start, const T* end) noexcept { return basic_string_view<T>{ start, static_cast<size_t>(end - start) }; }
-	template <std::contiguous_iterator IT, typename T = typename std::iterator_traits<IT>::value_type>
-	[[nodiscard]] constexpr basic_string_view<T> make_sv(IT start, IT end) noexcept { return basic_string_view<T>{ std::to_address(start), static_cast<size_t>(std::distance(std::to_address(start), std::to_address(end))) }; }
+	/// ///////////////////////////// ///
+	/// Makes
+	/// ///////////////////////////// ///
 
-	template <character T>
-	[[nodiscard]] constexpr std::basic_string<T> make_string(const T* start, const T* end) noexcept { return std::basic_string<T>{ start, static_cast<size_t>(end - start) }; }
-	template <std::contiguous_iterator IT, typename T = typename std::iterator_traits<IT>::value_type>
-	[[nodiscard]] constexpr std::basic_string<T> make_string(IT start, IT end) noexcept { return std::basic_string<T>{ std::to_address(start), static_cast<size_t>(std::distance(std::to_address(start), std::to_address(end))) }; }
+	[[nodiscard]] inline constexpr string_view make_sv(const char* start, const char* end) noexcept { return string_view{ start, static_cast<size_t>(end - start) }; }
+	//template <std::contiguous_iterator IT, typename T = typename std::iterator_traits<IT>::value_type>
+	template <typename IT, typename T = typename std::iterator_traits<IT>::value_type>
+	[[nodiscard]] inline constexpr string_view make_sv(IT start, IT end) { return string_view{ std::to_address(start), static_cast<size_t>(std::distance(std::to_address(start), std::to_address(end))) }; }
 
-	template <character T>
-	[[nodiscard]] basic_string_view<T> trimmed_whitespace_right(basic_string_view<T> str) noexcept { return make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
-	template <character T>
-	[[nodiscard]] basic_string_view<T> trimmed_whitespace_left(basic_string_view<T> str) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
-	template <character T>
-	[[nodiscard]] basic_string_view<T> trimmed_whitespace(basic_string_view<T> str) noexcept { return trimmed_whitespace_left(trimmed_whitespace_right(str)); }
-	template <character T>
-	[[nodiscard]] basic_string_view<T> trimmed_until(basic_string_view<T> str, T chr) noexcept { return make_sv(std::find(str.begin(), str.end(), chr), str.end()); }
+	[[nodiscard]] inline std::string make_string(const char* start, const char* end) { return std::string{ start, static_cast<size_t>(end - start) }; }
+	//template <std::contiguous_iterator IT, typename T = typename std::iterator_traits<IT>::value_type>
+	template <typename IT, typename T = typename std::iterator_traits<IT>::value_type>
+	[[nodiscard]] inline std::string make_string(IT start, IT end) { return std::string{ std::to_address(start), static_cast<size_t>(std::distance(std::to_address(start), std::to_address(end))) }; }
 
-	template <character T, typename FUNC>
-	[[nodiscard]] string_view trimmed_while(basic_string_view<T> str, FUNC&& func) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), std::forward<FUNC>(func)), str.end()); }
+	/// for predicates
+	[[nodiscard]] inline std::string to_string(string_view from) noexcept { return std::string{ from }; }
 
-	template <character T>
-	T consume(basic_string_view<T>& str)
+	/// ///////////////////////////// ///
+	/// Trims
+	/// ///////////////////////////// ///
+
+	[[nodiscard]] inline string_view trimmed_whitespace_right(string_view str) noexcept { return make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
+	[[nodiscard]] inline string_view trimmed_whitespace_left(string_view str) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
+	[[nodiscard]] inline string_view trimmed_whitespace(string_view str) noexcept { return trimmed_whitespace_left(trimmed_whitespace_right(str)); }
+	[[nodiscard]] inline string_view trimmed_until(string_view str, char chr) noexcept { return make_sv(std::find(str.begin(), str.end(), chr), str.end()); }
+
+	inline void trim_whitespace_right(string_view& str) noexcept { str = make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
+	inline void trim_whitespace_left(string_view& str) noexcept { str = make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
+	inline void trim_whitespace(string_view& str) noexcept { trim_whitespace_left(str); trim_whitespace_right(str); }
+
+	template <typename FUNC>
+	[[nodiscard]] inline string_view trimmed_while(string_view str, FUNC&& func) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), std::forward<FUNC>(func)), str.end()); }
+
+	/// ///////////////////////////// ///
+	/// Consume
+	/// ///////////////////////////// ///
+	
+	inline char consume(string_view& str)
 	{
 		if (str.empty())
 			return {};
@@ -125,6 +106,300 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
+	inline bool consume(string_view& str, char val)
+	{
+		if (str.starts_with(val))
+		{
+			str.remove_prefix(1);
+			return true;
+		}
+		return false;
+	}
+
+	inline bool consume(string_view& str, string_view val)
+	{
+		if (str.starts_with(val))
+		{
+			str.remove_prefix(val.size());
+			return true;
+		}
+		return false;
+	}
+
+	/*
+	template <size_t N>
+	bool consume(string_view& str, char(&val)[N])
+	{
+		return consume(str, make_sv(val, val + N));
+	}
+	*/
+	
+	inline bool consume_at_end(string_view& str, char val)
+	{
+		if (str.ends_with(val))
+		{
+			str.remove_prefix(1);
+			return true;
+		}
+		return false;
+	}
+
+	inline bool consume_at_end(string_view& str, string_view val)
+	{
+		if (str.ends_with(val))
+		{
+			str.remove_suffix(val.size());
+			return true;
+		}
+		return false;
+	}
+
+	template <typename FUNC>
+	//requires std::invocable<FUNC, char>
+	inline string_view consume_while(string_view& str, FUNC&& pred)
+	{
+		const auto start = str.begin();
+		while (!str.empty() && pred(str[0]))
+			str.remove_prefix(1);
+		return make_sv(start, str.begin());
+	}
+
+	template <typename FUNC>
+	inline string_view consume_while(string_view& str, char c)
+	{
+		const auto start = str.begin();
+		while (str.starts_with(c))
+			str.remove_prefix(1);
+		return make_sv(start, str.begin());
+	}
+
+	inline string_view consume_until(string_view& str, char c)
+	{
+		const auto start = str.begin();
+		while (!str.empty() && str[0] != c)
+			str.remove_prefix(1);
+		return make_sv(start, str.begin());
+	}
+
+	inline string_view consume_n(string_view& str, size_t n)
+	{
+		n = std::min(str.size(), n);
+		auto result = str.substr(0, n);
+		str.remove_prefix(n);
+		return result;
+	}
+
+	template <typename CALLBACK>
+	inline bool consume_delimited_list_non_empty(string_view& str, string_view delimiter, CALLBACK callback)
+	{
+		do
+		{
+			trim_whitespace_left(str);
+			if (!callback(str))
+				return false;
+			trim_whitespace_left(str);
+		} while (consume(str, delimiter));
+		return true;
+	}
+
+	template <typename CALLBACK>
+	inline bool consume_delimited_list(string_view& str, string_view delimiter, string_view closer, CALLBACK callback)
+	{
+		trim_whitespace_left(str);
+		while (!str.empty())
+		{
+			trim_whitespace_left(str);
+			if (!callback(str))
+				return false;
+			trim_whitespace_left(str);
+			if (!consume(str, delimiter))
+				return consume(str, closer);
+		}
+		return false;
+	}
+
+	inline string_view consume_c_identifier(string_view& str)
+	{
+		if (str.empty() || !(ascii::isalpha(str[0]) || str[0] == '_'))
+			return {};
+
+		const auto start = str.begin();
+		str.remove_prefix(1);
+		consume_while(str, ascii::isident);
+		return make_sv(start, str.begin());
+	}
+
+	inline string_view consume_c_identifier_with(string_view& str, string_view additional_chars)
+	{
+		if (str.empty() || !(ascii::isalpha(str[0]) || str[0] == '_' || additional_chars.contains(str[0])))
+			return {};
+
+		const auto start = str.begin();
+		str.remove_prefix(1);
+		consume_while(str, [additional_chars](char c) { return ascii::isident(c) || additional_chars.contains(c); });
+		return make_sv(start, str.begin());
+	}
+
+
+#if _MSC_VER
+	inline std::pair<string_view, double> consume_c_float(string_view& str)
+	{
+		if (str.empty() || !(ascii::isdigit(str[0]) || str[0] == '-'))
+			return {};
+
+		std::pair<string_view, double> result;
+
+		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second);
+		if (from_chars_result.ec != std::errc{})
+			return { {}, std::numeric_limits<double>::quiet_NaN() };
+
+		result.first = make_sv(str.data(), from_chars_result.ptr);
+		str.remove_prefix(result.first.size());
+		return result;
+	}
+
+	inline std::pair<string_view, int64_t> consume_c_integer(string_view& str, int base = 10)
+	{
+		if (str.empty() || !(ascii::isdigit(str[0]) || str[0] == '-'))
+			return {};
+
+		std::pair<string_view, int64_t> result;
+
+		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second, base);
+		if (from_chars_result.ec != std::errc{})
+			return { {}, 0 };
+
+		result.first = make_sv(str.data(), from_chars_result.ptr);
+		str.remove_prefix(result.first.size());
+		return result;
+	}
+
+	inline std::pair<string_view, int64_t> consume_c_unsigned(string_view& str, int base = 10)
+	{
+		if (str.empty() || !ascii::isdigit(str[0]))
+			return {};
+
+		std::pair<string_view, uint64_t> result;
+
+		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second, base);
+		if (from_chars_result.ec != std::errc{})
+			return { {}, 0 };
+
+		result.first = make_sv(str.data(), from_chars_result.ptr);
+		str.remove_prefix(result.first.size());
+		return result;
+	}
+
+	size_t append_utf8(std::string& buffer, char32_t cp);
+
+	template <char DELIMITER = '\''>
+	inline std::pair<string_view, std::string> consume_c_string(string_view& strv)
+	{
+		if (strv.empty() || strv[0] != DELIMITER)
+			return {};
+
+		std::pair<string_view, std::string> result;
+
+		auto view = strv;
+		auto start = view.begin();
+		view.remove_prefix(1);
+		while (view[0] != DELIMITER)
+		{
+			auto cp = consume(view);
+			if (cp == '\\')
+			{
+				cp = consume(view);
+				if (view.empty())
+					return {}; /// Unterminated string literal
+
+				switch (cp)
+				{
+				case 'n': result.second += '\n'; break;
+				case '"': result.second += '"'; break;
+				case '\'': result.second += '\''; break;
+				case '\\': result.second += '\\'; break;
+				case 'b': result.second += '\b'; break;
+				case 'r': result.second += '\r'; break;
+				case 'f': result.second += '\f'; break;
+				case 't': result.second += '\t'; break;
+				case '0': result.second += '\0'; break;
+				case 'o':
+				{
+					auto num = consume_n(view, 3);
+					if (num.size() < 3 || view.empty()) return {}; /// malformed
+
+					auto parsed = consume_c_integer(num, 8);
+					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+
+					if (parsed.second > 255) return {}; /// invalid octal
+					result.second.push_back((char)parsed.second);
+					break;
+				}
+				case 'x':
+				{
+					auto num = consume_n(view, 2);
+					if (num.size() < 2 || view.empty()) return {}; /// malformed
+
+					auto parsed = consume_c_integer(num, 16);
+					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+
+					append_utf8(result.second, (char32_t)parsed.second);
+					break;
+				}
+				case 'u':
+				{
+					auto num = consume_n(view, 4);
+					if (num.size() < 4 || view.empty()) return {}; /// malformed
+
+					auto parsed = consume_c_integer(num, 16);
+					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+
+					append_utf8(result.second, (char32_t)parsed.second);
+					break;
+				}
+				case 'U':
+				{
+					auto num = consume_n(view, 8);
+					if (num.size() < 8 || view.empty()) return {}; /// malformed
+
+					auto parsed = consume_c_integer(num, 16);
+					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+
+					append_utf8(result.second, (char32_t)parsed.second);
+					break;
+				}
+				default:
+					return {}; /// unknown escape character
+				}
+			}
+			else
+			{
+				result.second += cp;
+			}
+
+			if (view.empty())
+				return {}; /// unterminated
+		}
+
+		if (!consume(view, DELIMITER))
+			return {}; /// unterminated
+
+		result.first = make_sv(start, view.begin());
+		strv = view;
+		return result;
+	}
+
+	/// TODO: this 
+	void consume_c_literal(string_view& str);
+
+#endif
+
+	/// ///////////////////////////// ///
+	/// Basic UTF-8 stuff
+	/// ///////////////////////////// ///
+	
+	/// Assuming str is valid UTF-8
+	[[gsl::suppress(type.1, es.79)]]
 	inline char32_t consume_utf8(string_view& str)
 	{
 		if (str.empty()) return 0;
@@ -156,207 +431,8 @@ namespace ghassanpl::string_ops
 		return cp;
 	}
 
-	template <character T>
-	bool consume(basic_string_view<T>& str, T val)
-	{
-		if (str.starts_with(val))
-		{
-			str.remove_prefix(1);
-			return true;
-		}
-		return false;
-	}
-
-	template <character T>
-	bool consume(basic_string_view<T>& str, basic_string_view<T> val)
-	{
-		if (str.starts_with(val))
-		{
-			str.remove_prefix(val.size());
-			return true;
-		}
-		return false;
-	}
-
-	template <character T>
-	bool consume(basic_string_view<T>& str, T const* val)
-	{
-		return consume(str, basic_string_view<T>{val});
-	}
-
-
-	template <character T, size_t N>
-	bool consume(basic_string_view<T>& str, T(&val)[N])
-	{
-		return consume(str, basic_string_view<T>{val});
-	}
-	
-	template <character T>
-	bool consume_at_end(basic_string_view<T>& str, T val)
-	{
-		if (str.ends_with(val))
-		{
-			str.remove_prefix(1);
-			return true;
-		}
-		return false;
-	}
-
-	template <character T>
-	bool consume_at_end(basic_string_view<T>& str, basic_string_view<T> val)
-	{
-		if (str.ends_with(val))
-		{
-			str.remove_suffix(val.size());
-			return true;
-		}
-		return false;
-	}
-
-	template <character T>
-	bool consume_at_end(basic_string_view<T>& str, T const* val)
-	{
-		return consume_at_end(str, basic_string_view<T>{val});
-	}
-
-
-	template <character T, size_t N>
-	bool consume_at_end(basic_string_view<T>& str, T(&val)[N])
-	{
-		return consume_at_end(str, basic_string_view<T>{val});
-	}
-
-	template <character T, typename FUNC>
-	requires std::invocable<FUNC, T>
-	basic_string_view<T> consume_while(basic_string_view<T>& str, FUNC&& pred)
-	{
-		const auto start = str.begin();
-		while (!str.empty() && pred(str[0]))
-			str.remove_prefix(1);
-		return make_sv(start, str.begin());
-	}
-
-	template <character T, typename FUNC>
-	basic_string_view<T> consume_while(basic_string_view<T>& str, T c)
-	{
-		const auto start = str.begin();
-		while (str.starts_with(c))
-			str.remove_prefix(1);
-		return make_sv(start, str.begin());
-	}
-
-	template <character T>
-	basic_string_view<T> consume_until(basic_string_view<T>& str, T c)
-	{
-		const auto start = str.begin();
-		while (!str.empty() && str[0] != c)
-			str.remove_prefix(1);
-		return make_sv(start, str.begin());
-	}
-
-	template <character T, typename DELIM, typename FUNC>
-	void split(basic_string_view<T> source, DELIM&& delim, FUNC&& func) noexcept
-	{
-		size_t next = 0;
-		while ((next = source.find_first_of(delim)) != std::string::npos)
-		{
-			func(source.substr(0, next), false);
-			source.remove_prefix(next + 1);
-		}
-		func(source, true);
-	}
-
-	template <character T, typename DELIM, typename FUNC>
-	void natural_split(basic_string_view<T> source, DELIM&& delim, FUNC&& func) noexcept
-	{
-		size_t next = 0;
-		while ((next = source.find_first_of(delim)) != std::string::npos)
-		{
-			func(source.substr(0, next), false);
-			source.remove_prefix(next + 1);
-
-			if ((next = source.find_first_not_of(delim)) == std::string::npos)
-				return;
-
-			source.remove_prefix(next + 1);
-		}
-
-		if (!source.empty())
-			func(source, true);
-	}
-
-	template <character T, typename DELIM>
-	[[nodiscard]] std::vector<basic_string_view<T>> split(basic_string_view<T> source, DELIM&& delim) noexcept
-	{
-		std::vector<basic_string_view<T>> result;
-		::ghassanpl::string_ops::split(source, forward<DELIM>(delim), [&](basic_string_view<T> str, bool last) {
-			result.push_back(str);
-		});
-		return result;
-	}
-
-	template <character T, typename DELIM>
-	[[nodiscard]] std::vector<basic_string_view<T>> natural_split(basic_string_view<T> source, DELIM&& delim) noexcept
-	{
-		std::vector<basic_string_view<T>> result;
-		::ghassanpl::string_ops::natural_split(source, forward<DELIM>(delim), [&](basic_string_view<T> str, bool last) {
-			result.push_back(str);
-		});
-		return result;
-	}
-
-	template <std::ranges::range T, typename DELIM>
-	[[nodiscard]] auto join(T&& source, DELIM&& delim)
-	{
-		using CHAR_T = detail::deduce_char_t<std::decay_t<DELIM>>;
-		std::basic_stringstream<CHAR_T> strm;
-		bool first = true;
-		for (auto&& p : std::forward<T>(source))
-		{
-			if (!first) strm << forward<DELIM>(delim);
-			strm << p;
-			first = false;
-		}
-		return strm.str();
-	}
-
-	template <std::ranges::range T, typename FUNC, typename DELIM>
-	[[nodiscard]] auto join(T&& source, DELIM&& delim, FUNC&& transform_func)
-	{
-		using CHAR_T = detail::deduce_char_t<std::decay_t<DELIM>>;
-		std::basic_stringstream<CHAR_T> strm;
-		bool first = true;
-		for (auto&& p : source)
-		{
-			if (!first) strm << forward<DELIM>(delim);
-			strm << transform_func(p);
-			first = false;
-		}
-		return strm.str();
-	}
-
-	template <character T, typename NEEDLE, typename REPLACE>
-	void replace(std::basic_string<T>& subject, NEEDLE&& search, REPLACE&& replace)
-	{
-		using std::empty;
-		using std::size;
-
-		if (std::basic_string_view<T>{ search }.empty())
-			return;
-
-		const auto search_size = std::basic_string_view<T>{ search }.size();
-		const auto replace_size = std::basic_string_view<T>{ replace }.size();
-
-		size_t pos = 0;
-		while ((pos = subject.find(search, pos)) != std::string::npos)
-		{
-			subject.replace(pos, search_size, replace);
-			pos += replace_size;
-		}
-	}
-
-
 	/// Assuming codepoint is valid
+	[[gsl::suppress(type.1)]]
 	inline size_t append_utf8(std::string& buffer, char32_t cp)
 	{
 		if (cp < 0x80)
@@ -387,10 +463,278 @@ namespace ghassanpl::string_ops
 		}
 	}
 
+	[[gsl::suppress(type.1)]]
+	/// Assumes codepoint is valid
+	inline std::string to_utf8(char32_t cp)
+	{
+		if (cp < 0x80)
+			return { static_cast<char>(cp) };
+		else if (cp < 0x800)
+			return { static_cast<char>((cp >> 6) | 0xc0), static_cast<char>((cp & 0x3f) | 0x80) };
+		else if (cp < 0x10000)
+			return { static_cast<char>((cp >> 12) | 0xe0), static_cast<char>(((cp >> 6) & 0x3f) | 0x80), static_cast<char>((cp & 0x3f) | 0x80) };
+		else
+			return { static_cast<char>((cp >> 18) | 0xf0), static_cast<char>(((cp >> 12) & 0x3f) | 0x80), static_cast<char>(((cp >> 6) & 0x3f) | 0x80), static_cast<char>((cp & 0x3f) | 0x80) };
+	}
 
+	template <std::ranges::input_range R>
+	requires std::ranges::view<R>
+	struct utf8_view : public std::ranges::view_interface<utf8_view<R>>
+	{
+		template <typename RANGE_ITER, typename SENTINEL>
+		struct utf8_iterator
+		{
+			using iterator_category = std::forward_iterator_tag;
+			using value_type = char32_t;
+			using difference_type = ptrdiff_t;
+			using reference = char32_t;
+
+			constexpr utf8_iterator(RANGE_ITER current, SENTINEL end) : mCurrent(std::move(current)), mEnd(std::move(end)) {}
+
+			constexpr value_type operator*() const { 
+				const auto length = len();
+				auto it = mCurrent;
+				char32_t cp = std::bit_cast<uint8_t>(*it);
+
+				switch (length) {
+				case 2:
+					++it; cp = ((cp << 6) & 0x7ff) + ((*it) & 0x3f);
+					break;
+				case 3:
+					++it; cp = ((cp << 12) & 0xffff) + ((*it << 6) & 0xfff);
+					++it; cp += (*it) & 0x3f;
+					break;
+				case 4:
+					++it; cp = ((cp << 18) & 0x1fffff) + (((*it) << 12) & 0x3ffff);
+					++it; cp += ((*it) << 6) & 0xfff;
+					++it; cp += (*it) & 0x3f;
+					break;
+				}
+				return cp;
+			}
+
+			constexpr utf8_iterator& operator++() {
+				std::advance(mCurrent, len());
+				return *this;
+			}
+
+			constexpr utf8_iterator operator++(int) {
+				auto copy = *this;
+				++*this;
+				return copy;
+			}
+
+			constexpr auto operator<=>(utf8_iterator const&) const noexcept = default;
+			constexpr bool operator==(utf8_iterator const&) const noexcept = default;
+			constexpr bool operator!=(utf8_iterator const&) const noexcept = default;
+
+		private:
+
+			size_t len() const
+			{
+				if (mCurrent >= mEnd)
+					throw std::out_of_range("utf8 iterator out of range");
+
+				const unsigned cp = std::bit_cast<uint8_t>(*mCurrent);
+				size_t length = 0;
+				if (cp < 0x80) length = 1;
+				else if ((cp >> 5) == 0x6) length = 2;
+				else if ((cp >> 4) == 0xe) length = 3;
+				else if ((cp >> 3) == 0x1e) length = 4;
+				else
+					throw std::runtime_error("invalid utf-8 prefix");
+
+				if (mCurrent + length > mEnd)
+					throw std::runtime_error("utf-8 range contains codepoint with length beyond end of range");
+
+				return length;
+			}
+
+			RANGE_ITER mCurrent;
+			SENTINEL mEnd;
+		};
+
+		utf8_view() = default;
+
+		constexpr utf8_view(R base)
+			: mBase(base)
+		{
+		}
+
+		constexpr R base() const&
+		{
+			return mBase;
+		}
+		constexpr R base() &&
+		{
+			return std::move(mBase);
+		}
+
+		constexpr auto begin() const
+		{
+			return utf8_iterator<decltype(std::begin(mBase)), decltype(std::end(mBase))>{std::begin(mBase), std::end(mBase)};
+		}
+
+		constexpr auto end() const
+		{
+			return utf8_iterator<decltype(std::end(mBase)), decltype(std::end(mBase))>{std::end(mBase), std::end(mBase)};
+		}
+
+	private:
+		R mBase{};
+	};
+
+	//template<class R> custom_take_view(R&& base, std::iter_difference_t<rg::iterator_t<R>>) ->custom_take_view<rg::views::all_t<R>>;
+
+	/// ///////////////////////////// ///
+	/// Other
+	/// ///////////////////////////// ///
+
+	template <typename DELIM, typename FUNC>
+	inline void split(string_view source, DELIM&& delim, FUNC&& func) noexcept
+	{
+		size_t next = 0;
+		while ((next = source.find_first_of(delim)) != std::string::npos)
+		{
+			func(source.substr(0, next), false);
+			source.remove_prefix(next + 1);
+		}
+		func(source, true);
+	}
+
+	template <typename DELIM, typename FUNC>
+	inline void natural_split(string_view source, DELIM&& delim, FUNC&& func) noexcept
+	{
+		size_t next = 0;
+		while ((next = source.find_first_of(delim)) != std::string::npos)
+		{
+			func(source.substr(0, next), false);
+			source.remove_prefix(next + 1);
+
+			if ((next = source.find_first_not_of(delim)) == std::string::npos)
+				return;
+
+			source.remove_prefix(next);
+		}
+
+		if (!source.empty())
+			func(source, true);
+	}
+
+	template <typename DELIM>
+	[[nodiscard]] inline std::vector<string_view> split(string_view source, DELIM&& delim) noexcept
+	{
+		std::vector<string_view> result;
+		::ghassanpl::string_ops::split(source, std::forward<DELIM>(delim), [&result](string_view str, bool last) {
+			result.push_back(str);
+		});
+		return result;
+	}
+
+	template <typename DELIM>
+	[[nodiscard]] inline std::vector<string_view> natural_split(string_view source, DELIM&& delim) noexcept
+	{
+		std::vector<string_view> result;
+		::ghassanpl::string_ops::natural_split(source, std::forward<DELIM>(delim), [&result](string_view str, bool last) {
+			result.push_back(str);
+		});
+		return result;
+	}
+
+#if _MSC_VER
+	template <std::ranges::range T, typename DELIM>
+#else
+	template <typename T, typename DELIM>
+#endif
+	[[nodiscard]] inline auto join(T&& source, DELIM&& delim)
+	{
+		std::stringstream strm;
+		bool first = true;
+		for (auto&& p : std::forward<T>(source))
+		{
+			if (!first) strm << delim;
+			strm << p;
+			first = false;
+		}
+		return strm.str();
+	}
+
+#if _MSC_VER
+	template <std::ranges::range T, typename DELIM, typename LAST_DELIM>
+#else
+	template <typename T, typename DELIM, typename LAST_DELIM>
+#endif
+	[[nodiscard]] inline auto join_and(T&& source, DELIM&& delim, LAST_DELIM&& last_delim)
+	{
+		using std::begin;
+		using std::end;
+		using std::next;
+
+		std::stringstream strm;
+		bool first = true;
+		
+		auto&& endit = end(source);
+		for (auto it = begin(source); it != endit; ++it)
+		{
+			if (!first)
+			{
+				if (next(it) == endit)
+					strm << std::forward<LAST_DELIM>(last_delim);
+				else
+					strm << delim;
+			}
+			strm << *it;
+			first = false;
+		}
+		return strm.str();
+	}
+
+#if _MSC_VER
+	template <std::ranges::range T, typename FUNC, typename DELIM>
+#else
+	template <typename T, typename FUNC, typename DELIM>
+#endif
+	[[nodiscard]] inline auto join(T&& source, DELIM&& delim, FUNC&& transform_func)
+	{
+		std::stringstream strm;
+		bool first = true;
+		for (auto&& p : source)
+		{
+			if (!first) strm << delim;
+			strm << transform_func(p);
+			first = false;
+		}
+		return strm.str();
+	}
+
+	template <typename NEEDLE, typename REPLACE>
+	inline void replace(std::string& subject, NEEDLE&& search, REPLACE&& replace)
+	{
+		using std::empty;
+		using std::size;
+
+		if (std::string_view{ search }.empty())
+			return;
+
+		const auto search_size = std::string_view{ search }.size();
+		const auto replace_size = std::string_view{ replace }.size();
+
+		size_t pos = 0;
+		while ((pos = subject.find(search, pos)) != std::string::npos)
+		{
+			subject.replace(pos, search_size, replace);
+			pos += replace_size;
+		}
+	}
+
+
+#if !_MSC_VER
+
+#else
 	template <typename T>
 	inline auto from_chars(std::string_view str, T& value, const int base = 10) noexcept {
 		return std::from_chars(str.data(), str.data() + str.size(), value, base);
 	}
+#endif
 
 }

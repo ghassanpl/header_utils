@@ -61,8 +61,8 @@ namespace ghassanpl
 	constexpr inline vertical_align to_vertical(vertical_align alignment) { return alignment; }
 	constexpr inline horizontal_align to_horizontal(vertical_align alignment) { return horizontal_align{ (int(alignment) & int(vertical_align::mask)) << 2 }; }
 	constexpr inline horizontal_align to_horizontal(horizontal_align alignment) { return alignment; }
-	constexpr inline vertical_align vertical(align alignment) { return vertical_align{ (int(alignment) & int(vertical_align::mask)) }; }
-	constexpr inline horizontal_align horizontal(align alignment) { return horizontal_align{ (int(alignment) & int(horizontal_align::mask)) }; }
+	constexpr inline vertical_align vertical_from(align alignment) { return vertical_align{ (int(alignment) & int(vertical_align::mask)) }; }
+	constexpr inline horizontal_align horizontal_from(align alignment) { return horizontal_align{ (int(alignment) & int(horizontal_align::mask)) }; }
 	constexpr inline align only_vertical(align alignment) { return align{ (int(alignment) & int(vertical_align::mask)) }; }
 	constexpr inline align only_horizontal(align alignment) { return align{ (int(alignment) & int(horizontal_align::mask)) }; }
 
