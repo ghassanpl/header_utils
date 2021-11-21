@@ -1,0 +1,103 @@
+
+#if 0
+
+	template <bool SINGLE>
+	struct SplitRange
+	{
+		SplitRange(std::string_view source, char split_on) : mSource(source), mSplit(split_on) {}
+
+		struct SplitRangeIterator
+		{
+			const char* RangeStart;
+			const char* RangeEnd;
+			const char* SourceEnd;
+			char SplitChar;
+
+			bool operator!=(const SplitRangeIterator& other) const { return RangeStart != other.SourceEnd; }
+			SplitRangeIterator& operator++(int) {
+				auto copy = *this;
+				++* this;
+				return copy;
+			}
+
+			SplitRangeIterator operator++() {
+				auto rs = RangeEnd;
+				auto se = SourceEnd;
+				auto sc = SplitChar;
+
+				if (SINGLE)
+				{
+					if (rs < se && *rs == sc)
+						++rs;
+				}
+				else
+				{
+					while (rs < se && *rs == sc)
+						++rs;
+				}
+
+				RangeStart = rs;
+
+				while (rs < se && *rs != sc)
+					++rs;
+
+				RangeEnd = rs;
+				return *this;
+			}
+
+			std::pair<const char*, const char*> operator*() const { return { RangeStart, RangeEnd }; }
+		};
+
+		SplitRangeIterator begin() {
+			SplitRangeIterator it = { nullptr, mSource.data(), mSource.data() + mSource.size(), mSplit };
+			++it;
+			return it;
+		}
+
+		SplitRangeIterator end() {
+			auto se = mSource.data() + mSource.size();
+			return { se, se, se, mSplit };
+		}
+
+		std::string_view mSource;
+		char mSplit;
+	};
+
+	std::vector<std::string_view> WordWrap(std::string_view _source, float max_width, std::function<float(std::string_view)> width_getter)
+	{
+		std::vector<std::string_view> result;
+
+		auto space_left = max_width;
+		auto space_width = width_getter(" ");
+
+		for (auto line : SplitRange<true>(_source, '\n'))
+		{
+			auto line_start = line.first;
+
+			for (auto r : SplitRange<false>({ line.first, size_t(line.second - line.first) }, ' '))
+			{
+				const auto word_width = width_getter({ r.first, size_t(r.second - r.first) });
+				const auto width = word_width + space_width;
+				if (width > space_left)
+				{
+					result.emplace_back(line_start, size_t(r.first - line_start) - 1);
+					space_left = max_width - word_width;
+					line_start = r.first;
+				}
+				else
+				{
+					space_left -= width;
+				}
+			}
+
+			result.emplace_back(line_start, size_t(line.second - line_start));
+		}
+
+		return result;
+	}
+
+	std::vector<std::string_view> WordWrap(std::string_view _source, float max_width)
+	{
+		return WordWrap(_source, max_width, [](std::string_view str) { return float(str.size() * TW); });
+	}
+#endif
