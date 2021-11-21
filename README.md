@@ -4,6 +4,8 @@ A collection of header-only C++20 "libraries" that implement small but useful ut
 
 **This is in-progress, live-at-head code that most likely has a lot of bugs, was not thoroughly tested, and requires C++20** (or at least, the version of C++20 that MSVC supports, did not test other compilers, though the code should be portable).
 
+**Pull requests welcome!**
+
 ## align.h
 
 A small enum to represent alignment within a rectangle (e.g. top-left, bottom-right, etc), and functions to modify it and align stuff.
