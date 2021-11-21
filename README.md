@@ -22,10 +22,10 @@ Pros:
 * Better macros to control the behavior of this library.
 
 Cons:
-* Depends on <format> and <source_location> headers.
+* Depends on \<format\> and \<source_location\> headers.
 * Still macro-based (only for stringification of arguments, thankfully.)
-* Using compiler-specific code for enforcing assumptions
-* Slightly non-idiomatic naming conventions as well as some tiny assumptions about the user code-base
+* Using compiler-specific code for enforcing assumptions.
+* Slightly non-idiomatic naming conventions as well as some tiny assumptions about the user code-base.
 
 ## di.h
 
