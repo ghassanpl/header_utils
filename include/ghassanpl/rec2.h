@@ -80,8 +80,8 @@ namespace ghassanpl
 		constexpr trec2 shrunk(tvec by) const noexcept { return grown(-by); }
 		constexpr trec2 at_position(tvec pos) const noexcept { auto copy = *this; copy.set_position(pos); return copy; }
 		constexpr trec2 at_position(T x, T y) const noexcept { auto copy = *this; copy.set_position(x, y); return copy; }
-		constexpr trec2 sized(tvec size) const noexcept { auto copy = *this; copy.set_size(pos); return copy; }
-		constexpr trec2 sized(T w, T h) const noexcept { auto copy = *this; copy.set_size(x, y); return copy; }
+		constexpr trec2 sized(tvec size) const noexcept { auto copy = *this; copy.set_size(size); return copy; }
+		constexpr trec2 sized(T w, T h) const noexcept { auto copy = *this; copy.set_size(w, h); return copy; }
 		constexpr trec2 translated(tvec op) const noexcept { return *this + op; }
 		constexpr trec2 translated(T x, T y) const noexcept { return *this + tvec{ x, y }; }
 		constexpr trec2 scaled(tvec op) const noexcept { return *this * op; }
