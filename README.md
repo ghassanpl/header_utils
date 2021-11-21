@@ -76,7 +76,7 @@ Has all the usual methods, plus: `at_center, at_position, bottom, calculate_area
 
 Adds a few utility functions that deal with strings and string_views.
 
-* The `ascii` namespaces contains equivalents to the C standard library character and string functions like `isalpha`, that do not depend on the current locale, are constexpr and inlineable.
+* The `ascii` namespace contains equivalents to the C standard library character and string functions like `isalpha`, that do not depend on the current locale, are constexpr and inlineable.
 * Adds the `make_sv` and `make_string` functions that deal with the fact that in earlier version of the C++ library string_view did not have a range constructor
 * trim* API that trims whitespace from different sides of a string_view
 * consume* API that "consumes" characters, substrings, ranges, etc. from string_views and returns them (useful for basic parsers):
