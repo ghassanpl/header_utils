@@ -21,7 +21,7 @@ namespace ghassanpl
 		};
 
 		template <typename RESULT_TYPE, typename... ENUM_TYPES>
-		concept valid_flag_bits_arguments = detail::valid_integral<RESULT_TYPE> && (detail::integral_or_enum<ENUM_TYPES> && ...);
+		concept valid_flag_bits_arguments = detail::valid_integral<RESULT_TYPE> && (integral_or_enum<ENUM_TYPES> && ...);
 	}
 
 	template <typename RESULT_TYPE = unsigned long long, typename... ARGS>

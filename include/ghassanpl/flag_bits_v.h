@@ -8,16 +8,16 @@
 
 namespace ghassanpl
 {
+	template<typename T>
+	concept bit_integral = std::is_integral_v<T> && !std::is_same_v<std::decay_t<T>, bool>;
+
+	template<typename T>
+	concept integral_or_enum = bit_integral<T> || std::is_enum_v<T>;
+
 	namespace detail
 	{
-		template<typename T>
-		concept bit_integral = std::is_integral_v<T> && !std::is_same_v<std::decay_t<T>, bool>;
-
-		template<typename T>
-		concept integral_or_enum = detail::bit_integral<T> || std::is_enum_v<T>;
-
 		template <typename T> 
-		requires detail::integral_or_enum<T>
+		requires integral_or_enum<T>
 		constexpr auto to_underlying_type(T t) noexcept
 		{
 			if constexpr (std::is_enum_v<T>)
@@ -31,8 +31,8 @@ namespace ghassanpl
 
 		template <typename RESULT_TYPE, auto... VALUES>
 		concept valid_flag_bits_v_arguments =
-			 detail::bit_integral<RESULT_TYPE> &&
-			(detail::integral_or_enum<decltype(VALUES)> && ...) &&
+			 bit_integral<RESULT_TYPE> &&
+			(integral_or_enum<decltype(VALUES)> && ...) &&
 			(detail::allowed_bit_num<RESULT_TYPE, decltype(detail::to_underlying_type(VALUES)), static_cast<decltype(detail::to_underlying_type(VALUES))>(VALUES)> && ...);
 	}
 

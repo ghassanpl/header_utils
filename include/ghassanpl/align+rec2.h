@@ -1,0 +1,30 @@
+#pragma once
+#include "rec2.h"
+#include "align.h"
+
+namespace ghassanpl
+{
+	template <typename T>
+	inline constexpr trec2<T> align_inside(trec2<T> const& smaller, trec2<T> const& larger, align alignment)
+	{
+		return trec2<T>::from_size(
+			larger.position() + glm::tvec2<T>{ 
+				ghassanpl::align_axis<T>(smaller.width(), larger.width(), horizontal_from(alignment)), 
+				ghassanpl::align_axis<T>(smaller.height(), larger.height(), vertical_from(alignment)) 
+			}, 
+			smaller.size()
+		);
+	}
+
+	template <typename T>
+	inline constexpr trec2<T> align_inside(glm::tvec2<T> inner_size, trec2<T> const& larger, align alignment)
+	{
+		return trec2<T>::from_size(
+			larger.position() + glm::tvec2<T>{ 
+				ghassanpl::align_axis<T>(inner_size.x, larger.width(), horizontal_from(alignment)),
+				ghassanpl::align_axis<T>(inner_size.y, larger.height(), vertical_from(alignment))
+			},
+			inner_size
+		);
+	}
+}

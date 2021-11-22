@@ -11,7 +11,7 @@
 
 namespace ghassanpl
 {
-	template <detail::integral_or_enum ENUM, detail::valid_integral VALUE_TYPE = unsigned long long>
+	template <integral_or_enum ENUM, detail::valid_integral VALUE_TYPE = unsigned long long>
 	struct enum_flags
 	{
 		using value_type = VALUE_TYPE;
