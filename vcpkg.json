@@ -1,0 +1,7 @@
+{
+  "name": "header-utils",
+  "version": "0.0.1",
+  "dependencies": [
+    "glm"
+  ]
+}
