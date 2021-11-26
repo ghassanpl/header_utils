@@ -167,6 +167,20 @@ namespace ghassanpl
 			return *this;
 		}
 
+		constexpr std::pair<trec2, trec2> split_vertical(T top_height) const noexcept
+		{
+			if (top_height < 0)
+				top_height = this->height() + top_height;
+			return { trec2::from_size(this->p1, {this->width(), top_height}), trec2::from_size(this->p1 + tvec{0, top_height}, {this->width(), this->height() - top_height}) };
+		}
+
+		constexpr std::pair<trec2, trec2> split_horizontal(T left_width) const noexcept
+		{
+			if (left_width < 0)
+				left_width = this->width() + left_width;
+			return { trec2::from_size(this->p1, {left_width, this->height}), trec2::from_size(this->p1 + tvec{left_width, 0}, {this->width() - left_width, this->height()})};
+		}
+
 		constexpr T calculate_area() const noexcept { return width() * height(); }
 
 		constexpr T edge_length() const noexcept { return (width() + height()) * 2; }

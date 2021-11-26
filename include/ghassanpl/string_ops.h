@@ -61,6 +61,19 @@ namespace ghassanpl::string_ops
 	}
 
 	/// ///////////////////////////// ///
+	/// Pre-C++23 stuff
+	/// ///////////////////////////// ///
+	
+	bool contains(std::string_view str, char c)
+	{
+#if __cpp_lib_string_contains
+		return str.contains(c);
+#else
+		return ::std::find(str.begin(), str.end(), c) != str.end();
+#endif
+	}
+
+	/// ///////////////////////////// ///
 	/// Makes
 	/// ///////////////////////////// ///
 
@@ -231,12 +244,12 @@ namespace ghassanpl::string_ops
 
 	inline string_view consume_c_identifier_with(string_view& str, string_view additional_chars)
 	{
-		if (str.empty() || !(ascii::isalpha(str[0]) || str[0] == '_' || additional_chars.contains(str[0])))
+		if (str.empty() || !(ascii::isalpha(str[0]) || str[0] == '_' || contains(additional_chars, str[0])))
 			return {};
 
 		const auto start = str.begin();
 		str.remove_prefix(1);
-		consume_while(str, [additional_chars](char c) { return ascii::isident(c) || additional_chars.contains(c); });
+		consume_while(str, [additional_chars](char c) { return ascii::isident(c) || contains(additional_chars, c); });
 		return make_sv(start, str.begin());
 	}
 
