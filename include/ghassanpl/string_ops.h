@@ -9,6 +9,7 @@
 #include <vector>
 #include <sstream>
 #include <charconv>
+#include <ranges>
 
 namespace ghassanpl::string_ops
 {
@@ -18,24 +19,28 @@ namespace ghassanpl::string_ops
 
 	namespace ascii
 	{
+		/// Our own versions of <cctype> functions that do not block, are defined for values outside of uint8_t, and do not depend on locale.
+		/// RATIONALE: We are using numbers (e.g. 65) instead of character literals (e.g. 'A'), because the encoding of this source file might not be ASCII-based
+		/// Thanks to @fmatthew5876 for inspiration
 
-		/// Our own functions that do not block, are defined for values outside of uint8_t, and do not depend on locale
-		[[nodiscard]] inline constexpr bool isalpha(char32_t cp) noexcept { return (cp >= 'A' && cp <= 'Z') || (cp >= 'a' && cp <= 'z'); }
-		[[nodiscard]] inline constexpr bool isdigit(char32_t d)  noexcept { return d >= '0' && d <= '9'; }
-		[[nodiscard]] inline constexpr bool isxdigit(char32_t d) noexcept { return (d >= '0' && d <= '9') || (d >= 'A' && d <= 'F') || (d >= 'a' && d <= 'f'); }
+		[[nodiscard]] inline constexpr bool isalpha(char32_t cp) noexcept { return (cp >= 65 && cp <= 90) || (cp >= 97 && cp <= 122); }
+		[[nodiscard]] inline constexpr bool isdigit(char32_t cp) noexcept { return cp >= 48 && cp <= 57; }
+		[[nodiscard]] inline constexpr bool isxdigit(char32_t d) noexcept { return (d >= 48 && d <= 57) || (d >= 65 && d <= 70) || (d >= 97 && d <= 102); }
 		[[nodiscard]] inline constexpr bool isalnum(char32_t cp) noexcept { return ::ghassanpl::string_ops::ascii::isdigit(cp) || ::ghassanpl::string_ops::ascii::isalpha(cp); }
 		[[nodiscard]] inline constexpr bool isident(char32_t cp) noexcept { return ::ghassanpl::string_ops::ascii::isdigit(cp) || ::ghassanpl::string_ops::ascii::isalpha(cp) || cp == '_'; }
-		[[nodiscard]] inline constexpr bool isspace(char32_t d)  noexcept { return d == ' ' || d == '\t' || d == '\n' || d == '\v' || d == '\r' || d == '\f'; }
-		[[nodiscard]] inline constexpr bool ispunct(char32_t d)  noexcept { return (d >= 33 && d <= 47) || (d >= 58 && d <= 64) || (d >= 91 && d <= 96) || (d >= 123 && d <= 126); }
-		[[nodiscard]] inline constexpr bool islower(char32_t cp) noexcept { return (cp >= 'a' && cp <= 'z'); }
-		[[nodiscard]] inline constexpr bool isupper(char32_t cp) noexcept { return (cp >= 'A' && cp <= 'Z'); }
+		[[nodiscard]] inline constexpr bool isspace(char32_t cp) noexcept { return (cp >= 9 && cp <= 13) || cp == 32; }
+		[[nodiscard]] inline constexpr bool ispunct(char32_t cp) noexcept { return (cp >= 33 && cp <= 47) || (cp >= 58 && cp <= 64) || (cp >= 91 && cp <= 96) || (cp >= 123 && cp <= 126); }
+		[[nodiscard]] inline constexpr bool islower(char32_t cp) noexcept { return cp >= 97 && cp <= 122; }
+		[[nodiscard]] inline constexpr bool isupper(char32_t cp) noexcept { return cp >= 65 && cp <= 90; }
 		[[nodiscard]] inline constexpr bool iscntrl(char32_t cp) noexcept { return cp == 0x7F || cp < 0x20; }
-		[[nodiscard]] inline constexpr bool isblank(char32_t cp) noexcept { return cp == ' ' || cp == '\t'; }
-		[[nodiscard]] inline constexpr bool isgraph(char32_t cp) noexcept { return ::ghassanpl::string_ops::ascii::isalnum(cp) || ::ghassanpl::string_ops::ascii::ispunct(cp); }
-		[[nodiscard]] inline constexpr bool isprint(char32_t cp) noexcept { return ::ghassanpl::string_ops::ascii::isgraph(cp) || cp == ' '; }
+		[[nodiscard]] inline constexpr bool isblank(char32_t cp) noexcept { return cp == 32 || cp == 9; }
+		[[nodiscard]] inline constexpr bool isgraph(char32_t cp) noexcept { return cp >= 33 && cp <= 126; }
+		[[nodiscard]] inline constexpr bool isprint(char32_t cp) noexcept { return cp >= 32 && cp <= 126; }
 
-		[[nodiscard]] inline constexpr char32_t toupper(char32_t cp) noexcept { return (cp >= 'a' && cp <= 'z') ? (cp ^ 0b100000) : cp; }
-		[[nodiscard]] inline constexpr char32_t tolower(char32_t cp) noexcept { return (cp >= 'A' && cp <= 'Z') ? (cp | 0b100000) : cp; }
+		[[nodiscard]] inline constexpr char32_t toupper(char32_t cp) noexcept { return (cp >= 97 && cp <= 122) ? (cp ^ 0b100000) : cp; }
+		[[nodiscard]] inline constexpr char32_t tolower(char32_t cp) noexcept { return (cp >= 65 && cp <= 90)  ? (cp | 0b100000) : cp; }
+
+		/// ASCII-string-based utilities that make use of the above functions
 
 		[[nodiscard]] inline std::string tolower(std::string str) noexcept { std::for_each(str.begin(), str.end(), [](char& cp) { cp = (char)::ghassanpl::string_ops::ascii::tolower(cp); }); return str; }
 		[[nodiscard]] inline std::string tolower(std::string_view str) noexcept { return ::ghassanpl::string_ops::ascii::tolower(std::string{str}); }
@@ -45,10 +50,17 @@ namespace ghassanpl::string_ops
 		[[nodiscard]] inline std::string toupper(std::string_view str) noexcept { return ::ghassanpl::string_ops::ascii::toupper(std::string{str}); }
 		[[nodiscard]] inline std::string toupper(const char* str) noexcept { return ::ghassanpl::string_ops::ascii::toupper(std::string{str}); }
 
-		/// todigit is defined only for values between 0 and 9
-		[[nodiscard]] inline constexpr char32_t todigit(int v) noexcept { return char32_t(v) + U'0'; }
-		/// toxdigit is defined only for values between 0 and 15
-		[[nodiscard]] inline constexpr char32_t toxdigit(int v) noexcept { return (v > 9) ? (char32_t(v - 10) + U'A') : (char32_t(v) + U'0'); }
+		/// Convert a number between 0 and 9/15 to its ASCII representation (only gives meaningful results with arguments between 0 and 9/15)
+
+		[[nodiscard]] inline constexpr char32_t number_to_digit(int v) noexcept { return char32_t(v) + 48; }
+		[[nodiscard]] inline constexpr char32_t number_to_xdigit(int v) noexcept { return (v > 9) ? (char32_t(v - 10) + 65) : (char32_t(v) + 48); }
+
+		/// Convert an ASCII (x)digit to its numerical value (only gives meaningful results with valid (x)digit arguments)
+
+		[[nodiscard]] inline constexpr int digit_to_number(char32_t cp) noexcept { return int(cp - 48); }
+		[[nodiscard]] inline constexpr int xdigit_to_number(char32_t cp) noexcept { return (cp >= 97 && cp <= 102) ? int(cp - 97) : int((cp >= 65 && cp <= 70) ? (cp - 55) : (cp - 48)); }
+
+		/// Case-invariant comparisons and sorts
 
 		[[nodiscard]] constexpr bool strings_equal_ignore_case(std::string_view a, std::string_view b)
 		{
@@ -60,6 +72,11 @@ namespace ghassanpl::string_ops
 			return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), [](char a, char b) { return ::ghassanpl::string_ops::ascii::toupper(a) < ::ghassanpl::string_ops::ascii::toupper(b); });
 		}
 	}
+
+#pragma push_macro("isascii")
+#undef isascii
+	[[nodiscard]] inline constexpr bool isascii(char32_t cp) noexcept { return cp <= 127; }
+#pragma pop_macro("isascii")
 
 	/// ///////////////////////////// ///
 	/// Pre-C++23 stuff
@@ -74,19 +91,26 @@ namespace ghassanpl::string_ops
 #endif
 	}
 
-	/// ///////////////////////////// ///
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ///
 	/// Makes
-	/// ///////////////////////////// ///
+	/// 
+	/// Rationale: Even though C++20 has a range constructor, it uses `operator-` on its arguments, which means that iterators from disparate string_views do not work, even
+	/// if they point to a contiguous string range (for example, were made from substrings of the same string_view). Hence these functions.
+	/// They should work with any pair of iterators (no support for sentinels yet, unfortunately), support nulls, and are almost as strong as the string_view range constructor
+	/// in terms of exception and type safety. As with the respective constructors, undefined behavior when `start` > `end`.
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ///
 
-	[[nodiscard]] inline constexpr std::string_view make_sv(const char* start, const char* end) noexcept { return std::string_view{ start, static_cast<size_t>(end - start) }; }
-	//template <std::contiguous_iterator IT, typename T = typename std::iterator_traits<IT>::value_type>
-	template <typename IT, typename T = typename std::iterator_traits<IT>::value_type>
-	[[nodiscard]] inline constexpr std::string_view make_sv(IT start, IT end) { return std::string_view{ std::to_address(start), static_cast<size_t>(std::distance(std::to_address(start), std::to_address(end))) }; }
+	[[nodiscard]] inline constexpr std::string_view make_sv(nullptr_t start, nullptr_t end) { return std::string_view{}; }
 
-	[[nodiscard]] inline std::string make_string(const char* start, const char* end) { return std::string{ start, static_cast<size_t>(end - start) }; }
-	//template <std::contiguous_iterator IT, typename T = typename std::iterator_traits<IT>::value_type>
-	template <typename IT, typename T = typename std::iterator_traits<IT>::value_type>
-	[[nodiscard]] inline std::string make_string(IT start, IT end) { return std::string{ std::to_address(start), static_cast<size_t>(std::distance(std::to_address(start), std::to_address(end))) }; }
+	template <std::contiguous_iterator IT>
+	requires std::is_same_v<std::iter_value_t<IT>, char>
+	[[nodiscard]] inline constexpr std::string_view make_sv(IT start, IT end) noexcept(noexcept(std::to_address(start))) { return std::string_view{ std::to_address(start), static_cast<size_t>(std::to_address(end) - std::to_address(start)) }; }
+
+	[[nodiscard]] inline constexpr std::string make_string(nullptr_t start, nullptr_t end) { return std::string{}; }
+
+	template <std::contiguous_iterator IT>
+	requires std::is_same_v<std::iter_value_t<IT>, char>
+	[[nodiscard]] inline std::string make_string(IT start, IT end) noexcept(noexcept(std::to_address(start))) { return std::string{ ::ghassanpl::string_ops::make_sv(start, end) }; }
 
 	/// for predicates
 	[[nodiscard]] inline std::string to_string(std::string_view from) noexcept { return std::string{ from }; }

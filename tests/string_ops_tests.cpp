@@ -14,7 +14,7 @@ using std::string_view;
 template <typename F1, typename F2>
 void same(F1&& f1, F2&& f2, const char* name)
 {
-	for (int cp = 0; cp < 256; ++cp)
+	for (int cp = -1; cp < 256; ++cp) /// same range as C functions support
 	{
 		auto a = f1(cp);
 		auto b = f2(cp);
@@ -45,9 +45,13 @@ TEST(string_ops_test, ascii_functions_are_correct)
 	const char digits[] = "0123456789ABCDEF";
 	for (int i = 0; i < 16; i++)
 	{
-		EXPECT_EQ(digits[i], ascii::toxdigit(i));
+		EXPECT_EQ(digits[i], ascii::number_to_xdigit(i));
+		EXPECT_EQ(ascii::xdigit_to_number(ascii::number_to_xdigit(i)), i);
 		if (i < 10)
-			EXPECT_EQ(digits[i], ascii::todigit(i));
+		{
+			EXPECT_EQ(digits[i], ascii::number_to_digit(i));
+			EXPECT_EQ(ascii::digit_to_number(ascii::number_to_digit(i)), i);
+		}
 	}
 
 	EXPECT_EQ(ascii::tolower("woof"), "woof");
@@ -99,16 +103,48 @@ TEST(string_ops_test, contains_works)
 
 TEST(string_ops_test, make_sv_works)
 {
+	auto sv = make_sv(nullptr, nullptr);
+	EXPECT_EQ(sv, string_view{});
 
+	string_view svo = "hello world";
+	EXPECT_EQ(make_sv(svo.data(), svo.data() + svo.size()), svo);
+	EXPECT_EQ(make_sv(svo.begin(), svo.end()), svo);
 }
 
-TEST(string_ops_test, make_sv_works_for_nulls)
+TEST(string_ops_test, make_string_works)
 {
+	auto s = make_string(nullptr, nullptr);
+	EXPECT_EQ(s, string_view{});
 
+	string so = "hello world";
+	EXPECT_EQ(make_string(so.data(), so.data() + so.size()), so);
+	EXPECT_EQ(make_string(so.begin(), so.end()), so);
 }
 
-TEST(string_ops_test, make_sv_fails_for_invalid_range)
+TEST(string_ops_test, to_string_works)
 {
-	//std::string hello = "hello";
-	//EXPECT_EQ(make_sv(hello.end(), hello.begin()), "");
+	auto sv = std::string_view{};
+	auto s = to_string(sv);
+	EXPECT_EQ(s, sv);
+
+	string so = "hello world";
+	EXPECT_EQ(to_string(so), so);
+	EXPECT_EQ(to_string("hello world"), so);
+}
+
+TEST(string_ops_test, trims_work)
+{
+	/*
+	[[nodiscard]] inline std::string_view trimmed_whitespace_right(std::string_view str) noexcept { return make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
+	[[nodiscard]] inline std::string_view trimmed_whitespace_left(std::string_view str) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
+	[[nodiscard]] inline std::string_view trimmed_whitespace(std::string_view str) noexcept { return trimmed_whitespace_left(trimmed_whitespace_right(str)); }
+	[[nodiscard]] inline std::string_view trimmed_until(std::string_view str, char chr) noexcept { return make_sv(std::find(str.begin(), str.end(), chr), str.end()); }
+
+	inline void trim_whitespace_right(std::string_view & str) noexcept { str = make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
+	inline void trim_whitespace_left(std::string_view & str) noexcept { str = make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
+	inline void trim_whitespace(std::string_view & str) noexcept { trim_whitespace_left(str); trim_whitespace_right(str); }
+
+	template <typename FUNC>
+	[[nodiscard]] inline std::string_view trimmed_while(std::string_view str, FUNC && func) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), std::forward<FUNC>(func)), str.end()); }
+	*/
 }
