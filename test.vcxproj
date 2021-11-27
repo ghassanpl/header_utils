@@ -147,7 +147,8 @@
   <ItemGroup>
     <ClCompile Include="tests\assuming_tests.cpp" />
     <ClCompile Include="tests\enum_flags_tests.cpp" />
-    <ClCompile Include="tests\tests.cpp" />
+    <ClCompile Include="tests\align_tests.cpp" />
+    <ClCompile Include="tests\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ghassanpl\align+rec2.h" />
