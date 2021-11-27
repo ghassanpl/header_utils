@@ -1,19 +1,19 @@
-/// Copyright 2017-2020 Ghassan.pl
-/// Usage of the works is permitted provided that this instrument is retained with
-/// the works, so that any entity that uses the works is notified of this instrument.
-/// DISCLAIMER: THE WORKS ARE WITHOUT WARRANTY.
+/// This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "../include/ghassanpl/assuming.h"
+
 #include <gtest/gtest.h>
 
-struct AssumingTest;
-AssumingTest* current_test = nullptr;
+struct assuming_test;
+assuming_test* current_test = nullptr;
 
 using namespace ghassanpl;
 
 using name_value_pair = std::pair<std::string_view, std::string>;
 
-struct AssumingTest : public ::testing::Test
+struct assuming_test : public ::testing::Test
 {
   bool assumption_failed = false;
   std::source_location last_where;
@@ -73,7 +73,7 @@ struct AssumingTest : public ::testing::Test
 #endif
 #define EXPECT_ASSUMPTION_SUCCEEDED(func_name, ...) func_name SELF(__VA_ARGS__); EXPECT_FALSE(assumption_failed) << #func_name; assumption_failed = false;
 
-TEST_F(AssumingTest, Assuming_works)
+TEST_F(assuming_test, Assuming_works)
 {
   EXPECT_ASSUMPTION_SUCCEEDED(Assuming, true);
 
@@ -89,7 +89,7 @@ TEST_F(AssumingTest, Assuming_works)
 
 int object{};
 
-TEST_F(AssumingTest, AssumingNotNull_works)
+TEST_F(assuming_test, AssumingNotNull_works)
 {
   EXPECT_ASSUMPTION_SUCCEEDED(AssumingNotNull, &object);
 
@@ -103,7 +103,7 @@ TEST_F(AssumingTest, AssumingNotNull_works)
   }
 }
 
-TEST_F(AssumingTest, AssumingNull_works)
+TEST_F(assuming_test, AssumingNull_works)
 {
   const decltype(&object) value = nullptr;
   EXPECT_ASSUMPTION_SUCCEEDED(AssumingNull, value);
@@ -117,7 +117,7 @@ TEST_F(AssumingTest, AssumingNull_works)
   }
 }
 
-TEST_F(AssumingTest, AssumingEqual_works)
+TEST_F(assuming_test, AssumingEqual_works)
 {
   std::pair<int, double> q = { 5, 6 };
   EXPECT_ASSUMPTION_FAILED(AssumingEqual, q.first, q.second);
@@ -132,7 +132,7 @@ TEST_F(AssumingTest, AssumingEqual_works)
   EXPECT_ASSUMPTION_SUCCEEDED(AssumingEqual, value, 0.4);
 }
 
-TEST_F(AssumingTest, AssumingNotEqual_works)
+TEST_F(assuming_test, AssumingNotEqual_works)
 {
   EXPECT_ASSUMPTION_SUCCEEDED(AssumingNotEqual, 5, 6);
 
@@ -148,7 +148,7 @@ TEST_F(AssumingTest, AssumingNotEqual_works)
 }
 
 #define EXPECT_EVAL_COUNT(count, ...) __VA_ARGS__; EXPECT_EQ(std::exchange(evaluation_count, 0), count);
-TEST_F(AssumingTest, assumings_evaluate_arguments_only_once)
+TEST_F(assuming_test, assumings_evaluate_arguments_only_once)
 {
   EXPECT_EVAL_COUNT(1, Assuming(single_eval_check(false)));
 
@@ -212,7 +212,7 @@ struct std::formatter<UnMovable, CharT> : std::formatter<std::basic_string<CharT
   }
 };
 
-TEST_F(AssumingTest, assumings_dont_copy_unnecessarily)
+TEST_F(assuming_test, assumings_dont_copy_unnecessarily)
 {
   //int i = 0;
   UnCopyable a;

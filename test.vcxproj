@@ -121,6 +121,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -136,6 +137,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,12 +146,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="tests\assuming_tests.cpp" />
-    <ClCompile Include="tests\enum_flags_tests.cpp" />
-    <ClCompile Include="tests\align_tests.cpp" />
-    <ClCompile Include="tests\main.cpp" />
-  </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ghassanpl\align+rec2.h" />
     <ClInclude Include="include\ghassanpl\align.h" />
@@ -165,6 +161,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="tests\align_tests.cpp" />
+    <ClCompile Include="tests\assuming_tests.cpp" />
+    <ClCompile Include="tests\di_tests.cpp" />
+    <ClCompile Include="tests\enum_flags_tests.cpp" />
+    <ClCompile Include="tests\main.cpp" />
+    <ClCompile Include="tests\named_tests.cpp" />
+    <ClCompile Include="tests\rec2_tests.cpp" />
+    <ClCompile Include="tests\string_ops_tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

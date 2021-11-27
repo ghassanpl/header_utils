@@ -1,4 +1,10 @@
+/// This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #include "../include/ghassanpl/align.h"
+
+#include <gtest/gtest.h>
 
 #include <set>
 #include <algorithm>
@@ -29,8 +35,6 @@ auto cartesian_product(RANGE1&& r1, RANGE2&& r2)
 #endif
 #include <ranges>
 
-#include <gtest/gtest.h>
-
 using namespace ghassanpl;
 
 const std::set<align> all_aligns{
@@ -47,7 +51,7 @@ const std::set<vertical_align> vertical_aligns{
   vertical_align::top, vertical_align::bottom, vertical_align::middle
 };
 
-TEST(alignment, basics_work)
+TEST(alignment_test, basics_work)
 {
   align a{ align::top_left };
   EXPECT_EQ(horizontal_align::left | vertical_align::bottom, a |= vertical_align::bottom);
@@ -63,7 +67,7 @@ TEST(alignment, basics_work)
   ASSERT_EQ(all_aligns, (std::set<align> { other_range.begin(), other_range.end() }));
 }
 
-TEST(alignment, names_work)
+TEST(alignment_test, names_work)
 {
 #define E(t, a) EXPECT_EQ(#a, t##_names[int(t::a)])
   E(horizontal_align, left);
@@ -97,7 +101,7 @@ TEST(alignment, names_work)
   }
 }
 
-TEST(alignment, conversions_work)
+TEST(alignment_test, conversions_work)
 {
   for (auto v : vertical_aligns_in_order)
   {
@@ -180,16 +184,6 @@ TEST(alignment, conversions_work)
   EXPECT_EQ(horizontal_align::center, to_horizontal(horizontal_align::center));
   EXPECT_EQ(horizontal_align::right, to_horizontal(horizontal_align::right));
 
-  EXPECT_EQ(vertical_from(align::top_center), vertical_align::top);
-  EXPECT_EQ(vertical_from(align::middle_center), vertical_align::middle);
-  EXPECT_EQ(vertical_from(align::bottom_center), vertical_align::bottom);
-  EXPECT_EQ(vertical_from(align::top_left), vertical_align::top);
-  EXPECT_EQ(vertical_from(align::middle_left), vertical_align::middle);
-  EXPECT_EQ(vertical_from(align::bottom_left), vertical_align::bottom);
-  EXPECT_EQ(vertical_from(align::top_right), vertical_align::top);
-  EXPECT_EQ(vertical_from(align::middle_right), vertical_align::middle);
-  EXPECT_EQ(vertical_from(align::bottom_right), vertical_align::bottom);
-
   EXPECT_EQ(horizontal_from(align::top_center), horizontal_align::center);
   EXPECT_EQ(horizontal_from(align::middle_center), horizontal_align::center);
   EXPECT_EQ(horizontal_from(align::bottom_center), horizontal_align::center);
@@ -200,15 +194,15 @@ TEST(alignment, conversions_work)
   EXPECT_EQ(horizontal_from(align::middle_right), horizontal_align::right);
   EXPECT_EQ(horizontal_from(align::bottom_right), horizontal_align::right);
 
-  EXPECT_EQ(only_vertical(align::top_center), align::top_left);
-  EXPECT_EQ(only_vertical(align::middle_center), align::middle_left);
-  EXPECT_EQ(only_vertical(align::bottom_center), align::bottom_left);
-  EXPECT_EQ(only_vertical(align::top_left), align::top_left);
-  EXPECT_EQ(only_vertical(align::middle_left), align::middle_left);
-  EXPECT_EQ(only_vertical(align::bottom_left), align::bottom_left);
-  EXPECT_EQ(only_vertical(align::top_right), align::top_left);
-  EXPECT_EQ(only_vertical(align::middle_right), align::middle_left);
-  EXPECT_EQ(only_vertical(align::bottom_right), align::bottom_left);
+  EXPECT_EQ(vertical_from(align::top_center), vertical_align::top);
+  EXPECT_EQ(vertical_from(align::middle_center), vertical_align::middle);
+  EXPECT_EQ(vertical_from(align::bottom_center), vertical_align::bottom);
+  EXPECT_EQ(vertical_from(align::top_left), vertical_align::top);
+  EXPECT_EQ(vertical_from(align::middle_left), vertical_align::middle);
+  EXPECT_EQ(vertical_from(align::bottom_left), vertical_align::bottom);
+  EXPECT_EQ(vertical_from(align::top_right), vertical_align::top);
+  EXPECT_EQ(vertical_from(align::middle_right), vertical_align::middle);
+  EXPECT_EQ(vertical_from(align::bottom_right), vertical_align::bottom);
 
   EXPECT_EQ(only_horizontal(align::top_center), align::top_center);
   EXPECT_EQ(only_horizontal(align::middle_center), align::top_center);
@@ -219,9 +213,19 @@ TEST(alignment, conversions_work)
   EXPECT_EQ(only_horizontal(align::top_right), align::top_right);
   EXPECT_EQ(only_horizontal(align::middle_right), align::top_right);
   EXPECT_EQ(only_horizontal(align::bottom_right), align::top_right);
+
+  EXPECT_EQ(only_vertical(align::top_center), align::top_left);
+  EXPECT_EQ(only_vertical(align::middle_center), align::middle_left);
+  EXPECT_EQ(only_vertical(align::bottom_center), align::bottom_left);
+  EXPECT_EQ(only_vertical(align::top_left), align::top_left);
+  EXPECT_EQ(only_vertical(align::middle_left), align::middle_left);
+  EXPECT_EQ(only_vertical(align::bottom_left), align::bottom_left);
+  EXPECT_EQ(only_vertical(align::top_right), align::top_left);
+  EXPECT_EQ(only_vertical(align::middle_right), align::middle_left);
+  EXPECT_EQ(only_vertical(align::bottom_right), align::bottom_left);
 }
 
-TEST(alignment, axis_alignments_work)
+TEST(alignment_test, axis_alignments_work)
 {
   EXPECT_EQ(align_axis(10, 100, horizontal_align::left), 0);
   EXPECT_EQ(align_axis(10.0, 100.0, horizontal_align::center), 45.0);
@@ -252,7 +256,7 @@ TEST(alignment, axis_alignments_work)
   EXPECT_EQ(align_axis(INFINITY, 10.0f, horizontal_align::right), -INFINITY);
 }
 
-TEST(alignment, justify_doesnt_break_anything)
+TEST(alignment_test, justify_doesnt_break_anything)
 {
   EXPECT_FALSE(horizontal_aligns.contains(horizontal_align::justify));
   EXPECT_FALSE(vertical_aligns.contains(vertical_align::justify));
