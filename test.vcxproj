@@ -145,9 +145,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\vcpkg.json" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="tests\assuming_tests.cpp" />
+    <ClCompile Include="tests\enum_flags_tests.cpp" />
     <ClCompile Include="tests\tests.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +161,9 @@
     <ClInclude Include="include\ghassanpl\named.h" />
     <ClInclude Include="include\ghassanpl\rec2.h" />
     <ClInclude Include="include\ghassanpl\string_ops.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vcpkg.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

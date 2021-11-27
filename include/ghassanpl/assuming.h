@@ -39,19 +39,19 @@
 
 #if ASSUMING_DEBUG
 
-#define Assuming(exp, ...) { if (decltype(auto) _assuming_exp_v = (exp); !_assuming_exp_v) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#exp " will evalute to true", { { #exp, std::format("{}", ::ghassanpl::detail::GetFormattable(std::move(_assuming_exp_v))) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
+#define Assuming(exp, ...) { if (auto&& _assuming_exp_v = (exp); !_assuming_exp_v) [[unlikely]] \
+	::ghassanpl::ReportAssumptionFailure(#exp " will evalute to true", { { #exp, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-#define AssumingNull(exp, ...) { if (decltype(auto) _assuming_exp_v = (exp); _assuming_exp_v != nullptr) [[unlikely]] \
+#define AssumingNull(exp, ...) { if (auto&& _assuming_exp_v = (exp); _assuming_exp_v != nullptr) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will be null", { { #exp, std::format("{}", (const void*)std::to_address(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-#define AssumingNotNull(exp, ...) { if (decltype(auto) _assuming_exp_v = (exp); _assuming_exp_v == nullptr) [[unlikely]] \
+#define AssumingNotNull(exp, ...) { if (auto&& _assuming_exp_v = (exp); _assuming_exp_v == nullptr) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will not be null", { { #exp, std::format("{}", (const void*)std::to_address(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-#define AssumingBinOp(a, b, op, text, ...) { decltype(auto) _assuming_a_v = (a); decltype(auto) _assuming_b_v = (b); if (!(_assuming_a_v op _assuming_b_v)) [[unlikely]] \
+#define AssumingBinOp(a, b, op, text, ...) { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!(_assuming_a_v op _assuming_b_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#a " will " text " " #b, { \
-		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(std::move(_assuming_a_v))) }, \
-		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(std::move(_assuming_b_v))) } \
+		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_a_v)) }, \
+		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
 	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
 #define AssumingEqual(a, b, ...) AssumingBinOp(a, b, ==, "be equal to", __VA_ARGS__)
@@ -63,19 +63,19 @@
 
 #define AssumingZero(a, ...) AssumingBinOp(a, 0, ==, "be equal to", __VA_ARGS__)
 
-#define AssumingEmpty(exp, ...) { using std::empty; using std::size; if (decltype(auto) _assuming_exp_v = (exp); !empty(_assuming_exp_v)) [[unlikely]] \
+#define AssumingEmpty(exp, ...) { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); !empty(_assuming_exp_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will be empty", { { "size of " #exp, std::format("{}", size(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-#define AssumingNotEmpty(exp, ...) { using std::empty; using std::size; if (decltype(auto) _assuming_exp_v = (exp); empty(_assuming_exp_v)) [[unlikely]] \
+#define AssumingNotEmpty(exp, ...) { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); empty(_assuming_exp_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will not be empty", { { "size of " #exp, std::format("{}", size(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-#define AssumingNullOrEmpty(exp, ...) { using std::empty; using std::size; if (decltype(auto) _assuming_exp_v = (exp); !::ghassanpl::detail::IsNullOrEmpty(_assuming_exp_v)) [[unlikely]] \
+#define AssumingNullOrEmpty(exp, ...) { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); !::ghassanpl::detail::IsNullOrEmpty(_assuming_exp_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will be null or empty", { { #exp, _assuming_exp_v ? std::format("'{}'", _assuming_exp_v) : "(null)" } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-#define AssumingNotNullOrEmpty(exp, ...) { using std::empty; using std::size; if (decltype(auto) _assuming_exp_v = (exp); ::ghassanpl::detail::IsNullOrEmpty(_assuming_exp_v)) [[unlikely]] \
+#define AssumingNotNullOrEmpty(exp, ...) { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); ::ghassanpl::detail::IsNullOrEmpty(_assuming_exp_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will not be null or empty", { { #exp, _assuming_exp_v ? std::format("'{}'", _assuming_exp_v) : "(null)" } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-#define AssumingValidIndex(_index, _container, ...) { using std::size; decltype(auto) _assuming_index = (_index); decltype(auto) _assuming_container = (_container); const auto _assuming_container_size = size(_assuming_container); \
+#define AssumingValidIndex(_index, _container, ...) { using std::size; auto&& _assuming_index = (_index); auto&& _assuming_container = (_container); const auto _assuming_container_size = size(_assuming_container); \
 	if (!(_assuming_index >= 0 && size_t(_assuming_index) < _assuming_container_size)) [[unlikely]] { \
 		::ghassanpl::ReportAssumptionFailure(#_index " will be a valid index to " #_container, { \
 			{ #_index, std::format("{}", _assuming_index) }, \
@@ -99,7 +99,7 @@
 #define AssumingNotEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(!empty(exp)); }
 #define AssumingNullOrEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(::ghassanpl::detail::IsNullOrEmpty(exp));  }
 #define AssumingNotNullOrEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(!::ghassanpl::detail::IsNullOrEmpty(exp)); }
-#define AssumingValidIndex(_index, _container, ...) { using std::size; decltype(auto) _assuming_index = (_index); ASSUMING_ASSUME(((_assuming_index) >= 0 && size_t(_assuming_index) < size(_container))); }
+#define AssumingValidIndex(_index, _container, ...) { using std::size; auto&& _assuming_index = (_index); ASSUMING_ASSUME(((_assuming_index) >= 0 && size_t(_assuming_index) < size(_container))); }
 
 #endif
 
@@ -119,7 +119,7 @@ namespace ghassanpl
 		}
 
 		template <typename T>
-		auto GetFormattable(T&& val)
+		auto&& GetFormattable(T&& val)
 		{
 #if ASSUMING_INCLUDE_MAGIC_ENUM
 			if constexpr (std::is_enum_v<T>) return magic_enum::enum_name(val); else 
