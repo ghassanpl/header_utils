@@ -14,6 +14,13 @@
 namespace ghassanpl::string_ops
 {
 	/// ///////////////////////////// ///
+	/// Useful concepts
+	/// ///////////////////////////// ///
+	
+	template <typename T, typename CHAR_TYPE = char>
+	concept string_or_char = std::is_constructible_v<std::basic_string_view<CHAR_TYPE>, T> || std::is_constructible_v<CHAR_TYPE, T>;
+
+	/// ///////////////////////////// ///
 	/// ASCII functions
 	/// ///////////////////////////// ///
 
@@ -82,7 +89,7 @@ namespace ghassanpl::string_ops
 	/// Pre-C++23 stuff
 	/// ///////////////////////////// ///
 	
-	bool contains(std::string_view str, char c)
+	inline bool contains(std::string_view str, char c)
 	{
 #if __cpp_lib_string_contains
 		return str.contains(c);
@@ -129,7 +136,8 @@ namespace ghassanpl::string_ops
 	inline void trim_whitespace(std::string_view& str) noexcept { trim_whitespace_left(str); trim_whitespace_right(str); }
 
 	template <typename FUNC>
-	[[nodiscard]] inline std::string_view trimmed_while(std::string_view str, FUNC&& func) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), std::forward<FUNC>(func)), str.end()); }
+	requires std::is_invocable_r_v<bool, FUNC, char>
+	[[nodiscard]] inline std::string_view trimmed_while(std::string_view str, FUNC&& func) noexcept { return ::ghassanpl::string_ops::make_sv(std::find_if_not(str.begin(), str.end(), std::forward<FUNC>(func)), str.end()); }
 
 	/// ///////////////////////////// ///
 	/// Consume
@@ -164,14 +172,6 @@ namespace ghassanpl::string_ops
 		return false;
 	}
 
-	/*
-	template <size_t N>
-	bool consume(string_view& str, char(&val)[N])
-	{
-		return consume(str, make_sv(val, val + N));
-	}
-	*/
-	
 	inline bool consume_at_end(std::string_view& str, char val)
 	{
 		if (str.ends_with(val))
@@ -193,7 +193,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <typename FUNC>
-	//requires std::invocable<FUNC, char>
+	requires std::is_invocable_r_v<bool, FUNC, char>
 	inline std::string_view consume_while(std::string_view& str, FUNC&& pred)
 	{
 		const auto start = str.begin();
@@ -202,7 +202,6 @@ namespace ghassanpl::string_ops
 		return make_sv(start, str.begin());
 	}
 
-	template <typename FUNC>
 	inline std::string_view consume_while(std::string_view& str, char c)
 	{
 		const auto start = str.begin();
@@ -228,6 +227,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <typename CALLBACK>
+	requires std::is_invocable_r_v<bool, CALLBACK, std::string_view>
 	inline bool consume_delimited_list_non_empty(std::string_view& str, std::string_view delimiter, CALLBACK callback)
 	{
 		do
@@ -241,6 +241,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <typename CALLBACK>
+	requires std::is_invocable_r_v<bool, CALLBACK, std::string_view>
 	inline bool consume_delimited_list(std::string_view& str, std::string_view delimiter, std::string_view closer, CALLBACK callback)
 	{
 		trim_whitespace_left(str);
@@ -279,7 +280,7 @@ namespace ghassanpl::string_ops
 	}
 
 
-#if _MSC_VER
+#if __cpp_lib_to_chars
 	inline std::pair<std::string_view, double> consume_c_float(std::string_view& str)
 	{
 		if (str.empty() || !(ascii::isdigit(str[0]) || str[0] == '-'))
@@ -438,7 +439,7 @@ namespace ghassanpl::string_ops
 	
 	/// Assuming str is valid UTF-8
 	[[gsl::suppress(type.1, es.79)]]
-	inline char32_t consume_utf8(std::string_view& str)
+	constexpr inline char32_t consume_utf8(std::string_view& str)
 	{
 		if (str.empty()) return 0;
 		auto it = (uint8_t*)std::to_address(str.begin());
@@ -467,6 +468,13 @@ namespace ghassanpl::string_ops
 		}
 		str.remove_prefix(length);
 		return cp;
+	}
+
+	/// Assuming str is valid UTF-8
+	[[gsl::suppress(type.1, es.79)]]
+	constexpr inline char32_t consume_utf8(std::string_view&& str)
+	{
+		return consume_utf8(str);
 	}
 
 	/// Assuming codepoint is valid
@@ -628,7 +636,8 @@ namespace ghassanpl::string_ops
 	/// Other
 	/// ///////////////////////////// ///
 
-	template <typename DELIM, typename FUNC>
+	template <string_or_char DELIM, typename FUNC>
+	requires std::is_invocable_v<FUNC, std::string_view, bool>
 	inline void split(std::string_view source, DELIM&& delim, FUNC&& func) noexcept
 	{
 		size_t next = 0;
@@ -640,7 +649,8 @@ namespace ghassanpl::string_ops
 		func(source, true);
 	}
 
-	template <typename DELIM, typename FUNC>
+	template <string_or_char DELIM, typename FUNC>
+	requires std::is_invocable_v<FUNC, std::string_view, bool>
 	inline void natural_split(std::string_view source, DELIM&& delim, FUNC&& func) noexcept
 	{
 		size_t next = 0;
@@ -659,7 +669,7 @@ namespace ghassanpl::string_ops
 			func(source, true);
 	}
 
-	template <typename DELIM>
+	template <string_or_char DELIM>
 	[[nodiscard]] inline std::vector<std::string_view> split(std::string_view source, DELIM&& delim) noexcept
 	{
 		std::vector<std::string_view> result;
@@ -669,7 +679,7 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
-	template <typename DELIM>
+	template <string_or_char DELIM>
 	[[nodiscard]] inline std::vector<std::string_view> natural_split(std::string_view source, DELIM&& delim) noexcept
 	{
 		std::vector<std::string_view> result;
@@ -679,11 +689,7 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
-#if _MSC_VER
-	template <std::ranges::range T, typename DELIM>
-#else
-	template <typename T, typename DELIM>
-#endif
+	template <std::ranges::range T, string_or_char DELIM>
 	[[nodiscard]] inline auto join(T&& source, DELIM&& delim)
 	{
 		std::stringstream strm;
@@ -697,11 +703,7 @@ namespace ghassanpl::string_ops
 		return strm.str();
 	}
 
-#if _MSC_VER
-	template <std::ranges::range T, typename DELIM, typename LAST_DELIM>
-#else
-	template <typename T, typename DELIM, typename LAST_DELIM>
-#endif
+	template <std::ranges::range T, string_or_char DELIM, string_or_char LAST_DELIM>
 	[[nodiscard]] inline auto join_and(T&& source, DELIM&& delim, LAST_DELIM&& last_delim)
 	{
 		using std::begin;
@@ -727,11 +729,7 @@ namespace ghassanpl::string_ops
 		return strm.str();
 	}
 
-#if _MSC_VER
-	template <std::ranges::range T, typename FUNC, typename DELIM>
-#else
-	template <typename T, typename FUNC, typename DELIM>
-#endif
+	template <std::ranges::range T, typename FUNC, string_or_char DELIM>
 	[[nodiscard]] inline auto join(T&& source, DELIM&& delim, FUNC&& transform_func)
 	{
 		std::stringstream strm;
@@ -745,7 +743,7 @@ namespace ghassanpl::string_ops
 		return strm.str();
 	}
 
-	template <typename NEEDLE, typename REPLACE>
+	template <string_or_char NEEDLE, string_or_char REPLACE>
 	inline void replace(std::string& subject, NEEDLE&& search, REPLACE&& replace)
 	{
 		using std::empty;
@@ -765,8 +763,7 @@ namespace ghassanpl::string_ops
 		}
 	}
 
-
-#if !_MSC_VER
+#if !__cpp_lib_to_chars
 
 #else
 	template <typename T>

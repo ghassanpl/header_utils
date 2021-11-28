@@ -10,6 +10,7 @@ using namespace ghassanpl::string_ops;
 
 using std::string;
 using std::string_view;
+using namespace std::string_view_literals;
 
 template <typename F1, typename F2>
 void same(F1&& f1, F2&& f2, const char* name)
@@ -134,17 +135,30 @@ TEST(string_ops_test, to_string_works)
 
 TEST(string_ops_test, trims_work)
 {
-	/*
-	[[nodiscard]] inline std::string_view trimmed_whitespace_right(std::string_view str) noexcept { return make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
-	[[nodiscard]] inline std::string_view trimmed_whitespace_left(std::string_view str) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
-	[[nodiscard]] inline std::string_view trimmed_whitespace(std::string_view str) noexcept { return trimmed_whitespace_left(trimmed_whitespace_right(str)); }
-	[[nodiscard]] inline std::string_view trimmed_until(std::string_view str, char chr) noexcept { return make_sv(std::find(str.begin(), str.end(), chr), str.end()); }
+	const auto base_test = "  \t\n\r\n\r\r\r \n\n\n\va0\n\n \n\tasd\n\b\v \v\t"sv;
+	const auto only_ws = "  \t\n\r\n\r\r\r \n\n\n\v"sv;
+	EXPECT_EQ(trimmed_whitespace_left(base_test), "a0\n\n \n\tasd\n\b\v \v\t");
+	EXPECT_EQ(trimmed_whitespace_right(base_test), "  \t\n\r\n\r\r\r \n\n\n\va0\n\n \n\tasd\n\b");
+	EXPECT_EQ(trimmed_whitespace(base_test), "a0\n\n \n\tasd\n\b");
+	EXPECT_EQ(trimmed_until(base_test, '\b'), "\b\v \v\t");
 
-	inline void trim_whitespace_right(std::string_view & str) noexcept { str = make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
-	inline void trim_whitespace_left(std::string_view & str) noexcept { str = make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
-	inline void trim_whitespace(std::string_view & str) noexcept { trim_whitespace_left(str); trim_whitespace_right(str); }
+	EXPECT_EQ(trimmed_whitespace_left(only_ws), "");
+	EXPECT_EQ(trimmed_whitespace_right(only_ws), "");
+	EXPECT_EQ(trimmed_whitespace(only_ws), "");
+	EXPECT_EQ(trimmed_until(only_ws, '\b'), "");
 
-	template <typename FUNC>
-	[[nodiscard]] inline std::string_view trimmed_while(std::string_view str, FUNC && func) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), std::forward<FUNC>(func)), str.end()); }
-	*/
+	EXPECT_EQ(trimmed_whitespace_left({}), "");
+	EXPECT_EQ(trimmed_whitespace_right({}), "");
+	EXPECT_EQ(trimmed_whitespace({}), "");
+	EXPECT_EQ(trimmed_until({}, '\b'), "");
+
+	auto bt_left = base_test, bt_right = base_test, bt_both = base_test;
+	trim_whitespace_left(bt_left);
+	trim_whitespace_right(bt_right);
+	trim_whitespace(bt_both);
+	EXPECT_EQ(bt_left, trimmed_whitespace_left(base_test));
+	EXPECT_EQ(bt_right, trimmed_whitespace_right(base_test));
+	EXPECT_EQ(bt_both, trimmed_whitespace(base_test));
+	
+	EXPECT_EQ(trimmed_while(base_test, [](auto cp) { return cp != U'\b'; }), "\b\v \v\t");
 }
