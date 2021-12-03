@@ -154,7 +154,7 @@ namespace ghassanpl::di
 		requires (!std::is_constructible_v<T>)
 		struct ConstructorTypologyDeducer<T, std::integer_sequence<int>>
 		{
-			using Type = ConstructorTypologyDeducer<T, std::make_integer_sequence<int, 1>>::Type;
+			using Type = typename ConstructorTypologyDeducer<T, std::make_integer_sequence<int, 1>>::Type;
 		};
 
 		static inline constexpr size_t MaximumArgumentCount = 20;
@@ -171,7 +171,7 @@ namespace ghassanpl::di
 		requires (sizeof...(NthArgument) > 0 && sizeof...(NthArgument) < MaximumArgumentCount) && (!std::is_constructible_v<T, WrapAndGet<T, NthArgument>...>)
 		struct ConstructorTypologyDeducer<T, std::integer_sequence<int, NthArgument...>>
 		{
-			using Type = ConstructorTypologyDeducer<T, std::make_integer_sequence<int, sizeof...(NthArgument) + 1>>::Type;
+			using Type = typename ConstructorTypologyDeducer<T, std::make_integer_sequence<int, sizeof...(NthArgument) + 1>>::Type;
 		};
 
 		// Last recursion state

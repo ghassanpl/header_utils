@@ -6,6 +6,13 @@
 
 #include <type_traits>
 
+#if !defined(__cpp_concepts)
+#error "This library requires concepts"
+#endif
+#if !__has_cpp_attribute(nodiscard)
+#error "This library requires [[nodiscard]]"
+#endif
+
 namespace ghassanpl
 {
 	template<typename T>

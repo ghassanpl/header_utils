@@ -8,6 +8,10 @@
 #include <algorithm>
 #include <iostream>
 
+#if !defined(__cpp_nontype_template_args) || __cpp_nontype_template_args < 201911L
+#error "This library requires non-type template parameters with class type support"
+#endif
+
 namespace ghassanpl
 {
 
@@ -41,8 +45,8 @@ namespace ghassanpl
 		constexpr T& get() noexcept { return Value; }
 		constexpr T const& get() const noexcept { return Value; }
 
-		template <typename T>
-		constexpr T as() noexcept { return static_cast<T>(Value); }
+		template <typename U>
+		constexpr U as() noexcept { return static_cast<U>(Value); }
 
 		template <typename U, typename = std::enable_if_t<std::is_convertible_v<T, U>>>
 		constexpr explicit operator U() const noexcept(noexcept((U)Value)) { return (U)Value; }

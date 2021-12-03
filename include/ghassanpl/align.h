@@ -86,14 +86,14 @@ namespace ghassanpl
 	constexpr inline horizontal_align to_opposite(horizontal_align alignment) { return horizontal_align{ (2 - int(alignment)) & detail::horizontal_align_mask }; }
 	constexpr inline align to_opposite(align alignment) { return to_opposite(vertical_from(alignment)) | to_opposite(horizontal_from(alignment)); }
 
-	constexpr inline align rotate_clockwise(align alignment) { return to_horizontal(to_opposite(vertical_from(alignment))) | to_vertical(horizontal_from(alignment)); }
-	constexpr inline align rotate_counter_clockwise(align alignment) { return to_horizontal(vertical_from(alignment)) | to_vertical(to_opposite(horizontal_from(alignment))); }
+	constexpr inline align rotated_clockwise(align alignment) { return to_horizontal(to_opposite(vertical_from(alignment))) | to_vertical(horizontal_from(alignment)); }
+	constexpr inline align rotated_counter_clockwise(align alignment) { return to_horizontal(vertical_from(alignment)) | to_vertical(to_opposite(horizontal_from(alignment))); }
 
-	constexpr inline align flip_horizontally(align alignment) { return vertical_from(alignment) | to_opposite(horizontal_from(alignment)); }
-	constexpr inline align flip_vertically(align alignment) { return to_opposite(vertical_from(alignment)) | horizontal_from(alignment); }
+	constexpr inline align flipped_horizontally(align alignment) { return vertical_from(alignment) | to_opposite(horizontal_from(alignment)); }
+	constexpr inline align flipped_vertically(align alignment) { return to_opposite(vertical_from(alignment)) | horizontal_from(alignment); }
 
 	template <typename T>
-	inline constexpr T align_axis(const T& width, const T& max_width, horizontal_align align) {
+	inline constexpr T aligned(const T& width, const T& max_width, horizontal_align align) {
 		switch (align)
 		{
 		case horizontal_align::center: return (max_width / 2 - width / 2);
@@ -104,7 +104,7 @@ namespace ghassanpl
 	}
 
 	template <typename T>
-	inline constexpr T align_axis(const T& width, const T& max_width, vertical_align align) {
+	inline constexpr T aligned(const T& width, const T& max_width, vertical_align align) {
 		switch (align)
 		{
 		case vertical_align::middle: return (max_width / 2 - width / 2);

@@ -11,6 +11,16 @@
 #include <charconv>
 #include <ranges>
 
+#if !defined(__cpp_concepts)
+#error "This library requires concepts"
+#endif
+#if !defined(__cpp_lib_ranges)
+#error "This library requires ranges"
+#endif
+#if !defined(__cpp_lib_to_address)
+#error "This library requires std::to_address"
+#endif
+
 namespace ghassanpl::string_ops
 {
 	/// ///////////////////////////// ///
@@ -74,6 +84,25 @@ namespace ghassanpl::string_ops
 			return std::equal(a.begin(), a.end(), b.begin(), b.end(), [](char a, char b) { return ::ghassanpl::string_ops::ascii::toupper(a) == ::ghassanpl::string_ops::ascii::toupper(b); });
 		}
 
+		[[nodiscard]] constexpr bool string_starts_with_ignore_case(std::string_view a, std::string_view b)
+		{
+			return strings_equal_ignore_case(a.substr(0, b.size()), b);
+		}
+
+		[[nodiscard]] constexpr auto string_find_ignore_case(std::string_view a, std::string_view b)
+		{
+			return std::search(
+				a.begin(), a.end(),
+				b.begin(), b.end(),
+				[](char ch1, char ch2) { return ::ghassanpl::string_ops::ascii::tolower(ch1) == ::ghassanpl::string_ops::ascii::tolower(ch2); }
+			);
+		}
+
+		[[nodiscard]] constexpr auto string_contains_ignore_case(std::string_view a, std::string_view b)
+		{
+			return string_find_ignore_case(a, b) != a.end();
+		}
+
 		[[nodiscard]] constexpr bool lexicographical_compare_ignore_case(std::string_view a, std::string_view b)
 		{
 			return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), [](char a, char b) { return ::ghassanpl::string_ops::ascii::toupper(a) < ::ghassanpl::string_ops::ascii::toupper(b); });
@@ -118,6 +147,9 @@ namespace ghassanpl::string_ops
 	template <std::contiguous_iterator IT>
 	requires std::is_same_v<std::iter_value_t<IT>, char>
 	[[nodiscard]] inline std::string make_string(IT start, IT end) noexcept(noexcept(std::to_address(start))) { return std::string{ ::ghassanpl::string_ops::make_sv(start, end) }; }
+
+	[[nodiscard]] inline constexpr std::string_view make_sv(char& single_char) noexcept { return make_sv(&single_char, &single_char + 1); }
+	[[nodiscard]] inline constexpr std::string_view make_sv(std::string_view id) noexcept { return id; }
 
 	/// for predicates
 	[[nodiscard]] inline std::string to_string(std::string_view from) noexcept { return std::string{ from }; }
@@ -438,7 +470,11 @@ namespace ghassanpl::string_ops
 	/// ///////////////////////////// ///
 	
 	/// Assuming str is valid UTF-8
+#ifndef __clang__
 	[[gsl::suppress(type.1, es.79)]]
+#else
+	[[gsl::suppress("type.1", "es.79")]]
+#endif
 	constexpr inline char32_t consume_utf8(std::string_view& str)
 	{
 		if (str.empty()) return 0;
@@ -471,14 +507,22 @@ namespace ghassanpl::string_ops
 	}
 
 	/// Assuming str is valid UTF-8
+#ifndef __clang__
 	[[gsl::suppress(type.1, es.79)]]
+#else
+	[[gsl::suppress("type.1", "es.79")]]
+#endif
 	constexpr inline char32_t consume_utf8(std::string_view&& str)
 	{
 		return consume_utf8(str);
 	}
 
 	/// Assuming codepoint is valid
+#ifndef __clang__
 	[[gsl::suppress(type.1)]]
+#else
+	[[gsl::suppress("type.1")]]
+#endif
 	inline size_t append_utf8(std::string& buffer, char32_t cp)
 	{
 		if (cp < 0x80)
@@ -509,7 +553,12 @@ namespace ghassanpl::string_ops
 		}
 	}
 
+	/// Assuming codepoint is valid
+#ifndef __clang__
 	[[gsl::suppress(type.1)]]
+#else
+	[[gsl::suppress("type.1")]]
+#endif
 	/// Assumes codepoint is valid
 	inline std::string to_utf8(char32_t cp)
 	{
@@ -524,7 +573,9 @@ namespace ghassanpl::string_ops
 	}
 
 	template <std::ranges::input_range R>
+#ifdef __cpp_lib_ranges
 	requires std::ranges::view<R>
+#endif
 	struct utf8_view : public std::ranges::view_interface<utf8_view<R>>
 	{
 		template <typename RANGE_ITER, typename SENTINEL>
@@ -749,18 +800,54 @@ namespace ghassanpl::string_ops
 		using std::empty;
 		using std::size;
 
-		if (std::string_view{ search }.empty())
-			return;
+		const auto search_sv = make_sv(search);
+		const auto replace_sv = make_sv(replace);
 
-		const auto search_size = std::string_view{ search }.size();
-		const auto replace_size = std::string_view{ replace }.size();
+		if (search_sv.empty())
+			return;
 
 		size_t pos = 0;
 		while ((pos = subject.find(search, pos)) != std::string::npos)
 		{
-			subject.replace(pos, search_size, replace);
-			pos += replace_size;
+			subject.replace(pos, search_sv.size(), replace_sv);
+			pos += replace_sv.size();
 		}
+	}
+
+	template <string_or_char DELIMITER = char, string_or_char ESCAPE = char>
+	inline void quote(std::string& subject, DELIMITER&& delimiter = '"', ESCAPE&& escape = '\\')
+	{
+		std::string replace_delim;
+		replace_delim += std::forward<ESCAPE>(escape);
+		replace_delim += delimiter;
+		::ghassanpl::string_ops::replace(subject, std::forward<DELIMITER>(delimiter), std::move(replace_delim));
+	}
+
+	template <string_or_char DELIMITER = char, string_or_char ESCAPE = char>
+	inline std::string quoted(std::string subject, DELIMITER&& delimiter = '"', ESCAPE&& escape = '\\')
+	{
+		::ghassanpl::string_ops::quote(subject, std::forward<DELIMITER>(delimiter), std::forward<ESCAPE>(escape));
+		return subject;
+	}
+
+	template <string_or_char DELIMITER = char, string_or_char ESCAPE = char>
+	inline std::string quoted(std::string_view subject, DELIMITER&& delimiter = '"', ESCAPE&& escape = '\\')
+	{
+		auto result = std::string{ subject };
+		::ghassanpl::string_ops::quote(result, std::forward<DELIMITER>(delimiter), std::forward<ESCAPE>(escape));
+		return result;
+	}
+
+	template <string_or_char DELIMITER = char, string_or_char ESCAPE = char>
+	inline std::string quoted(const char* subject, DELIMITER&& delimiter = '"', ESCAPE&& escape = '\\')
+	{
+		return ::ghassanpl::string_ops::quoted(std::string{ subject }, std::forward<DELIMITER>(delimiter), std::forward<ESCAPE>(escape));
+	}
+
+	template <typename STR, string_or_char DELIMITER = char, string_or_char ESCAPE = char>
+	inline std::string escaped(STR&& subject, DELIMITER&& delimiter = '\\', ESCAPE&& escape = '\\')
+	{
+		return ::ghassanpl::string_ops::quoted(std::forward<STR>(subject), std::forward<DELIMITER>(delimiter), std::forward<ESCAPE>(escape));
 	}
 
 #if !__cpp_lib_to_chars

@@ -6,6 +6,10 @@ A collection of header-only C++20 "libraries" that implement small but useful ut
 
 **Pull requests welcome!**
 
+### Note on portability
+
+Since this is a C++20 library, and apparently no compiler except MSVC supports C++20 fully, don't expect it to work anywhere other than MSVC. Yay.
+
 ## align.h
 
 A small enum to represent alignment within a rectangle (e.g. top-left, bottom-right, etc), and functions to modify it and align stuff.
@@ -43,7 +47,7 @@ Supports custom instance lifetimes (strong and weak singletons, per-thread singl
 A value struct that represents a set of bits mapped to an enum. E.g.:
 
     enum class door_flags { closed, locked, blue };
-    enum_flags<door_flags> flags;
+    enum_flags\<door_flags\> flags;
     flags.set(door_flags::closed, door_flags::blue);
     if (flags.is_set(door_flags::locked)) { ... }
     if (flags.are_all_set(door_flags::closed, door_flags::locked)) { print("Not getting in"); }
@@ -57,14 +61,14 @@ A value struct that represents a set of bits mapped to an enum. E.g.:
 * Uses concepts to ensure most functions do not overflow or produce garbage results (e.g. enum values of -5 or 100 won't work with uint64_t)
 * The first template parameter doesn't have to be an enum, any integral value will work
 * Also provides a set of *flag_bits* functions to do all the same operations directly on integers, without using the `enum_flags` class template
-* Also provides a set of *flag_v* inline variable templates to do all these operations as constexpr variable expressions (e.g. `constexpr auto bits = set_flag_v<10, door_flags::closed>;`)
+* Also provides a set of *flag_v* inline variable templates to do all these operations as constexpr variable expressions (e.g. `constexpr auto bits = set_flag_v\<10, door_flags::closed\>;`)
 
 ## named.h
 
 A simple type wrapper to use strong typing for safer coding. E.g.:
 
-    using degrees_t = named<double, "degrees">;
-    using radians_t = named<double, "radians">;
+    using degrees_t = named\<double, "degrees"\>;
+    using radians_t = named\<double, "radians"\>;
     
     void SetAngle(degrees_t deg); void SetAngle(radians_t rad);
 

@@ -43,15 +43,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -123,6 +123,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>$(ExternalIncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -160,8 +161,11 @@
     <ClInclude Include="include\ghassanpl\named.h" />
     <ClInclude Include="include\ghassanpl\rec2.h" />
     <ClInclude Include="include\ghassanpl\string_ops.h" />
+    <ClInclude Include="include\ghassanpl\templates.h" />
+    <ClInclude Include="tests\tests_common.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="README.md" />
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +177,7 @@
     <ClCompile Include="tests\named_tests.cpp" />
     <ClCompile Include="tests\rec2_tests.cpp" />
     <ClCompile Include="tests\string_ops_tests.cpp" />
+    <ClCompile Include="tests\templates_tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

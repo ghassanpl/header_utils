@@ -11,7 +11,7 @@
 #include <numeric>
 #include <vector>
 #include <magic_enum.hpp>
-#if __has_include(<experimental/generator>)
+#if __has_include(<experimental/generator>) && !defined(__clang__)
 #include <experimental/generator>
 
 template <typename RANGE1, typename RANGE2>
@@ -130,45 +130,45 @@ TEST(alignment_test, conversions_work)
   EXPECT_EQ(to_opposite(align::bottom_center), align::top_center);
   EXPECT_EQ(to_opposite(align::bottom_right), align::top_left);
 
-  EXPECT_EQ(rotate_clockwise(align::top_left), align::top_right);
-  EXPECT_EQ(rotate_clockwise(align::top_center), align::middle_right);
-  EXPECT_EQ(rotate_clockwise(align::top_right), align::bottom_right);
-  EXPECT_EQ(rotate_clockwise(align::middle_left), align::top_center);
-  EXPECT_EQ(rotate_clockwise(align::center), align::center);
-  EXPECT_EQ(rotate_clockwise(align::middle_right), align::bottom_center);
-  EXPECT_EQ(rotate_clockwise(align::bottom_left), align::top_left);
-  EXPECT_EQ(rotate_clockwise(align::bottom_center), align::middle_left);
-  EXPECT_EQ(rotate_clockwise(align::bottom_right), align::bottom_left);
+  EXPECT_EQ(rotated_clockwise(align::top_left), align::top_right);
+  EXPECT_EQ(rotated_clockwise(align::top_center), align::middle_right);
+  EXPECT_EQ(rotated_clockwise(align::top_right), align::bottom_right);
+  EXPECT_EQ(rotated_clockwise(align::middle_left), align::top_center);
+  EXPECT_EQ(rotated_clockwise(align::center), align::center);
+  EXPECT_EQ(rotated_clockwise(align::middle_right), align::bottom_center);
+  EXPECT_EQ(rotated_clockwise(align::bottom_left), align::top_left);
+  EXPECT_EQ(rotated_clockwise(align::bottom_center), align::middle_left);
+  EXPECT_EQ(rotated_clockwise(align::bottom_right), align::bottom_left);
 
-  EXPECT_EQ(rotate_counter_clockwise(align::top_left), align::bottom_left);
-  EXPECT_EQ(rotate_counter_clockwise(align::top_center), align::middle_left);
-  EXPECT_EQ(rotate_counter_clockwise(align::top_right), align::top_left);
-  EXPECT_EQ(rotate_counter_clockwise(align::middle_left), align::bottom_center);
-  EXPECT_EQ(rotate_counter_clockwise(align::center), align::center);
-  EXPECT_EQ(rotate_counter_clockwise(align::middle_right), align::top_center);
-  EXPECT_EQ(rotate_counter_clockwise(align::bottom_left), align::bottom_right);
-  EXPECT_EQ(rotate_counter_clockwise(align::bottom_center), align::middle_right);
-  EXPECT_EQ(rotate_counter_clockwise(align::bottom_right), align::top_right);
+  EXPECT_EQ(rotated_counter_clockwise(align::top_left), align::bottom_left);
+  EXPECT_EQ(rotated_counter_clockwise(align::top_center), align::middle_left);
+  EXPECT_EQ(rotated_counter_clockwise(align::top_right), align::top_left);
+  EXPECT_EQ(rotated_counter_clockwise(align::middle_left), align::bottom_center);
+  EXPECT_EQ(rotated_counter_clockwise(align::center), align::center);
+  EXPECT_EQ(rotated_counter_clockwise(align::middle_right), align::top_center);
+  EXPECT_EQ(rotated_counter_clockwise(align::bottom_left), align::bottom_right);
+  EXPECT_EQ(rotated_counter_clockwise(align::bottom_center), align::middle_right);
+  EXPECT_EQ(rotated_counter_clockwise(align::bottom_right), align::top_right);
 
-  EXPECT_EQ(flip_vertically(align::top_left), align::bottom_left);
-  EXPECT_EQ(flip_vertically(align::top_center), align::bottom_center);
-  EXPECT_EQ(flip_vertically(align::top_right), align::bottom_right);
-  EXPECT_EQ(flip_vertically(align::middle_left), align::middle_left);
-  EXPECT_EQ(flip_vertically(align::center), align::center);
-  EXPECT_EQ(flip_vertically(align::middle_right), align::middle_right);
-  EXPECT_EQ(flip_vertically(align::bottom_left), align::top_left);
-  EXPECT_EQ(flip_vertically(align::bottom_center), align::top_center);
-  EXPECT_EQ(flip_vertically(align::bottom_right), align::top_right);
+  EXPECT_EQ(flipped_vertically(align::top_left), align::bottom_left);
+  EXPECT_EQ(flipped_vertically(align::top_center), align::bottom_center);
+  EXPECT_EQ(flipped_vertically(align::top_right), align::bottom_right);
+  EXPECT_EQ(flipped_vertically(align::middle_left), align::middle_left);
+  EXPECT_EQ(flipped_vertically(align::center), align::center);
+  EXPECT_EQ(flipped_vertically(align::middle_right), align::middle_right);
+  EXPECT_EQ(flipped_vertically(align::bottom_left), align::top_left);
+  EXPECT_EQ(flipped_vertically(align::bottom_center), align::top_center);
+  EXPECT_EQ(flipped_vertically(align::bottom_right), align::top_right);
 
-  EXPECT_EQ(flip_horizontally(align::top_left), align::top_right);
-  EXPECT_EQ(flip_horizontally(align::top_center), align::top_center);
-  EXPECT_EQ(flip_horizontally(align::top_right), align::top_left);
-  EXPECT_EQ(flip_horizontally(align::middle_left), align::middle_right);
-  EXPECT_EQ(flip_horizontally(align::center), align::center);
-  EXPECT_EQ(flip_horizontally(align::middle_right), align::middle_left);
-  EXPECT_EQ(flip_horizontally(align::bottom_left), align::bottom_right);
-  EXPECT_EQ(flip_horizontally(align::bottom_center), align::bottom_center);
-  EXPECT_EQ(flip_horizontally(align::bottom_right), align::bottom_left);
+  EXPECT_EQ(flipped_horizontally(align::top_left), align::top_right);
+  EXPECT_EQ(flipped_horizontally(align::top_center), align::top_center);
+  EXPECT_EQ(flipped_horizontally(align::top_right), align::top_left);
+  EXPECT_EQ(flipped_horizontally(align::middle_left), align::middle_right);
+  EXPECT_EQ(flipped_horizontally(align::center), align::center);
+  EXPECT_EQ(flipped_horizontally(align::middle_right), align::middle_left);
+  EXPECT_EQ(flipped_horizontally(align::bottom_left), align::bottom_right);
+  EXPECT_EQ(flipped_horizontally(align::bottom_center), align::bottom_center);
+  EXPECT_EQ(flipped_horizontally(align::bottom_right), align::bottom_left);
 
   EXPECT_EQ(to_vertical(horizontal_align::left), vertical_align::top);
   EXPECT_EQ(to_vertical(horizontal_align::center), vertical_align::middle);
@@ -227,33 +227,33 @@ TEST(alignment_test, conversions_work)
 
 TEST(alignment_test, axis_alignments_work)
 {
-  EXPECT_EQ(align_axis(10, 100, horizontal_align::left), 0);
-  EXPECT_EQ(align_axis(10.0, 100.0, horizontal_align::center), 45.0);
-  EXPECT_EQ(align_axis(10.0f, 100.0f, horizontal_align::right), 90.0f);
+  EXPECT_EQ(aligned(10, 100, horizontal_align::left), 0);
+  EXPECT_EQ(aligned(10.0, 100.0, horizontal_align::center), 45.0);
+  EXPECT_EQ(aligned(10.0f, 100.0f, horizontal_align::right), 90.0f);
 
-  EXPECT_EQ(align_axis(10, 100, vertical_align::top), 0);
-  EXPECT_EQ(align_axis(10, 100, vertical_align::middle), 45);
-  EXPECT_EQ(align_axis(10, 100, vertical_align::bottom), 90);
+  EXPECT_EQ(aligned(10, 100, vertical_align::top), 0);
+  EXPECT_EQ(aligned(10, 100, vertical_align::middle), 45);
+  EXPECT_EQ(aligned(10, 100, vertical_align::bottom), 90);
 
-  EXPECT_EQ(align_axis(0, 0, horizontal_align::left), 0);
-  EXPECT_EQ(align_axis(0, 0, horizontal_align::center), 0);
-  EXPECT_EQ(align_axis(0, 0, horizontal_align::right), 0);
+  EXPECT_EQ(aligned(0, 0, horizontal_align::left), 0);
+  EXPECT_EQ(aligned(0, 0, horizontal_align::center), 0);
+  EXPECT_EQ(aligned(0, 0, horizontal_align::right), 0);
 
-  EXPECT_EQ(align_axis(100.0, 100.0, horizontal_align::left), 0.0);
-  EXPECT_EQ(align_axis(100.0, 100.0, horizontal_align::center), 0.0);
-  EXPECT_EQ(align_axis(100.0, 100.0, horizontal_align::right), 0.0);
+  EXPECT_EQ(aligned(100.0, 100.0, horizontal_align::left), 0.0);
+  EXPECT_EQ(aligned(100.0, 100.0, horizontal_align::center), 0.0);
+  EXPECT_EQ(aligned(100.0, 100.0, horizontal_align::right), 0.0);
 
-  EXPECT_EQ(align_axis(10.0f, INFINITY, horizontal_align::left), 0.0f);
-  EXPECT_EQ(align_axis(10.0f, INFINITY, horizontal_align::center), INFINITY);
-  EXPECT_EQ(align_axis(10.0f, INFINITY, horizontal_align::right), INFINITY);
+  EXPECT_EQ(aligned(10.0f, INFINITY, horizontal_align::left), 0.0f);
+  EXPECT_EQ(aligned(10.0f, INFINITY, horizontal_align::center), INFINITY);
+  EXPECT_EQ(aligned(10.0f, INFINITY, horizontal_align::right), INFINITY);
 
-  EXPECT_EQ(align_axis(100.0, 10.0, horizontal_align::left), 0.0);
-  EXPECT_EQ(align_axis(100.0, 10.0, horizontal_align::center), -45.0);
-  EXPECT_EQ(align_axis(100.0, 10.0, horizontal_align::right), -90.0);
+  EXPECT_EQ(aligned(100.0, 10.0, horizontal_align::left), 0.0);
+  EXPECT_EQ(aligned(100.0, 10.0, horizontal_align::center), -45.0);
+  EXPECT_EQ(aligned(100.0, 10.0, horizontal_align::right), -90.0);
 
-  EXPECT_EQ(align_axis(INFINITY, 10.0f, horizontal_align::left), 0.0f);
-  EXPECT_EQ(align_axis(INFINITY, 10.0f, horizontal_align::center), -INFINITY);
-  EXPECT_EQ(align_axis(INFINITY, 10.0f, horizontal_align::right), -INFINITY);
+  EXPECT_EQ(aligned(INFINITY, 10.0f, horizontal_align::left), 0.0f);
+  EXPECT_EQ(aligned(INFINITY, 10.0f, horizontal_align::center), -INFINITY);
+  EXPECT_EQ(aligned(INFINITY, 10.0f, horizontal_align::right), -INFINITY);
 }
 
 TEST(alignment_test, justify_doesnt_break_anything)

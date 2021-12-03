@@ -4,6 +4,15 @@
 
 #pragma once
 
+#include <version>
+
+#if !defined(__cpp_lib_format)
+#error "This library requires std::format"
+#endif
+#if !defined(__cpp_lib_source_location)
+#error "This library requires std::source_location"
+#endif
+
 #ifndef ASSUMING_DEBUG
 #ifdef NDEBUG
 #define ASSUMING_DEBUG 0

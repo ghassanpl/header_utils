@@ -4,6 +4,10 @@
 
 #pragma once
 
+#if !defined(__cpp_concepts)
+#error "This library requires concepts"
+#endif
+
 #include <typeindex>
 #include <vector>
 #include <memory>

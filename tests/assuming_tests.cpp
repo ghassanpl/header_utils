@@ -2,7 +2,10 @@
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#ifndef __clang__
+
 #include "../include/ghassanpl/assuming.h"
+#include "tests_common.h"
 
 #include <gtest/gtest.h>
 
@@ -173,28 +176,6 @@ TEST_F(assuming_test, assumings_evaluate_arguments_only_once)
   EXPECT_EVAL_COUNT(2, AssumingValidIndex(single_eval_check(1), single_eval_check(empty_string)));
 }
 
-struct UnCopyable
-{
-  UnCopyable() = default;
-  UnCopyable(UnCopyable const&) = delete;
-  UnCopyable(UnCopyable&&) = default;
-  UnCopyable& operator=(UnCopyable const&) = delete;
-  UnCopyable& operator=(UnCopyable&&) = default;
-
-  bool operator==(UnCopyable const& other) const noexcept { return true; }
-};
-
-struct UnMovable
-{
-  UnMovable() = default;
-  UnMovable(UnMovable const&) = delete;
-  UnMovable(UnMovable&&) = delete;
-  UnMovable& operator=(UnMovable const&) = delete;
-  UnMovable& operator=(UnMovable&&) = delete;
-
-  bool operator==(UnMovable const& other) const noexcept { return true; }
-};
-
 template <class CharT>
 struct std::formatter<UnCopyable, CharT> : std::formatter<std::basic_string<CharT>, CharT>
 {
@@ -227,3 +208,5 @@ void ghassanpl::ReportAssumptionFailure(std::string_view expectation, std::initi
 {
   current_test->ReportAssumptionFailure(expectation, std::move(values), std::move(data), where);
 }
+
+#endif
