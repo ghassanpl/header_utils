@@ -51,11 +51,11 @@
 #define Assuming(exp, ...) { if (auto&& _assuming_exp_v = (exp); !_assuming_exp_v) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will evalute to true", { { #exp, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-#define AssumingNull(exp, ...) { if (auto&& _assuming_exp_v = (exp); _assuming_exp_v != nullptr) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#exp " will be null", { { #exp, std::format("{}", (const void*)std::to_address(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
+#define AssumingNull(exp, ...) { if (auto _assuming_exp_v = (const void*)std::to_address(exp); _assuming_exp_v != nullptr) [[unlikely]] \
+	::ghassanpl::ReportAssumptionFailure(#exp " will be null", { { #exp, std::format("{}", _assuming_exp_v) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-#define AssumingNotNull(exp, ...) { if (auto&& _assuming_exp_v = (exp); _assuming_exp_v == nullptr) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#exp " will not be null", { { #exp, std::format("{}", (const void*)std::to_address(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
+#define AssumingNotNull(exp, ...) { if (auto _assuming_exp_v = (const void*)std::to_address(exp); _assuming_exp_v == nullptr) [[unlikely]] \
+	::ghassanpl::ReportAssumptionFailure(#exp " will not be null", { { #exp, std::format("{}", _assuming_exp_v) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
 #define AssumingBinOp(a, b, op, text, ...) { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!(_assuming_a_v op _assuming_b_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#a " will " text " " #b, { \
@@ -90,6 +90,10 @@
 			{ #_index, std::format("{}", _assuming_index) }, \
 			{  "size of " #_container, std::format("{}", _assuming_container_size) }, \
 		}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } }
+
+#define AssumingValidIterator(_iterator, _container, ...) { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); \
+	if (_assuming_iterator == _assuming_end) [[unlikely]] { \
+		::ghassanpl::ReportAssumptionFailure(#_iterator " will be a valid iterator to " #_container, {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } }
 
 #else
 
@@ -128,18 +132,27 @@ namespace ghassanpl
 		}
 
 		template <typename T>
+		concept formattable = requires (T val) { { std::format("{}", val) }; };
+
+		template <typename T>
 		auto&& GetFormattable(T&& val)
 		{
 #if ASSUMING_INCLUDE_MAGIC_ENUM
-			if constexpr (std::is_enum_v<T>) return magic_enum::enum_name(val); else 
+			if constexpr (std::is_enum_v<std::remove_cvref_t<T>>) 
+				return magic_enum::enum_name(val);
+			else
 #endif
-			if constexpr (std::is_pointer_v<T>) return (const void*)std::to_address(std::forward<T>(val)); else
-			return std::forward<T>(val);
+			if constexpr (std::is_pointer_v<std::remove_cvref_t<T>>)
+				return (const void*)std::to_address(std::forward<T>(val));
+			else if constexpr (!formattable<std::remove_cvref_t<T>>)
+				return std::format("<{}>", typeid(std::remove_cvref_t<T>).name());
+			else
+				return std::forward<T>(val);
 		}
 #endif
 	}
 
-	[[noreturn]] void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, std::source_location loc = std::source_location::current());
+	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, std::source_location loc = std::source_location::current());
 }
 /*
 #define AssumingBetween(v, a, b, ...) { Assuming_GET(v_v, v); Assuming_GET(a_v, a); Assuming_GET(b_v, b); \

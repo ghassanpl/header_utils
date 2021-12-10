@@ -30,6 +30,35 @@ namespace ghassanpl::string_ops
 	template <typename T, typename CHAR_TYPE = char>
 	concept string_or_char = std::is_constructible_v<std::basic_string_view<CHAR_TYPE>, T> || std::is_constructible_v<CHAR_TYPE, T>;
 
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ///
+	/// Makes
+	/// 
+	/// Rationale: Even though C++20 has a range constructor, it uses `operator-` on its arguments, which means that iterators from disparate string_views do not work, even
+	/// if they point to a contiguous string range (for example, were made from substrings of the same string_view). Hence these functions.
+	/// They should work with any pair of iterators (no support for sentinels yet, unfortunately), support nulls, and are almost as strong as the string_view range constructor
+	/// in terms of exception and type safety. As with the respective constructors, undefined behavior when `start` > `end`.
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ///
+
+	[[nodiscard]] inline constexpr std::string_view make_sv(nullptr_t start, nullptr_t end) { return std::string_view{}; }
+
+	template <std::contiguous_iterator IT>
+	requires std::is_same_v<std::iter_value_t<IT>, char>
+	[[nodiscard]] inline constexpr std::string_view make_sv(IT start, IT end) noexcept(noexcept(std::to_address(start))) { return std::string_view{ std::to_address(start), static_cast<size_t>(std::to_address(end) - std::to_address(start)) }; }
+
+	[[nodiscard]] inline constexpr std::string make_string(nullptr_t start, nullptr_t end) { return std::string{}; }
+
+	template <std::contiguous_iterator IT>
+	requires std::is_same_v<std::iter_value_t<IT>, char>
+	[[nodiscard]] inline std::string make_string(IT start, IT end) noexcept(noexcept(std::to_address(start))) { return std::string{ ::ghassanpl::string_ops::make_sv(start, end) }; }
+
+	[[nodiscard]] inline constexpr std::string_view make_sv(char& single_char) noexcept { return make_sv(&single_char, &single_char + 1); }
+	[[nodiscard]] inline constexpr std::string_view make_sv(std::string_view id) noexcept { return id; }
+	[[nodiscard]] inline constexpr std::string_view make_sv(const char* str) noexcept { return str ? std::string_view{ str } : std::string_view{}; }
+	[[nodiscard]] inline constexpr std::string_view make_sv(const unsigned char* str) noexcept { return str ? std::string_view{ (const char*)str } : std::string_view{}; }
+
+	/// for predicates
+	[[nodiscard]] inline std::string to_string(std::string_view from) noexcept { return std::string{ from }; }
+
 	/// ///////////////////////////// ///
 	/// ASCII functions
 	/// ///////////////////////////// ///
@@ -61,11 +90,11 @@ namespace ghassanpl::string_ops
 
 		[[nodiscard]] inline std::string tolower(std::string str) noexcept { std::for_each(str.begin(), str.end(), [](char& cp) { cp = (char)::ghassanpl::string_ops::ascii::tolower(cp); }); return str; }
 		[[nodiscard]] inline std::string tolower(std::string_view str) noexcept { return ::ghassanpl::string_ops::ascii::tolower(std::string{str}); }
-		[[nodiscard]] inline std::string tolower(const char* str) noexcept { return ::ghassanpl::string_ops::ascii::tolower(std::string{ str }); }
+		[[nodiscard]] inline std::string tolower(const char* str) noexcept { return ::ghassanpl::string_ops::ascii::tolower(make_sv(str)); }
 
 		[[nodiscard]] inline std::string toupper(std::string str) noexcept { std::for_each(str.begin(), str.end(), [](char& cp) { cp = (char)::ghassanpl::string_ops::ascii::toupper(cp); }); return str; }
 		[[nodiscard]] inline std::string toupper(std::string_view str) noexcept { return ::ghassanpl::string_ops::ascii::toupper(std::string{str}); }
-		[[nodiscard]] inline std::string toupper(const char* str) noexcept { return ::ghassanpl::string_ops::ascii::toupper(std::string{str}); }
+		[[nodiscard]] inline std::string toupper(const char* str) noexcept { return ::ghassanpl::string_ops::ascii::toupper(make_sv(str)); }
 
 		/// Convert a number between 0 and 9/15 to its ASCII representation (only gives meaningful results with arguments between 0 and 9/15)
 
@@ -126,33 +155,6 @@ namespace ghassanpl::string_ops
 		return ::std::find(str.begin(), str.end(), c) != str.end();
 #endif
 	}
-
-	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ///
-	/// Makes
-	/// 
-	/// Rationale: Even though C++20 has a range constructor, it uses `operator-` on its arguments, which means that iterators from disparate string_views do not work, even
-	/// if they point to a contiguous string range (for example, were made from substrings of the same string_view). Hence these functions.
-	/// They should work with any pair of iterators (no support for sentinels yet, unfortunately), support nulls, and are almost as strong as the string_view range constructor
-	/// in terms of exception and type safety. As with the respective constructors, undefined behavior when `start` > `end`.
-	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ///
-
-	[[nodiscard]] inline constexpr std::string_view make_sv(nullptr_t start, nullptr_t end) { return std::string_view{}; }
-
-	template <std::contiguous_iterator IT>
-	requires std::is_same_v<std::iter_value_t<IT>, char>
-	[[nodiscard]] inline constexpr std::string_view make_sv(IT start, IT end) noexcept(noexcept(std::to_address(start))) { return std::string_view{ std::to_address(start), static_cast<size_t>(std::to_address(end) - std::to_address(start)) }; }
-
-	[[nodiscard]] inline constexpr std::string make_string(nullptr_t start, nullptr_t end) { return std::string{}; }
-
-	template <std::contiguous_iterator IT>
-	requires std::is_same_v<std::iter_value_t<IT>, char>
-	[[nodiscard]] inline std::string make_string(IT start, IT end) noexcept(noexcept(std::to_address(start))) { return std::string{ ::ghassanpl::string_ops::make_sv(start, end) }; }
-
-	[[nodiscard]] inline constexpr std::string_view make_sv(char& single_char) noexcept { return make_sv(&single_char, &single_char + 1); }
-	[[nodiscard]] inline constexpr std::string_view make_sv(std::string_view id) noexcept { return id; }
-
-	/// for predicates
-	[[nodiscard]] inline std::string to_string(std::string_view from) noexcept { return std::string{ from }; }
 
 	/// ///////////////////////////// ///
 	/// Trims
@@ -259,7 +261,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <typename CALLBACK>
-	requires std::is_invocable_r_v<bool, CALLBACK, std::string_view>
+	requires std::is_invocable_r_v<bool, CALLBACK, std::string_view&>
 	inline bool consume_delimited_list_non_empty(std::string_view& str, std::string_view delimiter, CALLBACK callback)
 	{
 		do
@@ -345,7 +347,7 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
-	inline std::pair<std::string_view, int64_t> consume_c_unsigned(std::string_view& str, int base = 10)
+	inline std::pair<std::string_view, uint64_t> consume_c_unsigned(std::string_view& str, int base = 10)
 	{
 		if (str.empty() || !ascii::isdigit(str[0]))
 			return {};

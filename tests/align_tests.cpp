@@ -11,28 +11,16 @@
 #include <numeric>
 #include <vector>
 #include <magic_enum.hpp>
-#if __has_include(<experimental/generator>) && !defined(__clang__)
-#include <experimental/generator>
 
-template <typename RANGE1, typename RANGE2>
-auto cartesian_product(RANGE1&& r1, RANGE2&& r2) -> std::experimental::generator<std::pair<std::ranges::range_value_t<RANGE1>, std::ranges::range_value_t<RANGE2>>>
-{
-  for (auto& e1 : r1)
-    for (auto& e2 : r2)
-      co_yield std::pair{ e1, e2 };
-}
-
-#else
 template <typename RANGE1, typename RANGE2>
 auto cartesian_product(RANGE1&& r1, RANGE2&& r2)
 {
   std::vector<std::pair<std::ranges::range_value_t<RANGE1>, std::ranges::range_value_t<RANGE2>>> result;
   for (auto&& e1 : std::forward<RANGE1>(r1))
     for (auto&& e2 : std::forward<RANGE2>(r2))
-      result.emplace_back(std::forward<std::ranges::range_value_t<RANGE1>>(e1), std::forward<std::ranges::range_value_t<RANGE2>>(e2));
+      result.emplace_back(e1, e2);
   return result;
 }
-#endif
 #include <ranges>
 
 using namespace ghassanpl;
@@ -63,8 +51,11 @@ TEST(alignment_test, basics_work)
   ASSERT_EQ(vertical_aligns.size(), 3);
 
   auto range = cartesian_product(vertical_aligns, horizontal_aligns);
-  auto other_range = range | std::ranges::views::transform([](auto p) { return p.first | p.second; });
-  ASSERT_EQ(all_aligns, (std::set<align> { other_range.begin(), other_range.end() }));
+  std::set<align> result_set;
+  for (auto&& r : range)
+      result_set.insert(r.first | r.second);
+  
+  ASSERT_EQ(all_aligns, result_set);
 }
 
 TEST(alignment_test, names_work)

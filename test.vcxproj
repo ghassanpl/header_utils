@@ -162,6 +162,7 @@
     <ClInclude Include="include\ghassanpl\rec2.h" />
     <ClInclude Include="include\ghassanpl\string_ops.h" />
     <ClInclude Include="include\ghassanpl\templates.h" />
+    <ClInclude Include="include\ghassanpl\with_sl.h" />
     <ClInclude Include="tests\tests_common.h" />
   </ItemGroup>
   <ItemGroup>

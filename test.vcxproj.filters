@@ -54,6 +54,9 @@
     <ClInclude Include="tests\tests_common.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\with_sl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />

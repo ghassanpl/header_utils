@@ -90,6 +90,21 @@ namespace ghassanpl
 			}(std::forward<ARGS>(args)...);
 		}
 	}
+
+	template <typename... ARGS, typename FUNC>
+	void for_each(FUNC&& f)
+	{
+		[&] <size_t... Idxs>(std::index_sequence<Idxs...>) {
+			([&] <typename T> (size_t i, std::type_identity<T>) {
+				if constexpr (std::is_invocable_v<FUNC, size_t, std::type_identity<T>>)
+					f(i, std::type_identity<T>{});
+				else if constexpr (std::is_invocable_v<FUNC, std::type_identity<T>, size_t>)
+					f(std::type_identity<T>{}, i);
+				else
+					f(std::type_identity<T>{});
+			}(Idxs, std::type_identity<ARGS>{}), ...);
+		}(std::make_index_sequence<sizeof...(ARGS)>{});
+	}
 	
 	template <size_t I, typename FUNC, typename... ARGS>
 	requires (I < sizeof...(ARGS))

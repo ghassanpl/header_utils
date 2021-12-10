@@ -32,7 +32,7 @@ namespace ghassanpl::di
 		ThreadSingleton,
 	};
 
-	inline constexpr struct DefaultImplementationStruct {} Default;
+	inline constexpr struct DefaultImplementationStruct {} DefaultImplementation;
 
 	/*
 	namespace constraints

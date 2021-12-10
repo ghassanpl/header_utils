@@ -217,6 +217,7 @@ namespace ghassanpl::di
 			};
 		}
 		void Set(std::shared_ptr<INTERFACE> instance) { StrongInstancePointer = std::move(instance); }
+		void Set(INTERFACE* instance) { StrongInstancePointer = std::shared_ptr<INTERFACE>{ std::shared_ptr<INTERFACE>{}, instance }; }
 		void Set(std::function<void(Container&, std::shared_ptr<INTERFACE>)> on_create) { mOnCreate = std::move(on_create); }
 
 		std::shared_ptr<INTERFACE> Resolve(Container& container, Lifetime lifetime)
@@ -328,6 +329,16 @@ namespace ghassanpl::di
 			return mImplementationsInDeclarationOrder.back()->Resolve(container, lifetime);
 		}
 
+		std::vector<std::shared_ptr<INTERFACE>> ResolveAll(Container& container, Lifetime lifetime)
+		{
+			std::vector<std::shared_ptr<INTERFACE>> result;
+
+			for (auto& [type, impl] : mImplementations)
+				result.push_back(impl.Resolve(container, lifetime));
+
+			return result;
+		}
+
 	private:
 
 		std::map<std::type_index, ImplementationContainer<INTERFACE>> mImplementations;
@@ -384,13 +395,7 @@ namespace ghassanpl::di
 	template<typename INTERFACE>
 	inline std::vector<std::shared_ptr<INTERFACE>> Container::ResolveAll()
 	{
-		std::vector<std::shared_ptr<INTERFACE>> result;
-
-		auto& interface_container = GetInterfaceContainer<INTERFACE>();
-		for (auto& impl : interface_container.mImplementations)
-			result.push_back(impl.Resolve(*this, DefaultLifetime));
-
-		return result;
+		return GetInterfaceContainer<INTERFACE>().ResolveAll(*this, DefaultLifetime);
 	}
 
 	template<typename INTERFACE>

@@ -5,6 +5,7 @@
 #include "../include/ghassanpl/string_ops.h"
 
 #include <gtest/gtest.h>
+#undef isascii
 
 using namespace ghassanpl::string_ops;
 
@@ -39,6 +40,17 @@ TEST(string_ops_test, ascii_functions_are_correct)
 	FU(isblank);
 	FU(isgraph);
 	FU(isprint);
+
+	/// Check for isident00
+	for (int cp = -1; cp < 256; ++cp) /// same range as C functions support
+	{
+		auto a = ascii::isident(cp);
+		auto b = (bool)::isalnum(cp);
+		if (cp == '_')
+			EXPECT_TRUE(ascii::isident(cp));
+		else
+			EXPECT_EQ((decltype(b))a, b) << "function isident for codepoint " << cp << "\n";
+	}
 
 	same(::toupper, (char32_t(*)(char32_t))ascii::toupper, "toupper");
 	same(::tolower, (char32_t(*)(char32_t))ascii::tolower, "tolower");
@@ -78,6 +90,8 @@ TEST(string_ops_test, ascii_functions_are_correct)
 	EXPECT_TRUE(ascii::strings_equal_ignore_case(longer_str, longer_upper));
 	EXPECT_TRUE(ascii::strings_equal_ignore_case(longer_lower, longer_upper));
 
+	/// TODO: string_starts_with_ignore_case, string_find_ignore_case, string_contains_ignore_case
+
 	EXPECT_TRUE(ascii::lexicographical_compare_ignore_case("a", "b"));
 	EXPECT_FALSE(ascii::lexicographical_compare_ignore_case("a", "A"));
 	EXPECT_TRUE(ascii::lexicographical_compare_ignore_case("a", "aa"));
@@ -91,6 +105,86 @@ TEST(string_ops_test, ascii_functions_are_correct)
 	EXPECT_FALSE(ascii::lexicographical_compare_ignore_case("", ""));
 	EXPECT_FALSE(ascii::lexicographical_compare_ignore_case("a", ""));
 	EXPECT_TRUE(ascii::lexicographical_compare_ignore_case("", "a"));
+}
+
+template <typename T>
+class StringableTestFixture : public ::testing::Test
+{
+public:
+	T null_value = {};
+	T empty_string_value = "";
+	T complex_value = "ZCoo(01_;";
+	T embedded_zeroes_value = "asdf\0ZXCV";
+};
+
+using StringableTypes = ::testing::Types<char const*, std::string_view, const char(&)[10], std::string>;
+TYPED_TEST_SUITE(StringableTestFixture, StringableTypes);
+
+TYPED_TEST(StringableTestFixture, ascii_works_with_all_stringable_types)
+{
+	EXPECT_EQ(ascii::tolower(this->null_value), std::string_view{});
+	EXPECT_EQ(ascii::tolower(this->empty_string_value), std::string_view{});
+	EXPECT_EQ(ascii::tolower(this->complex_value), "zcoo(01_;");
+	EXPECT_EQ(ascii::tolower(this->embedded_zeroes_value), "asdf\0ZXCV");
+
+	EXPECT_EQ(ascii::toupper(this->null_value), std::string_view{});
+	EXPECT_EQ(ascii::toupper(this->empty_string_value), std::string_view{});
+	EXPECT_EQ(ascii::toupper(this->complex_value), "ZCOO(01_;");
+	EXPECT_EQ(ascii::toupper(this->embedded_zeroes_value), "ASDF\0ZXCV");
+}
+
+template <typename T, int VALUE>
+concept narrowable = requires (T t) { { t = T{ VALUE } }; };
+
+template <typename T, int VALUE>
+using narrow_type = std::conditional_t<narrowable<T, VALUE>, T, int>;
+
+template <typename T>
+class CharTestFixture : public ::testing::Test
+{
+public:
+	T null_value = {};
+	T zero_value = '\0';
+	T a_value = 'a';
+	narrow_type<T, 'long'> long_value = 'long';
+	narrow_type<T, U'ą'> utf_value = U'ą';
+};
+
+using CharTypes = ::testing::Types<char, signed char, unsigned char, wchar_t, char8_t, char16_t, char32_t>;
+TYPED_TEST_SUITE(CharTestFixture, CharTypes);
+
+#undef FU
+
+#define FU(x) \
+	EXPECT_EQ(ascii::isalpha(x), (x < 256) ? (bool)::isalpha(x) : false); \
+	EXPECT_EQ(ascii::isdigit(x), (x < 256) ? (bool)::isdigit(x) : false); \
+	EXPECT_EQ(ascii::isxdigit(x),(x < 256) ? (bool)::isxdigit(x) : false); \
+	EXPECT_EQ(ascii::isalnum(x), (x < 256) ? (bool)::isalnum(x) : false); \
+	EXPECT_EQ(ascii::isspace(x), (x < 256) ? (bool)::isspace(x) : false); \
+	EXPECT_EQ(ascii::ispunct(x), (x < 256) ? (bool)::ispunct(x) : false); \
+	EXPECT_EQ(ascii::islower(x), (x < 256) ? (bool)::islower(x) : false); \
+	EXPECT_EQ(ascii::isupper(x), (x < 256) ? (bool)::isupper(x) : false); \
+	EXPECT_EQ(ascii::iscntrl(x), (x < 256) ? (bool)::iscntrl(x) : false); \
+	EXPECT_EQ(ascii::isblank(x), (x < 256) ? (bool)::isblank(x) : false); \
+	EXPECT_EQ(ascii::isgraph(x), (x < 256) ? (bool)::isgraph(x) : false); \
+	EXPECT_EQ(ascii::isprint(x), (x < 256) ? (bool)::isprint(x) : false); \
+
+TYPED_TEST(CharTestFixture, ascii_works_with_all_char_types)
+{
+	FU(this->null_value);
+	FU(this->zero_value);
+	FU(this->a_value);
+	FU(this->long_value);
+	FU(this->utf_value);
+
+	static_assert((sizeof(TypeParam) < 4) == std::is_same_v<decltype(this->long_value), int>);
+	static_assert((sizeof(TypeParam) < 2) == std::is_same_v<decltype(this->utf_value), int>);
+
+	EXPECT_TRUE(isascii(this->null_value));
+	EXPECT_TRUE(isascii(this->zero_value));
+	EXPECT_TRUE(isascii(this->a_value));
+	EXPECT_FALSE(isascii(this->long_value)) << (int)this->long_value;
+	EXPECT_FALSE(isascii(this->utf_value));
 }
 
 TEST(string_ops_test, contains_works)
