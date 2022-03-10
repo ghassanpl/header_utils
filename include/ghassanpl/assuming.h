@@ -135,7 +135,7 @@ namespace ghassanpl
 		concept formattable = requires (T val) { { std::format("{}", val) }; };
 
 		template <typename T>
-		auto&& GetFormattable(T&& val)
+		decltype(auto) GetFormattable(T&& val)
 		{
 #if ASSUMING_INCLUDE_MAGIC_ENUM
 			if constexpr (std::is_enum_v<std::remove_cvref_t<T>>) 

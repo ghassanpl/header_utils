@@ -48,6 +48,8 @@ namespace ghassanpl
 
 		[[nodiscard]]
 		constexpr bool is_set(enum_type flag) const noexcept { return (bits & flag_bits<VALUE_TYPE>(flag)) != 0; }
+		[[nodiscard]]
+		constexpr bool contain(enum_type flag) const noexcept { return this->is_set(flag); }
 
 		template <typename T, typename... ARGS>
 		[[nodiscard]]
@@ -138,6 +140,7 @@ namespace ghassanpl
 			enum_type operator*() const noexcept
 			{ 
 				const auto bitset = static_cast<bitset_type>(bits);
+#pragma warning(suppress: 4146)
 				return static_cast<enum_type>(std::countr_zero(static_cast<bitset_type>(bitset & -bitset)));
 			}
 
