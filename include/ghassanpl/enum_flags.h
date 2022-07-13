@@ -51,6 +51,16 @@ namespace ghassanpl
 		[[nodiscard]]
 		constexpr bool contain(enum_type flag) const noexcept { return this->is_set(flag); }
 
+		[[nodiscard]]
+		constexpr int count() const noexcept { return std::popcount(bits); }
+
+		[[nodiscard]]
+		constexpr ENUM nth_set(size_t n) const noexcept {
+			auto b = bits;
+			while (n--) { b ^= VALUE_TYPE{ 1 } << std::countr_zero(b); }
+			return static_cast<ENUM>(std::countr_zero(b));
+		}
+
 		template <typename T, typename... ARGS>
 		[[nodiscard]]
 		constexpr bool are_any_set(T arg, ARGS... args) const noexcept
@@ -121,6 +131,8 @@ namespace ghassanpl
 
 		constexpr bool operator==(self_type other) const noexcept { return bits == other.bits; }
 		constexpr bool operator!=(self_type other) const noexcept { return bits != other.bits; }
+
+		constexpr auto operator<=>(enum_flags const& other) const noexcept { return bits <=> other.bits; }
 
 		/// TODO: begin() and end(), so we can iterate over the set bits
 		/// TODO: See if this would be faster with a simple loop

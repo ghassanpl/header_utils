@@ -13,8 +13,8 @@ namespace ghassanpl
 	{
 		return trec2<T>::from_size(
 			larger.position() + glm::tvec2<T>{ 
-				ghassanpl::align_axis<T>(smaller.width(), larger.width(), horizontal_from(alignment)), 
-				ghassanpl::align_axis<T>(smaller.height(), larger.height(), vertical_from(alignment)) 
+				ghassanpl::aligned<T>(smaller.width(), larger.width(), horizontal_from(alignment)), 
+				ghassanpl::aligned<T>(smaller.height(), larger.height(), vertical_from(alignment)) 
 			}, 
 			smaller.size()
 		);
@@ -25,8 +25,8 @@ namespace ghassanpl
 	{
 		return trec2<T>::from_size(
 			larger.position() + glm::tvec2<T>{ 
-				ghassanpl::align_axis<T>(inner_size.x, larger.width(), horizontal_from(alignment)),
-				ghassanpl::align_axis<T>(inner_size.y, larger.height(), vertical_from(alignment))
+				ghassanpl::aligned<T>(inner_size.x, larger.width(), horizontal_from(alignment)),
+				ghassanpl::aligned<T>(inner_size.y, larger.height(), vertical_from(alignment))
 			},
 			inner_size
 		);

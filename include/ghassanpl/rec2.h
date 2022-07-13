@@ -7,6 +7,8 @@
 #include <glm/gtx/compatibility.hpp>
 #include <iostream>
 
+#define GHASSANPL_HAS_REC2
+
 namespace ghassanpl
 {
 	template <typename T>
@@ -20,6 +22,7 @@ namespace ghassanpl
 
 		constexpr trec2() noexcept = default;
 		constexpr trec2(tvec a, tvec b) noexcept : p1(a), p2(b) { }
+		constexpr explicit trec2(tvec a) noexcept : p1(), p2(a) { }
 		constexpr trec2(T x1, T y1, T x2, T y2) noexcept : p1(x1, y1), p2(x2, y2) { }
 		constexpr trec2(const trec2&) noexcept = default;
 		constexpr trec2(trec2&&) noexcept = default;
@@ -118,10 +121,10 @@ namespace ghassanpl
 		constexpr tvec to_world_space(glm::vec2 rect_space) const noexcept { return tvec{ rect_space * glm::vec2{ size() } } + p1; }
 
 		constexpr trec2& include(tvec pt) noexcept { this->p1 = glm::min(this->p1, pt); this->p2 = glm::max(this->p2, pt); return *this; };
-		constexpr trec2& include(trec2 rec) noexcept { return this->include(rec.p1).include(rec.p2); };
+		constexpr trec2& include(trec2 const& rec) noexcept { return this->include(rec.p1).include(rec.p2); };
 
 		constexpr trec2 including(tvec pt) const noexcept { return { glm::min(this->p1, pt), glm::max(this->p2, pt) }; };
-		constexpr trec2 including(trec2 rec) const noexcept { return this->include(rec.p1).include(rec.p2); };
+		constexpr trec2 including(trec2 const& rec) const noexcept { return this->include(rec.p1).include(rec.p2); };
 
 		constexpr bool intersects(trec2 const& other) const noexcept
 		{
@@ -178,7 +181,7 @@ namespace ghassanpl
 		{
 			if (left_width < 0)
 				left_width = this->width() + left_width;
-			return { trec2::from_size(this->p1, {left_width, this->height}), trec2::from_size(this->p1 + tvec{left_width, 0}, {this->width() - left_width, this->height()})};
+			return { trec2::from_size(this->p1, {left_width, this->height()}), trec2::from_size(this->p1 + tvec{left_width, 0}, {this->width() - left_width, this->height()})};
 		}
 
 		constexpr T calculate_area() const noexcept { return width() * height(); }
@@ -236,3 +239,7 @@ namespace ghassanpl
 	template <typename T>
 	inline std::ostream& operator<<(std::ostream& strm, trec2<T> const& b) { return strm << '(' << b.p1.x << ',' << b.p1.y << ',' << b.p2.x << ',' << b.p2.y << ')'; }
 }
+
+#ifdef GHASSANPL_HAS_ALIGN
+#include "align+rec2.h"
+#endif

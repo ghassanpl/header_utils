@@ -35,4 +35,25 @@ namespace ghassanpl
 		with_sl& operator=(with_sl&& other) noexcept = default;
 	};
 
+	template <typename T, typename HASH_FUNC>
+	struct with_slh
+	{
+		using hash_func = HASH_FUNC;
+		using hash_type = decltype(HASH_FUNC{}(std::source_location{}));
+		
+		T Object;
+		hash_type LocationHash;
+
+		template <std::convertible_to<T> U>
+		with_slh(U&& t, hash_type loc = HASH_FUNC{}(std::source_location::current()))
+			: Object(std::forward<U>(t)), LocationHash(loc)
+		{
+		}
+
+		with_slh(with_slh const& other) noexcept = default;
+		with_slh(with_slh&& other) noexcept = default;
+		with_slh& operator=(with_slh const& other) noexcept = default;
+		with_slh& operator=(with_slh&& other) noexcept = default;
+	};
+
 }

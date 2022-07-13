@@ -4,6 +4,8 @@
 
 #pragma once
 
+#define GHASSANPL_HAS_ALIGN
+
 namespace ghassanpl
 {
 
@@ -151,3 +153,7 @@ namespace ghassanpl
 	};
 	*/
 }
+
+#ifdef GHASSANPL_HAS_REC2
+#include "align+rec2.h"
+#endif

@@ -241,10 +241,15 @@ TEST(string_ops_test, trims_work)
 	EXPECT_EQ(trimmed_whitespace(only_ws), "");
 	EXPECT_EQ(trimmed_until(only_ws, '\b'), "");
 
-	EXPECT_EQ(trimmed_whitespace_left({}), "");
-	EXPECT_EQ(trimmed_whitespace_right({}), "");
-	EXPECT_EQ(trimmed_whitespace({}), "");
-	EXPECT_EQ(trimmed_until({}, '\b'), "");
+	EXPECT_EQ(trimmed_whitespace_left(std::string_view{}), "");
+	EXPECT_EQ(trimmed_whitespace_right(std::string_view{}), "");
+	EXPECT_EQ(trimmed_whitespace(std::string_view{}), "");
+	EXPECT_EQ(trimmed_until(std::string_view{}, '\b'), "");
+
+	EXPECT_EQ(trimmed_whitespace_left(std::string{}), "");
+	EXPECT_EQ(trimmed_whitespace_right(std::string{}), "");
+	EXPECT_EQ(trimmed_whitespace(std::string{}), "");
+	EXPECT_EQ(trimmed_until(std::string{}, '\b'), "");
 
 	auto bt_left = base_test, bt_right = base_test, bt_both = base_test;
 	trim_whitespace_left(bt_left);
@@ -255,4 +260,13 @@ TEST(string_ops_test, trims_work)
 	EXPECT_EQ(bt_both, trimmed_whitespace(base_test));
 	
 	EXPECT_EQ(trimmed_while(base_test, [](auto cp) { return cp != U'\b'; }), "\b\v \v\t");
+}
+
+TEST(string_ops_test, utf8_to_16_converting_works)
+{
+	std::u8string utf8 = u8"zażółć gęślą jaźń";
+	std::u16string utf16 = u"zażółć gęślą jaźń";
+
+	EXPECT_TRUE(to_utf8<std::u8string>(utf16) == utf8);
+	EXPECT_TRUE(to_utf16<std::u16string>(utf8) == utf16);
 }

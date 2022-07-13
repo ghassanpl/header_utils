@@ -119,16 +119,23 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>false</ConformanceMode>
+      <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(ExternalIncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
+      <DisableLanguageExtensions>true</DisableLanguageExtensions>
+      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -140,7 +147,7 @@
       <ConformanceMode>false</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,31 +161,43 @@
     <ClInclude Include="include\ghassanpl\align.h" />
     <ClInclude Include="include\ghassanpl\assuming.h" />
     <ClInclude Include="include\ghassanpl\atomic_enum_flags.h" />
+    <ClInclude Include="include\ghassanpl\configs.h" />
     <ClInclude Include="include\ghassanpl\di.h" />
     <ClInclude Include="include\ghassanpl\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\flag_bits.h" />
     <ClInclude Include="include\ghassanpl\flag_bits_v.h" />
+    <ClInclude Include="include\ghassanpl\hashes.h" />
+    <ClInclude Include="include\ghassanpl\json_helpers.h" />
     <ClInclude Include="include\ghassanpl\named.h" />
+    <ClInclude Include="include\ghassanpl\parsing.h" />
     <ClInclude Include="include\ghassanpl\rec2.h" />
     <ClInclude Include="include\ghassanpl\string_ops.h" />
     <ClInclude Include="include\ghassanpl\templates.h" />
+    <ClInclude Include="include\ghassanpl\wilson.h" />
     <ClInclude Include="include\ghassanpl\with_sl.h" />
+    <ClInclude Include="mmap.h" />
     <ClInclude Include="tests\tests_common.h" />
+    <ClInclude Include="tests\test_system.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="mmap.cpp" />
     <ClCompile Include="tests\align_tests.cpp" />
     <ClCompile Include="tests\assuming_tests.cpp" />
+    <ClCompile Include="tests\configs_tests.cpp" />
     <ClCompile Include="tests\di_tests.cpp" />
     <ClCompile Include="tests\enum_flags_tests.cpp" />
     <ClCompile Include="tests\main.cpp" />
+    <ClCompile Include="tests\mmap_tests.cpp" />
     <ClCompile Include="tests\named_tests.cpp" />
     <ClCompile Include="tests\rec2_tests.cpp" />
     <ClCompile Include="tests\string_ops_tests.cpp" />
     <ClCompile Include="tests\templates_tests.cpp" />
+    <ClCompile Include="tests\test_system.cpp" />
+    <ClCompile Include="tests\test_system_tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

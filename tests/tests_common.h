@@ -13,6 +13,8 @@ struct UnCopyable
   bool operator==(UnCopyable const& other) const noexcept { return true; }
 };
 
+inline const UnCopyable uncopyable{};
+
 struct UnMovable
 {
   UnMovable() = default;
@@ -23,6 +25,8 @@ struct UnMovable
 
   bool operator==(UnMovable const& other) const noexcept { return true; }
 };
+
+inline const UnMovable unmovable{};
 
 inline std::string to_string(UnCopyable const& cp) { return "UnCopyable"; }
 inline std::string to_string(UnMovable const& cp) { return "UnMovable"; }

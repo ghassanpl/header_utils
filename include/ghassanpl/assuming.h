@@ -38,7 +38,7 @@
 
 #if !ASSUMING_DEBUG
 #ifdef _MSC_VER
-#define ASSUMING_ASSUME(cond) (__assume(cond), (cond))
+#define ASSUMING_ASSUME(cond) (__assume(cond), (::std::ignore = (cond)))
 #elif defined(__GNUC__)
 #define ASSUMING_ASSUME(cond) ((cond) ? static_cast<void>(0) : __builtin_unreachable())
 #else
@@ -95,6 +95,19 @@
 	if (_assuming_iterator == _assuming_end) [[unlikely]] { \
 		::ghassanpl::ReportAssumptionFailure(#_iterator " will be a valid iterator to " #_container, {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } }
 
+#define AssumingBetween(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!(_assuming_v_v >= _assuming_a_v && _assuming_v_v < _assuming_b_v)) [[unlikely]] \
+	::ghassanpl::ReportAssumptionFailure(#v " will be between " #a " and " #b, { \
+		{ #v, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_v_v)) }, \
+		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_a_v)) }, \
+		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
+	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
+
+#define AssumingBetweenInclusive(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v)) [[unlikely]] \
+	::ghassanpl::ReportAssumptionFailure(#v " will be between " #a " and " #b " (inclusive)", { \
+		{ #v, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_v_v)) }, \
+		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_a_v)) }, \
+		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
+	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 #else
 
 #define Assuming(exp, ...) ASSUMING_ASSUME(!!(exp))
@@ -113,6 +126,9 @@
 #define AssumingNullOrEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(::ghassanpl::detail::IsNullOrEmpty(exp));  }
 #define AssumingNotNullOrEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(!::ghassanpl::detail::IsNullOrEmpty(exp)); }
 #define AssumingValidIndex(_index, _container, ...) { using std::size; auto&& _assuming_index = (_index); ASSUMING_ASSUME(((_assuming_index) >= 0 && size_t(_assuming_index) < size(_container))); }
+#define AssumingValidIterator(_iterator, _container, ...) { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); ASSUMING_ASSUME(!(_assuming_iterator == _assuming_end)); }
+#define AssumingBetween(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); ASSUMING_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v < _assuming_b_v); }
+#define AssumingBetweenInclusive(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); ASSUMING_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v); }
 
 #endif
 
@@ -125,37 +141,51 @@ namespace ghassanpl
 		inline bool IsNullOrEmpty(T&& str) { using std::empty; return empty(str); }
 
 #if ASSUMING_DEBUG
-		inline std::string AdditionalDataToString() { return {}; }
-		template <typename T, typename... ARGS>
-		inline std::string AdditionalDataToString(T&& fmt, ARGS&&... args) {
-			return std::format(std::forward<T>(fmt), std::forward<ARGS>(args)...);
-		}
+		/*
+		template <typename T>
+		concept formattable = requires { typename std::formatter<T>; };
+		*/
 
 		template <typename T>
-		concept formattable = requires (T val) { { std::format("{}", val) }; };
+		concept formattable = requires { { std::formatter<T>{} }; };
+
+		template <typename T>
+		concept streamable = requires (T val, std::stringstream & ss) { { ss << val }; };
 
 		template <typename T>
 		decltype(auto) GetFormattable(T&& val)
 		{
+			using simple_type = std::remove_cvref_t<T>;
 #if ASSUMING_INCLUDE_MAGIC_ENUM
-			if constexpr (std::is_enum_v<std::remove_cvref_t<T>>) 
+			if constexpr (std::is_enum_v<simple_type>)
 				return magic_enum::enum_name(val);
 			else
 #endif
-			if constexpr (std::is_pointer_v<std::remove_cvref_t<T>>)
+			if constexpr (std::is_constructible_v<std::string_view, simple_type>)
+				return std::forward<T>(val);
+			else if constexpr (std::is_pointer_v<simple_type>)
 				return (const void*)std::to_address(std::forward<T>(val));
-			else if constexpr (!formattable<std::remove_cvref_t<T>>)
-				return std::format("<{}>", typeid(std::remove_cvref_t<T>).name());
+			else if constexpr (streamable<simple_type> && !formattable<simple_type>)
+			{
+				std::stringstream ss;
+				ss << std::forward<T>(val);
+				return std::move(ss).str();
+			}
+			else if constexpr (!formattable<simple_type> && !streamable<simple_type>)
+				return std::format("<{}>", typeid(simple_type).name());
 			else
 				return std::forward<T>(val);
 		}
+
+		inline std::string AdditionalDataToString() { return {}; }
+		template <typename T, typename... ARGS>
+		inline std::string AdditionalDataToString(T&& fmt, ARGS&&... args) {
+			return std::vformat(std::forward<T>(fmt), std::make_format_args(GetFormattable(std::forward<ARGS>(args))...));
+			//return std::format(std::forward<T>(fmt), std::forward<ARGS>(args)...);
+		}
+
 #endif
 	}
 
 	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, std::source_location loc = std::source_location::current());
 }
-/*
-#define AssumingBetween(v, a, b, ...) { Assuming_GET(v_v, v); Assuming_GET(a_v, a); Assuming_GET(b_v, b); \
-	Assuming_IFFALSE(v_v >= a_v && v_v < b_v) { Assuming_START(); Assuming_FAILED(#v " will be between " #a " (inclusive) and " #b " (exclusive"); \
-	Assuming_VAL(v_v, #v); Assuming_VAL(a_v, #a); Assuming_VAL(b_v, #b); Assuming_FINISH(__VA_ARGS__); } }
-*/

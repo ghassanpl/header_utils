@@ -10,9 +10,12 @@
 #include "tests_common.h"
 
 #include <gtest/gtest.h>
+#include <format>
 
 struct assuming_test;
 assuming_test* current_test = nullptr;
+
+enum class test_enum { asadf, bcvbvc, czxcv };
 
 using namespace ghassanpl;
 
@@ -65,19 +68,19 @@ struct assuming_test : public ::testing::Test
 #define SELF(...) (__VA_ARGS__)
 
 #if ASSUMING_DEBUG
-#define EXPECT_ASSUMPTION_FAILED(func_name, ...) \
+#define EXPECT_ASSUMPTION_FAILED(func_name, ...) {\
 	assumption_failed = false; \
 	func_name SELF(__VA_ARGS__, "test({}, {})", 0, 5) ; auto current_location = std::source_location::current(); \
 	EXPECT_TRUE(assumption_failed) << #func_name; \
 	EXPECT_EQ(last_where.line(), current_location.line()); \
 	EXPECT_EQ(last_where.file_name(), current_location.file_name()); \
 	EXPECT_STREQ(last_where.function_name(), current_location.function_name()); \
-	EXPECT_EQ("test(0, 5)", last_data);
+	EXPECT_EQ("test(0, 5)", last_data); }
 #else
 #define EXPECT_ASSUMPTION_FAILED(func_name, ...) \
 	func_name SELF(__VA_ARGS__, "test({}, {})", 0, 5);
 #endif
-#define EXPECT_ASSUMPTION_SUCCEEDED(func_name, ...) assumption_failed = false; func_name SELF(__VA_ARGS__); EXPECT_FALSE(assumption_failed) << #func_name;
+#define EXPECT_ASSUMPTION_SUCCEEDED(func_name, ...) { assumption_failed = false; func_name SELF(__VA_ARGS__); EXPECT_FALSE(assumption_failed) << #func_name; }
 
 TEST_F(assuming_test, Assuming_works)
 {
@@ -128,7 +131,9 @@ TEST_F(assuming_test, AssumingEqual_works)
 
 TEST_F(assuming_test, AssumingNotEqual_works)
 {
-	EXPECT_ASSUMPTION_SUCCEEDED(AssumingNotEqual, 5, 6);
+	const auto enum_val = test_enum::asadf;
+	EXPECT_ASSUMPTION_SUCCEEDED(AssumingNotEqual, enum_val, test_enum::bcvbvc);
+	EXPECT_ASSUMPTION_FAILED(AssumingNotEqual, enum_val, enum_val);
 
 	const std::string value = "hello";
 	EXPECT_ASSUMPTION_FAILED(AssumingNotEqual, value, "hello");
