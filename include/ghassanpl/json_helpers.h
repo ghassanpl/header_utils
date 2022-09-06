@@ -8,17 +8,17 @@ namespace ghassanpl
 {
 	inline std::string load_text_file(std::filesystem::path const& from, std::error_code& ec)
 	{
-		auto source = ghassanpl::make_mmap_source(from, ec);
-		return ec ? std::string{} : std::string{ (const char*)source.begin(), (const char*)source.end() };
+		auto source = ghassanpl::make_mmap_source<char>(from, ec);
+		return ec ? std::string{} : std::string{ source.begin(), source.end() };
 	}
 
 	inline std::string load_text_file(std::filesystem::path const& from)
 	{
 		std::error_code ec;
-		auto source = ghassanpl::make_mmap_source(from, ec);
+		auto source = ghassanpl::make_mmap_source<char>(from, ec);
 		if (ec)
 			throw std::runtime_error(format("file '{}' not found", from.string()));
-		return std::string{ (const char*)source.begin(), (const char*)source.end() };
+		return std::string{ source.begin(), source.end() };
 	}
 
 	inline bool save_text_file(std::filesystem::path const& to, std::string_view string, std::error_code& ec)
@@ -37,13 +37,13 @@ namespace ghassanpl
 
 	inline nlohmann::json load_json_file(std::filesystem::path const& from, std::error_code& ec)
 	{
-		auto source = ghassanpl::make_mmap_source(from, ec);
+		auto source = ghassanpl::make_mmap_source<char>(from, ec);
 		return ec ? nlohmann::json{} : nlohmann::json::parse(source);
 	}
 
 	inline nlohmann::json load_ubjson_file(std::filesystem::path const& from, std::error_code& ec)
 	{
-		auto source = ghassanpl::make_mmap_source(from, ec);
+		auto source = ghassanpl::make_mmap_source<char>(from, ec);
 		return ec ? nlohmann::json{} : nlohmann::json::from_ubjson(source);
 	}
 
@@ -60,21 +60,21 @@ namespace ghassanpl
 	inline nlohmann::json try_load_json_file(std::filesystem::path const& from, nlohmann::json const& or_json = empty_json)
 	{
 		std::error_code ec;
-		auto source = ghassanpl::make_mmap_source(from, ec);
+		auto source = ghassanpl::make_mmap_source<char>(from, ec);
 		return ec ? or_json : nlohmann::json::parse(source);
 	}
 
 	inline nlohmann::json try_load_ubjson_file(std::filesystem::path const& from, nlohmann::json const& or_json = empty_json)
 	{
 		std::error_code ec;
-		auto source = ghassanpl::make_mmap_source(from, ec);
+		auto source = ghassanpl::make_mmap_source<char>(from, ec);
 		return ec ? or_json : nlohmann::json::from_ubjson(source);
 	}
 
 	inline nlohmann::json try_load_cbor_file(std::filesystem::path const& from, nlohmann::json const& or_json = empty_json)
 	{
 		std::error_code ec;
-		auto source = ghassanpl::make_mmap_source(from, ec);
+		auto source = ghassanpl::make_mmap_source<char>(from, ec);
 		return ec ? or_json : nlohmann::json::from_cbor(source);
 	}
 
@@ -82,7 +82,7 @@ namespace ghassanpl
 	{
 		try
 		{
-			return nlohmann::json::parse(ghassanpl::make_mmap_source(from));
+			return nlohmann::json::parse(ghassanpl::make_mmap_source<char>(from));
 		}
 		catch (...)
 		{
@@ -94,7 +94,7 @@ namespace ghassanpl
 	{
 		try
 		{
-			return nlohmann::json::from_ubjson(ghassanpl::make_mmap_source(from));
+			return nlohmann::json::from_ubjson(ghassanpl::make_mmap_source<char>(from));
 		}
 		catch (...)
 		{

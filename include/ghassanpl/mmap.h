@@ -24,9 +24,13 @@ namespace ghassanpl
 	static inline const file_handle_type invalid_handle = (file_handle_type)-1;
 
 
+	template <typename VALUE_TYPE>
+	//requires std::is_integral_v<VALUE_TYPE>
 	struct basic_mmap_base
 	{
-		using value_type = std::byte;
+		static_assert(sizeof(VALUE_TYPE) == sizeof(std::byte));
+
+		using value_type = VALUE_TYPE;
 		using size_type = size_t;
 		using reference = value_type&;
 		using const_reference = const value_type&;
@@ -39,7 +43,6 @@ namespace ghassanpl
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using iterator_category = std::random_access_iterator_tag;
 		using handle_type = file_handle_type;
-		using path = std::filesystem::path;
 
 		basic_mmap_base() noexcept = default;
 		basic_mmap_base(basic_mmap_base&& other) noexcept
@@ -130,7 +133,7 @@ namespace ghassanpl
 
 		struct mmap_context
 		{
-			char* data;
+			VALUE_TYPE* data;
 			int64_t length;
 			int64_t mapped_length;
 			file_handle_type file_mapping_handle;
@@ -151,11 +154,15 @@ namespace ghassanpl
 
 	};
 
-	template <typename CRTP>
-	struct basic_mmap : public basic_mmap_base
-	{
+	template <typename CRTP, typename VALUE_TYPE = std::byte>
+	struct basic_mmap : public basic_mmap_base<VALUE_TYPE>
+	{ 
+		using typename basic_mmap_base<VALUE_TYPE>::size_type;
+		using typename basic_mmap_base<VALUE_TYPE>::handle_type;
+		using typename basic_mmap_base<VALUE_TYPE>::pointer;
+
 		basic_mmap() noexcept = default;
-		basic_mmap(const path& path, const size_type offset = 0, const size_type length = map_entire_file)
+		basic_mmap(const std::filesystem::path& path, const size_type offset = 0, const size_t length = map_entire_file)
 		{
 			std::error_code error;
 			map(path, offset, length, error);
@@ -175,13 +182,13 @@ namespace ghassanpl
 		{
 			if (this != &other)
 			{
-				unmap();
+				this->unmap();
 
-				data_ = std::exchange(other.data_, nullptr);
-				length_ = std::exchange(other.length_, 0);
-				mapped_length_ = std::exchange(other.mapped_length_, 0);
-				file_handle_ = std::exchange(other.file_handle_, invalid_handle);
-				file_mapping_handle_ = std::exchange(other.file_mapping_handle_, invalid_handle);
+				this->data_ = std::exchange(other.data_, nullptr);
+				this->length_ = std::exchange(other.length_, 0);
+				this->mapped_length_ = std::exchange(other.mapped_length_, 0);
+				this->file_handle_ = std::exchange(other.file_handle_, invalid_handle);
+				this->file_mapping_handle_ = std::exchange(other.file_mapping_handle_, invalid_handle);
 			}
 			return *this;
 		}
@@ -189,10 +196,10 @@ namespace ghassanpl
 		~basic_mmap() noexcept
 		{
 			static_cast<CRTP*>(this)->conditional_sync();
-			unmap();
+			this->unmap();
 		}
 
-		void map(const path& path, const size_type offset, const size_type length, std::error_code& error) noexcept
+		void map(const std::filesystem::path& path, const size_type offset, const size_type length, std::error_code& error) noexcept
 		{
 			error.clear();
 			if (path.empty())
@@ -232,75 +239,84 @@ namespace ghassanpl
 				// order to provide the strong guarantee that, should the new mapping fail, the
 				// `map` function leaves this instance in a state as though the function had
 				// never been invoked.
-				unmap();
+				this->unmap();
 
-				file_handle_ = handle;
-				data_ = reinterpret_cast<pointer>(ctx.data);
-				length_ = ctx.length;
-				mapped_length_ = ctx.mapped_length;
-				file_mapping_handle_ = ctx.file_mapping_handle;
+				this->file_handle_ = handle;
+				this->data_ = reinterpret_cast<pointer>(ctx.data);
+				this->length_ = ctx.length;
+				this->mapped_length_ = ctx.mapped_length;
+				this->file_mapping_handle_ = ctx.file_mapping_handle;
 			}
 		}
 
-		void map(const path& path, std::error_code& error) noexcept
+		void map(const std::filesystem::path& path, std::error_code& error) noexcept
 		{
-			map(path, 0, map_entire_file, error);
+			this->map(path, 0, map_entire_file, error);
 		}
 
 	};
 
-	struct mmap_source : public basic_mmap<mmap_source>
+	template <typename VALUE_TYPE = std::byte>
+	struct mmap_source : public basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>
 	{
-		using basic_mmap::basic_mmap;
+		using basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>::basic_mmap;
+		using typename basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>::mmap_context;
 
 	protected:
 
-		friend struct basic_mmap;
+		friend struct basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>;
 
-		static file_handle_type open_file(const path& path, std::error_code& error) noexcept;
+		static file_handle_type open_file(const std::filesystem::path& path, std::error_code& error) noexcept;
 
 		static mmap_context memory_map(const file_handle_type file_handle, const int64_t offset, const int64_t length, std::error_code& error) noexcept;
 
 		void conditional_sync() {}
 	};
 
-	struct mmap_sink : public basic_mmap<mmap_sink>
+	template <typename VALUE_TYPE = std::byte>
+	struct mmap_sink : public basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>
 	{
-		using basic_mmap::basic_mmap;
+		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::basic_mmap;
+		using typename basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::reference;
+		using typename basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::size_type;
+		using typename basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::mmap_context;
+		using typename basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::pointer;
+		using typename basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::iterator;
+		using typename basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::reverse_iterator;
 
-		using basic_mmap::operator[];
-		reference operator[](const size_type i) noexcept { return data_[i]; }
+		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::operator[];
+		reference operator[](const size_type i) noexcept { return this->data_[i]; }
 
 		//void unmap();
 
-		using basic_mmap::data;
-		pointer data() noexcept { return data_; }
+		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::data;
+		pointer data() noexcept { return this->data_; }
 
-		using basic_mmap::begin;
-		iterator begin() noexcept { return data(); }
+		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::begin;
+		iterator begin() noexcept { return this->data(); }
 
-		using basic_mmap::end;
-		iterator end() noexcept { return data() + length(); }
+		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::end;
+		iterator end() noexcept { return this->data() + this->length(); }
 
-		using basic_mmap::rbegin;
-		reverse_iterator rbegin() noexcept { return reverse_iterator(end()); }
+		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::rbegin;
+		reverse_iterator rbegin() noexcept { return reverse_iterator(this->end()); }
 
-		using basic_mmap::rend;
-		reverse_iterator rend() noexcept { return reverse_iterator(begin()); }
+		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::rend;
+		reverse_iterator rend() noexcept { return reverse_iterator(this->begin()); }
 
 		void sync(std::error_code& error) noexcept;
 
 	protected:
 
-		friend struct basic_mmap;
+		friend struct basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>;
 
-		static file_handle_type open_file(const path& path, std::error_code& error) noexcept;
+		static file_handle_type open_file(const std::filesystem::path& path, std::error_code& error) noexcept;
 
 		static mmap_context memory_map(const file_handle_type file_handle, const int64_t offset, const int64_t length, std::error_code& error) noexcept;
 
 		pointer get_mapping_start() noexcept
 		{
-			return !data() ? nullptr : data() - mapping_offset();
+			return !this->data() ? nullptr : this->data() - this->mapping_offset();
 		}
 
 		void conditional_sync()
@@ -311,48 +327,56 @@ namespace ghassanpl
 	};
 
 
-	inline mmap_source make_mmap_source(const std::filesystem::path& path, mmap_source::size_type offset, mmap_source::size_type length, std::error_code& error) noexcept
+	template <typename VALUE_TYPE>
+	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length, std::error_code& error) noexcept
 	{
-		mmap_source mmap;
+		mmap_source<VALUE_TYPE> mmap;
 		mmap.map(path, offset, length, error);
 		return mmap;
 	}
 
-	inline mmap_source make_mmap_source(const std::filesystem::path& path, std::error_code& error) noexcept
+	template <typename VALUE_TYPE>
+	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, std::error_code& error) noexcept
 	{
-		return make_mmap_source(path, 0, map_entire_file, error);
+		return make_mmap_source<VALUE_TYPE>(path, 0, map_entire_file, error);
 	}
 
-	inline mmap_sink make_mmap_sink(const std::filesystem::path& path, mmap_sink::size_type offset, mmap_sink::size_type length, std::error_code& error) noexcept
+	template <typename VALUE_TYPE>
+	inline mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, typename mmap_sink<VALUE_TYPE>::size_type offset, typename mmap_sink<VALUE_TYPE>::size_type length, std::error_code& error) noexcept
 	{
-		mmap_sink mmap;
+		mmap_sink<VALUE_TYPE> mmap;
 		mmap.map(path, offset, length, error);
 		return mmap;
 	}
 
-	inline mmap_sink make_mmap_sink(const std::filesystem::path& path, std::error_code& error) noexcept
+	template <typename VALUE_TYPE>
+	inline mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, std::error_code& error) noexcept
 	{
-		return make_mmap_sink(path, 0, map_entire_file, error);
+		return make_mmap_sink<VALUE_TYPE>(path, 0, map_entire_file, error);
 	}
 
-	inline mmap_source make_mmap_source(const std::filesystem::path& path, mmap_source::size_type offset, mmap_source::size_type length)
+	template <typename VALUE_TYPE>
+	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length)
 	{
-		return mmap_source{ path, offset, length };
+		return mmap_source<VALUE_TYPE>{ path, offset, length };
 	}
 
-	inline mmap_source make_mmap_source(const std::filesystem::path& path)
+	template <typename VALUE_TYPE>
+	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path)
 	{
-		return make_mmap_source(path, 0, map_entire_file);
+		return make_mmap_source<VALUE_TYPE>(path, 0, map_entire_file);
 	}
 
-	inline mmap_sink make_mmap_sink(const std::filesystem::path& path, mmap_sink::size_type offset, mmap_sink::size_type length)
+	template <typename VALUE_TYPE>
+	inline mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, typename mmap_sink<VALUE_TYPE>::size_type offset, typename mmap_sink<VALUE_TYPE>::size_type length)
 	{
-		return mmap_sink{ path, offset, length };
+		return mmap_sink<VALUE_TYPE>{ path, offset, length };
 	}
 
-	inline mmap_sink make_mmap_sink(const std::filesystem::path& path)
+	template <typename VALUE_TYPE>
+	inline mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path)
 	{
-		return make_mmap_sink(path, 0, map_entire_file);
+		return make_mmap_sink<VALUE_TYPE>(path, 0, map_entire_file);
 	}
 
 }
@@ -437,19 +461,20 @@ namespace ghassanpl
 		}
 	}
 
-	inline void mmap_sink::sync(std::error_code& error) noexcept
+	template <typename VALUE_TYPE>
+	inline void mmap_sink<VALUE_TYPE>::sync(std::error_code& error) noexcept
 	{
 		error.clear();
-		if (!is_open())
+		if (!this->is_open())
 		{
 			error = std::make_error_code(std::errc::bad_file_descriptor);
 			return;
 		}
 
-		if (data())
+		if (this->data())
 		{
 #ifdef _WIN32
-			if (FlushViewOfFile(get_mapping_start(), mapped_length_) == 0 || FlushFileBuffers(file_handle_) == 0)
+			if (FlushViewOfFile(get_mapping_start(), this->mapped_length_) == 0 || FlushFileBuffers(this->file_handle_) == 0)
 #else // POSIX
 			if (::msync(get_mapping_start(), mapped_length_, MS_SYNC) != 0)
 #endif
@@ -460,14 +485,15 @@ namespace ghassanpl
 		}
 
 #ifdef _WIN32
-		if (FlushFileBuffers(file_handle_) == 0)
+		if (FlushFileBuffers(this->file_handle_) == 0)
 		{
 			error = last_error();
 		}
 #endif
 	}
 
-	inline file_handle_type mmap_sink::open_file(const path& path, std::error_code& error) noexcept
+	template <typename VALUE_TYPE>
+	inline file_handle_type mmap_sink<VALUE_TYPE>::open_file(const std::filesystem::path& path, std::error_code& error) noexcept
 	{
 		if (path.empty())
 		{
@@ -486,7 +512,8 @@ namespace ghassanpl
 		return handle;
 	}
 
-	inline mmap_sink::mmap_context mmap_sink::memory_map(const file_handle_type file_handle, const int64_t offset, const int64_t length, std::error_code& error) noexcept
+	template <typename VALUE_TYPE>
+	inline mmap_sink<VALUE_TYPE>::mmap_context mmap_sink<VALUE_TYPE>::memory_map(const file_handle_type file_handle, const int64_t offset, const int64_t length, std::error_code& error) noexcept
 	{
 		const int64_t aligned_offset = make_offset_page_aligned(offset);
 		const int64_t length_to_map = offset - aligned_offset + length;
@@ -498,7 +525,7 @@ namespace ghassanpl
 			error = last_error();
 			return {};
 		}
-		char* mapping_start = static_cast<char*>(MapViewOfFile(file_mapping_handle, 0x0002, int64_high(aligned_offset), int64_low(aligned_offset), length_to_map));
+		VALUE_TYPE* mapping_start = static_cast<VALUE_TYPE*>(MapViewOfFile(file_mapping_handle, 0x0002, int64_high(aligned_offset), int64_low(aligned_offset), length_to_map));
 		if (mapping_start == nullptr)
 		{
 			CloseHandle(file_mapping_handle);
@@ -506,7 +533,7 @@ namespace ghassanpl
 			return {};
 		}
 #else // POSIX
-		char* mapping_start = static_cast<char*>(::mmap(0, length_to_map, PROT_WRITE, MAP_SHARED, file_handle, aligned_offset));
+		VALUE_TYPE* mapping_start = static_cast<VALUE_TYPE*>(::mmap(0, length_to_map, PROT_WRITE, MAP_SHARED, file_handle, aligned_offset));
 		if (mapping_start == MAP_FAILED)
 		{
 			error = last_error();
@@ -522,34 +549,36 @@ namespace ghassanpl
 		return ctx;
 	}
 
-	inline void basic_mmap_base::unmap() noexcept
+	template <typename VALUE_TYPE>
+	inline void basic_mmap_base<VALUE_TYPE>::unmap() noexcept
 	{
-		if (!is_open()) { return; }
+		if (!this->is_open()) { return; }
 		// TODO do we care about errors here?
 #ifdef _WIN32
-		if (is_mapped())
+		if (this->is_mapped())
 		{
-			UnmapViewOfFile(get_mapping_start());
-			CloseHandle(file_mapping_handle_);
+			UnmapViewOfFile(this->get_mapping_start());
+			CloseHandle(this->file_mapping_handle_);
 		}
 #else // POSIX
 		if (data_) { ::munmap(const_cast<pointer>(get_mapping_start()), mapped_length_); }
 #endif
 
 #ifdef _WIN32
-		CloseHandle(file_handle_);
+		CloseHandle(this->file_handle_);
 #else // POSIX
 		::close(file_handle_);
 #endif
 
 		// Reset fields to their default values.
-		data_ = nullptr;
-		length_ = mapped_length_ = 0;
-		file_handle_ = invalid_handle;
-		file_mapping_handle_ = invalid_handle;
+		this->data_ = nullptr;
+		this->length_ = this->mapped_length_ = 0;
+		this->file_handle_ = invalid_handle;
+		this->file_mapping_handle_ = invalid_handle;
 	}
 
-	inline file_handle_type mmap_source::open_file(const path& path, std::error_code& error) noexcept
+	template <typename VALUE_TYPE>
+	inline file_handle_type mmap_source<VALUE_TYPE>::open_file(const std::filesystem::path& path, std::error_code& error) noexcept
 	{
 		error.clear();
 		if (path.empty())
@@ -569,7 +598,8 @@ namespace ghassanpl
 		return handle;
 	}
 
-	inline mmap_source::mmap_context mmap_source::memory_map(const file_handle_type file_handle, const int64_t offset, const int64_t length, std::error_code& error) noexcept
+	template <typename VALUE_TYPE>
+	inline mmap_source<VALUE_TYPE>::mmap_context mmap_source<VALUE_TYPE>::memory_map(const file_handle_type file_handle, const int64_t offset, const int64_t length, std::error_code& error) noexcept
 	{
 		const int64_t aligned_offset = make_offset_page_aligned(offset);
 		const int64_t length_to_map = offset - aligned_offset + length;
@@ -581,7 +611,7 @@ namespace ghassanpl
 			error = last_error();
 			return {};
 		}
-		char* mapping_start = static_cast<char*>(MapViewOfFile(file_mapping_handle, 0x0004, int64_high(aligned_offset), int64_low(aligned_offset), length_to_map));
+		VALUE_TYPE* mapping_start = static_cast<VALUE_TYPE*>(MapViewOfFile(file_mapping_handle, 0x0004, int64_high(aligned_offset), int64_low(aligned_offset), length_to_map));
 		if (mapping_start == nullptr)
 		{
 			// Close file handle if mapping it failed.
@@ -590,7 +620,7 @@ namespace ghassanpl
 			return {};
 		}
 #else // POSIX
-		char* mapping_start = static_cast<char*>(::mmap(0, length_to_map, PROT_READ, MAP_SHARED, file_handle, aligned_offset));
+		VALUE_TYPE* mapping_start = static_cast<VALUE_TYPE*>(::mmap(0, length_to_map, PROT_READ, MAP_SHARED, file_handle, aligned_offset));
 		if (mapping_start == MAP_FAILED)
 		{
 			error = last_error();

@@ -1167,9 +1167,15 @@ namespace ghassanpl::string_ops
 	template <string_or_char DELIMITER = char, string_or_char ESCAPE = char>
 	inline void quote(std::string& subject, DELIMITER delimiter = '"', ESCAPE escape = '\\')
 	{
-		const char replace_delim[] {escape, delimiter, '\0' };
-		const char replace_escape[] {escape, escape, '\0'};
-		::ghassanpl::string_ops::replace(subject, escape, replace_escape);
+		const char replace_delim[]{ escape, delimiter, '\0' };
+		const char replace_escape[]{ escape, escape, '\0' };
+		if constexpr (requires { delimiter != escape; })
+		{
+			if (delimiter != escape)
+				::ghassanpl::string_ops::replace(subject, escape, replace_escape);
+		}
+		else
+			::ghassanpl::string_ops::replace(subject, escape, replace_escape);
 		::ghassanpl::string_ops::replace(subject, delimiter, replace_delim);
 		subject.insert(subject.begin(), delimiter);
 		subject += delimiter;

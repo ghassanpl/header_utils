@@ -8,16 +8,18 @@
 
 namespace ghassanpl
 {
-	constexpr int get(std::string_view& str) { if (str.empty()) return -1; const auto result = str[0]; str.remove_prefix(1); return result; }
-	constexpr int get_invalid(std::string_view const&) { return -1; }
+	inline constexpr int get(std::string_view& str) { if (str.empty()) return -1; const auto result = static_cast<unsigned char>(str[0]); str.remove_prefix(1); return result; }
+	inline constexpr int get_invalid(std::type_identity<std::string_view>) { return -1; }
 
-	constexpr int get(std::istream& strm) { return strm.get(); }
-	constexpr int get_invalid(std::istream const&) { return -1; }
+	inline           int get(std::istream& strm) { return strm.get(); }
+	template <typename T>
+	requires std::derived_from<T, std::istream>
+	inline constexpr int get_invalid(std::type_identity<T>) { return -1; }
 
 	template <typename BUFFER, typename ROW_CALLBACK>
 	intptr_t load_csv(BUFFER&& buffer, ROW_CALLBACK&& row_callback)
 	{
-		static constexpr auto invalid_value = get_invalid(buffer);
+		static constexpr auto invalid_value = get_invalid(std::type_identity<std::remove_cvref_t<decltype(buffer)>>{});
 		bool in_quote = false;
 		intptr_t line = 0;
 
@@ -59,7 +61,8 @@ namespace ghassanpl
 				if (cp == '\n')
 				{
 					row.push_back(std::move(current_cell));
-					row_callback(line++, std::move(row));
+					if (!row_callback(line++, std::move(row)))
+						return line;
 				}
 				else if (cp == '"')
 					in_quote = true;
