@@ -60,14 +60,14 @@ namespace ghassanpl
 
 				if (cp == '\n')
 				{
-					row.push_back(std::move(current_cell));
-					if (!row_callback(line++, std::move(row)))
+					row.push_back(std::exchange(current_cell, {}));
+					if (!row_callback(line++, std::exchange(row, {})))
 						return line;
 				}
 				else if (cp == '"')
 					in_quote = true;
 				else if (cp == ',')
-					row.push_back(std::move(current_cell));
+					row.push_back(std::exchange(current_cell, {}));
 				else
 					current_cell += (char)cp;
 			}

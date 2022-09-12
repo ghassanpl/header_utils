@@ -243,11 +243,11 @@ namespace ghassanpl::string_ops
 	/// Trims
 	/// ///////////////////////////// ///
 
-	[[nodiscard]] inline std::string_view trimmed_whitespace_right(std::string_view str) noexcept { return make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
-	[[nodiscard]] inline std::string_view trimmed_whitespace_left(std::string_view str) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
-	[[nodiscard]] inline std::string_view trimmed_whitespace(std::string_view str) noexcept { return trimmed_whitespace_left(trimmed_whitespace_right(str)); }
-	[[nodiscard]] inline std::string_view trimmed_until(std::string_view str, char chr) noexcept { return make_sv(std::find(str.begin(), str.end(), chr), str.end()); }
-	[[nodiscard]] inline std::string_view trimmed(std::string_view str, char chr) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), [chr](char c) { return c == chr; }), str.end()); }
+	[[nodiscard]] inline constexpr std::string_view trimmed_whitespace_right(std::string_view str) noexcept { return make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
+	[[nodiscard]] inline constexpr std::string_view trimmed_whitespace_left(std::string_view str) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
+	[[nodiscard]] inline constexpr std::string_view trimmed_whitespace(std::string_view str) noexcept { return trimmed_whitespace_left(trimmed_whitespace_right(str)); }
+	[[nodiscard]] inline constexpr std::string_view trimmed_until(std::string_view str, char chr) noexcept { return make_sv(std::find(str.begin(), str.end(), chr), str.end()); }
+	[[nodiscard]] inline constexpr std::string_view trimmed(std::string_view str, char chr) noexcept { return make_sv(std::find_if_not(str.begin(), str.end(), [chr](char c) { return c == chr; }), str.end()); }
 
 	[[nodiscard]] inline std::string trimmed_whitespace_right(std::string&& str) noexcept { str.erase(std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base(), str.end()); return str; }
 	[[nodiscard]] inline std::string trimmed_whitespace_left(std::string&& str) noexcept { str.erase(str.begin(), std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace)); return str; }
@@ -259,15 +259,15 @@ namespace ghassanpl::string_ops
 	requires std::is_invocable_r_v<bool, FUNC, char>
 	[[nodiscard]] inline std::string_view trimmed_while(std::string_view str, FUNC&& func) noexcept { return ::ghassanpl::string_ops::make_sv(std::find_if_not(str.begin(), str.end(), std::forward<FUNC>(func)), str.end()); }
 
-	inline void trim_whitespace_right(std::string_view& str) noexcept { str = make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
-	inline void trim_whitespace_left(std::string_view& str) noexcept { str = make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
-	inline void trim_whitespace(std::string_view& str) noexcept { trim_whitespace_left(str); trim_whitespace_right(str); }
-	inline void trim_until(std::string_view& str, char chr) noexcept { str = trimmed_until(str, chr); }
-	inline void trim(std::string_view& str, char chr) noexcept { str = trimmed(str, chr); }
+	inline constexpr void trim_whitespace_right(std::string_view& str) noexcept { str = make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
+	inline constexpr void trim_whitespace_left(std::string_view& str) noexcept { str = make_sv(std::find_if_not(str.begin(), str.end(), ::ghassanpl::string_ops::ascii::isspace), str.end()); }
+	inline constexpr void trim_whitespace(std::string_view& str) noexcept { trim_whitespace_left(str); trim_whitespace_right(str); }
+	inline constexpr void trim_until(std::string_view& str, char chr) noexcept { str = trimmed_until(str, chr); }
+	inline constexpr void trim(std::string_view& str, char chr) noexcept { str = trimmed(str, chr); }
 	//inline void trim(std::string_view& str) noexcept { if (!str.empty()) str.remove_prefix(1); }
 	template <typename FUNC>
 	requires std::is_invocable_r_v<bool, FUNC, char>
-	inline void trim_while(std::string_view& str, FUNC&& func) noexcept { str = trimmed_while(str, std::forward<FUNC>(func)); }
+	inline constexpr void trim_while(std::string_view& str, FUNC&& func) noexcept { str = trimmed_while(str, std::forward<FUNC>(func)); }
 
 	/// ///////////////////////////// ///
 	/// Consume

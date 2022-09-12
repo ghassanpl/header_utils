@@ -2,7 +2,7 @@
 
 #include "string_ops.h"
 #include "mmap.h"
-#include <nlohmann/json.hpp>
+#include "json_helpers.h"
 #include <ostream>
 
 namespace ghassanpl
@@ -63,7 +63,7 @@ namespace ghassanpl
 			std::ignore = string_ops::consume_while(from, &string_ops::ascii::isident);
 			return string_ops::make_string(beg.begin(), from.begin());
 			*/
-			return string{ string_ops::consume_while(from, &string_ops::ascii::isident) };
+			return std::string{ string_ops::consume_while(from, &string_ops::ascii::isident) };
 		}
 
 		inline std::string parse_string_value(std::string_view& str)
@@ -109,6 +109,10 @@ namespace ghassanpl
 
 				auto key = parse_string_value(str);
 				string_ops::trim_whitespace_left(str);
+
+				if (str.empty())
+					break;
+
 				if (str[0] == ',' || str[0] == ';')
 				{
 					obj[std::move(key)] = true;
@@ -126,7 +130,7 @@ namespace ghassanpl
 
 				string_ops::trim_whitespace_left(str);
 
-				if (str[0] == ',' || str[0] == ';')
+				if (!str.empty() && (str[0] == ',' || str[0] == ';'))
 					str.remove_prefix(1);
 			} while (!str.empty());
 
@@ -261,14 +265,14 @@ namespace ghassanpl
 
 	inline nlohmann::json load_wilson_file(std::filesystem::path const& from, std::error_code& ec)
 	{
-		auto source = ghassanpl::make_mmap_source(from, ec);
+		auto source = ghassanpl::make_mmap_source<char>(from, ec);
 		return ec ? nlohmann::json{} : parse_wilson_value(string_ops::make_sv((const char*)source.begin(), (const char*)source.end()));
 	}
 
 	inline nlohmann::json try_load_wilson_file(std::filesystem::path const& from, nlohmann::json const& or_json = empty_json)
 	{
 		std::error_code ec;
-		auto source = ghassanpl::make_mmap_source(from, ec);
+		auto source = ghassanpl::make_mmap_source<char>(from, ec);
 		return ec ? or_json : parse_wilson_value(string_ops::make_sv((const char*)source.begin(), (const char*)source.end()));
 	}
 

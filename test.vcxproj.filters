@@ -57,9 +57,6 @@
     <ClInclude Include="include\ghassanpl\with_sl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="mmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ghassanpl\parsing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -76,6 +73,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\wilson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\colors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\di_impl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\direction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\mmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\regex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
