@@ -20,12 +20,26 @@ namespace glm
 	template<typename T> void from_json(json const& j, vec<4, T>& v) { v.x = j[0]; v.y = j[1]; v.z = j[2]; v.w = j[3]; }
 }
 
+#define cvar_namespace(name) inline cvar_group_t cvg##name{#name}; namespace name
+#define cvar_decl(type, group, name, ...)  inline cvar_t<type> cv##name{ group, #name, type (__VA_ARGS__) }
+
 namespace config
 {
-	cvar_group_t cvgRender{ "Render" };
+	cvar_namespace(Render)
+	{
+		//cvar_t<ivec2> cvWindowedResolution{ "Render", "WindowedResolution", {1280, 720}};
+		cvar_decl(ivec2, "Render", WindowedResolution, { 1280, 720 });
+	}
+
 	namespace Render
 	{
-		cvar_t<ivec2> cvWindowedResolution{ cvgRender, "WindowedResolution", {1280, 720} };
+		cvar_t<ivec2> cvFullscreenResolution{ "Render", "FullscreenResolution", {1280, 720}};
+	}
+
+	cvar_group_t cvgGameplay{ "Gameplay" };
+	namespace Gameplay
+	{
+		cvar_t<float> cvPlayerSpeed{ cvgGameplay, "PlayerSpeed", 120.0f};
 	}
 }
 
@@ -33,6 +47,7 @@ TEST(configs_test, basics)
 {
 
 	config::Render::cvWindowedResolution.json();
-	config::Render::cvWindowedResolution.json(json{});
+	config::Render::cvWindowedResolution.json(json::array({1600, 900}));
 
+	/// config::Render::cvWindowedResolution == ivec2{ 1600, 900 };
 }

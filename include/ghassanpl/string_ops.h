@@ -219,6 +219,19 @@ namespace ghassanpl::string_ops
 		{
 			return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), [](char a, char b) { return ::ghassanpl::string_ops::ascii::toupper(a) < ::ghassanpl::string_ops::ascii::toupper(b); });
 		}
+
+		struct string_view_case_insensitive
+		{
+			std::string_view value;
+
+			friend constexpr bool operator ==(std::string_view a, string_view_case_insensitive b) noexcept { return strings_equal_ignore_case(a, b.value); }
+			friend constexpr bool operator !=(std::string_view a, string_view_case_insensitive b) noexcept { return !strings_equal_ignore_case(a, b.value); }
+
+			constexpr bool operator ==(std::string_view a) const noexcept { return strings_equal_ignore_case(value, a); }
+			constexpr bool operator !=(std::string_view a) const noexcept { return !strings_equal_ignore_case(value, a); }
+		};
+
+		inline constexpr string_view_case_insensitive operator"" _i(const char* str, size_t size) noexcept { return string_view_case_insensitive{ std::string_view{str, str + size} }; }
 	}
 
 #pragma push_macro("isascii")
@@ -863,7 +876,7 @@ namespace ghassanpl::string_ops
 	template <string16 T, string_view8 STR>
 	[[nodiscard]] inline T to_utf16(STR str)
 	{
-		T result;
+		T result{};
 		auto sv = make_sv(str);
 		while (!sv.empty())
 			append_utf16(result, consume_utf8(sv));

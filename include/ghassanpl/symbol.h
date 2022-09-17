@@ -1,0 +1,48 @@
+#include <string>
+#include <string_view>
+#include <set>
+
+namespace ghassanpl
+{
+	struct symbol
+	{
+		std::string_view value{};
+
+		explicit symbol(std::string_view val) : value{ val.empty() ? std::string_view{} : insert(val) } { }
+		symbol() noexcept = default;
+		symbol(symbol const&) noexcept = default;
+		symbol(symbol&&) noexcept = default;
+		symbol& operator=(symbol const&) noexcept = default;
+		symbol& operator=(symbol&&) noexcept = default;
+
+		static auto& values() noexcept
+		{
+			static std::set<std::string, std::less<>> values;
+			return values;
+		}
+
+		static std::string_view insert(std::string_view val)
+		{
+			auto& values = symbol::values();
+			if (auto v = values.find(val); v == values.end())
+				return *values.insert(std::string{ val }).first;
+			else
+				return *v;
+		}
+
+		explicit operator std::string_view() const noexcept { return value; }
+
+		bool operator==(symbol const& other) const noexcept { return value.data() == other.value.data(); }
+		auto operator<=>(symbol const& other) const noexcept { return value <=> other.value; }
+
+		friend bool operator==(std::string_view a, symbol const& b) noexcept { return a == b.value; }
+		friend auto operator<=>(std::string_view a, symbol const& b) noexcept { return a <=> b.value; }
+	};
+}
+
+/// TODO: ostream << and formatter
+
+namespace std
+{
+	template <> struct hash<ghassanpl::symbol> { size_t operator()(const ghassanpl::symbol& x) const { return std::hash<std::string_view>{}(x.value); } };
+}

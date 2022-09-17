@@ -21,6 +21,12 @@ namespace ghassanpl
 		return std::string{ source.begin(), source.end() };
 	}
 
+	inline std::string try_load_text_file(std::filesystem::path const& from)
+	{
+		std::error_code ec;
+		return load_text_file(from, ec);
+	}
+
 	inline bool save_text_file(std::filesystem::path const& to, std::string_view string, std::error_code& ec)
 	{
 		std::ofstream out{ to };
@@ -50,12 +56,6 @@ namespace ghassanpl
 	static inline const nlohmann::json empty_json = nlohmann::json{};
 	static inline const nlohmann::json empty_json_array = nlohmann::json::array();
 	static inline const nlohmann::json empty_json_object = nlohmann::json::object();
-
-	inline std::string try_load_text_file(std::filesystem::path const& from)
-	{
-		std::error_code ec;
-		return load_text_file(from, ec);
-	}
 
 	inline nlohmann::json try_load_json_file(std::filesystem::path const& from, nlohmann::json const& or_json = empty_json)
 	{

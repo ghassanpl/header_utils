@@ -169,6 +169,7 @@
     <ClInclude Include="include\ghassanpl\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\flag_bits.h" />
     <ClInclude Include="include\ghassanpl\flag_bits_v.h" />
+    <ClInclude Include="include\ghassanpl\formats.h" />
     <ClInclude Include="include\ghassanpl\hashes.h" />
     <ClInclude Include="include\ghassanpl\json_helpers.h" />
     <ClInclude Include="include\ghassanpl\mmap.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="include\ghassanpl\rec2.h" />
     <ClInclude Include="include\ghassanpl\regex.h" />
     <ClInclude Include="include\ghassanpl\string_ops.h" />
+    <ClInclude Include="include\ghassanpl\symbol.h" />
     <ClInclude Include="include\ghassanpl\templates.h" />
     <ClInclude Include="include\ghassanpl\wilson.h" />
     <ClInclude Include="include\ghassanpl\with_sl.h" />
@@ -189,7 +191,6 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mmap.cpp" />
     <ClCompile Include="tests\align_tests.cpp" />
     <ClCompile Include="tests\assuming_tests.cpp" />
     <ClCompile Include="tests\configs_tests.cpp" />
@@ -198,11 +199,13 @@
     <ClCompile Include="tests\main.cpp" />
     <ClCompile Include="tests\mmap_tests.cpp" />
     <ClCompile Include="tests\named_tests.cpp" />
+    <ClCompile Include="tests\symbol_tests.cpp" />
     <ClCompile Include="tests\rec2_tests.cpp" />
     <ClCompile Include="tests\string_ops_tests.cpp" />
     <ClCompile Include="tests\templates_tests.cpp" />
     <ClCompile Include="tests\test_system.cpp" />
     <ClCompile Include="tests\test_system_tests.cpp" />
+    <ClCompile Include="tests\windows_message_box_test.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

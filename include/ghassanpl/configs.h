@@ -32,6 +32,12 @@ namespace ghassanpl::config
 			return m_global;
 		}
 
+		cvar_group_t* resolve_group_path(std::string_view group_path)
+		{
+			throw "unimplemented";
+			return nullptr;
+		}
+
 	private:
 
 		friend struct cvar_manager_t;
@@ -59,13 +65,20 @@ namespace ghassanpl::config
 	{
 		void set(cvar_flags flag) noexcept { m_flags += flag; }
 
-		cvar_group_t& group() const noexcept { return m_group; }
+		cvar_group_t& group() const noexcept { return m_group ? *m_group : resolve_group_path(); }
 		std::string_view name() const noexcept { return m_name; }
 		enum_flags<cvar_flags> flag() const noexcept { return m_flags; }
-		
+
 		cvar_base_t(cvar_group_t& group, std::string_view name)
-			: m_group(group)
-			, m_name(name)			
+			: m_group(&group)
+			, m_name(name)
+		{
+
+		}
+
+		cvar_base_t(std::string_view group_path, std::string_view name)
+			: m_group_path(group_path)
+			, m_name(name)
 		{
 
 		}
@@ -79,11 +92,20 @@ namespace ghassanpl::config
 
 		friend struct cvar_manager_t;
 
-		cvar_group_t& m_group;
+		std::string const m_group_path;
+		mutable cvar_group_t* m_group = nullptr;
 		std::string const m_name;
 		enum_flags<cvar_flags> m_flags{};
 
 		config_source_t* m_current_source = nullptr;
+
+		cvar_group_t& resolve_group_path() const
+		{
+			auto group = cvar_group_t::global_group().resolve_group_path(m_group_path);
+			if (!group)
+				throw std::invalid_argument("group path does not resolve to any defined group");
+			return *(m_group = group);
+		}
 	};
 
 	template <typename T>
@@ -96,6 +118,14 @@ namespace ghassanpl::config
 		template <typename... ARGS>
 		cvar_t(cvar_group_t& group, std::string_view name, T value, ARGS&&... args)
 			: cvar_base_t(group, name)
+			, m_default_value(std::move(value))
+		{
+			(this->set(std::forward<ARGS>(args)), ...);
+		}
+
+		template <typename... ARGS>
+		cvar_t(std::string_view group_name, std::string_view name, T value, ARGS&&... args)
+			: cvar_base_t(group_name, name)
 			, m_default_value(std::move(value))
 		{
 			(this->set(std::forward<ARGS>(args)), ...);
