@@ -220,15 +220,23 @@ namespace ghassanpl::string_ops
 			return std::lexicographical_compare(a.begin(), a.end(), b.begin(), b.end(), [](char a, char b) { return ::ghassanpl::string_ops::ascii::toupper(a) < ::ghassanpl::string_ops::ascii::toupper(b); });
 		}
 
+		[[nodiscard]] constexpr auto lexicographical_compare_ignore_case_three_way(std::string_view a, std::string_view b)
+		{
+			return std::lexicographical_compare_three_way(a.begin(), a.end(), b.begin(), b.end(), [](char a, char b) { return ::ghassanpl::string_ops::ascii::toupper(a) <=> ::ghassanpl::string_ops::ascii::toupper(b); });
+		}
+
 		struct string_view_case_insensitive
 		{
 			std::string_view value;
 
 			friend constexpr bool operator ==(std::string_view a, string_view_case_insensitive b) noexcept { return strings_equal_ignore_case(a, b.value); }
-			friend constexpr bool operator !=(std::string_view a, string_view_case_insensitive b) noexcept { return !strings_equal_ignore_case(a, b.value); }
+			friend constexpr auto operator <=>(std::string_view a, string_view_case_insensitive b) noexcept { return lexicographical_compare_ignore_case_three_way(a, b.value); }
 
 			constexpr bool operator ==(std::string_view a) const noexcept { return strings_equal_ignore_case(value, a); }
-			constexpr bool operator !=(std::string_view a) const noexcept { return !strings_equal_ignore_case(value, a); }
+			constexpr auto operator <=>(std::string_view a) const noexcept { return lexicographical_compare_ignore_case_three_way(value, a); }
+
+			constexpr bool operator ==(string_view_case_insensitive const& other) const noexcept { return strings_equal_ignore_case(value, other.value); }
+			constexpr auto operator <=>(string_view_case_insensitive const& other) const noexcept { return lexicographical_compare_ignore_case_three_way(value, other.value); }
 		};
 
 		inline constexpr string_view_case_insensitive operator"" _i(const char* str, size_t size) noexcept { return string_view_case_insensitive{ std::string_view{str, str + size} }; }
@@ -1382,3 +1390,7 @@ namespace ghassanpl::string_ops
 		return ::ghassanpl::string_ops::word_wrap(_source, max_width, [letter_width](std::string_view str) { return T(str.size() * letter_width); });
 	}
 }
+
+#define GHPL_FORMAT_TEMPLATE typename... GHPL_ARGS
+#define GHPL_FORMAT_ARGS std::string_view ghpl_fmt, GHPL_ARGS&&... ghpl_args
+#define GHPL_FORMAT_CALL std::vformat(ghpl_fmt, std::make_format_args(std::forward<GHPL_ARGS>(ghpl_args)...))
