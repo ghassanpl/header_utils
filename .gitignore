@@ -2,3 +2,6 @@
 x64/
 packages/
 CoverageReport-*
+/Build
+/include/ghassanpl/.parsing
+/Output

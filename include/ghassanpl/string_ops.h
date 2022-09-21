@@ -1064,33 +1064,33 @@ namespace ghassanpl::string_ops
 			func(source, true);
 	}
 
-	template <string_or_char DELIM>
-	[[nodiscard]] inline constexpr std::vector<std::string_view> split(std::string_view source, DELIM&& delim) noexcept
+	template <typename RESULT_TYPE = std::string_view, string_or_char DELIM>
+	[[nodiscard]] inline constexpr std::vector<RESULT_TYPE> split(std::string_view source, DELIM&& delim) noexcept
 	{
-		std::vector<std::string_view> result;
+		std::vector<RESULT_TYPE> result;
 		::ghassanpl::string_ops::split(source, std::forward<DELIM>(delim), [&result](std::string_view str, bool last) {
-			result.push_back(str);
+			result.push_back(RESULT_TYPE{ str });
 		});
 		return result;
 	}
 
-	template <typename DELIM_FUNC>
+	template <typename RESULT_TYPE = std::string_view, typename DELIM_FUNC>
 	requires std::is_invocable_r_v<size_t, DELIM_FUNC, std::string_view>
-	[[nodiscard]] std::vector<std::string_view> split_on(std::string_view source, DELIM_FUNC && delim) noexcept
+	[[nodiscard]] std::vector<RESULT_TYPE> split_on(std::string_view source, DELIM_FUNC && delim) noexcept
 	{
-		std::vector<std::string_view> result;
+		std::vector<RESULT_TYPE> result;
 		::ghassanpl::string_ops::split_on(source, std::forward<DELIM_FUNC>(delim), [&result](std::string_view str, bool last) {
-			result.push_back(str);
-			});
+			result.push_back(RESULT_TYPE{ str });
+		});
 		return result;
 	}
 
-	template <string_or_char DELIM>
-	[[nodiscard]] inline std::vector<std::string_view> natural_split(std::string_view source, DELIM&& delim) noexcept
+	template <typename RESULT_TYPE = std::string_view, string_or_char DELIM>
+	[[nodiscard]] inline std::vector<RESULT_TYPE> natural_split(std::string_view source, DELIM&& delim) noexcept
 	{
-		std::vector<std::string_view> result;
+		std::vector<RESULT_TYPE> result;
 		::ghassanpl::string_ops::natural_split(source, std::forward<DELIM>(delim), [&result](std::string_view str, bool last) {
-			result.push_back(str);
+			result.push_back(RESULT_TYPE{ str });
 		});
 		return result;
 	}
@@ -1285,7 +1285,7 @@ namespace ghassanpl::string_ops
 	}
 #endif
 
-
+	/// TODO: Make this an actual range
 	template <bool SINGLE>
 	struct split_range
 	{
@@ -1347,6 +1347,8 @@ namespace ghassanpl::string_ops
 		std::string_view mSource;
 		char mSplit;
 	};
+
+	/// static_assert(std::ranges::range<split_range<true>>);
 
 	template <typename T, typename FUNC>
 	requires std::is_arithmetic_v<T> && std::is_invocable_r_v<T, FUNC, std::string_view>
