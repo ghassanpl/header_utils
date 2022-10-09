@@ -1,3 +1,7 @@
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #include <string>
@@ -9,6 +13,10 @@
 
 namespace ghassanpl::config
 {
+	/// \defgroup Configs
+	/// A todo-namespace for cvars
+	/// @{
+
 	struct cvar_base_t;
 
 	struct cvar_manager_t;
@@ -132,7 +140,7 @@ namespace ghassanpl::config
 		}
 
 		template <typename CALLBACK>
-		requires constructible_from<cvar_change_callback, CALLBACK>
+		requires std::constructible_from<cvar_change_callback, CALLBACK>
 		void set(CALLBACK&&)
 		{
 			
@@ -168,4 +176,5 @@ namespace ghassanpl::config
 
 	};
 
+	///@}
 }

@@ -5,3 +5,5 @@ CoverageReport-*
 /Build
 /include/ghassanpl/.parsing
 /Output
+/docs/html
+/include/ghassanpl/buffers

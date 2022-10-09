@@ -1,6 +1,7 @@
-/// This Source Code Form is subject to the terms of the Mozilla Public
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #include <glm/vec2.hpp>
@@ -8,6 +9,8 @@
 #include <iostream>
 
 #define GHASSANPL_HAS_REC2
+
+/// An extension to the `glm` library. Adds a class template that represents a 2D axis-aligned rectangle.
 
 namespace ghassanpl
 {

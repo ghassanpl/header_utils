@@ -4,5 +4,5 @@
 
 TEST(windows_message_box, runs_without_headers)
 {
-	std::ignore = ghassanpl::msg::confirm("Does this work?");
+	//std::ignore = ghassanpl::msg::confirm("Does this work?");
 }

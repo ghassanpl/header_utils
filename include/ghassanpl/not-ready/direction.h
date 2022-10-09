@@ -69,30 +69,30 @@ namespace ghassanpl
 
 	/// TODO: Tests
 
-	inline constexpr Direction operator+(Direction dir, int d) { return (Direction)((int(dir) + d) % 8); }
-	inline constexpr Direction operator-(Direction dir, int d) { return (Direction)((int(dir) + (8 + (d % 8))) % 8); }
+	constexpr inline Direction operator+(Direction dir, int d) { return (Direction)((int(dir) + d) % 8); }
+	constexpr inline Direction operator-(Direction dir, int d) { return (Direction)((int(dir) + (8 + (d % 8))) % 8); }
 
-	inline constexpr Direction& operator++(Direction& dir) { return dir = dir + 1; }
-	inline constexpr Direction& operator--(Direction& dir) { return dir = dir + 7; }
+	constexpr inline Direction& operator++(Direction& dir) { return dir = dir + 1; }
+	constexpr inline Direction& operator--(Direction& dir) { return dir = dir + 7; }
 
-	inline constexpr Direction operator++(Direction& dir, int) { auto res = dir; ++dir; return res; }
-	inline constexpr Direction operator--(Direction& dir, int) { auto res = dir; --dir; return res; }
+	constexpr inline Direction operator++(Direction& dir, int) { auto res = dir; ++dir; return res; }
+	constexpr inline Direction operator--(Direction& dir, int) { auto res = dir; --dir; return res; }
 
-	inline constexpr Direction Opposite(Direction dir) { return dir + 4; }
-	inline constexpr Direction NextCardinal(Direction dir) { return dir + 2; }
+	constexpr inline Direction Opposite(Direction dir) { return dir + 4; }
+	constexpr inline Direction NextCardinal(Direction dir) { return dir + 2; }
 
 	namespace {
 		static constexpr const int DirectionValue[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 	}
 
-	inline constexpr int HorizontalDirection(Direction dir) { return DirectionValue[(int)dir]; }
-	inline constexpr int VerticalDirection(Direction dir) { return DirectionValue[int(dir + 6)]; }
+	constexpr inline int HorizontalDirection(Direction dir) { return DirectionValue[(int)dir]; }
+	constexpr inline int VerticalDirection(Direction dir) { return DirectionValue[int(dir + 6)]; }
 
-	inline constexpr bool IsCardinal(Direction dir) { return (int(dir) & 1) == 0; }
-	inline constexpr bool IsDiagonal(Direction dir) { return (int(dir) & 1) != 0; }
+	constexpr inline bool IsCardinal(Direction dir) { return (int(dir) & 1) == 0; }
+	constexpr inline bool IsDiagonal(Direction dir) { return (int(dir) & 1) != 0; }
 
-	inline constexpr gh::EnumFlags<Direction> AllCardinalDirections = gh::EnumFlags<Direction>{ Direction::Left, Direction::Right, Direction::Up, Direction::Down };
-	inline constexpr gh::EnumFlags<Direction> AllDiagonalDirections = gh::EnumFlags<Direction>{ Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
+	constexpr inline gh::EnumFlags<Direction> AllCardinalDirections = gh::EnumFlags<Direction>{ Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	constexpr inline gh::EnumFlags<Direction> AllDiagonalDirections = gh::EnumFlags<Direction>{ Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
 
 	/*
 	template <>
@@ -118,19 +118,19 @@ namespace ghassanpl
 	}
 
 	template <>
-	inline constexpr degrees_t value_cast<Direction, degrees_t>(Direction dir)
+	constexpr inline degrees_t value_cast<Direction, degrees_t>(Direction dir)
 	{
 		return degrees_t{ float(int(dir) * 45.0) };
 	}
 
 	template <>
-	inline constexpr ivec2 value_cast<Direction, ivec2>(Direction dir)
+	constexpr inline ivec2 value_cast<Direction, ivec2>(Direction dir)
 	{
 		return ivec2{ HorizontalDirection(dir), VerticalDirection(dir) };
 	}
 
 	template <>
-	inline constexpr Align value_cast<Direction, Align>(Direction dir); /// TODO
+	constexpr inline Align value_cast<Direction, Align>(Direction dir); /// TODO
 
 	enum class Direction
 	{
@@ -167,8 +167,8 @@ namespace ghassanpl
 
 	extern const DirectionProperties Directions[8];
 
-	inline constexpr EnumFlags<Direction> AllCardinalDirections = EnumFlags<Direction>{ Direction::Left, Direction::Right, Direction::Up, Direction::Down };
-	inline constexpr EnumFlags<Direction> AllDiagonalDirections = EnumFlags<Direction>{ Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
+	constexpr inline EnumFlags<Direction> AllCardinalDirections = EnumFlags<Direction>{ Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	constexpr inline EnumFlags<Direction> AllDiagonalDirections = EnumFlags<Direction>{ Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
 
 	inline const DirectionProperties& Dir(Direction d) { return Directions[int(d)]; }
 
@@ -180,24 +180,24 @@ namespace ghassanpl
 		return Direction(int(EnsurePositiveAngle(angle + DegreesToRadians(45.0 / 2.0)) / DegreesToRadians(45.0)));
 	}
 
-	inline constexpr Direction operator+(Direction dir, int d) { return (Direction)((int(dir) + d) % 8); }
-	inline constexpr Direction operator-(Direction dir, int d) { return (Direction)((int(dir) + (8 + (d % 8))) % 8); }
+	constexpr inline Direction operator+(Direction dir, int d) { return (Direction)((int(dir) + d) % 8); }
+	constexpr inline Direction operator-(Direction dir, int d) { return (Direction)((int(dir) + (8 + (d % 8))) % 8); }
 
-	inline constexpr Direction& operator++(Direction& dir) { return dir = dir + 1; }
-	inline constexpr Direction& operator--(Direction& dir) { return dir = dir + 7; }
+	constexpr inline Direction& operator++(Direction& dir) { return dir = dir + 1; }
+	constexpr inline Direction& operator--(Direction& dir) { return dir = dir + 7; }
 
-	inline constexpr Direction operator++(Direction& dir, int) { auto res = dir; ++dir; return res; }
-	inline constexpr Direction operator--(Direction& dir, int) { auto res = dir; --dir; return res; }
+	constexpr inline Direction operator++(Direction& dir, int) { auto res = dir; ++dir; return res; }
+	constexpr inline Direction operator--(Direction& dir, int) { auto res = dir; --dir; return res; }
 
-	inline constexpr Direction Opposite(Direction dir) { return dir + 4; }
-	inline constexpr Direction NextCardinal(Direction dir) { return dir + 2; }
+	constexpr inline Direction Opposite(Direction dir) { return dir + 4; }
+	constexpr inline Direction NextCardinal(Direction dir) { return dir + 2; }
 
 	namespace {
 		static constexpr const int DirectionValue[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 	}
 
-	inline constexpr int HorizontalDirection(Direction dir) { return DirectionValue[(int)dir]; }
-	inline constexpr int VerticalDirection(Direction dir) { return DirectionValue[int(dir + 6)]; }
+	constexpr inline int HorizontalDirection(Direction dir) { return DirectionValue[(int)dir]; }
+	constexpr inline int VerticalDirection(Direction dir) { return DirectionValue[int(dir + 6)]; }
 
 	/*
 	template <>
@@ -223,19 +223,19 @@ namespace ghassanpl
 	}
 
 	template <>
-	inline constexpr degrees_t value_cast<Direction, degrees_t>(Direction dir)
+	constexpr inline degrees_t value_cast<Direction, degrees_t>(Direction dir)
 	{
 		return degrees_t{ float(int(dir) * 45.0) };
 	}
 
 	template <>
-	inline constexpr ivec2 value_cast<Direction, ivec2>(Direction dir)
+	constexpr inline ivec2 value_cast<Direction, ivec2>(Direction dir)
 	{
 		return ivec2{ HorizontalDirection(dir), VerticalDirection(dir) };
 	}
 
 	template <>
-	inline constexpr Align value_cast<Direction, Align>(Direction dir); /// TODO
+	constexpr inline Align value_cast<Direction, Align>(Direction dir); /// TODO
 
 	inline Direction DirFromAngle(float radians)
 	{
@@ -308,54 +308,54 @@ namespace ghassanpl
 
 	using DirectionBitmap = enum_flags<Direction, uint8_t>;
 
-	inline constexpr Direction operator+(Direction dir, int d) { return (Direction)((int(dir) + d) % 8); }
-	inline constexpr Direction operator-(Direction dir, int d) { return (Direction)((int(dir) + (8 + (d % 8))) % 8); }
+	constexpr inline Direction operator+(Direction dir, int d) { return (Direction)((int(dir) + d) % 8); }
+	constexpr inline Direction operator-(Direction dir, int d) { return (Direction)((int(dir) + (8 + (d % 8))) % 8); }
 
-	inline constexpr Direction& operator++(Direction& dir) { return dir = dir + 1; }
-	inline constexpr Direction& operator--(Direction& dir) { return dir = dir + 7; }
+	constexpr inline Direction& operator++(Direction& dir) { return dir = dir + 1; }
+	constexpr inline Direction& operator--(Direction& dir) { return dir = dir + 7; }
 
-	inline constexpr Direction operator++(Direction& dir, int) { auto res = dir; ++dir; return res; }
-	inline constexpr Direction operator--(Direction& dir, int) { auto res = dir; --dir; return res; }
+	constexpr inline Direction operator++(Direction& dir, int) { auto res = dir; ++dir; return res; }
+	constexpr inline Direction operator--(Direction& dir, int) { auto res = dir; --dir; return res; }
 
-	inline constexpr Direction Opposite(Direction dir) { return dir + 4; }
-	inline constexpr Direction NextCardinal(Direction dir) { return dir + 2; }
-	inline constexpr Direction PrevCardinal(Direction dir) { return dir + 6; }
+	constexpr inline Direction Opposite(Direction dir) { return dir + 4; }
+	constexpr inline Direction NextCardinal(Direction dir) { return dir + 2; }
+	constexpr inline Direction PrevCardinal(Direction dir) { return dir + 6; }
 
 	namespace {
 		static constexpr const int DirectionToOffset[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 		static constexpr const int OffsetToDirection[] = { 5, 6, 7, 4, -1, 0, 3, 2, 1 };
 	}
 
-	inline constexpr int HorizontalOffset(Direction dir) { return DirectionToOffset[(int)dir]; }
-	inline constexpr int VerticalOffset(Direction dir) { return DirectionToOffset[int(dir + 6)]; }
+	constexpr inline int HorizontalOffset(Direction dir) { return DirectionToOffset[(int)dir]; }
+	constexpr inline int VerticalOffset(Direction dir) { return DirectionToOffset[int(dir + 6)]; }
 
-	inline constexpr bool IsCardinal(Direction dir) { return (int(dir) & 1) == 0; }
-	inline constexpr bool IsDiagonal(Direction dir) { return (int(dir) & 1) != 0; }
+	constexpr inline bool IsCardinal(Direction dir) { return (int(dir) & 1) == 0; }
+	constexpr inline bool IsDiagonal(Direction dir) { return (int(dir) & 1) != 0; }
 
-	//inline constexpr DirectionBitmap AllCardinalDirections = { Direction::Left, Direction::Right, Direction::Up, Direction::Down };
-	//inline constexpr DirectionBitmap AllDiagonalDirections = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
-	//inline constexpr DirectionBitmap AllDirections = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown, Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	//constexpr inline DirectionBitmap AllCardinalDirections = { Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	//constexpr inline DirectionBitmap AllDiagonalDirections = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
+	//constexpr inline DirectionBitmap AllDirections = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown, Direction::Left, Direction::Right, Direction::Up, Direction::Down };
 
-	inline constexpr Direction AllCardinalDirections[] = { Direction::Left, Direction::Right, Direction::Up, Direction::Down };
-	inline constexpr Direction AllDiagonalDirections[] = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
-	inline constexpr Direction AllDirections[] = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown, Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	constexpr inline Direction AllCardinalDirections[] = { Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	constexpr inline Direction AllDiagonalDirections[] = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
+	constexpr inline Direction AllDirections[] = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown, Direction::Left, Direction::Right, Direction::Up, Direction::Down };
 
 	inline Direction ToDirection(radians_t angle)
 	{
 		return Direction(int(glm::mod(glm::degrees(angle.Value), 360.0f) / 45.0) % 8);
 	}
 
-	inline constexpr Direction ToDirection(ivec2 vec)
+	constexpr inline Direction ToDirection(ivec2 vec)
 	{
 		return (Direction)OffsetToDirection[vec.x + vec.y * 3 + 4];
 	}
 
-	inline constexpr radians_t ToRadians(Direction dir)
+	constexpr inline radians_t ToRadians(Direction dir)
 	{
 		return radians_t{ (float)glm::radians(int(dir) * 45.0) };
 	}
 
-	inline constexpr degrees_t ToDegrees(Direction dir)
+	constexpr inline degrees_t ToDegrees(Direction dir)
 	{
 		return degrees_t{ float(int(dir) * 45.0) };
 	}
@@ -407,54 +407,54 @@ namespace ghassanpl
 
 	using DirectionBitmap = enum_flags<Direction, uint8_t>;
 
-	inline constexpr Direction operator+(Direction dir, int d) { return (Direction)((int(dir) + d) % 8); }
-	inline constexpr Direction operator-(Direction dir, int d) { return (Direction)((int(dir) + (8 + (d % 8))) % 8); }
+	constexpr inline Direction operator+(Direction dir, int d) { return (Direction)((int(dir) + d) % 8); }
+	constexpr inline Direction operator-(Direction dir, int d) { return (Direction)((int(dir) + (8 + (d % 8))) % 8); }
 
-	inline constexpr Direction& operator++(Direction& dir) { return dir = dir + 1; }
-	inline constexpr Direction& operator--(Direction& dir) { return dir = dir + 7; }
+	constexpr inline Direction& operator++(Direction& dir) { return dir = dir + 1; }
+	constexpr inline Direction& operator--(Direction& dir) { return dir = dir + 7; }
 
-	inline constexpr Direction operator++(Direction& dir, int) { auto res = dir; ++dir; return res; }
-	inline constexpr Direction operator--(Direction& dir, int) { auto res = dir; --dir; return res; }
+	constexpr inline Direction operator++(Direction& dir, int) { auto res = dir; ++dir; return res; }
+	constexpr inline Direction operator--(Direction& dir, int) { auto res = dir; --dir; return res; }
 
-	inline constexpr Direction Opposite(Direction dir) { return dir + 4; }
-	inline constexpr Direction NextCardinal(Direction dir) { return dir + 2; }
-	inline constexpr Direction PrevCardinal(Direction dir) { return dir + 6; }
+	constexpr inline Direction Opposite(Direction dir) { return dir + 4; }
+	constexpr inline Direction NextCardinal(Direction dir) { return dir + 2; }
+	constexpr inline Direction PrevCardinal(Direction dir) { return dir + 6; }
 
 	namespace {
 		static constexpr const int DirectionToOffset[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 		static constexpr const int OffsetToDirection[] = { 5, 6, 7, 4, -1, 0, 3, 2, 1 };
 	}
 
-	inline constexpr int HorizontalOffset(Direction dir) { return DirectionToOffset[(int)dir]; }
-	inline constexpr int VerticalOffset(Direction dir) { return DirectionToOffset[int(dir + 6)]; }
+	constexpr inline int HorizontalOffset(Direction dir) { return DirectionToOffset[(int)dir]; }
+	constexpr inline int VerticalOffset(Direction dir) { return DirectionToOffset[int(dir + 6)]; }
 
-	inline constexpr bool IsCardinal(Direction dir) { return (int(dir) & 1) == 0; }
-	inline constexpr bool IsDiagonal(Direction dir) { return (int(dir) & 1) != 0; }
+	constexpr inline bool IsCardinal(Direction dir) { return (int(dir) & 1) == 0; }
+	constexpr inline bool IsDiagonal(Direction dir) { return (int(dir) & 1) != 0; }
 
-	//inline constexpr DirectionBitmap AllCardinalDirections = { Direction::Left, Direction::Right, Direction::Up, Direction::Down };
-	//inline constexpr DirectionBitmap AllDiagonalDirections = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
-	//inline constexpr DirectionBitmap AllDirections = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown, Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	//constexpr inline DirectionBitmap AllCardinalDirections = { Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	//constexpr inline DirectionBitmap AllDiagonalDirections = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
+	//constexpr inline DirectionBitmap AllDirections = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown, Direction::Left, Direction::Right, Direction::Up, Direction::Down };
 
-	inline constexpr Direction AllCardinalDirections[] = { Direction::Left, Direction::Right, Direction::Up, Direction::Down };
-	inline constexpr Direction AllDiagonalDirections[] = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
-	inline constexpr Direction AllDirections[] = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown, Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	constexpr inline Direction AllCardinalDirections[] = { Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	constexpr inline Direction AllDiagonalDirections[] = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
+	constexpr inline Direction AllDirections[] = { Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown, Direction::Left, Direction::Right, Direction::Up, Direction::Down };
 
 	inline Direction ToDirection(radians_t angle)
 	{
 		return Direction(int(glm::mod(glm::degrees(angle.Value), 360.0f) / 45.0) % 8);
 	}
 
-	inline constexpr Direction ToDirection(ivec2 vec)
+	constexpr inline Direction ToDirection(ivec2 vec)
 	{
 		return (Direction)OffsetToDirection[vec.x + vec.y * 3 + 4];
 	}
 
-	inline constexpr radians_t ToRadians(Direction dir)
+	constexpr inline radians_t ToRadians(Direction dir)
 	{
 		return radians_t{ (float)glm::radians(int(dir) * 45.0) };
 	}
 
-	inline constexpr degrees_t ToDegrees(Direction dir)
+	constexpr inline degrees_t ToDegrees(Direction dir)
 	{
 		return degrees_t{ float(int(dir) * 45.0) };
 	}
@@ -510,3 +510,199 @@ namespace ghassanpl
 #endif
 
 }
+
+
+	enum class Direction
+	{
+		None = -1,
+
+		Right = 0,
+		RightDown,
+		Down,
+		LeftDown,
+		Left,
+		LeftUp,
+		Up,
+		RightUp,
+
+		East = 0,
+		SouthEast,
+		South,
+		SouthWest,
+		West,
+		NorthWest,
+		North,
+		NorthEast
+	};
+
+	/// TODO: Tests
+
+	constexpr inline Direction operator+(Direction dir, int d) { return (Direction)((int(dir) + d) % 8); }
+	constexpr inline Direction operator-(Direction dir, int d) { return (Direction)((int(dir) + (8 + (d % 8))) % 8); }
+
+	constexpr inline Direction& operator++(Direction& dir) { return dir = dir + 1; }
+	constexpr inline Direction& operator--(Direction& dir) { return dir = dir + 7; }
+
+	constexpr inline Direction operator++(Direction& dir, int) { auto res = dir; ++dir; return res; }
+	constexpr inline Direction operator--(Direction& dir, int) { auto res = dir; --dir; return res; }
+
+	constexpr inline Direction Opposite(Direction dir) { return dir + 4; }
+	constexpr inline Direction NextCardinal(Direction dir) { return dir + 2; }
+
+	namespace {
+		static constexpr const int DirectionValue[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+	}
+
+	constexpr inline int HorizontalDirection(Direction dir) { return DirectionValue[(int)dir]; }
+	constexpr inline int VerticalDirection(Direction dir) { return DirectionValue[int(dir + 6)]; }
+
+	constexpr inline bool IsCardinal(Direction dir) { return (int(dir) & 1) == 0; }
+	constexpr inline bool IsDiagonal(Direction dir) { return (int(dir) & 1) != 0; }
+
+	constexpr inline gh::EnumFlags<Direction> AllCardinalDirections = gh::EnumFlags<Direction>{ Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	constexpr inline gh::EnumFlags<Direction> AllDiagonalDirections = gh::EnumFlags<Direction>{ Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
+
+	/*
+	template <>
+	inline Direction value_cast<radians_t, Direction>(radians_t radians)
+	{
+		constexpr auto pi = 3.14159265358979323846264338327950288;
+		auto angle = pi * 2 - radians.Value;
+		angle = angle + pi / 8;
+		angle = std::fmod(angle + pi * 4, pi * 2);
+		return Direction(int(((8 * angle) / (pi * 2))));
+	}
+	*/
+	template <>
+	inline Direction value_cast<radians_t, Direction>(radians_t angle)
+	{
+		return Direction(int(glm::mod(glm::degrees(angle.Value - glm::radians(45.0 / 2.0)), 360.0) / 45.0) % 8);
+	}
+
+	template <>
+	inline radians_t value_cast<Direction, radians_t>(Direction dir)
+	{
+		return radians_t{ (float)glm::radians(int(dir) * 45.0) };
+	}
+
+	template <>
+	constexpr inline degrees_t value_cast<Direction, degrees_t>(Direction dir)
+	{
+		return degrees_t{ float(int(dir) * 45.0) };
+	}
+
+	template <>
+	constexpr inline ivec2 value_cast<Direction, ivec2>(Direction dir)
+	{
+		return ivec2{ HorizontalDirection(dir), VerticalDirection(dir) };
+	}
+
+	template <>
+	constexpr inline Align value_cast<Direction, Align>(Direction dir); /// TODO
+	
+	
+	enum class Direction
+	{
+		None = -1,
+
+		Right = 0,
+		RightDown,
+		Down,
+		LeftDown,
+		Left,
+		LeftUp,
+		Up,
+		RightUp,
+
+		East = 0,
+		SouthEast,
+		South,
+		SouthWest,
+		West,
+		NorthWest,
+		North,
+		NorthEast
+	};
+
+	struct DirectionProperties
+	{
+		vec2 Vector = {};
+		double Angle = 0;
+		int Opposite = 0;
+		int Next = 0;
+		int Previous = 0;
+		Alignment Alignment = {};
+	};
+
+	extern const DirectionProperties Directions[8];
+
+	constexpr inline EnumFlags<Direction> AllCardinalDirections = EnumFlags<Direction>{ Direction::Left, Direction::Right, Direction::Up, Direction::Down };
+	constexpr inline EnumFlags<Direction> AllDiagonalDirections = EnumFlags<Direction>{ Direction::LeftUp, Direction::RightUp, Direction::RightDown, Direction::LeftDown };
+
+	inline const DirectionProperties& Dir(Direction d) { return Directions[int(d)]; }
+
+	constexpr inline bool IsCardinal(Direction dir) { return (int(dir) & 1) == 0; }
+	constexpr inline bool IsDiagonal(Direction dir) { return (int(dir) & 1) != 0; }
+
+	inline Direction AngleToDirection(double angle)
+	{
+		return Direction(int(EnsurePositiveAngle(angle + DegreesToRadians(45.0 / 2.0)) / DegreesToRadians(45.0)));
+	}
+	
+	constexpr inline Direction operator+(Direction dir, int d) { return (Direction)((int(dir) + d) % 8); }
+	constexpr inline Direction operator-(Direction dir, int d) { return (Direction)((int(dir) + (8 + (d % 8))) % 8); }
+
+	constexpr inline Direction& operator++(Direction& dir) { return dir = dir + 1; }
+	constexpr inline Direction& operator--(Direction& dir) { return dir = dir + 7; }
+
+	constexpr inline Direction operator++(Direction& dir, int) { auto res = dir; ++dir; return res; }
+	constexpr inline Direction operator--(Direction& dir, int) { auto res = dir; --dir; return res; }
+
+	constexpr inline Direction Opposite(Direction dir) { return dir + 4; }
+	constexpr inline Direction NextCardinal(Direction dir) { return dir + 2; }
+
+	namespace {
+		static constexpr const int DirectionValue[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
+	}
+
+	constexpr inline int HorizontalDirection(Direction dir) { return DirectionValue[(int)dir]; }
+	constexpr inline int VerticalDirection(Direction dir) { return DirectionValue[int(dir + 6)]; }
+
+	/*
+	template <>
+	inline Direction value_cast<radians_t, Direction>(radians_t radians)
+	{
+		constexpr auto pi = 3.14159265358979323846264338327950288;
+		auto angle = pi * 2 - radians.Value;
+		angle = angle + pi / 8;
+		angle = std::fmod(angle + pi * 4, pi * 2);
+		return Direction(int(((8 * angle) / (pi * 2))));
+	}
+	*/
+	template <>
+	inline Direction value_cast<radians_t, Direction>(radians_t angle)
+	{
+		return Direction(int(glm::mod(glm::degrees(angle.Value - glm::radians(45.0 / 2.0)), 360.0) / 45.0) % 8);
+	}
+
+	template <>
+	inline radians_t value_cast<Direction, radians_t>(Direction dir)
+	{
+		return radians_t{ (float)glm::radians(int(dir) * 45.0) };
+	}
+
+	template <>
+	constexpr inline degrees_t value_cast<Direction, degrees_t>(Direction dir)
+	{
+		return degrees_t{ float(int(dir) * 45.0) };
+	}
+
+	template <>
+	constexpr inline ivec2 value_cast<Direction, ivec2>(Direction dir)
+	{
+		return ivec2{ HorizontalDirection(dir), VerticalDirection(dir) };
+	}
+
+	template <>
+	constexpr inline Align value_cast<Direction, Align>(Direction dir); /// TODO
+	

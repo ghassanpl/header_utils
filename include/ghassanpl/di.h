@@ -1,4 +1,4 @@
-/// This Source Code Form is subject to the terms of the Mozilla Public
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
@@ -18,10 +18,21 @@
 #include <concepts>
 #include <thread>
 
+/// \defgroup DI Dependency Injection
+/// Basic dependency injection framework
+/// 
+/// Documentation for it is in progress.
+/// 
+/// A tiny and as-simple-as-possible Dependency Injection/IoC library, based around `shared_ptr`s.
+/// 
+/// Works, but is not-documented and might contain bugs. Still, you should be able to register types, instances, factory functions, 
+/// and the construction arguments should resolve automatically, so, a basic DI container.
+/// 
+/// Supports custom instance lifetimes (strong and weak singletons, per-thread singleton, multiple-instances), naming interfaces/instances, instance creation callbacks, and probably other stuff.
 namespace ghassanpl::di
 {
 	template <typename T, typename... OTHERS>
-	inline constexpr bool is_same_as_any_v = std::disjunction_v<std::is_same<std::decay_t<OTHERS>, std::decay_t<T>>...>;
+	constexpr inline bool is_same_as_any_v = std::disjunction_v<std::is_same<std::decay_t<OTHERS>, std::decay_t<T>>...>;
 
 	enum class Lifetime
 	{
@@ -32,7 +43,7 @@ namespace ghassanpl::di
 		ThreadSingleton,
 	};
 
-	inline constexpr struct DefaultImplementationStruct {} DefaultImplementation;
+	constexpr inline struct DefaultImplementationStruct {} DefaultImplementation;
 
 	/*
 	namespace constraints
@@ -126,8 +137,8 @@ namespace ghassanpl::di
 
 		void ReportAwaitingCreations()
 		{
-			auto creations = std::move(mCreationsToReport); /// move away because callbacks may create more objects to report about
-			for (auto&& [ptr, callback] : std::move(creations))
+			auto creations = std::exchange(mCreationsToReport, {}); /// move away because callbacks may create more objects to report about
+			for (auto&& [ptr, callback] : creations)
 				callback(*this, std::move(ptr));
 		}
 

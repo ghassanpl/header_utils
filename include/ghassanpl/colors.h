@@ -1,24 +1,38 @@
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #include <glm/vec4.hpp>
 #include "named.h"
 
 namespace ghassanpl
 {
-	//using color_rgba_t = named_t<glm::vec4, "color_rgba">;
+	/// \defgroup Colors
+	/// Colors and things
+
+	/// \ingroup Colors
+	///@{
+
+	/// Represents a color in RGBA color space, with 0.0-1.0 float elements
 	using color_rgba_t = glm::vec4;
+	/// Represents a color in HSVA color space, with 0.0-1.0 float elements
 	using color_hsva_t = named<glm::vec4, "color_hsva">;
+	/// Default `color_t` type is RGBA
 	using color_t = color_rgba_t;
 
+	/// Contains the basic colors as variables and functions
+	/// \ingroup Colors
 	namespace colors
 	{
 #define DEF_COLOR(name, r, g, b) \
-	inline constexpr color_t get_##name(float alpha) { return color_t{ float(r), float(g), float(b), alpha }; } \
-	inline constexpr color_t name = get_##name(1.0f); 
+	constexpr inline color_t get_##name(float alpha) { return color_t{ float(r), float(g), float(b), alpha }; } \
+	constexpr inline color_t name = get_##name(1.0f); 
 #define DEF_COLORS(name, r, g, b) \
 	DEF_COLOR(name, r, g, b) \
-	inline constexpr color_t get_dark_##name(float alpha) { return color_t{ float(r) * 0.5f, float(g) * 0.5f, float(b) * 0.5f, alpha }; } \
-	inline constexpr color_t dark_##name = get_dark_##name(1.0f); \
-	inline constexpr color_t get_light_##name(float alpha) { return color_t{ r + float(1.0f-r) * 0.5f, g + float(1.0f-g) * 0.5f, b + float(1.0f-b) * 0.5f, alpha }; } \
-	inline constexpr color_t light_##name = get_light_##name(1.0f);
+	constexpr inline color_t get_dark_##name(float alpha) { return color_t{ float(r) * 0.5f, float(g) * 0.5f, float(b) * 0.5f, alpha }; } \
+	constexpr inline color_t dark_##name = get_dark_##name(1.0f); \
+	constexpr inline color_t get_light_##name(float alpha) { return color_t{ r + float(1.0f-r) * 0.5f, g + float(1.0f-g) * 0.5f, b + float(1.0f-b) * 0.5f, alpha }; } \
+	constexpr inline color_t light_##name = get_light_##name(1.0f);
 
 		DEF_COLORS(red, 1, 0, 0)
 		DEF_COLORS(green, 0, 1, 0)
@@ -31,17 +45,19 @@ namespace ghassanpl
 		
 		DEF_COLOR(black, 0, 0, 0)
 		DEF_COLOR(white, 1, 1, 1)
-		inline constexpr color_t transparent = get_black(0.0f);
+		constexpr inline color_t transparent = get_black(0.0f);
 
 		#undef DEF_COLOR
 		#undef DEF_COLORS
 	}
 
+	/// Returns a color with all elements clamped between 0 and 1
 	constexpr inline color_t saturated(color_t const& color)
 	{
 		return glm::clamp(color_t(color.r, color.g, color.b, color.a), color_t{ 0,0,0,0 }, color_t{ 1,1,1,1 });
 	}
 
+	/// Returns a color lightened by a coefficient
 	constexpr inline color_t lighten(color_t const& color, float coef)
 	{
 		const auto rgb_max = glm::max(color.r, glm::max(color.g, color.b));
@@ -50,14 +66,19 @@ namespace ghassanpl
 		return saturated(color_t(lighter.r + dif * coef, lighter.g + dif * coef, lighter.b + dif * coef, 1.0f) * rgb_max);
 	}
 
-	/// NOTE: `contrast` here is between 0.0 and 1.0
+	/// Returns a color with its contrast changed
+	/// \note `contrast` here is between 0.0 and 1.0
+	/// \sa contrast2
 	constexpr inline color_t contrast(color_t const& color, float contrast)
 	{
 		const auto t = (1.0f - contrast) * 0.5f;
 		return color_t(color.r*contrast + t, color.g*contrast + t, color.b*contrast + t, color.a);
 	}
 
-	/// NOTE: `contrast` here is between -1.0 and 1.0
+	/// Returns a color with its contrast changed
+	/// This uses a differen algorithm and `contrast` value than \ref contrast.
+	/// \note `contrast` here is between -1.0 and 1.0
+	/// \sa contrast
 	constexpr inline color_t contrast2(color_t const& color, float contrast)
 	{
 		constexpr double m = 1.0156862745098039215686274509804;
@@ -65,17 +86,20 @@ namespace ghassanpl
 		return color_t(t * (color.r - 0.5f) + 0.5f, t * (color.g - 0.5f) + 0.5f, t * (color.b - 0.5f) + 0.5f, color.a);
 	}
 
+	/// Returns a gamma corrected color
 	constexpr inline color_t gamma_correct(color_t const& color, const float gamma)
 	{
 		const auto gamma_correct = 1.0f / gamma;
 		return { std::pow(color.r, gamma_correct), std::pow(color.g, gamma_correct),std::pow(color.b, gamma_correct), color.a };
 	}
 
+	/// Returns an inverted color, i.e. with (1.0-x) on all of its elements, excluding its alpha
 	constexpr inline color_t inverted(color_t const& color)
 	{
 		return color_t(1.0f - color.r, 1.0f - color.g, 1.0f - color.b, color.a);
 	}
 
+	/// Returns a color that's a good contrasting color for the original
 	constexpr inline color_t contrasting(color_t const& color)
 	{
 		return color_t(fmod(color.r + 0.5f, 1.0f), fmod(color.g + 0.5f, 1.0f), fmod(color.b + 0.5f, 1.0f), color.a);
@@ -85,24 +109,37 @@ namespace ghassanpl
 	{
 		constexpr inline float byte_to_float(uint32_t byte) { return (byte & 0xFF) / 255.0f; } 
 
-		template <typename T> constexpr inline const T& min3(const T& x, const T& y, const T& z) { return ((y) <= (z) ? ((x) <= (y) ? (x) : (y)) : ((x) <= (z) ? (x) : (z))); }
-		template <typename T> constexpr inline const T& max3(const T& x, const T& y, const T& z) { return ((y) >= (z) ? ((x) >= (y) ? (x) : (y)) : ((x) >= (z) ? (x) : (z))); }
+		template <typename T> constexpr const T& min3(const T& x, const T& y, const T& z) { return ((y) <= (z) ? ((x) <= (y) ? (x) : (y)) : ((x) <= (z) ? (x) : (z))); }
+		template <typename T> constexpr const T& max3(const T& x, const T& y, const T& z) { return ((y) >= (z) ? ((x) >= (y) ? (x) : (y)) : ((x) >= (z) ? (x) : (z))); }
 	}
 
+	/// Gets a color from an RGB 8bpp integer, with R being most significant
 	constexpr inline color_t from_u32_rgb(uint32_t rgb) { return color_t(detail::byte_to_float(rgb >> 16), detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb), 1.0f); }
+	/// Gets a color from an BGR 8bpp integer, with R being least significant
 	constexpr inline color_t from_u32_bgr(uint32_t rgb) { return color_t(detail::byte_to_float(rgb), detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb >> 16), 1.0f); }
+	/// Gets a color from an RGBA 8bpp integer, with R being most significant
 	constexpr inline color_t from_u32_rgba(uint32_t rgb) { return color_t(detail::byte_to_float(rgb >> 24), detail::byte_to_float(rgb >> 16), detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb)); }
+	/// Gets a color from an BGRA 8bpp integer, with A being least significant, and B being most significant
 	constexpr inline color_t from_u32_bgra(uint32_t rgb) { return color_t(detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb >> 16), detail::byte_to_float(rgb >> 24), detail::byte_to_float(rgb)); }
+	/// Gets a color from an ARGB 8bpp integer, with A being most significant, and B being least significant
 	constexpr inline color_t from_u32_argb(uint32_t rgb) { return color_t(detail::byte_to_float(rgb >> 16), detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb), detail::byte_to_float(rgb >> 24)); }
+	/// Gets a color from an ABGR 8bpp integer, with A being most significant, and R being least significant
 	constexpr inline color_t from_u32_abgr(uint32_t rgb) { return color_t(detail::byte_to_float(rgb), detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb >> 16), detail::byte_to_float(rgb >> 24)); }
 
+	/// Creates an 8bpp ARGB integer from a color
 	constexpr inline uint32_t to_u32_argb(color_t const& rgba) { return uint32_t(rgba.a * 255.0f) << 24 | uint32_t(rgba.r * 255.0f) << 16 | uint32_t(rgba.g * 255.0f) << 8 | uint32_t(rgba.b * 255.0f); }
+	/// Creates an 8bpp ABGR integer from a color
 	constexpr inline uint32_t to_u32_abgr(color_t const& rgba) { return uint32_t(rgba.a * 255.0f) << 24 | uint32_t(rgba.b * 255.0f) << 16 | uint32_t(rgba.g * 255.0f) << 8 | uint32_t(rgba.r * 255.0f); }
+	/// Creates an 8bpp RGBA integer from a color
 	constexpr inline uint32_t to_u32_rgba(color_t const& rgba) { return uint32_t(rgba.r * 255.0f) << 24 | uint32_t(rgba.g * 255.0f) << 16 | uint32_t(rgba.b * 255.0f) << 8 | uint32_t(rgba.a * 255.0f); }
+	/// Creates an 8bpp BGRA integer from a color
 	constexpr inline uint32_t to_u32_bgra(color_t const& rgba) { return uint32_t(rgba.b * 255.0f) << 24 | uint32_t(rgba.g * 255.0f) << 16 | uint32_t(rgba.r * 255.0f) << 8 | uint32_t(rgba.a * 255.0f); }
+	/// Creates a 32 bit, 8bpp RGB integer from a color, with the most significant 8 bits set to 0
 	constexpr inline uint32_t to_u32_rgb(color_t const& rgba) { return uint32_t(rgba.r * 255.0f) << 16 | uint32_t(rgba.g * 255.0f) << 8 | uint32_t(rgba.b * 255.0f); }
+	/// Creates a 32 bit, 8bpp BGR integer from a color, with the most significant 8 bits set to 0
 	constexpr inline uint32_t to_u32_bgr(color_t const& rgba) { return uint32_t(rgba.b * 255.0f) << 16 | uint32_t(rgba.g * 255.0f) << 8 | uint32_t(rgba.r * 255.0f); }
 
+	/// Converts a HSVA color to RGBA space
 	constexpr inline color_t to_rgb(color_hsva_t const& hsva)
 	{
 		auto hue = hsva->r, saturation = hsva->g, value = hsva->b, alpha = hsva->a;
@@ -124,6 +161,7 @@ namespace ghassanpl
 		}
 	}
 
+	/// Converts an RGBA color to HSVA space
 	constexpr inline color_hsva_t to_hsv(color_t const& rgba)
 	{
 		auto min = detail::min3(rgba.r, rgba.g, rgba.b);
@@ -146,12 +184,47 @@ namespace ghassanpl
 		}
 
 		return color_hsva_t{
-			h,
-			(max != 0) ? (delta / max) : 0,
-			max,
-			rgba.a
+			{
+				h,
+				(max != 0) ? (delta / max) : 0,
+				max,
+				rgba.a
+			}
 		};
 	}
+
+	/// Converts a HTML color string (like #FBA or fafafa) to an RGBA color
+	inline constexpr color_rgba_t operator ""_rgb(const char* str, size_t n)
+	{
+		if (n == 0)
+			throw n;
+		if (str[0] == '#')
+		{
+			str++;
+			n--;
+		}
+		uint8_t r{}, g{}, b{}, a = 255;
+		switch (n)
+		{
+		case 4:
+			std::from_chars(str + 3, str + 4, a, 16); a = a << 4 | a;
+		case 3:
+			std::from_chars(str + 0, str + 1, r, 16); r = r << 4 | r;
+			std::from_chars(str + 1, str + 2, g, 16); g = g << 4 | g;
+			std::from_chars(str + 2, str + 3, b, 16); b = b << 4 | b;
+			break;
+		case 8:
+			std::from_chars(str + 6, str + 8, a, 16);
+		case 6:
+			std::from_chars(str + 0, str + 2, r, 16);
+			std::from_chars(str + 2, str + 4, g, 16);
+			std::from_chars(str + 4, str + 6, b, 16);
+			break;
+		default: throw "invalid number of characters";
+		}
+		return { r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f };
+	}
+	///@}
 
 #if 0
 

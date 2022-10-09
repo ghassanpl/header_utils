@@ -1,3 +1,7 @@
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #include <string_view>
@@ -9,7 +13,7 @@
 #include <algorithm>
 #include <iterator>
 
-#include "../string_ops.h"
+#include "../unicode.h"
 #include "common.h"
 
 namespace ghassanpl
@@ -19,36 +23,31 @@ namespace ghassanpl
 
 	enum class windows_message_box_event;
 
-	/// Basic API
+	/// \addtogroup Windows
+	
+	/// \addtogroup msg Message Box
+	/// Functions to display advanced message boxes
+	/// \ingroup Windows
+	///@{
 
-	/// Enum: windows_message_box_icon
 	/// Type of icon in the message box. If not given, `Information` will be used by default.
-	/// 
-	/// Warning - An exclamation-point icon
-	/// Error - A stop-sign icon
-	/// Information - An icon consisting of a lowercase letter i in a circle
-	/// Security - A shield icon
 	enum class windows_message_box_icon
 	{
-		Warning = -1,
-		Error = -2,
-		Information = -3,
-		Security = -4
+		Warning = -1, ///< An exclamation-point icon
+		Error = -2, ///< A stop-sign icon
+		Information = -3, ///< An icon consisting of a lowercase letter i in a circle
+		Security = -4 ///< A shield icon
 	};
 
-	/// Struct: windows_message_box_result
 	/// Holds the results of the windows_message_box invocation
 	struct windows_message_box_result
 	{
-		/// Field: Failed
 		/// Will be true if the message box was closed via the "X" button or failed to appear (perhaps due to argument errors)
 		bool Failed = false;
 
-		/// Field: ClickedButton
 		/// The number of the button that was clicked
 		size_t ClickedButton = 0;
 
-		/// Field: CheckboxValue
 		/// Whether or not the checkbox was checked
 		bool CheckboxValue = false;
 
@@ -56,6 +55,7 @@ namespace ghassanpl
 		operator size_t() const noexcept { return Failed ? -1 : ClickedButton; }
 	};
 
+	/// Helper functions and parameters
 	namespace msg
 	{
 		/// Title of the message box window. This is "Message" by default.
@@ -65,54 +65,57 @@ namespace ghassanpl
 		struct description { std::string_view str; };
 
 		/// The longer description of the message (the smaller text of the message box).
+		/// 
 		/// This text can contain hyperlinks (`<A HREF="">asd</A>`) which will trigger the callback function, if given.
 		struct long_description { std::string_view str; };
 
 		/// If a non-empty checkbox_text is given, a checkbox will be present in the message box. The message box result will specify whether or not it was checked.
+		/// 
 		/// The callback, if present, will also be called when the checkbox state changes.
 		struct checkbox_text { std::string_view str; };
 
 		/// If a non-empty additional_info is given, a collapsible sub-section will be present in the message box, containg the text given in the additional info.
+		/// 
 		/// This text can contain hyperlinks (`<A HREF="">asd</A>`) which will trigger the callback function, if given.
 		struct additional_info { std::string_view str; };
 
 		/// If given, the button with this name will be selected by default
 		struct default_button { std::string_view str; };
 
-		/// If given, the message box will be modal to this window. Must be intitalized with a value of type <c>static_cast&lt;void*&gt;(HWND)</c>.
-		struct window_handle { void* handle; };
+		/// If given, the message box will be modal to this window
+		struct window_handle { win::HWND handle; };
 
-		static inline constexpr std::string_view ok_button[] = { "OK" };
-		static inline constexpr std::string_view yes_no_buttons[] = { "Yes", "No" };
-		static inline constexpr std::string_view yes_no_cancel_buttons[] = { "Yes", "No", "Cancel" };
-		static inline constexpr std::string_view abort_retry_ignore_buttons[] = { "Abort", "Retry", "Ignore" };
-		static inline constexpr std::string_view debug_abort_continue_buttons[] = { "Debug", "Abort", "Continue" };
+		/// List of buttons: just OK
+		static constexpr inline std::string_view ok_button[] = { "OK" };
+		/// List of buttons: Yes, No
+		static constexpr inline std::string_view yes_no_buttons[] = { "Yes", "No" };
+		/// List of buttons: Yes, No, Cancel
+		static constexpr inline std::string_view yes_no_cancel_buttons[] = { "Yes", "No", "Cancel" };
+		/// List of buttons: Abort, Retry, Ignore
+		static constexpr inline std::string_view abort_retry_ignore_buttons[] = { "Abort", "Retry", "Ignore" };
+		/// List of buttons: Debug, Abort, Continue
+		static constexpr inline std::string_view debug_abort_continue_buttons[] = { "Debug", "Abort", "Continue" };
 	}
 
-	/// Function: windows_message_box
-	/// The primary internal workhorse function. Using the variadic version instead of this is preferable.
+	/// The primary internal workhorse function; using the variadic version instead of this is preferable.
 	/// 
-	/// Parameters:
-	///		param - Structure holding the parameters of the message box
-	/// Returns:
-	///		The result of the user interacting with the message box
+	/// \param param Structure holding the parameters of the message box
+	/// \returns The result of the user interacting with the message box
 	windows_message_box_result windows_message_box(windows_message_box_params const& param);
 
-	/// Function: windows_message_box
 	/// Primary function to display the message box
 	/// 
-	/// Parameters:
-	///		title - Title of the message box window
-	///		description - The primary instruction to the user (the main header of the message box)
-	///		args - Additional parameters to tweak the message box behavior. They can be:
-	/// 
-	/// - one of the types in namespace msg
-	/// - a <windows_message_box_icon> (::Warning, ::Error, ::Information or ::Security) specifying the type of icon to display. This is ::Information by default
-	/// - a range convertible to a range of string_views - these will be used as the names of the buttons to display in the message box. The default is a single "OK" button
+	///	\param title Title of the message box window
+	///	\param description The primary instruction to the user (the main header of the message box)
+	///	\param args Additional parameters to tweak the message box behavior. They can be:
+	/// - one of the types in namespace \ref ghassanpl::msg
+	/// - a \ref windows_message_box_icon (`::Warning, ::Error, ::Information` or `::Security`) specifying the type of icon to display. This is `::Information` by default
+	/// - a range convertible to a range of `string_view`s - these will be used as the names of the buttons to display in the message box. The default is a single "OK" button
 	/// - a size_t 0-based number of the button that should be highlighted by default. If not given, the 0th button is highlighted
-	/// - a function of signature `bool(<windows_message_box_event>, uintptr_t, uintptr_t)` that will be used as a callback, and called when different events occur during the user interaction. See `windows_message_box_event` for more info
-	/// Returns:
-	///		The result of the user interacting with the message box. See <windows_message_box_result> for more info.
+	/// - a function of signature `bool(` \ref windows_message_box_event `, uintptr_t, uintptr_t)` that will be used as a callback, and called when different events occur during the user interaction.
+	/// \returns The result of the user interacting with the message box. 
+	/// \sa windows_message_box_result
+	/// \sa windows_message_box_event 
 	template <typename... ARGS>
 	windows_message_box_result windows_message_box(std::string_view title, std::string_view description, ARGS&&... args)
 	{
@@ -121,6 +124,8 @@ namespace ghassanpl
 
 	namespace msg
 	{
+		/// Helper to create a confirm box, with "Are you sure?" as text, and Yes and No buttons
+		/// \returns true if Yes button was pressed
 		template <typename... ARGS>
 		bool confirm(std::string_view description, ARGS&&... args)
 		{
@@ -128,6 +133,9 @@ namespace ghassanpl
 			return result && result == 0;
 		}
 
+		/// A helper function for \ref Assuming macros.
+		/// 
+		/// Will take all the arguments of the \ref ghassanpl::ReportAssumptionFailure function, as well as additional ones that will be forwarded to \ref windows_message_box
 		template <typename... ARGS>
 		auto assumption_failure(std::string_view expectation, std::span<std::pair<std::string_view, std::string> const> values, std::string data, std::source_location loc, ARGS&&... args)
 		{
@@ -149,19 +157,18 @@ namespace ghassanpl
 		}
 	}
 
-	/// Class: windows_message_box_event
+	/// Type of event that caused the callback to be called
 	enum class windows_message_box_event
 	{
-		DialogCreated = 0,
-		ButtonClicked = 2, /// param1 = (int)button id
-		LinkClicked = 3, /// param1 = (const wchar_t*)href
-		DialogDestroyed = 5,
-		CheckboxClicked = 8, /// param2 = (bool)checked
-		HelpRequested = 9,
+		DialogCreated = 0, ///< The dialog box has been created
+		ButtonClicked = 2, ///< A button on the message box was clicked. `param1` holds the button id as `int`
+		LinkClicked = 3, ///< A link in the message box text was clicked. `param1` holds the URL given, as a `const wchar_t*`
+		DialogDestroyed = 5, ///< The dialog box has been destroyed
+		CheckboxClicked = 8, ///< The checkbox in the message box was clicked. `param2` holds the value of the checkbox, as `bool`
+		HelpRequested = 9, ///< A help button/link was clicked
 	};
 
-	/// Struct: windows_message_box_params
-	/// Holds all the parameters for the message box. Prefer to use the variadic version of <windows_message_box>
+	/// Holds all the parameters for the message box. Prefer to use the variadic version of \ref windows_message_box to using this struct
 	struct windows_message_box_params
 	{
 		std::string_view title = "Message";
@@ -211,6 +218,7 @@ namespace ghassanpl
 		void Set(msg::window_handle param) { window_handle = param.handle; }
 	};
 
+	///@}
 }
 
 #if 1

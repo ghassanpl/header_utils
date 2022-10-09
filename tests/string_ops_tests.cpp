@@ -3,7 +3,10 @@
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "../include/ghassanpl/string_ops.h"
+#include "../include/ghassanpl/unicode.h"
+#include "../include/ghassanpl/ranges.h"
 
+#include <array>
 #include <gtest/gtest.h>
 #undef isascii
 
@@ -58,11 +61,11 @@ TEST(string_ops_test, ascii_functions_are_correct)
 	const char digits[] = "0123456789ABCDEF";
 	for (int i = 0; i < 16; i++)
 	{
-		EXPECT_EQ(digits[i], ascii::number_to_xdigit(i));
+		EXPECT_EQ(digits[i], (uint32_t)ascii::number_to_xdigit(i));
 		EXPECT_EQ(ascii::xdigit_to_number(ascii::number_to_xdigit(i)), i);
 		if (i < 10)
 		{
-			EXPECT_EQ(digits[i], ascii::number_to_digit(i));
+			EXPECT_EQ(digits[i], (uint32_t)ascii::number_to_digit(i));
 			EXPECT_EQ(ascii::digit_to_number(ascii::number_to_digit(i)), i);
 		}
 	}
@@ -90,7 +93,7 @@ TEST(string_ops_test, ascii_functions_are_correct)
 	EXPECT_TRUE(ascii::strings_equal_ignore_case(longer_str, longer_upper));
 	EXPECT_TRUE(ascii::strings_equal_ignore_case(longer_lower, longer_upper));
 
-	/// TODO: string_starts_with_ignore_case, string_find_ignore_case, string_contains_ignore_case
+	/// TODO: string_starts_with_ignore_case, string_find_ignore_case, string_find_last_ignore_case, string_contains_ignore_case
 
 	EXPECT_TRUE(ascii::lexicographical_compare_ignore_case("a", "b"));
 	EXPECT_FALSE(ascii::lexicographical_compare_ignore_case("a", "A"));
@@ -147,7 +150,7 @@ public:
 	T zero_value = '\0';
 	T a_value = 'a';
 	narrow_type<T, 'long'> long_value = 'long';
-	narrow_type<T, U'ą'> utf_value = U'ą';
+	narrow_type<T, 'ą'> utf_value = 'ą';
 };
 
 using CharTypes = ::testing::Types<char, signed char, unsigned char, wchar_t, char8_t, char16_t, char32_t>;
@@ -269,4 +272,155 @@ TEST(string_ops_test, utf8_to_16_converting_works)
 
 	EXPECT_TRUE(to_utf8<std::u8string>(utf16) == utf8);
 	EXPECT_TRUE(to_utf16<std::u16string>(utf8) == utf16);
+}
+
+
+TEST(string_ops_test, split_functions_are_correct)
+{
+	EXPECT_EQ(split("hello world ", ' '), (std::vector<std::string_view>{"hello"sv, "world"sv, ""sv}));
+	EXPECT_EQ(split("hello world ", "ll"), (std::vector<std::string_view>{"he"sv, "o world "sv}));
+	EXPECT_EQ(split("", ' '), (std::vector<std::string_view>{""}));
+	EXPECT_EQ(split("asd", ' '), (std::vector<std::string_view>{"asd"}));
+	//EXPECT_EQ(ghassanpl::to<std::vector<std::string_view>>(std::ranges::split_view(std::string_view{ "hello world " }, ' ')), (std::vector<std::string_view>{"hello"sv, "world"sv, ""sv}));
+
+	EXPECT_EQ(split_on_any("hello world ", "od"), (std::vector<std::string_view>{"hell"sv, " w"sv, "rl"sv, " "sv}));
+	EXPECT_EQ(split_on_any("hello world ", ""), (std::vector<std::string_view>{}));
+	EXPECT_EQ(split_on_any("", " "), (std::vector<std::string_view>{""}));
+	EXPECT_EQ(split_on_any("asd", " "), (std::vector<std::string_view>{"asd"}));
+
+	/// TODO: split_on, natural_split
+}
+
+TEST(string_ops_test, join_functions_are_correct)
+{
+}
+
+TEST(string_ops_test, transcode)
+{
+	static const std::array<char32_t, 128> win1250 = {
+		U'€',	U' ', 	U'‚', 	U' ', 	U'„', 	U'…', 	U'†', 	U'‡', 	U' ', 	U'‰', 	U'Š', 	U'‹', 	U'Ś', 	U'Ť', 	U'Ž', 	U'Ź',
+		U' ',	U'‘', 	U'’', 	U'“', 	U'”', 	U'•', 	U'–', 	U'—', 	U' ', 	U'™', 	U'š', 	U'›', 	U'ś', 	U'ť', 	U'ž', 	U'ź',
+		0xA0,	U'ˇ', 	U'˘', 	U'Ł', 	U'¤', 	U'Ą', 	U'¦', 	U'§', 	U'¨', 	U'©', 	U'Ş', 	U'«', 	U'¬', 	U'-', 	U'®', 	U'Ż',
+		U'°', 	U'±', 	U'˛', 	U'ł', 	U'´', 	U'µ', 	U'¶', 	U'·', 	U'¸', 	U'ą', 	U'ş', 	U'»', 	U'Ľ', 	U'˝', 	U'ľ', 	U'ż',
+		U'Ŕ', 	U'Á', 	U'Â', 	U'Ă', 	U'Ä', 	U'Ĺ', 	U'Ć', 	U'Ç', 	U'Č', 	U'É', 	U'Ę', 	U'Ë', 	U'Ě', 	U'Í', 	U'Î', 	U'Ď',
+		U'Đ', 	U'Ń', 	U'Ň', 	U'Ó', 	U'Ô', 	U'Ő', 	U'Ö', 	U'×', 	U'Ř', 	U'Ů', 	U'Ú', 	U'Ű', 	U'Ü', 	U'Ý', 	U'Ţ', 	U'ß',
+		U'ŕ', 	U'á', 	U'â', 	U'ă', 	U'ä', 	U'ĺ', 	U'ć', 	U'ç', 	U'č', 	U'é', 	U'ę', 	U'ë', 	U'ě', 	U'í', 	U'î', 	U'ď',
+		U'đ', 	U'ń', 	U'ň', 	U'ó', 	U'ô', 	U'ő', 	U'ö', 	U'÷', 	U'ř', 	U'ů', 	U'ú', 	U'ű', 	U'ü', 	U'ý', 	U'ţ', 	U'˙',
+	};
+
+	using namespace std::string_literals;
+
+	const std::string str { (char)0x5A, (char)0x41, (char)0xAF, (char)0xD3, (char)0xA3, (char)0xC6, (char)0x20, (char)0x47, (char)0xCA, (char)0x8C, 
+		(char)0x4C, (char)0xA5, (char)0x20, (char)0x4A, (char)0x41, (char)0x8F, (char)0xD1 };
+
+	EXPECT_EQ(transcode_codepage_to_utf8<std::string>(str, win1250), to_string(u8"ZAŻÓŁĆ GĘŚLĄ JAŹŃ"));
+}
+
+
+TEST(string_ops_test, consume_bom_and_detect_encoding)
+{
+	{
+		std::string_view str = "hello";
+		auto [encoding, endianness] = consume_bom(str);
+		EXPECT_EQ(encoding, base_text_encoding::unknown);
+		EXPECT_EQ(endianness, std::endian::native);
+		EXPECT_EQ(str, "hello"sv);
+	}
+
+	{
+		std::string_view str = "\xEF\xBB\xBFhello";
+		auto [encoding, endianness] = consume_bom(str);
+		EXPECT_EQ(encoding, base_text_encoding::utf8);
+		EXPECT_EQ(endianness, std::endian::native);
+		EXPECT_EQ(str, "hello"sv);
+	}
+
+	{
+		static_assert(sizeof(char16_t) == 2);
+
+		const char16_t bom = 0xFEFF;
+		std::string hello;
+		hello += std::string{ reinterpret_cast<char const*>(&bom), sizeof(bom) };
+		hello += std::string{ reinterpret_cast<char const*>(u"hello"), sizeof(u"hello") - sizeof(u"")};
+
+		std::string_view str = hello;
+		auto [encoding, endianness] = consume_bom(str);
+		EXPECT_EQ(encoding, base_text_encoding::utf16);
+		EXPECT_EQ(endianness, std::endian::native);
+
+		auto detected_encoding = detect_encoding(str);
+		EXPECT_EQ(detected_encoding.base_encoding, base_text_encoding::utf16);
+		EXPECT_EQ(detected_encoding.endianness, std::endian::native);
+	}
+
+	{
+		static_assert(sizeof(char32_t) == 4);
+
+		const char32_t bom = 0xFEFF;
+		std::string hello;
+		hello += std::string{ reinterpret_cast<char const*>(&bom), sizeof(bom) };
+		hello += std::string{ reinterpret_cast<char const*>(U"hello"), sizeof(U"hello") - sizeof(U"") };
+
+		std::string_view str = hello;
+		auto bom_encoding = consume_bom(str);
+		EXPECT_EQ(bom_encoding.base_encoding, base_text_encoding::utf32);
+		EXPECT_EQ(bom_encoding.endianness, std::endian::native);
+
+		auto detected_encoding = detect_encoding(str);
+		EXPECT_EQ(detected_encoding.base_encoding, base_text_encoding::utf32);
+		EXPECT_EQ(detected_encoding.endianness, std::endian::native);
+		//EXPECT_EQ(str, "hello"sv);
+	}
+
+	/// not native endianness
+	{
+		static_assert(sizeof(char16_t) == 2);
+
+		const char16_t bom = std::byteswap(char16_t(0xFEFF));
+		std::string hello;
+		hello += std::string{ reinterpret_cast<char const*>(&bom), sizeof(bom) };
+		hello += '\0';
+		hello += std::string{ reinterpret_cast<char const*>(u"hello"), sizeof(u"hello") - sizeof(u"") };
+		hello.pop_back();
+
+		std::string_view str = hello;
+		auto [encoding, endianness] = consume_bom(str);
+		EXPECT_EQ(encoding, base_text_encoding::utf16);
+		EXPECT_EQ(endianness, std::endian(!(int)std::endian::native));
+
+		auto detected_encoding = detect_encoding(str);
+		EXPECT_EQ(detected_encoding.base_encoding, base_text_encoding::utf16);
+		EXPECT_EQ(detected_encoding.endianness, std::endian(!(int)std::endian::native));
+	}
+
+	{
+		static_assert(sizeof(char32_t) == 4);
+
+		const char32_t bom = std::byteswap(char32_t(0xFEFF));
+		std::string hello;
+		hello += std::string{ reinterpret_cast<char const*>(&bom), sizeof(bom) };
+		hello += '\0';
+		hello += '\0';
+		hello += '\0';
+		hello += std::string{ reinterpret_cast<char const*>(U"hello"), sizeof(U"hello") - sizeof(U"") };
+		hello.pop_back();
+		hello.pop_back();
+		hello.pop_back();
+
+		std::string_view str = hello;
+		auto bom_encoding = consume_bom(str);
+		EXPECT_EQ(bom_encoding.base_encoding, base_text_encoding::utf32);
+		EXPECT_EQ(bom_encoding.endianness, std::endian(!(int)std::endian::native));
+
+		auto detected_encoding = detect_encoding(str);
+		EXPECT_EQ(detected_encoding.base_encoding, base_text_encoding::utf32);
+		EXPECT_EQ(detected_encoding.endianness, std::endian(!(int)std::endian::native));
+		//EXPECT_EQ(str, "hello"sv);
+	}
+
+	{
+		auto [encoding, endianness] = detect_encoding("hello world");
+		EXPECT_EQ(encoding, base_text_encoding::utf8);
+		EXPECT_EQ(endianness, std::endian::native);
+	}
 }

@@ -1,4 +1,4 @@
-/// This Source Code Form is subject to the terms of the Mozilla Public
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
@@ -6,6 +6,9 @@
 
 //#include <utility>
 #include <tuple>
+#include <variant>
+#include <optional>
+#include <any>
 
 #if !defined(__cpp_concepts)
 #error "This library requires concepts"
@@ -14,8 +17,8 @@
 /// Concepts
 namespace ghassanpl
 {
-	template <class _Ty, class... _Types>
-	inline constexpr bool is_any_of_v = std::disjunction_v<std::is_same<_Ty, _Types>...>;
+	template <class T, class... TYPES>
+	constexpr inline bool is_any_of_v = std::disjunction_v<std::is_same<T, TYPES>...>;
 }
 
 /// Manipulators
@@ -67,6 +70,202 @@ namespace ghassanpl
 	/// Calls `f` with a slice of the `args` pack. The slice will start at `Begin`, and increment by 1 argument.
 	template <size_t Begin, double&..., typename FUNC, typename... ARGS>
 	constexpr auto apply_to_slice(FUNC&& f, ARGS&&... args);
+
+
+	/// Shamelessly stolen from hsutter's cppfront
+	template< typename C, typename X >
+	auto is(X const&) -> bool {
+		return false;
+	}
+
+	template< typename C, typename X >
+	requires std::is_same_v<C, X>
+	auto is(X const&) -> bool {
+		return true;
+	}
+
+	template< typename C, typename X >
+	requires (std::is_base_of_v<C, X> && !std::is_same_v<C, X>)
+	auto is(X const&) -> bool {
+		return true;
+	}
+
+	template< typename C, typename X >
+	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
+	auto is(X const& x) -> bool {
+		return dynamic_cast<C const*>(&x) != nullptr;
+	}
+
+	template< typename C, typename X >
+	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
+	auto is(X const* x) -> bool {
+		return dynamic_cast<C const&>(x) != nullptr;
+	}
+
+	template< typename C, typename X >
+	requires (requires (X x) { *x; X(); }&& std::is_same_v<C, void>)
+	auto is(X const& x) -> bool
+	{
+		return x == X();
+	}
+
+	template< typename C >
+	auto as(...) -> auto {
+		return nullptr;
+	}
+
+	template< typename C, typename X >
+	requires std::is_same_v<C, X>
+	auto as(X const& x) -> auto&& {
+		return x;
+	}
+
+	template< typename C, typename X >
+	auto as(X const& x) -> auto
+	requires (!std::is_same_v<C, X>&& requires { C{ x }; })
+	{
+		return C{ x };
+	}
+
+	template< typename C, typename X >
+	requires std::is_base_of_v<C, X>
+	auto as(X&& x) -> C&& {
+		return std::forward<X>(x);
+	}
+
+	template< typename C, typename X >
+	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
+	auto as(X& x) -> C& {
+		return dynamic_cast<C&>(x);
+	}
+
+	template< typename C, typename X >
+	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
+	auto as(X const& x) -> C const& {
+		return dynamic_cast<C const&>(x);
+	}
+
+	template< typename C, typename X >
+	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
+	auto as(X* x) -> C* {
+		return dynamic_cast<C*>(x);
+	}
+
+	template< typename C, typename X >
+	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
+	auto as(X const* x) -> C const* {
+		return dynamic_cast<C const*>(x);
+	}
+
+
+	//-------------------------------------------------------------------------------------------------------------
+	//  std::variant is and as
+	//
+	template<typename... Ts>
+	constexpr auto operator_is(std::variant<Ts...> const& x) {
+		return x.index();
+	}
+
+	template<size_t I, typename... Ts>
+	constexpr auto operator_as(std::variant<Ts...> const& x) -> auto&& 
+	{
+		if constexpr (I < std::variant_size_v<std::variant<Ts...>>)
+			return std::get<I>(x);
+		else
+			return nullptr;
+	}
+
+
+	#define CPP2_TYPEOF(x)  std::remove_cvref_t<decltype(x)>
+
+	template<typename T, typename... Ts>
+	auto is(std::variant<Ts...> const& x)
+	{
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<0>(x)), T >) if (x.index() == 0) return true;
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<1>(x)), T >) if (x.index() == 1) return true;
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<2>(x)), T >) if (x.index() == 2) return true;
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<3>(x)), T >) if (x.index() == 3) return true;
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<4>(x)), T >) if (x.index() == 4) return true;
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<5>(x)), T >) if (x.index() == 5) return true;
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<6>(x)), T >) if (x.index() == 6) return true;
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<7>(x)), T >) if (x.index() == 7) return true;
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<8>(x)), T >) if (x.index() == 8) return true;
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<9>(x)), T >) if (x.index() == 9) return true;
+		if constexpr (std::is_same_v< T, void >)
+		{
+			if (x.valueless_by_exception()) return true;
+			//  Need to guard this with is_any otherwise the get_if is illegal
+			if constexpr (is_any_of_v<std::monostate, Ts...>) return std::get_if<std::monostate>(&x) != nullptr;
+		}
+		return false;
+	}
+
+	template<typename T, typename... Ts>
+	auto as(std::variant<Ts...> const& x)
+	{
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<0>(x)), T >) if (x.index() == 0) return operator_as<0>(x);
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<1>(x)), T >) if (x.index() == 1) return operator_as<1>(x);
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<2>(x)), T >) if (x.index() == 2) return operator_as<2>(x);
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<3>(x)), T >) if (x.index() == 3) return operator_as<3>(x);
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<4>(x)), T >) if (x.index() == 4) return operator_as<4>(x);
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<5>(x)), T >) if (x.index() == 5) return operator_as<5>(x);
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<6>(x)), T >) if (x.index() == 6) return operator_as<6>(x);
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<7>(x)), T >) if (x.index() == 7) return operator_as<7>(x);
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<8>(x)), T >) if (x.index() == 8) return operator_as<8>(x);
+		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<9>(x)), T >) if (x.index() == 9) return operator_as<9>(x);
+		throw std::bad_variant_access();
+	}
+
+
+	//-------------------------------------------------------------------------------------------------------------
+	//  std::any is and as
+	//
+	template<typename T, typename X>
+	requires (std::is_same_v<X, std::any> && !std::is_same_v<T, std::any> && !std::is_same_v<T, void>)
+	constexpr auto is(X const& x) -> bool
+	{
+		return x.type() == typeid(T);
+	}
+
+	template<typename T, typename X>
+		requires (std::is_same_v<X, std::any> && std::is_same_v<T, void>)
+	constexpr auto is(X const& x) -> bool
+	{
+		return !x.has_value();
+	}
+
+	template<typename T, typename X>
+	requires (!std::is_reference_v<T> && std::is_same_v<X, std::any> && !std::is_same_v<T, std::any>)
+	constexpr auto as(X const& x) -> T
+	{
+		return std::any_cast<T>(x);
+	}
+
+
+	//-------------------------------------------------------------------------------------------------------------
+	//  std::optional is and as
+	//
+	template<typename T, typename X>
+	requires std::is_same_v<X, std::optional<T>>
+	constexpr auto is(X const& x) -> bool
+	{
+		return x.has_value();
+	}
+
+	template<typename T, typename U>
+	requires std::is_same_v<T, void>
+	constexpr auto is(std::optional<U> const& x) -> bool
+	{
+		return !x.has_value();
+	}
+
+	template<typename T, typename X>
+	requires std::is_same_v<X, std::optional<T>>
+	constexpr auto as(X const& x) -> auto&&
+	{
+		return x.value();
+	}
+
 }
 
 namespace ghassanpl
@@ -96,10 +295,10 @@ namespace ghassanpl
 	{
 		if constexpr (sizeof...(args) > 1)
 		{
-			[&]<typename T1, typename T2, typename... ARGS>(T1 && t1, T2 && t2, ARGS&&... args) {
+			[&]<typename T1, typename T2, typename... NEW_ARGS>(T1 && t1, T2 && t2, NEW_ARGS&&... args) {
 				f(std::forward<T1>(t1), std::forward<T2>(t2));
 				if constexpr (sizeof...(args) > 1)
-					for_each_pair(f, std::forward<ARGS>(args)...);
+					for_each_pair(f, std::forward<NEW_ARGS>(args)...);
 			}(std::forward<ARGS>(args)...);
 		}
 	}
@@ -245,7 +444,7 @@ namespace ghassanpl
 		}(std::make_index_sequence<sizeof...(ARGS)>{});
 		*/
 
-		[]<size_t... INDICES, typename FUNC, typename TUPLE>(FUNC&& func, std::index_sequence<INDICES...>, TUPLE&& tuple) {
+		[]<size_t... INDICES, typename FUNC2, typename TUPLE>(FUNC2&& func, std::index_sequence<INDICES...>, TUPLE&& tuple) {
 			(detail::call<INDICES>(std::get<INDICES>(tuple), func), ...);
 		}(std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>{}, std::forward_as_tuple(std::forward<ARGS>(args)...));
 		

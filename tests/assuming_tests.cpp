@@ -67,10 +67,12 @@ struct assuming_test : public ::testing::Test
 
 #define SELF(...) (__VA_ARGS__)
 
+#define ORCOMMA(...) __VA_ARGS__ __VA_OPT__(,)
+
 #if ASSUMING_DEBUG
 #define EXPECT_ASSUMPTION_FAILED(func_name, ...) {\
 	assumption_failed = false; \
-	func_name SELF(__VA_ARGS__, "test({}, {})", 0, 5) ; auto current_location = std::source_location::current(); \
+	func_name (__VA_ARGS__ __VA_OPT__(,) "test({}, {})", 0, 5) ; auto current_location = std::source_location::current(); \
 	EXPECT_TRUE(assumption_failed) << #func_name; \
 	EXPECT_EQ(last_where.line(), current_location.line()); \
 	EXPECT_EQ(last_where.file_name(), current_location.file_name()); \
@@ -80,7 +82,7 @@ struct assuming_test : public ::testing::Test
 #define EXPECT_ASSUMPTION_FAILED(func_name, ...) \
 	func_name SELF(__VA_ARGS__, "test({}, {})", 0, 5);
 #endif
-#define EXPECT_ASSUMPTION_SUCCEEDED(func_name, ...) { assumption_failed = false; func_name SELF(__VA_ARGS__); EXPECT_FALSE(assumption_failed) << #func_name; }
+#define EXPECT_ASSUMPTION_SUCCEEDED(func_name, ...) { assumption_failed = false; func_name(__VA_ARGS__); EXPECT_FALSE(assumption_failed) << #func_name; }
 
 TEST_F(assuming_test, Assuming_works)
 {
@@ -140,6 +142,52 @@ TEST_F(assuming_test, AssumingNotEqual_works)
 
 	name_value_pair const values[] = { {"value", "hello"}, {"\"hello\"", "hello"} };
 	ASSERT_TRUE(compare(values, last_values));
+}
+
+TEST_F(assuming_test, AssumingNotReachable_works)
+{
+	EXPECT_ASSUMPTION_FAILED(AssumingNotReachable);
+}
+
+TEST_F(assuming_test, AssumingNotRecursive_works)
+{
+	auto func = [](this auto&& func, int times) {
+		if (times <= 0)
+			return;
+
+		AssumingNotRecursive();
+		func(times - 1);
+	};
+
+	assumption_failed = false;
+	func(1);
+	EXPECT_FALSE(assumption_failed);
+	func(2);
+	EXPECT_TRUE(assumption_failed);
+}
+
+TEST_F(assuming_test, AssumingSingleThread_works)
+{
+	assumption_failed = false;
+
+	auto func = []() {
+		AssumingSingleThread();
+	};
+
+	EXPECT_FALSE(assumption_failed);
+
+	func();
+
+	EXPECT_FALSE(assumption_failed);
+
+	func();
+
+	EXPECT_FALSE(assumption_failed);
+
+	std::thread thread{ func };
+	thread.join();
+
+	EXPECT_TRUE(assumption_failed);
 }
 
 #define EXPECT_EVAL_COUNT(count, ...) __VA_ARGS__; EXPECT_EQ(std::exchange(evaluation_count, 0), count);

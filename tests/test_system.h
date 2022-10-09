@@ -46,7 +46,7 @@ namespace ghassanpl::tests
 
 		protected:
 
-			friend struct TestRunner;
+			friend struct ghassanpl::tests::TestRunner;
 
 			size_t mReportCount = 0;
 

@@ -1,23 +1,17 @@
-/// This Source Code Form is subject to the terms of the Mozilla Public
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #pragma once
 
-#include <type_traits>
+#include "bits.h"
 
-#if !defined(__cpp_concepts)
-#error "This library requires concepts"
-#endif
 #if !__has_cpp_attribute(nodiscard)
 #error "This library requires [[nodiscard]]"
 #endif
 
 namespace ghassanpl
 {
-	template<typename T>
-	concept bit_integral = std::is_integral_v<T> && !std::is_same_v<std::decay_t<T>, bool>;
-
 	template<typename T>
 	concept integral_or_enum = bit_integral<T> || std::is_enum_v<T>;
 
@@ -45,35 +39,35 @@ namespace ghassanpl
 
 	template <typename RESULT_TYPE, auto... VALUES> 
 	requires detail::valid_flag_bits_v_arguments<RESULT_TYPE, VALUES...>
-	inline constexpr RESULT_TYPE flag_bits_v = ((RESULT_TYPE(1) << (detail::to_underlying_type(VALUES))) | ... | 0);
+	constexpr inline RESULT_TYPE flag_bits_v = ((RESULT_TYPE(1) << (detail::to_underlying_type(VALUES))) | ... | 0);
 
 	template <auto INT_VALUE, auto VALUE>
 	requires detail::valid_flag_bits_v_arguments<decltype(INT_VALUE), VALUE>
-	inline constexpr auto is_flag_set_v = (INT_VALUE & flag_bits_v<decltype(INT_VALUE), VALUE>) != 0;
+	constexpr inline auto is_flag_set_v = (INT_VALUE & flag_bits_v<decltype(INT_VALUE), VALUE>) != 0;
 
 	template <auto INT_VALUE, auto... VALUES>
 	requires detail::valid_flag_bits_v_arguments<decltype(INT_VALUE), VALUES...>
-	inline constexpr auto are_any_flags_set_v = (INT_VALUE & flag_bits_v<decltype(INT_VALUE), VALUES...>) != decltype(INT_VALUE){};//((is_flag_set_v<INT_VALUE, VALUES>) || ...);
+	constexpr inline auto are_any_flags_set_v = (INT_VALUE & flag_bits_v<decltype(INT_VALUE), VALUES...>) != decltype(INT_VALUE){};//((is_flag_set_v<INT_VALUE, VALUES>) || ...);
 
 	template <auto INT_VALUE, auto... VALUES>
 	requires detail::valid_flag_bits_v_arguments<decltype(INT_VALUE), VALUES...>
-	inline constexpr auto are_all_flags_set_v = (INT_VALUE & flag_bits_v<decltype(INT_VALUE), VALUES...>) == flag_bits_v<decltype(INT_VALUE), VALUES...>;//((is_flag_set_v<INT_VALUE, VALUES>) && ...);
+	constexpr inline auto are_all_flags_set_v = (INT_VALUE & flag_bits_v<decltype(INT_VALUE), VALUES...>) == flag_bits_v<decltype(INT_VALUE), VALUES...>;//((is_flag_set_v<INT_VALUE, VALUES>) && ...);
 
 	template <auto INT_VALUE, auto... VALUES>
 	requires detail::valid_flag_bits_v_arguments<decltype(INT_VALUE), VALUES...>
-	inline constexpr auto set_flag_v = INT_VALUE | (flag_bits_v<decltype(INT_VALUE), VALUES...>);
+	constexpr inline auto set_flag_v = INT_VALUE | (flag_bits_v<decltype(INT_VALUE), VALUES...>);
 
 	template <auto INT_VALUE, auto... VALUES>
 	requires detail::valid_flag_bits_v_arguments<decltype(INT_VALUE), VALUES...>
-	inline constexpr auto unset_flag_v = INT_VALUE & ~(flag_bits_v<decltype(INT_VALUE), VALUES...>);
+	constexpr inline auto unset_flag_v = INT_VALUE & ~(flag_bits_v<decltype(INT_VALUE), VALUES...>);
 
 	template <auto INT_VALUE, auto... VALUES>
 	requires detail::valid_flag_bits_v_arguments<decltype(INT_VALUE), VALUES...>
-	inline constexpr auto toggle_flag_v = INT_VALUE ^ (flag_bits_v<decltype(INT_VALUE), VALUES...>);
+	constexpr inline auto toggle_flag_v = INT_VALUE ^ (flag_bits_v<decltype(INT_VALUE), VALUES...>);
 
 	template <auto INT_VALUE, bool TO, auto... VALUES>
 	requires detail::valid_flag_bits_v_arguments<decltype(INT_VALUE), VALUES...>
-	inline constexpr auto set_flag_to_v = TO ?
+	constexpr inline auto set_flag_to_v = TO ?
 		(INT_VALUE | (flag_bits_v<decltype(INT_VALUE), VALUES...>)) :
 		(INT_VALUE & ~(flag_bits_v<decltype(INT_VALUE), VALUES...>));
 }

@@ -1,4 +1,4 @@
-/// This Source Code Form is subject to the terms of the Mozilla Public
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
@@ -157,7 +157,7 @@ namespace ghassanpl::di
 			using Type = typename ConstructorTypologyDeducer<T, std::make_integer_sequence<int, 1>>::Type;
 		};
 
-		static inline constexpr size_t MaximumArgumentCount = 20;
+		static constexpr inline size_t MaximumArgumentCount = 20;
 
 		// Common recusion state
 		template <class T, int... NthArgument>
@@ -347,7 +347,7 @@ namespace ghassanpl::di
 	};
 
 	template <typename INTERFACE>
-	inline bool Container::HasAnyImplementationsOf() const
+	bool Container::HasAnyImplementationsOf() const
 	{
 		if (auto it = mContainers.find(typeid(INTERFACE)); it != mContainers.end())
 			return !it->second->mImplementations.empty();
@@ -355,7 +355,7 @@ namespace ghassanpl::di
 	}
 
 	template<typename INTERFACE, typename IMPLEMENTATION, typename ...ARGS>
-	inline void Container::RegisterType(ARGS&& ...args)
+	void Container::RegisterType(ARGS&& ...args)
 	{
 		/// NOTE: Previously we used a requires clause in the header of the function, but static asserts here are better at reporting
 		/// errors to the user :)
@@ -375,13 +375,13 @@ namespace ghassanpl::di
 	}
 
 	template<typename INTERFACE>
-	inline std::shared_ptr<INTERFACE> Container::Resolve()
+	std::shared_ptr<INTERFACE> Container::Resolve()
 	{
 		return GetInterfaceContainer<INTERFACE>().Resolve(*this, DefaultLifetime);
 	}
 
 	template<typename INTERFACE>
-	inline std::shared_ptr<INTERFACE> Container::ResolveByName(std::string_view name)
+	std::shared_ptr<INTERFACE> Container::ResolveByName(std::string_view name)
 	{
 		auto& interface_container = GetInterfaceContainer<INTERFACE>();
 		for (auto& impl : interface_container.mImplementations)
@@ -393,13 +393,13 @@ namespace ghassanpl::di
 	}
 
 	template<typename INTERFACE>
-	inline std::vector<std::shared_ptr<INTERFACE>> Container::ResolveAll()
+	std::vector<std::shared_ptr<INTERFACE>> Container::ResolveAll()
 	{
 		return GetInterfaceContainer<INTERFACE>().ResolveAll(*this, DefaultLifetime);
 	}
 
 	template<typename INTERFACE>
-	inline Container::InterfaceContainer<INTERFACE>& Container::GetInterfaceContainer()
+	Container::InterfaceContainer<INTERFACE>& Container::GetInterfaceContainer()
 	{
 		auto& container = mContainers[typeid(INTERFACE)];
 		if (!container)
@@ -408,13 +408,13 @@ namespace ghassanpl::di
 	}
 
 	template<typename INTERFACE, typename IMPLEMENTATION>
-	inline Container::ImplementationContainer<INTERFACE>* Container::GetImplementationContainer()
+	Container::ImplementationContainer<INTERFACE>* Container::GetImplementationContainer()
 	{
 		return GetInterfaceContainer<INTERFACE>().GetImplementationContainer<IMPLEMENTATION>();
 	}
 
 	template<typename INSTANCE>
-	inline void Container::ReportCreation(std::shared_ptr<INSTANCE> const& obj, std::function<void(Container&, std::shared_ptr<void>)> func)
+	void Container::ReportCreation(std::shared_ptr<INSTANCE> const& obj, std::function<void(Container&, std::shared_ptr<void>)> func)
 	{
 		for (auto& [ptr, callback] : mCreationsToReport)
 		{
@@ -425,7 +425,7 @@ namespace ghassanpl::di
 	}
 
 	template<typename INTERFACE, typename T>
-	inline std::shared_ptr<INTERFACE> Container::Instantiate(T& factory)
+	std::shared_ptr<INTERFACE> Container::Instantiate(T& factory)
 	{
 		if (find(mResolutionStack.begin(), mResolutionStack.end(), typeid(INTERFACE)) != mResolutionStack.end())
 			throw "circular dependency";

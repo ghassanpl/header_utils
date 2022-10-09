@@ -6,18 +6,87 @@
 
 #include <gtest/gtest.h>
 
-template <typename RESULT_TYPE>
-class flag_bits_test : public ::testing::Test {
-public:
-
-  using result_type = RESULT_TYPE;
-
-};
+#include <algorithm>
+#include <numeric>
+#include <ranges>
 
 using integer_types = ::testing::Types<
   short int, unsigned short int, int, unsigned int, long int, unsigned long int, long long int, unsigned long long int,
   signed char, unsigned char, char, wchar_t, char16_t, char32_t, char8_t>;
 
+template <typename RESULT_TYPE>
+class bits_test : public ::testing::Test {
+public:
+
+	using result_type = RESULT_TYPE;
+
+};
+TYPED_TEST_SUITE(bits_test, integer_types);
+
+TYPED_TEST(bits_test, bit_reference_works)
+{
+	TypeParam value = 10;
+
+	static_assert(sizeof(bit_reference<TypeParam>) > sizeof(bit_reference<TypeParam, 2>));
+
+	bit_reference bit_2_of_value{ value, 2 };
+	bit_reference bit_2_of_value_s{ value, bit_num<2> };
+
+	bit_2_of_value = true;
+	EXPECT_EQ(value, 14);
+	bit_2_of_value_s = false;
+	EXPECT_EQ(value, 10);
+
+	EXPECT_EQ(&bit_2_of_value.integer_value(), &value);
+	EXPECT_EQ(bit_2_of_value.bit_number(), 2);
+
+	if constexpr (std::is_signed_v<TypeParam>)
+	{
+		bit_reference msb{ value, bit_num<bit_count<TypeParam> - 1> };
+		msb = true;
+		EXPECT_LT(value, 0);
+	}
+}
+
+TYPED_TEST(bits_test, bit_view_works)
+{
+	std::vector<int> ints{ 20,30,40 };
+	bit_view view{ ints };
+
+	auto bit_42_of_value = make_bit_reference(ints, 42);
+	auto bit_42_of_value_s = make_bit_reference<42>(ints);
+
+	std::vector<int> const const_ints{ 20,30,40 };
+	const bit_view const_view{ const_ints };
+
+	auto bit_42_of_const_value = make_bit_reference(const_ints, 42);
+	auto bit_42_of_const_value_s = make_bit_reference<42>(const_ints);
+
+	EXPECT_EQ(bit_42_of_const_value_s.bit_number(), 10);
+
+	std::string out;
+	std::transform(const_view.begin(), const_view.end(), std::back_inserter(out), [](auto bit) { return bit ? '1' : '0'; });
+
+	EXPECT_EQ(out, 
+		"00101000000000000000000000000000"
+		"01111000000000000000000000000000"
+		"00010100000000000000000000000000");
+}
+
+TYPED_TEST(bits_test, bit_view_works_for_empty_range)
+{
+	std::vector<TypeParam> const const_values{};
+	const bit_view const_view{ const_values };
+	EXPECT_THROW({ std::ignore = const_view.at(0); }, std::invalid_argument);
+}
+
+template <typename RESULT_TYPE>
+class flag_bits_test : public ::testing::Test {
+public:
+
+	using result_type = RESULT_TYPE;
+
+};
 TYPED_TEST_SUITE(flag_bits_test, integer_types);
 
 enum class TestEnum : int64_t

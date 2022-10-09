@@ -1,4 +1,4 @@
-/// This Source Code Form is subject to the terms of the Mozilla Public
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
@@ -26,7 +26,7 @@ namespace ghassanpl
 		};
 	}
 
-	template <typename T, detail::FixedString PARAMETER>
+	template <typename T, detail::FixedString PARAMETER, typename... CAPABILITIES>
 	struct named
 	{
 		using base_type = T;
@@ -34,10 +34,13 @@ namespace ghassanpl
 
 		T Value{};
 
-		template <typename... ARGS>
-		constexpr explicit named(ARGS&&... args) noexcept(std::is_nothrow_constructible_v<T, ARGS...>) : Value(std::forward<ARGS>(args)...) {}
+		constexpr explicit named(T val) noexcept(std::is_nothrow_move_constructible_v<T>) : Value(std::move(val)) {}
 
 		constexpr named() noexcept(std::is_nothrow_default_constructible_v<T>) = default;
+		constexpr named(named const&) noexcept(std::is_nothrow_copy_constructible_v<T>) = default;
+		constexpr named(named&&) noexcept(std::is_nothrow_move_constructible_v<T>) = default;
+		constexpr named& operator=(named const&) noexcept(std::is_nothrow_copy_assignable_v<T>) = default;
+		constexpr named& operator=(named&&) noexcept(std::is_nothrow_move_assignable_v<T>) = default;
 
 		constexpr T* operator->() noexcept { return &Value; }
 		constexpr T const* operator->() const noexcept { return &Value; }
@@ -48,8 +51,10 @@ namespace ghassanpl
 		template <typename U>
 		constexpr U as() noexcept { return static_cast<U>(Value); }
 
+		/*
 		template <typename U, typename = std::enable_if_t<std::is_convertible_v<T, U>>>
 		constexpr explicit operator U() const noexcept(noexcept((U)Value)) { return (U)Value; }
+		*/
 
 		constexpr explicit operator bool() const noexcept { return Value; }
 		constexpr auto operator <=>(named const&) const noexcept = default;

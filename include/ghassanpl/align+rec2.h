@@ -1,4 +1,4 @@
-/// This Source Code Form is subject to the terms of the Mozilla Public
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
@@ -9,7 +9,7 @@
 namespace ghassanpl
 {
 	template <typename T>
-	inline constexpr trec2<T> aligned(trec2<T> const& smaller, trec2<T> const& larger, align alignment)
+	constexpr trec2<T> aligned(trec2<T> const& smaller, trec2<T> const& larger, align alignment)
 	{
 		return trec2<T>::from_size(
 			larger.position() + glm::tvec2<T>{ 
@@ -21,7 +21,7 @@ namespace ghassanpl
 	}
 
 	template <typename T>
-	inline constexpr trec2<T> aligned(glm::tvec2<T> inner_size, trec2<T> const& larger, align alignment)
+	constexpr trec2<T> aligned(glm::tvec2<T> inner_size, trec2<T> const& larger, align alignment)
 	{
 		return trec2<T>::from_size(
 			larger.position() + glm::tvec2<T>{ 
