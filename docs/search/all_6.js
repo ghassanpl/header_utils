@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['ascii_0',['ascii',['../namespaceghassanpl_1_1string__ops_1_1ascii.html',1,'ghassanpl::string_ops']]],
+  ['bit_5fintegral_1',['bit_integral',['../conceptghassanpl_1_1bit__integral.html',1,'ghassanpl']]],
+  ['bytelike_2',['bytelike',['../conceptghassanpl_1_1bytelike.html',1,'ghassanpl']]],
+  ['colors_3',['colors',['../namespaceghassanpl_1_1colors.html',1,'ghassanpl']]],
+  ['config_4',['config',['../namespaceghassanpl_1_1config.html',1,'ghassanpl']]],
+  ['di_5',['di',['../namespaceghassanpl_1_1di.html',1,'ghassanpl']]],
+  ['formats_6',['formats',['../namespaceghassanpl_1_1formats.html',1,'ghassanpl']]],
+  ['gamma_5fcorrect_7',['gamma_correct',['../group___colors.html#gab597f8f103a37a9d100b5c20c799082d',1,'ghassanpl']]],
+  ['ghassanpl_8',['ghassanpl',['../namespaceghassanpl.html',1,'']]],
+  ['msg_9',['msg',['../namespaceghassanpl_1_1msg.html',1,'ghassanpl']]],
+  ['output_5fbuffer_10',['output_buffer',['../conceptghassanpl_1_1output__buffer.html',1,'ghassanpl']]],
+  ['parsing_11',['parsing',['../namespaceghassanpl_1_1parsing.html',1,'ghassanpl']]],
+  ['random_12',['random',['../namespaceghassanpl_1_1random.html',1,'ghassanpl']]],
+  ['regex_13',['regex',['../namespaceghassanpl_1_1regex.html',1,'ghassanpl']]],
+  ['string_5fops_14',['string_ops',['../namespaceghassanpl_1_1string__ops.html',1,'ghassanpl']]],
+  ['string_5for_5fchar_15',['string_or_char',['../conceptghassanpl_1_1string__ops_1_1string__or__char.html',1,'ghassanpl::string_ops']]]
+];
