@@ -10,6 +10,4 @@ A collection of header-only C++20 "libraries" that implement small but useful ut
 
 Since this is a C++20 library, and apparently no compiler except MSVC supports C++20 fully, don't expect it to work anywhere other than MSVC. Yay.
 
-## Documentation
-
-A new Doxygen-based documentation set is coming soon!
+## [Documentation](https://ghassanpl.github.io/header_utils/)
