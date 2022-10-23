@@ -7,6 +7,7 @@
 #include <random>
 #include <concepts>
 #include <numeric>
+#include <span>
 
 namespace ghassanpl::random
 {
@@ -88,6 +89,9 @@ namespace ghassanpl::random
 		inline int operator""_d100(unsigned long long int n) { return (int)dice(n, 100, default_random_engine); }
 	}
 
+	template <class T, class... TYPES>
+	constexpr inline bool is_any_of_v = std::disjunction_v<std::is_same<T, TYPES>...>;
+
 	template <typename RANDOM, typename T>
 	requires is_any_of_v<T, short, int, long, long long, unsigned short, unsigned int, unsigned long, unsigned long long>
 	T integer_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
@@ -121,88 +125,20 @@ namespace ghassanpl::random
 			return integer_range(from, to, rng);
 	}
 
-#if 0
-	template <typename RANDOM = std::default_random_engine>
-	radians_t radians(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	template <std::floating_point T = float>
+	constexpr inline T halton_sequence(unsigned index, unsigned base = 2)
 	{
-		static std::uniform_real_distribution<radians_t::base_type> dist{ radians_t::base_type{}, glm::two_pi<radians_t::base_type>() };
-		return radians_t{ dist(rng) };
-	}
-
-	template <std::floating_point T, typename RANDOM = std::default_random_engine>
-	T radians(RANDOM& rng = ::ghassanpl::random::default_random_engine)
-	{
-		static std::uniform_real_distribution<T> dist{ T{}, glm::two_pi<T>() };
-		return dist(rng);
-	}
-
-	template <typename RANDOM = std::default_random_engine>
-	degrees_t degrees(RANDOM& rng = ::ghassanpl::random::default_random_engine)
-	{
-		static std::uniform_real_distribution<degrees_t::base_type> dist{ degrees_t::base_type{0}, degrees_t::base_type{360} };
-		return degrees_t{ dist(rng) };
-	}
-
-	template <std::floating_point T, typename RANDOM = std::default_random_engine>
-	T degrees(RANDOM& rng = ::ghassanpl::random::default_random_engine)
-	{
-		static std::uniform_real_distribution<T> dist{ T{}, T{360} };
-		return dist(rng);
-	}
-
-	template <std::floating_point T = float, typename RANDOM = std::default_random_engine>
-	glm::tvec2<T> unit_vector(RANDOM& rng = ::ghassanpl::random::default_random_engine)
-	{
-		return glm::rotate(glm::tvec2<T>{ T{ 1 }, T{ 0 } }, radians<T>(rng));
-	}
-
-	template <typename RANDOM = std::default_random_engine>
-	ivec2 neighbor(RANDOM& rng = ::ghassanpl::random::default_random_engine)
-	{
-		static std::uniform_int_distribution<typename RANDOM::result_type> dist{ 0, 3 };
-		switch (dist(rng))
+		auto result = T(0);
+		auto fraction = T(1);
+		while (index > 0)
 		{
-		case 0: return { 1.0f, 0.0f };
-		case 1: return { 0.0f, 1.0f };
-		case 2: return { -1.0f, 0.0f };
-		case 3: return { 0.0f, -1.0f };
+			fraction /= base;
+			result += fraction * (index % base);
+			index /= base;
 		}
-		return {};
+		return result;
 	}
 
-	template <typename RANDOM = std::default_random_engine>
-	ivec2 diagonal_neighbor(RANDOM& rng = ::ghassanpl::random::default_random_engine)
-	{
-		static std::uniform_int_distribution<typename RANDOM::result_type> dist{ 0, 3 };
-		switch (dist(rng))
-		{
-		case 0: return { 1.0f, 1.0f };
-		case 1: return { -1.0f, 1.0f };
-		case 2: return { -1.0f, -1.0f };
-		case 3: return { 1.0f, -1.0f };
-		}
-		return {};
-	}
-
-	template <typename RANDOM = std::default_random_engine>
-	ivec2 surrounding(RANDOM& rng = ::ghassanpl::random::default_random_engine)
-	{
-		static std::uniform_int_distribution<typename RANDOM::result_type> dist{ 0, 7 };
-		switch (dist(rng))
-		{
-		case 0: return { 1.0f, 0.0f };
-		case 1: return { 0.0f, 1.0f };
-		case 2: return { -1.0f, 0.0f };
-		case 3: return { 0.0f, -1.0f };
-		case 4: return { 1.0f, 1.0f };
-		case 5: return { -1.0f, 1.0f };
-		case 6: return { -1.0f, -1.0f };
-		case 7: return { 1.0f, -1.0f };
-		}
-		return {};
-	}
-#endif
-	
 	template <typename RANDOM = std::default_random_engine>
 	bool with_probability(double probability, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -299,4 +235,24 @@ namespace ghassanpl::random
 
 		return Randomizer{ rng, container };
 	}
+
+	template <typename T, typename RANDOM>
+	size_t option_with_probability(std::span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	{
+		/// TODO: instead of span, we could just use a range
+		if (option_probabilities.size() == 0)
+			return -1;
+		auto sum = std::accumulate(option_probabilities.begin(), option_probabilities.end(), T(0));
+		auto rnd = range(T(0), sum, rng);
+		sum = 0;
+		for (size_t i = 0; i < option_probabilities.size(); i++)
+		{
+			sum += option_probabilities[i];
+			if (rnd <= sum)
+				return i;
+		}
+		/// We should never reach here
+		return 0;
+	}
+
 }

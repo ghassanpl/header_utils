@@ -170,7 +170,18 @@ namespace ghassanpl
 	{
 		uint64_t crc = 0;
 		while (count --> 0)
-			crc = crc64_table[crc >> 56] ^ ((crc << 8) ^ (*in++));
+			crc = crc64_table[crc >> 56] ^ ((crc << 8U) ^ (*in++));
 		return crc;
 	}
+	
+	/// Calculates a FNV Hash for a span of bytes
+	/// \ingroup Hashes
+	[[nodiscard]] constexpr inline uint64_t fnv(uint8_t const* in, size_t count)
+	{
+		uint64_t result = 0xcbf29ce484222325;
+		while (count --> 0)
+			result = (result ^ (*in++)) * 0x00000100000001b3U;
+		return result;
+	}
+
 }

@@ -175,6 +175,15 @@ Typedefs</h2></td></tr>
 <tr class="separator:a44753df22e88d8658ba8dcc6962b1527"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad2f94b4947fbcbfadad727f848fae9d"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceghassanpl.html#aad2f94b4947fbcbfadad727f848fae9d">file_handle_type</a> = int</td></tr>
 <tr class="separator:aad2f94b4947fbcbfadad727f848fae9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8db7cc1d5d3f3a0f52256b59e6c1bebb"><td class="memTemplParams" colspan="2">template&lt;size_t I, typename... Ts&gt; </td></tr>
+<tr class="memitem:a8db7cc1d5d3f3a0f52256b59e6c1bebb"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl.html#a8db7cc1d5d3f3a0f52256b59e6c1bebb">nth_type_of</a> = std::tuple_element_t&lt; I, std::tuple&lt; Ts... &gt; &gt;</td></tr>
+<tr class="separator:a8db7cc1d5d3f3a0f52256b59e6c1bebb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a341dd7de7b169282c47f259e9a825413"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:a341dd7de7b169282c47f259e9a825413"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl.html#a341dd7de7b169282c47f259e9a825413">first_type_of</a> = std::tuple_element_t&lt; 0, std::tuple&lt; Ts... &gt; &gt;</td></tr>
+<tr class="separator:a341dd7de7b169282c47f259e9a825413"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed59e5249820fed67dd4dce1280052b7"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:aed59e5249820fed67dd4dce1280052b7"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl.html#aed59e5249820fed67dd4dce1280052b7">last_type_of</a> = std::tuple_element_t&lt;(sizeof...(Ts) - 1), std::tuple&lt; Ts... &gt; &gt;</td></tr>
+<tr class="separator:aed59e5249820fed67dd4dce1280052b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -365,6 +374,15 @@ requires detail::valid_flag_bits_arguments&lt;INTEGRAL, ARGS...&gt;</td></tr>
 <tr class="memitem:a9517eab990059328245e1b165c9941ae"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a9517eab990059328245e1b165c9941ae"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl.html#a9517eab990059328245e1b165c9941ae">operator&lt;&lt;</a> (std::ostream &amp;strm, trec2&lt; T &gt; const &amp;b)</td></tr>
 <tr class="separator:a9517eab990059328245e1b165c9941ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d77e0dffc5a2dea90584bbc5b09f90a"><td class="memTemplParams" colspan="2">template&lt;size_t I, typename T , typename... Ts&gt; </td></tr>
+<tr class="memitem:a7d77e0dffc5a2dea90584bbc5b09f90a"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl.html#a7d77e0dffc5a2dea90584bbc5b09f90a">nth_value_of</a> (T &amp;&amp;t, Ts &amp;&amp;... args)</td></tr>
+<tr class="separator:a7d77e0dffc5a2dea90584bbc5b09f90a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1344ba777dd3b7e2234c5eb84cf10ae"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:ad1344ba777dd3b7e2234c5eb84cf10ae"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl.html#ad1344ba777dd3b7e2234c5eb84cf10ae">first_value_of</a> (Ts &amp;&amp;... args)</td></tr>
+<tr class="separator:ad1344ba777dd3b7e2234c5eb84cf10ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3bc596ee4fe2e54db94dc87fbffa799"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:ae3bc596ee4fe2e54db94dc87fbffa799"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl.html#ae3bc596ee4fe2e54db94dc87fbffa799">last_value_of</a> (Ts &amp;&amp;... args)</td></tr>
+<tr class="separator:ae3bc596ee4fe2e54db94dc87fbffa799"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2850e9ad9015f69748e820f6a65da62e"><td class="memTemplParams" colspan="2">template&lt;typename... ARGS, typename FUNC &gt; </td></tr>
 <tr class="memitem:a2850e9ad9015f69748e820f6a65da62e"><td class="memTemplItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl.html#a2850e9ad9015f69748e820f6a65da62e">for_each</a> (FUNC &amp;&amp;f)</td></tr>
 <tr class="memdesc:a2850e9ad9015f69748e820f6a65da62e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function: for_each TODO: Description.  <a href="namespaceghassanpl.html#a2850e9ad9015f69748e820f6a65da62e">More...</a><br /></td></tr>
@@ -530,6 +548,9 @@ requires (I &lt; sizeof...(ARGS))</td></tr>
 <tr class="memitem:gadbe4a5223af4c5dacea7a6e9e164536a"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___containers.html#gadbe4a5223af4c5dacea7a6e9e164536a">erase_at_swap</a> (std::vector&lt; T &gt; &amp;vector, size_t index)</td></tr>
 <tr class="memdesc:gadbe4a5223af4c5dacea7a6e9e164536a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Erases the element at <code>index</code> in vector, not preserving item order (swapping last item to erased)  <a href="group___containers.html#gadbe4a5223af4c5dacea7a6e9e164536a">More...</a><br /></td></tr>
 <tr class="separator:gadbe4a5223af4c5dacea7a6e9e164536a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga91ebfeff774711194ee3c728db9eac9d"><td class="memTemplParams" colspan="2">template&lt;typename MAP , typename VAL &gt; </td></tr>
+<tr class="memitem:ga91ebfeff774711194ee3c728db9eac9d"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___containers.html#ga91ebfeff774711194ee3c728db9eac9d">map_find</a> (MAP &amp;map, VAL &amp;&amp;value)</td></tr>
+<tr class="separator:ga91ebfeff774711194ee3c728db9eac9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -721,6 +742,93 @@ Variables</h2></td></tr>
 <tr class="memitem:ga800cdce07af22c2e1f20111a986bf3e4"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ga800cdce07af22c2e1f20111a986bf3e4"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___alignment.html#ga800cdce07af22c2e1f20111a986bf3e4">aligned</a> (const T &amp;width, const T &amp;max_width, <a class="el" href="group___alignment.html#ga93c615403286c16bdf1f3952f9a2fdb8">vertical_align</a> <a class="el" href="group___alignment.html#ga01bf04cf94bf7689c267eafb7d0a21bc">align</a>)</td></tr>
 <tr class="separator:ga800cdce07af22c2e1f20111a986bf3e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2bd76b8baeed4f6153cd3d087e83b8f4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><b>color_space</b> { <b>linear_rgba</b>
+, <b>srgb</b>
+, <b>hsva</b>
+, <b>rgbe</b>
+ }</td></tr>
+<tr class="separator:ga2bd76b8baeed4f6153cd3d087e83b8f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga72f54ee837994b9599b6411792c7cd84"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> = glm::vec4</td></tr>
+<tr class="memdesc:ga72f54ee837994b9599b6411792c7cd84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a color in RGBA color space, with 0.0-1.0 float elements.  <a href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">More...</a><br /></td></tr>
+<tr class="separator:ga72f54ee837994b9599b6411792c7cd84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a> = named&lt; glm::vec4, &quot;color_hsva&quot;&gt;</td></tr>
+<tr class="memdesc:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a color in HSVA color space, with 0.0-1.0 float elements.  <a href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">More...</a><br /></td></tr>
+<tr class="separator:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2135250e4bfc4091c3456ec5e303884c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> = <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a></td></tr>
+<tr class="memdesc:ga2135250e4bfc4091c3456ec5e303884c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default <code>color_t</code> type is RGBA.  <a href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">More...</a><br /></td></tr>
+<tr class="separator:ga2135250e4bfc4091c3456ec5e303884c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4b7e3ffaf17692c029d94bc1c19a08f2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga4b7e3ffaf17692c029d94bc1c19a08f2">saturated</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
+<tr class="memdesc:ga4b7e3ffaf17692c029d94bc1c19a08f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color with all elements clamped between 0 and 1.  <a href="group___colors.html#ga4b7e3ffaf17692c029d94bc1c19a08f2">More...</a><br /></td></tr>
+<tr class="separator:ga4b7e3ffaf17692c029d94bc1c19a08f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga424eb26450c5b94374828f9aa1f33648"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga424eb26450c5b94374828f9aa1f33648">lighten</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float coef)</td></tr>
+<tr class="memdesc:ga424eb26450c5b94374828f9aa1f33648"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color lightened by a coefficient.  <a href="group___colors.html#ga424eb26450c5b94374828f9aa1f33648">More...</a><br /></td></tr>
+<tr class="separator:ga424eb26450c5b94374828f9aa1f33648"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7b770114a3975680d67ff5a5789d0be1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">contrast</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float contrast)</td></tr>
+<tr class="memdesc:ga7b770114a3975680d67ff5a5789d0be1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color with its contrast changed.  <a href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">More...</a><br /></td></tr>
+<tr class="separator:ga7b770114a3975680d67ff5a5789d0be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8412b721aff95aa0b8524e7e9bea4f08"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga8412b721aff95aa0b8524e7e9bea4f08">contrast2</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float <a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">contrast</a>)</td></tr>
+<tr class="memdesc:ga8412b721aff95aa0b8524e7e9bea4f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color with its contrast changed This uses a differen algorithm and <code>contrast</code> value than <a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">contrast</a>.  <a href="group___colors.html#ga8412b721aff95aa0b8524e7e9bea4f08">More...</a><br /></td></tr>
+<tr class="separator:ga8412b721aff95aa0b8524e7e9bea4f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab597f8f103a37a9d100b5c20c799082d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gab597f8f103a37a9d100b5c20c799082d">gamma_correct</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, const float gamma)</td></tr>
+<tr class="memdesc:gab597f8f103a37a9d100b5c20c799082d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a gamma corrected color.  <a href="group___colors.html#gab597f8f103a37a9d100b5c20c799082d">More...</a><br /></td></tr>
+<tr class="separator:gab597f8f103a37a9d100b5c20c799082d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacbce8d4add6360aac71fe4de184b0260"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gacbce8d4add6360aac71fe4de184b0260">inverted</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
+<tr class="memdesc:gacbce8d4add6360aac71fe4de184b0260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an inverted color, i.e. with (1.0-x) on all of its elements, excluding its alpha.  <a href="group___colors.html#gacbce8d4add6360aac71fe4de184b0260">More...</a><br /></td></tr>
+<tr class="separator:gacbce8d4add6360aac71fe4de184b0260"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac5a99d76f132942d1e06e5ca147d3573"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gac5a99d76f132942d1e06e5ca147d3573">contrasting</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
+<tr class="memdesc:gac5a99d76f132942d1e06e5ca147d3573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color that's a good contrasting color for the original.  <a href="group___colors.html#gac5a99d76f132942d1e06e5ca147d3573">More...</a><br /></td></tr>
+<tr class="separator:gac5a99d76f132942d1e06e5ca147d3573"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga036c395e3bf0b1ae2c6c6afe0f035a11"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11">luminance</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
+<tr class="memdesc:ga036c395e3bf0b1ae2c6c6afe0f035a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get brightness of color.  <a href="group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11">More...</a><br /></td></tr>
+<tr class="separator:ga036c395e3bf0b1ae2c6c6afe0f035a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace8c71252f6168960b135e89a167dc3b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gace8c71252f6168960b135e89a167dc3b">desaturated</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float desaturation)</td></tr>
+<tr class="memdesc:gace8c71252f6168960b135e89a167dc3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color sapped of <code>desaturation</code> (0-1) of its saturation.  <a href="group___colors.html#gace8c71252f6168960b135e89a167dc3b">More...</a><br /></td></tr>
+<tr class="separator:gace8c71252f6168960b135e89a167dc3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad66512e84d142f2bf947fdf6ac340567"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gad66512e84d142f2bf947fdf6ac340567">from_u32_rgb</a> (uint32_t rgb)</td></tr>
+<tr class="memdesc:gad66512e84d142f2bf947fdf6ac340567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an RGB 8bpp integer, with R being most significant.  <a href="group___colors.html#gad66512e84d142f2bf947fdf6ac340567">More...</a><br /></td></tr>
+<tr class="separator:gad66512e84d142f2bf947fdf6ac340567"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3ac5863dcf6ff11ad9fc9f288d3c1772"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga3ac5863dcf6ff11ad9fc9f288d3c1772">from_u32_bgr</a> (uint32_t rgb)</td></tr>
+<tr class="memdesc:ga3ac5863dcf6ff11ad9fc9f288d3c1772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an BGR 8bpp integer, with R being least significant.  <a href="group___colors.html#ga3ac5863dcf6ff11ad9fc9f288d3c1772">More...</a><br /></td></tr>
+<tr class="separator:ga3ac5863dcf6ff11ad9fc9f288d3c1772"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3462a38134c3cc60c3bf097c30cd0ca6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga3462a38134c3cc60c3bf097c30cd0ca6">from_u32_rgba</a> (uint32_t rgb)</td></tr>
+<tr class="memdesc:ga3462a38134c3cc60c3bf097c30cd0ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an RGBA 8bpp integer, with R being most significant.  <a href="group___colors.html#ga3462a38134c3cc60c3bf097c30cd0ca6">More...</a><br /></td></tr>
+<tr class="separator:ga3462a38134c3cc60c3bf097c30cd0ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaee02db2b8051d87b456f29b9cdad9d0c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaee02db2b8051d87b456f29b9cdad9d0c">from_u32_bgra</a> (uint32_t rgb)</td></tr>
+<tr class="memdesc:gaee02db2b8051d87b456f29b9cdad9d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an BGRA 8bpp integer, with A being least significant, and B being most significant.  <a href="group___colors.html#gaee02db2b8051d87b456f29b9cdad9d0c">More...</a><br /></td></tr>
+<tr class="separator:gaee02db2b8051d87b456f29b9cdad9d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9f15a265a1fd662fe51138eaa5c1e018"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga9f15a265a1fd662fe51138eaa5c1e018">from_u32_argb</a> (uint32_t rgb)</td></tr>
+<tr class="memdesc:ga9f15a265a1fd662fe51138eaa5c1e018"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an ARGB 8bpp integer, with A being most significant, and B being least significant.  <a href="group___colors.html#ga9f15a265a1fd662fe51138eaa5c1e018">More...</a><br /></td></tr>
+<tr class="separator:ga9f15a265a1fd662fe51138eaa5c1e018"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga842e7acf1d544fa8cc9bc6d8fcfff04e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga842e7acf1d544fa8cc9bc6d8fcfff04e">from_u32_abgr</a> (uint32_t rgb)</td></tr>
+<tr class="memdesc:ga842e7acf1d544fa8cc9bc6d8fcfff04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an ABGR 8bpp integer, with A being most significant, and R being least significant.  <a href="group___colors.html#ga842e7acf1d544fa8cc9bc6d8fcfff04e">More...</a><br /></td></tr>
+<tr class="separator:ga842e7acf1d544fa8cc9bc6d8fcfff04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace89926fcd87552a1a36ce2ca87423ba"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gace89926fcd87552a1a36ce2ca87423ba">to_u32_argb</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memdesc:gace89926fcd87552a1a36ce2ca87423ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp ARGB integer from a color.  <a href="group___colors.html#gace89926fcd87552a1a36ce2ca87423ba">More...</a><br /></td></tr>
+<tr class="separator:gace89926fcd87552a1a36ce2ca87423ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5eff765fb4a9125d3a4da5a15e0c210a"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga5eff765fb4a9125d3a4da5a15e0c210a">to_u32_abgr</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memdesc:ga5eff765fb4a9125d3a4da5a15e0c210a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp ABGR integer from a color.  <a href="group___colors.html#ga5eff765fb4a9125d3a4da5a15e0c210a">More...</a><br /></td></tr>
+<tr class="separator:ga5eff765fb4a9125d3a4da5a15e0c210a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5758267a057452433341dff0756b92f1"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga5758267a057452433341dff0756b92f1">to_u32_rgba</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memdesc:ga5758267a057452433341dff0756b92f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp RGBA integer from a color.  <a href="group___colors.html#ga5758267a057452433341dff0756b92f1">More...</a><br /></td></tr>
+<tr class="separator:ga5758267a057452433341dff0756b92f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga255b095856a5d974a39ca5b457402bbb"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga255b095856a5d974a39ca5b457402bbb">to_u32_bgra</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memdesc:ga255b095856a5d974a39ca5b457402bbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp BGRA integer from a color.  <a href="group___colors.html#ga255b095856a5d974a39ca5b457402bbb">More...</a><br /></td></tr>
+<tr class="separator:ga255b095856a5d974a39ca5b457402bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga30e505f9dbf5267f8fc04cfe721fa995">to_u32_rgb</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memdesc:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 32 bit, 8bpp RGB integer from a color, with the most significant 8 bits set to 0.  <a href="group___colors.html#ga30e505f9dbf5267f8fc04cfe721fa995">More...</a><br /></td></tr>
+<tr class="separator:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf3c2764491b233be2e04558f85ee1e9f"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaf3c2764491b233be2e04558f85ee1e9f">to_u32_bgr</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memdesc:gaf3c2764491b233be2e04558f85ee1e9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 32 bit, 8bpp BGR integer from a color, with the most significant 8 bits set to 0.  <a href="group___colors.html#gaf3c2764491b233be2e04558f85ee1e9f">More...</a><br /></td></tr>
+<tr class="separator:gaf3c2764491b233be2e04558f85ee1e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga53ca83b37b93b9c00484bd13b5e84713"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga53ca83b37b93b9c00484bd13b5e84713">to_rgb</a> (<a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a> const &amp;hsva)</td></tr>
+<tr class="memdesc:ga53ca83b37b93b9c00484bd13b5e84713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a HSVA color to RGBA space.  <a href="group___colors.html#ga53ca83b37b93b9c00484bd13b5e84713">More...</a><br /></td></tr>
+<tr class="separator:ga53ca83b37b93b9c00484bd13b5e84713"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac688b79c326f6c0f2ea98a64630adec2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gac688b79c326f6c0f2ea98a64630adec2">to_hsv</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memdesc:gac688b79c326f6c0f2ea98a64630adec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an RGBA color to HSVA space.  <a href="group___colors.html#gac688b79c326f6c0f2ea98a64630adec2">More...</a><br /></td></tr>
+<tr class="separator:gac688b79c326f6c0f2ea98a64630adec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12ef0b63b291a99dc53188b297693a54"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga12ef0b63b291a99dc53188b297693a54">operator&quot;&quot;_rgb</a> (const char *str, size_t n)</td></tr>
+<tr class="memdesc:ga12ef0b63b291a99dc53188b297693a54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a HTML color string (like #FBA or fafafa) to an RGBA color.  <a href="group___colors.html#ga12ef0b63b291a99dc53188b297693a54">More...</a><br /></td></tr>
+<tr class="separator:ga12ef0b63b291a99dc53188b297693a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga234303c524cd6b459b5e23d24fd61f77"><td class="memTemplParams" colspan="2">template&lt;typename BUFFER &gt; </td></tr>
 <tr class="memitem:ga234303c524cd6b459b5e23d24fd61f77"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___buffers.html#ga234303c524cd6b459b5e23d24fd61f77">buffer_element_type</a> = typename decltype(detail::deduce_buffer_element_type&lt; BUFFER &gt;())::type</td></tr>
 <tr class="separator:ga234303c524cd6b459b5e23d24fd61f77"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -790,80 +898,6 @@ requires std::is_trivially_copyable_v&lt;POD&gt; &amp;&amp; bytelike&lt;<a class
 <tr class="memitem:ga3bf35d0fbed3f2c6b92801d7b33a2b0c"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___buffers.html#ga3bf35d0fbed3f2c6b92801d7b33a2b0c">buffer_append_pod</a> (BUFFER &amp;buffer, POD const &amp;pod)</td></tr>
 <tr class="memdesc:ga3bf35d0fbed3f2c6b92801d7b33a2b0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a POD values internal object representation to a buffer.  <a href="group___buffers.html#ga3bf35d0fbed3f2c6b92801d7b33a2b0c">More...</a><br /></td></tr>
 <tr class="separator:ga3bf35d0fbed3f2c6b92801d7b33a2b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga72f54ee837994b9599b6411792c7cd84"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> = glm::vec4</td></tr>
-<tr class="separator:ga72f54ee837994b9599b6411792c7cd84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a> = named&lt; glm::vec4, &quot;color_hsva&quot;&gt;</td></tr>
-<tr class="memdesc:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a color in HSVA color space, with 0.0-1.0 float elements.  <a href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">More...</a><br /></td></tr>
-<tr class="separator:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2135250e4bfc4091c3456ec5e303884c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> = <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a></td></tr>
-<tr class="memdesc:ga2135250e4bfc4091c3456ec5e303884c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default <code>color_t</code> type is RGBA.  <a href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">More...</a><br /></td></tr>
-<tr class="separator:ga2135250e4bfc4091c3456ec5e303884c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4b7e3ffaf17692c029d94bc1c19a08f2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga4b7e3ffaf17692c029d94bc1c19a08f2">saturated</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
-<tr class="memdesc:ga4b7e3ffaf17692c029d94bc1c19a08f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color with all elements clamped between 0 and 1.  <a href="group___colors.html#ga4b7e3ffaf17692c029d94bc1c19a08f2">More...</a><br /></td></tr>
-<tr class="separator:ga4b7e3ffaf17692c029d94bc1c19a08f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga424eb26450c5b94374828f9aa1f33648"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga424eb26450c5b94374828f9aa1f33648">lighten</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float coef)</td></tr>
-<tr class="memdesc:ga424eb26450c5b94374828f9aa1f33648"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color lightened by a coefficient.  <a href="group___colors.html#ga424eb26450c5b94374828f9aa1f33648">More...</a><br /></td></tr>
-<tr class="separator:ga424eb26450c5b94374828f9aa1f33648"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7b770114a3975680d67ff5a5789d0be1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">contrast</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float contrast)</td></tr>
-<tr class="memdesc:ga7b770114a3975680d67ff5a5789d0be1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color with its contrast changed.  <a href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">More...</a><br /></td></tr>
-<tr class="separator:ga7b770114a3975680d67ff5a5789d0be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8412b721aff95aa0b8524e7e9bea4f08"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga8412b721aff95aa0b8524e7e9bea4f08">contrast2</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float <a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">contrast</a>)</td></tr>
-<tr class="memdesc:ga8412b721aff95aa0b8524e7e9bea4f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color with its contrast changed This uses a differen algorithm and <code>contrast</code> value than <a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">contrast</a>.  <a href="group___colors.html#ga8412b721aff95aa0b8524e7e9bea4f08">More...</a><br /></td></tr>
-<tr class="separator:ga8412b721aff95aa0b8524e7e9bea4f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab597f8f103a37a9d100b5c20c799082d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gab597f8f103a37a9d100b5c20c799082d">gamma_correct</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, const float gamma)</td></tr>
-<tr class="memdesc:gab597f8f103a37a9d100b5c20c799082d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a gamma corrected color.  <a href="group___colors.html#gab597f8f103a37a9d100b5c20c799082d">More...</a><br /></td></tr>
-<tr class="separator:gab597f8f103a37a9d100b5c20c799082d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacbce8d4add6360aac71fe4de184b0260"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gacbce8d4add6360aac71fe4de184b0260">inverted</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
-<tr class="memdesc:gacbce8d4add6360aac71fe4de184b0260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an inverted color, i.e. with (1.0-x) on all of its elements, excluding its alpha.  <a href="group___colors.html#gacbce8d4add6360aac71fe4de184b0260">More...</a><br /></td></tr>
-<tr class="separator:gacbce8d4add6360aac71fe4de184b0260"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac5a99d76f132942d1e06e5ca147d3573"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gac5a99d76f132942d1e06e5ca147d3573">contrasting</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
-<tr class="memdesc:gac5a99d76f132942d1e06e5ca147d3573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color that's a good contrasting color for the original.  <a href="group___colors.html#gac5a99d76f132942d1e06e5ca147d3573">More...</a><br /></td></tr>
-<tr class="separator:gac5a99d76f132942d1e06e5ca147d3573"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad66512e84d142f2bf947fdf6ac340567"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gad66512e84d142f2bf947fdf6ac340567">from_u32_rgb</a> (uint32_t rgb)</td></tr>
-<tr class="memdesc:gad66512e84d142f2bf947fdf6ac340567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an RGB 8bpp integer, with R being most significant.  <a href="group___colors.html#gad66512e84d142f2bf947fdf6ac340567">More...</a><br /></td></tr>
-<tr class="separator:gad66512e84d142f2bf947fdf6ac340567"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3ac5863dcf6ff11ad9fc9f288d3c1772"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga3ac5863dcf6ff11ad9fc9f288d3c1772">from_u32_bgr</a> (uint32_t rgb)</td></tr>
-<tr class="memdesc:ga3ac5863dcf6ff11ad9fc9f288d3c1772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an BGR 8bpp integer, with R being least significant.  <a href="group___colors.html#ga3ac5863dcf6ff11ad9fc9f288d3c1772">More...</a><br /></td></tr>
-<tr class="separator:ga3ac5863dcf6ff11ad9fc9f288d3c1772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3462a38134c3cc60c3bf097c30cd0ca6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga3462a38134c3cc60c3bf097c30cd0ca6">from_u32_rgba</a> (uint32_t rgb)</td></tr>
-<tr class="memdesc:ga3462a38134c3cc60c3bf097c30cd0ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an RGBA 8bpp integer, with R being most significant.  <a href="group___colors.html#ga3462a38134c3cc60c3bf097c30cd0ca6">More...</a><br /></td></tr>
-<tr class="separator:ga3462a38134c3cc60c3bf097c30cd0ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaee02db2b8051d87b456f29b9cdad9d0c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaee02db2b8051d87b456f29b9cdad9d0c">from_u32_bgra</a> (uint32_t rgb)</td></tr>
-<tr class="memdesc:gaee02db2b8051d87b456f29b9cdad9d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an BGRA 8bpp integer, with A being least significant, and B being most significant.  <a href="group___colors.html#gaee02db2b8051d87b456f29b9cdad9d0c">More...</a><br /></td></tr>
-<tr class="separator:gaee02db2b8051d87b456f29b9cdad9d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9f15a265a1fd662fe51138eaa5c1e018"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga9f15a265a1fd662fe51138eaa5c1e018">from_u32_argb</a> (uint32_t rgb)</td></tr>
-<tr class="memdesc:ga9f15a265a1fd662fe51138eaa5c1e018"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an ARGB 8bpp integer, with A being most significant, and B being least significant.  <a href="group___colors.html#ga9f15a265a1fd662fe51138eaa5c1e018">More...</a><br /></td></tr>
-<tr class="separator:ga9f15a265a1fd662fe51138eaa5c1e018"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga842e7acf1d544fa8cc9bc6d8fcfff04e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga842e7acf1d544fa8cc9bc6d8fcfff04e">from_u32_abgr</a> (uint32_t rgb)</td></tr>
-<tr class="memdesc:ga842e7acf1d544fa8cc9bc6d8fcfff04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an ABGR 8bpp integer, with A being most significant, and R being least significant.  <a href="group___colors.html#ga842e7acf1d544fa8cc9bc6d8fcfff04e">More...</a><br /></td></tr>
-<tr class="separator:ga842e7acf1d544fa8cc9bc6d8fcfff04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gace89926fcd87552a1a36ce2ca87423ba"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gace89926fcd87552a1a36ce2ca87423ba">to_u32_argb</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
-<tr class="memdesc:gace89926fcd87552a1a36ce2ca87423ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp ARGB integer from a color.  <a href="group___colors.html#gace89926fcd87552a1a36ce2ca87423ba">More...</a><br /></td></tr>
-<tr class="separator:gace89926fcd87552a1a36ce2ca87423ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5eff765fb4a9125d3a4da5a15e0c210a"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga5eff765fb4a9125d3a4da5a15e0c210a">to_u32_abgr</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
-<tr class="memdesc:ga5eff765fb4a9125d3a4da5a15e0c210a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp ABGR integer from a color.  <a href="group___colors.html#ga5eff765fb4a9125d3a4da5a15e0c210a">More...</a><br /></td></tr>
-<tr class="separator:ga5eff765fb4a9125d3a4da5a15e0c210a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5758267a057452433341dff0756b92f1"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga5758267a057452433341dff0756b92f1">to_u32_rgba</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
-<tr class="memdesc:ga5758267a057452433341dff0756b92f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp RGBA integer from a color.  <a href="group___colors.html#ga5758267a057452433341dff0756b92f1">More...</a><br /></td></tr>
-<tr class="separator:ga5758267a057452433341dff0756b92f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga255b095856a5d974a39ca5b457402bbb"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga255b095856a5d974a39ca5b457402bbb">to_u32_bgra</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
-<tr class="memdesc:ga255b095856a5d974a39ca5b457402bbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp BGRA integer from a color.  <a href="group___colors.html#ga255b095856a5d974a39ca5b457402bbb">More...</a><br /></td></tr>
-<tr class="separator:ga255b095856a5d974a39ca5b457402bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga30e505f9dbf5267f8fc04cfe721fa995">to_u32_rgb</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
-<tr class="memdesc:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 32 bit, 8bpp RGB integer from a color, with the most significant 8 bits set to 0.  <a href="group___colors.html#ga30e505f9dbf5267f8fc04cfe721fa995">More...</a><br /></td></tr>
-<tr class="separator:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf3c2764491b233be2e04558f85ee1e9f"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaf3c2764491b233be2e04558f85ee1e9f">to_u32_bgr</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
-<tr class="memdesc:gaf3c2764491b233be2e04558f85ee1e9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 32 bit, 8bpp BGR integer from a color, with the most significant 8 bits set to 0.  <a href="group___colors.html#gaf3c2764491b233be2e04558f85ee1e9f">More...</a><br /></td></tr>
-<tr class="separator:gaf3c2764491b233be2e04558f85ee1e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga53ca83b37b93b9c00484bd13b5e84713"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga53ca83b37b93b9c00484bd13b5e84713">to_rgb</a> (<a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a> const &amp;hsva)</td></tr>
-<tr class="memdesc:ga53ca83b37b93b9c00484bd13b5e84713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a HSVA color to RGBA space.  <a href="group___colors.html#ga53ca83b37b93b9c00484bd13b5e84713">More...</a><br /></td></tr>
-<tr class="separator:ga53ca83b37b93b9c00484bd13b5e84713"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac688b79c326f6c0f2ea98a64630adec2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gac688b79c326f6c0f2ea98a64630adec2">to_hsv</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
-<tr class="memdesc:gac688b79c326f6c0f2ea98a64630adec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an RGBA color to HSVA space.  <a href="group___colors.html#gac688b79c326f6c0f2ea98a64630adec2">More...</a><br /></td></tr>
-<tr class="separator:gac688b79c326f6c0f2ea98a64630adec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga12ef0b63b291a99dc53188b297693a54"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga12ef0b63b291a99dc53188b297693a54">operator&quot;&quot;_rgb</a> (const char *str, size_t n)</td></tr>
-<tr class="memdesc:ga12ef0b63b291a99dc53188b297693a54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a HTML color string (like #FBA or fafafa) to an RGBA color.  <a href="group___colors.html#ga12ef0b63b291a99dc53188b297693a54">More...</a><br /></td></tr>
-<tr class="separator:ga12ef0b63b291a99dc53188b297693a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga62cccd02ccbdf71054a6939f0120ea8e"><td class="memTemplParams" colspan="2">template&lt;typename RANGE &gt; </td></tr>
 <tr class="memitem:ga62cccd02ccbdf71054a6939f0120ea8e"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___ranges.html#ga62cccd02ccbdf71054a6939f0120ea8e">range_value</a> = std::ranges::range_value_t&lt; std::decay_t&lt; RANGE &gt; &gt;</td></tr>
 <tr class="memdesc:ga62cccd02ccbdf71054a6939f0120ea8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper template to get the value type of a type that decays to a <code>range</code>  <a href="group___ranges.html#ga62cccd02ccbdf71054a6939f0120ea8e">More...</a><br /></td></tr>
@@ -955,6 +989,24 @@ template&lt;size_t NUM&gt; </div>
 
 </div>
 </div>
+<a id="a341dd7de7b169282c47f259e9a825413" name="a341dd7de7b169282c47f259e9a825413"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a341dd7de7b169282c47f259e9a825413">&#9670;&#160;</a></span>first_type_of</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Ts&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using ghassanpl::first_type_of = typedef std::tuple_element_t&lt;0, std::tuple&lt;Ts...&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00031">31</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+
+</div>
+</div>
 <a id="a5dc4b76fa9aa97570f73956295c4cd0c" name="a5dc4b76fa9aa97570f73956295c4cd0c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5dc4b76fa9aa97570f73956295c4cd0c">&#9670;&#160;</a></span>intN_t</h2>
 
@@ -970,6 +1022,42 @@ template&lt;size_t N&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="bits_8h_source.html#l00074">74</a> of file <a class="el" href="bits_8h_source.html">bits.h</a>.</p>
+
+</div>
+</div>
+<a id="aed59e5249820fed67dd4dce1280052b7" name="aed59e5249820fed67dd4dce1280052b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed59e5249820fed67dd4dce1280052b7">&#9670;&#160;</a></span>last_type_of</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Ts&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using ghassanpl::last_type_of = typedef std::tuple_element_t&lt;(sizeof...(Ts) - 1), std::tuple&lt;Ts...&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00033">33</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+
+</div>
+</div>
+<a id="a8db7cc1d5d3f3a0f52256b59e6c1bebb" name="a8db7cc1d5d3f3a0f52256b59e6c1bebb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8db7cc1d5d3f3a0f52256b59e6c1bebb">&#9670;&#160;</a></span>nth_type_of</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t I, typename... Ts&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using ghassanpl::nth_type_of = typedef std::tuple_element_t&lt;I, std::tuple&lt;Ts...&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00029">29</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1141,7 +1229,7 @@ requires (N &lt; sizeof...(ARGS))</div>
 
 <p>Function: apply_to_nth Calls <code>f</code> on the <code>N</code>th argument in the <code>args</code> pack. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00457">457</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00492">492</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1184,7 +1272,7 @@ requires (I &lt; sizeof...(ARGS))</div>
 
 <p>Function: apply_to_nth Calls <code>f</code> on the <code>N</code>th argument in the <code>args</code> pack. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00457">457</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00492">492</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1227,7 +1315,7 @@ template&lt;size_t Begin, size_t End, size_t Stride, double &amp; ..., typename 
 <p>Function: apply_to_slice Calls <code>f</code> with a slice of the <code>args</code> pack. </p>
 <p >The slice will start at <code>Begin</code>, end at <code>End</code>, and increment by <code>Stride</code> arguments. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00498">498</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00533">533</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1270,7 +1358,7 @@ template&lt;size_t Begin, size_t End, double &amp; ..., typename FUNC , typename
 <p>Function: apply_to_slice Calls <code>f</code> with a slice of the <code>args</code> pack. </p>
 <p >The slice will start at <code>Begin</code>, end at <code>End</code>, and increment by 1 argument. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00504">504</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00539">539</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1313,7 +1401,7 @@ template&lt;size_t Begin, double &amp; ..., typename FUNC , typename... ARGS&gt;
 <p>Function: apply_to_slice Calls <code>f</code> with a slice of the <code>args</code> pack. </p>
 <p >The slice will start at <code>Begin</code>, and increment by 1 argument. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00510">510</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00545">545</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1335,7 +1423,7 @@ template&lt;typename C &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00113">113</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00148">148</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1357,7 +1445,7 @@ template&lt;typename T , typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00204">204</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00239">239</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1380,7 +1468,7 @@ requires std::is_base_of_v&lt;C, X&gt;</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00132">132</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00167">167</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1403,7 +1491,7 @@ requires (std::is_base_of_v&lt;X, C&gt; &amp;&amp; !std::is_same_v&lt;C, X&gt;)<
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00138">138</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00173">173</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1426,7 +1514,7 @@ requires (std::is_base_of_v&lt;X, C&gt; &amp;&amp; !std::is_same_v&lt;C, X&gt;)<
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00150">150</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00185">185</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1450,7 +1538,7 @@ requires (!std::is_same_v&lt;C, X&gt;&amp;&amp; requires { C{ x }; })</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00124">124</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00159">159</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1473,7 +1561,7 @@ requires std::is_same_v&lt;C, X&gt;</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00119">119</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00154">154</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1505,7 +1593,7 @@ requires std::is_same_v&lt;X, std::optional&lt;T&gt;&gt;</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00264">264</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00299">299</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1528,7 +1616,7 @@ requires (std::is_base_of_v&lt;X, C&gt; &amp;&amp; !std::is_same_v&lt;C, X&gt;)<
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00144">144</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00179">179</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1560,7 +1648,7 @@ requires (!std::is_reference_v&lt;T&gt; &amp;&amp; std::is_same_v&lt;X, std::any
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00239">239</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00274">274</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1583,7 +1671,7 @@ requires (std::is_base_of_v&lt;X, C&gt; &amp;&amp; !std::is_same_v&lt;C, X&gt;)<
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00156">156</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00191">191</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1626,7 +1714,29 @@ template&lt;typename FUNC , typename... ARGS&gt; </div>
 <p>Function: enumerate_pack Calls <code>f</code> on every argument <code>args...</code>. </p>
 <p ><code>f</code> must take one or two arguments: either a single argument for each element of the pack, or a <code>size_t</code> index of the argument, and then the argument. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00432">432</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00467">467</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+
+</div>
+</div>
+<a id="ad1344ba777dd3b7e2234c5eb84cf10ae" name="ad1344ba777dd3b7e2234c5eb84cf10ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1344ba777dd3b7e2234c5eb84cf10ae">&#9670;&#160;</a></span>first_value_of()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Ts&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::first_value_of </td>
+          <td>(</td>
+          <td class="paramtype">Ts &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00048">48</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1658,7 +1768,7 @@ template&lt;typename... ARGS, typename FUNC &gt; </div>
 
 <p>Function: for_each TODO: Description. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00414">414</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00449">449</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1700,7 +1810,7 @@ template&lt;typename... ARGS, typename FUNC &gt; </div>
 
 <p>Function: for_each_in_tuple. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00420">420</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00455">455</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1743,7 +1853,7 @@ requires ((sizeof...(ARGS) % 2) == 0)</div>
 
 <p>Function: for_each_pair TODO: Description. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00294">294</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00329">329</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1775,7 +1885,7 @@ requires std::is_same_v&lt;T, void&gt;</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00257">257</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00292">292</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1797,7 +1907,7 @@ template&lt;typename T , typename... Ts&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00182">182</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00217">217</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1821,7 +1931,7 @@ template&lt;typename C , typename X &gt; </div>
 
 <p>Shamelessly stolen from hsutter's cppfront. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00077">77</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00112">112</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1844,7 +1954,7 @@ requires std::is_same_v&lt;C, X&gt;</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00083">83</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00118">118</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1867,7 +1977,7 @@ requires (std::is_base_of_v&lt;C, X&gt; &amp;&amp; !std::is_same_v&lt;C, X&gt;)<
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00089">89</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00124">124</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1890,7 +2000,7 @@ requires (std::is_base_of_v&lt;X, C&gt; &amp;&amp; !std::is_same_v&lt;C, X&gt;)<
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00095">95</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00130">130</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1914,7 +2024,7 @@ requires (requires (X x) { *x; X(); }&amp;&amp; std::is_same_v&lt;C, void&gt;)</
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00107">107</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00142">142</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1946,7 +2056,7 @@ requires (std::is_same_v&lt;X, std::any&gt; &amp;&amp; !std::is_same_v&lt;T, std
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00225">225</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00260">260</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -1978,7 +2088,7 @@ requires (std::is_same_v&lt;X, std::any&gt; &amp;&amp; std::is_same_v&lt;T, void
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00232">232</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00267">267</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -2010,7 +2120,7 @@ requires std::is_same_v&lt;X, std::optional&lt;T&gt;&gt;</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00250">250</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00285">285</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -2033,7 +2143,29 @@ requires (std::is_base_of_v&lt;X, C&gt; &amp;&amp; !std::is_same_v&lt;C, X&gt;)<
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00101">101</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00136">136</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+
+</div>
+</div>
+<a id="ae3bc596ee4fe2e54db94dc87fbffa799" name="ae3bc596ee4fe2e54db94dc87fbffa799"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3bc596ee4fe2e54db94dc87fbffa799">&#9670;&#160;</a></span>last_value_of()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... Ts&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::last_value_of </td>
+          <td>(</td>
+          <td class="paramtype">Ts &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00055">55</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -2541,6 +2673,38 @@ template&lt;bit_integral T&gt; </div>
 
 </div>
 </div>
+<a id="a7d77e0dffc5a2dea90584bbc5b09f90a" name="a7d77e0dffc5a2dea90584bbc5b09f90a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d77e0dffc5a2dea90584bbc5b09f90a">&#9670;&#160;</a></span>nth_value_of()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;size_t I, typename T , typename... Ts&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::nth_value_of </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&amp;&#160;</td>
+          <td class="paramname"><em>t</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Ts &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00036">36</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+
+</div>
+</div>
 <a id="a8397a83d765f3fe0f94597d4a0d05c76" name="a8397a83d765f3fe0f94597d4a0d05c76"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8397a83d765f3fe0f94597d4a0d05c76">&#9670;&#160;</a></span>operator+()</h2>
 
@@ -2577,7 +2741,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rec2_8h_source.html#l00240">240</a> of file <a class="el" href="rec2_8h_source.html">rec2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec2_8h_source.html#l00266">266</a> of file <a class="el" href="rec2_8h_source.html">rec2.h</a>.</p>
 
 </div>
 </div>
@@ -2657,7 +2821,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="rec2_8h_source.html#l00243">243</a> of file <a class="el" href="rec2_8h_source.html">rec2.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rec2_8h_source.html#l00269">269</a> of file <a class="el" href="rec2_8h_source.html">rec2.h</a>.</p>
 
 </div>
 </div>
@@ -2688,7 +2852,7 @@ template&lt;size_t I, typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00170">170</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00205">205</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -2718,7 +2882,7 @@ template&lt;typename... Ts&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00165">165</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00200">200</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>
@@ -2892,7 +3056,7 @@ template&lt;typename... ARGS, typename FUNC &gt; </div>
 
 <p>Function: transform_tuple. </p>
 
-<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00426">426</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00461">461</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
 
 </div>
 </div>

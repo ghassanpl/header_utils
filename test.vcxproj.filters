@@ -120,10 +120,22 @@
     <ClInclude Include="include\ghassanpl\buffers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\windows\include.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\random_geom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
     <None Include="README.md" />
+    <None Include="include\ghassanpl\platform_impl.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tests\align_tests.cpp">
@@ -165,7 +177,7 @@
     <ClCompile Include="tests\configs_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\windows_message_box_test.cpp">
+    <ClCompile Include="tests\platform_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\symbol_tests.cpp">
@@ -190,6 +202,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\formats_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\random_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

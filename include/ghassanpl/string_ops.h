@@ -127,6 +127,43 @@ namespace ghassanpl::string_ops
 
 	namespace ascii
 	{
+#if 0
+		constexpr inline uint64_t is_flag_set(std::array<uint64_t, 2> flags, char32_t cp) noexcept
+		{
+			const auto flag_el = (cp >> 6) & 1;
+			const auto bit = uint64_t(1) << (cp & 63);
+			return (flags[flag_el] & bit) != 0;
+		}
+		
+		template <uint64_t HIGH, uint64_t LOW>
+		constexpr inline bool is_flag_set(char32_t cp) noexcept
+		{
+			const auto low_mask = uint64_t(0) - (cp >> 6 == 0);
+			const auto high_mask = uint64_t(0) - (cp >> 6 == 1);
+			const auto bit = uint64_t(1) << (cp & 63);
+
+			return ((bit & low_mask) & LOW) or ((bit & high_mask) & HIGH);
+		}
+
+		constexpr inline std::array<uint64_t, 2> get_flags_for(std::string_view str) noexcept
+		{
+			std::array<uint64_t, 2> result{0,0};
+			for (auto c : str)
+				result[(char32_t(c) >> 6) & 1] |= (char32_t(c) & 63);
+			return result;
+		}
+
+		template <typename FUNC>
+		constexpr inline std::array<uint64_t, 2> get_flags_for(FUNC&& pred) noexcept
+		{
+			std::array<uint64_t, 2> result{0,0};
+			for (char32_t c=0; c<128; ++c)
+				if (pred(c))
+					result[(char32_t(c) >> 6) & 1] |= (char32_t(c) & 63);
+			return result;
+		}
+#endif
+
 		/// Our own versions of <cctype> functions that do not block, are defined for values outside of uint8_t, and do not depend on locale.
 		/// RATIONALE: We are using numbers (e.g. 65) instead of character literals (e.g. 'A'), because the encoding of this source file might not be ASCII-based
 		/// Thanks to @fmatthew5876 for inspiration
@@ -137,6 +174,7 @@ namespace ghassanpl::string_ops
 		[[nodiscard]] constexpr inline bool isxdigit(char32_t d) noexcept { return (d >= 48 && d <= 57) || (d >= 65 && d <= 70) || (d >= 97 && d <= 102); }
 		[[nodiscard]] constexpr inline bool isalnum(char32_t cp) noexcept { return ::ghassanpl::string_ops::ascii::isdigit(cp) || ::ghassanpl::string_ops::ascii::isalpha(cp); }
 		[[nodiscard]] constexpr inline bool isident(char32_t cp) noexcept { return ::ghassanpl::string_ops::ascii::isdigit(cp) || ::ghassanpl::string_ops::ascii::isalpha(cp) || cp == 95; }
+		[[nodiscard]] constexpr inline bool isidentstart(char32_t cp) noexcept { return ::ghassanpl::string_ops::ascii::isalpha(cp) || cp == 95; }
 		[[nodiscard]] constexpr inline bool isspace(char32_t cp) noexcept { return (cp >= 9 && cp <= 13) || cp == 32; }
 		[[nodiscard]] constexpr inline bool ispunct(char32_t cp) noexcept { return (cp >= 33 && cp <= 47) || (cp >= 58 && cp <= 64) || (cp >= 91 && cp <= 96) || (cp >= 123 && cp <= 126); }
 		[[nodiscard]] constexpr inline bool islower(char32_t cp) noexcept { return cp >= 97 && cp <= 122; }
@@ -148,8 +186,18 @@ namespace ghassanpl::string_ops
 
 		[[nodiscard]] constexpr inline bool isany(char32_t cp, std::string_view chars) noexcept { return cp < 128 && std::find(chars.begin(), chars.end(), (char)cp) != chars.end(); }
 
-		[[nodiscard]] constexpr inline char32_t toupper(char32_t cp) noexcept { return (cp >= 97 && cp <= 122) ? (cp ^ 0b100000) : cp; }
-		[[nodiscard]] constexpr inline char32_t tolower(char32_t cp) noexcept { return (cp >= 65 && cp <= 90)  ? (cp | 0b100000) : cp; }
+		[[nodiscard]] constexpr inline char32_t toupper(char32_t cp) noexcept { 
+#if 0
+			return (CharType)(ToUnsigned(Char) - ((uint32(Char) - 'a' < 26u) << 5));
+#endif
+			return (cp >= 97 && cp <= 122) ? (cp ^ 0b100000) : cp; 
+		}
+		[[nodiscard]] constexpr inline char32_t tolower(char32_t cp) noexcept { 
+#if 0
+			return (CharType)(ToUnsigned(Char) + ((uint32(Char) - 'A' < 26u) << 5));
+#endif
+			return (cp >= 65 && cp <= 90)  ? (cp | 0b100000) : cp; 
+		}
 
 		/// ASCII-string-based utilities that make use of the above functions
 

@@ -181,7 +181,9 @@
     <ClInclude Include="include\ghassanpl\mmap.h" />
     <ClInclude Include="include\ghassanpl\named.h" />
     <ClInclude Include="include\ghassanpl\parsing.h" />
+    <ClInclude Include="include\ghassanpl\platform.h" />
     <ClInclude Include="include\ghassanpl\random.h" />
+    <ClInclude Include="include\ghassanpl\random_geom.h" />
     <ClInclude Include="include\ghassanpl\ranges.h" />
     <ClInclude Include="include\ghassanpl\rec2.h" />
     <ClInclude Include="include\ghassanpl\regex.h" />
@@ -191,11 +193,13 @@
     <ClInclude Include="include\ghassanpl\unicode.h" />
     <ClInclude Include="include\ghassanpl\wilson.h" />
     <ClInclude Include="include\ghassanpl\windows\common.h" />
+    <ClInclude Include="include\ghassanpl\windows\include.h" />
     <ClInclude Include="include\ghassanpl\windows\message_box.h" />
     <ClInclude Include="include\ghassanpl\with_sl.h" />
     <ClInclude Include="tests\tests_common.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="include\ghassanpl\platform_impl.inl" />
     <None Include="README.md" />
     <None Include="vcpkg.json" />
   </ItemGroup>
@@ -214,14 +218,24 @@
     <ClCompile Include="tests\mmap_tests.cpp" />
     <ClCompile Include="tests\named_tests.cpp" />
     <ClCompile Include="tests\parsing_tests.cpp" />
+    <ClCompile Include="tests\random_tests.cpp" />
     <ClCompile Include="tests\ranges_tests.cpp" />
     <ClCompile Include="tests\symbol_tests.cpp" />
     <ClCompile Include="tests\rec2_tests.cpp" />
-    <ClCompile Include="tests\string_ops_tests.cpp" />
+    <ClCompile Include="tests\string_ops_tests.cpp">
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PreprocessToFile>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PreprocessSuppressLineNumbers>
+      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PreprocessToFile>
+      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PreprocessSuppressLineNumbers>
+    </ClCompile>
     <ClCompile Include="tests\templates_tests.cpp" />
     <ClCompile Include="tests\test_system.cpp" />
     <ClCompile Include="tests\test_system_tests.cpp" />
-    <ClCompile Include="tests\windows_message_box_test.cpp" />
+    <ClCompile Include="tests\platform_tests.cpp">
+      <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ConformanceMode>
+      <DisableLanguageExtensions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DisableLanguageExtensions>
+      <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

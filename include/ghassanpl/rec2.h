@@ -7,6 +7,7 @@
 #include <glm/vec2.hpp>
 #include <glm/gtx/compatibility.hpp>
 #include <iostream>
+#include <span>
 
 #define GHASSANPL_HAS_REC2
 
@@ -25,6 +26,12 @@ namespace ghassanpl
 
 		constexpr trec2() noexcept = default;
 		constexpr trec2(tvec a, tvec b) noexcept : p1(a), p2(b) { }
+		explicit constexpr trec2(std::span<tvec const> points) noexcept
+		{
+			*this = trec2::exclusive();
+			for (auto& p : points)
+				include(p);
+		}
 		constexpr explicit trec2(tvec a) noexcept : p1(), p2(a) { }
 		constexpr trec2(T x1, T y1, T x2, T y2) noexcept : p1(x1, y1), p2(x2, y2) { }
 		constexpr trec2(const trec2&) noexcept = default;
@@ -36,6 +43,7 @@ namespace ghassanpl
 		constexpr trec2& operator=(const trec2&) noexcept = default;
 		constexpr trec2& operator=(trec2&&) noexcept = default;
 
+		static constexpr trec2 from_points(std::span<tvec const> points) noexcept { return trec2{points}; }
 		static constexpr trec2 from_size(tvec p, tvec s) noexcept { return { p, p + s }; };
 		static constexpr trec2 from_size(T x, T y, T w, T h) noexcept { return { x, y, x + w, y + h }; };
 		static constexpr trec2 from_center_and_size(tvec p, tvec s) noexcept { return { p - s / T(2), p + s / T(2) }; };
@@ -118,7 +126,7 @@ namespace ghassanpl
 		constexpr trec2 at_center(tvec pos) const noexcept { auto copy = *this; copy.set_center(pos); return copy; }
 
 		constexpr trec2 local() const noexcept { return { tvec{}, size() }; }
-		constexpr trec2 relative_to(trec2 const& other) const noexcept { return { p1 - other.p1, p2 - other.p1 }; }
+		constexpr trec2 relative_to(trec2 const& other) const noexcept { return { p1 - other.position(), p2 - other.position() }; }
 
 		constexpr glm::vec2 to_rect_space(tvec world_space) const noexcept { return glm::vec2{ world_space - p1 } / glm::vec2{ size() }; }
 		constexpr tvec to_world_space(glm::vec2 rect_space) const noexcept { return tvec{ rect_space * glm::vec2{ size() } } + p1; }
@@ -234,7 +242,25 @@ namespace ghassanpl
 			const auto c = glm::round(glm::saturate(d));
 			return p1 + c * size();
 		}
+
+		/// TODO: Distance from point to this
 	};
+
+
+	template <typename SHAPE, typename T>
+	concept shape = requires (SHAPE const& shape, glm::tvec2<T> pt, T t) {
+		{ shape.contains(pt) } -> std::convertible_to<bool>;
+		{ shape.calculate_area() } -> std::convertible_to<T>;
+		{ shape.edge_length() } -> std::convertible_to<T>;
+		{ shape.edge_point_alpha(t) } -> std::convertible_to<glm::tvec2<T>>;
+		{ shape.edge_point(t) } -> std::convertible_to<glm::tvec2<T>>;
+		{ shape.bounding_box() } -> std::convertible_to<trec2<T>>;
+		{ shape.projected(pt) } -> std::convertible_to<glm::tvec2<T>>;
+	};
+
+	static_assert(shape<trec2<float>, float>);
+	static_assert(shape<trec2<double>, double>);
+	static_assert(shape<trec2<int>, int>);
 
 	template <typename T>
 	inline trec2<T> operator+(glm::tvec2<T> op, trec2<T> rec) noexcept { return { rec.p1 + op, rec.p2 + op }; }

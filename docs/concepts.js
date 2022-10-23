@@ -17,6 +17,7 @@ var concepts =
       [ "bit_integral", "conceptghassanpl_1_1bit__integral.html", null ],
       [ "output_buffer", "conceptghassanpl_1_1output__buffer.html", null ],
       [ "bytelike", "conceptghassanpl_1_1bytelike.html", null ],
-      [ "integral_or_enum", "conceptghassanpl_1_1integral__or__enum.html", null ]
+      [ "integral_or_enum", "conceptghassanpl_1_1integral__or__enum.html", null ],
+      [ "shape", "conceptghassanpl_1_1shape.html", null ]
     ] ]
 ];

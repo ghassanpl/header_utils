@@ -89,5 +89,14 @@ namespace ghassanpl
 		return result;
 	}
 
+	template <typename MAP, typename VAL>
+	auto map_find(MAP& map, VAL&& value)
+	{
+		auto it = map.find(std::forward<VAL>(value));
+		if (it != map.end())
+			return std::to_address(it);
+		return nullptr;
+	}
+
 	///@}
 }

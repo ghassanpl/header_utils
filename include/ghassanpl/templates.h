@@ -25,6 +25,41 @@ namespace ghassanpl
 /// All of these are pretty much stolen from Daisy Hollman (https://twitter.com/the_whole_daisy), her twitter is fantastic
 namespace ghassanpl
 {
+	template<size_t I, typename... Ts>
+	using nth_type_of = std::tuple_element_t<I, std::tuple<Ts...>>;
+	template<typename... Ts>
+	using first_type_of = std::tuple_element_t<0, std::tuple<Ts...>>;
+	template<typename... Ts>
+	using last_type_of = std::tuple_element_t<(sizeof...(Ts) - 1), std::tuple<Ts...>>;
+
+	template <size_t I, typename T, typename... Ts>
+	auto nth_value_of(T&& t, Ts&&... args)
+	{
+		if constexpr (I == 0)
+			return std::forward<T>(t);
+		else
+		{
+			using return_type = typename nth_type_of<I, T, Ts...>::type;
+			return std::forward<return_type>(nth_value_of<I - 1>((std::forward<Ts>(args))...));
+		}
+	}
+
+	template <typename... Ts>
+	auto first_value_of(Ts&&... args)
+	{
+		using return_type = typename first_type_of<Ts...>::type;
+		return std::forward<return_type>(nth_value_of<0>((std::forward<Ts>(args))...));
+	}
+
+	template <typename... Ts>
+	auto last_value_of(Ts&&... args)
+	{
+		using return_type = typename last_type_of<Ts...>::type;
+		return std::forward<return_type>(nth_value_of<sizeof...(Ts) - 1>((std::forward<Ts>(args))...));
+	}
+
+
+
 	/// Function: for_each
 	/// TODO: Description
 	template <typename... ARGS, typename FUNC>
@@ -483,7 +518,7 @@ namespace ghassanpl
 			static constexpr auto make_slice_function(T&& t, ARGS&&... ts)
 			{
 				return [slicer = next::make_slice_function(std::forward<ARGS>(ts)...), nt = std::forward<T>(t)]<typename CALLBACK>(CALLBACK && cb) mutable {
-					if (include)
+					if constexpr (include)
 						return slicer([t = std::forward<T>(nt), &cb]<typename... NEW_ARGS>(NEW_ARGS&&... sl) mutable { return cb(std::forward<T>(t), std::forward<NEW_ARGS>(sl)...); });
 					else
 						return slicer([&cb]<typename... NEW_ARGS>(NEW_ARGS&&... sl) mutable { return cb(std::forward<NEW_ARGS>(sl)...); });

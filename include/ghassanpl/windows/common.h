@@ -3,13 +3,18 @@ namespace ghassanpl::win
 	/// Base Windows Stuff
 	extern "C"
 	{
+		typedef unsigned char BYTE;
 		typedef unsigned short WORD;
 		typedef unsigned long DWORD;
 		typedef unsigned int UINT;
-		typedef void* HWND;
-		typedef void* HINSTANCE;
+		typedef float FLOAT;
+		typedef int BOOL;
+		typedef BYTE BOOLEAN;
+		typedef long LONG;
+		typedef struct HWND_gh* HWND;
+		typedef struct HINSTANCE_gh* HINSTANCE;
 		typedef HINSTANCE HMODULE;
-		typedef void* HICON;
+		typedef struct HICON_gh* HICON;
 		typedef const wchar_t* PCWSTR, * LPCWSTR;
 		typedef const char* PCCH, * LPCCH;
 		typedef wchar_t* LPWSTR;
@@ -25,5 +30,7 @@ namespace ghassanpl::win
 
 		__declspec(dllimport) HWND __stdcall GetActiveWindow(void);
 		__declspec(dllimport) HMODULE __stdcall GetModuleHandleW(LPCWSTR lpModuleName);
+		__declspec(dllimport) HMODULE __stdcall LoadLibraryW(LPCWSTR lpFileName);
+		__declspec(dllimport) BOOL __stdcall FreeLibrary(HMODULE hModule);
 	}
 }

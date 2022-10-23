@@ -90,7 +90,8 @@ $(document).ready(function(){initNavTree('namespaceghassanpl_1_1random.html','')
 
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">ghassanpl::random Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -130,6 +131,9 @@ requires is_any_of_v&lt;T, short, int, long, long long, unsigned short, unsigned
 <tr class="memitem:af7b70de759a87aba0990ffaa7d65461d"><td class="memTemplParams" colspan="2">template&lt;typename RANDOM , typename T &gt; </td></tr>
 <tr class="memitem:af7b70de759a87aba0990ffaa7d65461d"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#af7b70de759a87aba0990ffaa7d65461d">range</a> (T from, T <a class="el" href="group___ranges.html#gad09bc60b963ea15fb4617f1cd45a5ddd">to</a>, RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
 <tr class="separator:af7b70de759a87aba0990ffaa7d65461d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f2b7e0a47c2c4a11fdc800627a13394"><td class="memTemplParams" colspan="2">template&lt;std::floating_point T = float&gt; </td></tr>
+<tr class="memitem:a0f2b7e0a47c2c4a11fdc800627a13394"><td class="memTemplItemLeft" align="right" valign="top">constexpr T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#a0f2b7e0a47c2c4a11fdc800627a13394">halton_sequence</a> (unsigned index, unsigned base=2)</td></tr>
+<tr class="separator:a0f2b7e0a47c2c4a11fdc800627a13394"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed4400ac0cf22b7bda44073836b8dcae"><td class="memTemplParams" colspan="2">template&lt;typename RANDOM  = std::default_random_engine&gt; </td></tr>
 <tr class="memitem:aed4400ac0cf22b7bda44073836b8dcae"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#aed4400ac0cf22b7bda44073836b8dcae">with_probability</a> (double probability, RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
 <tr class="separator:aed4400ac0cf22b7bda44073836b8dcae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,6 +164,36 @@ requires is_any_of_v&lt;T, short, int, long, long long, unsigned short, unsigned
 <tr class="memitem:ac5f4fa74be2d8fb52c132d2b8283c05b"><td class="memTemplParams" colspan="2">template&lt;typename RANDOM , typename T &gt; </td></tr>
 <tr class="memitem:ac5f4fa74be2d8fb52c132d2b8283c05b"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#ac5f4fa74be2d8fb52c132d2b8283c05b">make_bag_randomizer</a> (T &amp;container, RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
 <tr class="separator:ac5f4fa74be2d8fb52c132d2b8283c05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89ccd8b10170b66131eea33f1001d45b"><td class="memTemplParams" colspan="2">template&lt;typename T , typename RANDOM &gt; </td></tr>
+<tr class="memitem:a89ccd8b10170b66131eea33f1001d45b"><td class="memTemplItemLeft" align="right" valign="top">size_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#a89ccd8b10170b66131eea33f1001d45b">option_with_probability</a> (std::span&lt; T const &gt; option_probabilities, RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
+<tr class="separator:a89ccd8b10170b66131eea33f1001d45b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98ba5ec96a41ff8f762443985bb86c73"><td class="memTemplParams" colspan="2">template&lt;std::floating_point T = float, typename RANDOM  = std::default_random_engine&gt; </td></tr>
+<tr class="memitem:a98ba5ec96a41ff8f762443985bb86c73"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#a98ba5ec96a41ff8f762443985bb86c73">radians</a> (RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
+<tr class="separator:a98ba5ec96a41ff8f762443985bb86c73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af573ccd8ac156efa22abf76a0f337541"><td class="memTemplParams" colspan="2">template&lt;std::floating_point T = float, typename RANDOM  = std::default_random_engine&gt; </td></tr>
+<tr class="memitem:af573ccd8ac156efa22abf76a0f337541"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#af573ccd8ac156efa22abf76a0f337541">degrees</a> (RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
+<tr class="separator:af573ccd8ac156efa22abf76a0f337541"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a525a136149155f57298d98de45923da8"><td class="memTemplParams" colspan="2">template&lt;std::floating_point T = float, typename RANDOM  = std::default_random_engine&gt; </td></tr>
+<tr class="memitem:a525a136149155f57298d98de45923da8"><td class="memTemplItemLeft" align="right" valign="top">glm::tvec2&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#a525a136149155f57298d98de45923da8">unit_vector</a> (RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
+<tr class="separator:a525a136149155f57298d98de45923da8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae167dffe2b8a0518b78403dbefdae5c0"><td class="memTemplParams" colspan="2">template&lt;std::floating_point T = float, typename RANDOM  = std::default_random_engine&gt; </td></tr>
+<tr class="memitem:ae167dffe2b8a0518b78403dbefdae5c0"><td class="memTemplItemLeft" align="right" valign="top">glm::tvec2&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#ae167dffe2b8a0518b78403dbefdae5c0">in</a> (trec2&lt; T &gt; const &amp;rect, RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
+<tr class="separator:ae167dffe2b8a0518b78403dbefdae5c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38e3f8de8db752bad59f1051398d6c54"><td class="memTemplParams" colspan="2">template&lt;typename RANDOM  = std::default_random_engine&gt; </td></tr>
+<tr class="memitem:a38e3f8de8db752bad59f1051398d6c54"><td class="memTemplItemLeft" align="right" valign="top">glm::ivec2&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#a38e3f8de8db752bad59f1051398d6c54">neighbor</a> (RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
+<tr class="separator:a38e3f8de8db752bad59f1051398d6c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6777a828ff36ba38f21bf0148f7fec2"><td class="memTemplParams" colspan="2">template&lt;typename RANDOM  = std::default_random_engine&gt; </td></tr>
+<tr class="memitem:ac6777a828ff36ba38f21bf0148f7fec2"><td class="memTemplItemLeft" align="right" valign="top">glm::ivec2&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#ac6777a828ff36ba38f21bf0148f7fec2">diagonal_neighbor</a> (RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
+<tr class="separator:ac6777a828ff36ba38f21bf0148f7fec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2f9188ee7f1cbd1ac556dd669683022"><td class="memTemplParams" colspan="2">template&lt;typename RANDOM  = std::default_random_engine&gt; </td></tr>
+<tr class="memitem:aa2f9188ee7f1cbd1ac556dd669683022"><td class="memTemplItemLeft" align="right" valign="top">glm::ivec2&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#aa2f9188ee7f1cbd1ac556dd669683022">surrounding</a> (RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</td></tr>
+<tr class="separator:aa2f9188ee7f1cbd1ac556dd669683022"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ae532bb95a9a12f798b49fbb77745138b"><td class="memTemplParams" colspan="2">template&lt;class T , class... TYPES&gt; </td></tr>
+<tr class="memitem:ae532bb95a9a12f798b49fbb77745138b"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1random.html#ae532bb95a9a12f798b49fbb77745138b">is_any_of_v</a> = std::disjunction_v&lt;std::is_same&lt;T, TYPES&gt;...&gt;</td></tr>
+<tr class="separator:ae532bb95a9a12f798b49fbb77745138b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at <a href="https://mozilla.org/MPL/2.0/">https://mozilla.org/MPL/2.0/</a>. </dd></dl>
@@ -182,7 +216,51 @@ template&lt;typename RANDOM  = std::default_random_engine&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00073">73</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00074">74</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+
+</div>
+</div>
+<a id="af573ccd8ac156efa22abf76a0f337541" name="af573ccd8ac156efa22abf76a0f337541"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af573ccd8ac156efa22abf76a0f337541">&#9670;&#160;</a></span>degrees()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::floating_point T = float, typename RANDOM  = std::default_random_engine&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T ghassanpl::random::degrees </td>
+          <td>(</td>
+          <td class="paramtype">RANDOM &amp;&#160;</td>
+          <td class="paramname"><em>rng</em> = <code>::ghassanpl::random::default_random_engine</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random__geom_8h_source.html#l00020">20</a> of file <a class="el" href="random__geom_8h_source.html">random_geom.h</a>.</p>
+
+</div>
+</div>
+<a id="ac6777a828ff36ba38f21bf0148f7fec2" name="ac6777a828ff36ba38f21bf0148f7fec2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6777a828ff36ba38f21bf0148f7fec2">&#9670;&#160;</a></span>diagonal_neighbor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RANDOM  = std::default_random_engine&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::ivec2 ghassanpl::random::diagonal_neighbor </td>
+          <td>(</td>
+          <td class="paramtype">RANDOM &amp;&#160;</td>
+          <td class="paramname"><em>rng</em> = <code>::ghassanpl::random::default_random_engine</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random__geom_8h_source.html#l00053">53</a> of file <a class="el" href="random__geom_8h_source.html">random_geom.h</a>.</p>
 
 </div>
 </div>
@@ -205,7 +283,7 @@ requires (N_SIDED &gt;= 2)</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00055">55</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00056">56</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -228,7 +306,7 @@ requires (N_DICE &gt;= 1 &amp;&amp; N_SIDED &gt;= 2)</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00063">63</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00064">64</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -266,7 +344,7 @@ template&lt;typename RANDOM  = std::default_random_engine&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00043">43</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00044">44</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -298,7 +376,7 @@ template&lt;typename RANDOM  = std::default_random_engine&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00035">35</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00036">36</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -336,7 +414,7 @@ template&lt;typename RANDOM , typename T , typename PRED &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00272">272</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00208">208</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -368,7 +446,79 @@ template&lt;typename RANDOM , typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00264">264</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00200">200</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+
+</div>
+</div>
+<a id="a0f2b7e0a47c2c4a11fdc800627a13394" name="a0f2b7e0a47c2c4a11fdc800627a13394"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f2b7e0a47c2c4a11fdc800627a13394">&#9670;&#160;</a></span>halton_sequence()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::floating_point T = float&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr T ghassanpl::random::halton_sequence </td>
+          <td>(</td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned&#160;</td>
+          <td class="paramname"><em>base</em> = <code>2</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00129">129</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+
+</div>
+</div>
+<a id="ae167dffe2b8a0518b78403dbefdae5c0" name="ae167dffe2b8a0518b78403dbefdae5c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae167dffe2b8a0518b78403dbefdae5c0">&#9670;&#160;</a></span>in()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::floating_point T = float, typename RANDOM  = std::default_random_engine&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::tvec2&lt; T &gt; ghassanpl::random::in </td>
+          <td>(</td>
+          <td class="paramtype">trec2&lt; T &gt; const &amp;&#160;</td>
+          <td class="paramname"><em>rect</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RANDOM &amp;&#160;</td>
+          <td class="paramname"><em>rng</em> = <code>::ghassanpl::random::default_random_engine</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random__geom_8h_source.html#l00033">33</a> of file <a class="el" href="random__geom_8h_source.html">random_geom.h</a>.</p>
 
 </div>
 </div>
@@ -406,7 +556,7 @@ template&lt;typename RANDOM , typename T , typename PRED &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00258">258</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00194">194</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -438,7 +588,7 @@ template&lt;typename RANDOM , typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00252">252</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00188">188</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -468,7 +618,7 @@ template&lt;typename INTEGER  = uint64_t, typename RANDOM  = std::default_random
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00021">21</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00022">22</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -507,7 +657,7 @@ requires is_any_of_v&lt;T, short, int, long, long long, unsigned short, unsigned
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00093">93</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00097">97</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -545,7 +695,7 @@ template&lt;typename RANDOM , typename T , typename PRED &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00236">236</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00172">172</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -577,7 +727,7 @@ template&lt;typename RANDOM , typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00228">228</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00164">164</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -609,7 +759,29 @@ template&lt;typename RANDOM , typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00280">280</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00216">216</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+
+</div>
+</div>
+<a id="a38e3f8de8db752bad59f1051398d6c54" name="a38e3f8de8db752bad59f1051398d6c54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38e3f8de8db752bad59f1051398d6c54">&#9670;&#160;</a></span>neighbor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RANDOM  = std::default_random_engine&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::ivec2 ghassanpl::random::neighbor </td>
+          <td>(</td>
+          <td class="paramtype">RANDOM &amp;&#160;</td>
+          <td class="paramname"><em>rng</em> = <code>::ghassanpl::random::default_random_engine</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random__geom_8h_source.html#l00039">39</a> of file <a class="el" href="random__geom_8h_source.html">random_geom.h</a>.</p>
 
 </div>
 </div>
@@ -641,7 +813,39 @@ template&lt;typename RANDOM  = std::default_random_engine&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00213">213</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00149">149</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+
+</div>
+</div>
+<a id="a89ccd8b10170b66131eea33f1001d45b" name="a89ccd8b10170b66131eea33f1001d45b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89ccd8b10170b66131eea33f1001d45b">&#9670;&#160;</a></span>option_with_probability()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename RANDOM &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t ghassanpl::random::option_with_probability </td>
+          <td>(</td>
+          <td class="paramtype">std::span&lt; T const &gt;&#160;</td>
+          <td class="paramname"><em>option_probabilities</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RANDOM &amp;&#160;</td>
+          <td class="paramname"><em>rng</em> = <code>::ghassanpl::random::default_random_engine</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00240">240</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -663,7 +867,29 @@ template&lt;typename REAL  = double, typename RANDOM  = std::default_random_engi
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00028">28</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00029">29</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+
+</div>
+</div>
+<a id="a98ba5ec96a41ff8f762443985bb86c73" name="a98ba5ec96a41ff8f762443985bb86c73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98ba5ec96a41ff8f762443985bb86c73">&#9670;&#160;</a></span>radians()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::floating_point T = float, typename RANDOM  = std::default_random_engine&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">T ghassanpl::random::radians </td>
+          <td>(</td>
+          <td class="paramtype">RANDOM &amp;&#160;</td>
+          <td class="paramname"><em>rng</em> = <code>::ghassanpl::random::default_random_engine</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random__geom_8h_source.html#l00013">13</a> of file <a class="el" href="random__geom_8h_source.html">random_geom.h</a>.</p>
 
 </div>
 </div>
@@ -701,7 +927,7 @@ template&lt;typename RANDOM , typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00109">109</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00113">113</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -739,7 +965,7 @@ template&lt;typename RANDOM , std::floating_point T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00101">101</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00105">105</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>
@@ -771,7 +997,51 @@ template&lt;typename RANDOM , typename T &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00220">220</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00156">156</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+
+</div>
+</div>
+<a id="aa2f9188ee7f1cbd1ac556dd669683022" name="aa2f9188ee7f1cbd1ac556dd669683022"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2f9188ee7f1cbd1ac556dd669683022">&#9670;&#160;</a></span>surrounding()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RANDOM  = std::default_random_engine&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::ivec2 ghassanpl::random::surrounding </td>
+          <td>(</td>
+          <td class="paramtype">RANDOM &amp;&#160;</td>
+          <td class="paramname"><em>rng</em> = <code>::ghassanpl::random::default_random_engine</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random__geom_8h_source.html#l00067">67</a> of file <a class="el" href="random__geom_8h_source.html">random_geom.h</a>.</p>
+
+</div>
+</div>
+<a id="a525a136149155f57298d98de45923da8" name="a525a136149155f57298d98de45923da8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a525a136149155f57298d98de45923da8">&#9670;&#160;</a></span>unit_vector()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;std::floating_point T = float, typename RANDOM  = std::default_random_engine&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">glm::tvec2&lt; T &gt; ghassanpl::random::unit_vector </td>
+          <td>(</td>
+          <td class="paramtype">RANDOM &amp;&#160;</td>
+          <td class="paramname"><em>rng</em> = <code>::ghassanpl::random::default_random_engine</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random__geom_8h_source.html#l00027">27</a> of file <a class="el" href="random__geom_8h_source.html">random_geom.h</a>.</p>
 
 </div>
 </div>
@@ -803,7 +1073,34 @@ template&lt;typename RANDOM  = std::default_random_engine&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00207">207</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00143">143</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="ae532bb95a9a12f798b49fbb77745138b" name="ae532bb95a9a12f798b49fbb77745138b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae532bb95a9a12f798b49fbb77745138b">&#9670;&#160;</a></span>is_any_of_v</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T , class... TYPES&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr bool ghassanpl::random::is_any_of_v = std::disjunction_v&lt;std::is_same&lt;T, TYPES&gt;...&gt;</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="random_8h_source.html#l00093">93</a> of file <a class="el" href="random_8h_source.html">random.h</a>.</p>
 
 </div>
 </div>

@@ -103,7 +103,14 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceghassanpl_1_1colors"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1colors.html">ghassanpl::colors</a></td></tr>
 <tr class="memdesc:namespaceghassanpl_1_1colors"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains the basic colors as variables and functions. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2bd76b8baeed4f6153cd3d087e83b8f4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><b>color_space</b> { <b>linear_rgba</b>
+, <b>srgb</b>
+, <b>hsva</b>
+, <b>rgbe</b>
+ }</td></tr>
+<tr class="separator:ga2bd76b8baeed4f6153cd3d087e83b8f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga72f54ee837994b9599b6411792c7cd84"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">ghassanpl::color_rgba_t</a> = glm::vec4</td></tr>
+<tr class="memdesc:ga72f54ee837994b9599b6411792c7cd84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a color in RGBA color space, with 0.0-1.0 float elements.  <a href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">More...</a><br /></td></tr>
 <tr class="separator:ga72f54ee837994b9599b6411792c7cd84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">ghassanpl::color_hsva_t</a> = named&lt; glm::vec4, &quot;color_hsva&quot;&gt;</td></tr>
 <tr class="memdesc:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a color in HSVA color space, with 0.0-1.0 float elements.  <a href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">More...</a><br /></td></tr>
@@ -132,6 +139,12 @@ Namespaces</h2></td></tr>
 <tr class="memitem:gac5a99d76f132942d1e06e5ca147d3573"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gac5a99d76f132942d1e06e5ca147d3573">ghassanpl::contrasting</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
 <tr class="memdesc:gac5a99d76f132942d1e06e5ca147d3573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color that's a good contrasting color for the original.  <a href="group___colors.html#gac5a99d76f132942d1e06e5ca147d3573">More...</a><br /></td></tr>
 <tr class="separator:gac5a99d76f132942d1e06e5ca147d3573"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga036c395e3bf0b1ae2c6c6afe0f035a11"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11">ghassanpl::luminance</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
+<tr class="memdesc:ga036c395e3bf0b1ae2c6c6afe0f035a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get brightness of color.  <a href="group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11">More...</a><br /></td></tr>
+<tr class="separator:ga036c395e3bf0b1ae2c6c6afe0f035a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace8c71252f6168960b135e89a167dc3b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gace8c71252f6168960b135e89a167dc3b">ghassanpl::desaturated</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float desaturation)</td></tr>
+<tr class="memdesc:gace8c71252f6168960b135e89a167dc3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color sapped of <code>desaturation</code> (0-1) of its saturation.  <a href="group___colors.html#gace8c71252f6168960b135e89a167dc3b">More...</a><br /></td></tr>
+<tr class="separator:gace8c71252f6168960b135e89a167dc3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad66512e84d142f2bf947fdf6ac340567"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gad66512e84d142f2bf947fdf6ac340567">ghassanpl::from_u32_rgb</a> (uint32_t rgb)</td></tr>
 <tr class="memdesc:gad66512e84d142f2bf947fdf6ac340567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an RGB 8bpp integer, with R being most significant.  <a href="group___colors.html#gad66512e84d142f2bf947fdf6ac340567">More...</a><br /></td></tr>
 <tr class="separator:gad66512e84d142f2bf947fdf6ac340567"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,7 +208,7 @@ Namespaces</h2></td></tr>
 
 <p>Represents a color in HSVA color space, with 0.0-1.0 float elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00019">19</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00028">28</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -210,9 +223,10 @@ Namespaces</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Represents a color in RGBA color space, with 0.0-1.0 float elements </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00017">17</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p>Represents a color in RGBA color space, with 0.0-1.0 float elements. </p>
+
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00026">26</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -230,7 +244,32 @@ Namespaces</h2></td></tr>
 
 <p>Default <code>color_t</code> type is RGBA. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00021">21</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00030">30</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ga2bd76b8baeed4f6153cd3d087e83b8f4" name="ga2bd76b8baeed4f6153cd3d087e83b8f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga2bd76b8baeed4f6153cd3d087e83b8f4">&#9670;&#160;</a></span>color_space</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class ghassanpl::color_space</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00016">16</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -273,7 +312,7 @@ Namespaces</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd><code>contrast</code> here is between 0.0 and 1.0 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group___colors.html#ga8412b721aff95aa0b8524e7e9bea4f08" title="Returns a color with its contrast changed This uses a differen algorithm and contrast value than cont...">contrast2</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00072">72</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00081">81</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -315,7 +354,7 @@ Namespaces</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd><code>contrast</code> here is between -1.0 and 1.0 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1" title="Returns a color with its contrast changed.">contrast</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00082">82</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00091">91</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -345,7 +384,47 @@ Namespaces</h2></td></tr>
 
 <p>Returns a color that's a good contrasting color for the original. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00103">103</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00112">112</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+
+</div>
+</div>
+<a id="gace8c71252f6168960b135e89a167dc3b" name="gace8c71252f6168960b135e89a167dc3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gace8c71252f6168960b135e89a167dc3b">&#9670;&#160;</a></span>desaturated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::desaturated </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramname"><em>color</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>desaturation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a color sapped of <code>desaturation</code> (0-1) of its saturation. </p>
+
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00124">124</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -375,7 +454,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an ABGR 8bpp integer, with A being most significant, and R being least significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00127">127</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00149">149</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -405,7 +484,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an ARGB 8bpp integer, with A being most significant, and B being least significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00125">125</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00147">147</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -435,7 +514,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an BGR 8bpp integer, with R being least significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00119">119</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00141">141</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -465,7 +544,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an BGRA 8bpp integer, with A being least significant, and B being most significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00123">123</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00145">145</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -495,7 +574,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an RGB 8bpp integer, with R being most significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00117">117</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00139">139</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -525,7 +604,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an RGBA 8bpp integer, with R being most significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00121">121</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00143">143</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -565,7 +644,7 @@ Namespaces</h2></td></tr>
 
 <p>Returns a gamma corrected color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00090">90</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00099">99</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -595,7 +674,7 @@ Namespaces</h2></td></tr>
 
 <p>Returns an inverted color, i.e. with (1.0-x) on all of its elements, excluding its alpha. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00097">97</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00106">106</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -635,7 +714,37 @@ Namespaces</h2></td></tr>
 
 <p>Returns a color lightened by a coefficient. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00061">61</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00070">70</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+
+</div>
+</div>
+<a id="ga036c395e3bf0b1ae2c6c6afe0f035a11" name="ga036c395e3bf0b1ae2c6c6afe0f035a11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga036c395e3bf0b1ae2c6c6afe0f035a11">&#9670;&#160;</a></span>luminance()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr float ghassanpl::luminance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramname"><em>color</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get brightness of color. </p>
+
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00118">118</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -675,7 +784,7 @@ Namespaces</h2></td></tr>
 
 <p>Converts a HTML color string (like #FBA or fafafa) to an RGBA color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00197">197</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00219">219</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -705,7 +814,7 @@ Namespaces</h2></td></tr>
 
 <p>Returns a color with all elements clamped between 0 and 1. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00055">55</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00064">64</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -735,7 +844,7 @@ Namespaces</h2></td></tr>
 
 <p>Converts an RGBA color to HSVA space. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00165">165</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00187">187</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -765,7 +874,7 @@ Namespaces</h2></td></tr>
 
 <p>Converts a HSVA color to RGBA space. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00143">143</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00165">165</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -795,7 +904,7 @@ Namespaces</h2></td></tr>
 
 <p>Creates an 8bpp ABGR integer from a color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00132">132</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00154">154</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -825,7 +934,7 @@ Namespaces</h2></td></tr>
 
 <p>Creates an 8bpp ARGB integer from a color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00130">130</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00152">152</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -855,7 +964,7 @@ Namespaces</h2></td></tr>
 
 <p>Creates a 32 bit, 8bpp BGR integer from a color, with the most significant 8 bits set to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00140">140</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00162">162</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -885,7 +994,7 @@ Namespaces</h2></td></tr>
 
 <p>Creates an 8bpp BGRA integer from a color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00136">136</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00158">158</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -915,7 +1024,7 @@ Namespaces</h2></td></tr>
 
 <p>Creates a 32 bit, 8bpp RGB integer from a color, with the most significant 8 bits set to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00138">138</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00160">160</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -945,7 +1054,7 @@ Namespaces</h2></td></tr>
 
 <p>Creates an 8bpp RGBA integer from a color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00134">134</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00156">156</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>

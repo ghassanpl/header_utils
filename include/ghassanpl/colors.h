@@ -13,6 +13,15 @@ namespace ghassanpl
 	/// \ingroup Colors
 	///@{
 
+	enum class color_space
+	{
+		linear_rgba,
+		srgb,
+		hsva,
+
+		rgbe, /// Radiant HDR
+	};
+
 	/// Represents a color in RGBA color space, with 0.0-1.0 float elements
 	using color_rgba_t = glm::vec4;
 	/// Represents a color in HSVA color space, with 0.0-1.0 float elements
@@ -104,7 +113,20 @@ namespace ghassanpl
 	{
 		return color_t(fmod(color.r + 0.5f, 1.0f), fmod(color.g + 0.5f, 1.0f), fmod(color.b + 0.5f, 1.0f), color.a);
 	}
+	
+	/// Get brightness of color
+	constexpr inline float luminance(color_t const& color)
+	{		
+		return color.r * 0.3f + color.g * 0.59f + color.b * 0.11f;
+	}
 
+	/// Returns a color sapped of `desaturation` (0-1) of its saturation.
+	constexpr inline color_t desaturated(color_t const& color, float desaturation)
+	{
+		const auto l = luminance(color);
+		return glm::mix(color, color_t{l, l, l, color.a}, desaturation);
+	}
+	
 	namespace detail 
 	{
 		constexpr inline float byte_to_float(uint32_t byte) { return (byte & 0xFF) / 255.0f; } 
