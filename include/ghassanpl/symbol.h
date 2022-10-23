@@ -42,6 +42,14 @@ namespace ghassanpl
 		friend bool operator==(std::string_view a, symbol const& b) noexcept { return a == b.value; }
 		friend auto operator<=>(std::string_view a, symbol const& b) noexcept { return a <=> b.value; }
 	};
+
+	std::string_view symbol_for(std::string_view val)
+	{
+		auto& sym_values = symbol::values();
+		const auto v = sym_values.find(val);
+		return (v == sym_values.end()) ? *sym_values.insert(std::string{ val }).first : *v;
+	}
+
 }
 
 /// TODO: ostream << and formatter

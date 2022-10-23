@@ -23,7 +23,7 @@ namespace ghassanpl::parsing
 		}
 	};
 
-	bool try_eat(std::string_view& str, std::string_view what)
+	inline bool try_eat(std::string_view& str, std::string_view what)
 	{
 		string_ops::trim_whitespace_left(str);
 		if (!str.starts_with(what))
@@ -32,7 +32,7 @@ namespace ghassanpl::parsing
 		return true;
 	}
 
-	bool try_eat(std::string_view& str, char what)
+	inline bool try_eat(std::string_view& str, char what)
 	{
 		string_ops::trim_whitespace_left(str);
 		if (!str.starts_with(what))
@@ -41,25 +41,25 @@ namespace ghassanpl::parsing
 		return true;
 	}
 
-	void eat(std::string_view& str, std::string_view what)
+	inline void eat(std::string_view& str, std::string_view what)
 	{
 		if (!try_eat(str, what))
 			throw parse_error(str, "expected '{}'", what);
 	}
 
-	void eat(std::string_view& str, char what)
+	inline void eat(std::string_view& str, char what)
 	{
 		if (!try_eat(str, what))
 			throw parse_error(str, "expected '{}'", what);
 	}
 
-	std::string_view try_eat_identifier(std::string_view& str)
+	inline std::string_view try_eat_identifier(std::string_view& str)
 	{
 		string_ops::trim_whitespace_left(str);
 		return string_ops::consume_c_identifier(str);
 	}
 
-	std::string_view eat_identifier(std::string_view& str)
+	inline std::string_view eat_identifier(std::string_view& str)
 	{
 		auto result = try_eat_identifier(str);
 		if (result.empty())
@@ -67,13 +67,13 @@ namespace ghassanpl::parsing
 		return result;
 	}
 
-	std::string_view try_eat_identifier_with(std::string_view& str, std::string_view additional_chars)
+	inline std::string_view try_eat_identifier_with(std::string_view& str, std::string_view additional_chars)
 	{
 		string_ops::trim_whitespace_left(str);
 		return string_ops::consume_c_identifier_with(str, additional_chars);
 	}
 
-	std::string_view eat_identifier_with(std::string_view& str, std::string_view additional_chars)
+	inline std::string_view eat_identifier_with(std::string_view& str, std::string_view additional_chars)
 	{
 		auto result = try_eat_identifier_with(str, additional_chars);
 		if (result.empty())
@@ -81,12 +81,12 @@ namespace ghassanpl::parsing
 		return result;
 	}
 
-	std::string_view eat_whitespace(std::string_view& str)
+	inline std::string_view eat_whitespace(std::string_view& str)
 	{
 		return string_ops::consume_while(str, string_ops::ascii::isspace);
 	}
 
-	bool try_eat_line_comment(std::string_view& str, std::string_view comment_start = "//")
+	inline bool try_eat_line_comment(std::string_view& str, std::string_view comment_start = "//")
 	{
 		string_ops::trim_whitespace_left(str);
 		if (!try_eat(str, comment_start))
@@ -95,7 +95,7 @@ namespace ghassanpl::parsing
 		return true;
 	}
 
-	bool try_eat_unsigned(std::string_view& str, uint64_t& result, int base = 10)
+	inline bool try_eat_unsigned(std::string_view& str, uint64_t& result, int base = 10)
 	{
 		string_ops::trim_whitespace_left(str);
 		auto [parsed, value] = string_ops::consume_c_unsigned(str, base);
@@ -104,7 +104,7 @@ namespace ghassanpl::parsing
 		return true;
 	}
 
-	std::optional<uint64_t> try_eat_unsigned(std::string_view& str, int base = 10)
+	inline std::optional<uint64_t> try_eat_unsigned(std::string_view& str, int base = 10)
 	{
 		uint64_t result{};
 		if (try_eat_unsigned(str, result, base))
@@ -112,7 +112,7 @@ namespace ghassanpl::parsing
 		return std::nullopt;
 	}
 
-	bool try_eat_integer(std::string_view& str, int64_t& result, int base = 10)
+	inline bool try_eat_integer(std::string_view& str, int64_t& result, int base = 10)
 	{
 		string_ops::trim_whitespace_left(str);
 		auto [parsed, value] = string_ops::consume_c_integer(str, base);
@@ -121,7 +121,7 @@ namespace ghassanpl::parsing
 		return true;
 	}
 
-	std::optional<int64_t> try_eat_integer(std::string_view& str, int base = 10)
+	inline std::optional<int64_t> try_eat_integer(std::string_view& str, int base = 10)
 	{
 		int64_t result{};
 		if (try_eat_integer(str, result, base))
@@ -129,7 +129,7 @@ namespace ghassanpl::parsing
 		return std::nullopt;
 	}
 
-	uint64_t eat_unsigned(std::string_view& str, int base = 10)
+	inline uint64_t eat_unsigned(std::string_view& str, int base = 10)
 	{
 		uint64_t result{};
 		if (!try_eat_unsigned(str, result, base))
@@ -137,7 +137,7 @@ namespace ghassanpl::parsing
 		return result;
 	}
 
-	int64_t eat_integer(std::string_view& str, int base = 10)
+	inline int64_t eat_integer(std::string_view& str, int base = 10)
 	{
 		int64_t result{};
 		if (!try_eat_integer(str, result, base))
@@ -145,12 +145,12 @@ namespace ghassanpl::parsing
 		return result;
 	}
 
-	char32_t try_eat_utf8_codepoint(std::string_view& str)
+	inline char32_t try_eat_utf8_codepoint(std::string_view& str)
 	{
 		return string_ops::consume_utf8(str);
 	}
 
-	char32_t eat_utf8_codepoint(std::string_view& str)
+	inline char32_t eat_utf8_codepoint(std::string_view& str)
 	{
 		if (auto cp = string_ops::consume_utf8(str))
 			return cp;
@@ -182,7 +182,7 @@ namespace ghassanpl::parsing
 
 		using lex_error = parsing::parse_error;
 
-		token lex_number(std::string_view& str)
+		inline token lex_number(std::string_view& str)
 		{
 			auto start = str.begin();
 			std::ignore = consume(str, '-');
@@ -206,7 +206,7 @@ namespace ghassanpl::parsing
 			return token{ token::number, make_sv(start, str.begin()), uint8_t(prefix.size()), uint8_t(suffix.size()) };
 		}
 
-		token lex_string(std::string_view& str)
+		inline token lex_string(std::string_view& str)
 		{
 			auto start = str.begin();
 
@@ -265,7 +265,7 @@ namespace ghassanpl::parsing
 			return token{ token::string, make_sv(start, str.begin()), 0, uint8_t(suffix.size()) };
 		}
 
-		token lex_comment(std::string_view& str)
+		inline token lex_comment(std::string_view& str)
 		{
 			const auto start = str.begin();
 			const auto ender = consume(str);
@@ -277,12 +277,12 @@ namespace ghassanpl::parsing
 			return token{ token::line_comment, make_sv(start, str.begin()) }; /// end-of-line encountered, line comment
 		}
 
-		token eat_single(token::token_type type, std::string_view& str)
+		inline token eat_single(token::token_type type, std::string_view& str)
 		{
 			return token{ type, string_ops::consume_n(str, 1) };
 		}
 
-		token lex_single_token(std::string_view& str)
+		inline token lex_single_token(std::string_view& str)
 		{
 			eat_whitespace(str);
 
@@ -301,7 +301,7 @@ namespace ghassanpl::parsing
 			return token{ token::word, consume_until(str, isterm) };
 		}
 
-		std::vector<token> lex(std::string_view& str)
+		inline std::vector<token> lex(std::string_view& str)
 		{
 			std::vector<token> result;
 			while (!str.empty())
@@ -370,7 +370,7 @@ namespace ghassanpl::parsing
 			literal_expression(token_it it) : expression(it), literal(*it) {}
 		};
 
-		std::unique_ptr<expression> parse_expression(token_range& tokens)
+		inline std::unique_ptr<expression> parse_expression(token_range& tokens)
 		{
 			std::unique_ptr<expression> result;
 
@@ -430,7 +430,7 @@ namespace ghassanpl::parsing
 			return std::make_unique<function_call_expression>(std::ranges::subrange(start, tokens.begin()), std::move(function_name), std::move(arguments));
 		}
 
-		std::unique_ptr<expression> parse_expression(std::string_view& str)
+		inline std::unique_ptr<expression> parse_expression(std::string_view& str)
 		{
 			const auto tokens = lex(str);
 			using tokenit = std::ranges::iterator_t<decltype(tokens)>;

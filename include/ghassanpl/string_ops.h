@@ -137,6 +137,7 @@ namespace ghassanpl::string_ops
 		[[nodiscard]] constexpr inline bool isxdigit(char32_t d) noexcept { return (d >= 48 && d <= 57) || (d >= 65 && d <= 70) || (d >= 97 && d <= 102); }
 		[[nodiscard]] constexpr inline bool isalnum(char32_t cp) noexcept { return ::ghassanpl::string_ops::ascii::isdigit(cp) || ::ghassanpl::string_ops::ascii::isalpha(cp); }
 		[[nodiscard]] constexpr inline bool isident(char32_t cp) noexcept { return ::ghassanpl::string_ops::ascii::isdigit(cp) || ::ghassanpl::string_ops::ascii::isalpha(cp) || cp == 95; }
+		[[nodiscard]] constexpr inline bool isidentstart(char32_t cp) noexcept { return ::ghassanpl::string_ops::ascii::isalpha(cp) || cp == 95; }
 		[[nodiscard]] constexpr inline bool isspace(char32_t cp) noexcept { return (cp >= 9 && cp <= 13) || cp == 32; }
 		[[nodiscard]] constexpr inline bool ispunct(char32_t cp) noexcept { return (cp >= 33 && cp <= 47) || (cp >= 58 && cp <= 64) || (cp >= 91 && cp <= 96) || (cp >= 123 && cp <= 126); }
 		[[nodiscard]] constexpr inline bool islower(char32_t cp) noexcept { return cp >= 97 && cp <= 122; }
@@ -493,7 +494,7 @@ namespace ghassanpl::string_ops
 
 	[[nodiscard]] inline std::string_view consume_c_identifier(std::string_view& str)
 	{
-		if (str.empty() || !(ascii::isalpha(str[0]) || str[0] == '_'))
+		if (str.empty() || !ascii::isidentstart(str[0]))
 			return {};
 
 		const auto start = str.begin();
@@ -504,7 +505,7 @@ namespace ghassanpl::string_ops
 
 	[[nodiscard]] inline std::string_view consume_c_identifier_with(std::string_view& str, std::string_view additional_chars)
 	{
-		if (str.empty() || !(ascii::isalpha(str[0]) || str[0] == '_' || contains(additional_chars, str[0])))
+		if (str.empty() || !(ascii::isidentstart(str[0]) || contains(additional_chars, str[0])))
 			return {};
 
 		const auto start = str.begin();
@@ -674,11 +675,12 @@ namespace ghassanpl::string_ops
 			/// TODO: this
 			return {};
 		}
-		else if (str.starts_with("0x"))
-		{
-			/// TODO: this
-			return {};
-		}
+		else if (consume(str, "0x"))
+			return consume_c_unsigned(str, 16);
+		else if (consume(str, "0b"))
+			return consume_c_unsigned(str, 1);
+		else if (consume(str, "0"))
+			return consume_c_unsigned(str, 8);
 		else if (ascii::isdigit(first_char))
 		{
 			{
