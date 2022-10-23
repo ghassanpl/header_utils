@@ -541,7 +541,7 @@ namespace ghassanpl::string_ops
 
 	[[nodiscard]] inline std::string_view consume_c_identifier(std::string_view& str)
 	{
-		if (str.empty() || !(ascii::isalpha(str[0]) || str[0] == '_'))
+		if (str.empty() || !ascii::isidentstart(str[0]))
 			return {};
 
 		const auto start = str.begin();
@@ -552,7 +552,7 @@ namespace ghassanpl::string_ops
 
 	[[nodiscard]] inline std::string_view consume_c_identifier_with(std::string_view& str, std::string_view additional_chars)
 	{
-		if (str.empty() || !(ascii::isalpha(str[0]) || str[0] == '_' || contains(additional_chars, str[0])))
+		if (str.empty() || !(ascii::isidentstart(str[0]) || contains(additional_chars, str[0])))
 			return {};
 
 		const auto start = str.begin();
@@ -722,11 +722,12 @@ namespace ghassanpl::string_ops
 			/// TODO: this
 			return {};
 		}
-		else if (str.starts_with("0x"))
-		{
-			/// TODO: this
-			return {};
-		}
+		else if (consume(str, "0x"))
+			return consume_c_unsigned(str, 16);
+		else if (consume(str, "0b"))
+			return consume_c_unsigned(str, 1);
+		else if (consume(str, "0"))
+			return consume_c_unsigned(str, 8);
 		else if (ascii::isdigit(first_char))
 		{
 			{

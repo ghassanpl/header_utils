@@ -6,3 +6,5 @@ CoverageReport-*
 /include/ghassanpl/.parsing
 /Output
 /include/ghassanpl/buffers
+/include/ghassanpl/mmap - Copy.h
+/vcpkg_installed/x64-windows
