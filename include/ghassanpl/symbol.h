@@ -12,7 +12,7 @@ namespace ghassanpl
 	{
 		std::string_view value{};
 
-		explicit symbol(std::string_view val) : value{ val.empty() ? std::string_view{} : insert(val) } { }
+		explicit symbol(std::string_view val) : value{ insert(val) } { }
 		symbol() noexcept = default;
 		symbol(symbol const&) noexcept = default;
 		symbol(symbol&&) noexcept = default;

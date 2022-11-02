@@ -28,7 +28,9 @@ namespace ghassanpl::string_ops
 	/// constexpr inline text_encoding utf32_le_encoding;
 	/// constexpr inline text_encoding utf32_be_encoding;
 	/// constexpr inline text_encoding unknown_text_encoding;
-	
+
+	/// https://bjoern.hoehrmann.de/utf-8/decoder/dfa/
+
 	constexpr size_t codepoint_utf8_count(char32_t cp) noexcept;
 
 	struct text_decode_result;

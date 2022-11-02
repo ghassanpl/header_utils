@@ -12,10 +12,11 @@
 namespace ghassanpl::random
 {
 	/// TODO: Tests
+	/// check out https://github.com/effolkronium/random/
 
 	namespace
 	{
-		inline static std::default_random_engine default_random_engine;
+		thread_local inline static std::default_random_engine default_random_engine;
 	}
 
 	template <typename INTEGER = uint64_t, typename RANDOM = std::default_random_engine>
@@ -161,6 +162,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM, typename T>
+	requires std::ranges::sized_range<T>
 	auto iterator(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::size;

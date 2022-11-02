@@ -157,167 +157,9 @@ namespace ghassanpl::parsing
 		throw parse_error(str, "expected UTF-8 codepoint");
 	}
 
+#if 0
 	namespace decade
 	{
-		using namespace string_ops;
-
-		struct token
-		{
-			enum token_type
-			{
-				error, eol, 
-				end_sub_expression, comma,
-				block_comment, line_comment,
-
-				word, number, string, start_sub_expression,
-			};
-
-			token_type type{};
-			std::string_view range;
-			uint8_t prefix{};
-			uint8_t suffix{};
-		};
-
-		static constexpr auto isterm = [](char c) { static constexpr std::string_view tops = "|^[]{}(),"; return tops.contains(c) || ascii::isspace(c); };
-
-		using lex_error = parsing::parse_error;
-
-		inline token lex_number(std::string_view& str)
-		{
-			auto start = str.begin();
-			std::ignore = consume(str, '-');
-			auto start_real = str.begin();
-			if (consume(str, '0') && consume(str, ascii::isalpha))
-				start_real = str.begin();
-
-			std::ignore = consume_while(str, ascii::isdigit);
-			if (consume(str, '.'))
-				std::ignore = consume_while(str, ascii::isdigit);
-
-			auto end_real = str.begin();
-			std::ignore = consume_until(str, isterm);
-
-			const auto prefix = make_sv(start, start_real);
-			const auto suffix = make_sv(end_real, str.begin());
-			if (prefix.size() > std::numeric_limits<uint8_t>::max())
-				throw lex_error(prefix, "number prefix too long (max 255 characters)");
-			if (suffix.size() > std::numeric_limits<uint8_t>::max())
-				throw lex_error(suffix, "number suffix too long (max 255 characters)");
-			return token{ token::number, make_sv(start, str.begin()), uint8_t(prefix.size()), uint8_t(suffix.size()) };
-		}
-
-		inline token lex_string(std::string_view& str)
-		{
-			auto start = str.begin();
-
-			auto ender = consume(str);
-			while (!str.empty())
-			{
-				if (consume(str, '\\'))
-				{
-					if (str.empty())
-						throw lex_error(str.substr(1), "empty escape sequence is invalid");
-					else
-					{
-						std::string_view escape{};
-						switch (consume(str))
-						{
-						case 'u':
-							escape = consume_n(str, 4, ascii::isxdigit);
-							if (escape.size() != 4)
-								throw lex_error(escape, "invalid 16-bit Unicode escape sequence");
-							break;
-						case 'U':
-							escape = consume_n(str, 8, ascii::isxdigit);
-							if (escape.size() != 8)
-								throw lex_error(escape, "invalid 32-bit Unicode escape sequence");
-							break;
-						case 'o':
-							escape = consume_n(str, 3, ascii::isodigit);
-							if (escape.size() != 3)
-								throw lex_error(escape, "invalid octal escape sequence");
-							break;
-						case 'x':
-							escape = consume_n(str, 2, ascii::isxdigit);
-							if (escape.size() != 2)
-								throw lex_error(escape, "invalid hexadecimal escape sequence");
-							break;
-						default:
-							break;
-						}
-					}
-				}
-				else if (str.starts_with(ender))
-					break;
-				else
-					str.remove_prefix(1);
-			}
-
-			if (!consume(str, ender))
-				throw lex_error(str.substr(1), "unterminated string literal");
-
-			auto end_real = str.begin();
-			auto suffix = consume_until(str, isterm);
-
-			if (suffix.size() > std::numeric_limits<uint8_t>::max())
-				throw lex_error(suffix, "number suffix too long (max 255 characters)");
-
-			return token{ token::string, make_sv(start, str.begin()), 0, uint8_t(suffix.size()) };
-		}
-
-		inline token lex_comment(std::string_view& str)
-		{
-			const auto start = str.begin();
-			const auto ender = consume(str);
-
-			const auto comment_span = consume_until(str, ender);
-			if (consume(str, ender))
-				return token{ token::block_comment, make_sv(start, str.begin()) }; /// block comment
-
-			return token{ token::line_comment, make_sv(start, str.begin()) }; /// end-of-line encountered, line comment
-		}
-
-		inline token eat_single(token::token_type type, std::string_view& str)
-		{
-			return token{ type, string_ops::consume_n(str, 1) };
-		}
-
-		inline token lex_single_token(std::string_view& str)
-		{
-			eat_whitespace(str);
-
-			if (str.empty())
-				return token{ token::eol, str };
-
-			const auto cp = str[0];
-
-			if (ascii::isdigit(cp) || (cp == '-' && str.size() > 1 && ascii::isdigit(str[1]))) return lex_number(str);
-			else if (cp == '"' || cp == '\'') return lex_string(str);
-			else if (cp == '|' || cp == '^') return lex_comment(str);
-			else if (cp == '[') return eat_single(token::start_sub_expression, str);
-			else if (cp == ']') return eat_single(token::end_sub_expression, str);
-			else if (cp == ',') return eat_single(token::comma, str);
-
-			return token{ token::word, consume_until(str, isterm) };
-		}
-
-		inline std::vector<token> lex(std::string_view& str)
-		{
-			std::vector<token> result;
-			while (!str.empty())
-			{
-				auto token = lex_single_token(str);
-				result.push_back(token);
-				if (token.type == token::eol)
-					break;
-			}
-			return result;
-		}
-
-		using token_it = std::vector<token>::const_iterator;
-		using token_range = std::ranges::subrange<token_it>;
-
-		[[nodiscard]] inline std::string_view to_string_view(token_range const& range) { return make_sv(range.data()->range.begin(), (range.data() + (range.size() - 1))->range.end()); }
 		template <GHPL_FORMAT_TEMPLATE>
 		[[nodiscard]] inline parsing::parse_error parse_error(token_range const& range, GHPL_FORMAT_ARGS) { return parsing::parse_error(to_string_view(range), GHPL_FORMAT_FORWARD); }
 		template <GHPL_FORMAT_TEMPLATE>
@@ -336,10 +178,10 @@ namespace ghassanpl::parsing
 		{
 			std::vector<std::unique_ptr<expression>> arguments;
 			std::string name;
-			static std::string make_name(std::span<token_it const> name_parts)
+			static std::string make_name(std::span<token_it const> name_parts, bool infix)
 			{
 				std::string name;
-				if (name_parts.size() % 2)
+				if (infix)
 					name += ':';
 				for (token_it it : name_parts)
 				{
@@ -348,9 +190,9 @@ namespace ghassanpl::parsing
 				}
 				return name;
 			}
-			function_call_expression(token_range range, std::span<token_it const> name_, std::vector<std::unique_ptr<expression>> arguments_) 
+			function_call_expression(token_range range, std::span<token_it const> name_, std::vector<std::unique_ptr<expression>> arguments_, bool infix) 
 				: expression(range)
-				, name(make_name(name_))
+				, name(make_name(name_, infix))
 				, arguments(std::move(arguments_))
 			{
 			}
@@ -427,7 +269,7 @@ namespace ghassanpl::parsing
 					throw parse_error(function_identifier->source_range, "expected function name part");
 			}
 
-			return std::make_unique<function_call_expression>(std::ranges::subrange(start, tokens.begin()), std::move(function_name), std::move(arguments));
+			return std::make_unique<function_call_expression>(std::ranges::subrange(start, tokens.begin()), std::move(function_name), std::move(arguments), infix);
 		}
 
 		inline std::unique_ptr<expression> parse_expression(std::string_view& str)
@@ -439,4 +281,5 @@ namespace ghassanpl::parsing
 		}
 
 	}
+#endif
 }

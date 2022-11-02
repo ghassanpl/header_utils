@@ -1252,4 +1252,4 @@ namespace ghassanpl::string_ops
 #define GHPL_FORMAT_TEMPLATE typename... GHPL_ARGS
 #define GHPL_FORMAT_ARGS std::string_view ghpl_fmt, GHPL_ARGS&&... ghpl_args
 #define GHPL_FORMAT_FORWARD ghpl_fmt, std::forward<GHPL_ARGS>(ghpl_args)...
-#define GHPL_FORMAT_CALL std::vformat(ghpl_fmt, std::make_format_args(GHPL_FORMAT_FORWARD))
+#define GHPL_FORMAT_CALL std::vformat(ghpl_fmt, std::make_format_args(std::forward<GHPL_ARGS>(ghpl_args)...))

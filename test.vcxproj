@@ -214,6 +214,7 @@
     <ClCompile Include="tests\enum_flags_tests.cpp" />
     <ClCompile Include="tests\formats_tests.cpp" />
     <ClCompile Include="tests\functional_tests.cpp" />
+    <ClCompile Include="tests\hashes_tests.cpp" />
     <ClCompile Include="tests\main.cpp" />
     <ClCompile Include="tests\mmap_tests.cpp" />
     <ClCompile Include="tests\named_tests.cpp" />
@@ -222,12 +223,7 @@
     <ClCompile Include="tests\ranges_tests.cpp" />
     <ClCompile Include="tests\symbol_tests.cpp" />
     <ClCompile Include="tests\rec2_tests.cpp" />
-    <ClCompile Include="tests\string_ops_tests.cpp">
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PreprocessToFile>
-      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</PreprocessSuppressLineNumbers>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PreprocessToFile>
-      <PreprocessSuppressLineNumbers Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</PreprocessSuppressLineNumbers>
-    </ClCompile>
+    <ClCompile Include="tests\string_ops_tests.cpp" />
     <ClCompile Include="tests\templates_tests.cpp" />
     <ClCompile Include="tests\test_system.cpp" />
     <ClCompile Include="tests\test_system_tests.cpp" />
