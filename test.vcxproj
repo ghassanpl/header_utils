@@ -214,7 +214,6 @@
     <ClCompile Include="tests\enum_flags_tests.cpp" />
     <ClCompile Include="tests\formats_tests.cpp" />
     <ClCompile Include="tests\functional_tests.cpp" />
-    <ClCompile Include="tests\hashes_tests.cpp" />
     <ClCompile Include="tests\main.cpp" />
     <ClCompile Include="tests\mmap_tests.cpp" />
     <ClCompile Include="tests\named_tests.cpp" />
