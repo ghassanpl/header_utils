@@ -5,6 +5,7 @@
 #pragma once
 
 #include "string_ops.h"
+#include "unicode.h"
 #include "mmap.h"
 #include "json_helpers.h"
 #include <ostream>
@@ -117,7 +118,10 @@ namespace ghassanpl::formats
 					string_ops::trim_whitespace_left(str);
 
 					if (str.empty())
+					{
+						obj[std::move(key)] = true;
 						break;
+					}
 
 					if (str[0] == ',' || str[0] == ';')
 					{

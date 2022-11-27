@@ -164,7 +164,7 @@ namespace ghassanpl::string_ops
 		}
 #endif
 
-		/// Our own versions of <cctype> functions that do not block, are defined for values outside of uint8_t, and do not depend on locale.
+		/// Our own versions of <cctype> functions that do not block, are defined for values outside of uint8_t, and do not depend on locale. (plus you can take pointers to them)
 		/// RATIONALE: We are using numbers (e.g. 65) instead of character literals (e.g. 'A'), because the encoding of this source file might not be ASCII-based
 		/// Thanks to @fmatthew5876 for inspiration
 

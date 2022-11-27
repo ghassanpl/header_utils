@@ -45,8 +45,9 @@ namespace ghassanpl
 		constexpr T* operator->() noexcept { return &Value; }
 		constexpr T const* operator->() const noexcept { return &Value; }
 
-		constexpr T& get() noexcept { return Value; }
-		constexpr T const& get() const noexcept { return Value; }
+		constexpr T& get() & noexcept { return Value; }
+		constexpr T const& get() const& noexcept { return Value; }
+		constexpr T get() && noexcept { return std::move(Value); }
 
 		template <typename U>
 		constexpr U as() noexcept { return static_cast<U>(Value); }

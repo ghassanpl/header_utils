@@ -8,16 +8,17 @@
 
 namespace ghassanpl
 {
-	struct symbol
+	template <typename TAG>
+	struct namespaced_symbol
 	{
 		std::string_view value{};
 
-		explicit symbol(std::string_view val) : value{ val.empty() ? std::string_view{} : insert(val) } { }
-		symbol() noexcept = default;
-		symbol(symbol const&) noexcept = default;
-		symbol(symbol&&) noexcept = default;
-		symbol& operator=(symbol const&) noexcept = default;
-		symbol& operator=(symbol&&) noexcept = default;
+		explicit namespaced_symbol(std::string_view val) : value{ val.empty() ? std::string_view{} : insert(val) } { }
+		namespaced_symbol() noexcept = default;
+		namespaced_symbol(namespaced_symbol const&) noexcept = default;
+		namespaced_symbol(namespaced_symbol&&) noexcept = default;
+		namespaced_symbol& operator=(namespaced_symbol const&) noexcept = default;
+		namespaced_symbol& operator=(namespaced_symbol&&) noexcept = default;
 
 		static auto& values() noexcept
 		{
@@ -27,7 +28,7 @@ namespace ghassanpl
 
 		static std::string_view insert(std::string_view val)
 		{
-			auto& values = symbol::values();
+			auto& values = namespaced_symbol<TAG>::values();
 			if (auto v = values.find(val); v == values.end())
 				return *values.insert(std::string{ val }).first;
 			else
@@ -36,16 +37,19 @@ namespace ghassanpl
 
 		explicit operator std::string_view() const noexcept { return value; }
 
-		bool operator==(symbol const& other) const noexcept { return value.data() == other.value.data(); }
-		auto operator<=>(symbol const& other) const noexcept { return value <=> other.value; }
+		bool operator==(namespaced_symbol const& other) const noexcept { return value.data() == other.value.data(); }
+		auto operator<=>(namespaced_symbol const& other) const noexcept { return value <=> other.value; }
 
-		friend bool operator==(std::string_view a, symbol const& b) noexcept { return a == b.value; }
-		friend auto operator<=>(std::string_view a, symbol const& b) noexcept { return a <=> b.value; }
+		friend bool operator==(std::string_view a, namespaced_symbol const& b) noexcept { return a == b.value; }
+		friend auto operator<=>(std::string_view a, namespaced_symbol const& b) noexcept { return a <=> b.value; }
 	};
 
+	using symbol = namespaced_symbol<void>;
+
+	template <typename TAG = void>
 	std::string_view symbol_for(std::string_view val)
 	{
-		auto& sym_values = symbol::values();
+		auto& sym_values = namespaced_symbol<TAG>::values();
 		const auto v = sym_values.find(val);
 		return (v == sym_values.end()) ? *sym_values.insert(std::string{ val }).first : *v;
 	}

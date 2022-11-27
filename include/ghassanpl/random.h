@@ -33,6 +33,13 @@ namespace ghassanpl::random
 		return dist(rng);
 	}
 
+	template <typename REAL = double, typename RANDOM = std::default_random_engine>
+	REAL normal(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	{
+		static std::normal_distribution<REAL> dist;
+		return dist(rng);
+	}
+
 	template <typename RANDOM = std::default_random_engine>
 	uint64_t dice(uint64_t n_sided, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -238,9 +245,10 @@ namespace ghassanpl::random
 		return Randomizer{ rng, container };
 	}
 
-	template <typename T, typename RANDOM>
+	template <std::convertible_to<double> T, typename RANDOM>
 	size_t option_with_probability(std::span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
+		/*
 		/// TODO: instead of span, we could just use a range
 		if (option_probabilities.size() == 0)
 			return -1;
@@ -255,6 +263,10 @@ namespace ghassanpl::random
 		}
 		/// We should never reach here
 		return 0;
+		*/
+		/// Well, <random> is pretty dope it seems
+		std::discrete_distribution<size_t> dist(option_probabilities.begin(), option_probabilities.end());
+		return dist(rng);
 	}
 
 }
