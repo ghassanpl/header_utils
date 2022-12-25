@@ -16,6 +16,9 @@
     <Filter Include="Header Files\windows">
       <UniqueIdentifier>{1841a88e-0102-4362-a8c1-5d5e8eb12b5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\geometry">
+      <UniqueIdentifier>{c7fce0bf-6179-4186-a6cc-ac843241ef50}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tests\tests_common.h">
@@ -129,6 +132,24 @@
     <ClInclude Include="include\ghassanpl\random_geom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\paths.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\direction.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\geometry_common.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\grid.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\squares.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\constexpr_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -205,6 +226,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\random_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\paths_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="playground.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\geometry_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

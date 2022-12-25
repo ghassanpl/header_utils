@@ -50,6 +50,15 @@ namespace ghassanpl
 		return *(std::ranges::begin(range) + index);
 	}
 
+	/// Returns a pointer to the value at `index` of `range` if index is valid, else returns null
+	constexpr auto at_ptr(random_access_range auto& range, std::integral auto index)
+		-> decltype(std::to_address(std::ranges::begin(range) + index))
+	{
+		if (!valid_index(range, index))
+			return nullptr;
+		return std::to_address(std::ranges::begin(range) + index);
+	}
+
 	/// Returns a reference to the value at \ref module_index of `range`
 	constexpr decltype(auto) modulo_at(random_access_range auto& range, std::integral auto index)
 	{

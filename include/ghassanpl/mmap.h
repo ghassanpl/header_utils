@@ -166,13 +166,13 @@ namespace ghassanpl
 		{
 			std::error_code error;
 			map(path, offset, length, error);
-			if (error) { throw std::system_error(error); }
+			if (error) { throw error; }
 		}
 		basic_mmap(const handle_type handle, const size_type offset = 0, const size_type length = map_entire_file)
 		{
 			std::error_code error;
 			map(handle, offset, length, error);
-			if (error) { throw std::system_error(error); }
+			if (error) { throw error; }
 		}
 
 		basic_mmap(const basic_mmap&) = delete;
@@ -272,6 +272,11 @@ namespace ghassanpl
 
 		void conditional_sync() {}
 	};
+
+	using byte_mmap_source = mmap_source<std::byte>;
+	using u8_mmap_source = mmap_source<std::uint8_t>;
+	using char_mmap_source = mmap_source<char>;
+	using char8_mmap_source = mmap_source<char8_t>;
 
 	template <typename VALUE_TYPE = std::byte>
 	struct mmap_sink : public basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>

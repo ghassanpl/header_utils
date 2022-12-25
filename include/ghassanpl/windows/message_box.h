@@ -150,7 +150,7 @@ namespace ghassanpl
 				::ghassanpl::msg::title{"Assumption Failed"}, 
 				::ghassanpl::msg::description{message_information}, 
 				::ghassanpl::msg::long_description{message_long}, 
-				::ghassanpl::msg::debug_abort_continue_buttons, 
+				::ghassanpl::msg::debug_abort_continue_buttons,
 				1, 
 				std::forward<ARGS>(args)...
 			});

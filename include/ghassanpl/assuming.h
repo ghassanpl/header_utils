@@ -121,6 +121,13 @@
 /// Asummes the first expression is less than or equal to the second.
 #define AssumingLessEqual(a, b, ...) AssumingBinOp(a, b, <=, "be less or equal to", __VA_ARGS__)
 
+/// Asummes the first expression contains the bits in the second expression.
+#define AssumingContainsBits(a, b, ...) { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)) [[unlikely]] \
+	::ghassanpl::ReportAssumptionFailure(#a " will contain flags " #b, { \
+		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_a_v)) }, \
+		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
+	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
+
 /// Asummes the expression evaluates to 0.
 #define AssumingZero(a, ...) AssumingBinOp(a, 0, ==, "be equal to", __VA_ARGS__)
 
@@ -181,7 +188,7 @@
 #define AssumingSingleThread(...) { \
 		static std::thread::id _assuming_thread_id = std::this_thread::get_id(); \
 		auto _assuming_current_thread_id = std::this_thread::get_id(); \
-		ASSUMING_ASSUME(_assuming_thread_id == _assuming_current_thread_id);
+		ASSUMING_ASSUME(_assuming_thread_id == _assuming_current_thread_id); \
 	}
 
 #define AssumingNull(exp, ...) ASSUMING_ASSUME(!((exp) != nullptr))
@@ -276,7 +283,13 @@ namespace ghassanpl
 	/// \param expectation An explanation of which assumption failed
 	/// \param values The values of the expressions the assumption macro checked
 	/// \param data Any additional arguments you gave to the macro, std-formatted.
-	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, std::source_location loc = std::source_location::current());
+	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, std::source_location loc
+#if __INTELLISENSE__
+		= {}
+#else
+		= std::source_location::current()
+#endif
+	);
 }
 
 /// \namespace ghassanpl

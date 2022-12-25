@@ -73,7 +73,7 @@ namespace ghassanpl::string_ops
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ///
 
 	[[nodiscard]] constexpr inline std::string_view make_sv(nullptr_t start, nullptr_t end) { return std::string_view{}; }
-	
+
 	template <std::contiguous_iterator IT, std::contiguous_iterator IT2>
 	requires std::is_same_v<std::iter_value_t<IT>, char> && std::is_same_v<std::iter_value_t<IT2>, char>
 	[[nodiscard]] constexpr inline std::string_view make_sv(IT start, IT2 end) noexcept(noexcept(std::to_address(start))) { return std::string_view{ std::to_address(start), static_cast<size_t>(std::to_address(end) - std::to_address(start)) }; }
@@ -281,11 +281,11 @@ namespace ghassanpl::string_ops
 			return strings_equal_ignore_case(a.substr(a.size() - b.size()), b);
 		}
 
-		[[nodiscard]] constexpr auto string_find_ignore_case(std::string_view a, std::string_view b)
+		[[nodiscard]] constexpr auto string_find_ignore_case(std::string_view haystack, std::string_view pattern)
 		{
 			return std::search(
-				a.begin(), a.end(),
-				b.begin(), b.end(),
+				haystack.begin(), haystack.end(),
+				pattern.begin(), pattern.end(),
 				[](char ch1, char ch2) { return ::ghassanpl::string_ops::ascii::tolower(ch1) == ::ghassanpl::string_ops::ascii::tolower(ch2); }
 			);
 		}
@@ -1001,6 +1001,13 @@ namespace ghassanpl::string_ops
 		}
 	}
 
+	template <string_or_char NEEDLE, string_or_char REPLACE>
+	inline std::string replaced(std::string subject, NEEDLE&& search, REPLACE&& replace)
+	{
+		string_ops::replace(subject, std::forward<NEEDLE>(search), std::forward<REPLACE>(replace));
+		return subject;
+	}
+
 	template <string_or_char DELIMITER = char, string_or_char ESCAPE = char>
 	inline void quote(std::string& subject, DELIMITER delimiter = '"', ESCAPE escape = '\\')
 	{
@@ -1247,6 +1254,39 @@ namespace ghassanpl::string_ops
 	{
 		return ::ghassanpl::string_ops::word_wrap(_source, max_width, [letter_width](std::string_view str) { return T(str.size() * letter_width); });
 	}
+
+	template <std::integral T>
+	[[nodiscard]] inline auto string_to_number(std::string_view str, size_t* idx = nullptr, int base = 10)
+	{
+		const auto begin = str.data();
+		auto end = str.data() + str.size();
+		T value{};
+		auto res = std::from_chars(begin, end, value, base);
+		if (idx && res.ec == std::error_code{})
+			*idx = size_t(res.ptr - begin);
+		return value;
+	}
+
+	template <std::floating_point T>
+	[[nodiscard]] inline auto string_to_number(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general)
+	{
+		const auto begin = str.data();
+		auto end = str.data() + str.size();
+		T value{};
+		auto res = std::from_chars(begin, end, value, format);
+		if (idx && res.ec == std::error_code{})
+			*idx = size_t(res.ptr - begin);
+		return value;
+	}
+
+	[[nodiscard]] inline int stoi(std::string_view str, size_t* idx = nullptr, int base = 10) { return string_to_number<int>(str, idx, base); }
+	[[nodiscard]] inline long stol(std::string_view str, size_t* idx = nullptr, int base = 10) { return string_to_number<long>(str, idx, base); }
+	[[nodiscard]] inline long long stoll(std::string_view str, size_t* idx = nullptr, int base = 10) { return string_to_number<long long>(str, idx, base); }
+	[[nodiscard]] inline unsigned long stoul(std::string_view str, size_t* idx = nullptr, int base = 10) { return string_to_number<unsigned long>(str, idx, base); }
+	[[nodiscard]] inline unsigned long long stoull(std::string_view str, size_t* idx = nullptr, int base = 10) { return string_to_number<unsigned long long>(str, idx, base); }
+	[[nodiscard]] inline float stof(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return string_to_number<float>(str, idx, format); }
+	[[nodiscard]] inline double stod(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return string_to_number<double>(str, idx, format); }
+	[[nodiscard]] inline long double stold(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return string_to_number<long double>(str, idx, format); }
 }
 
 #define GHPL_FORMAT_TEMPLATE typename... GHPL_ARGS

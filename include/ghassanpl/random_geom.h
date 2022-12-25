@@ -35,6 +35,8 @@ namespace ghassanpl::random
 		return { range(rect.p1.x, rect.p2.x), range(rect.p1.y, rect.p2.y) };
 	}
 
+	/// TODO: in(circle), in(poly)?, on(rect), on(circle)
+
 	template <typename RANDOM = std::default_random_engine>
 	glm::ivec2 neighbor(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{

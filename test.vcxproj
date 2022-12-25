@@ -168,6 +168,7 @@
     <ClInclude Include="include\ghassanpl\buffers.h" />
     <ClInclude Include="include\ghassanpl\colors.h" />
     <ClInclude Include="include\ghassanpl\configs.h" />
+    <ClInclude Include="include\ghassanpl\constexpr_math.h" />
     <ClInclude Include="include\ghassanpl\containers.h" />
     <ClInclude Include="include\ghassanpl\di.h" />
     <ClInclude Include="include\ghassanpl\di_impl.h" />
@@ -176,11 +177,16 @@
     <ClInclude Include="include\ghassanpl\flag_bits_v.h" />
     <ClInclude Include="include\ghassanpl\formats.h" />
     <ClInclude Include="include\ghassanpl\functional.h" />
+    <ClInclude Include="include\ghassanpl\geometry\direction.h" />
+    <ClInclude Include="include\ghassanpl\geometry\geometry_common.h" />
+    <ClInclude Include="include\ghassanpl\geometry\grid.h" />
+    <ClInclude Include="include\ghassanpl\geometry\squares.h" />
     <ClInclude Include="include\ghassanpl\hashes.h" />
     <ClInclude Include="include\ghassanpl\json_helpers.h" />
     <ClInclude Include="include\ghassanpl\mmap.h" />
     <ClInclude Include="include\ghassanpl\named.h" />
     <ClInclude Include="include\ghassanpl\parsing.h" />
+    <ClInclude Include="include\ghassanpl\paths.h" />
     <ClInclude Include="include\ghassanpl\platform.h" />
     <ClInclude Include="include\ghassanpl\random.h" />
     <ClInclude Include="include\ghassanpl\random_geom.h" />
@@ -204,6 +210,7 @@
     <None Include="vcpkg.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="playground.cpp" />
     <ClCompile Include="tests\align_tests.cpp" />
     <ClCompile Include="tests\assuming_tests.cpp" />
     <ClCompile Include="tests\buffers_tests.cpp" />
@@ -214,10 +221,12 @@
     <ClCompile Include="tests\enum_flags_tests.cpp" />
     <ClCompile Include="tests\formats_tests.cpp" />
     <ClCompile Include="tests\functional_tests.cpp" />
+    <ClCompile Include="tests\geometry_tests.cpp" />
     <ClCompile Include="tests\main.cpp" />
     <ClCompile Include="tests\mmap_tests.cpp" />
     <ClCompile Include="tests\named_tests.cpp" />
     <ClCompile Include="tests\parsing_tests.cpp" />
+    <ClCompile Include="tests\paths_tests.cpp" />
     <ClCompile Include="tests\random_tests.cpp" />
     <ClCompile Include="tests\ranges_tests.cpp" />
     <ClCompile Include="tests\symbol_tests.cpp" />

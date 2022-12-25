@@ -27,6 +27,22 @@ namespace ghassanpl
 		//seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 	}
 
+	template <template<typename> typename HASHER = std::hash, typename FIRST, typename... T>
+	constexpr size_t hash(FIRST&& first, T&&... values)
+	{
+		size_t result = HASHER<std::remove_cvref_t<FIRST>>{}(std::forward<FIRST>(first));
+		(ghassanpl::hash_combine(result, std::forward<T>(values), HASHER<std::remove_cvref_t<T>>{}), ...);
+		return result;
+	}
+	/*
+	template <typename FIRST, typename... T>
+	constexpr size_t hash(FIRST&& first, T&&... values)
+	{
+		size_t result = hasher(std::forward<FIRST>(first));
+		(hash_combine(result, values, hasher), ...);
+	}
+	*/
+
 	/// Combines an existing hash value (`seed`) with the hash of a range of values
 	/// \ingroup Hashes
 	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
@@ -184,4 +200,25 @@ namespace ghassanpl
 		return result;
 	}
 
+	/// 
+	struct splitmix_state { uint64_t state{}; };
+	[[nodiscard]] constexpr inline uint64_t splitmix(splitmix_state& state, uint64_t stream_id = 0x9e3779b97f4a7c15)
+	{
+		state.state = state.state + stream_id;
+		uint64_t z = state.state;
+		z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;
+		z = (z ^ (z >> 27)) * 0x94d049bb133111eb;
+		z = z ^ (z >> 31);
+		return z;
+	}
+
+	///
+	[[nodiscard]] constexpr inline uint64_t splitmix(uint64_t seed, uint64_t index, uint64_t stream_id = 0x9e3779b97f4a7c15)
+	{
+		uint64_t z = seed + index * stream_id;
+		z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;
+		z = (z ^ (z >> 27)) * 0x94d049bb133111eb;
+		z = z ^ (z >> 31);
+		return z;
+	}
 }

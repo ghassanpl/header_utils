@@ -32,5 +32,6 @@ namespace ghassanpl::win
 		__declspec(dllimport) HMODULE __stdcall GetModuleHandleW(LPCWSTR lpModuleName);
 		__declspec(dllimport) HMODULE __stdcall LoadLibraryW(LPCWSTR lpFileName);
 		__declspec(dllimport) BOOL __stdcall FreeLibrary(HMODULE hModule);
+		__declspec(dllimport) DWORD __stdcall GetLastError(void);
 	}
 }

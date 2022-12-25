@@ -60,6 +60,11 @@ namespace ghassanpl
 		#undef DEF_COLORS
 	}
 
+	constexpr inline color_t premultiplied(color_t const& color)
+	{
+		return { color.r * color.a, color.g * color.a, color.b * color.a, color.a };
+	}
+
 	/// Returns a color with all elements clamped between 0 and 1
 	constexpr inline color_t saturated(color_t const& color)
 	{
@@ -206,12 +211,10 @@ namespace ghassanpl
 		}
 
 		return color_hsva_t{
-			{
-				h,
-				(max != 0) ? (delta / max) : 0,
-				max,
-				rgba.a
-			}
+			h,
+			(max != 0) ? (delta / max) : 0,
+			max,
+			rgba.a
 		};
 	}
 
@@ -230,6 +233,7 @@ namespace ghassanpl
 		{
 		case 4:
 			std::from_chars(str + 3, str + 4, a, 16); a = a << 4 | a;
+			[[fallthrough]];
 		case 3:
 			std::from_chars(str + 0, str + 1, r, 16); r = r << 4 | r;
 			std::from_chars(str + 1, str + 2, g, 16); g = g << 4 | g;
@@ -237,6 +241,7 @@ namespace ghassanpl
 			break;
 		case 8:
 			std::from_chars(str + 6, str + 8, a, 16);
+			[[fallthrough]];
 		case 6:
 			std::from_chars(str + 0, str + 2, r, 16);
 			std::from_chars(str + 2, str + 4, g, 16);
@@ -246,6 +251,14 @@ namespace ghassanpl
 		}
 		return { r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f };
 	}
+
+
+	/// Converts a HTML color string (like #FBA or fafafa) to an RGBA color
+	inline constexpr color_rgba_t from_html(std::string_view html)
+	{
+		return operator""_rgb(html.data(), html.size());
+	}
+
 	///@}
 
 #if 0

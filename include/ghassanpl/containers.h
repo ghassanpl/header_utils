@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <vector>
+#include <map>
 #include "ranges.h"
 
 namespace ghassanpl
@@ -93,10 +95,43 @@ namespace ghassanpl
 	auto map_find(MAP& map, VAL&& value)
 	{
 		auto it = map.find(std::forward<VAL>(value));
-		if (it != map.end())
-			return std::to_address(it);
-		return nullptr;
+		return (it != map.end()) ? &it->second : nullptr;
 	}
+
+	template <typename K, typename V, typename C, typename VAL>
+	auto at_ptr(std::map<K, V, C> const& map, VAL&& value) { return map_find(map, std::forward<VAL>(value)); }
+	template <typename K, typename V, typename C, typename VAL>
+	auto at_ptr(std::map<K, V, C>& map, VAL&& value) { return map_find(map, std::forward<VAL>(value)); }
+
+	/// ordered container movement
+	/*
+	void move_element(container cont, int from_index, int to_index)
+	{
+		assumingvalidindex(fromindex)
+		assumingvalidindex(toindex)
+
+		if (from_index == to_index)
+			return;
+
+		if (std::abs(from_index - to_index) == 1)
+		{
+			std::swap(mFiles[from_index], mFiles[to_index]);
+			return;
+		}
+
+		if (from_index < to_index)
+			std::rotate(mFiles.begin() + from_index, mFiles.begin() + from_index + 1, mFiles.begin() + to_index + 1);
+		else
+			std::rotate(mFiles.begin() + to_index, mFiles.begin() + from_index, mFiles.begin() + from_index + 1);
+	}
+
+	void move_element_by(container cont, int from_index, int by)
+	{
+		move_element(cont, from_index, clamp(from_index+by, 0, size(cont)));
+	}
+	void move_element_to_front();
+	void move_element_to_back();
+	*/
 
 	///@}
 }
