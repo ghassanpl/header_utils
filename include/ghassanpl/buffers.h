@@ -6,6 +6,7 @@
 
 #include <ranges>
 #include <concepts>
+#include "bytes.h"
 
 namespace ghassanpl
 {
@@ -88,14 +89,45 @@ namespace ghassanpl
 	{
 		if constexpr (std::ranges::sized_range<RANGE>)
 			buffer_reserve(buffer, std::ranges::size(range));
-		size_t count = 0;
-		for (auto&& value : std::forward<RANGE>(range))
+
+		/*
+				if constexpr (requires { buffer.append(val); })
 		{
-			if (!buffer_append(buffer, value))
-				break;
-			++count;
+			buffer.append(val);
+			return true;
 		}
-		return count;
+		else if constexpr (requires { buffer.push_back(val); })
+		{
+			buffer.push_back(val);
+			return true;
+		}
+		else if constexpr (requires { buffer.insert(buffer.end(), val); })
+		{
+			buffer.insert(buffer.end(), val);
+			return true;
+		}
+		else 
+		*/
+		if constexpr (requires { buffer.write(std::to_address(std::ranges::begin(range)), std::ranges::size(range)); } && std::ranges::sized_range<RANGE>) /// for ostreams
+		{
+			const auto size = std::ranges::size(range);
+			/// const auto pos = buffer.tellp();
+			buffer.write(std::to_address(std::ranges::begin(range)), size);
+			/// return static_cast<size_t>(buffer.tellp() - pos);
+			/// return buffer.size;
+			return size;
+		}
+		else
+		{
+			size_t count = 0;
+			for (auto&& value : std::forward<RANGE>(range))
+			{
+				if (!buffer_append(buffer, value))
+					break;
+				++count;
+			}
+			return count;
+		}
 	}
 
 	/// Appends characters in the `cstr` to the `buffer`
@@ -162,48 +194,6 @@ namespace ghassanpl
 		return count;
 	}
 
-	/// Represents any trivially copyable type that is trivially castable to an internal object representation (so a char range)
-	template <typename T>
-	concept bytelike = (alignof(T) == alignof(std::byte) && sizeof(T) == sizeof(std::byte) && std::is_trivially_copyable_v<T>);
-
-	/// Converts a span of bytelikes to a span of `std::byte`s
-	template <bytelike T>
-	std::span<std::byte const> as_bytes(std::span<T const> bytes)
-	{
-		return { reinterpret_cast<std::byte const*>(bytes.data()), bytes.size() };
-	}
-
-	/// Returns a `std::byte` span that represents the internal object representation of the argument
-	template <typename T>
-	requires std::is_trivially_copyable_v<T>
-	std::span<std::byte const> as_bytes(T const& pod)
-	{
-		return { reinterpret_cast<std::byte const*>(&pod), sizeof(pod) };
-	}
-
-	/// Converts a span of \ref bytelike s to a span of `char`s
-	template <bytelike T>
-	std::span<char const> as_chars(std::span<T const> bytes)
-	{
-		return { reinterpret_cast<char const*>(bytes.data()), bytes.size() };
-	}
-
-	/// Returns a `char` span that represents the internal object representation of the argument
-	template <typename T>
-	requires std::is_trivially_copyable_v<T>
-	std::span<char const> as_chars(T const& pod)
-	{
-		return { reinterpret_cast<char const*>(&pod), sizeof(pod) };
-	}
-
-	/// Returns a span that represents the internal object representation of the argument, of any \ref bytelike type
-	template <bytelike B, typename T>
-	requires std::is_trivially_copyable_v<T>
-	std::span<B const> as_bytes(T const& pod)
-	{
-		return { reinterpret_cast<B const*>(&pod), sizeof(pod) };
-	}
-
 	/// Appends a POD values internal object representation to a buffer.
 	/// \note
 	/// If, for some reason, you want to append the pod as a certain type of bytelikes
@@ -211,7 +201,7 @@ namespace ghassanpl
 	requires std::is_trivially_copyable_v<POD> && bytelike<buffer_element_type<BUFFER>>
 	size_t buffer_append_pod(BUFFER& buffer, POD const& pod)
 	{
-		return buffer_append_range(buffer, as_bytes<buffer_element_type<BUFFER>, POD>(pod));
+		return buffer_append_range(buffer, as_bytelikes<buffer_element_type<BUFFER>, POD>(pod));
 	}
 
 	///@}

@@ -90,7 +90,15 @@
 		static std::thread::id _assuming_thread_id = std::this_thread::get_id(); \
 		auto _assuming_current_thread_id = std::this_thread::get_id(); \
 		if (_assuming_thread_id != _assuming_current_thread_id)\
-			::ghassanpl::ReportAssumptionFailure("this code will be executed in one thread only", { {"thread_id", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id)} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
+			::ghassanpl::ReportAssumptionFailure("this code will be executed in one thread only", { {"required_thread_id", ::ghassanpl::detail::GetFormattable(_assuming_thread_id)}, {"thread_id", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id)} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
+	}
+
+/// Assumes the point in code executes in the specified thread
+#define AssumingOnThread(thread_to_check, ...) { \
+		auto _assuming_thread_id = (thread_to_check); \
+		auto _assuming_current_thread_id = std::this_thread::get_id(); \
+		if (_assuming_thread_id != _assuming_current_thread_id)\
+			::ghassanpl::ReportAssumptionFailure("this code will be executed in one thread only", { {"required_thread_id", ::ghassanpl::detail::GetFormattable(_assuming_thread_id)}, { "thread_id", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id)} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
 	}
 
 /// Assumes the expression is not (convertible to) a null pointer.
@@ -190,6 +198,12 @@
 		auto _assuming_current_thread_id = std::this_thread::get_id(); \
 		ASSUMING_ASSUME(_assuming_thread_id == _assuming_current_thread_id); \
 	}
+#define AssumingOnThread(thread_to_check, ...) { \
+		auto _assuming_thread_id = (thread_to_check); \
+		auto _assuming_current_thread_id = std::this_thread::get_id(); \
+		ASSUMING_ASSUME(_assuming_thread_id == _assuming_current_thread_id); \
+	}
+
 
 #define AssumingNull(exp, ...) ASSUMING_ASSUME(!((exp) != nullptr))
 #define AssumingNotNull(exp, ...) ASSUMING_ASSUME(!((exp) == nullptr))
@@ -209,6 +223,9 @@
 #define AssumingValidIterator(_iterator, _container, ...) { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); ASSUMING_ASSUME(!(_assuming_iterator == _assuming_end)); }
 #define AssumingBetween(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); ASSUMING_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v < _assuming_b_v); }
 #define AssumingBetweenInclusive(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); ASSUMING_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v); }
+
+#define AssumingContainsBits(a, b, ...) { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); ASSUMING_ASSUME(!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)); }
+
 
 #endif
 

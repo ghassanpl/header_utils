@@ -27,6 +27,8 @@ namespace ghassanpl::geometry
 		north_east
 	};
 
+	static constexpr auto direction_count = 8;
+
 	/// TODO: names, compass name
 
 	using direction_set = enum_flags<direction, uint8_t>;
@@ -81,6 +83,5 @@ namespace ghassanpl::geometry
 		constexpr const int vec_value[] = { 5, 6, 7, 4, -1, 0, 3, 2, 1 };
 		return (direction)vec_value[glm::sign(vec.x) + glm::sign(vec.y) * 3 + 4];
 	}
-
 
 }

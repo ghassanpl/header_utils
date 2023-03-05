@@ -91,11 +91,33 @@ namespace ghassanpl
 		return result;
 	}
 
-	template <typename MAP, typename VAL>
-	auto map_find(MAP& map, VAL&& value)
+	template <typename MAP, typename KEY>
+	auto map_find(MAP& map, KEY&& key)
 	{
-		auto it = map.find(std::forward<VAL>(value));
+		auto it = map.find(std::forward<KEY>(key));
 		return (it != map.end()) ? &it->second : nullptr;
+	}
+
+	namespace detail
+	{
+		template <typename MAP>
+		inline auto map_key_type(MAP const& val)
+		{
+			auto& [k, v] = *std::begin(val);
+			return decltype(k){};
+		}
+	}
+
+	template <typename MAP, typename VAL>
+	auto map_find_value(MAP& map, VAL const* value)
+	{
+		for (auto& [k, v] : map)
+		{
+			if (&v == value)
+				return &k;
+		}
+		using map_key_type = decltype(detail::map_key_type(map));
+		return (map_key_type const*)nullptr;
 	}
 
 	template <typename K, typename V, typename C, typename VAL>

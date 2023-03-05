@@ -67,10 +67,29 @@ namespace ghassanpl
 
 	/// Find a value in `range` and returns an index to it
 	template <random_access_range RANGE, typename T>
-	constexpr auto index_of(RANGE&& range, T&& value)->std::iter_difference_t<range_iterator<RANGE>>
-	requires requires { { std::declval<range_value<RANGE>>() == value } -> std::convertible_to<bool>; }
+	constexpr auto index_of(RANGE&& range, T&& value) -> std::iter_difference_t<range_iterator<RANGE>>
+	requires requires (T value, RANGE range) { { *std::ranges::begin(range) == value } -> std::convertible_to<bool>; }
 	{
-		const auto it = std::ranges::find(range, value);
+		const auto it = std::ranges::find(range, std::forward<T>(value));
+		if (it == std::ranges::end(range))
+			return -1;
+		return std::ranges::distance(std::ranges::begin(range), it);
+	}
+
+	/// Return the element at `index` or `default_value` if not a valid index
+	template <random_access_range RANGE, typename T = range_value<RANGE>>
+	constexpr auto at_or_default(RANGE&& range, std::integral auto index, T&& default_value)
+	{
+		if (!valid_index(range, index)) [[unlikely]] return std::forward<T>(default_value);
+		return at(range, index);
+	}
+
+	/// Find a value in `range` and returns an index to it
+	template <random_access_range RANGE, typename FUNC>
+	constexpr auto find_index(RANGE&& range, FUNC&& func) -> std::iter_difference_t<range_iterator<RANGE>>
+	requires requires (FUNC func, RANGE range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; }
+	{
+		const auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
 		if (it == std::ranges::end(range))
 			return -1;
 		return std::ranges::distance(std::ranges::begin(range), it);

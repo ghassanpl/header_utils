@@ -8,6 +8,7 @@
 
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
+#include <format>
 
 namespace ghassanpl::geometry
 {
@@ -53,3 +54,24 @@ namespace ghassanpl::geometry
 	using rec2 = trec2<float>;
 	using irec2 = trec2<int>;
 }
+
+template <typename T>
+struct std::formatter<glm::tvec2<T>> : std::formatter<std::string>
+{
+	template<class FormatContext>
+	auto format(glm::tvec2<T> const& p, FormatContext& ctx) { return std::formatter<string>::format(std::format("[{}, {}]", p.x, p.y), ctx); }
+};
+
+template <typename T>
+struct std::formatter<glm::tvec3<T>> : std::formatter<std::string>
+{
+	template<class FormatContext>
+	auto format(glm::tvec2<T> const& p, FormatContext& ctx) { return std::formatter<string>::format(std::format("[{}, {}, {}]", p.x, p.y, p.z), ctx); }
+};
+
+template <typename T>
+struct std::formatter<glm::tvec4<T>> : std::formatter<std::string>
+{
+	template<class FormatContext>
+	auto format(glm::tvec2<T> const& p, FormatContext& ctx) { return std::formatter<string>::format(std::format("[{}, {}, {}, {}]", p.x, p.y, p.z, p.w), ctx); }
+};

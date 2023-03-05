@@ -103,6 +103,10 @@ namespace ghassanpl
 			return static_cast<ENUM>(std::countr_zero(b));
 		}
 
+		/// Returns the lowest numerical value in the set. Returns an unspecified value if no values are in the set.
+		[[nodiscard]]
+		constexpr ENUM first_set() const noexcept { return static_cast<ENUM>(std::countr_zero(bits)); }
+
 		/// Returns whether or not *any* of the given flags are set
 		template <typename T, typename... ARGS>
 		[[nodiscard]]

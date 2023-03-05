@@ -85,11 +85,11 @@ namespace ghassanpl::formats
 			}
 		}
 
-		inline void save_file(std::filesystem::path const& to, nlohmann::json const& j)
+		inline void save_file(std::filesystem::path const& to, nlohmann::json const& j, bool pretty = true)
 		{
 			std::ofstream out{ to };
 			nlohmann::detail::serializer<nlohmann::json> s{ nlohmann::detail::output_adapter<char, std::string>(out), '\t', nlohmann::detail::error_handler_t::strict };
-			s.dump(j, true, false, 1);
+			s.dump(j, pretty, false, 1);
 		}
 
 
@@ -150,6 +150,25 @@ namespace ghassanpl::formats
 			}
 
 			throw std::runtime_error(std::format("no key \"{}\" found", key));
+		}
+
+		template <typename T>
+		inline bool field_opt(T& val, nlohmann::json const& g, std::string_view key)
+		{
+			try
+			{
+				auto it = g.find(key);
+				if (it != g.end())
+				{
+					val = *it;
+					return true;
+				}
+			}
+			catch (...)
+			{
+				std::throw_with_nested(std::runtime_error{ std::format("while trying to convert value at key \"{}\" to type {}", key, typeid(T).name()) });
+			}
+			return false;
 		}
 
 		template <typename T>

@@ -166,6 +166,7 @@
     <ClInclude Include="include\ghassanpl\atomic_enum_flags.h" />
     <ClInclude Include="include\ghassanpl\bits.h" />
     <ClInclude Include="include\ghassanpl\buffers.h" />
+    <ClInclude Include="include\ghassanpl\bytes.h" />
     <ClInclude Include="include\ghassanpl\colors.h" />
     <ClInclude Include="include\ghassanpl\configs.h" />
     <ClInclude Include="include\ghassanpl\constexpr_math.h" />
@@ -179,7 +180,8 @@
     <ClInclude Include="include\ghassanpl\functional.h" />
     <ClInclude Include="include\ghassanpl\geometry\direction.h" />
     <ClInclude Include="include\ghassanpl\geometry\geometry_common.h" />
-    <ClInclude Include="include\ghassanpl\geometry\grid.h" />
+    <ClInclude Include="include\ghassanpl\geometry\square_grid.h" />
+    <ClInclude Include="include\ghassanpl\geometry\square_grid_algorithms.h" />
     <ClInclude Include="include\ghassanpl\geometry\squares.h" />
     <ClInclude Include="include\ghassanpl\hashes.h" />
     <ClInclude Include="include\ghassanpl\json_helpers.h" />

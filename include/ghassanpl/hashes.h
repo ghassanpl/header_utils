@@ -5,72 +5,12 @@
 #pragma once
 
 #include <source_location>
+#include "bytes.h"
 
 namespace ghassanpl
 {
 	/// \defgroup Hashes
 	/// Hashing functions.
-	
-	/// Combines an existing hash value (`seed`) with the hash of value `v`
-	/// \ingroup Hashes
-	template <typename T, typename HASHER = std::hash<T>>
-	constexpr void hash_combine(size_t& seed, T&& v, HASHER&& hasher = {})
-	{
-		constexpr size_t kMul = 0x9ddfea08eb382d69ULL;
-		size_t a = (hasher(v) ^ seed) * kMul;
-		a ^= (a >> 47);
-		size_t b = (seed ^ a) * kMul;
-		b ^= (b >> 47);
-		b *= kMul;
-		seed = b;
-
-		//seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-	}
-
-	template <template<typename> typename HASHER = std::hash, typename FIRST, typename... T>
-	constexpr size_t hash(FIRST&& first, T&&... values)
-	{
-		size_t result = HASHER<std::remove_cvref_t<FIRST>>{}(std::forward<FIRST>(first));
-		(ghassanpl::hash_combine(result, std::forward<T>(values), HASHER<std::remove_cvref_t<T>>{}), ...);
-		return result;
-	}
-	/*
-	template <typename FIRST, typename... T>
-	constexpr size_t hash(FIRST&& first, T&&... values)
-	{
-		size_t result = hasher(std::forward<FIRST>(first));
-		(hash_combine(result, values, hasher), ...);
-	}
-	*/
-
-	/// Combines an existing hash value (`seed`) with the hash of a range of values
-	/// \ingroup Hashes
-	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
-	constexpr void hash_range(std::size_t& seed, It first, It last, HASHER&& hasher = {})
-	{
-		for (; first != last; ++first)
-			hash_combine(seed, *first, hasher);
-	}
-
-	/// Hashes a range of values
-	/// \ingroup Hashes
-	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
-	[[nodiscard]] constexpr std::size_t hash_range(It first, It last, HASHER&& hasher = {})
-	{
-		size_t seed = 0;
-		hash_range(seed, first, last, std::forward<HASHER>(hasher));
-		return seed;
-	}
-
-	/// Hashes a range of values
-	/// \ingroup Hashes
-	template <std::ranges::range T, typename HASHER = std::hash<std::ranges::range_value_t<T>>>
-	[[nodiscard]] constexpr std::size_t hash_range(T range, HASHER&& hasher = {})
-	{
-		size_t seed = 0;
-		hash_range(seed, std::ranges::begin(range), std::ranges::end(range), std::forward<HASHER>(hasher));
-		return seed;
-	}
 
 	static constexpr inline uint32_t crc32_table[256] = {
 		0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
@@ -118,24 +58,22 @@ namespace ghassanpl
 		0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 	};
 
-	/// Calculates a CRC32 for a C string
+	/// Calculates a CRC32 for a span of bytelikes
 	/// \ingroup Hashes
-	[[nodiscard]] constexpr inline uint32_t crc32(const char* in)
+	template <bytelike T>
+	[[nodiscard]] constexpr inline uint32_t crc32(std::span<T const> bytes)
 	{
 		uint32_t crc = 0xFFFFFFFFu;
-		while (auto c = *in++)
-			crc = crc32_table[(crc ^ c) & 0xFF] ^ (crc >> 8);
+		for (auto byte: as_u8s(bytes))
+			crc = crc32_table[(crc ^ byte) & 0xFF] ^ (crc >> 8);
 		return ~crc;
 	}
 
-	/// Calculates a CRC32 for a span of bytes
+	/// Calculates a CRC32 for a string
 	/// \ingroup Hashes
-	[[nodiscard]] constexpr inline uint32_t crc32(uint8_t const* in, size_t count)
+	[[nodiscard]] constexpr inline uint32_t crc32(std::string_view bytes)
 	{
-		uint32_t crc = 0xFFFFFFFFu;
-		while (count --> 0)
-			crc = crc32_table[(crc ^ (*in++)) & 0xFF] ^ (crc >> 8);
-		return ~crc;
+		return crc32(std::span{ bytes });
 	}
 
 	/// Calculates a CRC32 of a source_location (constexpr, so can be used at compile time)
@@ -180,23 +118,39 @@ namespace ghassanpl
 		0x14DEA25F3AF9026D, 0x562E43B4931334FE, 0x913F6188692D6F4B, 0xD3CF8063C0C759D8, 0x5DEDC41A34BBEEB2, 0x1F1D25F19D51D821, 0xD80C07CD676F8394, 0x9AFCE626CE85B507,
 	};
 
-	/// Calculates a CRC64 for a span of bytes
+	/// Calculates a CRC4 for a span of bytelikes
 	/// \ingroup Hashes
-	[[nodiscard]] constexpr inline uint64_t crc64(uint8_t const* in, size_t count)
+	template <bytelike T>
+	[[nodiscard]] constexpr inline uint64_t crc64(std::span<T const> bytes)
 	{
 		uint64_t crc = 0;
-		while (count --> 0)
-			crc = crc64_table[crc >> 56] ^ ((crc << 8U) ^ (*in++));
-		return crc;
+		for (auto byte : as_u8s(bytes))
+			crc = crc64_table[crc >> 56] ^ ((crc << 8U) ^ byte);
+		return ~crc;
 	}
-	
+
+	/// Calculates a CRC64 for a string
+	/// \ingroup Hashes
+	[[nodiscard]] constexpr inline auto crc64(std::string_view bytes)
+	{
+		return crc64(std::span{ bytes });
+	}
+
+	/// Calculates a CRC64 of a source_location (constexpr, so can be used at compile time)
+	/// \ingroup Hashes
+	[[nodiscard]] constexpr inline auto crc64(const std::source_location& k)
+	{
+		return crc64(k.file_name()) ^ k.line() ^ k.column();
+	}
+
 	/// Calculates a FNV Hash for a span of bytes
 	/// \ingroup Hashes
-	[[nodiscard]] constexpr inline uint64_t fnv(uint8_t const* in, size_t count)
+	template <bytelike T>
+	[[nodiscard]] constexpr inline uint64_t fnv(std::span<T const> bytes)
 	{
 		uint64_t result = 0xcbf29ce484222325;
-		while (count --> 0)
-			result = (result ^ (*in++)) * 0x00000100000001b3U;
+		for (auto byte: bytes)
+			result = (result ^ std::bit_cast<uint8_t>(byte)) * 0x00000100000001b3U;
 		return result;
 	}
 
@@ -220,5 +174,117 @@ namespace ghassanpl
 		z = (z ^ (z >> 27)) * 0x94d049bb133111eb;
 		z = z ^ (z >> 31);
 		return z;
+	}
+
+	constexpr void ce_hash_combine(size_t& hash1, size_t hash2) noexcept
+	{
+		constexpr size_t kMul = 0x9ddfea08eb382d69ULL;
+		const auto seed = hash1;
+		size_t a = (hash2 ^ seed) * kMul;
+		a ^= (a >> 47);
+		size_t b = (seed ^ a) * kMul;
+		b ^= (b >> 47);
+		b *= kMul;
+		hash1 = b;
+	}
+
+	[[nodiscard]] constexpr size_t ce_hash(float val) noexcept { return fnv(as_u8s(val == 0.0f ? 0.0f : val)); }
+	[[nodiscard]] constexpr size_t ce_hash(double val) noexcept { return fnv(as_u8s(val == 0.0 ? 0.0 : val)); }
+	[[nodiscard]] constexpr size_t ce_hash(long double val) noexcept { return fnv(as_u8s(val == 0.0L ? 0.0L : val)); }
+	[[nodiscard]] constexpr size_t ce_hash(nullptr_t) noexcept { return fnv(as_u8s((void*)nullptr)); }
+	template <typename T>
+	requires (!std::is_const_v<T> && !std::is_volatile_v<T> && (std::is_enum_v<T> || std::is_integral_v<T> || std::is_pointer_v<T>))
+	[[nodiscard]] constexpr size_t ce_hash(T const& val) noexcept { return fnv(as_u8s(val)); }
+
+	template <typename T>
+	[[nodiscard]] constexpr size_t ce_hash(std::basic_string_view<T> const& val) noexcept { return fnv(std::span{ val }); }
+
+	template <typename FIRST, typename... T>
+	requires (sizeof...(T) > 0)
+	[[nodiscard]] constexpr size_t ce_hash(FIRST const& first, T const&... values)
+	{
+		size_t result = ce_hash(first);
+		(ce_hash_combine(result, ce_hash(values)), ...);
+		return result;
+	}
+
+	template<typename TUPLE_TYPE, size_t... Is>
+	constexpr void ce_hash_combine_tuple(size_t& hash, TUPLE_TYPE const& t, std::index_sequence<Is...>)
+	{
+		(ce_hash_combine(hash, std::get<Is>(t)), ...);
+	}
+
+	template <typename... T>
+	[[nodiscard]] constexpr size_t ce_hash(std::tuple<T...> const& tupl) noexcept
+	{
+		size_t result = 0;
+		ce_hash_combine_tuple(result, tupl, std::index_sequence_for<T...>{});
+		return result;
+	}
+
+	/// TODO: ce_hash(path)
+	/// TODO: ce_hash(thread::id) ?
+	/// TODO: ce_hash(optional/variant) ?
+
+	/// Combines an existing hash value (`seed`) with the hash of value `v`
+	/// \ingroup Hashes
+	template <typename T, typename HASHER = std::hash<T>>
+	constexpr void hash_combine_to(size_t& seed, T&& v, HASHER&& hasher = {})
+	{
+		constexpr size_t kMul = 0x9ddfea08eb382d69ULL;
+		size_t a = (hasher(v) ^ seed) * kMul;
+		a ^= (a >> 47);
+		size_t b = (seed ^ a) * kMul;
+		b ^= (b >> 47);
+		b *= kMul;
+		seed = b;
+	}
+
+	constexpr size_t hash_combine(size_t seed, size_t with)
+	{
+		constexpr size_t kMul = 0x9ddfea08eb382d69ULL;
+		size_t a = (with ^ seed) * kMul;
+		a ^= (a >> 47);
+		size_t b = (seed ^ a) * kMul;
+		b ^= (b >> 47);
+		b *= kMul;
+		return b;
+	}
+
+	template <template<typename> typename HASHER = std::hash, typename FIRST, typename... T>
+	[[nodiscard]] constexpr size_t hash(FIRST&& first, T&&... values)
+	{
+		size_t result = HASHER<std::remove_cvref_t<FIRST>>{}(std::forward<FIRST>(first));
+		(ghassanpl::hash_combine_to(result, std::forward<T>(values), HASHER<std::remove_cvref_t<T>>{}), ...);
+		return result;
+	}
+
+	/// Combines an existing hash value (`seed`) with the hash of a range of values
+	/// \ingroup Hashes
+	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
+	constexpr void hash_range(std::size_t& seed, It first, It last, HASHER&& hasher = {})
+	{
+		for (; first != last; ++first)
+			hash_combine_to(seed, *first, hasher);
+	}
+
+	/// Hashes a range of values
+	/// \ingroup Hashes
+	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
+	[[nodiscard]] constexpr std::size_t hash_range(It first, It last, HASHER&& hasher = {})
+	{
+		size_t seed = 0;
+		hash_range(seed, first, last, std::forward<HASHER>(hasher));
+		return seed;
+	}
+
+	/// Hashes a range of values
+	/// \ingroup Hashes
+	template <std::ranges::range T, typename HASHER = std::hash<std::ranges::range_value_t<T>>>
+	[[nodiscard]] constexpr std::size_t hash_range(T range, HASHER&& hasher = {})
+	{
+		size_t seed = 0;
+		hash_range(seed, std::ranges::begin(range), std::ranges::end(range), std::forward<HASHER>(hasher));
+		return seed;
 	}
 }

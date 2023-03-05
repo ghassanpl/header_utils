@@ -14,6 +14,12 @@
 #error "This library requires std::source_location"
 #endif
 
+#if __INTELLISENSE__
+#define EQ_SOURCE_LOCATION = std::source_location{}
+#else
+#define EQ_SOURCE_LOCATION = std::source_location::current()
+#endif
+
 namespace ghassanpl
 {
 
@@ -24,7 +30,7 @@ namespace ghassanpl
 		std::source_location Location;
 
 		template <std::convertible_to<T> U>
-		with_sl(U&& t, std::source_location loc = std::source_location::current())
+		with_sl(U&& t, std::source_location loc EQ_SOURCE_LOCATION)
 			: Object(std::forward<U>(t)), Location(std::move(loc))
 		{
 		}
@@ -45,7 +51,11 @@ namespace ghassanpl
 		hash_type LocationHash;
 
 		template <std::convertible_to<T> U>
+#if __INTELLISENSE__
+		with_slh(U&& t, hash_type loc)
+#else
 		with_slh(U&& t, hash_type loc = HASH_FUNC{}(std::source_location::current()))
+#endif
 			: Object(std::forward<U>(t)), LocationHash(loc)
 		{
 		}

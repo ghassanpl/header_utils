@@ -141,13 +141,19 @@
     <ClInclude Include="include\ghassanpl\geometry\geometry_common.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
-    <ClInclude Include="include\ghassanpl\geometry\grid.h">
+    <ClInclude Include="include\ghassanpl\geometry\square_grid.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\geometry\squares.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\constexpr_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\square_grid_algorithms.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\bytes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

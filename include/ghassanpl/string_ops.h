@@ -911,6 +911,15 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
+	template <std::ranges::range T>
+	[[nodiscard]] inline auto join(T&& source)
+	{
+		std::stringstream strm;
+		for (auto&& p : std::forward<T>(source))
+			strm << p;
+		return strm.str();
+	}
+
 	template <std::ranges::range T, string_or_char DELIM>
 	[[nodiscard]] inline auto join(T&& source, DELIM&& delim)
 	{
@@ -1002,7 +1011,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <string_or_char NEEDLE, string_or_char REPLACE>
-	inline std::string replaced(std::string subject, NEEDLE&& search, REPLACE&& replace)
+	[[nodiscard]] inline std::string replaced(std::string subject, NEEDLE&& search, REPLACE&& replace)
 	{
 		string_ops::replace(subject, std::forward<NEEDLE>(search), std::forward<REPLACE>(replace));
 		return subject;

@@ -29,10 +29,10 @@ namespace ghassanpl::random
 		return glm::rotate(glm::tvec2<T>{ T{ 1 }, T{ 0 } }, radians<T>(rng));
 	}
 
-	template <std::floating_point T = float, typename RANDOM = std::default_random_engine>
+	template <typename T, typename RANDOM = std::default_random_engine>
 	glm::tvec2<T> in(trec2<T> const& rect, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		return { range(rect.p1.x, rect.p2.x), range(rect.p1.y, rect.p2.y) };
+		return { range(rect.p1.x, rect.p2.x, rng), range(rect.p1.y, rect.p2.y, rng) };
 	}
 
 	/// TODO: in(circle), in(poly)?, on(rect), on(circle)

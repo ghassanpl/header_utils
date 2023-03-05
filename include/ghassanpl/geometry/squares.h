@@ -67,29 +67,29 @@ namespace ghassanpl::geometry::squares
 	inline constexpr bool is_neighbor(glm::ivec2 a, glm::ivec2 b) { return is_surrounding(a, b) && glm::abs(a.y - b.y) != glm::abs(a.x - b.x); }
 	inline constexpr bool is_diagonal_neighbor(glm::ivec2 a, glm::ivec2 b) { return is_surrounding(a, b) && glm::abs(a.y - b.y) == glm::abs(a.x - b.x); }
 
-	inline constexpr glm::vec2 square_pos_to_world_pos(glm::ivec2 square_pos, glm::vec2 square_size) { return glm::vec2(square_pos) * square_size; }
-	inline constexpr glm::vec2 square_pos_to_world_pos(glm::ivec2 square_pos, float square_size) { return glm::vec2(square_pos) * square_size; }
-	inline constexpr rec2 world_rect_for_square(glm::ivec2 pos, glm::vec2 square_size) { return rec2::from_size(square_pos_to_world_pos(pos, square_size), square_size); }
-	inline constexpr rec2 world_rect_for_square(glm::ivec2 pos, float square_size) { return rec2::from_size(square_pos_to_world_pos(pos, square_size), { square_size, square_size }); }
-	inline constexpr glm::ivec2 world_pos_to_square_pos(glm::vec2 world_pos, glm::vec2 square_size) { return glm::ivec2(glm::floor(world_pos / square_size)); }
-	inline constexpr glm::ivec2 world_pos_to_square_pos(glm::vec2 world_pos, float square_size) { return glm::ivec2(glm::floor(world_pos / square_size)); }
-	inline constexpr irec2 world_rect_to_square_rect(rec2 const& world_rect, glm::vec2 square_size) { return irec2{ glm::floor(world_rect.p1 / square_size), glm::ceil(world_rect.p2 / square_size) }; }
-	inline constexpr irec2 world_rect_to_square_rect(rec2 const& world_rect, float square_size) { return irec2{ glm::floor(world_rect.p1 / square_size), glm::ceil(world_rect.p2 / square_size) }; }
+	inline constexpr glm::vec2 tile_pos_to_world_pos(glm::ivec2 tile_pos, glm::vec2 tile_size) { return glm::vec2(tile_pos) * tile_size; }
+	inline constexpr glm::vec2 tile_pos_to_world_pos(glm::ivec2 tile_pos, float tile_size) { return glm::vec2(tile_pos) * tile_size; }
+	inline constexpr rec2 world_rect_for_tile(glm::ivec2 pos, glm::vec2 tile_size) { return rec2::from_size(tile_pos_to_world_pos(pos, tile_size), tile_size); }
+	inline constexpr rec2 world_rect_for_tile(glm::ivec2 pos, float tile_size) { return rec2::from_size(tile_pos_to_world_pos(pos, tile_size), { tile_size, tile_size }); }
+	inline constexpr glm::ivec2 world_pos_to_tile_pos(glm::vec2 world_pos, glm::vec2 tile_size) { return glm::ivec2(glm::floor(world_pos / tile_size)); }
+	inline constexpr glm::ivec2 world_pos_to_tile_pos(glm::vec2 world_pos, float tile_size) { return glm::ivec2(glm::floor(world_pos / tile_size)); }
+	inline constexpr irec2 world_rect_to_tile_rect(rec2 const& world_rect, glm::vec2 tile_size) { return irec2{ glm::floor(world_rect.p1 / tile_size), glm::ceil(world_rect.p2 / tile_size) }; }
+	inline constexpr irec2 world_rect_to_tile_rect(rec2 const& world_rect, float tile_size) { return irec2{ glm::floor(world_rect.p1 / tile_size), glm::ceil(world_rect.p2 / tile_size) }; }
 
 	template <metric METRIC = chebyshev_metric>
-	struct square_space
+	struct tile_space
 	{
-		glm::vec2 square_size;
+		glm::vec2 tile_size;
 
-		constexpr glm::vec2 to_world_pos(glm::ivec2 square_pos) const noexcept { return square_pos_to_world_pos(square_pos, square_size); }
-		constexpr rec2 world_rect_for_square(glm::ivec2 square_pos) const noexcept { return ghassanpl::geometry::squares::world_rect_for_square(square_pos, square_size); }
-		constexpr glm::ivec2 to_square_pos(glm::vec2 world_pos) const noexcept { return world_pos_to_square_pos(world_pos, square_size); }
-		constexpr irec2 to_square_rect(rec2 const& world_rect) const noexcept { return world_rect_to_square_rect(world_rect, square_size); }
+		constexpr glm::vec2 to_world_pos(glm::ivec2 tile_pos) const noexcept { return tile_pos_to_world_pos(tile_pos, tile_size); }
+		constexpr rec2 world_rect_for_tile(glm::ivec2 tile_pos) const noexcept { return ghassanpl::geometry::squares::world_rect_for_tile(tile_pos, tile_size); }
+		constexpr glm::ivec2 to_tile_pos(glm::vec2 world_pos) const noexcept { return world_pos_to_tile_pos(world_pos, tile_size); }
+		constexpr irec2 to_tile_rect(rec2 const& world_rect) const noexcept { return world_rect_to_tile_rect(world_rect, tile_size); }
 	};
 
-	using square_pos = named<glm::ivec2, "square_pos", traits::location>;
+	using tile_pos = named<glm::ivec2, "tile_pos", traits::location>;
 	using world_pos = named<glm::vec2, "world_pos", traits::location>;
 
-	using square_rec = named<irec2, "square_rec">;
+	using tile_rec = named<irec2, "tile_rec">;
 	using world_rec = named<rec2, "world_rec">;
 }

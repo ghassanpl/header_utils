@@ -2,7 +2,9 @@
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include <glm/vec4.hpp>
+#pragma once
+
+#include <glm/glm.hpp>
 #include "named.h"
 
 namespace ghassanpl
@@ -29,6 +31,9 @@ namespace ghassanpl
 	/// Default `color_t` type is RGBA
 	using color_t = color_rgba_t;
 
+	using color_rgba_u32_t = named<uint32_t, "color_rgba_u32">;
+	using color_abgr_u32_t = named<uint32_t, "color_abgr_u32">;
+
 	/// Contains the basic colors as variables and functions
 	/// \ingroup Colors
 	namespace colors
@@ -51,6 +56,9 @@ namespace ghassanpl
 		DEF_COLORS(cyan, 0, 1, 1)
 		DEF_COLORS(gray, 0.5f, 0.5f, 0.5f)
 		DEF_COLORS(grey, 0.5f, 0.5f, 0.5f)
+
+		DEF_COLORS(orange, 1, 0.65f, 0)
+		DEF_COLORS(brown, 0.59f, 0.29f, 0)
 		
 		DEF_COLOR(black, 0, 0, 0)
 		DEF_COLOR(white, 1, 1, 1)
@@ -165,6 +173,20 @@ namespace ghassanpl
 	constexpr inline uint32_t to_u32_rgb(color_t const& rgba) { return uint32_t(rgba.r * 255.0f) << 16 | uint32_t(rgba.g * 255.0f) << 8 | uint32_t(rgba.b * 255.0f); }
 	/// Creates a 32 bit, 8bpp BGR integer from a color, with the most significant 8 bits set to 0
 	constexpr inline uint32_t to_u32_bgr(color_t const& rgba) { return uint32_t(rgba.b * 255.0f) << 16 | uint32_t(rgba.g * 255.0f) << 8 | uint32_t(rgba.r * 255.0f); }
+
+	template <std::same_as<color_rgba_u32_t> TO>
+	constexpr TO named_cast(color_rgba_t const& from)
+	{
+		return TO{ to_u32_rgba(from) };
+	}
+
+	template <std::same_as<color_abgr_u32_t> TO>
+	constexpr TO named_cast(color_rgba_t const& from)
+	{
+		return TO{ to_u32_abgr(from) };
+	}
+
+	constexpr inline glm::tvec4<uint8_t> to_u8(color_t const& rgba) { return { uint8_t(rgba.r * 255.0f), uint8_t(rgba.g * 255.0f), uint8_t(rgba.b * 255.0f), uint8_t(rgba.a * 255.0f) }; }
 
 	/// Converts a HSVA color to RGBA space
 	constexpr inline color_t to_rgb(color_hsva_t const& hsva)

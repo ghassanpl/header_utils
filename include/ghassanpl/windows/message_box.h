@@ -133,6 +133,8 @@ namespace ghassanpl
 			return result && result == 0;
 		}
 
+		enum { btn_debug = 0, btn_abort = 1, btn_continue = 2 };
+
 		/// A helper function for \ref Assuming macros.
 		/// 
 		/// Will take all the arguments of the \ref ghassanpl::ReportAssumptionFailure function, as well as additional ones that will be forwarded to \ref windows_message_box

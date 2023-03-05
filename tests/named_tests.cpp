@@ -37,8 +37,8 @@ TEST(named, named_location_and_displacement_traits_work)
 	static_assert(!subtractable<point, point, point>);
 	static_assert(subtractable<point, point, vector>);
 
-	constexpr auto trait_ti = point::find_displacement_type_impl(traits::is_location_of<vector>{});
-	using type = std::remove_cvref_t<typename decltype(trait_ti)::type>;
+	//constexpr auto trait_ti = point::find_displacement_type_impl(traits::is_location_of<vector>{});
+	//using type = std::remove_cvref_t<typename decltype(trait_ti)::type>;
 
 	EXPECT_EQ((point{ 5,5 } - point{ 2,2 }), (vector{ 3,3 }));
 	EXPECT_EQ((point{ 5,5 } + vector{ 2,2 }), (point{ 7,7 }));

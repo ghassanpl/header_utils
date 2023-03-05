@@ -44,6 +44,9 @@ namespace ghassanpl
 		/// This trait implies the named type is an linear type, that is, a type that has the addition operator defined on itself
 		/// Example: 
 		struct displacement { template <typename SELF_TYPE> static constexpr bool applies_to = true; };
+
+		struct implicitly_convertible { template <typename SELF_TYPE> static constexpr bool applies_to = true; };
+		struct implicitly_constructible { template <typename SELF_TYPE> static constexpr bool applies_to = true; };
 		
 		template <typename LOCATION_NAMED_TYPE>
 		struct is_displacement_of {
@@ -82,6 +85,7 @@ namespace ghassanpl
 		using self_type = named<T, PARAMETER, TRAITS...>;
 		static constexpr detail::FixedString name = PARAMETER;
 
+	private:
 		template <typename T>
 		static constexpr auto find_displacement_type_impl(traits::is_location_of<T>)
 		{
@@ -108,6 +112,10 @@ namespace ghassanpl
 		{
 			return find_displacement_type_traits(TRAITS{}...);
 		}
+	public:
+
+		template <typename TRAIT, typename... OTHER>
+		static constexpr bool has_trait = (std::is_same_v<TRAIT, TRAITS> || ...) && TRAIT::template applies_to<self_type, OTHER...>;
 
 		using displacement_type = typename decltype(find_displacement_type())::type;
 
@@ -117,11 +125,26 @@ namespace ghassanpl
 		requires std::constructible_from<T, ARGS...>
 		constexpr explicit named(ARGS&&... args) noexcept(std::is_nothrow_constructible<T, ARGS...>) : value(std::forward<ARGS>(args)...) {}
 
+		template <typename U>
+		requires has_trait<traits::implicitly_constructible> && std::is_same_v<std::remove_cvref_t<U>, T>
+		constexpr named(U&& arg) noexcept(std::is_nothrow_move_constructible_v<T>) 
+			: value(std::forward<U>(arg))
+		{
+		}
+
 		constexpr named() noexcept(std::is_nothrow_default_constructible_v<T>) = default;
 		constexpr named(named const&) noexcept(std::is_nothrow_copy_constructible_v<T>) = default;
 		constexpr named(named&&) noexcept(std::is_nothrow_move_constructible_v<T>) = default;
 		constexpr named& operator=(named const&) noexcept(std::is_nothrow_copy_assignable_v<T>) = default;
 		constexpr named& operator=(named&&) noexcept(std::is_nothrow_move_assignable_v<T>) = default;
+
+		template <typename U>
+		requires requires(U&& val) { { named_cast<self_type>(std::forward<U>(val)) } -> std::same_as<self_type>; }
+		constexpr named(U&& arg)
+			: named(named_cast<self_type>(std::forward<U>(arg)))
+		{
+
+		}
 
 		constexpr T* operator->() noexcept { return &value; }
 		constexpr T const* operator->() const noexcept { return &value; }
@@ -132,6 +155,8 @@ namespace ghassanpl
 
 		template <typename U>
 		constexpr U as() noexcept { return static_cast<U>(value); }
+		
+		constexpr auto drop() noexcept(std::is_nothrow_move_constructible_v<T>) { return std::move(value); }
 
 		template <typename U, detail::FixedString OTHER_PARAMETER, typename... OTHER_CAPABILITIES>
 		requires requires(self_type const& self) { { named_cast<named<U, OTHER_PARAMETER, OTHER_CAPABILITIES...>>(self) } -> std::same_as<named<U, OTHER_PARAMETER, OTHER_CAPABILITIES...>>; }
@@ -140,18 +165,33 @@ namespace ghassanpl
 			return named_cast<named<U, OTHER_PARAMETER, OTHER_CAPABILITIES...>>(*this);
 		}
 
+		template <typename U>
+		requires requires(self_type const& self) { { named_cast<U>(self) } -> std::same_as<U>; }
+		constexpr operator U() const
+		{
+			return named_cast<U>(*this);
+		}
+
 		constexpr explicit operator bool() const noexcept { return value; }
-		constexpr auto operator <=>(named const&) const noexcept = default;
-
-		constexpr auto drop() noexcept(std::is_nothrow_move_constructible_v<T>) { return std::move(value); }
-
-		template <typename TRAIT, typename... OTHER>
-		static constexpr bool has_trait = (std::is_same_v<TRAIT, TRAITS> || ...) && TRAIT::template applies_to<self_type, OTHER...>;
+		constexpr operator base_type() const noexcept requires has_trait<traits::implicitly_convertible> { return value; }
+		
+		constexpr auto operator <=>(named const&) const = default;
+		constexpr bool operator ==(named const&) const = default;
+		
+		friend constexpr auto operator <=>(T const& a, named const& b) { return a <=> b.value; }
+		friend constexpr auto operator ==(T const& a, named const& b) { return a == b.value; }
 
 		constexpr auto operator+(self_type val) const /// TODO: these should be forwarding references
 		requires has_trait<displacement> || has_trait<addable>
 		{
 			return self_type{ this->value + val.value };
+		}
+
+		constexpr auto& operator+=(self_type val) /// TODO: these should be forwarding references
+		requires has_trait<displacement> || has_trait<addable>
+		{
+			this->value += val.value;
+			return *this;
 		}
 
 		constexpr auto operator-(self_type val) const
@@ -205,6 +245,12 @@ namespace ghassanpl
 			return self_type{ this->value / std::forward<U>(val) };
 		}
 
+		constexpr auto operator/(self_type const& val) const
+		requires has_trait<displacement>
+		{
+			return this->value / val.value;
+		}
+
 	private:
 
 	};
@@ -219,5 +265,17 @@ namespace ghassanpl
 
 	template <typename T, detail::FixedString PARAMETER>
 	inline std::ostream& operator<<(std::ostream& strm, named<T, PARAMETER> const& val) { return strm << val.value; }
+
+	template <typename ALPHA, typename T, detail::FixedString PARAMETER, typename... TRAITS>
+	auto lerp(named<T, PARAMETER, TRAITS...> const& value_a, named<T, PARAMETER, TRAITS...> const& value_b, ALPHA&& alpha)
+	{
+		using std::lerp;
+		return lerp(value_a.value, value_b.value, std::forward<ALPHA>(alpha));
+	}
+
+#define ghassanpl_named_string_literal(named_name, suffix) \
+	inline named_name operator"" suffix(const char* str, std::size_t len) { \
+		return named_name{std::string{str,len}}; \
+	}
 
 }
