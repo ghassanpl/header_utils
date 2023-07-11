@@ -6,9 +6,8 @@
 
 #include <glm/vec2.hpp>
 #include <glm/gtx/compatibility.hpp>
-#include <iostream>
 #include <span>
-#include "hashes.h"
+#include <functional>
 
 #define GHASSANPL_HAS_REC2
 
@@ -16,6 +15,10 @@
 
 namespace ghassanpl
 {
+	template <template<typename> typename HASHER, typename FIRST, typename... T>
+	[[nodiscard]] constexpr size_t hash(FIRST&& first, T&&... values);
+
+
 	template <typename T>
 	struct trec2
 	{
@@ -172,9 +175,14 @@ namespace ghassanpl
 			return { x1,y1,x2,y2 };
 		}
 
+		constexpr trec2 clipped_to(trec2 const& other) const noexcept
+		{
+			return intersection(other);
+		}
+
 		constexpr bool contains(glm::vec<2, T> const& other) const noexcept
 		{
-			return other.x >= p1.x && other.y >= p1.y && other.x < p2.x&& other.y < p2.y;
+			return other.x >= p1.x && other.y >= p1.y && other.x < p2.x && other.y < p2.y;
 		}
 
 		constexpr bool contains(trec2 const& other) const noexcept
@@ -268,26 +276,13 @@ namespace ghassanpl
 	};
 
 
-	template <typename SHAPE, typename T>
-	concept shape = requires (SHAPE const& shape, glm::tvec2<T> pt, T t) {
-		{ shape.contains(pt) } -> std::convertible_to<bool>;
-		{ shape.calculate_area() } -> std::convertible_to<T>;
-		{ shape.edge_length() } -> std::convertible_to<T>;
-		{ shape.edge_point_alpha(t) } -> std::convertible_to<glm::tvec2<T>>;
-		{ shape.edge_point(t) } -> std::convertible_to<glm::tvec2<T>>;
-		{ shape.bounding_box() } -> std::convertible_to<trec2<T>>;
-		{ shape.projected(pt) } -> std::convertible_to<glm::tvec2<T>>;
-	};
-
-	static_assert(shape<trec2<float>, float>);
-	static_assert(shape<trec2<double>, double>);
-	static_assert(shape<trec2<int>, int>);
-
 	template <typename T>
-	inline trec2<T> operator+(glm::tvec2<T> op, trec2<T> rec) noexcept { return { rec.p1 + op, rec.p2 + op }; }
+	trec2<T> operator+(glm::tvec2<T> op, trec2<T> rec) noexcept { return { rec.p1 + op, rec.p2 + op }; }
 
-	template <typename T>
-	inline std::ostream& operator<<(std::ostream& strm, trec2<T> const& b) { return strm << '(' << b.p1.x << ',' << b.p1.y << ',' << b.p2.x << ',' << b.p2.y << ')'; }
+	template <typename T, typename STRINGIFIER>
+	bool stringify(STRINGIFIER& str, trec2<T>& b) { return str('[', b.p1.x, ',', b.p1.y, ',', b.p2.x, ',', b.p2.y, ']'); }
+	template <typename T, typename STRINGIFIER>
+	bool stringify(STRINGIFIER& str, trec2<T> const& b) { return str('[', b.p1.x, ',', b.p1.y, ',', b.p2.x, ',', b.p2.y, ']'); }
 }
 
 
