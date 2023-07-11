@@ -30,11 +30,18 @@ namespace ghassanpl
 	{
 		struct addable { 
 			template <typename SELF_TYPE, typename OTHERS_SELF_TYPE = SELF_TYPE>
-			static constexpr bool applies_to = requires (SELF_TYPE::base_type a, std::remove_cvref_t<OTHERS_SELF_TYPE>::base_type b) { { a + b } -> std::convertible_to<SELF_TYPE::base_type>; };
+			//static constexpr bool applies_to = requires (SELF_TYPE::base_type a, std::remove_cvref_t<OTHERS_SELF_TYPE>::base_type b) { { a + b } -> std::convertible_to<SELF_TYPE::base_type>; };
+			static constexpr bool applies_to = true;
 		};
 		struct subtractable { 
 			template <typename SELF_TYPE, typename OTHERS_SELF_TYPE = SELF_TYPE>
-			static constexpr bool applies_to = requires (SELF_TYPE::base_type a, std::remove_cvref_t<OTHERS_SELF_TYPE>::base_type b) { { a - b } -> std::convertible_to<SELF_TYPE::base_type>; };
+			//static constexpr bool applies_to = requires (SELF_TYPE::base_type a, std::remove_cvref_t<OTHERS_SELF_TYPE>::base_type b) { { a - b } -> std::convertible_to<SELF_TYPE::base_type>; };
+			static constexpr bool applies_to = true;
+		};
+
+		struct incrementable {
+			template <typename SELF_TYPE>
+			static constexpr bool applies_to = true;
 		};
 
 		/// This trait implies the named type is an affine type, that is, a type that does not have the addition operator defined on itself
@@ -181,23 +188,38 @@ namespace ghassanpl
 		friend constexpr auto operator <=>(T const& a, named const& b) { return a <=> b.value; }
 		friend constexpr auto operator ==(T const& a, named const& b) { return a == b.value; }
 
-		constexpr auto operator+(self_type val) const /// TODO: these should be forwarding references
+		constexpr named& operator++()
+		requires has_trait<traits::incrementable>
+		{
+			++this->value;
+			return *this;
+		}
+
+		constexpr auto operator+(self_type const& val) const /// TODO: these should be forwarding references
 		requires has_trait<displacement> || has_trait<addable>
 		{
 			return self_type{ this->value + val.value };
 		}
 
-		constexpr auto& operator+=(self_type val) /// TODO: these should be forwarding references
+		constexpr auto& operator+=(self_type const& val) /// TODO: these should be forwarding references
 		requires has_trait<displacement> || has_trait<addable>
 		{
 			this->value += val.value;
 			return *this;
 		}
 
-		constexpr auto operator-(self_type val) const
+		/*
+		constexpr auto operator-(self_type const& val) const
 		requires (has_trait<displacement> || has_trait<subtractable>) && (!has_trait<location>)
 		{
 			return self_type{ this->value - val.value };
+		}
+		*/
+
+		friend constexpr auto operator-(self_type const& other, self_type const& self)
+		requires (has_trait<displacement> || has_trait<subtractable>) && (!has_trait<location>)
+		{
+			return self_type{ other.value - self.value };
 		}
 
 		/// TODO: Make this work for locations by usins super-duper TMP tricks to find the displacement_type for this location type
@@ -263,19 +285,26 @@ namespace ghassanpl
 	template <typename OTHER>
 	static constexpr bool is_named_v = ::ghassanpl::detail::is_named_impl(std::type_identity<std::remove_cvref_t<OTHER>>{});
 
-	template <typename T, detail::FixedString PARAMETER>
-	inline std::ostream& operator<<(std::ostream& strm, named<T, PARAMETER> const& val) { return strm << val.value; }
+
+	template <typename T, detail::FixedString PARAMETER, typename STRINGIFIER>
+	void stringify(STRINGIFIER& str, named<T, PARAMETER> const& val)
+	{
+		stringify(str, val.value);
+	}
 
 	template <typename ALPHA, typename T, detail::FixedString PARAMETER, typename... TRAITS>
 	auto lerp(named<T, PARAMETER, TRAITS...> const& value_a, named<T, PARAMETER, TRAITS...> const& value_b, ALPHA&& alpha)
 	{
 		using std::lerp;
-		return lerp(value_a.value, value_b.value, std::forward<ALPHA>(alpha));
+		return named<T, PARAMETER, TRAITS...>{ lerp(value_a.value, value_b.value, std::forward<ALPHA>(alpha)) };
 	}
 
 #define ghassanpl_named_string_literal(named_name, suffix) \
 	inline named_name operator"" suffix(const char* str, std::size_t len) { \
-		return named_name{std::string{str,len}}; \
+		return named_name{named_name::base_type{str,len}}; \
 	}
+
+#define ghassanpl_named_string_literal_ce(named_name, suffix) \
+	constexpr ghassanpl_named_string_literal(named_name, suffix)
 
 }
