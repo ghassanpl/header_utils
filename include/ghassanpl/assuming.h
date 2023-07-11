@@ -53,19 +53,32 @@
 #endif
 
 #include <format>
-#include <source_location>
+#include "source_location.h"
+#if ASSUMING_DEBUG
+#include <sstream>
+#endif
 
 #if ASSUMING_INCLUDE_MAGIC_ENUM
 #include <magic_enum.hpp>
 #endif
 
+#ifdef __has_cpp_attribute
+#if __has_cpp_attribute(assume)
+#define GHPL_CPP23_ASSUME(...) [[assume(__VA_ARGS__)]];
+#endif
+#endif
+#ifndef GHPL_CPP23_ASSUME
+#define GHPL_CPP23_ASSUME(...)
+#endif
+
+
 #if !ASSUMING_DEBUG
 #ifdef _MSC_VER
-#define ASSUMING_ASSUME(cond) (__assume(cond), (::std::ignore = (cond)))
+#define ASSUMING_ASSUME(cond) GHPL_CPP23_ASSUME(cond) (__assume(cond), (::std::ignore = (cond)))
 #elif defined(__GNUC__)
-#define ASSUMING_ASSUME(cond) ((cond) ? static_cast<void>(0) : __builtin_unreachable())
+#define ASSUMING_ASSUME(cond) GHPL_CPP23_ASSUME(cond) ((cond) ? static_cast<void>(0) : __builtin_unreachable())
 #else
-#define ASSUMING_ASSUME(cond) static_cast<void>((cond) ? 0 : 0)
+#define ASSUMING_ASSUME(cond) GHPL_CPP23_ASSUME(cond) static_cast<void>((cond) ? 0 : 0)
 #endif
 #endif
 
@@ -116,46 +129,48 @@
 		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
 	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-/// Asummes the two expressions evaluate equal.
+/// Assumes the two expressions evaluate equal.
 #define AssumingEqual(a, b, ...) AssumingBinOp(a, b, ==, "be equal to", __VA_ARGS__)
-/// Asummes the two expressions do not evaluate equal.
+/// Assumes the two expressions do not evaluate equal.
 #define AssumingNotEqual(a, b, ...) AssumingBinOp(a, b, !=, "not be equal to", __VA_ARGS__)
-/// Asummes the first expression is greater than the second.
+/// Assumes the first expression is greater than the second.
 #define AssumingGreater(a, b, ...) AssumingBinOp(a, b, >, "be greater than", __VA_ARGS__)
-/// Asummes the first expression is less than the second.
+/// Assumes the first expression is less than the second.
 #define AssumingLess(a, b, ...) AssumingBinOp(a, b, <, "be less than", __VA_ARGS__)
-/// Asummes the first expression is greater than or equal to the second.
+/// Assumes the first expression is greater than or equal to the second.
 #define AssumingGreaterEqual(a, b, ...) AssumingBinOp(a, b, >=, "be greater or equal to", __VA_ARGS__)
-/// Asummes the first expression is less than or equal to the second.
+/// Assumes the first expression is less than or equal to the second.
 #define AssumingLessEqual(a, b, ...) AssumingBinOp(a, b, <=, "be less or equal to", __VA_ARGS__)
 
-/// Asummes the first expression contains the bits in the second expression.
+#define AssumingBinAnd(a, b, ...) AssumingBinOp(a, b, &, "will have the following bits set:", __VA_ARGS__)
+
+/// Assumes the first expression contains the bits in the second expression.
 #define AssumingContainsBits(a, b, ...) { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#a " will contain flags " #b, { \
 		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_a_v)) }, \
 		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
 	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-/// Asummes the expression evaluates to 0.
+/// Assumes the expression evaluates to 0.
 #define AssumingZero(a, ...) AssumingBinOp(a, 0, ==, "be equal to", __VA_ARGS__)
 
-/// Asummes the expression evaluates to an empty container (tested via `empty(container)`)
+/// Assumes the expression evaluates to an empty container (tested via `empty(container)`)
 #define AssumingEmpty(exp, ...) { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); !empty(_assuming_exp_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will be empty", { { "size of " #exp, std::format("{}", size(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-/// Asummes the expression evaluates to an non-empty container (tested via `empty(container)`)
+/// Assumes the expression evaluates to an non-empty container (tested via `empty(container)`)
 #define AssumingNotEmpty(exp, ...) { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); empty(_assuming_exp_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will not be empty", { { "size of " #exp, std::format("{}", size(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-/// Asummes the expression evaluates to either a null value or an empty string
+/// Assumes the expression evaluates to either a null value or an empty string
 #define AssumingNullOrEmpty(exp, ...) { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); !::ghassanpl::detail::IsNullOrEmpty(_assuming_exp_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will be null or empty", { { #exp, _assuming_exp_v ? std::format("'{}'", _assuming_exp_v) : "(null)" } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-/// Asummes the expression does not evaluate to neither a null value nor an empty string
+/// Assumes the expression does not evaluate to neither a null value nor an empty string
 #define AssumingNotNullOrEmpty(exp, ...) { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); ::ghassanpl::detail::IsNullOrEmpty(_assuming_exp_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#exp " will not be null or empty", { { #exp, _assuming_exp_v ? std::format("'{}'", _assuming_exp_v) : "(null)" } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-/// Asummes the `_index` expression evaluates to a valid index to the `_container` expression. This is checked via `size(_container)`
+/// Assumes the `_index` expression evaluates to a valid index to the `_container` expression. This is checked via `size(_container)`
 #define AssumingValidIndex(_index, _container, ...) { using std::size; auto&& _assuming_index = (_index); auto&& _assuming_container = (_container); const auto _assuming_container_size = size(_assuming_container); \
 	if (!(_assuming_index >= 0 && size_t(_assuming_index) < _assuming_container_size)) [[unlikely]] { \
 		::ghassanpl::ReportAssumptionFailure(#_index " will be a valid index to " #_container, { \
@@ -163,12 +178,12 @@
 			{  "size of " #_container, std::format("{}", _assuming_container_size) }, \
 		}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } }
 
-/// Asummes the `_index` expression evaluates to a valid iterator to the `_container` expression. This is checked via `end(_container)`
+/// Assumes the `_index` expression evaluates to a valid iterator to the `_container` expression. This is checked via `end(_container)`
 #define AssumingValidIterator(_iterator, _container, ...) { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); \
 	if (_assuming_iterator == _assuming_end) [[unlikely]] { \
 		::ghassanpl::ReportAssumptionFailure(#_iterator " will be a valid iterator to " #_container, {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } }
 
-/// Asummes the `v` expression evaluates to a value between `a` and `b` exclusive.
+/// Assumes the `v` expression evaluates to a value between `a` and `b` exclusive.
 #define AssumingBetween(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!(_assuming_v_v >= _assuming_a_v && _assuming_v_v < _assuming_b_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#v " will be between " #a " and " #b, { \
 		{ #v, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_v_v)) }, \
@@ -176,7 +191,7 @@
 		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
 	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
-/// Asummes the `v` expression evaluates to a value between `a` and `b` inclusive.
+/// Assumes the `v` expression evaluates to a value between `a` and `b` inclusive.
 #define AssumingBetweenInclusive(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v)) [[unlikely]] \
 	::ghassanpl::ReportAssumptionFailure(#v " will be between " #a " and " #b " (inclusive)", { \
 		{ #v, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_v_v)) }, \
@@ -215,6 +230,7 @@
 #define AssumingLess(a, b, ...) AssumingBinOp(a, b, <, "be less than", __VA_ARGS__)
 #define AssumingGreaterEqual(a, b, ...) AssumingBinOp(a, b, >=, "be greater or equal to", __VA_ARGS__)
 #define AssumingLessEqual(a, b, ...) AssumingBinOp(a, b, <=, "be less or equal to", __VA_ARGS__)
+#define AssumingBinAnd(a, b, ...) AssumingBinOp(a, b, &, "will have the following bits set:", __VA_ARGS__)
 #define AssumingEmpty(exp, ...) { using std::empty; ASSUMING_ASSUME(empty(exp)); }
 #define AssumingNotEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(!empty(exp)); }
 #define AssumingNullOrEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(::ghassanpl::detail::IsNullOrEmpty(exp));  }
@@ -280,7 +296,6 @@ namespace ghassanpl
 		template <typename T, typename... ARGS>
 		std::string AdditionalDataToString(T&& fmt, ARGS&&... args) {
 			return std::vformat(std::forward<T>(fmt), std::make_format_args(GetFormattable(std::forward<ARGS>(args))...));
-			//return std::format(std::forward<T>(fmt), std::forward<ARGS>(args)...);
 		}
 
 		/// Shamelessly stolen from UE :)
