@@ -5,6 +5,8 @@
 #include "../include/ghassanpl/string_ops.h"
 #include "../include/ghassanpl/unicode.h"
 #include "../include/ghassanpl/ranges.h"
+#include "../include/ghassanpl/stringification.h"
+#include "../include/ghassanpl/rec2.h"
 
 #include <array>
 #include <gtest/gtest.h>
@@ -423,4 +425,15 @@ TEST(string_ops_test, consume_bom_and_detect_encoding)
 		EXPECT_EQ(encoding, base_text_encoding::utf8);
 		EXPECT_EQ(endianness, std::endian::native);
 	}
+}
+
+TEST(stringification_test, sanity_check)
+{
+	const ghassanpl::trec2<float> val{0,10,20,30};
+	const auto stringified = ghassanpl::to_string(val);
+	EXPECT_EQ(stringified, "[0,10,20,30]");
+	
+	ghassanpl::trec2<float> unstringified{};
+	EXPECT_TRUE(ghassanpl::from_string<ghassanpl::trec2<float>>(stringified, unstringified));
+	EXPECT_EQ(unstringified, val);
 }

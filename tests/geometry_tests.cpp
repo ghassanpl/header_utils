@@ -1,5 +1,8 @@
 //#include "../include/ghassanpl/geometry/angles.h"
 #include "../include/ghassanpl/geometry/square_grid.h"
+#include "../include/ghassanpl/geometry/ellipse.h"
+#include "../include/ghassanpl/geometry/polygon.h"
+#include "../include/ghassanpl/geometry/segment.h"
 //#include "../include/ghassanpl/geometry/squares.h"
 //#include "../include/ghassanpl/geometry/grid_algorithms.h"
 //#include "../include/ghassanpl/geometry/block_navigation_grid.h"
