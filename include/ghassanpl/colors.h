@@ -195,8 +195,8 @@ namespace ghassanpl
 		const int i = (int)hue;
 		float fraction = hue - (float)i;
 		if (!(i & 1)) fraction = 1.0f - fraction;
-		float m = value * (1.0f - saturation);
-		float n = value * (1.0f - saturation * fraction);
+		const auto m = value * (1.0f - saturation);
+		const auto n = value * (1.0f - saturation * fraction);
 		switch (i)
 		{
 		case 6:
@@ -213,9 +213,9 @@ namespace ghassanpl
 	/// Converts an RGBA color to HSVA space
 	constexpr inline color_hsva_t to_hsv(color_t const& rgba)
 	{
-		auto min = detail::min3(rgba.r, rgba.g, rgba.b);
-		auto max = detail::max3(rgba.r, rgba.g, rgba.b);
-		auto delta = max - min;
+		const auto min = detail::min3(rgba.r, rgba.g, rgba.b);
+		const auto max = detail::max3(rgba.r, rgba.g, rgba.b);
+		const auto delta = max - min;
 
 		float h = 0;
 
@@ -337,19 +337,19 @@ namespace ghassanpl
 			return Lerp(func(*this, other), other, A);
 		}
 		/*
-		static Color Multiply(const Color& c1, const Color& c2 ) { return Color(c1.R*c2.R, c1.G*c2.G, c1.B*c2.B); }
+		static Color Multiply(const Color& c1, const Color& c2 ) { return Color(c1.r*c2.r, c1.g*c2.g, c1.b*c2.b); }
 		static Color Screen(const Color& c1, const Color& c2) { return Multiply(c1.Inverted(), c2.Inverted()).Inverted(); }
 		static Color Overlay(const Color& c1, const Color& c2) {
 			return Color(
-				c2.R < 0.5f ? c1.R*c2.R * 2 : (1 - 2 * (1 - c2.R)*(1 - c1.R)),
-				c2.G < 0.5f ? c1.G*c2.G * 2 : (1 - 2 * (1 - c2.G)*(1 - c1.G)),
-				c2.B < 0.5f ? c1.B*c2.B * 2 : (1 - 2 * (1 - c2.B)*(1 - c1.B)));
+				c2.r < 0.5f ? c1.r*c2.r * 2 : (1 - 2 * (1 - c2.r)*(1 - c1.r)),
+				c2.g < 0.5f ? c1.g*c2.g * 2 : (1 - 2 * (1 - c2.g)*(1 - c1.g)),
+				c2.b < 0.5f ? c1.b*c2.b * 2 : (1 - 2 * (1 - c2.b)*(1 - c1.b)));
 		}
 		static Color HardLight(const Color& c2, const Color& c1) {
 			return Color(
-				c2.R < 0.5f ? c1.R*c2.R * 2 : (1 - 2 * (1 - c2.R)*(1 - c1.R)),
-				c2.G < 0.5f ? c1.G*c2.G * 2 : (1 - 2 * (1 - c2.G)*(1 - c1.G)),
-				c2.B < 0.5f ? c1.B*c2.B * 2 : (1 - 2 * (1 - c2.B)*(1 - c1.B)));
+				c2.r < 0.5f ? c1.r*c2.r * 2 : (1 - 2 * (1 - c2.r)*(1 - c1.r)),
+				c2.g < 0.5f ? c1.g*c2.g * 2 : (1 - 2 * (1 - c2.g)*(1 - c1.g)),
+				c2.b < 0.5f ? c1.b*c2.b * 2 : (1 - 2 * (1 - c2.b)*(1 - c1.b)));
 		}
 		static Color Overlay(const Color& c1, const Color& c2) {
 			return Multiply((2 * c2).Inverted(), Multiply(c1, c1)) + 2 * Multiply(c1, c2); /// pegtop!
@@ -384,7 +384,7 @@ namespace ghassanpl
 		#define ChannelBlend_Alpha(A,B,O)    ((uint8)(O * A + (1 - O) * B))
 		#define ChannelBlend_AlphaF(A,B,F,O) (ChannelBlend_Alpha(F(A,B),A,O))
 		*/
-		//Color BlendMultiply(const Color& other) const { return BlendWithAlpha(other, Color::Multiply); }
+		//Color BlendMultiply(const Color& other) const { return BlendWithAlpha(other, colors::Multiply); }
 
 		static Color FromHTML(StringView str)
 		{
@@ -392,19 +392,19 @@ namespace ghassanpl
 			if (str.size() == 6)
 			{
 				uint32_t hex = StringToUnsignedLong(str, nullptr, 16);
-				return Color::FromRGBInt(hex);
+				return colors::FromRGBInt(hex);
 			}
 			else if (str.size() == 8)
 			{
 				uint32_t hex = StringToUnsignedLong(str, nullptr, 16);
-				return Color::FromRGBAInt(hex);
+				return colors::FromRGBAInt(hex);
 			}
 			else if (str.size() == 3)
 			{
 				uint32_t hex = StringToUnsignedLong(str, nullptr, 16);
 				hex = ((hex << 12) & 0xF00000) | ((hex << 8) & 0xF000) | ((hex << 4) & 0xF0);
 				hex = hex | (hex >> 4);
-				return Color::FromRGBInt(hex);
+				return colors::FromRGBInt(hex);
 			}
 			else return Color();
 		}
