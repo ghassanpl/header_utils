@@ -6,6 +6,7 @@
 
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include "string_ops.h"
 #include "mmap.h"
 
 namespace ghassanpl::formats
@@ -15,6 +16,7 @@ namespace ghassanpl::formats
 
 	namespace text
 	{
+		/// TODO: These are technically incorrect as they don't do newline conversions
 		inline std::string load_file(std::filesystem::path const& from, std::error_code& ec)
 		{
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
@@ -38,6 +40,7 @@ namespace ghassanpl::formats
 
 		inline bool save_file(std::filesystem::path const& to, std::string_view string, std::error_code& ec)
 		{
+			/// TODO: How to fil ec?
 			std::ofstream out{ to };
 			out.write(string.data(), string.size());
 			return out.fail();
@@ -48,6 +51,81 @@ namespace ghassanpl::formats
 			std::ofstream out{ to };
 			out.exceptions(std::ios::badbit | std::ios::failbit);
 			out.write(string.data(), string.size());
+		}
+	}
+
+	/// \addtogroup Text Lines
+	/// \ingroup Formats
+
+	namespace text_lines
+	{
+		/// TODO: These are technically incorrect as they don't remove \r at split points
+
+		inline std::vector<std::string> load_file(std::filesystem::path const& from, std::error_code& ec)
+		{
+			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			if (ec)
+				return {};
+
+			std::vector<std::string> result;
+			ghassanpl::string_ops::split(std::string_view{ source }, '\n', [&](std::string_view line, bool) { result.push_back(std::string{line}); });
+			return result;
+		}
+
+		inline std::vector<std::string> load_file(std::filesystem::path const& from)
+		{
+			std::error_code ec;
+			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			if (ec)
+				throw std::runtime_error(format("file '{}' not found", from.string()));
+
+			std::vector<std::string> result;
+			ghassanpl::string_ops::split(std::string_view{ source }, '\n', [&](std::string_view line, bool) { result.push_back(std::string{line}); });
+			return result;
+		}
+
+		template <typename CALLBACK>
+		inline void load_file(std::filesystem::path const& from, CALLBACK&& callback)
+		{
+			std::error_code ec;
+			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			if (ec)
+				throw std::runtime_error(format("file '{}' not found", from.string()));
+
+			std::vector<std::string> result;
+			ghassanpl::string_ops::split(std::string_view{ source }, '\n', [&](std::string_view line, bool) { callback(line); });
+			return result;
+		}
+
+		inline std::vector<std::string> try_load_file(std::filesystem::path const& from)
+		{
+			std::error_code ec;
+			return load_file(from, ec);
+		}
+
+		template <std::ranges::range T>
+		inline bool save_file(std::filesystem::path const& to, T string_range, std::error_code& ec)
+		{
+			/// TODO: How to fil ec?
+			std::ofstream out{ to };
+			for (auto& string : string_range)
+			{
+				out.write(std::to_address(std::ranges::begin(string)), std::ranges::size(string));
+				out << "\n";
+			}
+			return out.fail();
+		}
+
+		template <std::ranges::range T>
+		inline void save_file(std::filesystem::path const& to, T string_range)
+		{
+			std::ofstream out{ to };
+			out.exceptions(std::ios::badbit | std::ios::failbit);
+			for (auto& string : string_range)
+			{
+				out.write(std::to_address(std::ranges::begin(string)), std::ranges::size(string));
+				out << "\n";
+			}
 		}
 	}
 
@@ -182,6 +260,26 @@ namespace ghassanpl::formats
 			catch (...)
 			{
 				std::throw_with_nested(std::runtime_error{ std::format("while trying to convert value at element {} to type {}", key, typeid(T).name()) });
+			}
+		}
+
+		template <typename VISIT_FUNC>
+		void visit(nlohmann::json const& j, VISIT_FUNC&& func)
+		{
+			switch (j.type())
+			{
+			case nlohmann::json::value_t::object: func(j.get_ref<nlohmann::json::object_t const&>()); return;
+			case nlohmann::json::value_t::array: func(j.get_ref<nlohmann::json::array_t const&>()); return;
+			case nlohmann::json::value_t::string: func(j.get_ref<nlohmann::json::string_t const&>()); return;
+			case nlohmann::json::value_t::boolean: func(j.get_ref<nlohmann::json::boolean_t const&>()); return;
+			case nlohmann::json::value_t::number_integer: func(j.get_ref<nlohmann::json::number_integer_t const&>()); return;
+			case nlohmann::json::value_t::number_unsigned: func(j.get_ref<nlohmann::json::number_unsigned_t const&>()); return;
+			case nlohmann::json::value_t::number_float: func(j.get_ref<nlohmann::json::number_float_t const&>()); return;
+			case nlohmann::json::value_t::binary: func(j.get_ref<nlohmann::json::binary_t const&>()); return;
+			case nlohmann::json::value_t::null: func(nullptr); return;
+			case nlohmann::json::value_t::discarded:
+			default:
+				break;
 			}
 		}
 	}
