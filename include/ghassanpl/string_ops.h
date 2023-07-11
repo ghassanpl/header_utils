@@ -28,6 +28,7 @@
 
 /// Adds a few utility functions that deal with strings and string_views.
 
+static_assert(CHAR_BIT >= 8);
 
 namespace ghassanpl::string_ops
 {
@@ -121,6 +122,11 @@ namespace ghassanpl::string_ops
 		return make_sv(child_to_back_up.data() - n, child_to_back_up.data() + child_to_back_up.size());
 	}
 
+	[[nodiscard]] constexpr bool is_inside(std::string_view big_string, std::string_view smaller_string)
+	{
+		return big_string.data() - smaller_string.data() >= 0 && (smaller_string.data() + smaller_string.size()) - (big_string.data() + big_string.size()) >= 0;
+	}
+
 	/// ///////////////////////////// ///
 	/// ASCII functions
 	/// ///////////////////////////// ///
@@ -187,19 +193,19 @@ namespace ghassanpl::string_ops
 		[[nodiscard]] constexpr inline bool isany(char32_t cp, std::string_view chars) noexcept { return cp < 128 && std::find(chars.begin(), chars.end(), (char)cp) != chars.end(); }
 
 		[[nodiscard]] constexpr inline char32_t toupper(char32_t cp) noexcept { 
-#if 0
-			return (CharType)(ToUnsigned(Char) - ((uint32(Char) - 'a' < 26u) << 5));
-#endif
 			return (cp >= 97 && cp <= 122) ? (cp ^ 0b100000) : cp; 
 		}
 		[[nodiscard]] constexpr inline char32_t tolower(char32_t cp) noexcept { 
-#if 0
-			return (CharType)(ToUnsigned(Char) + ((uint32(Char) - 'A' < 26u) << 5));
-#endif
 			return (cp >= 65 && cp <= 90)  ? (cp | 0b100000) : cp; 
 		}
 
 		/// ASCII-string-based utilities that make use of the above functions
+
+		template <stringable T>
+		[[nodiscard]] constexpr inline bool is_identifier(T const& str) noexcept {
+			if (std::ranges::empty(str)) return false;
+			return ::ghassanpl::string_ops::ascii::isidentstart(*std::ranges::begin(str)) && std::ranges::all_of(std::views::drop(str, 1), ::ghassanpl::string_ops::ascii::isident);
+		}
 
 		template <stringable T>
 		[[nodiscard]] constexpr inline std::string tolower(T const& str) noexcept {
@@ -252,6 +258,13 @@ namespace ghassanpl::string_ops
 				return toupper(std::string{ str });
 			return {};
 		}
+
+		[[nodiscard]] inline std::string capitalize(std::string str) noexcept {
+			if (str.empty()) return str;
+			str[0] = (char)::ghassanpl::string_ops::ascii::toupper(str[0]);
+			return str;
+		}
+
 
 		/// Convert a number between 0 and 9/15 to its ASCII representation (only gives meaningful results with arguments between 0 and 9/15)
 
@@ -335,6 +348,7 @@ namespace ghassanpl::string_ops
 #undef isascii
 	[[nodiscard]] constexpr inline bool isascii(char32_t cp) noexcept { return cp <= 127; }
 #pragma pop_macro("isascii")
+	[[nodiscard]] constexpr inline bool is_ascii(char32_t cp) noexcept { return cp <= 127; }
 
 	/// ///////////////////////////// ///
 	/// Pre-C++23 stuff
@@ -425,6 +439,15 @@ namespace ghassanpl::string_ops
 		return {};
 	}
 
+	[[nodiscard]] inline char consume_or(std::string_view& str, char or_else)
+	{
+		if (str.empty())
+			return or_else;
+		const auto result = str[0];
+		str.remove_prefix(1);
+		return result;
+	}
+
 	[[nodiscard]] inline bool consume_at_end(std::string_view& str, char val)
 	{
 		if (str.ends_with(val))
@@ -489,6 +512,17 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
+	[[nodiscard]] inline std::string_view consume_until_delim(std::string_view& str, char c)
+	{
+		/// TODO: Should this return a sv including the delimiter?
+
+		const auto start = str.begin();
+		while (!str.empty() && str[0] != c)
+			str.remove_prefix(1);
+		std::ignore = consume(str, c);
+		return make_sv(start, str.begin());
+	}
+
 	[[nodiscard]] inline std::string_view consume_n(std::string_view& str, size_t n)
 	{
 		n = std::min(str.size(), n);
@@ -538,238 +572,6 @@ namespace ghassanpl::string_ops
 		}
 		return false;
 	}
-
-	[[nodiscard]] inline std::string_view consume_c_identifier(std::string_view& str)
-	{
-		if (str.empty() || !ascii::isidentstart(str[0]))
-			return {};
-
-		const auto start = str.begin();
-		str.remove_prefix(1);
-		trim_while(str, ascii::isident);
-		return make_sv(start, str.begin());
-	}
-
-	[[nodiscard]] inline std::string_view consume_c_identifier_with(std::string_view& str, std::string_view additional_chars)
-	{
-		if (str.empty() || !(ascii::isidentstart(str[0]) || contains(additional_chars, str[0])))
-			return {};
-
-		const auto start = str.begin();
-		str.remove_prefix(1);
-		trim_while(str, [additional_chars](char c) { return ascii::isident(c) || contains(additional_chars, c); });
-		return make_sv(start, str.begin());
-	}
-
-
-#if __cpp_lib_to_chars
-	[[nodiscard]] inline std::pair<std::string_view, double> consume_c_float(std::string_view& str)
-	{
-		if (str.empty() || !(ascii::isdigit(str[0]) || str[0] == '-'))
-			return {};
-
-		std::pair<std::string_view, double> result;
-
-		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second);
-		if (from_chars_result.ec != std::errc{})
-			return { {}, std::numeric_limits<double>::quiet_NaN() };
-
-		result.first = make_sv(str.data(), from_chars_result.ptr);
-		str.remove_prefix(result.first.size());
-		return result;
-	}
-
-	[[nodiscard]] inline std::pair<std::string_view, int64_t> consume_c_integer(std::string_view& str, int base = 10)
-	{
-		if (str.empty() || !(ascii::isdigit(str[0]) || str[0] == '-'))
-			return {};
-
-		std::pair<std::string_view, int64_t> result;
-
-		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second, base);
-		if (from_chars_result.ec != std::errc{})
-			return { {}, 0 };
-
-		result.first = make_sv(str.data(), from_chars_result.ptr);
-		str.remove_prefix(result.first.size());
-		return result;
-	}
-
-	[[nodiscard]] inline std::pair<std::string_view, uint64_t> consume_c_unsigned(std::string_view& str, int base = 10)
-	{
-		if (str.empty() || !ascii::isdigit(str[0]))
-			return {};
-
-		std::pair<std::string_view, uint64_t> result;
-
-		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second, base);
-		if (from_chars_result.ec != std::errc{})
-			return { {}, 0 };
-
-		result.first = make_sv(str.data(), from_chars_result.ptr);
-		str.remove_prefix(result.first.size());
-		return result;
-	}
-
-	size_t append_utf8(string8 auto& buffer, char32_t cp);
-
-	template <char DELIMITER = '\''>
-	[[nodiscard]] inline std::pair<std::string_view, std::string> consume_c_string(std::string_view& strv)
-	{
-		if (strv.empty() || strv[0] != DELIMITER)
-			return {};
-
-		std::pair<std::string_view, std::string> result;
-
-		auto view = strv;
-		auto start = view.begin();
-		view.remove_prefix(1);
-		while (view[0] != DELIMITER)
-		{
-			auto cp = consume(view);
-			if (cp == '\\')
-			{
-				cp = consume(view);
-				if (view.empty())
-					return {}; /// Unterminated string literal
-
-				switch (cp)
-				{
-				case 'n': result.second += '\n'; break;
-				case '"': result.second += '"'; break;
-				case '\'': result.second += '\''; break;
-				case '\\': result.second += '\\'; break;
-				case 'b': result.second += '\b'; break;
-				case 'r': result.second += '\r'; break;
-				case 'f': result.second += '\f'; break;
-				case 't': result.second += '\t'; break;
-				case '0': result.second += '\0'; break;
-				case 'o':
-				{
-					auto num = consume_n(view, 3);
-					if (num.size() < 3 || view.empty()) return {}; /// malformed
-
-					auto parsed = consume_c_integer(num, 8);
-					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
-
-					if (parsed.second > 255) return {}; /// invalid octal
-					result.second.push_back((char)parsed.second);
-					break;
-				}
-				case 'x':
-				{
-					auto num = consume_n(view, 2);
-					if (num.size() < 2 || view.empty()) return {}; /// malformed
-
-					auto parsed = consume_c_integer(num, 16);
-					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
-
-					append_utf8(result.second, (char32_t)parsed.second);
-					break;
-				}
-				case 'u':
-				{
-					auto num = consume_n(view, 4);
-					if (num.size() < 4 || view.empty()) return {}; /// malformed
-
-					auto parsed = consume_c_integer(num, 16);
-					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
-
-					append_utf8(result.second, (char32_t)parsed.second);
-					break;
-				}
-				case 'U':
-				{
-					auto num = consume_n(view, 8);
-					if (num.size() < 8 || view.empty()) return {}; /// malformed
-
-					auto parsed = consume_c_integer(num, 16);
-					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
-
-					append_utf8(result.second, (char32_t)parsed.second);
-					break;
-				}
-				default:
-					return {}; /// unknown escape character
-				}
-			}
-			else
-			{
-				result.second += cp;
-			}
-
-			if (view.empty())
-				return {}; /// unterminated
-		}
-
-		if (!consume(view, DELIMITER))
-			return {}; /// unterminated
-
-		result.first = make_sv(start, view.begin());
-		strv = view;
-		return result;
-	}
-
-	[[nodiscard]] inline std::tuple<std::string_view, std::variant<double, uint64_t, int64_t>> consume_c_number(std::string_view& str)
-	{
-		if (str.empty())
-			return {};
-
-		auto first_char = str[0];
-		if (first_char == '-')
-		{
-			/// We need to parse then complement the integer
-			/// TODO: this
-			return {};
-		}
-		else if (consume(str, "0x"))
-			return consume_c_unsigned(str, 16);
-		else if (consume(str, "0b"))
-			return consume_c_unsigned(str, 1);
-		else if (consume(str, "0"))
-			return consume_c_unsigned(str, 8);
-		else if (ascii::isdigit(first_char))
-		{
-			{
-				auto result = consume_c_float(str);
-				if (!result.first.empty())
-					return result;
-			}
-
-			{
-				auto result = consume_c_unsigned(str);
-				if (!result.first.empty())
-					return result;
-			}
-
-			{
-				auto result = consume_c_integer(str);
-				if (!result.first.empty())
-					return result;
-			}
-		}
-		return {};
-	}
-
-	/// TODO: do this correctly
-	[[nodiscard]] inline std::tuple<std::string_view, std::variant<std::string, double, uint64_t, int64_t>> consume_c_literal(std::string_view& str)
-	{
-		if (str.empty())
-			return {};
-
-		auto first_char = str[0];
-		if (first_char == '\'')
-			return consume_c_string(str);
-		else if (first_char == '"')
-			return consume_c_string<'"'>(str);
-
-		auto [range, value] = consume_c_number(str);
-		if (range.empty()) return {};
-
-		return { range, std::visit([](auto&& v) { return std::variant<std::string, double, uint64_t, int64_t>{std::move(v)}; }, std::move(value)) };
-	}
-
-#endif
 
 	/// ///////////////////////////// ///
 	/// Other
@@ -842,12 +644,22 @@ namespace ghassanpl::string_ops
 		func(source.substr(start), true);
 	}
 
-	constexpr inline std::pair<std::string_view, std::string_view> single_split(std::string_view src, char delim) noexcept
+	[[nodiscard]] constexpr inline std::pair<std::string_view, std::string_view> single_split(std::string_view src, char delim) noexcept
 	{
 		size_t split_at = src.find_first_of(delim);
 		if (split_at == std::string::npos)
-			return {};
-		return {src.substr(0, split_at), src.substr(split_at + 1) };
+			return { src, {} };
+		return { src.substr(0, split_at), src.substr(split_at + 1) };
+	}
+
+	[[nodiscard]] constexpr inline bool single_split(std::string_view src, char delim, std::string_view& first, std::string_view& second) noexcept
+	{
+		size_t split_at = src.find_first_of(delim);
+		if (split_at == std::string::npos)
+			return false;
+		first = src.substr(0, split_at);
+		second = src.substr(split_at + 1);
+		return true;
 	}
 
 	template <typename FUNC>
@@ -1072,7 +884,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <string_or_char ESCAPE = char>
-	inline void escape(std::string& subject, std::string_view chars_to_escape, ESCAPE&& escape)
+	inline void escape(std::string& subject, std::string_view chars_to_escape, ESCAPE&& escape = '\\')
 	{
 		if (chars_to_escape.empty())
 			return;
@@ -1087,11 +899,41 @@ namespace ghassanpl::string_ops
 		}
 	}
 
+	template <typename ESCAPE_FUNC>
+	requires std::is_invocable_v<ESCAPE_FUNC, char> && std::is_constructible_v<std::string_view, std::invoke_result_t<ESCAPE_FUNC, char>>
+	inline void escape_non_printable(std::string& subject, ESCAPE_FUNC&& escape_func)
+	{
+		size_t pos = 0;
+		std::string::iterator it;
+		while ((it = std::find_if_not(subject.begin() + pos, subject.end(), ascii::isprint)) != subject.end())
+		{
+			pos = it - subject.begin();
+			auto escape_str = escape_func(subject[pos]);
+			subject.replace(pos, 1, escape_str);
+			pos += escape_str.size();
+		}
+	}
+
+	inline void escape_non_printable(std::string& subject)
+	{
+		escape_non_printable(subject, [](char c) {
+			return std::format("\\x{:02x}", c);
+		});
+	}
+
 	template <typename STR, string_or_char ESCAPE = char>
 	[[nodiscard]] inline std::string escaped(STR&& subject, std::string_view to_escape = "\"\\", ESCAPE&& escape_str = '\\')
 	{
 		auto result = std::string{ subject };
 		::ghassanpl::string_ops::escape(result, to_escape, std::forward<ESCAPE>(escape_str));
+		return result;
+	}
+
+	template <typename STR>
+	[[nodiscard]] inline std::string escaped_non_printable(STR&& subject)
+	{
+		auto result = std::string{ subject };
+		::ghassanpl::string_ops::escape_non_printable(result);
 		return result;
 	}
 
@@ -1302,3 +1144,4 @@ namespace ghassanpl::string_ops
 #define GHPL_FORMAT_ARGS std::string_view ghpl_fmt, GHPL_ARGS&&... ghpl_args
 #define GHPL_FORMAT_FORWARD ghpl_fmt, std::forward<GHPL_ARGS>(ghpl_args)...
 #define GHPL_FORMAT_CALL std::vformat(ghpl_fmt, std::make_format_args(std::forward<GHPL_ARGS>(ghpl_args)...))
+#define GHPL_PRINT_CALL std::vprint_unicode(ghpl_fmt, std::make_format_args(std::forward<GHPL_ARGS>(ghpl_args)...))

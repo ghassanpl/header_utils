@@ -9,6 +9,241 @@
 
 namespace ghassanpl::parsing
 {
+	using namespace string_ops;
+	[[nodiscard]] inline std::string_view consume_c_identifier(std::string_view& str)
+	{
+		if (str.empty() || !ascii::isidentstart(str[0]))
+			return {};
+
+		const auto start = str.begin();
+		str.remove_prefix(1);
+		trim_while(str, ascii::isident);
+		return make_sv(start, str.begin());
+	}
+
+	[[nodiscard]] inline std::string_view consume_c_identifier_with(std::string_view& str, std::string_view additional_chars)
+	{
+		if (str.empty() || !(ascii::isidentstart(str[0]) || contains(additional_chars, str[0])))
+			return {};
+
+		const auto start = str.begin();
+		str.remove_prefix(1);
+		trim_while(str, [additional_chars](char c) { return ascii::isident(c) || contains(additional_chars, c); });
+		return make_sv(start, str.begin());
+	}
+
+
+#if __cpp_lib_to_chars
+	[[nodiscard]] inline std::pair<std::string_view, double> consume_c_float(std::string_view& str)
+	{
+		if (str.empty() || !(ascii::isdigit(str[0]) || str[0] == '-'))
+			return {};
+
+		std::pair<std::string_view, double> result;
+
+		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second);
+		if (from_chars_result.ec != std::errc{})
+			return { {}, std::numeric_limits<double>::quiet_NaN() };
+
+		result.first = make_sv(str.data(), from_chars_result.ptr);
+		str.remove_prefix(result.first.size());
+		return result;
+	}
+
+	[[nodiscard]] inline std::pair<std::string_view, int64_t> consume_c_integer(std::string_view& str, int base = 10)
+	{
+		if (str.empty() || !(ascii::isdigit(str[0]) || str[0] == '-'))
+			return {};
+
+		std::pair<std::string_view, int64_t> result;
+
+		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second, base);
+		if (from_chars_result.ec != std::errc{})
+			return { {}, 0 };
+
+		result.first = make_sv(str.data(), from_chars_result.ptr);
+		str.remove_prefix(result.first.size());
+		return result;
+	}
+
+	[[nodiscard]] inline std::pair<std::string_view, uint64_t> consume_c_unsigned(std::string_view& str, int base = 10)
+	{
+		if (str.empty() || !ascii::isdigit(str[0]))
+			return {};
+
+		std::pair<std::string_view, uint64_t> result;
+
+		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second, base);
+		if (from_chars_result.ec != std::errc{})
+			return { {}, 0 };
+
+		result.first = make_sv(str.data(), from_chars_result.ptr);
+		str.remove_prefix(result.first.size());
+		return result;
+	}
+
+	template <char DELIMITER = '\''>
+	[[nodiscard]] inline std::pair<std::string_view, std::string> consume_c_string(std::string_view& strv)
+	{
+		if (strv.empty() || strv[0] != DELIMITER)
+			throw std::runtime_error("C string must start with delimiter");
+
+		std::pair<std::string_view, std::string> result;
+
+		auto view = strv;
+		auto start = view.begin();
+		view.remove_prefix(1);
+		while (view[0] != DELIMITER)
+		{
+			auto cp = consume(view);
+			if (cp == '\\')
+			{
+				cp = consume(view);
+				if (view.empty())
+					throw std::runtime_error("unterminated C string");
+
+				switch (cp)
+				{
+				case 'n': result.second += '\n'; break;
+				case '"': result.second += '"'; break;
+				case '\'': result.second += '\''; break;
+				case '\\': result.second += '\\'; break;
+				case 'b': result.second += '\b'; break;
+				case 'r': result.second += '\r'; break;
+				case 'f': result.second += '\f'; break;
+				case 't': result.second += '\t'; break;
+				case '0': result.second += '\0'; break;
+				case 'o':
+				{
+					auto num = consume_n(view, 3);
+					if (num.size() < 3 || view.empty()) return {}; /// malformed
+
+					auto parsed = consume_c_integer(num, 8);
+					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+
+					if (parsed.second > 255) return {}; /// invalid octal
+					result.second.push_back((char)parsed.second);
+					break;
+				}
+				case 'x':
+				{
+					auto num = consume_n(view, 2);
+					if (num.size() < 2 || view.empty()) return {}; /// malformed
+
+					auto parsed = consume_c_integer(num, 16);
+					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+
+					//append_utf8(result.second, (char32_t)parsed.second);
+					result.second += (char)parsed.second;
+					break;
+				}
+				case 'u':
+				{
+					auto num = consume_n(view, 4);
+					if (num.size() < 4 || view.empty()) return {}; /// malformed
+
+					auto parsed = consume_c_integer(num, 16);
+					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+
+					append_utf8(result.second, (char32_t)parsed.second);
+					break;
+				}
+				case 'U':
+				{
+					auto num = consume_n(view, 8);
+					if (num.size() < 8 || view.empty()) return {}; /// malformed
+
+					auto parsed = consume_c_integer(num, 16);
+					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+
+					append_utf8(result.second, (char32_t)parsed.second);
+					break;
+				}
+				default:
+					throw std::runtime_error("unknown escape character");
+				}
+			}
+			else
+			{
+				result.second += cp;
+			}
+
+			if (view.empty())
+				throw std::runtime_error("unterminated C string");
+		}
+
+		if (!consume(view, DELIMITER))
+			throw std::runtime_error("C string must end with delimiter");
+
+		result.first = make_sv(start, view.begin());
+		strv = view;
+		return result;
+	}
+
+	[[deprecated("WARNING: This function is incomplete")]]
+	[[nodiscard]] inline std::tuple<std::string_view, std::variant<double, uint64_t, int64_t>> consume_c_number(std::string_view& str)
+	{
+		if (str.empty())
+			return {};
+
+		auto first_char = str[0];
+		if (first_char == '-')
+		{
+			/// We need to parse then complement the integer
+			/// TODO: this
+			return {};
+		}
+		else if (consume(str, "0x"))
+			return consume_c_unsigned(str, 16);
+		else if (consume(str, "0b"))
+			return consume_c_unsigned(str, 1);
+		else if (consume(str, "0"))
+			return consume_c_unsigned(str, 8);
+		else if (ascii::isdigit(first_char))
+		{
+			{
+				auto result = consume_c_float(str);
+				if (!result.first.empty())
+					return result;
+			}
+
+			{
+				auto result = consume_c_unsigned(str);
+				if (!result.first.empty())
+					return result;
+			}
+
+			{
+				auto result = consume_c_integer(str);
+				if (!result.first.empty())
+					return result;
+			}
+		}
+		return {};
+	}
+
+	/*
+	/// TODO: do this correctly
+	[[deprecated("WARNING: This function is incomplete and incorrect")]]
+	[[nodiscard]] inline std::tuple<std::string_view, std::variant<std::string, double, uint64_t, int64_t>> consume_c_literal(std::string_view& str)
+	{
+		if (str.empty())
+			return {};
+
+		const auto first_char = str[0];
+		if (first_char == '\'')
+			return consume_c_string(str);
+		else if (first_char == '"')
+			return consume_c_string<'"'>(str);
+
+		auto [range, value] = consume_c_number(str);
+		if (range.empty()) return {};
+
+		return { range, std::visit([](auto&& v) { return std::variant<std::string, double, uint64_t, int64_t>{std::move(v)}; }, std::move(value)) };
+	}
+	*/
+
+#endif
 
 	struct parse_error : std::runtime_error
 	{
@@ -56,12 +291,12 @@ namespace ghassanpl::parsing
 	inline std::string_view try_eat_identifier(std::string_view& str)
 	{
 		string_ops::trim_whitespace_left(str);
-		return string_ops::consume_c_identifier(str);
+		return consume_c_identifier(str);
 	}
 
 	inline std::string_view eat_identifier(std::string_view& str)
 	{
-		auto result = try_eat_identifier(str);
+		const auto result = try_eat_identifier(str);
 		if (result.empty())
 			throw parse_error(str, "expected identifier");
 		return result;
@@ -70,12 +305,12 @@ namespace ghassanpl::parsing
 	inline std::string_view try_eat_identifier_with(std::string_view& str, std::string_view additional_chars)
 	{
 		string_ops::trim_whitespace_left(str);
-		return string_ops::consume_c_identifier_with(str, additional_chars);
+		return consume_c_identifier_with(str, additional_chars);
 	}
 
 	inline std::string_view eat_identifier_with(std::string_view& str, std::string_view additional_chars)
 	{
-		auto result = try_eat_identifier_with(str, additional_chars);
+		const auto result = try_eat_identifier_with(str, additional_chars);
 		if (result.empty())
 			throw parse_error(str, "expected identifier");
 		return result;
@@ -98,7 +333,7 @@ namespace ghassanpl::parsing
 	inline bool try_eat_unsigned(std::string_view& str, uint64_t& result, int base = 10)
 	{
 		string_ops::trim_whitespace_left(str);
-		auto [parsed, value] = string_ops::consume_c_unsigned(str, base);
+		auto [parsed, value] = consume_c_unsigned(str, base);
 		if (parsed.empty()) return false;
 		result = value;
 		return true;
@@ -115,7 +350,7 @@ namespace ghassanpl::parsing
 	inline bool try_eat_integer(std::string_view& str, int64_t& result, int base = 10)
 	{
 		string_ops::trim_whitespace_left(str);
-		auto [parsed, value] = string_ops::consume_c_integer(str, base);
+		auto [parsed, value] = consume_c_integer(str, base);
 		if (parsed.empty()) return false;
 		result = value;
 		return true;
@@ -152,7 +387,7 @@ namespace ghassanpl::parsing
 
 	inline char32_t eat_utf8_codepoint(std::string_view& str)
 	{
-		if (auto cp = string_ops::consume_utf8(str))
+		if (const auto cp = string_ops::consume_utf8(str))
 			return cp;
 		throw parse_error(str, "expected UTF-8 codepoint");
 	}
