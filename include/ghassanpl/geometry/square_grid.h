@@ -1,3 +1,7 @@
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #include "squares.h"
@@ -188,22 +192,25 @@ namespace ghassanpl::geometry::squares
 			//static_assert(tile_callback<FUNC, TILE_DATA>, "callback must take a glm::ivec2 and/or a tile reference, and return a bool or void");
 			//static_assert(tile_callback<FUNC>, "callback must take a glm::ivec2, and return a bool or void");
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
-			using return_type = decltype(self.apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
+			using return_type = decltype(self.template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
-			if constexpr (std::is_void_v<return_type>)
-			{
-				for (int y = tile_rect.top(); y < tile_rect.bottom(); y++)
-					for (int x = tile_rect.left(); x < tile_rect.right(); x++)
-						self.apply<ONLY_VALID>({ x, y }, func);
-			}
-			else
-			{
-				for (int y = tile_rect.top(); y < tile_rect.bottom(); y++)
-					for (int x = tile_rect.left(); x < tile_rect.right(); x++)
-						if (auto ret = self.apply<ONLY_VALID>({ x, y }, func)) return ret;
+			irec2 rect = tile_rect;
+			if constexpr (ONLY_VALID)
+				rect = tile_rect.clipped_to(self.bounds());
 
-				return return_type{};
-			}
+			for (int y = rect.top(); y < rect.bottom(); y++)
+				for (int x = rect.left(); x < rect.right(); x++)
+				{
+					if constexpr (std::is_void_v<return_type>)
+						self.template apply<ONLY_VALID>({ x, y }, func);
+					else
+					{
+						if (auto ret = self.template apply<ONLY_VALID>({ x, y }, func))
+							return ret;
+					}
+				}
+
+			return return_type{};
 		}
 
 		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC >
@@ -216,30 +223,34 @@ namespace ghassanpl::geometry::squares
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
+			irec2 rect = tile_rect;
+			if constexpr (ONLY_VALID)
+				rect = tile_rect.clipped_to(bounds());
+
 			if constexpr (std::is_void_v<return_type>)
 			{
-				for (int x = tile_rect.left(); x < tile_rect.right(); x++)
+				for (int x = rect.left(); x < rect.right(); x++)
 				{
-					apply<ONLY_VALID>({ x, tile_rect.top() }, func);
-					apply<ONLY_VALID>({ x, tile_rect.bottom() - 1 }, func);
+					apply<ONLY_VALID>({ x, rect.top() }, func);
+					apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func);
 				}
-				for (int y = tile_rect.top() + 1; y < tile_rect.bottom() - 1; y++)
+				for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
 				{
-					apply<ONLY_VALID>({ tile_rect.left(), y }, func);
-					apply<ONLY_VALID>({ tile_rect.right() - 1, y }, func);
+					apply<ONLY_VALID>({ rect.left(), y }, func);
+					apply<ONLY_VALID>({ rect.right() - 1, y }, func);
 				}
 			}
 			else
 			{
-				for (int x = tile_rect.left(); x < tile_rect.right(); x++)
+				for (int x = rect.left(); x < rect.right(); x++)
 				{
-					if (auto ret = apply<ONLY_VALID>({ x, tile_rect.top() }, func)) return ret;
-					if (auto ret = apply<ONLY_VALID>({ x, tile_rect.bottom() - 1 }, func)) return ret;
+					if (auto ret = apply<ONLY_VALID>({ x, rect.top() }, func)) return ret;
+					if (auto ret = apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func)) return ret;
 				}
-				for (int y = tile_rect.top() + 1; y < tile_rect.bottom() - 1; y++)
+				for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
 				{
-					if (auto ret = apply<ONLY_VALID>({ tile_rect.left(), y }, func)) return ret;
-					if (auto ret = apply<ONLY_VALID>({ tile_rect.right() - 1, y }, func)) return ret;
+					if (auto ret = apply<ONLY_VALID>({ rect.left(), y }, func)) return ret;
+					if (auto ret = apply<ONLY_VALID>({ rect.right() - 1, y }, func)) return ret;
 				}
 
 				return return_type{};
@@ -269,20 +280,20 @@ namespace ghassanpl::geometry::squares
 			}
 		}
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC >
+		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC>
 		auto for_each_tile(this auto&& self, FUNC&& func)
 		{
 			irec2 rect = { 0, 0, self.mWidth, self.mHeight };
-			return self.for_each_tile_in_rect<FLAGS>(rect, std::forward<FUNC>(func));
+			return self.template for_each_tile_in_rect<FLAGS>(rect, std::forward<FUNC>(func));
 		}
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC >
+		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC>
 		auto for_each_tile_in_polygon(std::span<glm::vec2 const> poly_points, glm::vec2 tile_size, FUNC&& func) const;
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC >
+		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC>
 		auto for_each_tile_in_row(int row, FUNC&& func) const;
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC >
+		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC>
 		auto for_each_tile_in_column(int column, FUNC&& func) const;
 
 		/// Function: line_cast
@@ -356,46 +367,18 @@ namespace ghassanpl::geometry::squares
 		template <bool ONLY_VALID = true, typename FUNC>
 		auto apply(this auto&& self, glm::ivec2 to, FUNC&& func)
 		{
-			/*
-			using return_type = decltype(func(glm::ivec2{}));
-			if constexpr (std::is_void_v<return_type>)
-			{
-				if constexpr (ONLY_VALID) if (!is_valid(to)) return;
-				if constexpr (std::invocable<FUNC, glm::ivec2, TILE_DATA&>)
-					func(to, at(to));
-				else if constexpr (std::invocable<FUNC, TILE_DATA& ,glm::ivec2>)
-					func(at(to), to);
-				else if constexpr (std::invocable<FUNC, TILE_DATA&>)
-					func(at(to));
-				else
-					func(to);
-			}
-			else
-			{
-				if constexpr (ONLY_VALID) if (!is_valid(to)) return return_type{};
-				if constexpr (std::invocable<FUNC, glm::ivec2, TILE_DATA&>)
-					return func(to, at(to));
-				else if constexpr (std::invocable<FUNC, TILE_DATA&, glm::ivec2>)
-					return func(at(to), to);
-				else if constexpr (std::invocable<FUNC, TILE_DATA&>)
-					return func(at(to));
-				else
-					return func(to);
-			}
-			*/
-
 			//if constexpr (ONLY_VALID) if (!is_valid(to)) return return_type{};
 			using self_type = std::remove_reference_t<decltype(self)>;
 			using tile_data_type = std::conditional_t<std::is_const_v<self_type>, std::add_const_t<typename self_type::tile_data_type>, typename self_type::tile_data_type>;
 			using invocable_type = std::remove_cvref_t<FUNC>;
 			if constexpr (std::invocable<invocable_type, glm::ivec2, tile_data_type&>)
-				return func(to, *self.at(to));
+				return (ONLY_VALID && self.is_valid(to)) ? func(to, *self.at(to)) : decltype(func(to, *self.at(to))){};
 			else if constexpr (std::invocable<invocable_type, tile_data_type&, glm::ivec2>)
-				return func(*self.at(to), to);
+				return (ONLY_VALID && self.is_valid(to)) ? func(*self.at(to), to) : decltype(func(*self.at(to), to)){};
 			else if constexpr (std::invocable<invocable_type, tile_data_type&>)
-				return func(*self.at(to));
+				return (ONLY_VALID && self.is_valid(to)) ? func(*self.at(to)) : decltype(func(*self.at(to))){};
 			else
-				return func(to);
+				return (ONLY_VALID && self.is_valid(to)) ? func(to) : decltype(func(to)){};
 		}
 
 		void flip_row(int row)

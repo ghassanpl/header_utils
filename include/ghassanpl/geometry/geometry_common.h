@@ -1,3 +1,7 @@
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #include "../enum_flags.h"
@@ -9,6 +13,19 @@
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
 #include <format>
+
+namespace glm
+{
+	template <typename STRINGIFIER>
+	bool stringify(STRINGIFIER& str, glm::vec4& b) { return str('[', b.x, ',', b.y, ',', b.z, ',', b.w, ']'); }
+	template <typename STRINGIFIER>
+	bool stringify(STRINGIFIER& str, glm::vec4 const& b) { return str('[', b.x, ',', b.y, ',', b.z, ',', b.w, ']'); }
+
+	template <typename STRINGIFIER>
+	bool stringify(STRINGIFIER& str, glm::vec2& b) { return str('[', b.x, ',', b.y, ']'); }
+	template <typename STRINGIFIER>
+	bool stringify(STRINGIFIER& str, glm::vec2 const& b) { return str('[', b.x, ',', b.y, ']'); }
+}
 
 namespace ghassanpl::geometry
 {
