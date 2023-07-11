@@ -19,85 +19,19 @@
     <Filter Include="Header Files\geometry">
       <UniqueIdentifier>{c7fce0bf-6179-4186-a6cc-ac843241ef50}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\enum_flags">
+      <UniqueIdentifier>{a604f8c3-27e2-4860-aa5b-70f009d51c3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\formats">
+      <UniqueIdentifier>{891a72da-22fd-42ed-80c4-05e4ecc17d92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\cpp98">
+      <UniqueIdentifier>{19080340-b9ca-4827-a5ed-e6d3dde2b121}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tests\tests_common.h">
       <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\align.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\align+rec2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\assuming.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\atomic_enum_flags.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\colors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\configs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\di.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\di_impl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\enum_flags.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\flag_bits.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\flag_bits_v.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\formats.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\hashes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\json_helpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\mmap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\named.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\parsing.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\random.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\rec2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\regex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\string_ops.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\symbol.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\templates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\wilson.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\with_sl.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\windows\common.h">
       <Filter>Header Files\windows</Filter>
@@ -105,32 +39,8 @@
     <ClInclude Include="include\ghassanpl\windows\message_box.h">
       <Filter>Header Files\windows</Filter>
     </ClInclude>
-    <ClInclude Include="include\ghassanpl\containers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\bits.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\ranges.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\unicode.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\functional.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\buffers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ghassanpl\windows\include.h">
       <Filter>Header Files\windows</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\platform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\random_geom.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\paths.h">
       <Filter>Header Files\windows</Filter>
@@ -147,14 +57,173 @@
     <ClInclude Include="include\ghassanpl\geometry\squares.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
-    <ClInclude Include="include\ghassanpl\constexpr_math.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ghassanpl\geometry\square_grid_algorithms.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\shape_concepts.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\arcs.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\triangles.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\ellipse.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\polygon.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\segment.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\align.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\align+rec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\assuming.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\bits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\buffers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\ghassanpl\bytes.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\colors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\configs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\constexpr_math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\containers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\di.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\di_impl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\functional.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\hashes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\mmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\mmap_impl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\named.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\parsing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\random_geom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\ranges.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\rec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\regex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\source_location.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\string_ops.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\stringification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\symbol.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\templates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\unicode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\uri.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\uri_impl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\virtual_filesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\with_sl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\atomic_enum_flags.h">
+      <Filter>Header Files\enum_flags</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\enum_flags.h">
+      <Filter>Header Files\enum_flags</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\flag_bits.h">
+      <Filter>Header Files\enum_flags</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\flag_bits_v.h">
+      <Filter>Header Files\enum_flags</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\bit_view.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\wilson.h">
+      <Filter>Header Files\formats</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\json_helpers.h">
+      <Filter>Header Files\formats</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\formats.h">
+      <Filter>Header Files\formats</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\cpp98\enum_flags.h">
+      <Filter>Header Files\cpp98</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\cpp98\named.h">
+      <Filter>Header Files\cpp98</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\windows\last_error.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\scope.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\eval.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\interpolate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\sexps.h">
+      <Filter>Header Files\formats</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -241,6 +310,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\geometry_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\uri_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\eval_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

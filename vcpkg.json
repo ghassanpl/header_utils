@@ -5,6 +5,8 @@
     "glm",
     "gtest",
     "magic-enum",
-    "nlohmann-json"
+    "nlohmann-json",
+
+    "tl-expected"
   ]
 }

@@ -131,6 +131,8 @@
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
       <BrowseInformation>true</BrowseInformation>
+      <EnableModules>false</EnableModules>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,6 +153,8 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalOptions>/Zc:__cplusplus /utf-8  /Zc:preprocessor</AdditionalOptions>
+      <EnableModules>false</EnableModules>
+      <BuildStlModules>false</BuildStlModules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,27 +169,39 @@
     <ClInclude Include="include\ghassanpl\assuming.h" />
     <ClInclude Include="include\ghassanpl\atomic_enum_flags.h" />
     <ClInclude Include="include\ghassanpl\bits.h" />
+    <ClInclude Include="include\ghassanpl\bit_view.h" />
     <ClInclude Include="include\ghassanpl\buffers.h" />
     <ClInclude Include="include\ghassanpl\bytes.h" />
     <ClInclude Include="include\ghassanpl\colors.h" />
     <ClInclude Include="include\ghassanpl\configs.h" />
     <ClInclude Include="include\ghassanpl\constexpr_math.h" />
     <ClInclude Include="include\ghassanpl\containers.h" />
+    <ClInclude Include="include\ghassanpl\cpp98\enum_flags.h" />
+    <ClInclude Include="include\ghassanpl\cpp98\named.h" />
     <ClInclude Include="include\ghassanpl\di.h" />
     <ClInclude Include="include\ghassanpl\di_impl.h" />
     <ClInclude Include="include\ghassanpl\enum_flags.h" />
+    <ClInclude Include="include\ghassanpl\eval.h" />
     <ClInclude Include="include\ghassanpl\flag_bits.h" />
     <ClInclude Include="include\ghassanpl\flag_bits_v.h" />
     <ClInclude Include="include\ghassanpl\formats.h" />
     <ClInclude Include="include\ghassanpl\functional.h" />
+    <ClInclude Include="include\ghassanpl\geometry\arcs.h" />
     <ClInclude Include="include\ghassanpl\geometry\direction.h" />
+    <ClInclude Include="include\ghassanpl\geometry\ellipse.h" />
     <ClInclude Include="include\ghassanpl\geometry\geometry_common.h" />
+    <ClInclude Include="include\ghassanpl\geometry\polygon.h" />
+    <ClInclude Include="include\ghassanpl\geometry\segment.h" />
+    <ClInclude Include="include\ghassanpl\geometry\shape_concepts.h" />
     <ClInclude Include="include\ghassanpl\geometry\square_grid.h" />
     <ClInclude Include="include\ghassanpl\geometry\square_grid_algorithms.h" />
     <ClInclude Include="include\ghassanpl\geometry\squares.h" />
+    <ClInclude Include="include\ghassanpl\geometry\triangles.h" />
     <ClInclude Include="include\ghassanpl\hashes.h" />
+    <ClInclude Include="include\ghassanpl\interpolate.h" />
     <ClInclude Include="include\ghassanpl\json_helpers.h" />
     <ClInclude Include="include\ghassanpl\mmap.h" />
+    <ClInclude Include="include\ghassanpl\mmap_impl.h" />
     <ClInclude Include="include\ghassanpl\named.h" />
     <ClInclude Include="include\ghassanpl\parsing.h" />
     <ClInclude Include="include\ghassanpl\paths.h" />
@@ -195,13 +211,19 @@
     <ClInclude Include="include\ghassanpl\ranges.h" />
     <ClInclude Include="include\ghassanpl\rec2.h" />
     <ClInclude Include="include\ghassanpl\regex.h" />
+    <ClInclude Include="include\ghassanpl\sexps.h" />
+    <ClInclude Include="include\ghassanpl\source_location.h" />
+    <ClInclude Include="include\ghassanpl\stringification.h" />
     <ClInclude Include="include\ghassanpl\string_ops.h" />
     <ClInclude Include="include\ghassanpl\symbol.h" />
     <ClInclude Include="include\ghassanpl\templates.h" />
     <ClInclude Include="include\ghassanpl\unicode.h" />
+    <ClInclude Include="include\ghassanpl\uri.h" />
+    <ClInclude Include="include\ghassanpl\uri_impl.h" />
     <ClInclude Include="include\ghassanpl\wilson.h" />
     <ClInclude Include="include\ghassanpl\windows\common.h" />
     <ClInclude Include="include\ghassanpl\windows\include.h" />
+    <ClInclude Include="include\ghassanpl\windows\last_error.h" />
     <ClInclude Include="include\ghassanpl\windows\message_box.h" />
     <ClInclude Include="include\ghassanpl\with_sl.h" />
     <ClInclude Include="tests\tests_common.h" />
@@ -221,6 +243,7 @@
     <ClCompile Include="tests\containers_tests.cpp" />
     <ClCompile Include="tests\di_tests.cpp" />
     <ClCompile Include="tests\enum_flags_tests.cpp" />
+    <ClCompile Include="tests\eval_tests.cpp" />
     <ClCompile Include="tests\formats_tests.cpp" />
     <ClCompile Include="tests\functional_tests.cpp" />
     <ClCompile Include="tests\geometry_tests.cpp" />
@@ -228,7 +251,6 @@
     <ClCompile Include="tests\mmap_tests.cpp" />
     <ClCompile Include="tests\named_tests.cpp" />
     <ClCompile Include="tests\parsing_tests.cpp" />
-    <ClCompile Include="tests\paths_tests.cpp" />
     <ClCompile Include="tests\random_tests.cpp" />
     <ClCompile Include="tests\ranges_tests.cpp" />
     <ClCompile Include="tests\symbol_tests.cpp" />
@@ -242,6 +264,7 @@
       <DisableLanguageExtensions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DisableLanguageExtensions>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
     </ClCompile>
+    <ClCompile Include="tests\uri_tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
