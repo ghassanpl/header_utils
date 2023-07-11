@@ -94,6 +94,25 @@ namespace ghassanpl
 			return -1;
 		return std::ranges::distance(std::ranges::begin(range), it);
 	}
+	
+	/// Find a value in `range` and returns a pointer to it, or null if none found
+	template <std::ranges::range RANGE, typename FUNC>
+	constexpr auto find_ptr(RANGE&& range, FUNC&& func)
+	requires requires (FUNC func, RANGE range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; }
+	{
+		const auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
+		return it == std::ranges::end(range) ? nullptr : std::to_address(it);
+	}
+
+	template <random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_value<RANGE>>
+	auto find_if_or_default(RANGE&& range, FUNC&& func, DEF_TYPE&& default_value = DEF_TYPE{})
+	requires requires (FUNC func, RANGE range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; }
+	{
+		auto it = std::ranges::find_if(std::forward<RANGE>(range), std::forward<FUNC>(func));
+		if (it == std::ranges::end(range))
+			return range_value<RANGE>{std::forward<DEF_TYPE>(default_value)};
+		return *it;
+	}
 
 	/// Turns an `iterator` to `range` to an index
 	constexpr auto to_index(random_access_iterator auto iterator, random_access_range auto&& range)
