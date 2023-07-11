@@ -2,6 +2,8 @@
 
 #include "geometry_common.h"
 
+#include <numbers>
+
 namespace ghassanpl::geometry
 {
 	enum class direction
@@ -67,8 +69,8 @@ namespace ghassanpl::geometry
 		return degrees{ (int(val) * 45.0f) };
 	}
 
-	constexpr inline glm::vec2 to_vec(direction val);
-	constexpr inline glm::ivec2 to_ivec(direction val);
+	constexpr inline glm::ivec2 to_ivec(direction val) { return { horizontal(val), vertical(val) }; }
+	constexpr inline glm::vec2 to_vec(direction val) { const glm::vec2 d = to_ivec(val); return is_diagonal(val) ? d * std::numbers::sqrt2_v<float> : d; }
 
 	constexpr inline ghassanpl::align to_alignment(direction val);
 

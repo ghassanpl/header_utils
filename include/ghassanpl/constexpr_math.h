@@ -60,8 +60,6 @@ namespace ghassanpl::constexpr_math
 		return false;
 	}
 
-	static constexpr int a = int(-0.1f);
-
 	template <std::floating_point T, typename RESULT = T>
 	constexpr RESULT ceil(T num)
 	{

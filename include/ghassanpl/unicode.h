@@ -460,7 +460,7 @@ namespace ghassanpl::string_ops
 #endif
 	[[nodiscard]] constexpr inline char32_t consume_utf8(string_view8 auto& str)
 	{
-		using char_type = std::remove_cvref_t<decltype(str)>::value_type;
+		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
 		using unsigned_char_type = std::make_unsigned_t<char_type>;
 
 		if (str.empty()) return 0;
@@ -513,7 +513,7 @@ namespace ghassanpl::string_ops
 #endif
 	inline size_t append_utf8(string8 auto& buffer, char32_t cp)
 	{
-		using char_type = std::remove_cvref_t<decltype(buffer)>::value_type;
+		using char_type = typename std::remove_cvref_t<decltype(buffer)>::value_type;
 #if 1
 		const size_t cp_bytes = codepoint_utf8_count(cp);
 		std::decay_t<decltype(buffer)> bytes(cp_bytes, 0);
@@ -561,8 +561,7 @@ namespace ghassanpl::string_ops
 
 	inline void transcode_codepage_to_utf8(string8 auto& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
 	{
-		using dest_char = std::decay_t<decltype(dest)>::value_type;
-		using source_char = std::decay_t<decltype(source)>::value_type;
+		using dest_char = typename std::decay_t<decltype(dest)>::value_type;
 		for (uint8_t cp : source)
 		{
 			if (cp < 0x80)
@@ -588,7 +587,7 @@ namespace ghassanpl::string_ops
 #endif
 	[[nodiscard]] constexpr inline char32_t consume_utf16(string_view16 auto& str)
 	{
-		using char_type = std::remove_cvref_t<decltype(str)>::value_type;
+		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
 		using unsigned_char_type = std::make_unsigned_t<char_type>;
 
 		if (str.empty()) return 0;
@@ -614,7 +613,7 @@ namespace ghassanpl::string_ops
 #endif
 	inline size_t append_utf16(string16 auto& buffer, char32_t cp)
 	{
-		using char_type = std::remove_cvref_t<decltype(buffer)>::value_type;
+		using char_type = typename std::remove_cvref_t<decltype(buffer)>::value_type;
 		if (cp <= 0xFFFF)
 		{
 			buffer += static_cast<char_type>(cp);
@@ -635,7 +634,7 @@ namespace ghassanpl::string_ops
 	/// Assumes codepoint is valid
 	[[nodiscard]] constexpr inline T to_utf8(char32_t cp)
 	{
-		using char_type = T::value_type;
+		using char_type = typename T::value_type;
 		if (cp < 0x80)
 			return { static_cast<char_type>(cp) };
 		else if (cp < 0x800)

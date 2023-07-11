@@ -5,16 +5,13 @@
 #pragma once
 
 #include <concepts>
-#include <source_location>
+#include "source_location.h"
 
 #if !defined(__cpp_concepts)
 #error "This library requires concepts"
 #endif
-#if !defined(__cpp_lib_source_location)
-#error "This library requires std::source_location"
-#endif
 
-#if __INTELLISENSE__
+#ifdef __INTELLISENSE__
 #define EQ_SOURCE_LOCATION = std::source_location{}
 #else
 #define EQ_SOURCE_LOCATION = std::source_location::current()
@@ -51,7 +48,7 @@ namespace ghassanpl
 		hash_type LocationHash;
 
 		template <std::convertible_to<T> U>
-#if __INTELLISENSE__
+#ifdef __INTELLISENSE__
 		with_slh(U&& t, hash_type loc)
 #else
 		with_slh(U&& t, hash_type loc = HASH_FUNC{}(std::source_location::current()))

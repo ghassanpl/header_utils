@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <span>
+#include <string_view>
 
 namespace ghassanpl
 {

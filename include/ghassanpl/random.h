@@ -215,7 +215,7 @@ namespace ghassanpl::random
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
 	auto index(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		return std::distance(begin(cont), iterator(cont, std::move(pred), rng)) - 1;
+		return std::distance(begin(cont), iterator(cont, std::forward<PRED>(pred), rng)) - 1;
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
@@ -230,7 +230,7 @@ namespace ghassanpl::random
 	auto* element(T& cont, PRED&& predicate, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::end;
-		auto result = iterator(cont, std::move(predicate), rng);
+		auto result = iterator(cont, std::forward<PRED>(predicate), rng);
 		return (result != end(cont)) ? std::to_address(result) : nullptr;
 	}
 

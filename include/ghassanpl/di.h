@@ -15,7 +15,6 @@
 #include <set>
 #include <functional>
 #include <string>
-#include <concepts>
 #include <thread>
 
 /// \defgroup DI Dependency Injection

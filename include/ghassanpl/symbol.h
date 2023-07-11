@@ -2,6 +2,8 @@
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#pragma once
+
 #include <string>
 #include <string_view>
 #include <set>
@@ -58,7 +60,4 @@ namespace ghassanpl
 
 /// TODO: ostream << and formatter
 
-namespace std
-{
-	template <> struct hash<ghassanpl::symbol> { size_t operator()(const ghassanpl::symbol& x) const { return std::hash<std::string_view>{}(x.value); } };
-}
+template <> struct std::hash<ghassanpl::symbol> { size_t operator()(const ghassanpl::symbol& x) const noexcept { return std::hash<std::string_view>{}(x.value); } };

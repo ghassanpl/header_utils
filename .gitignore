@@ -9,3 +9,5 @@ CoverageReport-*
 /include/ghassanpl/mmap - Copy.h
 /vcpkg_installed/x64-windows
 /.vscode/settings.json
+include/ghassanpl/geometry/not-ready/
+include/ghassanpl/geometry/old/
