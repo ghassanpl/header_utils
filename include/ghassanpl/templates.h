@@ -193,6 +193,43 @@ namespace ghassanpl
 	}
 
 
+	/// std::variant get index of type
+
+
+	template <typename T, typename>
+	struct get_index;
+
+	template <size_t I, typename... Ts>
+	struct get_index_impl
+	{
+		static_assert((std::is_same_v<size_t, Ts> && ...), "type not a member");
+	};
+
+	template <size_t I, typename T, typename... Ts>
+	struct get_index_impl<I, T, T, Ts...>
+		: std::integral_constant<size_t, I>
+	{ };
+
+	template <size_t I, typename T, typename U, typename... Ts>
+	struct get_index_impl<I, T, U, Ts...>
+		: get_index_impl<I + 1, T, Ts...>
+	{ };
+
+	template <typename T, typename... Ts>
+	struct get_index<T, std::variant<Ts...>>
+		: get_index_impl<0, T, Ts...>
+	{ };
+
+	template <typename T, typename... Ts>
+	struct get_index<T, std::tuple<Ts...>>
+		: get_index_impl<0, T, Ts...>
+	{ };
+
+
+	template <typename T, typename U>
+	inline size_t get_index_v = get_index<T, U>::value;
+
+
 	//-------------------------------------------------------------------------------------------------------------
 	//  std::variant is and as
 	//
@@ -517,7 +554,7 @@ namespace ghassanpl
 			template <typename T, typename... ARGS>
 			static constexpr auto make_slice_function(T&& t, ARGS&&... ts)
 			{
-				return [slicer = next::make_slice_function(std::forward<ARGS>(ts)...), nt = std::forward<T>(t)]<typename CALLBACK>(CALLBACK && cb) mutable {
+				return [slicer = next::make_slice_function(std::forward<ARGS>(ts)...), nt = std::forward<T>(t)]<typename CALLBACK_TYPE>(CALLBACK_TYPE && cb) mutable {
 					if constexpr (include)
 						return slicer([t = std::forward<T>(nt), &cb]<typename... NEW_ARGS>(NEW_ARGS&&... sl) mutable { return cb(std::forward<T>(t), std::forward<NEW_ARGS>(sl)...); });
 					else
