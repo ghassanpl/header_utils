@@ -3,6 +3,7 @@
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "../include/ghassanpl/enum_flags.h"
+#include "../include/ghassanpl/bit_view.h"
 
 #include <gtest/gtest.h>
 
@@ -266,4 +267,14 @@ TYPED_TEST(flag_bits_test, allows_cv_types)
   EXPECT_TRUE((flag_bits_v_overload_exists<std::add_const_t<TypeParam>>));
   EXPECT_TRUE((flag_bits_v_overload_exists<std::add_volatile_t<TypeParam>>));
   EXPECT_TRUE((flag_bits_v_overload_exists<std::add_cv_t<TypeParam>>));
+}
+
+TEST(enum_flags_test, changes_work)
+{
+	enum_flags<TestEnum> test;
+	test.set(TestEnum::Eight, TestEnum::Fifteen);
+	enum_flag_changes<TestEnum> changes;
+	changes.unset(TestEnum::Eight);
+	changes.toggle(TestEnum::Fifteen, TestEnum::Nine);
+	EXPECT_EQ(test + changes, enum_flags<TestEnum>{TestEnum::Nine});
 }

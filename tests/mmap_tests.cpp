@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "../include/ghassanpl/mmap.h"
+#include "../include/ghassanpl/mmap_impl.h"
 
 TEST(mmap_test, mmap_works)
 {

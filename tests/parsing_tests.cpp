@@ -17,11 +17,17 @@ TEST(parsing_functions, basics)
 
 TEST(wilson_parsing, doesnt_crash_or_loop_on_invalid_values)
 {
-	formats::wilson::parse_array("}"); formats::wilson::parse_object("}"); formats::wilson::parse_value("}");
-	formats::wilson::parse_array("]"); formats::wilson::parse_object("]"); formats::wilson::parse_value("]");
-	formats::wilson::parse_array(")"); formats::wilson::parse_object(")"); formats::wilson::parse_value(")");
-	formats::wilson::parse_array(","); formats::wilson::parse_object(","); formats::wilson::parse_value(",");
+	formats::wilson::parse_array("}"); formats::wilson::parse_object("}"); formats::wilson::parse("}");
+	formats::wilson::parse_array("]"); formats::wilson::parse_object("]"); formats::wilson::parse("]");
+	formats::wilson::parse_array(")"); formats::wilson::parse_object(")"); formats::wilson::parse(")");
+	formats::wilson::parse_array(","); formats::wilson::parse_object(","); formats::wilson::parse(",");
 	//EXPECT_EQ(, nlohmann::json{});
+}
+
+TEST(wilson_parsing, will_parse_map_with_key_but_no_value)
+{
+	auto result = formats::wilson::parse_object("Required)", ')');
+	EXPECT_EQ(result, nlohmann::json::object({ {"Required", true} }));
 }
 
 auto wilson_decade = R"([ChangeImageOf [this] ToTile chest_open]
