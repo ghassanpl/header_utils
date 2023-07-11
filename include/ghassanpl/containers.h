@@ -29,9 +29,9 @@ namespace ghassanpl
 		return it;
 	}
 
-	/// Finds a value in the vector, and erases it
+	/// Finds a value in the vector, and erases it, but returns the value
 	template <typename T, typename U>
-	constexpr T erase_single(std::vector<T>& vector, U&& value)
+	constexpr std::optional<T> erase_single(std::vector<T>& vector, U&& value)
 	{
 		const auto it = std::ranges::find(vector, value);
 		if (it == std::ranges::end(vector))
@@ -41,9 +41,21 @@ namespace ghassanpl
 		return result;
 	}
 
+	/// Finds a value in the map, and erases it, but returns the value
+	template <typename K, typename V, typename COMP, typename U>
+	constexpr std::optional<V> erase_single(std::map<K, V, COMP>& map, U&& key)
+	{
+		const auto it = map.find(key);
+		if (it == map.end())
+			return {};
+		auto&& result = std::move(it->second);
+		map.erase(it);
+		return result;
+	}
+
 	/// Finds a value in the vector by predicate, and erases it
 	template <typename T, typename PRED>
-	constexpr T erase_single_if(std::vector<T>& vector, PRED&& pred)
+	constexpr std::optional<T> erase_single_if(std::vector<T>& vector, PRED&& pred)
 	{
 		const auto it = std::ranges::find_if(vector, pred);
 		if (it == std::ranges::end(vector))
@@ -55,7 +67,7 @@ namespace ghassanpl
 
 	/// Finds and erases a value in vector, not preserving item order (swapping last item to erased)
 	template <typename T, typename U>
-	constexpr T erase_single_swap(std::vector<T>& vector, U&& value)
+	constexpr std::optional<T> erase_single_swap(std::vector<T>& vector, U&& value)
 	{
 		const auto it = std::ranges::find(vector, value);
 		if (it == std::ranges::end(vector))
@@ -68,7 +80,7 @@ namespace ghassanpl
 
 	/// Finds and erases a value in vector by predicate, not preserving item order (swapping last item to erased)
 	template <typename T, typename PRED>
-	constexpr T erase_single_swap_if(std::vector<T>& vector, PRED&& pred)
+	constexpr std::optional<T> erase_single_swap_if(std::vector<T>& vector, PRED&& pred)
 	{
 		const auto it = std::ranges::find_if(vector, pred);
 		if (it == std::ranges::end(vector))
@@ -81,7 +93,7 @@ namespace ghassanpl
 
 	/// Erases the element at `index` in vector, not preserving item order (swapping last item to erased)
 	template <typename T>
-	constexpr T erase_at_swap(std::vector<T>& vector, size_t index)
+	constexpr std::optional<T> erase_at_swap(std::vector<T>& vector, size_t index)
 	{
 		if (!valid_index(vector, index))
 			return {};
@@ -91,11 +103,29 @@ namespace ghassanpl
 		return result;
 	}
 
-	template <typename MAP, typename KEY>
+	template <typename KEY, typename MAP>
 	auto map_find(MAP& map, KEY&& key)
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		return (it != map.end()) ? &it->second : nullptr;
+	}
+
+	template <typename DEF, typename KEY, typename MAP>
+	auto map_at_or_default(MAP&& map, KEY&& key, DEF&& def)
+	{
+		auto it = map.find(std::forward<KEY>(key));
+		if (it != map.end())
+			return std::forward_like<MAP>(it->second);
+		return std::forward<DEF>(def);
+	}
+
+	template <typename KEY, typename MAP>
+	decltype(auto) map_at(MAP&& map, KEY&& key)
+	{
+		auto it = map.find(std::forward<KEY>(key));
+		if (it != map.end())
+			return std::forward_like<MAP>(it->second);
+		throw std::out_of_range("invalid map key");
 	}
 
 	namespace detail
