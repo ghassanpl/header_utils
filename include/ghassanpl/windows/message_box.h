@@ -9,7 +9,7 @@
 #include <functional>
 #include <span>
 #include <format>
-#include <source_location>
+#include "../source_location.h"
 #include <algorithm>
 #include <iterator>
 
@@ -243,7 +243,7 @@ namespace ghassanpl::win
 	extern "C"
 	{
 #pragma pack(push, 4)
-		typedef struct _TASKDIALOG_BUTTON
+		typedef struct
 		{
 			int     nButtonID;
 			PCWSTR  pszButtonText;
@@ -253,7 +253,7 @@ namespace ghassanpl::win
 		typedef int TASKDIALOG_FLAGS;
 		typedef int TASKDIALOG_COMMON_BUTTON_FLAGS;
 
-		typedef struct _TASKDIALOGCONFIG
+		typedef struct
 		{
 			UINT        cbSize;
 			HWND        hwndParent;
@@ -291,7 +291,7 @@ namespace ghassanpl::win
 #pragma pack(pop)
 	
 		void __stdcall InitCommonControls(void);
-		HRESULT __stdcall TaskDialogIndirect(const TASKDIALOGCONFIG* pTaskConfig, int* pnButton, int* pnRadioButton, int* pfVerificationFlagChecked);
+		using TaskDialogIndirectPtr = HRESULT (__stdcall *)(const TASKDIALOGCONFIG* pTaskConfig, int* pnButton, int* pnRadioButton, int* pfVerificationFlagChecked);
 	}
 }
 
@@ -349,9 +349,9 @@ namespace ghassanpl
 		/// Callback
 		if (param.callback)
 		{
-			task_config.pfCallback = [](HWND hwnd, UINT uNotification, WPARAM wParam, LPARAM lParam, LONG_PTR dwRefData) {
+			task_config.pfCallback = [](HWND hwnd, UINT uNotification, WPARAM wParam, LPARAM lParam, LONG_PTR dwRefData) -> HRESULT {
 				auto ptr = (decltype(param.callback)*)dwRefData;
-				return ptr->operator()((windows_message_box_event)uNotification, wParam, lParam) ? S_OK : S_FALSE;
+				return ptr->operator()((windows_message_box_event)uNotification, wParam, lParam) ? 0 : 1;
 			};
 			task_config.lpCallbackData = (LONG_PTR)&param.callback;
 		}
@@ -372,11 +372,14 @@ namespace ghassanpl
 		int clicked_id = 0;
 		int checkbox_value = false;
 		InitCommonControls();
+		auto lib = win::LoadLibraryW(L"Comctl32.dll");
+		TaskDialogIndirectPtr TaskDialogIndirect = (TaskDialogIndirectPtr)win::GetProcAddress(lib, "TaskDialogIndirect");
 		auto result = TaskDialogIndirect(&task_config, &clicked_id, nullptr, &checkbox_value);
 		if (result != ((HRESULT)0L))
 		{
 			return { true };
 		}
+		win::FreeLibrary(lib);
 
 		return{ false, size_t(clicked_id), checkbox_value != 0 };
 	}
