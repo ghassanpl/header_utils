@@ -8,6 +8,7 @@ var modules =
     [ "Containers", "group___containers.html", "group___containers" ],
     [ "Dependency Injection", "group___d_i.html", null ],
     [ "Hashes", "group___hashes.html", "group___hashes" ],
+    [ "mmap", "group__mmap.html", "group__mmap" ],
     [ "Ranges", "group___ranges.html", "group___ranges" ],
     [ "Bits", "group___bits.html", "group___bits" ],
     [ "Flags", "group___flags.html", "group___flags" ],

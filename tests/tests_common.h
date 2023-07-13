@@ -10,7 +10,7 @@ struct UnCopyable
   UnCopyable& operator=(UnCopyable const&) = delete;
   UnCopyable& operator=(UnCopyable&&) = default;
 
-  bool operator==(UnCopyable const& other) const noexcept { return true; }
+  bool operator==(UnCopyable const&) const noexcept { return true; }
 };
 
 inline const UnCopyable uncopyable{};
@@ -23,7 +23,7 @@ struct UnMovable
   UnMovable& operator=(UnMovable const&) = delete;
   UnMovable& operator=(UnMovable&&) = delete;
 
-  bool operator==(UnMovable const& other) const noexcept { return true; }
+  bool operator==(UnMovable const&) const noexcept { return true; }
 };
 
 inline const UnMovable unmovable{};

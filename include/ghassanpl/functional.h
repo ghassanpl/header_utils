@@ -18,23 +18,23 @@ namespace ghassanpl
 	template <typename R, typename... ARGS>
 	struct multicast_function_traits
 	{
-		typedef R return_type;
+		using return_type = R;
 		using argument_types = std::tuple<ARGS...>;
 	};
 
 	template <typename R, typename ARG>
 	struct multicast_function_traits<R, ARG>
 	{
-		typedef R return_type;
-		typedef ARG argument_type;
+		using return_type = R;
+		using argument_type = ARG;
 	};
 
 	template <typename R, typename ARG1, typename ARG2>
 	struct multicast_function_traits<R, ARG1, ARG2>
 	{
-		typedef R return_type;
-		typedef ARG1 first_argument_type;
-		typedef ARG2 second_argument_type;
+		using return_type = R;
+		using first_argument_type = ARG1;
+		using second_argument_type = ARG2;
 	};
 
 
@@ -50,12 +50,11 @@ namespace ghassanpl
 
 		enum class handle : size_t {};
 
-		mutlticast_function() = default;
-		mutlticast_function(mutlticast_function const&) = default;
-		mutlticast_function(mutlticast_function&&) = default;
-		mutlticast_function& operator =(mutlticast_function const&) = default;
-		mutlticast_function& operator =(mutlticast_function&&) = default;
-		~mutlticast_function() = default;
+		mutlticast_function() noexcept = default;
+		mutlticast_function(mutlticast_function const&) noexcept = default;
+		mutlticast_function(mutlticast_function&&) noexcept = default;
+		mutlticast_function& operator =(mutlticast_function const&) noexcept = default;
+		mutlticast_function& operator =(mutlticast_function&&) noexcept = default;
 
 		/// Adds a new invocable to the list
 		/// \returns A handle that can be used to remove the added invocable
@@ -145,7 +144,7 @@ namespace ghassanpl
 	template <typename FUNC>
 	auto make_single_time_function(FUNC&& func)
 	{
-		return make_single_time_function(std::function{ func });
+		return make_single_time_function(std::function{ std::forward<FUNC>(func) });
 	}
 
 } // namespace util

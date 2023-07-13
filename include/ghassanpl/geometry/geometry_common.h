@@ -39,9 +39,9 @@ namespace ghassanpl::geometry
 	using heading = basic_heading_t<float>;
 
 	template <std::floating_point T>
-	inline constexpr basic_degrees_t<T> ensure_positive(basic_degrees_t<T> degrees) noexcept { return basic_degrees_t<T>{ cem::fmod(degrees.value, T(360)) }; }
+	constexpr basic_degrees_t<T> ensure_positive(basic_degrees_t<T> degrees) noexcept { return basic_degrees_t<T>{ cem::fmod(degrees.value, T(360)) }; }
 	template <std::floating_point T>
-	inline constexpr basic_radians_t<T> ensure_positive(basic_radians_t<T> degrees) noexcept { return basic_radians_t<T>{ cem::fmod(degrees.value, glm::radians(T(360))) }; }
+	constexpr basic_radians_t<T> ensure_positive(basic_radians_t<T> degrees) noexcept { return basic_radians_t<T>{ cem::fmod(degrees.value, glm::radians(T(360))) }; }
 
 	template <typename TARGET, std::floating_point T>
 	requires std::same_as<TARGET, basic_degrees_t<T>>

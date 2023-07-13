@@ -4,12 +4,12 @@
 
 #pragma once
 
-#include <glm/vec2.hpp>
+//#include <glm/vec2.hpp>
 #include <glm/gtx/compatibility.hpp>
 #include <span>
 #include <functional>
 
-#define GHASSANPL_HAS_REC2
+#define GHPL_HAS_REC2
 
 /// An extension to the `glm` library. Adds a class template that represents a 2D axis-aligned rectangle.
 
@@ -17,7 +17,6 @@ namespace ghassanpl
 {
 	template <template<typename> typename HASHER, typename FIRST, typename... T>
 	[[nodiscard]] constexpr size_t hash(FIRST&& first, T&&... values);
-
 
 	template <typename T>
 	struct trec2
@@ -41,9 +40,9 @@ namespace ghassanpl
 		constexpr trec2(const trec2&) noexcept = default;
 		constexpr trec2(trec2&&) noexcept = default;
 		template <typename U>
-		constexpr trec2(const trec2<U>& other) noexcept : p1(glm::tvec2<U>(other.p1)), p2(glm::tvec2<U>(other.p2)) {}
+		constexpr explicit trec2(const trec2<U>& other) noexcept : p1(glm::tvec2<U>(other.p1)), p2(glm::tvec2<U>(other.p2)) {}
 		template <typename U>
-		constexpr trec2(trec2<U>&& other) noexcept : p1(glm::tvec2<U>(other.p1)), p2(glm::tvec2<U>(other.p2)) {}
+		constexpr explicit trec2(trec2<U>&& other) noexcept : p1(glm::tvec2<U>(other.p1)), p2(glm::tvec2<U>(other.p2)) {}
 		constexpr trec2& operator=(const trec2&) noexcept = default;
 		constexpr trec2& operator=(trec2&&) noexcept = default;
 
@@ -92,8 +91,6 @@ namespace ghassanpl
 		constexpr trec2 operator/(tvec op) const noexcept { return { p1 / op, p2 / op }; }
 
 		constexpr auto operator<=>(trec2 const& other) const noexcept = default;
-		constexpr bool operator==(trec2 const& op) const noexcept { return p1 == op.p1 && p2 == op.p2; }
-		constexpr bool operator!=(trec2 const& op) const noexcept { return p1 != op.p1 || p2 != op.p2; }
 
 		constexpr tvec operator[](size_t i) const noexcept
 		{
@@ -295,6 +292,6 @@ struct std::hash<ghassanpl::trec2<T>>
 	}
 };
 
-#ifdef GHASSANPL_HAS_ALIGN
+#ifdef GHPL_HAS_ALIGN
 #include "align+rec2.h"
 #endif

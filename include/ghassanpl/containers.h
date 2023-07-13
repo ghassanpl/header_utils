@@ -10,20 +10,20 @@
 
 namespace ghassanpl
 {
-	/// \defgroup Containers
-	/// Containers and etcetera
+	/// \defgroup Containers Containers
+	/// Functions that operate on containers like maps and vectors
 
 	/// \ingroup Containers
 	///@{
 
-	/// Pushes a value to a vector if it doesn't already exists
-	template <typename T>
-	constexpr auto push_back_unique(std::vector<T>& vector, T&& value)
+	/// Pushes a value to a vector if it doesn't already exists.
+	template <typename T, typename U>
+	constexpr auto push_back_unique(std::vector<T>& vector, U&& value)
 	{
 		const auto it = std::ranges::find(vector, value);
 		if (it == vector.end())
 		{
-			vector.push_back(std::forward<T>(value));
+			vector.push_back(std::forward<U>(value));
 			return std::prev(vector.end());
 		}
 		return it;
@@ -103,6 +103,7 @@ namespace ghassanpl
 		return result;
 	}
 
+	/// Finds the value associated with `key` in the `map` and retuns a pointer to it, or nullptr if none found
 	template <typename KEY, typename MAP>
 	auto map_find(MAP& map, KEY&& key)
 	{
@@ -110,6 +111,7 @@ namespace ghassanpl
 		return (it != map.end()) ? &it->second : nullptr;
 	}
 
+	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
 	template <typename DEF, typename KEY, typename MAP>
 	auto map_at_or_default(MAP&& map, KEY&& key, DEF&& def)
 	{
@@ -119,6 +121,7 @@ namespace ghassanpl
 		return std::forward<DEF>(def);
 	}
 
+	/// Basically map.at() but works with heterogenous key types
 	template <typename KEY, typename MAP>
 	decltype(auto) map_at(MAP&& map, KEY&& key)
 	{
@@ -138,6 +141,7 @@ namespace ghassanpl
 		}
 	}
 
+	/// Finds the first `value` of a map element, and returns a pointer to its key, or nullptr if none found
 	template <typename MAP, typename VAL>
 	auto map_find_value(MAP& map, VAL const* value)
 	{
@@ -150,8 +154,13 @@ namespace ghassanpl
 		return (map_key_type const*)nullptr;
 	}
 
+	/// Same as \c map_find()
+	/// \see map_find()
 	template <typename K, typename V, typename C, typename VAL>
 	auto at_ptr(std::map<K, V, C> const& map, VAL&& value) { return map_find(map, std::forward<VAL>(value)); }
+	
+	/// Same as \c map_find()
+	/// \see map_find()
 	template <typename K, typename V, typename C, typename VAL>
 	auto at_ptr(std::map<K, V, C>& map, VAL&& value) { return map_find(map, std::forward<VAL>(value)); }
 

@@ -5,11 +5,13 @@
 #pragma once
 
 #include "unicode.h"
+#include <variant>
 #include <optional>
 
 namespace ghassanpl::parsing
 {
 	using namespace string_ops;
+
 	[[nodiscard]] inline std::string_view consume_c_identifier(std::string_view& str)
 	{
 		if (str.empty() || !ascii::isidentstart(str[0]))
@@ -41,7 +43,7 @@ namespace ghassanpl::parsing
 
 		std::pair<std::string_view, double> result;
 
-		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second);
+		const auto from_chars_result = from_chars(str, result.second);
 		if (from_chars_result.ec != std::errc{})
 			return { {}, std::numeric_limits<double>::quiet_NaN() };
 
@@ -57,7 +59,7 @@ namespace ghassanpl::parsing
 
 		std::pair<std::string_view, int64_t> result;
 
-		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second, base);
+		const auto from_chars_result = from_chars(str, result.second, base);
 		if (from_chars_result.ec != std::errc{})
 			return { {}, 0 };
 
@@ -186,8 +188,7 @@ namespace ghassanpl::parsing
 		if (str.empty())
 			return {};
 
-		auto first_char = str[0];
-		if (first_char == '-')
+		if (auto first_char = str[0]; first_char == '-')
 		{
 			/// We need to parse then complement the integer
 			/// TODO: this
@@ -201,47 +202,17 @@ namespace ghassanpl::parsing
 			return consume_c_unsigned(str, 8);
 		else if (ascii::isdigit(first_char))
 		{
-			{
-				auto result = consume_c_float(str);
-				if (!result.first.empty())
-					return result;
-			}
-
-			{
-				auto result = consume_c_unsigned(str);
-				if (!result.first.empty())
-					return result;
-			}
-
-			{
-				auto result = consume_c_integer(str);
-				if (!result.first.empty())
-					return result;
-			}
+			if (auto result = consume_c_float(str); !result.first.empty())
+				return result;
+		
+			if (auto result = consume_c_unsigned(str); !result.first.empty())
+				return result;
+		
+			if (auto result = consume_c_integer(str); !result.first.empty())
+				return result;
 		}
 		return {};
 	}
-
-	/*
-	/// TODO: do this correctly
-	[[deprecated("WARNING: This function is incomplete and incorrect")]]
-	[[nodiscard]] inline std::tuple<std::string_view, std::variant<std::string, double, uint64_t, int64_t>> consume_c_literal(std::string_view& str)
-	{
-		if (str.empty())
-			return {};
-
-		const auto first_char = str[0];
-		if (first_char == '\'')
-			return consume_c_string(str);
-		else if (first_char == '"')
-			return consume_c_string<'"'>(str);
-
-		auto [range, value] = consume_c_number(str);
-		if (range.empty()) return {};
-
-		return { range, std::visit([](auto&& v) { return std::variant<std::string, double, uint64_t, int64_t>{std::move(v)}; }, std::move(value)) };
-	}
-	*/
 
 #endif
 
@@ -341,8 +312,7 @@ namespace ghassanpl::parsing
 
 	inline std::optional<uint64_t> try_eat_unsigned(std::string_view& str, int base = 10)
 	{
-		uint64_t result{};
-		if (try_eat_unsigned(str, result, base))
+		if (uint64_t result = 0; try_eat_unsigned(str, result, base))
 			return result;
 		return std::nullopt;
 	}
@@ -358,8 +328,7 @@ namespace ghassanpl::parsing
 
 	inline std::optional<int64_t> try_eat_integer(std::string_view& str, int base = 10)
 	{
-		int64_t result{};
-		if (try_eat_integer(str, result, base))
+		if (int64_t result = 0; try_eat_integer(str, result, base))
 			return result;
 		return std::nullopt;
 	}

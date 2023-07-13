@@ -11,7 +11,7 @@ namespace ghassanpl
 	template <typename T>
 	concept bytelike = (alignof(T) == alignof(std::byte) && sizeof(T) == sizeof(std::byte) && std::is_trivial_v<T>);
 
-	/// Converts a span of trivial values to a span of \ref bytelike s
+	/// Converts a span of trivial values to a span of \c bytelike s
 	template <bytelike TO, typename FROM>
 	requires std::is_trivially_copyable_v<FROM>
 	constexpr std::span<TO const> as_bytelikes(std::span<FROM const> bytes) noexcept
@@ -19,7 +19,7 @@ namespace ghassanpl
 		return { reinterpret_cast<TO const*>(bytes.data()), bytes.size() * sizeof(FROM) };
 	}
 
-	/// Returns a span of bytelikes that represents the internal object representation of the argument
+	/// Returns a span of \c bytelike s that represents the internal object representation of the argument
 	template <bytelike TO, typename T>
 	requires std::is_trivially_copyable_v<T>
 	constexpr std::span<TO const> as_bytelikes(T const& pod) noexcept
@@ -33,11 +33,11 @@ namespace ghassanpl
 	template <bytelike FROM> constexpr auto as_u8s(std::span<FROM const> bytes) noexcept { return as_bytelikes<uint8_t>(bytes); }
 	template <bytelike FROM> constexpr auto as_char8s(std::span<FROM const> bytes) noexcept { return as_bytelikes<char8_t>(bytes); }
 
-	inline constexpr auto as_chars(std::string_view bytes) noexcept { return as_bytelikes<char>(std::span{ bytes }); }
-	inline constexpr auto as_bytes(std::string_view bytes) noexcept { return as_bytelikes<std::byte>(std::span{ bytes }); }
-	inline constexpr auto as_uchars(std::string_view bytes) noexcept { return as_bytelikes<unsigned char>(std::span{ bytes }); }
-	inline constexpr auto as_u8s(std::string_view bytes) noexcept { return as_bytelikes<uint8_t>(std::span{ bytes }); }
-	inline constexpr auto as_char8s(std::string_view bytes) noexcept { return as_bytelikes<char8_t>(std::span{ bytes }); }
+	constexpr auto as_chars(std::string_view bytes) noexcept { return as_bytelikes<char>(std::span{ bytes }); }
+	constexpr auto as_bytes(std::string_view bytes) noexcept { return as_bytelikes<std::byte>(std::span{ bytes }); }
+	constexpr auto as_uchars(std::string_view bytes) noexcept { return as_bytelikes<unsigned char>(std::span{ bytes }); }
+	constexpr auto as_u8s(std::string_view bytes) noexcept { return as_bytelikes<uint8_t>(std::span{ bytes }); }
+	constexpr auto as_char8s(std::string_view bytes) noexcept { return as_bytelikes<char8_t>(std::span{ bytes }); }
 
 	template <typename T> requires std::is_trivial_v<T> constexpr auto as_chars(T const& data) noexcept { return as_bytelikes<char>(data); }
 	template <typename T> requires std::is_trivial_v<T> constexpr auto as_bytes(T const& data) noexcept { return as_bytelikes<std::byte>(data); }
@@ -45,7 +45,7 @@ namespace ghassanpl
 	template <typename T> requires std::is_trivial_v<T> constexpr auto as_u8s(T const& data) noexcept { return as_bytelikes<uint8_t>(data); }
 	template <typename T> requires std::is_trivial_v<T> constexpr auto as_char8s(T const& data) noexcept { return as_bytelikes<char8_t>(data); }
 
-	/*
+#if 0
 	/// Returns a `char` span that represents the internal object representation of the argument
 	template <typename T>
 	requires std::is_trivially_copyable_v<T>
@@ -122,5 +122,5 @@ namespace ghassanpl
 	{
 		return { reinterpret_cast<unsigned char const*>(&pod), sizeof(pod) };
 	}
-	*/
+#endif
 }

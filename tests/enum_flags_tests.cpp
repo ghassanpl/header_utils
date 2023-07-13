@@ -31,7 +31,7 @@ TYPED_TEST(bits_test, bit_reference_works)
 	static_assert(sizeof(bit_reference<TypeParam>) > sizeof(bit_reference<TypeParam, 2>));
 
 	bit_reference bit_2_of_value{ value, 2 };
-	bit_reference bit_2_of_value_s{ value, bit_num<2> };
+	bit_reference bit_2_of_value_s{ value, detail::bit_num<2> };
 
 	bit_2_of_value = true;
 	EXPECT_EQ(value, 14);
@@ -43,7 +43,7 @@ TYPED_TEST(bits_test, bit_reference_works)
 
 	if constexpr (std::is_signed_v<TypeParam>)
 	{
-		bit_reference msb{ value, bit_num<bit_count<TypeParam> - 1> };
+		bit_reference msb{ value, detail::bit_num<bit_count<TypeParam> - 1> };
 		msb = true;
 		EXPECT_LT(value, 0);
 	}
@@ -57,6 +57,12 @@ TYPED_TEST(bits_test, bit_view_works)
 	auto bit_42_of_value = make_bit_reference(ints, 42);
 	auto bit_42_of_value_s = make_bit_reference<42>(ints);
 
+	EXPECT_TRUE(bit_42_of_value == bit_42_of_value_s);
+	bit_42_of_value = true;
+	EXPECT_TRUE(bit_42_of_value == bit_42_of_value_s);
+	bit_42_of_value_s = false;
+	EXPECT_TRUE(bit_42_of_value == bit_42_of_value_s);
+
 	std::vector<int> const const_ints{ 20,30,40 };
 	const bit_view const_view{ const_ints };
 
@@ -66,7 +72,7 @@ TYPED_TEST(bits_test, bit_view_works)
 	EXPECT_EQ(bit_42_of_const_value_s.bit_number(), 10);
 
 	std::string out;
-	std::transform(const_view.begin(), const_view.end(), std::back_inserter(out), [](auto bit) { return bit ? '1' : '0'; });
+	std::ranges::transform(const_view, std::back_inserter(out), [](auto bit) { return bit ? '1' : '0'; });
 
 	EXPECT_EQ(out, 
 		"00101000000000000000000000000000"

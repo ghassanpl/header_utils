@@ -170,7 +170,7 @@ namespace ghassanpl::formats::wilson
 		else if (string_ops::ascii::isdigit(first) || first == '-')
 		{
 			double result = 0;
-			const auto fcresult = std::from_chars(str.data(), str.data() + str.size(), result);
+			const auto fcresult = string_ops::from_chars(str, result);
 			str = string_ops::make_sv(fcresult.ptr, str.end());
 			return result;
 		}
@@ -211,7 +211,7 @@ namespace ghassanpl::formats::wilson
 	namespace detail
 	{
 		template <typename OUTFUNC, typename VAL>
-		void output_value(OUTFUNC&& func, VAL&& val)
+		void output_value(OUTFUNC&& func, VAL const& val)
 		{
 			char temp_buffer[32]{};
 			auto&& [end, ec] = std::to_chars(std::begin(temp_buffer), std::end(temp_buffer), val);
@@ -252,19 +252,20 @@ namespace ghassanpl::formats::wilson
 	{
 		switch (value.type())
 		{
-		case nlohmann::json::value_t::null: out("null"); return;
-		case nlohmann::json::value_t::object:
+		using enum nlohmann::detail::value_t;
+		case null: out("null"); return;
+		case object:
 			out("{ ");
-			for (auto& obj : value.get_ref<nlohmann::json::object_t const&>())
+			for (auto& [k, v] : value.get_ref<nlohmann::json::object_t const&>())
 			{
-				wilson::detail::output_string(out, obj.first);
+				wilson::detail::output_string(out, k);
 				out(": ");
-				wilson::output(out, obj.second);
+				wilson::output(out, v);
 				out(", ");
 			}
 			out(" }");
 			return;
-		case nlohmann::json::value_t::array:
+		case array:
 			out("[ ");
 			for (auto& obj : value.get_ref<nlohmann::json::array_t const&>())
 			{
@@ -273,12 +274,12 @@ namespace ghassanpl::formats::wilson
 			}
 			out(" ]");
 			return;
-		case nlohmann::json::value_t::string: wilson::detail::output_string(out, value.get_ref<nlohmann::json::string_t const&>()); return;
-		case nlohmann::json::value_t::boolean: out(value.get_ref<nlohmann::json::boolean_t const&>() ? "true" : "false"); return;
-		case nlohmann::json::value_t::number_integer: wilson::detail::output_value(out, value.get_ref<nlohmann::json::number_integer_t const&>()); return;
-		case nlohmann::json::value_t::number_unsigned: wilson::detail::output_value(out, value.get_ref<nlohmann::json::number_unsigned_t const&>()); return;
-		case nlohmann::json::value_t::number_float: wilson::detail::output_value(out, value.get_ref<nlohmann::json::number_float_t const&>()); return;
-		case nlohmann::json::value_t::binary:
+		case string: wilson::detail::output_string(out, value.get_ref<nlohmann::json::string_t const&>()); return;
+		case boolean: out(value.get_ref<nlohmann::json::boolean_t const&>() ? "true" : "false"); return;
+		case number_integer: wilson::detail::output_value(out, value.get_ref<nlohmann::json::number_integer_t const&>()); return;
+		case number_unsigned: wilson::detail::output_value(out, value.get_ref<nlohmann::json::number_unsigned_t const&>()); return;
+		case number_float: wilson::detail::output_value(out, value.get_ref<nlohmann::json::number_float_t const&>()); return;
+		case binary:
 			out("[ ");
 			for (auto byte : value.get_ref<nlohmann::json::binary_t const&>())
 			{
@@ -287,7 +288,7 @@ namespace ghassanpl::formats::wilson
 			}
 			out(" ]");
 			return;
-		case nlohmann::json::value_t::discarded: return;
+		case discarded: return;
 		}
 	}
 
@@ -301,13 +302,13 @@ namespace ghassanpl::formats::wilson
 	inline nlohmann::json load_file(std::filesystem::path const& from, std::error_code& ec)
 	{
 		const auto source = ghassanpl::make_mmap_source<char>(from, ec);
-		return ec ? nlohmann::json{} : wilson::parse(string_ops::make_sv((const char*)source.begin(), (const char*)source.end()));
+		return ec ? nlohmann::json{} : wilson::parse(std::string_view{ source });
 	}
 
 	inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json const& or_json)
 	{
 		std::error_code ec;
 		const auto source = ghassanpl::make_mmap_source<char>(from, ec);
-		return ec ? or_json : wilson::parse(string_ops::make_sv((const char*)source.begin(), (const char*)source.end()));
+		return ec ? or_json : wilson::parse(std::string_view{ source });
 	}
 }

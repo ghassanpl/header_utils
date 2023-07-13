@@ -18,14 +18,15 @@ using std::to_string;
 TEST(templates_test, enumerate_pack_works)
 {
 	int test = 0;
+	UnCopyable uc{};
 	ghassanpl::enumerate_pack([&](size_t i, auto&& a) {
 		test++;
 		if constexpr (std::is_same_v<decltype(a), int&>)
 			a++;
 		return 0;
-	}, 10, 20, "hello", test);
+	}, 10, 20, "hello", test, uc);
 
-	EXPECT_EQ(test, 5);
+	EXPECT_EQ(test, 6);
 
 	std::vector<size_t> in_order;
 	std::vector<std::string> values_in_order;
@@ -35,7 +36,7 @@ TEST(templates_test, enumerate_pack_works)
 	}, 10, 20, "hello", test);
 
 	EXPECT_EQ(in_order, (std::vector<size_t>{0, 1, 2, 3}));
-	EXPECT_EQ(values_in_order, (std::vector<std::string>{"10", "20", "hello", "5"}));
+	EXPECT_EQ(values_in_order, (std::vector<std::string>{"10", "20", "hello", "6"}));
 
 	bool called_with_empty_pack = false;
 	ghassanpl::enumerate_pack([&](size_t i, auto a) { called_with_empty_pack = true; });
@@ -47,6 +48,25 @@ TEST(templates_test, enumerate_pack_works)
 	called = false;
 	ghassanpl::enumerate_pack([&](size_t i, auto&& a) { called = true; }, unmovable);
 	EXPECT_TRUE(called);
+}
+
+TEST(templates_tests, for_each_in_tuple)
+{
+	int test = 0;
+	UnCopyable uc{};
+	auto tu = std::make_tuple(10, 20, "hello", std::ref(test), std::ref(uc));
+	ghassanpl::for_each_in_tuple(tu, [](auto&& a) {
+		if constexpr (std::is_same_v<decltype(a), int&>)
+			a++;
+	});
+	EXPECT_EQ(test, 1);
+
+	bool set = false;
+	ghassanpl::for_each_in_tuple(std::move(tu), [&](auto&& a) {
+		if constexpr (std::is_same_v<decltype(a), int&>)
+			set = true;
+	});
+	EXPECT_TRUE(set);
 }
 
 /*

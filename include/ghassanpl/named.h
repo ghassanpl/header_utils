@@ -182,11 +182,13 @@ namespace ghassanpl
 		constexpr explicit operator bool() const noexcept { return value; }
 		constexpr operator base_type() const noexcept requires has_trait<traits::implicitly_convertible> { return value; }
 		
-		constexpr auto operator <=>(named const&) const = default;
-		constexpr bool operator ==(named const&) const = default;
-		
-		friend constexpr auto operator <=>(T const& a, named const& b) { return a <=> b.value; }
-		friend constexpr auto operator ==(T const& a, named const& b) { return a == b.value; }
+		constexpr auto operator<=>(named const&) const = default;
+
+		template <typename U>
+		constexpr auto operator<=>(U const& b) const { return value <=> b; }
+		template <typename U>
+		constexpr auto operator==(U const& b) const { return value == b; }
+		//friend constexpr auto operator ==(T const& a, named const& b) { return a == b.value; }
 
 		constexpr named& operator++()
 		requires has_trait<traits::incrementable>

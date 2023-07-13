@@ -91,7 +91,7 @@ namespace ghassanpl::di
 
 		struct ConstructorTypologyNotSupported
 		{
-			typedef ConstructorTypologyNotSupported Type;
+			using Type = ConstructorTypologyNotSupported;
 		};
 
 		template <class TParent>
@@ -121,7 +121,7 @@ namespace ghassanpl::di
 		template <class TParent>
 		struct AnyArgument
 		{
-			typedef TParent Type;
+			using Type = TParent;
 
 			template <class T>
 			requires (!std::is_convertible_v<TParent, T>&& IsSupportedArgument<T&>)

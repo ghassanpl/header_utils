@@ -13,7 +13,7 @@
 
 namespace ghassanpl::config
 {
-	/// \defgroup Configs
+	/// \defgroup Configs Configs
 	/// A todo-namespace for cvars
 	/// @{
 

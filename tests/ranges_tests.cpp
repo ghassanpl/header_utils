@@ -12,7 +12,7 @@ using namespace ghassanpl;
 
 TEST(ranges_test, to_works)
 {
-	std::map<std::string, int64_t> vals = { {"hello", 64}, {"yo", 32}, {"motehrfuck", 12} };
+	std::map<std::string, int64_t, std::less<>> vals = { {"hello", 64}, {"yo", 32}, {"motehrfuck", 12} };
 	const auto vec = to<std::set>(std::views::keys(vals));
 	EXPECT_EQ(vec, std::set({ "hello"s, "yo"s, "motehrfuck"s }));
 

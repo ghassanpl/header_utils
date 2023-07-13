@@ -52,7 +52,7 @@ namespace ghassanpl
 		bool CheckboxValue = false;
 
 		explicit operator bool() const noexcept { return !Failed; }
-		operator size_t() const noexcept { return Failed ? -1 : ClickedButton; }
+		explicit(false) operator size_t() const noexcept { return Failed ? -1 : ClickedButton; }
 	};
 
 	/// Helper functions and parameters
@@ -141,11 +141,10 @@ namespace ghassanpl
 		template <typename... ARGS>
 		auto assumption_failure(std::string_view expectation, std::span<std::pair<std::string_view, std::string> const> values, std::string data, std::source_location loc, ARGS&&... args)
 		{
-			std::string message_information, message_long;
-			message_information += std::format("Assumed: {}", expectation);
-			message_long += std::format("In function `{}` at file `{}`, line {}\n\n", loc.function_name(), loc.file_name(), loc.line());
-			for (auto& kvp : values)
-				message_long += std::format("'{}' = '{}'\n", kvp.first, kvp.second);
+			std::string message_information = std::format("Assumed: {}", expectation);
+			std::string message_long = std::format("In function `{}` at file `{}`, line {}\n\n", loc.function_name(), loc.file_name(), loc.line());
+			for (auto& [key, value] : values)
+				message_long += std::format("'{}' = '{}'\n", key, value);
 			if (!data.empty())
 				message_long += std::format("Additional Information: {}", move(data));
 			return ::ghassanpl::windows_message_box({ 
@@ -349,7 +348,7 @@ namespace ghassanpl
 		/// Callback
 		if (param.callback)
 		{
-			task_config.pfCallback = [](HWND hwnd, UINT uNotification, WPARAM wParam, LPARAM lParam, LONG_PTR dwRefData) -> HRESULT {
+			task_config.pfCallback = [](HWND, UINT uNotification, WPARAM wParam, LPARAM lParam, LONG_PTR dwRefData) -> HRESULT {
 				auto ptr = (decltype(param.callback)*)dwRefData;
 				return ptr->operator()((windows_message_box_event)uNotification, wParam, lParam) ? 0 : 1;
 			};
@@ -359,29 +358,31 @@ namespace ghassanpl
 		/// Buttons
 		std::vector<TASKDIALOG_BUTTON> button_vector;
 		std::vector<std::wstring> button_texts;
-		std::transform(param.buttons.begin(), param.buttons.end(), std::back_inserter(button_texts), string_ops::to_wstring);
-		std::transform(button_texts.begin(), button_texts.end(), std::back_inserter(button_vector), [id = 0](auto& wstr) mutable { return TASKDIALOG_BUTTON{ id++, wstr.c_str() }; });
+		std::ranges::transform(param.buttons, std::back_inserter(button_texts), string_ops::to_wstring);
+		std::ranges::transform(button_texts, std::back_inserter(button_vector), [id = 0](auto& wstr) mutable { return TASKDIALOG_BUTTON{ id++, wstr.c_str() }; });
 		
 		task_config.cButtons = (UINT)button_vector.size();
 		task_config.pButtons = button_vector.data();
 		if (param.default_button_str.empty())
 			task_config.nDefaultButton = (int)param.default_button;
 		else
-			task_config.nDefaultButton = int(std::find(param.buttons.begin(), param.buttons.end(), param.default_button_str) - param.buttons.begin());
+			task_config.nDefaultButton = int(std::ranges::find(param.buttons, param.default_button_str) - param.buttons.begin());
 
 		int clicked_id = 0;
 		int checkbox_value = false;
 		InitCommonControls();
+		
 		auto lib = win::LoadLibraryW(L"Comctl32.dll");
-		TaskDialogIndirectPtr TaskDialogIndirect = (TaskDialogIndirectPtr)win::GetProcAddress(lib, "TaskDialogIndirect");
-		auto result = TaskDialogIndirect(&task_config, &clicked_id, nullptr, &checkbox_value);
-		if (result != ((HRESULT)0L))
+		const auto TaskDialogIndirect = (TaskDialogIndirectPtr)win::GetProcAddress(lib, "TaskDialogIndirect");
+		auto result = TaskDialogIndirect(&task_config, &clicked_id, nullptr, &checkbox_value); 
+		win::FreeLibrary(lib);
+
+		if (result != S_OK_)
 		{
 			return { true };
 		}
-		win::FreeLibrary(lib);
 
-		return{ false, size_t(clicked_id), checkbox_value != 0 };
+		return { false, size_t(clicked_id), checkbox_value != 0 };
 	}
 
 }

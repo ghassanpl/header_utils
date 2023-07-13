@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['value_5ftype_0',['value_type',['../structghassanpl_1_1enum__flags.html#a94f5360054e570011e481948d555809f',1,'ghassanpl::enum_flags']]]
+  ['jtype_0',['jtype',['../group___j_s_o_n.html#ga08f904d2d12f3d200b30d8600311b75f',1,'ghassanpl::formats::json']]]
 ];

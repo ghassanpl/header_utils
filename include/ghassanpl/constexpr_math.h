@@ -55,10 +55,12 @@ namespace ghassanpl::constexpr_math
 
 	template <typename T>
 	requires std::is_unsigned_v<T>
-	constexpr bool signbit(T num)
+	constexpr bool signbit(T)
 	{
 		return false;
 	}
+
+	/// TODO: sign
 
 	template <std::floating_point T, typename RESULT = T>
 	constexpr RESULT ceil(T num)

@@ -21,7 +21,7 @@ namespace ghassanpl
 	using file_handle_type = int;
 #endif
 
-	static inline const file_handle_type invalid_handle = (file_handle_type)-1;
+	const inline file_handle_type invalid_handle = (file_handle_type)-1;
 
 
 	template <typename VALUE_TYPE>
@@ -70,11 +70,8 @@ namespace ghassanpl
 #endif
 		}
 
-		template <typename T>
+		template <typename T = VALUE_TYPE>
 		std::span<T const> to_span() const noexcept { return { reinterpret_cast<T const*>(data()), size() }; }
-
-		template <typename T>
-		operator std::span<T const>() const noexcept { return to_span<T>(); }
 
 		size_type size() const noexcept { return length(); }
 		size_type length() const noexcept { return length_; }
@@ -199,6 +196,8 @@ namespace ghassanpl
 			this->unmap();
 		}
 
+	protected:
+
 		void map(const std::filesystem::path& path, const size_type offset, const size_type length, std::error_code& error) noexcept
 		{
 			error.clear();
@@ -262,11 +261,19 @@ namespace ghassanpl
 
 	};
 
+	/// \defgroup mmap mmap
+	/// @{
+	
+	/// A read-only memory view over a file.
+	/// \tparam VALUE_TYPE the type to represent each byte of the file
 	template <typename VALUE_TYPE = std::byte>
 	struct mmap_source : public basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>
 	{
 		using basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>::basic_mmap;
 		using typename basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>::mmap_context;
+
+		template <typename VALUE_TYPE>
+		friend mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length, std::error_code& error) noexcept;
 
 	protected:
 
@@ -279,11 +286,13 @@ namespace ghassanpl
 		void conditional_sync() {}
 	};
 
+	
 	using byte_mmap_source = mmap_source<std::byte>;
 	using u8_mmap_source = mmap_source<std::uint8_t>;
 	using char_mmap_source = mmap_source<char>;
 	using char8_mmap_source = mmap_source<char8_t>;
-
+	
+	/// A read-write view over a file.
 	template <typename VALUE_TYPE = std::byte>
 	struct mmap_sink : public basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>
 	{
@@ -296,7 +305,7 @@ namespace ghassanpl
 		using typename basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::reverse_iterator;
 
 		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::operator[];
-		reference operator[](const size_type i) noexcept { return this->data_[i]; }
+		reference operator[](const size_type i) const noexcept { return this->data_[i]; }
 
 		//void unmap();
 
@@ -337,7 +346,6 @@ namespace ghassanpl
 		}
 	};
 
-
 	template <typename VALUE_TYPE>
 	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length, std::error_code& error) noexcept
 	{
@@ -350,6 +358,18 @@ namespace ghassanpl
 	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, std::error_code& error) noexcept
 	{
 		return make_mmap_source<VALUE_TYPE>(path, 0, map_entire_file, error);
+	}
+
+	template <typename VALUE_TYPE>
+	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length)
+	{
+		return mmap_source<VALUE_TYPE>{ path, offset, length };
+	}
+
+	template <typename VALUE_TYPE>
+	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path)
+	{
+		return make_mmap_source<VALUE_TYPE>(path, 0, map_entire_file);
 	}
 
 	template <typename VALUE_TYPE>
@@ -367,18 +387,6 @@ namespace ghassanpl
 	}
 
 	template <typename VALUE_TYPE>
-	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length)
-	{
-		return mmap_source<VALUE_TYPE>{ path, offset, length };
-	}
-
-	template <typename VALUE_TYPE>
-	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path)
-	{
-		return make_mmap_source<VALUE_TYPE>(path, 0, map_entire_file);
-	}
-
-	template <typename VALUE_TYPE>
 	inline mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, typename mmap_sink<VALUE_TYPE>::size_type offset, typename mmap_sink<VALUE_TYPE>::size_type length)
 	{
 		return mmap_sink<VALUE_TYPE>{ path, offset, length };
@@ -390,4 +398,5 @@ namespace ghassanpl
 		return make_mmap_sink<VALUE_TYPE>(path, 0, map_entire_file);
 	}
 
+	/// @}
 }

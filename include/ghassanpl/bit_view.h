@@ -9,11 +9,16 @@
 
 namespace ghassanpl
 {
-	/// TODO: Should this have extent, like span<> ?
-	/// TODO: Should this store a bitcount and bitstart, so we can have views over non-integral bit counts?
+	/// \addtogroup Bits
+	/// @{
+
+	/// A view over an integral value allowing for iteration and modification of its individual bits
 	template <bit_integral INTEGER_TYPE>
 	struct bit_view
 	{
+		// TODO: Should this have extent, like span<> ?
+		// TODO: Should this store a bitcount and bitstart, so we can have views over non-integral bit counts?
+		
 		using integer_type = INTEGER_TYPE;
 		using element_type = bit_reference<integer_type>;
 		static constexpr size_t integer_type_bit_count = bit_count<integer_type>;
@@ -209,7 +214,7 @@ namespace ghassanpl
 	[[nodiscard]] auto make_bit_reference(RANGE_TYPE&& range, size_t bit_num)
 	{
 		using range_value = std::remove_pointer_t<typename std::iterator_traits<std::ranges::iterator_t<decltype(range)>>::pointer>;
-		return bit_reference<range_value>{bit_view<range_value>{range}, bit_num};
+		return bit_reference<range_value>{bit_view<range_value>{range}.integer_at_bit(bit_num), bit_num % bit_count<range_value>};
 	}
 
 	template <size_t BIT_NUM, std::ranges::contiguous_range RANGE_TYPE>
@@ -231,6 +236,8 @@ namespace ghassanpl
 		static_assert(BIT_NUM < bit_count<VALUE_TYPE>, "BIT_NUM template argument can't be greater than or equal to the number of bits in the value type");
 		return bit_reference<VALUE_TYPE, BIT_NUM>{value};
 	}
+
+	/// @}
 }
 
 template <ghassanpl::bit_integral VALUE_TYPE>

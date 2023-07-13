@@ -5,8 +5,6 @@ var group___functional =
       [ "clear", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#a3c1c036e5d096540ac06fefd0097e4e9", null ],
       [ "listeners", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#a2be5314204698f6f5968fc6936f5b7c6", null ],
       [ "operator()", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#ae10362dbdcd887988354198132b2bdb9", null ],
-      [ "operator+=", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#a120a41ca5bca6878deae945336041fe1", null ],
-      [ "operator-=", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#aaeff2aafab680106d6bd255a2e340d0d", null ],
       [ "remove", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#a79cdb933de9afdd55557cc6c5de7caaa", null ]
     ] ],
     [ "ghassanpl::make_single_time_function", "group___functional.html#gac5e35cec2a80aef62add1b95798c46d8", null ],

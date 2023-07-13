@@ -15,6 +15,16 @@ template <typename T, typename U = T, typename RESULT = T> concept addable = req
 template <typename T, typename U = T, typename RESULT = T> concept subtractable = requires { { T{} - U{} } -> std::same_as<RESULT>; };
 template <typename T, typename U = T, typename RESULT = T> concept multipliable = requires { { T{} * U{} }-> std::same_as<RESULT>; };
 
+TEST(named, comparisons_work_both_ways)
+{
+	using inamed = named<int, "inamed">;
+	EXPECT_EQ(inamed{}, 0);
+	EXPECT_EQ(0, inamed{});
+	EXPECT_NE(0, inamed{3});
+	EXPECT_LE(0, inamed{1});
+	EXPECT_GE(1, inamed{0});
+}
+
 TEST(named, named_location_and_displacement_traits_work)
 {
 	using vector = named<ivec2, "vector", traits::displacement>;

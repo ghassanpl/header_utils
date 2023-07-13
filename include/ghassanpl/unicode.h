@@ -43,27 +43,27 @@ namespace ghassanpl::string_ops
 	text_encoding detect_encoding(stringable8 auto str);
 
 	constexpr char32_t consume_utf8(string_view8 auto& str);
-	size_t append_utf8(string8 auto& buffer, char32_t cp);
+	constexpr size_t append_utf8(string8 auto& buffer, char32_t cp);
 	template <string8 RESULT>
 	constexpr RESULT to_utf8(char32_t cp);
 	template <string8 RESULT, stringable16 STR>
-	RESULT to_utf8(STR str);
+	constexpr RESULT to_utf8(STR str);
 	std::string to_string(std::wstring_view str);
 
 	template <std::ranges::view R>
 	struct utf8_view;
 
 	constexpr char32_t consume_utf16(string_view16 auto& str);
-	size_t append_utf16(string16 auto& buffer, char32_t cp);
+	constexpr size_t append_utf16(string16 auto& buffer, char32_t cp);
 	template <string16 RESULT>
-	RESULT to_utf16(char32_t cp);
+	constexpr RESULT to_utf16(char32_t cp);
 	template <string16 RESULT, stringable8 STR>
-	RESULT to_utf16(STR str);
+	constexpr RESULT to_utf16(STR str);
 	std::wstring to_wstring(std::string_view str);
 
-	void transcode_codepage_to_utf8(string8 auto& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map);
+	constexpr void transcode_codepage_to_utf8(string8 auto& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map);
 	template <string8 T = std::string>
-	auto transcode_codepage_to_utf8(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> T;
+	constexpr auto transcode_codepage_to_utf8(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> T;
 
 
 	/// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// ///
@@ -89,7 +89,6 @@ namespace ghassanpl::string_ops
 		base_text_encoding base_encoding;
 		std::endian endianness;
 
-		[[nodiscard]] constexpr bool operator==(text_encoding const& other) const noexcept = default;
 		[[nodiscard]] constexpr auto operator<=>(text_encoding const& other) const noexcept = default;
 	};
 
@@ -116,17 +115,19 @@ namespace ghassanpl::string_ops
 
 		if (!sv.empty())
 		{
-			if (sv.starts_with(bom_for_gb18030)) { sv.remove_prefix(bom_for_gb18030.size()); return { base_text_encoding::gb18030, std::endian::native }; }
-			if (sv.starts_with(bom_for_utf32_be)) { sv.remove_prefix(bom_for_utf32_be.size()); return { base_text_encoding::utf32, std::endian::big }; }
-			if (sv.starts_with(bom_for_utf32_le)) { sv.remove_prefix(bom_for_utf32_le.size()); return { base_text_encoding::utf32, std::endian::little }; }
-			if (sv.starts_with(bom_for_utf_ebcdic)) { sv.remove_prefix(bom_for_utf_ebcdic.size()); return { base_text_encoding::utf_ebcdic, std::endian::native }; }
-			if (sv.starts_with(bom_for_utf8)) { sv.remove_prefix(bom_for_utf8.size()); return { base_text_encoding::utf8, std::endian::native }; }
-			if (sv.starts_with(bom_for_utf7)) { sv.remove_prefix(bom_for_utf7.size()); return { base_text_encoding::utf7, std::endian::native }; }
-			if (sv.starts_with(bom_for_utf1)) { sv.remove_prefix(bom_for_utf1.size()); return { base_text_encoding::utf1, std::endian::native }; }
-			if (sv.starts_with(bom_for_scsu)) { sv.remove_prefix(bom_for_scsu.size()); return { base_text_encoding::scsu, std::endian::native }; }
-			if (sv.starts_with(bom_for_bocu1)) { sv.remove_prefix(bom_for_bocu1.size()); return { base_text_encoding::bocu1, std::endian::native }; }
-			if (sv.starts_with(bom_for_utf16_be)) { sv.remove_prefix(bom_for_utf16_be.size()); return { base_text_encoding::utf16, std::endian::big }; }
-			if (sv.starts_with(bom_for_utf16_le)) { sv.remove_prefix(bom_for_utf16_le.size()); return { base_text_encoding::utf16, std::endian::little }; }
+			using enum std::endian;
+			using enum ghassanpl::string_ops::base_text_encoding;
+			if (sv.starts_with(bom_for_gb18030)) { sv.remove_prefix(bom_for_gb18030.size()); return { gb18030, native }; }
+			if (sv.starts_with(bom_for_utf32_be)) { sv.remove_prefix(bom_for_utf32_be.size()); return { utf32, big }; }
+			if (sv.starts_with(bom_for_utf32_le)) { sv.remove_prefix(bom_for_utf32_le.size()); return { utf32, little }; }
+			if (sv.starts_with(bom_for_utf_ebcdic)) { sv.remove_prefix(bom_for_utf_ebcdic.size()); return { utf_ebcdic, native }; }
+			if (sv.starts_with(bom_for_utf8)) { sv.remove_prefix(bom_for_utf8.size()); return { utf8, native }; }
+			if (sv.starts_with(bom_for_utf7)) { sv.remove_prefix(bom_for_utf7.size()); return { utf7, native }; }
+			if (sv.starts_with(bom_for_utf1)) { sv.remove_prefix(bom_for_utf1.size()); return { utf1, native }; }
+			if (sv.starts_with(bom_for_scsu)) { sv.remove_prefix(bom_for_scsu.size()); return { scsu, native }; }
+			if (sv.starts_with(bom_for_bocu1)) { sv.remove_prefix(bom_for_bocu1.size()); return { bocu1, native }; }
+			if (sv.starts_with(bom_for_utf16_be)) { sv.remove_prefix(bom_for_utf16_be.size()); return { utf16, big }; }
+			if (sv.starts_with(bom_for_utf16_le)) { sv.remove_prefix(bom_for_utf16_le.size()); return { utf16, little }; }
 		}
 		return unknown_text_encoding;
 	}
@@ -202,19 +203,19 @@ namespace ghassanpl::string_ops
 	constexpr inline char32_t first_unicode_low_surrogate = 0xDC00;
 	constexpr inline char32_t last_unicode_low_surrogate = 0xDFFF;
 
-	constexpr inline bool is_high_surrogate(char32_t cp) noexcept { return cp >= first_unicode_high_surrogate && cp <= last_unicode_high_surrogate; }
-	constexpr inline bool is_low_surrogate(char32_t cp) noexcept { return cp >= first_unicode_low_surrogate && cp <= last_unicode_low_surrogate; }
-	constexpr inline bool is_surrogate(char32_t cp) noexcept { return cp >= first_unicode_high_surrogate && cp <= last_unicode_low_surrogate; }
-	constexpr inline bool is_unicode(char32_t cp) noexcept { return cp <= last_unicode_code_point; }
-	constexpr inline auto get_unicode_plane(char32_t cp) noexcept -> unicode_plane { return is_unicode(cp) ? unicode_plane(cp >> 16) : unicode_plane::invalid; }
-	constexpr inline bool is_unicode_character(char32_t cp) noexcept { return is_unicode(cp) && ((cp & 0xFFFE) != 0xFFFE) && !(cp >= 0xFDD0 && cp <= 0xFDEF); }
+	constexpr bool is_high_surrogate(char32_t cp) noexcept { return cp >= first_unicode_high_surrogate && cp <= last_unicode_high_surrogate; }
+	constexpr bool is_low_surrogate(char32_t cp) noexcept { return cp >= first_unicode_low_surrogate && cp <= last_unicode_low_surrogate; }
+	constexpr bool is_surrogate(char32_t cp) noexcept { return cp >= first_unicode_high_surrogate && cp <= last_unicode_low_surrogate; }
+	constexpr bool is_unicode(char32_t cp) noexcept { return cp <= last_unicode_code_point; }
+	constexpr auto get_unicode_plane(char32_t cp) noexcept -> unicode_plane { return is_unicode(cp) ? unicode_plane(cp >> 16) : unicode_plane::invalid; }
+	constexpr bool is_unicode_character(char32_t cp) noexcept { return is_unicode(cp) && ((cp & 0xFFFE) != 0xFFFE) && !(cp >= 0xFDD0 && cp <= 0xFDEF); }
 
-	constexpr inline char32_t surrogate_pair_to_codepoint(char32_t high, char32_t low) noexcept
+	constexpr char32_t surrogate_pair_to_codepoint(char32_t high, char32_t low) noexcept
 	{
 		return 0x10000 + ((high - first_unicode_high_surrogate) << 10) + (low - first_unicode_low_surrogate);
 	}
 
-	constexpr inline std::pair<char32_t, char32_t> codepoint_to_surrogate_pair(char32_t cp) noexcept
+	constexpr std::pair<char32_t, char32_t> codepoint_to_surrogate_pair(char32_t cp) noexcept
 	{
 		return { ((cp - 0x10000) >> 10) + first_unicode_high_surrogate, ((cp - 0x10000) & 0x3FF) + first_unicode_low_surrogate };
 	}
@@ -232,7 +233,7 @@ namespace ghassanpl::string_ops
 		}
 	}
 
-	[[nodiscard]] constexpr inline size_t codepoint_utf8_count(char32_t cp) noexcept
+	[[nodiscard]] constexpr size_t codepoint_utf8_count(char32_t cp) noexcept
 	{
 		constexpr size_t lut[33] = { 7,6,6,6,6,6,5,5,5,5,5,4,4,4,4,4,3,3,3,3,3,2,2,2,2,1,1,1,1,1,1,1,1 };
 		return lut[std::countl_zero(std::bit_cast<uint32_t>(cp))];
@@ -330,7 +331,7 @@ namespace ghassanpl::string_ops
 			float score() const { return (2.5f * whitespace + plain_ascii - 100.f * invalid_points() - 50.f * control_points + 5.f * extended_codepoints) * one_over_points; }
 		};
 
-		static const auto scanTextFile = [](TextFileStats& stats, stringable8 auto sv, text_encoding encoding) -> size_t {
+		static const auto scanTextFile = [](TextFileStats& stats, stringable8 auto sv, text_encoding encoding) {
 			size_t numBytes = 0;
 			while (!sv.empty())
 			{
@@ -394,8 +395,8 @@ namespace ghassanpl::string_ops
 		/// If more than 20% of the high bytes in UTF-8 are encoding errors, reinterpret UTF-8 as just
 		/// bytes.
 		text_encoding encoding8 = utf8_encoding;
-		auto numHighBytes = numBytesRead - stats8.plain_ascii - stats8.control_points;
-		if (stats8.invalid_points() >= numHighBytes * 0.2f)
+		if (const auto numHighBytes = numBytesRead - stats8.plain_ascii - stats8.control_points; 
+			stats8.invalid_points() >= numHighBytes * 0.2f)
 		{
 			/// Too many UTF-8 errors. Consider it bytes.
 			encoding8 = unknown_text_encoding;
@@ -458,7 +459,7 @@ namespace ghassanpl::string_ops
 #else
 	[[gsl::suppress("type.1", "es.79")]]
 #endif
-	[[nodiscard]] constexpr inline char32_t consume_utf8(string_view8 auto& str)
+	[[nodiscard]] constexpr char32_t consume_utf8(string_view8 auto& str)
 	{
 		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
 		using unsigned_char_type = std::make_unsigned_t<char_type>;
@@ -492,26 +493,13 @@ namespace ghassanpl::string_ops
 		return cp;
 	}
 
-	/*
-	/// Assuming str is valid UTF-8
-#ifndef __clang__
-	[[gsl::suppress(type.1, es.79)]]
-#else
-	[[gsl::suppress("type.1", "es.79")]]
-#endif
-	[[nodiscard]] constexpr inline char32_t consume_utf8(string_view8 auto str)
-	{
-		return consume_utf8(str);
-	}
-	*/
-
 	/// Assuming codepoint is valid
 #ifndef __clang__
 	[[gsl::suppress(type.1)]]
 #else
 	[[gsl::suppress("type.1")]]
 #endif
-	inline size_t append_utf8(string8 auto& buffer, char32_t cp)
+	constexpr size_t append_utf8(string8 auto& buffer, char32_t cp)
 	{
 		using char_type = typename std::remove_cvref_t<decltype(buffer)>::value_type;
 #if 1
@@ -524,7 +512,7 @@ namespace ghassanpl::string_ops
 		case 5: bytes[cp_bytes - 4] = static_cast<char_type>(0x80 | ((cp >> 18) & 0x3F)); [[fallthrough]];
 		case 4: bytes[cp_bytes - 3] = static_cast<char_type>(0x80 | ((cp >> 12) & 0x3F)); [[fallthrough]];
 		case 3: bytes[cp_bytes - 2] = static_cast<char_type>(0x80 | ((cp >> 6) & 0x3F)); [[fallthrough]];
-		case 2: bytes[cp_bytes - 1] = static_cast<char_type>(0x80 | ((cp >> 0) & 0x3F)); bytes[0] = static_cast<char_type>((std::uint_least16_t(0xFF00uL) >> cp_bytes) | (cp >> (6 * cp_bytes - 6))); break;
+		case 2: bytes[cp_bytes - 1] = static_cast<char_type>(0x80 | ((cp >> 0) & 0x3F)); bytes[0] = static_cast<char_type>((std::uint_least16_t(0xFF00uL) >> cp_bytes) | (uint64_t(cp) >> (6 * cp_bytes - 6))); break;
 		case 1: bytes[0] = static_cast<char_type>(cp); break;
 		}
 		buffer += bytes;
@@ -559,7 +547,7 @@ namespace ghassanpl::string_ops
 #endif
 	}
 
-	inline void transcode_codepage_to_utf8(string8 auto& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
+	constexpr void transcode_codepage_to_utf8(string8 auto& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
 	{
 		using dest_char = typename std::decay_t<decltype(dest)>::value_type;
 		for (uint8_t cp : source)
@@ -572,7 +560,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <string8 T>
-	inline auto transcode_codepage_to_utf8(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> T
+	constexpr auto transcode_codepage_to_utf8(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> T
 	{
 		T result{};
 		transcode_codepage_to_utf8(result, source, codepage_map);
@@ -585,16 +573,16 @@ namespace ghassanpl::string_ops
 #else
 	[[gsl::suppress("type.1", "es.79")]]
 #endif
-	[[nodiscard]] constexpr inline char32_t consume_utf16(string_view16 auto& str)
+	[[nodiscard]] constexpr char32_t consume_utf16(string_view16 auto& str)
 	{
 		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
-		using unsigned_char_type = std::make_unsigned_t<char_type>;
+		using unsigned_char_type = std::make_unsigned_t<char_type const>;
 
 		if (str.empty()) return 0;
 		auto it = (unsigned_char_type*)std::to_address(str.begin());
 		char32_t cp = *it;
 
-		const int length = (cp >= 0xD800 && cp <= 0xDBFF) + 1;
+		const int length = int(cp >= 0xD800 && cp <= 0xDBFF) + 1;
 
 		if (length == 2)
 		{
@@ -611,7 +599,7 @@ namespace ghassanpl::string_ops
 #else
 	[[gsl::suppress("type.1")]]
 #endif
-	inline size_t append_utf16(string16 auto& buffer, char32_t cp)
+	constexpr size_t append_utf16(string16 auto& buffer, char32_t cp)
 	{
 		using char_type = typename std::remove_cvref_t<decltype(buffer)>::value_type;
 		if (cp <= 0xFFFF)
@@ -632,7 +620,7 @@ namespace ghassanpl::string_ops
 	[[gsl::suppress("type.1")]]
 #endif
 	/// Assumes codepoint is valid
-	[[nodiscard]] constexpr inline T to_utf8(char32_t cp)
+	[[nodiscard]] constexpr T to_utf8(char32_t cp)
 	{
 		using char_type = typename T::value_type;
 		if (cp < 0x80)
@@ -647,7 +635,7 @@ namespace ghassanpl::string_ops
 
 	/// Assumes codepoint is valid
 	template <string8 RESULT, stringable16 STR>
-	[[nodiscard]] inline RESULT to_utf8(STR str)
+	[[nodiscard]] constexpr RESULT to_utf8(STR str)
 	{
 		RESULT result{};
 		auto sv = make_sv(str);
@@ -668,7 +656,7 @@ namespace ghassanpl::string_ops
 	[[gsl::suppress("type.1")]]
 #endif
 	/// Assumes codepoint is valid
-	[[nodiscard]] inline T to_utf16(char32_t cp)
+	[[nodiscard]] constexpr T to_utf16(char32_t cp)
 	{
 		using char_type = T::value_type;
 		if (cp <= 0xFFFF)
@@ -679,7 +667,7 @@ namespace ghassanpl::string_ops
 
 	/// Assumes codepoint is valid
 	template <string16 T, stringable8 STR>
-	[[nodiscard]] inline T to_utf16(STR str)
+	[[nodiscard]] constexpr T to_utf16(STR str)
 	{
 		T result{};
 		auto sv = make_sv(str);
@@ -740,8 +728,6 @@ namespace ghassanpl::string_ops
 			}
 
 			constexpr auto operator<=>(utf8_iterator const&) const noexcept = default;
-			constexpr bool operator==(utf8_iterator const&) const noexcept = default;
-			constexpr bool operator!=(utf8_iterator const&) const noexcept = default;
 
 		private:
 
@@ -777,8 +763,8 @@ namespace ghassanpl::string_ops
 		}
 
 		template <typename... ARGS>
-		requires requires { std::string_view{ std::declval<ARGS>()... }; }
-		constexpr utf8_view(ARGS&&... args)
+		requires std::constructible_from<std::string_view, ARGS...>
+		explicit constexpr utf8_view(ARGS&&... args)
 			: mBase(std::forward<ARGS>(args)...)
 		{
 		}
@@ -805,7 +791,5 @@ namespace ghassanpl::string_ops
 	private:
 		R mBase{};
 	};
-
-	//template<class R> custom_take_view(R&& base, std::iter_difference_t<rg::iterator_t<R>>) ->custom_take_view<rg::views::all_t<R>>;
 
 }

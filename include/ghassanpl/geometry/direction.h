@@ -40,39 +40,47 @@ namespace ghassanpl::geometry
 		static constexpr const int direction_value[] = { 1, 1, 0, -1, -1, -1, 0, 1 };
 	}
 
-	constexpr inline direction operator+(direction dir, int d) { return (direction)((int(dir) + d) % 8); }
-	constexpr inline direction operator-(direction dir, int d) { return (direction)((int(dir) + (8 + (d % 8))) % 8); }
+	constexpr direction operator+(direction dir, int d) { return (direction)((int(dir) + d) % 8); }
+	constexpr direction operator-(direction dir, int d) { return (direction)((int(dir) + (8 + (d % 8))) % 8); }
 
-	constexpr inline direction& operator++(direction& dir) { return dir = dir + 1; }
-	constexpr inline direction& operator--(direction& dir) { return dir = dir + 7; }
+	constexpr direction& operator++(direction& dir) { return dir = dir + 1; }
+	constexpr direction& operator--(direction& dir) { return dir = dir + 7; }
 
-	constexpr inline direction operator++(direction& dir, int) { auto res = dir; ++dir; return res; }
-	constexpr inline direction operator--(direction& dir, int) { auto res = dir; --dir; return res; }
+	constexpr direction operator++(direction& dir, int) { auto res = dir; ++dir; return res; }
+	constexpr direction operator--(direction& dir, int) { auto res = dir; --dir; return res; }
 
-	constexpr inline direction opposite(direction dir) { return dir + 4; }
-	constexpr inline direction next_cardinal(direction dir) { return direction(int(dir) & (~1)) + 2; }
-	constexpr inline direction prev_cardinal(direction dir) { return direction(int(dir) & (~1)) + 6; }
+	constexpr direction opposite(direction dir) { return dir + 4; }
+	constexpr direction next_cardinal(direction dir) { return direction(int(dir) & (~1)) + 2; }
+	constexpr direction prev_cardinal(direction dir) { return direction(int(dir) & (~1)) + 6; }
 
 	constexpr inline static direction_set all_cardinal_directions{ direction::left, direction::right, direction::up, direction::down };
 	constexpr inline static direction_set all_diagonal_directions{ direction::left_up, direction::right_up, direction::right_down, direction::left_down };
 	constexpr inline static direction_set all_directions{ direction::left, direction::right, direction::up, direction::down, direction::left_up, direction::right_up, direction::right_down, direction::left_down };
 
-	constexpr inline bool is_valid(direction dir) { return int(dir) >= 0 && int(dir) <= 7; }
-	constexpr inline bool is_cardinal(direction dir) { return (int(dir) & 1) == 0; }
-	constexpr inline bool is_diagonal(direction dir) { return (int(dir) & 1) != 0; }
+	constexpr bool is_valid(direction dir) { return int(dir) >= 0 && int(dir) <= 7; }
+	constexpr bool is_cardinal(direction dir) { return (int(dir) & 1) == 0; }
+	constexpr bool is_diagonal(direction dir) { return (int(dir) & 1) != 0; }
 
-	constexpr inline int horizontal(direction dir) { return detail::direction_value[(int)dir]; }
-	constexpr inline int vertical(direction dir) { return detail::direction_value[int(dir + 6)]; }
+	constexpr int horizontal(direction dir) { return detail::direction_value[(int)dir]; }
+	constexpr int vertical(direction dir) { return detail::direction_value[int(dir + 6)]; }
 
-	constexpr inline degrees to_angle(direction val)
+	constexpr degrees to_angle(direction val)
 	{
-		return degrees{ (int(val) * 45.0f) };
+		return degrees{ (float(val) * 45.0f) };
 	}
 
-	constexpr inline glm::ivec2 to_ivec(direction val) { return { horizontal(val), vertical(val) }; }
-	constexpr inline glm::vec2 to_vec(direction val) { const glm::vec2 d = to_ivec(val); return is_diagonal(val) ? d * std::numbers::sqrt2_v<float> : d; }
+	/// \internal
+	/// TODO: Do we really want to include the entirety of geometry_common.h (which is a BIG header) just for the few functions below?
+	/// \endinternal
 
-	constexpr inline ghassanpl::align to_alignment(direction val);
+	constexpr glm::ivec2 to_ivec(direction val) { return { horizontal(val), vertical(val) }; }
+	constexpr glm::vec2 to_vec(direction val) { const glm::vec2 d = to_ivec(val); return is_diagonal(val) ? d * std::numbers::sqrt2_v<float> : d; }
+
+	constexpr ghassanpl::align to_alignment(direction val);
+
+	/// \internal
+	/// TODO: Use constexpr math for fmod and sign to make `to_direction` functions constexpr
+	/// \endinternal
 
 	inline direction to_direction(degrees angle)
 	{

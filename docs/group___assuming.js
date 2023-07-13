@@ -1,10 +1,12 @@
 var group___assuming =
 [
     [ "Assuming", "group___assuming.html#gacb8c2dbffc103683379b80af5b13e490", null ],
+    [ "ASSUMING_DEBUG", "group___assuming.html#ga218eb441da34d0d145c8215bec946304", null ],
     [ "ASSUMING_INCLUDE_MAGIC_ENUM", "group___assuming.html#ga80dcba370ab17ab332b2f90182753c55", null ],
     [ "AssumingBetween", "group___assuming.html#gaae12deb0193258e9debce0707f066280", null ],
     [ "AssumingBetweenInclusive", "group___assuming.html#gaa83e5157929343e3bcc17c075b004956", null ],
     [ "AssumingBinOp", "group___assuming.html#ga4c0d57ca6ee3ea3f7b0c2cf711ad673a", null ],
+    [ "AssumingContainsBits", "group___assuming.html#ga863f91ab7a228a9b923978ad0cb28073", null ],
     [ "AssumingEmpty", "group___assuming.html#ga5a5683af4e757e29a82eecf8691a0463", null ],
     [ "AssumingEqual", "group___assuming.html#ga823b7651241c2c24b78f0b1f7a4f9123", null ],
     [ "AssumingGreater", "group___assuming.html#ga421c7eb5c51901acc78cc3dd98635e66", null ],
@@ -19,6 +21,7 @@ var group___assuming =
     [ "AssumingNotRecursive", "group___assuming.html#gabf3129454270c3596424d0e793a64876", null ],
     [ "AssumingNull", "group___assuming.html#ga75b7a913f9747460eca1f785d0c12462", null ],
     [ "AssumingNullOrEmpty", "group___assuming.html#ga547b898e8d01905749a3b964d4e70b7d", null ],
+    [ "AssumingOnThread", "group___assuming.html#ga2edb7f1ac4b860af900a6255a74f1ec7", null ],
     [ "AssumingSingleThread", "group___assuming.html#gae7f47e8e04cb5f893e9f47d3716f9400", null ],
     [ "AssumingValidIndex", "group___assuming.html#ga4ab076fb853ecd9649018a317ffc4d8d", null ],
     [ "AssumingValidIterator", "group___assuming.html#gab69ef973b6e5447cd919a3817e0e9638", null ],

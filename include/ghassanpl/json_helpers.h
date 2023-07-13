@@ -11,18 +11,23 @@
 
 namespace ghassanpl::formats
 {
-	/// \addtogroup Text
-	/// \ingroup Formats
-
+	
 	namespace text
 	{
-		/// TODO: These are technically incorrect as they don't do newline conversions
+		/// \defgroup Text Text
+		/// \ingroup Formats
+		/// @{
+		
+		/// Returns the contents of a text file as a string.
+		/// \param ec is filled with the error if any happens
 		inline std::string load_file(std::filesystem::path const& from, std::error_code& ec)
 		{
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
 			return ec ? std::string{} : std::string{ source.begin(), source.end() };
 		}
 
+		/// Returns the contents of a text file as a string.
+		/// \exception std::runtime_error if file not found
 		inline std::string load_file(std::filesystem::path const& from)
 		{
 			std::error_code ec;
@@ -32,6 +37,7 @@ namespace ghassanpl::formats
 			return std::string{ source.begin(), source.end() };
 		}
 
+		/// Returns the contents of a text file as a string, or an empty string on failure.
 		inline std::string try_load_file(std::filesystem::path const& from)
 		{
 			std::error_code ec;
@@ -52,15 +58,17 @@ namespace ghassanpl::formats
 			out.exceptions(std::ios::badbit | std::ios::failbit);
 			out.write(string.data(), string.size());
 		}
+		/// @}
 	}
-
-	/// \addtogroup Text Lines
-	/// \ingroup Formats
 
 	namespace text_lines
 	{
-		/// TODO: These are technically incorrect as they don't remove \r at split points
 
+		/// \defgroup TextLines Text Lines
+		/// \todo These are technically incorrect as they don't remove `\r` at split points
+		/// \ingroup Formats
+		/// @{
+		
 		inline std::vector<std::string> load_file(std::filesystem::path const& from, std::error_code& ec)
 		{
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
@@ -68,7 +76,7 @@ namespace ghassanpl::formats
 				return {};
 
 			std::vector<std::string> result;
-			ghassanpl::string_ops::split(std::string_view{ source }, '\n', [&](std::string_view line, bool) { result.push_back(std::string{line}); });
+			ghassanpl::string_ops::split(std::string_view{ source }, '\n', [&](std::string_view line, bool) { result.emplace_back(line); });
 			return result;
 		}
 
@@ -80,7 +88,7 @@ namespace ghassanpl::formats
 				throw std::runtime_error(format("file '{}' not found", from.string()));
 
 			std::vector<std::string> result;
-			ghassanpl::string_ops::split(std::string_view{ source }, '\n', [&](std::string_view line, bool) { result.push_back(std::string{line}); });
+			ghassanpl::string_ops::split(std::string_view{ source }, '\n', [&](std::string_view line, bool) { result.emplace_back(line); });
 			return result;
 		}
 
@@ -127,16 +135,18 @@ namespace ghassanpl::formats
 				out << "\n";
 			}
 		}
+		/// @}
 	}
-
-	/// \addtogroup JSON
-	/// \ingroup Formats
 
 	namespace json
 	{
-		static inline const nlohmann::json empty_json = nlohmann::json{};
-		static inline const nlohmann::json empty_json_array = nlohmann::json::array();
-		static inline const nlohmann::json empty_json_object = nlohmann::json::object();
+		/// \defgroup JSON JSON
+		/// \ingroup Formats
+		/// @{
+
+		inline const nlohmann::json empty_json = nlohmann::json{};
+		inline const nlohmann::json empty_json_array = nlohmann::json::array();
+		inline const nlohmann::json empty_json_object = nlohmann::json::object();
 
 		inline nlohmann::json load_file(std::filesystem::path const& from, std::error_code& ec)
 		{
@@ -170,16 +180,20 @@ namespace ghassanpl::formats
 			s.dump(j, pretty, false, 1);
 		}
 
-
+		/// Smaller name for \c nlohmann::json::value_t
 		using jtype = nlohmann::json::value_t;
 
+		/// Gets the item in the json object `g` with the key `key`, or an empty json object if none found.
+		/// \param type the value must also be of this type
 		inline nlohmann::json const& get(nlohmann::json const& g, std::string_view key, jtype type = jtype::discarded)
 		{
 			if (auto it = g.find(key); it != g.end() && (type == jtype::discarded || it->type() == type))
 				return *it;
 			return json::empty_json;
 		}
-
+		
+		/// Gets the value (converted to a string) in the json object `g` with the key `key`, or `default_value` if none found.
+		/// \param type the value must also be of this type
 		inline std::string get(nlohmann::json const& g, std::string_view key, std::string_view default_value, jtype type = jtype::discarded)
 		{
 			if (auto it = g.find(key); it != g.end() && (type == jtype::discarded || it->type() == type))
@@ -187,6 +201,8 @@ namespace ghassanpl::formats
 			return std::string{ default_value };
 		}
 
+		/// Gets the value (converted to an integer) in the json object `g` with the key `key`, or `default_value` if none found.
+		/// \param type the value must also be of this type
 		template <std::integral T>
 		inline T get(nlohmann::json const& g, std::string_view key, T default_value, jtype type = jtype::discarded)
 		{
@@ -195,6 +211,8 @@ namespace ghassanpl::formats
 			return default_value;
 		}
 
+		/// Gets the value (converted to an floating point number) in the json object `g` with the key `key`, or `default_value` if none found.
+		/// \param type the value must also be of this type
 		template <std::floating_point T>
 		inline T get(nlohmann::json const& g, std::string_view key, T default_value, jtype type = jtype::discarded)
 		{
@@ -203,6 +221,7 @@ namespace ghassanpl::formats
 			return default_value;
 		}
 
+		/// Gets the array value in the json object `g` with the key `key`, or an empty array if none found.
 		inline nlohmann::json const& get_array(nlohmann::json const& g, std::string_view key)
 		{
 			if (auto it = g.find(key); it != g.end() && it->type() == jtype::array)
@@ -210,6 +229,8 @@ namespace ghassanpl::formats
 			return json::empty_json_array;
 		}
 
+		/// Sets the value of `val` to the item in json object `g` with key `key`
+		/// \exception std::runtime_error on error (no key found, cannot convert json to `val` type, etc.)
 		template <typename T>
 		inline void field(T& val, nlohmann::json const& g, std::string_view key)
 		{
@@ -230,6 +251,24 @@ namespace ghassanpl::formats
 			throw std::runtime_error(std::format("no key \"{}\" found", key));
 		}
 
+		/// Sets the value of `val` to the item in json array `g` at index `key`
+		/// \exception std::runtime_error on error (invalid index, cannot convert json to `val` type, etc.)
+		template <typename T>
+		inline void field(T& val, nlohmann::json const& g, size_t key)
+		{
+			try
+			{
+				val = g.at(key);
+				return;
+			}
+			catch (...)
+			{
+				std::throw_with_nested(std::runtime_error{ std::format("while trying to convert value at element {} to type {}", key, typeid(T).name()) });
+			}
+		}
+
+		/// Same as \c field() but returns if it succeeded, instead of throwing.
+		/// \see field()
 		template <typename T>
 		inline bool field_opt(T& val, nlohmann::json const& g, std::string_view key)
 		{
@@ -249,20 +288,7 @@ namespace ghassanpl::formats
 			return false;
 		}
 
-		template <typename T>
-		inline void field(T& val, nlohmann::json const& g, size_t key)
-		{
-			try
-			{
-				val = g.at(key);
-				return;
-			}
-			catch (...)
-			{
-				std::throw_with_nested(std::runtime_error{ std::format("while trying to convert value at element {} to type {}", key, typeid(T).name()) });
-			}
-		}
-
+		/// Calls `func` with the actual value inside `j`; similar to `std::visit`
 		template <typename VISIT_FUNC>
 		void visit(nlohmann::json const& j, VISIT_FUNC&& func)
 		{
@@ -282,13 +308,15 @@ namespace ghassanpl::formats
 				break;
 			}
 		}
-	}
 
-	/// \addtogroup UBJSON
-	/// \ingroup Formats
+		/// @}
+	}
 
 	namespace ubjson
 	{
+		/// \defgroup UBJSON UBJSON
+		/// \ingroup Formats
+		/// @{
 		inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json const& or_json = json::empty_json)
 		{
 			std::error_code ec;
@@ -319,16 +347,16 @@ namespace ghassanpl::formats
 			std::ofstream out{ to };
 			nlohmann::json::to_ubjson(j, nlohmann::detail::output_adapter<char, std::string>(out), true, true);
 		}
-
+		///@}
 	}
 
-	/// \addtogroup CBOR
-	/// \ingroup Formats
-	/// @{
 	namespace cbor
 	{
+		/// \defgroup CBOR CBOR
+		/// \ingroup Formats
+		/// @{
+		
 		/// Tries loading a CBOR file
-		/// \ingroup CBOR
 		inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json const& or_json = json::empty_json)
 		{
 			std::error_code ec;
@@ -337,13 +365,12 @@ namespace ghassanpl::formats
 		}
 
 		/// Saves a CBOR file
-		/// \ingroup CBOR
 		inline void save_file(std::filesystem::path const& to, nlohmann::json const& j)
 		{
 			std::ofstream out{ to };
 			nlohmann::json::to_cbor(j, nlohmann::detail::output_adapter<char, std::string>(out));
 		}
+		/// @}
 	}
-	/// @}
 
 }

@@ -176,10 +176,11 @@
     <ClInclude Include="include\ghassanpl\configs.h" />
     <ClInclude Include="include\ghassanpl\constexpr_math.h" />
     <ClInclude Include="include\ghassanpl\containers.h" />
+    <ClInclude Include="include\ghassanpl\cpp11\named.h" />
     <ClInclude Include="include\ghassanpl\cpp98\enum_flags.h" />
-    <ClInclude Include="include\ghassanpl\cpp98\named.h" />
     <ClInclude Include="include\ghassanpl\di.h" />
     <ClInclude Include="include\ghassanpl\di_impl.h" />
+    <ClInclude Include="include\ghassanpl\enums.h" />
     <ClInclude Include="include\ghassanpl\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\eval.h" />
     <ClInclude Include="include\ghassanpl\flag_bits.h" />
@@ -204,7 +205,6 @@
     <ClInclude Include="include\ghassanpl\mmap_impl.h" />
     <ClInclude Include="include\ghassanpl\named.h" />
     <ClInclude Include="include\ghassanpl\parsing.h" />
-    <ClInclude Include="include\ghassanpl\paths.h" />
     <ClInclude Include="include\ghassanpl\platform.h" />
     <ClInclude Include="include\ghassanpl\random.h" />
     <ClInclude Include="include\ghassanpl\random_geom.h" />
@@ -222,13 +222,17 @@
     <ClInclude Include="include\ghassanpl\uri_impl.h" />
     <ClInclude Include="include\ghassanpl\wilson.h" />
     <ClInclude Include="include\ghassanpl\windows\common.h" />
+    <ClInclude Include="include\ghassanpl\windows\folders.h" />
+    <ClInclude Include="include\ghassanpl\windows\gfx.h" />
     <ClInclude Include="include\ghassanpl\windows\include.h" />
     <ClInclude Include="include\ghassanpl\windows\last_error.h" />
     <ClInclude Include="include\ghassanpl\windows\message_box.h" />
+    <ClInclude Include="include\ghassanpl\windows\wm.h" />
     <ClInclude Include="include\ghassanpl\with_sl.h" />
     <ClInclude Include="tests\tests_common.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Doxyfile" />
     <None Include="include\ghassanpl\platform_impl.inl" />
     <None Include="README.md" />
     <None Include="vcpkg.json" />
@@ -241,12 +245,21 @@
     <ClCompile Include="tests\colors_test.cpp" />
     <ClCompile Include="tests\configs_tests.cpp" />
     <ClCompile Include="tests\containers_tests.cpp" />
+    <ClCompile Include="tests\cpp11_tests.cpp">
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp14</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp14</LanguageStandard>
+    </ClCompile>
+    <ClCompile Include="tests\cpp98_tests.cpp">
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp14</LanguageStandard>
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp14</LanguageStandard>
+    </ClCompile>
     <ClCompile Include="tests\di_tests.cpp" />
     <ClCompile Include="tests\enum_flags_tests.cpp" />
     <ClCompile Include="tests\eval_tests.cpp" />
     <ClCompile Include="tests\formats_tests.cpp" />
     <ClCompile Include="tests\functional_tests.cpp" />
     <ClCompile Include="tests\geometry_tests.cpp" />
+    <ClCompile Include="tests\hashes_tests.cpp" />
     <ClCompile Include="tests\main.cpp" />
     <ClCompile Include="tests\mmap_tests.cpp" />
     <ClCompile Include="tests\named_tests.cpp" />
@@ -265,6 +278,7 @@
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
     </ClCompile>
     <ClCompile Include="tests\uri_tests.cpp" />
+    <ClCompile Include="tests\windows_tests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

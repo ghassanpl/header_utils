@@ -212,10 +212,7 @@ namespace ghassanpl
 		constexpr self_type& operator+=(self_type flags) noexcept { bits |= flags.bits; return *this; }
 		constexpr self_type& operator-=(self_type flags) noexcept { bits &= ~flags.bits; return *this; }
 
-		constexpr bool operator==(self_type other) const noexcept { return bits == other.bits; }
-		constexpr bool operator!=(self_type other) const noexcept { return bits != other.bits; }
-
-		constexpr auto operator<=>(enum_flags const& other) const noexcept { return bits <=> other.bits; }
+		constexpr auto operator<=>(enum_flags const& other) const noexcept = default;
 
 		struct iterator
 		{
@@ -385,7 +382,6 @@ namespace ghassanpl
 
 		constexpr self_type& dont_change_any() noexcept { bits[0].clear(); bits[1].clear(); return *this; }
 
-		constexpr bool operator==(self_type const& other) const noexcept = default;
 		constexpr auto operator<=>(self_type const& other) const noexcept = default;
 
 		flags_type bits[2]{ {}, {} };

@@ -1,10 +1,11 @@
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 #pragma once
 
 #include <cstdint>
 
-/// Because GCC and Clang suck
-
-#if defined(__cpp_lib_source_location) && __cpp_lib_source_location >= 201907L
+#if defined(__cpp_lib_source_location) && __cpp_lib_source_location >= 201907L && !defined(DOXYGEN)
 #include <source_location>
 #else
 namespace std

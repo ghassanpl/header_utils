@@ -30,7 +30,7 @@ TEST(wilson_parsing, will_parse_map_with_key_but_no_value)
 	EXPECT_EQ(result, nlohmann::json::object({ {"Required", true} }));
 }
 
-auto wilson_decade = R"([ChangeImageOf [this] ToTile chest_open]
+constexpr auto wilson_decade = R"([ChangeImageOf [this] ToTile chest_open]
 [Play chest_open At [here] Waiting false]
 [AddLog [Phrase OpenChest FromGroup logs]]
 Once)"sv;
@@ -38,6 +38,6 @@ Once)"sv;
 TEST(parsing_functions, wilson_parsing_basic_decade)
 {
 	auto parsed = formats::wilson::parse_array(wilson_decade);
-	std::cout << parsed.dump(1) << "\n";
+	//std::cout << parsed.dump(1) << "\n";
 	EXPECT_EQ(parsed.size(), 4);
 }

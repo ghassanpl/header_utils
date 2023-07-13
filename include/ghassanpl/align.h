@@ -4,11 +4,11 @@
 
 #pragma once
 
-#define GHASSANPL_HAS_ALIGN
+#define GHPL_HAS_ALIGN
 
 namespace ghassanpl
 {
-	/// \defgroup Alignment
+	/// \defgroup Alignment Alignment
 	/// Types and functions for geometric alignments - relative positionings on a line
 	
 	/// \ingroup Alignment
@@ -38,9 +38,9 @@ namespace ghassanpl
 	enum class align;
 
 	/// You can use the | operator to create an \ref align from a \ref horizontal_align and a \ref vertical_align
-	constexpr inline align operator|(horizontal_align first, vertical_align second) { return align(int(first) | int(second)); }
+	constexpr align operator|(horizontal_align first, vertical_align second) { return align(int(first) | int(second)); }
 	/// You can use the | operator to create an \ref align from a \ref horizontal_align and a \ref vertical_align
-	constexpr inline align operator|(vertical_align first, horizontal_align second) { return align(int(first) | int(second)); }
+	constexpr align operator|(vertical_align first, horizontal_align second) { return align(int(first) | int(second)); }
 	
 	/// Represents an alignment in both axes (horizontal and veritcal)
 	enum class align
@@ -79,8 +79,8 @@ namespace ghassanpl
 	/// Vertical alignments in order
 	constexpr inline vertical_align vertical_aligns_in_order[] = { vertical_align::top, vertical_align::middle, vertical_align::bottom };
 
-	constexpr inline align& operator|=(align& first, horizontal_align second) { return first = align(int(first) | int(second)); }
-	constexpr inline align& operator|=(align& first, vertical_align second) { return first = align(int(first) | int(second)); }
+	constexpr align& operator|=(align& first, horizontal_align second) { return first = align(int(first) | int(second)); }
+	constexpr align& operator|=(align& first, vertical_align second) { return first = align(int(first) | int(second)); }
 
 	constexpr inline const char* horizontal_align_names[] = { "left", "center", "right", "justify_horizontal", "center", "", "", "", "right", "", "", "", "justify_horizontal" };
 	constexpr inline const char* vertical_align_names[] = { "top", "middle", "bottom", "justify_vertical", "middle", "", "", "", "bottom", "", "", "", "justify_vertical" };
@@ -90,19 +90,19 @@ namespace ghassanpl
 	/// Get alignment name
 	/// \returns Nul-terminated string with the name of the alignment (the same as the enum value name)
 	/// \sa horizontal_align_names
-	constexpr inline const char* to_name(horizontal_align h) { return horizontal_align_names[int(h)]; }
+	constexpr const char* to_name(horizontal_align h) { return horizontal_align_names[int(h)]; }
 	/// Get alignment name
 	/// \returns Nul-terminated string with the name of the alignment (the same as the enum value name)
 	/// \sa vertical_align_names
-	constexpr inline const char* to_name(vertical_align v) { return vertical_align_names[int(v)]; }
+	constexpr const char* to_name(vertical_align v) { return vertical_align_names[int(v)]; }
 	/// Get alignment name
 	/// \returns Nul-terminated string with the name of the alignment (the same as the enum value name)
 	/// \sa align_names
-	constexpr inline const char* to_name(align a) { return align_names[int(a)]; }
+	constexpr const char* to_name(align a) { return align_names[int(a)]; }
 	/// Get natural alignment name
 	/// \returns Nul-terminated string with the natural name of the alignment (containg spaces)
 	/// \sa align_names_natural
-	constexpr inline const char* to_natural_name(align a) { return align_names_natural[int(a)]; }
+	constexpr const char* to_natural_name(align a) { return align_names_natural[int(a)]; }
 
 	namespace detail
 	{
@@ -111,35 +111,35 @@ namespace ghassanpl
 	}
 
 	/// Returns \c alignment as if it was on a vertical line
-	constexpr inline vertical_align to_vertical(horizontal_align alignment) { return vertical_align{ (int(alignment) & detail::horizontal_align_mask) << 2 }; }
+	constexpr vertical_align to_vertical(horizontal_align alignment) { return vertical_align{ (int(alignment) & detail::horizontal_align_mask) << 2 }; }
 	/// Returns \c alignment as if it was on a vertical line
-	constexpr inline vertical_align to_vertical(vertical_align alignment) { return alignment; }
+	constexpr vertical_align to_vertical(vertical_align alignment) { return alignment; }
 	/// Returns \c alignment as if it was on a horizontal line
-	constexpr inline horizontal_align to_horizontal(vertical_align alignment) { return horizontal_align{ (int(alignment) & detail::vertical_align_mask) >> 2 }; }
+	constexpr horizontal_align to_horizontal(vertical_align alignment) { return horizontal_align{ (int(alignment) & detail::vertical_align_mask) >> 2 }; }
 	/// Returns \c alignment as if it was on a horizontal line
-	constexpr inline horizontal_align to_horizontal(horizontal_align alignment) { return alignment; }
+	constexpr horizontal_align to_horizontal(horizontal_align alignment) { return alignment; }
 
 	/// Gets just the vertical component from the \ref align (as a \ref vertical_align)
-	constexpr inline vertical_align vertical_from(align alignment) { return vertical_align{ (int(alignment) & detail::vertical_align_mask) }; }
+	constexpr vertical_align vertical_from(align alignment) { return vertical_align{ (int(alignment) & detail::vertical_align_mask) }; }
 	/// Gets just the horizontal component from the \ref align (as a \ref horizontal_align)
-	constexpr inline horizontal_align horizontal_from(align alignment) { return horizontal_align{ (int(alignment) & detail::horizontal_align_mask) }; }
+	constexpr horizontal_align horizontal_from(align alignment) { return horizontal_align{ (int(alignment) & detail::horizontal_align_mask) }; }
 
 	/// Gets a mew \ref align that only has the vertical component
-	constexpr inline align only_vertical(align alignment) { return align{ (int(alignment) & detail::vertical_align_mask) }; }
+	constexpr align only_vertical(align alignment) { return align{ (int(alignment) & detail::vertical_align_mask) }; }
 	/// Gets a mew \ref align that only has the horizontal component
-	constexpr inline align only_horizontal(align alignment) { return align{ (int(alignment) & detail::horizontal_align_mask) }; }
+	constexpr align only_horizontal(align alignment) { return align{ (int(alignment) & detail::horizontal_align_mask) }; }
 
 	/// Returns the opposite aligment
 	/// \note The opposite of `justify` is `justify`
-	constexpr inline vertical_align to_opposite(vertical_align alignment) { return vertical_align{ ((2 - (int(alignment) >> 2)) & detail::horizontal_align_mask) << 2 }; }
+	constexpr vertical_align to_opposite(vertical_align alignment) { return vertical_align{ ((2 - (int(alignment) >> 2)) & detail::horizontal_align_mask) << 2 }; }
 
 	/// Returns the opposite aligment
 	/// \note The opposite of `justify` is `justify`
-	constexpr inline horizontal_align to_opposite(horizontal_align alignment) { return horizontal_align{ (2 - int(alignment)) & detail::horizontal_align_mask }; }
+	constexpr horizontal_align to_opposite(horizontal_align alignment) { return horizontal_align{ (2 - int(alignment)) & detail::horizontal_align_mask }; }
 
 	/// Gets an \ref align that is opposite on bost axes
 	/// \note The opposite of `justify` is `justify`
-	constexpr inline align to_opposite(align alignment) { return to_opposite(vertical_from(alignment)) | to_opposite(horizontal_from(alignment)); }
+	constexpr align to_opposite(align alignment) { return to_opposite(vertical_from(alignment)) | to_opposite(horizontal_from(alignment)); }
 
 	/// Returns the 2D alignment rotated clockwise.
 	///
@@ -157,14 +157,14 @@ namespace ghassanpl
 	/// \endcode
 	/// Rotating an \ref align is like rotating the square - so, for example \c top_center becomes \c middle_right
 	/// \sa rotated_counter_clockwise
-	constexpr inline align rotated_clockwise(align alignment) { return to_horizontal(to_opposite(vertical_from(alignment))) | to_vertical(horizontal_from(alignment)); }
+	constexpr align rotated_clockwise(align alignment) { return to_horizontal(to_opposite(vertical_from(alignment))) | to_vertical(horizontal_from(alignment)); }
 	
 	/// Like \ref rotated_clockwise but counter clockwise
 	/// \sa rotated_clockwise
-	constexpr inline align rotated_counter_clockwise(align alignment) { return to_horizontal(vertical_from(alignment)) | to_vertical(to_opposite(horizontal_from(alignment))); }
+	constexpr align rotated_counter_clockwise(align alignment) { return to_horizontal(vertical_from(alignment)) | to_vertical(to_opposite(horizontal_from(alignment))); }
 
-	constexpr inline align flipped_horizontally(align alignment) { return vertical_from(alignment) | to_opposite(horizontal_from(alignment)); }
-	constexpr inline align flipped_vertically(align alignment) { return to_opposite(vertical_from(alignment)) | horizontal_from(alignment); }
+	constexpr align flipped_horizontally(align alignment) { return vertical_from(alignment) | to_opposite(horizontal_from(alignment)); }
+	constexpr align flipped_vertically(align alignment) { return to_opposite(vertical_from(alignment)) | horizontal_from(alignment); }
 
 	template <typename T>
 	constexpr T aligned(const T& width, const T& max_width, horizontal_align align) {
@@ -172,8 +172,7 @@ namespace ghassanpl
 		{
 		case horizontal_align::center: return (max_width / 2 - width / 2);
 		case horizontal_align::right: return (max_width - width);
-		default:
-		case horizontal_align::left: return 0;
+		default: return 0;
 		}
 	}
 
@@ -183,8 +182,7 @@ namespace ghassanpl
 		{
 		case vertical_align::middle: return (max_width / 2 - width / 2);
 		case vertical_align::bottom: return (max_width - width);
-		default:
-		case vertical_align::top: return 0;
+		default: return 0;
 		}
 	}
 
@@ -228,7 +226,7 @@ namespace ghassanpl
 	///@}
 }
 
-#ifdef GHASSANPL_HAS_REC2
+#ifdef GHPL_HAS_REC2
 #include "align+rec2.h"
 #endif
 

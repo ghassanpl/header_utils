@@ -63,7 +63,7 @@ namespace ghassanpl
 			}
 			else if constexpr (from_charsable<T>)
 			{
-				auto [ptr, ec] = std::from_chars(from.data(), from.data() + from.size(), val);
+				auto [ptr, ec] = string_ops::from_chars(from, val);
 				if (ec == std::errc{})
 				{
 					from = ghassanpl::string_ops::make_sv(ptr, from.end());

@@ -4,7 +4,6 @@
 
 #pragma once
 
-//#include <utility>
 #include <tuple>
 #include <variant>
 #include <optional>
@@ -19,6 +18,51 @@ namespace ghassanpl
 {
 	template <class T, class... TYPES>
 	constexpr inline bool is_any_of_v = std::disjunction_v<std::is_same<T, TYPES>...>;
+
+	namespace detail
+	{
+		template <class _Ty>
+		using with_reference = _Ty&;
+
+		template <class T>
+		concept can_reference = requires { typename with_reference<T>; };
+	}
+
+	template <class T>
+	concept dereferenceable = requires(T& t) {
+		{ *t } -> detail::can_reference;
+	};
+
+#if defined(__cpp_lib_forward_like)
+	using std::forward_like;
+#else
+	template <class Ty, class Uty>
+	[[nodiscard]] [[msvc::intrinsic]] constexpr auto&& forward_like(Uty&& Ux) noexcept
+	{
+		static_assert(detail::can_reference<Ty>, "forward_like's first template argument must be a referenceable type.");
+
+		using UnrefT = std::remove_reference_t<Ty>;
+		using UnrefU = std::remove_reference_t<Uty>;
+		if constexpr (std::is_const_v<UnrefT>) {
+			if constexpr (std::is_lvalue_reference_v<Ty>) {
+				return static_cast<const UnrefU&>(Ux);
+			}
+			else {
+				return static_cast<const UnrefU&&>(Ux);
+			}
+		}
+		else {
+			if constexpr (std::is_lvalue_reference_v<Ty>) {
+				return static_cast<UnrefU&>(Ux);
+			}
+			else {
+				return static_cast<UnrefU&&>(Ux);
+			}
+		}
+	}
+#endif
+
+
 }
 
 /// Manipulators
@@ -134,11 +178,11 @@ namespace ghassanpl
 	template< typename C, typename X >
 	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
 	auto is(X const* x) -> bool {
-		return dynamic_cast<C const&>(x) != nullptr;
+		return dynamic_cast<C const*>(x) != nullptr;
 	}
 
 	template< typename C, typename X >
-	requires (requires (X x) { *x; X(); }&& std::is_same_v<C, void>)
+	requires dereferenceable<X> && std::is_default_constructible_v<X> && std::is_same_v<C, void>
 	auto is(X const& x) -> bool
 	{
 		return x == X();
@@ -157,7 +201,7 @@ namespace ghassanpl
 
 	template< typename C, typename X >
 	auto as(X const& x) -> auto
-	requires (!std::is_same_v<C, X>&& requires { C{ x }; })
+	requires (!std::is_same_v<C, X> && std::constructible_from<C, X const&>)
 	{
 		return C{ x };
 	}
@@ -227,67 +271,30 @@ namespace ghassanpl
 
 
 	template <typename T, typename U>
-	inline size_t get_index_v = get_index<T, U>::value;
+	inline constexpr size_t get_index_v = get_index<T, U>::value;
 
 
 	//-------------------------------------------------------------------------------------------------------------
 	//  std::variant is and as
 	//
-	template<typename... Ts>
-	constexpr auto operator_is(std::variant<Ts...> const& x) {
-		return x.index();
-	}
-
-	template<size_t I, typename... Ts>
-	constexpr auto operator_as(std::variant<Ts...> const& x) -> auto&& 
-	{
-		if constexpr (I < std::variant_size_v<std::variant<Ts...>>)
-			return std::get<I>(x);
-		else
-			return nullptr;
-	}
-
-
-	#define CPP2_TYPEOF(x)  std::remove_cvref_t<decltype(x)>
 
 	template<typename T, typename... Ts>
 	auto is(std::variant<Ts...> const& x)
 	{
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<0>(x)), T >) if (x.index() == 0) return true;
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<1>(x)), T >) if (x.index() == 1) return true;
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<2>(x)), T >) if (x.index() == 2) return true;
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<3>(x)), T >) if (x.index() == 3) return true;
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<4>(x)), T >) if (x.index() == 4) return true;
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<5>(x)), T >) if (x.index() == 5) return true;
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<6>(x)), T >) if (x.index() == 6) return true;
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<7>(x)), T >) if (x.index() == 7) return true;
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<8>(x)), T >) if (x.index() == 8) return true;
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<9>(x)), T >) if (x.index() == 9) return true;
-		if constexpr (std::is_same_v< T, void >)
+		if constexpr (std::is_same_v<T, void>)
 		{
 			if (x.valueless_by_exception()) return true;
-			//  Need to guard this with is_any otherwise the get_if is illegal
-			if constexpr (is_any_of_v<std::monostate, Ts...>) return std::get_if<std::monostate>(&x) != nullptr;
+			if constexpr (is_any_of_v<std::monostate, Ts...>)
+				return std::get_if<std::monostate>(&x) != nullptr;
 		}
-		return false;
+		return get_index_v<T, std::variant<Ts...>> == x.index();
 	}
 
 	template<typename T, typename... Ts>
 	auto as(std::variant<Ts...> const& x)
 	{
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<0>(x)), T >) if (x.index() == 0) return operator_as<0>(x);
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<1>(x)), T >) if (x.index() == 1) return operator_as<1>(x);
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<2>(x)), T >) if (x.index() == 2) return operator_as<2>(x);
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<3>(x)), T >) if (x.index() == 3) return operator_as<3>(x);
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<4>(x)), T >) if (x.index() == 4) return operator_as<4>(x);
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<5>(x)), T >) if (x.index() == 5) return operator_as<5>(x);
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<6>(x)), T >) if (x.index() == 6) return operator_as<6>(x);
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<7>(x)), T >) if (x.index() == 7) return operator_as<7>(x);
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<8>(x)), T >) if (x.index() == 8) return operator_as<8>(x);
-		if constexpr (std::is_same_v< CPP2_TYPEOF(operator_as<9>(x)), T >) if (x.index() == 9) return operator_as<9>(x);
-		throw std::bad_variant_access();
+		return std::get<T>(x);
 	}
-
 
 	//-------------------------------------------------------------------------------------------------------------
 	//  std::any is and as
@@ -300,7 +307,7 @@ namespace ghassanpl
 	}
 
 	template<typename T, typename X>
-		requires (std::is_same_v<X, std::any> && std::is_same_v<T, void>)
+	requires (std::is_same_v<X, std::any> && std::is_same_v<T, void>)
 	constexpr auto is(X const& x) -> bool
 	{
 		return !x.has_value();
@@ -351,12 +358,12 @@ namespace ghassanpl
 			requires (!std::is_same_v<T, pass_identity>)
 			T operator* (T&& obj) const { return std::forward<T>(obj); }
 
-			pass_identity operator* (pass_identity&& p) const { return {}; }
+			pass_identity operator* (pass_identity&&) const { return {}; }
 		};
 
 		template <typename T>
 		requires (!std::is_same_v<T, pass_identity>)
-		T operator * (T&& obj, pass_identity&& p) { return std::forward<T>(obj); }
+		T operator* (T&& obj, pass_identity&& p) { return std::forward<T>(obj); }
 
 		constexpr size_t not_given = std::numeric_limits<size_t>::max();
 	}
@@ -367,10 +374,10 @@ namespace ghassanpl
 	{
 		if constexpr (sizeof...(args) > 1)
 		{
-			[&]<typename T1, typename T2, typename... NEW_ARGS>(T1 && t1, T2 && t2, NEW_ARGS&&... args) {
+			[&]<typename T1, typename T2, typename... NEW_ARGS>(T1 && t1, T2 && t2, NEW_ARGS&&... new_args) {
 				f(std::forward<T1>(t1), std::forward<T2>(t2));
 				if constexpr (sizeof...(args) > 1)
-					for_each_pair(f, std::forward<NEW_ARGS>(args)...);
+					for_each_pair(f, std::forward<NEW_ARGS>(new_args)...);
 			}(std::forward<ARGS>(args)...);
 		}
 	}
@@ -464,19 +471,23 @@ namespace ghassanpl
 		}
 
 		template<typename T, typename FUNC, size_t... Is>
-		constexpr void do_for_each_in_tuple(T&& t, FUNC f, std::index_sequence<Is...>)
+		constexpr void do_for_each_in_tuple(T&& t, FUNC const& f, std::index_sequence<Is...>)
 		{
-			(call<Is>(std::get<Is>(t), f), ...);
+			(call<Is>(
+				std::get<Is>(t)
+			, f), ...);
 		}
 
 		template<typename T, typename FUNC, size_t... Is>
-		constexpr auto do_transform_tuple(T&& t, FUNC f, std::index_sequence<Is...>)
+		constexpr auto do_transform_tuple(T&& t, FUNC const& f, std::index_sequence<Is...>)
 		{
-			return std::make_tuple(call_r<Is>(std::get<Is>(t), f)...);
+			return std::make_tuple(call_r<Is>(
+				std::get<Is>(t)
+			, f)...);
 		}
 
 		template<typename... ARGS, typename FUNC, size_t... Is>
-		constexpr void do_for_each(FUNC f, std::index_sequence<Is...>)
+		constexpr void do_for_each(FUNC const& f, std::index_sequence<Is...>)
 		{
 			(call<Is>(std::type_identity<ARGS>{}, f), ...);
 		}
@@ -485,19 +496,25 @@ namespace ghassanpl
 	template <typename... ARGS, typename FUNC>
 	constexpr void for_each(FUNC&& f)
 	{
-		detail::do_for_each<ARGS...>(f, std::make_index_sequence<sizeof...(ARGS)>());
+		detail::do_for_each<ARGS...>(std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>());
 	}
 
 	template<typename... ARGS, typename FUNC>
 	constexpr void for_each_in_tuple(std::tuple<ARGS...> const& t, FUNC&& f)
 	{
-		detail::do_for_each_in_tuple(t, f, std::make_index_sequence<sizeof...(ARGS)>());
+		detail::do_for_each_in_tuple(t, std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>());
+	}
+
+	template<typename... ARGS, typename FUNC>
+	constexpr void for_each_in_tuple(std::tuple<ARGS...>&& t, FUNC&& f)
+	{
+		detail::do_for_each_in_tuple(std::move(t), std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>());
 	}
 
 	template<typename... ARGS, typename FUNC>
 	constexpr auto transform_tuple(std::tuple<ARGS...> const& t, FUNC&& f)
 	{
-		return detail::do_transform_tuple(t, f, std::make_index_sequence<sizeof...(ARGS)>());
+		return detail::do_transform_tuple(t, std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>());
 	}
 
 	template <typename FUNC, typename... ARGS>
@@ -516,8 +533,10 @@ namespace ghassanpl
 		}(std::make_index_sequence<sizeof...(ARGS)>{});
 		*/
 
-		[]<size_t... INDICES, typename FUNC2, typename TUPLE>(FUNC2&& func, std::index_sequence<INDICES...>, TUPLE&& tuple) {
-			(detail::call<INDICES>(std::get<INDICES>(tuple), func), ...);
+		[]<size_t... INDICES, typename FUNC2, typename TUPLE>(FUNC2 const& func, std::index_sequence<INDICES...>, TUPLE&& tuple) {
+			(detail::call<INDICES>(
+				std::get<INDICES>(tuple)
+			, func), ...);
 		}(std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>{}, std::forward_as_tuple(std::forward<ARGS>(args)...));
 		
 
@@ -556,6 +575,7 @@ namespace ghassanpl
 			{
 				return [slicer = next::make_slice_function(std::forward<ARGS>(ts)...), nt = std::forward<T>(t)]<typename CALLBACK_TYPE>(CALLBACK_TYPE && cb) mutable {
 					if constexpr (include)
+						/// TODO: SonarLint marks these forwards as incorrect as nt and t are not rvalue references
 						return slicer([t = std::forward<T>(nt), &cb]<typename... NEW_ARGS>(NEW_ARGS&&... sl) mutable { return cb(std::forward<T>(t), std::forward<NEW_ARGS>(sl)...); });
 					else
 						return slicer([&cb]<typename... NEW_ARGS>(NEW_ARGS&&... sl) mutable { return cb(std::forward<NEW_ARGS>(sl)...); });

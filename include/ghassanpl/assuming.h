@@ -13,7 +13,7 @@
 #error "This library requires std::source_location"
 #endif
 
-/// \defgroup Assuming
+/// \defgroup Assuming Assuming
 /// An in-my-humble-opinion better version of the `assert` concept.
 /// 
 /// Pros:
@@ -31,10 +31,10 @@
 /// * Using compiler-specific code for enforcing assumptions.
 /// * Slightly non-idiomatic naming conventions as well as some tiny assumptions about the user code-base.
 
-
 /// \ingroup Assuming
 ///@{
 
+/// \hideinitializer
 #ifndef ASSUMING_DEBUG
 #ifdef NDEBUG
 #define ASSUMING_DEBUG 0
@@ -64,6 +64,7 @@
 
 #ifdef __has_cpp_attribute
 #if __has_cpp_attribute(assume)
+/// \private
 #define GHPL_CPP23_ASSUME(...) [[assume(__VA_ARGS__)]];
 #endif
 #endif
@@ -82,7 +83,7 @@
 #endif
 #endif
 
-#if ASSUMING_DEBUG
+#if ASSUMING_DEBUG || defined(DOXYGEN)
 
 /// The basic Assuming macro. Assumes the expression is true. Expression result must be convertible to bool.
 #define Assuming(exp, ...) { if (auto&& _assuming_exp_v = (exp); !_assuming_exp_v) [[unlikely]] \
@@ -141,8 +142,6 @@
 #define AssumingGreaterEqual(a, b, ...) AssumingBinOp(a, b, >=, "be greater or equal to", __VA_ARGS__)
 /// Assumes the first expression is less than or equal to the second.
 #define AssumingLessEqual(a, b, ...) AssumingBinOp(a, b, <=, "be less or equal to", __VA_ARGS__)
-
-#define AssumingBinAnd(a, b, ...) AssumingBinOp(a, b, &, "will have the following bits set:", __VA_ARGS__)
 
 /// Assumes the first expression contains the bits in the second expression.
 #define AssumingContainsBits(a, b, ...) { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)) [[unlikely]] \
@@ -230,7 +229,6 @@
 #define AssumingLess(a, b, ...) AssumingBinOp(a, b, <, "be less than", __VA_ARGS__)
 #define AssumingGreaterEqual(a, b, ...) AssumingBinOp(a, b, >=, "be greater or equal to", __VA_ARGS__)
 #define AssumingLessEqual(a, b, ...) AssumingBinOp(a, b, <=, "be less or equal to", __VA_ARGS__)
-#define AssumingBinAnd(a, b, ...) AssumingBinOp(a, b, &, "will have the following bits set:", __VA_ARGS__)
 #define AssumingEmpty(exp, ...) { using std::empty; ASSUMING_ASSUME(empty(exp)); }
 #define AssumingNotEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(!empty(exp)); }
 #define AssumingNullOrEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(::ghassanpl::detail::IsNullOrEmpty(exp));  }
@@ -301,7 +299,7 @@ namespace ghassanpl
 		/// Shamelessly stolen from UE :)
 		struct RecursionScopeMarker
 		{
-			RecursionScopeMarker(int& counter) : mCounter(counter) { ++mCounter; }
+			explicit RecursionScopeMarker(int& counter) : mCounter(counter) { ++mCounter; }
 			~RecursionScopeMarker() { --mCounter; }
 			int& mCounter;
 		};
@@ -315,6 +313,7 @@ namespace ghassanpl
 	/// \param expectation An explanation of which assumption failed
 	/// \param values The values of the expressions the assumption macro checked
 	/// \param data Any additional arguments you gave to the macro, std-formatted.
+	/// \param loc
 	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, std::source_location loc
 #if __INTELLISENSE__
 		= {}

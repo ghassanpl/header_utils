@@ -13,8 +13,8 @@ namespace ghassanpl::formats
 
 	namespace detail
 	{
-		constexpr inline int get_char(std::string_view& str) { if (str.empty()) return -1; const auto result = static_cast<unsigned char>(str[0]); str.remove_prefix(1); return result; }
-		constexpr inline int get_invalid_char(std::type_identity<std::string_view>) { return -1; }
+		constexpr int get_char(std::string_view& str) { if (str.empty()) { return -1; } const auto result = static_cast<unsigned char>(str[0]); str.remove_prefix(1); return result; }
+		constexpr int get_invalid_char(std::type_identity<std::string_view>) { return -1; }
 
 		inline           int get_char(std::istream& strm) { return strm.get(); }
 		template <typename T>

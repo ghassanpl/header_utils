@@ -12,7 +12,6 @@
 #include <vector>
 #include <memory>
 #include <map>
-#include <set>
 #include <functional>
 #include <string>
 #include <thread>
@@ -42,31 +41,8 @@ namespace ghassanpl::di
 		ThreadSingleton,
 	};
 
-	constexpr inline struct DefaultImplementationStruct {} DefaultImplementation;
-
-	/*
-	namespace constraints
-	{
-		template <FixedString NAME>
-		struct Named
-		{
-			
-		};
-
-		template <typename TAG>
-		struct Tagged
-		{
-			using Tag = TAG;
-		};
-	}
-
-	template <typename INTERFACE, typename... CONSTRAINTS>
-	struct dependency
-	{
-		using Constrains = std::tuple<CONSTRAINTS>
-		std::shared_ptr<INTERFACE> Pointer;
-	};
-	*/
+	struct DefaultImplementationStruct {};
+	constexpr inline DefaultImplementationStruct DefaultImplementation;
 
 	/// TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container)
 	/// Oooh, idea: Container container = Container(Registry1(), Registry2(), ...);
@@ -108,7 +84,7 @@ namespace ghassanpl::di
 		struct BaseInterfaceContainer
 		{
 			virtual ~BaseInterfaceContainer() noexcept = default;
-			BaseInterfaceContainer(Lifetime default_lifetime) : DefaultLifetime(default_lifetime) {}
+			explicit BaseInterfaceContainer(Lifetime default_lifetime) : DefaultLifetime(default_lifetime) {}
 			Lifetime DefaultLifetime = Lifetime::Default;
 		};
 

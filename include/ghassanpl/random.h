@@ -16,7 +16,7 @@ namespace ghassanpl::random
 
 	namespace
 	{
-		thread_local inline static std::default_random_engine default_random_engine;
+		thread_local inline std::default_random_engine default_random_engine;
 	}
 
 	template <typename INTEGER = uint64_t, typename RANDOM = std::default_random_engine>
@@ -147,7 +147,7 @@ namespace ghassanpl::random
 	}
 
 	template <std::floating_point T = float>
-	constexpr inline T halton_sequence(unsigned index, unsigned base = 2)
+	constexpr T halton_sequence(unsigned index, unsigned base = 2)
 	{
 		auto result = T(0);
 		auto fraction = T(1);
@@ -247,8 +247,8 @@ namespace ghassanpl::random
 					mIterators.push_back(it);
 				mCurrent = mIterators.end();
 			}
-			auto Next() { if (mCurrent == mIterators.end()) Shuffle(); return *mCurrent++; }
-			void Shuffle() { std::shuffle(mIterators.begin(), mIterators.end(), mRNG); mCurrent = mIterators.begin(); }
+			auto Next() { if (mCurrent == mIterators.end()) { Shuffle(); } return *mCurrent++; }
+			void Shuffle() { std::ranges::shuffle(mIterators, mRNG); mCurrent = mIterators.begin(); }
 		private:
 			RANDOM& mRNG;
 			std::vector<Iterator> mIterators;
@@ -261,22 +261,6 @@ namespace ghassanpl::random
 	template <std::convertible_to<double> T, typename RANDOM>
 	size_t option_with_probability(std::span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		/*
-		/// TODO: instead of span, we could just use a range
-		if (option_probabilities.size() == 0)
-			return -1;
-		auto sum = std::accumulate(option_probabilities.begin(), option_probabilities.end(), T(0));
-		auto rnd = range(T(0), sum, rng);
-		sum = 0;
-		for (size_t i = 0; i < option_probabilities.size(); i++)
-		{
-			sum += option_probabilities[i];
-			if (rnd <= sum)
-				return i;
-		}
-		/// We should never reach here
-		return 0;
-		*/
 		/// Well, <random> is pretty dope it seems
 		std::discrete_distribution<size_t> dist(option_probabilities.begin(), option_probabilities.end());
 		return dist(rng);

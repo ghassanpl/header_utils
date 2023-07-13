@@ -25,6 +25,9 @@
     <Filter Include="Header Files\formats">
       <UniqueIdentifier>{891a72da-22fd-42ed-80c4-05e4ecc17d92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\cpp11">
+      <UniqueIdentifier>{c668e6d7-b4d5-4c10-a729-d22d62f3f50d}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Header Files\cpp98">
       <UniqueIdentifier>{19080340-b9ca-4827-a5ed-e6d3dde2b121}</UniqueIdentifier>
     </Filter>
@@ -40,9 +43,6 @@
       <Filter>Header Files\windows</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\windows\include.h">
-      <Filter>Header Files\windows</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\paths.h">
       <Filter>Header Files\windows</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\geometry\direction.h">
@@ -174,9 +174,6 @@
     <ClInclude Include="include\ghassanpl\uri_impl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ghassanpl\virtual_filesystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ghassanpl\with_sl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -207,14 +204,8 @@
     <ClInclude Include="include\ghassanpl\cpp98\enum_flags.h">
       <Filter>Header Files\cpp98</Filter>
     </ClInclude>
-    <ClInclude Include="include\ghassanpl\cpp98\named.h">
-      <Filter>Header Files\cpp98</Filter>
-    </ClInclude>
     <ClInclude Include="include\ghassanpl\windows\last_error.h">
       <Filter>Header Files\windows</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\scope.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\eval.h">
       <Filter>Header Files</Filter>
@@ -225,6 +216,21 @@
     <ClInclude Include="include\ghassanpl\sexps.h">
       <Filter>Header Files\formats</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\cpp11\named.h">
+      <Filter>Header Files\cpp11</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\windows\gfx.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\windows\wm.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\windows\folders.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -232,6 +238,7 @@
     <None Include="include\ghassanpl\platform_impl.inl">
       <Filter>Header Files</Filter>
     </None>
+    <None Include="Doxyfile" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tests\align_tests.cpp">
@@ -303,9 +310,6 @@
     <ClCompile Include="tests\random_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\paths_tests.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="playground.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -316,6 +320,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\eval_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\hashes_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\cpp98_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\cpp11_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\windows_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

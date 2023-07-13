@@ -22,7 +22,7 @@ namespace ghassanpl
 		}
 	}
 
-	/// \defgroup Buffers
+	/// \defgroup Buffers Buffers
 	/// Buffers and stuff
 	
 	/// \ingroup Buffers

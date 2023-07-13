@@ -38,7 +38,7 @@ namespace ghassanpl::geometry::squares
 		grid(int w, int h, TILE_DATA const& default_tile) { Reset(w, h, default_tile); }
 		grid(glm::ivec2 size, TILE_DATA const& default_tile) : grid(size.x, size.y, default_tile) {}
 		grid(int w, int h) { Reset(w, h); }
-		grid(glm::ivec2 size) : grid(size.x, size.y) {}
+		explicit grid(glm::ivec2 size) : grid(size.x, size.y) {}
 
 		void reset(int w, int h, TILE_DATA const& default_tile) requires RESIZABLE { Reset(w, h, default_tile); }
 
@@ -112,10 +112,6 @@ namespace ghassanpl::geometry::squares
 		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::with_self, iteration_flags::only_valid }, typename FUNC >
 		auto for_each_neighbor(glm::ivec2 of, FUNC&& func) const
 		{
-			//static_assert(tile_callback<FUNC, TILE_DATA>, "callback must take a glm::ivec2 and/or a tile reference, and return a bool or void");
-			//static_assert(tile_callback<FUNC>, "callback must take a glm::ivec2, and return a bool or void");
-			//using return_type = decltype(func(glm::ivec2{}));
-			//static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
@@ -159,10 +155,6 @@ namespace ghassanpl::geometry::squares
 		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::with_self, IterationFlags::only_valid }, typename FUNC >
 		auto for_each_selected_neighbor(glm::ivec2 of, direction_set neighbor_set, FUNC&& func) const
 		{
-			//static_assert(tile_callback<FUNC, TILE_DATA>, "callback must take a glm::ivec2 and/or a tile reference, and return a bool or void");
-			//static_assert(tile_callback<FUNC>, "callback must take a glm::ivec2, and return a bool or void");
-			//using return_type = decltype(func(glm::ivec2{}));
-			//static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
@@ -189,8 +181,6 @@ namespace ghassanpl::geometry::squares
 		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC>
 		auto for_each_tile_in_rect(this auto&& self, irec2 const& tile_rect, FUNC&& func)
 		{
-			//static_assert(tile_callback<FUNC, TILE_DATA>, "callback must take a glm::ivec2 and/or a tile reference, and return a bool or void");
-			//static_assert(tile_callback<FUNC>, "callback must take a glm::ivec2, and return a bool or void");
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			using return_type = decltype(self.template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
@@ -216,10 +206,6 @@ namespace ghassanpl::geometry::squares
 		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC >
 		auto for_each_tile_in_perimeter(irec2 const& tile_rect, FUNC&& func) const
 		{
-			//static_assert(tile_callback<FUNC, TILE_DATA>, "callback must take a glm::ivec2 and/or a tile reference, and return a bool or void");
-			//static_assert(tile_callback<FUNC>, "callback must take a glm::ivec2, and return a bool or void");
-			//using return_type = decltype(func(glm::ivec2{}));
-			//static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
@@ -260,10 +246,6 @@ namespace ghassanpl::geometry::squares
 		template<enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename TILE_SET, typename FUNC >
 		auto for_each_tile_in_set(TILE_SET&& tiles, FUNC&& func) const
 		{
-			//static_assert(tile_callback<FUNC, TILE_DATA>, "callback must take a glm::ivec2 and/or a tile reference, and return a bool or void");
-			//static_assert(tile_callback<FUNC>, "callback must take a glm::ivec2, and return a bool or void");
-			//using return_type = decltype(func(glm::ivec2{}));
-			//static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 

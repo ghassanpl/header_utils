@@ -26,9 +26,8 @@ namespace ghassanpl
 		T Object;
 		std::source_location Location;
 
-		template <std::convertible_to<T> U>
-		with_sl(U&& t, std::source_location loc EQ_SOURCE_LOCATION)
-			: Object(std::forward<U>(t)), Location(std::move(loc))
+		with_sl(T t, std::source_location loc EQ_SOURCE_LOCATION)
+			: Object(std::move(t)), Location(std::move(loc))
 		{
 		}
 
@@ -47,13 +46,12 @@ namespace ghassanpl
 		T Object;
 		hash_type LocationHash;
 
-		template <std::convertible_to<T> U>
 #ifdef __INTELLISENSE__
-		with_slh(U&& t, hash_type loc)
+		with_slh(T t, hash_type loc)
 #else
-		with_slh(U&& t, hash_type loc = HASH_FUNC{}(std::source_location::current()))
+		with_slh(T t, hash_type loc = HASH_FUNC{}(std::source_location::current()))
 #endif
-			: Object(std::forward<U>(t)), LocationHash(loc)
+			: Object(std::move(t)), LocationHash(loc)
 		{
 		}
 

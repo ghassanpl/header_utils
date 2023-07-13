@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['ascii_0',['ascii',['../namespaceghassanpl_1_1string__ops_1_1ascii.html',1,'ghassanpl::string_ops']]],
+  ['area_5fshape_0',['area_shape',['../conceptghassanpl_1_1geometry_1_1area__shape.html',1,'ghassanpl::geometry']]],
   ['bit_5fintegral_1',['bit_integral',['../conceptghassanpl_1_1bit__integral.html',1,'ghassanpl']]],
   ['bytelike_2',['bytelike',['../conceptghassanpl_1_1bytelike.html',1,'ghassanpl']]],
   ['colors_3',['colors',['../namespaceghassanpl_1_1colors.html',1,'ghassanpl']]],
@@ -8,12 +8,22 @@ var searchData=
   ['di_5',['di',['../namespaceghassanpl_1_1di.html',1,'ghassanpl']]],
   ['formats_6',['formats',['../namespaceghassanpl_1_1formats.html',1,'ghassanpl']]],
   ['gamma_5fcorrect_7',['gamma_correct',['../group___colors.html#gab597f8f103a37a9d100b5c20c799082d',1,'ghassanpl']]],
-  ['ghassanpl_8',['ghassanpl',['../namespaceghassanpl.html',1,'']]],
-  ['msg_9',['msg',['../namespaceghassanpl_1_1msg.html',1,'ghassanpl']]],
-  ['output_5fbuffer_10',['output_buffer',['../conceptghassanpl_1_1output__buffer.html',1,'ghassanpl']]],
-  ['parsing_11',['parsing',['../namespaceghassanpl_1_1parsing.html',1,'ghassanpl']]],
-  ['random_12',['random',['../namespaceghassanpl_1_1random.html',1,'ghassanpl']]],
-  ['regex_13',['regex',['../namespaceghassanpl_1_1regex.html',1,'ghassanpl']]],
-  ['string_5fops_14',['string_ops',['../namespaceghassanpl_1_1string__ops.html',1,'ghassanpl']]],
-  ['string_5for_5fchar_15',['string_or_char',['../conceptghassanpl_1_1string__ops_1_1string__or__char.html',1,'ghassanpl::string_ops']]]
+  ['geometry_8',['geometry',['../namespaceghassanpl_1_1geometry.html',1,'ghassanpl']]],
+  ['get_9',['get',['../group___j_s_o_n.html#gae19591605779682f918ed6dcd4fc4ecc',1,'ghassanpl::formats::json::get(nlohmann::json const &amp;g, std::string_view key, jtype type=jtype::discarded)'],['../group___j_s_o_n.html#gae0ce167af920d887152670ef42c2469c',1,'ghassanpl::formats::json::get(nlohmann::json const &amp;g, std::string_view key, std::string_view default_value, jtype type=jtype::discarded)'],['../group___j_s_o_n.html#gaf098e7db863e0fa8108a63f7c0f389b9',1,'ghassanpl::formats::json::get(nlohmann::json const &amp;g, std::string_view key, T default_value, jtype type=jtype::discarded)']]],
+  ['get_5farray_10',['get_array',['../group___j_s_o_n.html#ga876d97659f6f81885d4014c2dc763341',1,'ghassanpl::formats::json']]],
+  ['get_5findex_11',['get_index',['../namespaceghassanpl.html#structghassanpl_1_1get__index',1,'ghassanpl']]],
+  ['ghassanpl_12',['ghassanpl',['../namespaceghassanpl.html',1,'']]],
+  ['glm_13',['glm',['../namespaceglm.html',1,'']]],
+  ['msg_14',['msg',['../namespaceghassanpl_1_1msg.html',1,'ghassanpl']]],
+  ['output_5fbuffer_15',['output_buffer',['../conceptghassanpl_1_1output__buffer.html',1,'ghassanpl']]],
+  ['parsing_16',['parsing',['../namespaceghassanpl_1_1parsing.html',1,'ghassanpl']]],
+  ['random_17',['random',['../namespaceghassanpl_1_1random.html',1,'ghassanpl']]],
+  ['range_5fpredicate_18',['range_predicate',['../conceptghassanpl_1_1range__predicate.html',1,'ghassanpl']]],
+  ['regex_19',['regex',['../namespaceghassanpl_1_1regex.html',1,'ghassanpl']]],
+  ['sexpressions_20',['sexpressions',['../namespaceghassanpl_1_1formats_1_1sexpressions.html',1,'ghassanpl::formats']]],
+  ['shape_21',['shape',['../conceptghassanpl_1_1geometry_1_1shape.html',1,'ghassanpl::geometry']]],
+  ['squares_22',['squares',['../namespaceghassanpl_1_1geometry_1_1squares.html',1,'ghassanpl::geometry']]],
+  ['string_5fops_23',['string_ops',['../namespaceghassanpl_1_1string__ops.html',1,'ghassanpl']]],
+  ['wilson_24',['wilson',['../namespaceghassanpl_1_1formats_1_1wilson.html',1,'ghassanpl::formats']]],
+  ['win_25',['win',['../namespaceghassanpl_1_1win.html',1,'ghassanpl']]]
 ];

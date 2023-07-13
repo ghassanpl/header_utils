@@ -58,6 +58,6 @@ namespace ghassanpl
 
 }
 
-/// TODO: ostream << and formatter
+/// TODO: ostream << and formatter, or enable stringification
 
 template <> struct std::hash<ghassanpl::symbol> { size_t operator()(const ghassanpl::symbol& x) const noexcept { return std::hash<std::string_view>{}(x.value); } };

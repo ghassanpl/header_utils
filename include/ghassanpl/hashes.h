@@ -6,10 +6,11 @@
 
 #include "source_location.h"
 #include "bytes.h"
+#include <bit>
 
 namespace ghassanpl
 {
-	/// \defgroup Hashes
+	/// \defgroup Hashes Hashes
 	/// Hashing functions.
 
 	static constexpr inline uint32_t crc32_table[256] = {
@@ -61,7 +62,7 @@ namespace ghassanpl
 	/// Calculates a CRC32 for a span of bytelikes
 	/// \ingroup Hashes
 	template <bytelike T>
-	[[nodiscard]] constexpr inline uint32_t crc32(std::span<T const> bytes)
+	[[nodiscard]] constexpr uint32_t crc32(std::span<T const> bytes)
 	{
 		uint32_t crc = 0xFFFFFFFFu;
 		for (auto byte: as_u8s(bytes))
@@ -71,14 +72,14 @@ namespace ghassanpl
 
 	/// Calculates a CRC32 for a string
 	/// \ingroup Hashes
-	[[nodiscard]] constexpr inline uint32_t crc32(std::string_view bytes)
+	[[nodiscard]] constexpr uint32_t crc32(std::string_view bytes)
 	{
 		return crc32(std::span{ bytes });
 	}
 
 	/// Calculates a CRC32 of a source_location (constexpr, so can be used at compile time)
 	/// \ingroup Hashes
-	[[nodiscard]] constexpr inline auto crc32(const std::source_location& k)
+	[[nodiscard]] constexpr auto crc32(const std::source_location& k)
 	{
 		return crc32(k.file_name()) ^ k.line() ^ k.column();
 	}
@@ -121,7 +122,7 @@ namespace ghassanpl
 	/// Calculates a CRC4 for a span of bytelikes
 	/// \ingroup Hashes
 	template <bytelike T>
-	[[nodiscard]] constexpr inline uint64_t crc64(std::span<T const> bytes)
+	[[nodiscard]] constexpr uint64_t crc64(std::span<T const> bytes)
 	{
 		uint64_t crc = 0;
 		for (auto byte : as_u8s(bytes))
@@ -131,14 +132,14 @@ namespace ghassanpl
 
 	/// Calculates a CRC64 for a string
 	/// \ingroup Hashes
-	[[nodiscard]] constexpr inline auto crc64(std::string_view bytes)
+	[[nodiscard]] constexpr auto crc64(std::string_view bytes)
 	{
 		return crc64(std::span{ bytes });
 	}
 
 	/// Calculates a CRC64 of a source_location (constexpr, so can be used at compile time)
 	/// \ingroup Hashes
-	[[nodiscard]] constexpr inline auto crc64(const std::source_location& k)
+	[[nodiscard]] constexpr auto crc64(const std::source_location& k)
 	{
 		return crc64(k.file_name()) ^ k.line() ^ k.column();
 	}
@@ -146,7 +147,7 @@ namespace ghassanpl
 	/// Calculates a FNV Hash for a span of bytes
 	/// \ingroup Hashes
 	template <bytelike T>
-	[[nodiscard]] constexpr inline uint64_t fnv(std::span<T const> bytes)
+	[[nodiscard]] constexpr uint64_t fnv(std::span<T const> bytes)
 	{
 		uint64_t result = 0xcbf29ce484222325;
 		for (auto byte: bytes)
@@ -154,9 +155,9 @@ namespace ghassanpl
 		return result;
 	}
 
-	/// 
 	struct splitmix_state { uint64_t state{}; };
-	[[nodiscard]] constexpr inline uint64_t splitmix(splitmix_state& state, uint64_t stream_id = 0x9e3779b97f4a7c15)
+	/// 
+	[[nodiscard]] constexpr uint64_t splitmix(splitmix_state& state, uint64_t stream_id = 0x9e3779b97f4a7c15)
 	{
 		state.state = state.state + stream_id;
 		uint64_t z = state.state;
@@ -167,7 +168,7 @@ namespace ghassanpl
 	}
 
 	///
-	[[nodiscard]] constexpr inline uint64_t splitmix(uint64_t seed, uint64_t index, uint64_t stream_id = 0x9e3779b97f4a7c15)
+	[[nodiscard]] constexpr uint64_t splitmix(uint64_t seed, uint64_t index, uint64_t stream_id = 0x9e3779b97f4a7c15)
 	{
 		uint64_t z = seed + index * stream_id;
 		z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;
@@ -262,7 +263,7 @@ namespace ghassanpl
 	/// Combines an existing hash value (`seed`) with the hash of a range of values
 	/// \ingroup Hashes
 	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
-	constexpr void hash_range(std::size_t& seed, It first, It last, HASHER&& hasher = {})
+	constexpr void hash_range(std::size_t& seed, It first, It last, HASHER const& hasher = {})
 	{
 		for (; first != last; ++first)
 			hash_combine_to(seed, *first, hasher);

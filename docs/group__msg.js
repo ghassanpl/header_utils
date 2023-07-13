@@ -6,6 +6,13 @@ var group__msg =
       [ "ClickedButton", "structghassanpl_1_1windows__message__box__result.html#a19a7e3eebf98fc469c5f5f1eb91fb5c0", null ],
       [ "Failed", "structghassanpl_1_1windows__message__box__result.html#ada5c2691b0e7d18a164ee67032d3382c", null ]
     ] ],
+    [ "ghassanpl::msg::title", "group__msg.html#structghassanpl_1_1msg_1_1title", null ],
+    [ "ghassanpl::msg::description", "group__msg.html#structghassanpl_1_1msg_1_1description", null ],
+    [ "ghassanpl::msg::long_description", "group__msg.html#structghassanpl_1_1msg_1_1long__description", null ],
+    [ "ghassanpl::msg::checkbox_text", "group__msg.html#structghassanpl_1_1msg_1_1checkbox__text", null ],
+    [ "ghassanpl::msg::additional_info", "group__msg.html#structghassanpl_1_1msg_1_1additional__info", null ],
+    [ "ghassanpl::msg::default_button", "group__msg.html#structghassanpl_1_1msg_1_1default__button", null ],
+    [ "ghassanpl::msg::window_handle", "group__msg.html#structghassanpl_1_1msg_1_1window__handle", null ],
     [ "ghassanpl::windows_message_box_params", "structghassanpl_1_1windows__message__box__params.html", null ],
     [ "ghassanpl::windows_message_box_event", "group__msg.html#gadb944a95636fd7bc57f5fb89f9d965cf", [
       [ "ghassanpl::windows_message_box_event::DialogCreated", "group__msg.html#ggadb944a95636fd7bc57f5fb89f9d965cfa9424977a459731fa595af7c5bcbc7297", null ],

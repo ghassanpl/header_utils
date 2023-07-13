@@ -4,13 +4,12 @@
 
 #pragma once
 
-//#include <concepts>
 #include <ranges>
 #include <stdexcept>
 
 namespace ghassanpl
 {
-	/// \defgroup Ranges
+	/// \defgroup Ranges Ranges
 	/// Ranges and such
 
 	/// \ingroup Ranges
@@ -28,6 +27,10 @@ namespace ghassanpl
 	/// Helper template to get the iterator type of a type that decays to a `range`
 	template <typename RANGE>
 	using range_iterator = std::ranges::iterator_t<std::decay_t<RANGE>>;
+
+	/// Concept to check if a function is a predicate on the range elements (i.e. returns boolable)
+	template <typename RANGE, typename FUNC>
+	concept range_predicate = requires (FUNC func, RANGE range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; };
 
 	/// Returns whether or not a given integer is a valid index to a random access `range`
 	constexpr bool valid_index(random_access_range auto& range, std::integral auto index)
@@ -59,7 +62,7 @@ namespace ghassanpl
 		return std::to_address(std::ranges::begin(range) + index);
 	}
 
-	/// Returns a reference to the value at \ref module_index of `range`
+	/// Returns a reference to the value at \ref modulo_index of `range`
 	constexpr decltype(auto) modulo_at(random_access_range auto& range, std::integral auto index)
 	{
 		return at(range, modulo_index(range, index)); /// TODO: make sure this is inlined properly 'cause we're quering size a couple of times, for example
@@ -67,7 +70,7 @@ namespace ghassanpl
 
 	/// Find a value in `range` and returns an index to it
 	template <random_access_range RANGE, typename T>
-	constexpr auto index_of(RANGE&& range, T&& value) -> std::iter_difference_t<range_iterator<RANGE>>
+	constexpr auto index_of(RANGE const& range, T&& value) -> std::iter_difference_t<range_iterator<RANGE>>
 	requires requires (T value, RANGE range) { { *std::ranges::begin(range) == value } -> std::convertible_to<bool>; }
 	{
 		const auto it = std::ranges::find(range, std::forward<T>(value));
@@ -86,8 +89,8 @@ namespace ghassanpl
 
 	/// Find a value in `range` and returns an index to it
 	template <random_access_range RANGE, typename FUNC>
-	constexpr auto find_index(RANGE&& range, FUNC&& func) -> std::iter_difference_t<range_iterator<RANGE>>
-	requires requires (FUNC func, RANGE range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; }
+	requires range_predicate<RANGE, FUNC>
+	constexpr auto find_index(RANGE const& range, FUNC&& func) -> std::iter_difference_t<range_iterator<RANGE>>
 	{
 		const auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
 		if (it == std::ranges::end(range))
@@ -97,25 +100,25 @@ namespace ghassanpl
 	
 	/// Find a value in `range` and returns a pointer to it, or null if none found
 	template <std::ranges::range RANGE, typename FUNC>
-	constexpr auto find_ptr(RANGE&& range, FUNC&& func)
-	requires requires (FUNC func, RANGE range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; }
+	requires range_predicate<RANGE, FUNC>
+	constexpr auto find_ptr(RANGE& range, FUNC&& func)
 	{
 		const auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
 		return it == std::ranges::end(range) ? nullptr : std::to_address(it);
 	}
 
 	template <random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_value<RANGE>>
-	auto find_if_or_default(RANGE&& range, FUNC&& func, DEF_TYPE&& default_value = DEF_TYPE{})
-	requires requires (FUNC func, RANGE range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; }
+	requires range_predicate<RANGE, FUNC>
+	auto find_if_or_default(RANGE& range, FUNC&& func, DEF_TYPE&& default_value = DEF_TYPE{})
 	{
-		auto it = std::ranges::find_if(std::forward<RANGE>(range), std::forward<FUNC>(func));
+		auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
 		if (it == std::ranges::end(range))
 			return range_value<RANGE>{std::forward<DEF_TYPE>(default_value)};
 		return *it;
 	}
 
 	/// Turns an `iterator` to `range` to an index
-	constexpr auto to_index(random_access_iterator auto iterator, random_access_range auto&& range)
+	constexpr auto to_index(random_access_iterator auto iterator, random_access_range auto const& range)
 	{
 		return std::ranges::distance(std::ranges::begin(range), iterator);
 	}
@@ -201,13 +204,13 @@ namespace ghassanpl
 			&& std::constructible_from<CONTAINER, std::ranges::iterator_t<RANGE>, std::ranges::iterator_t<RANGE>, TYPES...>;
 
 		template <class CONTAINER, class REFERENCE>
-		concept can_push_back = requires(CONTAINER & container) {
-			container.push_back(std::declval<REFERENCE>());
+		concept can_push_back = requires (CONTAINER& container, REFERENCE ref) {
+			container.push_back(ref);
 		};
 
 		template <class CONTAINER, class REFERENCE>
-		concept can_insert_at_end = requires(CONTAINER & container) {
-			container.insert(container.end(), std::declval<REFERENCE>());
+		concept can_insert_at_end = requires (CONTAINER & container, REFERENCE ref) {
+			container.insert(container.end(), ref);
 		};
 
 		// clang-format off
@@ -260,11 +263,11 @@ namespace ghassanpl
 		template <template <class...> class CONTAINER, class RANGE, class... ARGS>
 		auto to_helper()
 		{
-			if constexpr (requires { CONTAINER(std::declval<RANGE>(), std::declval<ARGS>()...); })
+			if constexpr (requires (RANGE range, ARGS... args) { CONTAINER(range, args...); })
 				return static_cast<decltype(CONTAINER(std::declval<RANGE>(), std::declval<ARGS>()...))*>(nullptr);
-			else if constexpr (requires { CONTAINER(from_range, std::declval<RANGE>(), std::declval<ARGS>()...); })
+			else if constexpr (requires (RANGE range, ARGS... args) { CONTAINER(from_range, range, args...); })
 				return static_cast<decltype(CONTAINER(from_range, std::declval<RANGE>(), std::declval<ARGS>()...))*>(nullptr);
-			else if constexpr (requires { CONTAINER(std::declval<phony_input_iterator<RANGE>>(), std::declval<phony_input_iterator<RANGE>>(), std::declval<ARGS>()...);})
+			else if constexpr (requires (phony_input_iterator<RANGE> it, ARGS...) { CONTAINER(it, it, args...);})
 				return static_cast<decltype(CONTAINER(std::declval<phony_input_iterator<RANGE>>(), std::declval<phony_input_iterator<RANGE>>(), std::declval<ARGS>()...))*>(nullptr);
 		}
 
@@ -281,7 +284,7 @@ namespace ghassanpl
 		else if constexpr (_Converts_tag_constructible<RANGE, CONTAINER, TYPES...>)
 			return CONTAINER(from_range, std::forward<RANGE>(range), std::forward<TYPES>(args)...);
 		else if constexpr (_Converts_and_common_constructible<RANGE, CONTAINER, TYPES...>)
-			return CONTAINER(std::ranges::begin(range), std::ranges::end(range), std::forward<TYPES...>(args)...);
+			return CONTAINER(std::ranges::begin(range), std::ranges::end(range), std::forward<TYPES>(args)...);
 		else if constexpr (_Converts_constructible_insertable<RANGE, CONTAINER, TYPES...>)
 		{
 			CONTAINER container(std::forward<TYPES>(args)...);

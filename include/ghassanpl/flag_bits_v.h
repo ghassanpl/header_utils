@@ -27,14 +27,14 @@ namespace ghassanpl
 				return t;
 		}
 
-		template <typename INT_TYPE, typename BIT_TYPE, BIT_TYPE BIT_NUM>
+		template <typename INT_TYPE, auto BIT_NUM>
 		concept allowed_bit_num = BIT_NUM >= 0 && BIT_NUM < CHAR_BIT * sizeof(INT_TYPE);
 
 		template <typename RESULT_TYPE, auto... VALUES>
 		concept valid_flag_bits_v_arguments =
 			 bit_integral<RESULT_TYPE> &&
 			(integral_or_enum<decltype(VALUES)> && ...) &&
-			(detail::allowed_bit_num<RESULT_TYPE, decltype(detail::to_underlying_type(VALUES)), static_cast<decltype(detail::to_underlying_type(VALUES))>(VALUES)> && ...);
+			(detail::allowed_bit_num<RESULT_TYPE, static_cast<decltype(detail::to_underlying_type(VALUES))>(VALUES)> && ...);
 	}
 
 	template <typename RESULT_TYPE, auto... VALUES> 

@@ -1,15 +1,16 @@
 var indexSectionsWithContent =
 {
-  0: "abcdefghijlmnoprstuvw",
-  1: "abcdelmrstw",
+  0: "abcdefghijlmnoprstuvwy",
+  1: "abcdeglmstw",
   2: "g",
   3: "abcdefghilmnoprstuvw",
-  4: "acfhv",
-  5: "bcersv",
-  6: "abhvw",
-  7: "bcdehijlmrstw",
+  4: "abcdfhovy",
+  5: "bcdeijrsuv",
+  6: "abhuvw",
+  7: "bcdehijlmrstuw",
   8: "abcdfhjmrtuw",
-  9: "g"
+  9: "t",
+  10: "g"
 };
 
 var indexSectionNames =
@@ -23,7 +24,8 @@ var indexSectionNames =
   6: "enums",
   7: "enumvalues",
   8: "groups",
-  9: "concepts"
+  9: "pages",
+  10: "concepts"
 };
 
 var indexSectionLabels =
@@ -37,6 +39,7 @@ var indexSectionLabels =
   6: "Enumerations",
   7: "Enumerator",
   8: "Modules",
-  9: "Concepts"
+  9: "Pages",
+  10: "Concepts"
 };
 

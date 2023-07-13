@@ -231,7 +231,7 @@ namespace ghassanpl
 
 	struct uri_builder
 	{
-		uri_builder(uri& uri);
+		explicit uri_builder(uri& uri);
 		uri_builder(uri& uri, known_uri_scheme const& scheme);
 		uri_builder(const uri_builder&) = delete;
 		uri_builder& operator= (const uri_builder&) = delete;
