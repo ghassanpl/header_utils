@@ -12,9 +12,13 @@
 
 namespace ghassanpl
 {
-	/// https://github.com/austinsc/Poco/blob/master/Foundation/include/Poco/URI.h
-	/// https://docs.pocoproject.org/current/Poco.URI.html
-	/// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3420.html
+	/// \defgroup URI URI
+	/// Basic functionality for URI encoding and decoding.
+	/// @{
+
+	// https://github.com/austinsc/Poco/blob/master/Foundation/include/Poco/URI.h
+	// https://docs.pocoproject.org/current/Poco.URI.html
+	// http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3420.html
 
 	/// URIs are stored in a UTF-8 encoding where both non-ASCII code unit bytes as well as URI-reserved characters (delimiters, etc) are %-encoded
 	using uri = std::string;
@@ -70,6 +74,7 @@ namespace ghassanpl
 		scheme_specific_element_malformed,
 	};
 
+	/// Holds the constituents of a URI
 	struct decomposed_uri
 	{
 		decomposed_uri() = default;
@@ -85,6 +90,7 @@ namespace ghassanpl
 		std::string port{};
 		std::string path{};
 		std::vector<std::string> path_elements;
+		/// Returns the path normalized by applying any "." or ".." elements
 		std::vector<std::string> normalized_path() const noexcept;
 		std::string query{};
 		std::vector<std::pair<std::string, std::string>> query_elements;
@@ -101,12 +107,10 @@ namespace ghassanpl
 	using uri_expected = tl::expected<T, uri_error_code>;
 	using uri_error = std::optional<uri_error_code>; // TODO: MSVS has a bug where std::expected doesn't work with std::error_condition error types
 
-	/// <summary>
 	/// Removes data that should not be displayed to an untrusted user (user-info after the first ':', perhaps other things)
-	/// </summary>
-	/// <typeparam name="CHAR_TYPE"></typeparam>
 	uri_expected<uri> make_uri_safe_for_display(uri_view uri);
 
+	/// Flags that modify how a URI string is decomposed into \c ghassanpl::decomposed_uri
 	enum class uri_decompose_flags
 	{
 		split_query_elements,
@@ -265,6 +269,8 @@ namespace ghassanpl
 		uri_builder& fragment(const Source& fragment);
 
 	};
+
+	/// @}
 
 	/// NOTE: https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
 	/// NOTE: https://en.wikipedia.org/wiki/List_of_URI_schemes

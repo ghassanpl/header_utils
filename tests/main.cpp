@@ -5,12 +5,8 @@
 #include <gtest/gtest.h>
 #include "test_system.h"
 
-void playground();
-
 int main(int argc, char** argv)
 {
-	playground();
-
 	::testing::InitGoogleTest(&argc, argv);
 
 	return RUN_ALL_TESTS();

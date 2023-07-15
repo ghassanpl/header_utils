@@ -32,7 +32,7 @@ namespace ghassanpl::string_ops
 	/// \defgroup StringOps String Operations
 	/// Adds a few utility functions that deal with strings and string_views.
 	/// @{
-
+	
 	/// The type is a stringable or a character
 	/// \tparam CHAR_TYPE the base char type, char by default
 	template <typename T, typename CHAR_TYPE = char>
@@ -83,11 +83,11 @@ namespace ghassanpl::string_ops
 	/// in terms of exception and type safety. As with the respective constructors, undefined behavior when `start` > `end`.
 	/// 
 	/// @{
-	
+
 	[[nodiscard]] constexpr std::string_view make_sv(nullptr_t, nullptr_t) noexcept { return std::string_view{}; }
 
 	template <std::contiguous_iterator IT, std::contiguous_iterator IT2>
-	requires std::is_same_v<std::iter_value_t<IT>, char> && std::is_same_v<std::iter_value_t<IT2>, char>
+	requires std::is_same_v<std::iter_value_t<IT>, char>&& std::is_same_v<std::iter_value_t<IT2>, char>
 	[[nodiscard]] constexpr std::string_view make_sv(IT start, IT2 end) noexcept(noexcept(std::to_address(start))) { return std::string_view{ std::to_address(start), static_cast<size_t>(std::to_address(end) - std::to_address(start)) }; }
 
 	[[nodiscard]] constexpr std::string_view make_sv(char& single_char) noexcept { return make_sv(&single_char, &single_char + 1); }
@@ -107,12 +107,12 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] inline std::string make_string(IT start, IT2 end) noexcept(noexcept(std::to_address(start))) { return std::string{ ::ghassanpl::string_ops::make_sv(start, end) }; }
 
 	/// @}
-
+	
 	/// \name to_string Functions
 	/// Basic identity and utility `to_string` functions.
 	/// \see Stringification
 	/// @{
-	
+
 	[[nodiscard]] inline std::string to_string(std::string_view from) noexcept { return std::string{ from }; }
 
 	[[nodiscard]] inline std::string to_string(std::u8string_view from) noexcept { return std::string{ from.data(), from.data() + from.size() }; }
@@ -177,10 +177,11 @@ namespace ghassanpl::string_ops
 		/// 
 		/// \ingroup StringOps
 		/// @{
-		
+
 		/// \internal
 		/// We are using numbers (e.g. 65) instead of character literals (e.g. 'A'), because the encoding of this source file might not be ASCII-based
 		/// Thanks to \@fmatthew5876 for inspiration
+		/// \endinternal
 
 #if 0
 		constexpr uint64_t is_flag_set(std::array<uint64_t, 2> flags, char32_t cp) noexcept
@@ -189,7 +190,7 @@ namespace ghassanpl::string_ops
 			const auto bit = uint64_t(1) << (cp & 63);
 			return (flags[flag_el] & bit) != 0;
 		}
-		
+
 		template <uint64_t HIGH, uint64_t LOW>
 		constexpr bool is_flag_set(char32_t cp) noexcept
 		{
@@ -202,7 +203,7 @@ namespace ghassanpl::string_ops
 
 		constexpr std::array<uint64_t, 2> get_flags_for(std::string_view str) noexcept
 		{
-			std::array<uint64_t, 2> result{0,0};
+			std::array<uint64_t, 2> result{ 0,0 };
 			for (auto c : str)
 				result[(char32_t(c) >> 6) & 1] |= (char32_t(c) & 63);
 			return result;
@@ -211,8 +212,8 @@ namespace ghassanpl::string_ops
 		template <typename FUNC>
 		constexpr std::array<uint64_t, 2> get_flags_for(FUNC&& pred) noexcept
 		{
-			std::array<uint64_t, 2> result{0,0};
-			for (char32_t c=0; c<128; ++c)
+			std::array<uint64_t, 2> result{ 0,0 };
+			for (char32_t c = 0; c < 128; ++c)
 				if (pred(c))
 					result[(char32_t(c) >> 6) & 1] |= (char32_t(c) & 63);
 			return result;
@@ -239,11 +240,11 @@ namespace ghassanpl::string_ops
 		[[nodiscard]] constexpr bool isgraph(char32_t cp) noexcept { return cp >= 33 && cp <= 126; }
 		[[nodiscard]] constexpr bool isprint(char32_t cp) noexcept { return cp >= 32 && cp <= 126; }
 
-		[[nodiscard]] constexpr char32_t toupper(char32_t cp) noexcept { 
-			return (cp >= 97 && cp <= 122) ? (cp ^ 0b100000) : cp; 
+		[[nodiscard]] constexpr char32_t toupper(char32_t cp) noexcept {
+			return (cp >= 97 && cp <= 122) ? (cp ^ 0b100000) : cp;
 		}
-		[[nodiscard]] constexpr char32_t tolower(char32_t cp) noexcept { 
-			return (cp >= 65 && cp <= 90)  ? (cp | 0b100000) : cp; 
+		[[nodiscard]] constexpr char32_t tolower(char32_t cp) noexcept {
+			return (cp >= 65 && cp <= 90) ? (cp | 0b100000) : cp;
 		}
 
 		/// @}
@@ -251,7 +252,7 @@ namespace ghassanpl::string_ops
 		/// Return true if `cp` is ascii and any of the chars in `chars`
 		[[nodiscard]] constexpr bool isany(char32_t cp, std::string_view chars) noexcept { return cp < 128 && std::ranges::find(chars, (char)cp) != chars.end(); }
 
-		
+
 		/// Returns true if the given `str` is a C-style identifier (e.g. matches `/[\w_][\w_0-9]+/`)
 		template <stringable T>
 		[[nodiscard]] constexpr bool is_identifier(T const& str) noexcept {
@@ -280,7 +281,7 @@ namespace ghassanpl::string_ops
 		/// \copydoc tolower(T const& str)
 		[[nodiscard]] constexpr std::string tolower(const char* str) noexcept {
 			if (str)
-				return tolower(std::string{str});
+				return tolower(std::string{ str });
 			return {};
 		}
 
@@ -377,7 +378,7 @@ namespace ghassanpl::string_ops
 
 		[[nodiscard]] constexpr auto lexicographical_compare_ignore_case_three_way(std::string_view a, std::string_view b)
 		{
-			return std::lexicographical_compare_three_way(a.begin(), a.end(), b.begin(), b.end(), 
+			return std::lexicographical_compare_three_way(a.begin(), a.end(), b.begin(), b.end(),
 				[](char ca, char cb) { return ::ghassanpl::string_ops::ascii::toupper(ca) <=> ::ghassanpl::string_ops::ascii::toupper(cb); });
 		}
 
@@ -458,7 +459,7 @@ namespace ghassanpl::string_ops
 	/// Most of the functions return the consumed part, or 'true/false' if the part to be consumed is given explicitly.
 	/// These functions do nothing (or the maximum safe amount) if there is nothing appropriate available to consume.
 	/// @{
-	
+
 	/// Consumes and returns the first character in the str, or \0 if no more characters.
 	[[nodiscard]] inline char consume(std::string_view& str)
 	{
@@ -636,7 +637,7 @@ namespace ghassanpl::string_ops
 	}
 
 	/// Consumes a list of `delimiter`-delimited strings, calling `callback(str)` each time; whitespaces before and after items are trimmed.
-	/// \note `callback` will be called with the ENTIRE string left after consuming the delimiter, so
+	/// \attention `callback` will be called with the ENTIRE string left after consuming the delimiter, so
 	/// you have to consume the list elements yourself!
 	/// \par Example
 	/// ```cpp
@@ -666,7 +667,7 @@ namespace ghassanpl::string_ops
 
 	/// Consumes a list of `delimiter`-delimited strings, ended with `closer`, calling `callback(str)` each time; whitespaces before and after items are trimmed.
 	/// Stops when `closer` is consumed.
-	/// \note `callback` will be called with the ENTIRE string left after consuming the delimiter, so
+	/// \attention `callback` will be called with the ENTIRE string left after consuming the delimiter, so
 	/// you have to consume the list elements yourself!
 	/// \par Example
 	/// ```cpp
@@ -698,11 +699,11 @@ namespace ghassanpl::string_ops
 
 	/// @}
 
-	/// \internal 
+	/// \internal
 	/// TODO: Move splits to use std::ranges::(lazy_)split_view
 	///       But check performance vs our split first!
 	/// \endinternal
-	
+
 	/// \name Split Functions
 	/// Functions that split strings into multiple parts, each delimited with some sort of delimiter.
 	/// @{
@@ -775,7 +776,7 @@ namespace ghassanpl::string_ops
 	///		if it returns `std::string::npos`, splitting ends there, calling `func` for the rest of the string
 	/// \param func must be invocable as `func(string_view, bool)`; the second argument specifies if the given string is the final part of the split
 	template <typename DELIM_FUNC, typename FUNC>
-	requires std::is_invocable_v<FUNC, std::string_view, bool> && std::is_invocable_r_v<size_t, DELIM_FUNC, std::string_view>
+	requires std::is_invocable_v<FUNC, std::string_view, bool>&& std::is_invocable_r_v<size_t, DELIM_FUNC, std::string_view>
 	inline void split_on(std::string_view source, DELIM_FUNC&& delim, FUNC&& func) noexcept(noexcept(func(std::string_view{}, true)) && noexcept(delim(std::string_view{})))
 	{
 		size_t start = 0;
@@ -783,7 +784,7 @@ namespace ghassanpl::string_ops
 		end = delim(source);
 		while (end != std::string::npos)
 		{
-			func(source.substr(start, end-start), false);
+			func(source.substr(start, end - start), false);
 			//source.remove_prefix(end);
 			start = end;
 			auto next = delim(source.substr(end + 1));
@@ -858,7 +859,7 @@ namespace ghassanpl::string_ops
 		std::vector<RESULT_TYPE> result;
 		::ghassanpl::string_ops::split(source, std::forward<DELIM>(delim), [&result](std::string_view str, bool) {
 			result.push_back(RESULT_TYPE{ str });
-		});
+			});
 		return result;
 	}
 
@@ -871,7 +872,7 @@ namespace ghassanpl::string_ops
 		std::vector<RESULT_TYPE> result;
 		::ghassanpl::string_ops::split_on_any(source, delim, [&result](std::string_view str, bool) {
 			result.push_back(RESULT_TYPE{ str });
-		});
+			});
 		return result;
 	}
 
@@ -886,7 +887,7 @@ namespace ghassanpl::string_ops
 		std::vector<RESULT_TYPE> result;
 		::ghassanpl::string_ops::split_on(source, std::forward<DELIM_FUNC>(delim), [&result](std::string_view str, bool last) {
 			result.push_back(RESULT_TYPE{ str });
-		});
+			});
 		return result;
 	}
 
@@ -898,7 +899,7 @@ namespace ghassanpl::string_ops
 		std::vector<RESULT_TYPE> result;
 		::ghassanpl::string_ops::natural_split(source, std::forward<DELIM>(delim), [&result](std::string_view str, bool last) {
 			result.push_back(RESULT_TYPE{ str });
-		});
+			});
 		return result;
 	}
 
@@ -909,7 +910,7 @@ namespace ghassanpl::string_ops
 	/// \note Formatting is done using stream operators (`operator<<`).
 	/// \todo Use \c Stringification instead
 	/// @{
-	
+
 	/// Returns a string that is created by joining together string representation of the elements in the `source` range.
 	template <std::ranges::range T>
 	[[nodiscard]] inline auto join(T&& source)
@@ -934,14 +935,14 @@ namespace ghassanpl::string_ops
 		}
 		return strm.str();
 	}
-	
+
 	/// Returns a string that is created by joining together string representation of the elements in the `sources` ranges, separated by `delim`; `delim` is only added between elements.
 	template <std::ranges::range... RANGES, string_or_char DELIM>
 	[[nodiscard]] inline auto join_multiple(DELIM const& delim, RANGES&&... sources)
 	{
 		std::stringstream strm;
 		bool first = true;
-		([&]<typename RANGE>(RANGE&& source) {
+		([&]<typename RANGE>(RANGE && source) {
 			for (auto&& p : std::forward<RANGE>(source))
 			{
 				if (!first) strm << delim;
@@ -964,7 +965,7 @@ namespace ghassanpl::string_ops
 
 		std::stringstream strm;
 		bool first = true;
-		
+
 		auto&& endit = end(source);
 		for (auto it = begin(source); it != endit; ++it)
 		{
@@ -1072,7 +1073,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <typename ESCAPE_FUNC>
-	requires std::is_invocable_v<ESCAPE_FUNC, std::string_view> && std::is_constructible_v<std::string_view, std::invoke_result_t<ESCAPE_FUNC, std::string_view>>
+	requires std::is_invocable_v<ESCAPE_FUNC, std::string_view>&& std::is_constructible_v<std::string_view, std::invoke_result_t<ESCAPE_FUNC, std::string_view>>
 	inline void escape(std::string& subject, std::string_view chars_to_escape, ESCAPE_FUNC&& escape_func)
 	{
 		if (chars_to_escape.empty())
@@ -1104,7 +1105,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <typename ESCAPE_FUNC>
-	requires std::is_invocable_v<ESCAPE_FUNC, char> && std::is_constructible_v<std::string_view, std::invoke_result_t<ESCAPE_FUNC, char>>
+	requires std::is_invocable_v<ESCAPE_FUNC, char>&& std::is_constructible_v<std::string_view, std::invoke_result_t<ESCAPE_FUNC, char>>
 	inline void escape_non_printable(std::string& subject, ESCAPE_FUNC&& escape_func)
 	{
 		size_t pos = 0;
@@ -1122,11 +1123,11 @@ namespace ghassanpl::string_ops
 	{
 		escape_non_printable(subject, [](char c) {
 			return std::format("\\x{:02x}", static_cast<uint8_t>(c));
-		});
+			});
 	}
 
 	template <typename STR, string_or_char ESCAPE = char>
-	[[nodiscard]] inline std::string escaped(STR&& subject, std::string_view to_escape = R"("\)", ESCAPE&& escape_str = '\\')
+	[[nodiscard]] inline std::string escaped(STR&& subject, std::string_view to_escape = "\"\\", ESCAPE&& escape_str = '\\') /// Lint Note: Changing the initializer of to_escape to a R-string breaks doxygen
 	{
 		auto result = std::string{ subject };
 		::ghassanpl::string_ops::escape(result, to_escape, std::forward<ESCAPE>(escape_str));
@@ -1237,7 +1238,7 @@ namespace ghassanpl::string_ops
 			bool operator!=(const split_range_iterator& other) const { return RangeStart != other.SourceEnd; }
 			split_range_iterator& operator++(int) {
 				auto copy = *this;
-				++* this;
+				++*this;
 				return copy;
 			}
 
@@ -1301,7 +1302,7 @@ namespace ghassanpl::string_ops
 	/// \returns a vector containing a `string_view` for each line
 	/// \todo example
 	template <typename T, typename FUNC>
-	requires std::is_arithmetic_v<T> && std::is_invocable_r_v<T, FUNC, std::string_view>
+	requires std::is_arithmetic_v<T>&& std::is_invocable_r_v<T, FUNC, std::string_view>
 	std::vector<std::string_view> word_wrap(std::string_view _source, T max_width, FUNC width_getter)
 	{
 		std::vector<std::string_view> result;

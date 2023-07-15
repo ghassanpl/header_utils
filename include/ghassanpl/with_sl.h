@@ -20,6 +20,21 @@
 namespace ghassanpl
 {
 
+	/// \defgroup WithSL with_sl
+	/// A set of usesful types (`with_sl` and `with_slh`) that allow for variadic functions taking a `std::source_location`.
+	/// 
+	/// \par Example Usage
+	/// ```cpp
+	/// template <typename... ARGS> 
+	/// void Debug(with_sl<string_view> fmt, ARGS&&... args)
+	/// { 
+	///		Log(LogType::Debug, fmt.Location, format(fmt.Object, forward<ARGS>(args)...));
+	/// }
+	/// ```
+	/// 
+	/// @{
+	
+	/// Use as a function parameter type to capture both the parameter and the call-site source location.
 	template <typename T>
 	struct with_sl
 	{
@@ -37,6 +52,8 @@ namespace ghassanpl
 		with_sl& operator=(with_sl&& other) noexcept = default;
 	};
 
+	/// Use as a function parameter type to capture both the parameter and the hash of the call-site source location.
+	/// \tparam HASH_FUNC a std::hash-style object type whose instances can hash `std::source_location`
 	template <typename T, typename HASH_FUNC>
 	struct with_slh
 	{
@@ -61,4 +78,5 @@ namespace ghassanpl
 		with_slh& operator=(with_slh&& other) noexcept = default;
 	};
 
+	/// @}
 }

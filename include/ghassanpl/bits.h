@@ -164,7 +164,7 @@ namespace ghassanpl
 
 	/// @}
 
-	/// Used to specify that a \c bit_reference references a bit number given at runtime
+	/// Used to specify that a \c ghassanpl::bit_reference references a bit number given at runtime
 	constexpr inline size_t dynamic_bit_number = size_t(-1);
 
 	namespace detail

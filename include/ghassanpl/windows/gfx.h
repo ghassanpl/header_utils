@@ -107,9 +107,6 @@ namespace ghassanpl::win
 		DC_PEN_ = 19,
 	};
 
-	typedef DWORD COLORREF;
-	typedef DWORD* LPCOLORREF;
-
 	extern "C"
 	{
 		GHPL_WINAPI HGDIOBJ GHPL_APIENTRY GetStockObject(int fnObject);

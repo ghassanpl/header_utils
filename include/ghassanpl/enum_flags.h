@@ -35,7 +35,7 @@ namespace ghassanpl
 	/// * The first template parameter doesn't have to be an enum, any integral value will work
 	/// * It is also a range
 	/// 
-	/// \note The members of this class will only work correctly if the enum values you give are greater than 0 and lesser than the bit-width of the VALUE_TYPE
+	/// \attention The members of this class will only work correctly if the enum values you give are greater than 0 and lesser than the bit-width of the VALUE_TYPE
 	/// 
 	/// \tparam ENUM the type containing the value flags the set will hold
 	/// \tparam VALUE_TYPE the underlying integral value that stores the bits representing the flags

@@ -92,6 +92,9 @@ namespace ghassanpl::win
 			LONG y;
 		} POINT, * PPOINT;
 
+		typedef DWORD COLORREF;
+		typedef DWORD* LPCOLORREF;
+
 	}
 #else
 	/// Base Windows Stuff
@@ -163,6 +166,14 @@ namespace ghassanpl::win
 		HEAP_REALLOC_IN_PLACE_ONLY_ = 0x10,
 	};
 
+	enum
+	{
+		COINIT_MULTITHREADED_ = 0x0,
+		COINIT_APARTMENTTHREADED_ = 0x2,
+		COINIT_DISABLE_OLE1DDE_ = 0x4,
+		COINIT_SPEED_OVER_MEMORY_ = 0x8
+	};
+
 	static constexpr HRESULT S_OK_ = 0;
 	static constexpr HRESULT S_FALSE_ = 1;
 	static constexpr HRESULT E_NOTIMPL_ = (HRESULT)0x80004001L;
@@ -175,6 +186,8 @@ namespace ghassanpl::win
 	static constexpr HRESULT E_HANDLE_ = (HRESULT)0x80070006L;
 	static constexpr HRESULT E_OUTOFMEMORY_ = (HRESULT)0x8007000EL;
 	static constexpr HRESULT E_INVALIDARG_ = (HRESULT)0x80070057L;
+
+	static constexpr HRESULT RPC_E_CHANGED_MODE = (HRESULT)0x80010106L; /// Possible return value from CoInitializeEx
 
 	extern "C"
 	{
@@ -193,5 +206,8 @@ namespace ghassanpl::win
 		GHPL_WINAPI BOOL GHPL_APIENTRY HeapFree(HANDLE hHeap, DWORD dwFlags, LPVOID lpMem);
 		GHPL_WINAPI LPVOID GHPL_APIENTRY HeapReAlloc(HANDLE hHeap, DWORD dwFlags, LPVOID lpMem, SIZE_T dwBytes);
 		GHPL_WINAPI VOID GHPL_APIENTRY ExitProcess(UINT uExitCode);
+
+		GHPL_WINAPI HRESULT GHPL_APIENTRY CoInitializeEx(LPVOID pvReserved = nullptr, DWORD dwCoInit = COINIT_MULTITHREADED_);
+		GHPL_WINAPI void GHPL_APIENTRY CoUninitialize();
 	}
 }

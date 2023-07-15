@@ -1,6 +1,0 @@
-var searchData=
-[
-  ['bit_5fcount_0',['bit_count',['../group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d',1,'ghassanpl']]],
-  ['bit_5fmask_5ffor_5fv_1',['bit_mask_for_v',['../group___bits.html#ga5aa6f92df52577aff869cb09bafc989a',1,'ghassanpl']]],
-  ['bit_5fmask_5fv_2',['bit_mask_v',['../group___bits.html#gad2ecb2309eaff29c1f0fb4d1b6c4ed5e',1,'ghassanpl']]]
-];

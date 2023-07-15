@@ -43,9 +43,10 @@ namespace ghassanpl
 				result += '[';
 			else
 			{
-				auto call = formats::sexpressions::consume_list(str);
-				nlohmann::json call_result = env.eval(call.get_ref<nlohmann::json::array_t const&>());
-				formats::json::visit(call_result, [&](auto&& val) {
+				using value = eval_env<SYNTAX>::value;
+				value call = formats::sexpressions::consume_list(str);
+				value call_result = env.eval(call);
+				formats::json::visit(env.ref(call_result), [&](auto&& val) {
 					using std::to_string;
 					using nlohmann::to_string;
 					using ghassanpl::string_ops::to_string;
@@ -56,4 +57,6 @@ namespace ghassanpl
 		}
 		return result;
 	}
+
+	/// https://projectfluent.org/ <- a nice example of what we could implement with sexps interpolate
 }

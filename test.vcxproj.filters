@@ -231,6 +231,9 @@
     <ClInclude Include="include\ghassanpl\windows\folders.h">
       <Filter>Header Files\windows</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\windows\console.h">
+      <Filter>Header Files\windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />

@@ -222,6 +222,7 @@
     <ClInclude Include="include\ghassanpl\uri_impl.h" />
     <ClInclude Include="include\ghassanpl\wilson.h" />
     <ClInclude Include="include\ghassanpl\windows\common.h" />
+    <ClInclude Include="include\ghassanpl\windows\console.h" />
     <ClInclude Include="include\ghassanpl\windows\folders.h" />
     <ClInclude Include="include\ghassanpl\windows\gfx.h" />
     <ClInclude Include="include\ghassanpl\windows\include.h" />

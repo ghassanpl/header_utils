@@ -41,13 +41,39 @@ namespace ghassanpl::formats::sexpressions
 
 		auto result = string_ops::consume_until(sexp_str, [=](auto ch) { return string_ops::ascii::isspace(ch) || ch == end_brace; });
 
+		if (result == "true") return true;
+		if (result == "false") return false;
+		if (result == "null") return nullptr;
+
 		/// Try paring as number
-		double num_result;
-		const auto fcres = string_ops::from_chars(result, num_result);
-		if (fcres.ec == std::errc{} && fcres.ptr == sexp_str.data()) /// If we ate the ENTIRE number
 		{
-			string_ops::trim_whitespace_left(sexp_str);
-			return num_result;
+			nlohmann::json::number_integer_t num_result;
+			const auto fcres = string_ops::from_chars(result, num_result);
+			if (fcres.ec == std::errc{} && fcres.ptr == sexp_str.data()) /// If we ate the ENTIRE number
+			{
+				string_ops::trim_whitespace_left(sexp_str);
+				return num_result;
+			}
+		}
+
+		{
+			nlohmann::json::number_unsigned_t num_result;
+			const auto fcres = string_ops::from_chars(result, num_result);
+			if (fcres.ec == std::errc{} && fcres.ptr == sexp_str.data()) /// If we ate the ENTIRE number
+			{
+				string_ops::trim_whitespace_left(sexp_str);
+				return num_result;
+			}
+		}
+
+		{
+			nlohmann::json::number_float_t num_result;
+			const auto fcres = string_ops::from_chars(result, num_result);
+			if (fcres.ec == std::errc{} && fcres.ptr == sexp_str.data()) /// If we ate the ENTIRE number
+			{
+				string_ops::trim_whitespace_left(sexp_str);
+				return num_result;
+			}
 		}
 
 		string_ops::trim_whitespace_left(sexp_str);
