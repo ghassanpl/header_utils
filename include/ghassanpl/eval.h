@@ -563,9 +563,6 @@ namespace ghassanpl
 				return get_of(e, std::move(args));
 			}
 
-			/// TODO: erase:of:, append:to:, pop:, etc.
-			/// TODO: try:catch:, try:catch:finally:, throw:
-
 			/// Will evaluate each argument and return the last one
 			static inline value eval(env_type& e, std::vector<value> args)
 			{
@@ -607,6 +604,10 @@ namespace ghassanpl
 			}
 
 			static inline value op_plus(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) + ref(args[2])); }
+			static inline value op_minus(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) - ref(args[2])); }
+			static inline value op_mul(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) * ref(args[2])); }
+			static inline value op_div(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) / ref(args[2])); }
+			static inline value op_mod(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) % ref(args[2])); }
 
 			static inline value type_of(env_type& e, std::vector<value> args) {
 				const auto val = e.eval_arg(args, 1);
@@ -698,9 +699,11 @@ namespace ghassanpl
 			typename LIB_TYPE<decade_syntax>::import_to(*this);
 		}
 
-		/// TODO: lib_iter - for-each:do:, map:using:, etc.
+		/// TODO: lib_list - erase:of:, erase:at:, append:to:, pop:, sublist:from:to:, reverse:, etc.
+		/// TODO: lib_err - try:catch:, try:catch:finally:, throw:, etc.
+		/// TODO: lib_iter - for-each:in:do:, map:using:, etc.
 		/// TODO: lib_string - :..:, :contains:, etc.
-		/// TODO: lib_math - max-of:and:, max-in:, floor:, ceil:, :**:, sqrt:
+		/// TODO: lib_math - max-of:and:, max-in:, floor:, ceil:, :**:, abs:, sqrt:
 		/// TODO: lib_json - flattened:, patch, diff, merge, parse, dump, etc.
 		/// TODO: lib_io - print:, println:, print:using:, format:using:, :fmt:
 
