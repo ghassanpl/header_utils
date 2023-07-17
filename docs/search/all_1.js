@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['back_0',['back',['../group___string_ops.html#gadca674eddd855509548f3fe1021c8bb7',1,'ghassanpl::string_ops::back(std::string_view child_to_back_up, std::string_view parent, size_t n=1) noexcept'],['../group___string_ops.html#ga37ee154e28f368f1787c1755b135f528',1,'ghassanpl::string_ops::back(std::string_view child_to_back_up, size_t n=1) noexcept']]],
+  ['base_5ftext_5fencoding_1',['base_text_encoding',['../group___unicode.html#ga1a8f96ed84ab50f48ff0925ecb6fa08a',1,'ghassanpl::string_ops']]],
+  ['bit_5fcount_2',['bit_count',['../group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d',1,'ghassanpl']]],
+  ['bit_5fmask_5ffor_5fv_3',['bit_mask_for_v',['../group___bits.html#ga5aa6f92df52577aff869cb09bafc989a',1,'ghassanpl']]],
+  ['bit_5fmask_5fv_4',['bit_mask_v',['../group___bits.html#gad2ecb2309eaff29c1f0fb4d1b6c4ed5e',1,'ghassanpl']]],
+  ['bit_5fnumber_5',['bit_number',['../structghassanpl_1_1bit__reference.html#a2f9c59ebb2f00602a6a235118a42a320',1,'ghassanpl::bit_reference']]],
+  ['bit_5freference_6',['bit_reference',['../structghassanpl_1_1bit__reference.html',1,'ghassanpl']]],
+  ['bit_5fview_7',['bit_view',['../structghassanpl_1_1bit__view.html',1,'ghassanpl']]],
+  ['bits_8',['Bits',['../group___bits.html',1,'']]],
+  ['bottom_9',['bottom',['../namespaceghassanpl.html#ga93c615403286c16bdf1f3952f9a2fdb8a71f262d796bed1ab30e8a2d5a8ddee6f',1,'ghassanpl']]],
+  ['bottom_5fcenter_10',['bottom_center',['../namespaceghassanpl.html#ga01bf04cf94bf7689c267eafb7d0a21bca1afb532afb8fb97068fa335cfdc02bb8',1,'ghassanpl']]],
+  ['bottom_5fleft_11',['bottom_left',['../namespaceghassanpl.html#ga01bf04cf94bf7689c267eafb7d0a21bca369408ec984d94fb270ae125c6de1a5b',1,'ghassanpl']]],
+  ['bottom_5fright_12',['bottom_right',['../namespaceghassanpl.html#ga01bf04cf94bf7689c267eafb7d0a21bcab88b8c9790136e01b8dfce869959cea3',1,'ghassanpl']]],
+  ['buffer_5fappend_13',['buffer_append',['../group___buffers.html#ga2a905a63c4503deec99973a856314cdb',1,'ghassanpl']]],
+  ['buffer_5fappend_5fcstring_14',['buffer_append_cstring',['../group___buffers.html#ga0cc0d5984e206729a2fb4bf5f1df2bef',1,'ghassanpl']]],
+  ['buffer_5fappend_5fcstring_5fptr_15',['buffer_append_cstring_ptr',['../group___buffers.html#ga4edb1a373404ef36b997d64f67f932c5',1,'ghassanpl::buffer_append_cstring_ptr(BUFFER &amp;buffer, const CHAR_TYPE *cstr)'],['../group___buffers.html#gac054de09c6b44e187e07e02bc989c7eb',1,'ghassanpl::buffer_append_cstring_ptr(BUFFER &amp;buffer, const CHAR_TYPE *cstr, size_t max_len)']]],
+  ['buffer_5fappend_5fpod_16',['buffer_append_pod',['../group___buffers.html#ga3bf35d0fbed3f2c6b92801d7b33a2b0c',1,'ghassanpl']]],
+  ['buffer_5fappend_5frange_17',['buffer_append_range',['../group___buffers.html#ga916ae5baf977660028578c634f4b509c',1,'ghassanpl']]],
+  ['buffer_5fappend_5futf8_18',['buffer_append_utf8',['../group___buffers.html#gab65200e913b0908bc960b1e887672bf8',1,'ghassanpl::buffer_append_utf8(BUFFER &amp;buffer, char32_t cp)'],['../group___buffers.html#gafe6a3e6d6564be56612d24654e20de88',1,'ghassanpl::buffer_append_utf8(BUFFER &amp;buffer, STRING_TYPE &amp;&amp;str)']]],
+  ['buffer_5felement_5ftype_19',['buffer_element_type',['../group___buffers.html#ga234303c524cd6b459b5e23d24fd61f77',1,'ghassanpl']]],
+  ['buffer_5freserve_20',['buffer_reserve',['../group___buffers.html#ga72a5968a3dfe2af1336ba8b84bb62c3b',1,'ghassanpl']]],
+  ['buffers_21',['Buffers',['../group___buffers.html',1,'']]],
+  ['but_5fonly_22',['but_only',['../structghassanpl_1_1enum__flags.html#accdbb737ca7b42d3dfeed3f0be7e8bd9',1,'ghassanpl::enum_flags::but_only(self_type flags) const EF_NOEXCEPT'],['../structghassanpl_1_1enum__flags.html#a06ecd625b68974f64e619a5505494048',1,'ghassanpl::enum_flags::but_only(self_type flags) const noexcept']]],
+  ['buttonclicked_23',['ButtonClicked',['../group__msg.html#ggadb944a95636fd7bc57f5fb89f9d965cfa9c130e95620950534eee656031fc6a12',1,'ghassanpl']]],
+  ['byte_5fcount_24',['byte_count',['../structghassanpl_1_1string__ops_1_1text__decode__result.html#a366d3aeb8a54790f1f3a12b0af8c3260',1,'ghassanpl::string_ops::text_decode_result']]]
+];
