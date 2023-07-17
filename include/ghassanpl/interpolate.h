@@ -46,7 +46,7 @@ namespace ghassanpl
 				using value = eval_env<SYNTAX>::value;
 				value call = formats::sexpressions::consume_list(str);
 				value call_result = env.eval(call);
-				formats::json::visit(env.ref(call_result), [&](auto&& val) {
+				formats::json::visit(call_result, [&](auto&& val) {
 					using std::to_string;
 					using nlohmann::to_string;
 					using ghassanpl::string_ops::to_string;

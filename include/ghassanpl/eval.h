@@ -33,9 +33,6 @@ namespace ghassanpl
 				return "binary";
 			case discarded:
 				return "discarded";
-			case number_integer:
-			case number_unsigned:
-			case number_float:
 			default:
 				return "number";
 			}
@@ -50,61 +47,87 @@ namespace ghassanpl
 
 		static inline const json null_json;
 
-		enum class value_type { rvalue, lvalue, const_ref };
-		using value = std::variant<json, json*, json const*>;
-
-		static value ref(json const& j) { return value{ &j }; }
-		static value lval(json& j) { return value{ &j }; }
-		static value rval(json j) { return value{ std::move(j) }; }
-
-		static value forward(json const& j) { return value{ &j }; }
-		static value forward(json& j) { return value{ &j }; }
-		static value forward(json&& j) { return value{ std::move(j) }; }
-
-		static json const& ref(value const& j)
+		struct value
 		{
-			switch (j.index())
+			std::variant<json, json*, json const*> v;
+
+			value() noexcept = default;
+			value(value const&) noexcept = default;
+			value(value&&) noexcept = default;
+			value& operator=(value const&) noexcept = default;
+			value& operator=(value&&) noexcept = default;
+
+			template <typename... ARGS>
+			requires std::constructible_from<json, ARGS...>
+			explicit(false) value(ARGS&&... args) noexcept : v(json(std::forward<ARGS>(args)...)) {}
+
+			explicit(false) value(json&& j) noexcept : v(std::move(j)) {}
+			explicit(false) value(json const* j) noexcept : v(std::move(j)) {}
+			explicit(false) value(json* j) noexcept : v(std::move(j)) {}
+
+			bool is_lval() const noexcept { return v.index() == 1; }
+			bool is_rval() const noexcept { return v.index() == 0; }
+			bool is_ref() const noexcept { return v.index() == 2; }
+
+			json& lval() { return *std::get<json*>(v); }
+			
+			void ref() && = delete;
+
+			json const& ref() const &
 			{
-			case 0: return std::get<json>(j);
-			case 1: return *std::get<json*>(j);
-			case 2: return *std::get<json const*>(j);
+				switch (v.index())
+				{
+				case 0: return std::get<json>(v);
+				case 1: return *std::get<json*>(v);
+				case 2: return *std::get<json const*>(v);
+				}
+				return null_json;
 			}
-			return null_json;
-		}
 
-		static json move(value& j_)
-		{
-			auto j = std::move(j_);
-			switch (j.index())
+			json const& forward() const &
 			{
-			case 0: return std::move(std::get<json>(j));
-			case 1: return std::move(*std::get<json*>(j));
-			case 2: return *std::get<json const*>(j);
+				switch (v.index())
+				{
+				case 0: return std::get<json>(v);
+				case 1: return *std::get<json*>(v);
+				case 2: return *std::get<json const*>(v);
+				}
+				return null_json;
 			}
-			return null_json;
-		}
 
-		static json forward(value& j_)
-		{
-			auto j = std::move(j_);
-			switch (j.index())
+			json forward() &&
 			{
-			case 0: return std::move(std::get<json>(j));
-			case 1: return *std::get<json*>(j);
-			case 2: return *std::get<json const*>(j);
+				switch (v.index())
+				{
+				case 0: return std::move(std::get<json>(v));
+				case 1: return *std::get<json*>(v);
+				case 2: return *std::get<json const*>(v);
+				}
+				return null_json;
 			}
-			return null_json;
-		}
 
-		static json move(value&& j_)
-		{
-			return move(j_);
-		}
+			operator json const& () const&
+			{
+				return ref();
+			}
 
-		static json forward(value&& j_)
-		{
-			return forward(j_);
-		}
+			json const& operator*() const &
+			{
+				return ref();
+			}
+
+			operator json () &&
+			{
+				return forward();
+			}
+
+			json operator*() &&
+			{
+				return forward();
+			}
+
+			json const* operator->() const & noexcept { return &ref(); }
+		};
 
 		using self_type = eval_env<DECADE_SYNTAX>;
 		static constexpr bool decade_syntax = DECADE_SYNTAX;
@@ -131,22 +154,12 @@ namespace ghassanpl
 				return self.parent_env ? self.parent_env->find_in_user_storage(name) : std::pair<decltype(&self), decltype(it)>{};
 		}
 
-		/*
-		value user_var(std::string_view name) const
-		{
-			auto var = find_in_user_storage(name);
-			if (var.first)
-				return ref(var.second->second);
-			return ref(null_json);
-		}
-		*/
-
 		value user_var(std::string_view name)
 		{
 			auto var = find_in_user_storage(name);
 			if (var.first)
-				return lval(var.second->second);
-			return rval(nullptr);
+				return &var.second->second;
+			return null_json;
 		}
 
 		json& set_user_var(std::string_view name, value val, bool force_local = false)
@@ -160,8 +173,8 @@ namespace ghassanpl
 			}
 			auto it = storage->find(name);
 			if (it == storage->end())
-				return storage->emplace(name, move(val)).first->second;
-			return it->second = move(val);
+				return storage->emplace(name, val.forward()).first->second;
+			return it->second = val.forward();
 		}
 
 		eval_func const* find_unknown_func_eval() const noexcept
@@ -189,7 +202,7 @@ namespace ghassanpl
 			if (error_handler)
 			{
 				error_handler(errstr);
-				return {};
+				return null_json;
 			}
 			throw std::runtime_error(std::move(errstr));
 		}
@@ -203,7 +216,7 @@ namespace ghassanpl
 		value eval_call(std::vector<value> args)
 		{
 			if (args.empty())
-				return rval(null_json);
+				return null_json;
 
 			//const auto orig_args = args;
 
@@ -214,14 +227,14 @@ namespace ghassanpl
 				const auto args_count = args.size();
 				const bool infix = (args_count % 2) == 1;
 
-				if (args_count >= 1 && (ref(args[0]) == "list" || ref(args[0]) == "eval")) /// Special form: ignore decade syntax and return a sexp
+				if (args_count >= 1 && (*args[0] == "list" || *args[0] == "eval")) /// Special form: ignore decade syntax and return a sexp
 				{
-					funcname = std::string{ ref(args[0]) } + ":";
+					funcname = std::string{ *args[0] } + ":";
 					arguments = std::move(args);
 				}
 				else if (args_count == 1)
 				{
-					funcname = ref(args[0]);
+					funcname = *args[0];
 					arguments = std::move(args);
 				}
 				else
@@ -239,23 +252,23 @@ namespace ghassanpl
 					for (size_t i = infix; i < args_count; i += 2)
 					{
 						auto& function_identifier = args[i];
-						if (ref(function_identifier).is_string())
+						if (function_identifier->is_string())
 						{
-							funcname += ref(function_identifier);
+							funcname += *function_identifier;
 							funcname += ':';
 
 							arguments.push_back(std::move(args[i + 1]));
 						}
 						else
-							return report_error("expected function name part, got: {}", ref(function_identifier).dump());
+							return report_error("expected function name part, got: {}", function_identifier->dump());
 					}
 
-					arguments[0] = rval(funcname);
+					arguments[0] = funcname;
 				}
 			}
 			else /// lisp syntax
 			{
-				auto& func = ref(args[0]);
+				auto& func = *args[0];
 				if (func.is_string())
 					funcname = func.get_ref<json::string_t const&>();
 				else if (func.is_array())
@@ -282,13 +295,13 @@ namespace ghassanpl
 			}
 			else if constexpr (std::same_as<std::remove_cvref_t<V>, json>)
 			{
-				return eval(forward(std::forward<V>(val)));
+				return eval(value(std::forward<V>(val)));
 			}
 			else if constexpr (std::same_as<std::remove_cvref_t<V>, value>)
 			{
-				if (ref(val).is_string())
+				if (val->is_string())
 				{
-					if (auto str = std::string_view{ ref(val) }; !str.empty())
+					if (auto str = std::string_view{ *val }; !str.empty())
 					{
 						for (auto& [prefix, macro] : prefix_macros)
 						{
@@ -300,31 +313,31 @@ namespace ghassanpl
 					}
 				}
 
-				if (!ref(val).is_array())
+				if (!val->is_array())
 					return std::move(val);
 
 				std::vector<value> args;
-				switch (val.index())
+				switch (val.v.index())
 				{
 				case 0:
 				{
-					json::array_t arr = std::move(std::get<json>(val).get_ref<json::array_t&>());
+					json::array_t arr = std::move(std::get<json>(val.v).get_ref<json::array_t&>());
 					for (auto& a : arr)
-						args.push_back(rval(std::move(a)));
+						args.push_back(std::move(a));
 					break;
 				}
 				case 1:
 				{
-					json::array_t& arr = std::get<json*>(val)->get_ref<json::array_t&>();
+					json::array_t& arr = std::get<json*>(val.v)->get_ref<json::array_t&>();
 					for (auto& a : arr)
-						args.push_back(rval(std::move(a)));
+						args.push_back(&a);
 					break;
 				}
 				case 2:
 				{
-					json::array_t const& arr = std::get<json const*>(val)->get_ref<json::array_t const&>();
-					for (auto& a : arr)
-						args.push_back(ref(a));
+					json::array_t const& arr = std::get<json const*>(val.v)->get_ref<json::array_t const&>();
+					for (auto const& a : arr)
+						args.push_back(&a);
 					break;
 				}
 				}
@@ -339,9 +352,7 @@ namespace ghassanpl
 			try
 			{
 				auto result = eval(value);
-				if (result.index() == 0)
-					return move(result);
-				return ref(result);
+				return result.forward();
 			}
 			catch (e_scope_terminator const& e)
 			{
@@ -361,39 +372,39 @@ namespace ghassanpl
 
 		inline bool is_true(value const& val)
 		{
-			return is_true(ref(val));
+			return is_true(*val);
 		}
 
 		static void assert_args(std::span<value const> args, size_t arg_count)
 		{
 			if (args.size() != arg_count + 1)
-				throw std::runtime_error(std::format("function {} requires exactly {} arguments, {} given", ref(args[0]).dump(), arg_count, args.size() - 1));
+				throw std::runtime_error(std::format("function {} requires exactly {} arguments, {} given", args[0]->dump(), arg_count, args.size() - 1));
 		}
 
 		static void assert_args(std::span<value const> args, size_t min_args, size_t max_args)
 		{
 			if (args.size() < min_args + 1 && args.size() >= max_args + 1)
-				throw std::runtime_error(std::format("function {} requires between {} and {} arguments, {} given", ref(args[0]).dump(), min_args, max_args, args.size() - 1));
+				throw std::runtime_error(std::format("function {} requires between {} and {} arguments, {} given", args[0]->dump(), min_args, max_args, args.size() - 1));
 		}
 
 		static void assert_min_args(std::span<value const> args, size_t arg_count)
 		{
 			if (args.size() < arg_count + 1)
-				throw std::runtime_error(std::format("function {} requires at least {} arguments, {} given", ref(args[0]).dump(), arg_count, args.size() - 1));
+				throw std::runtime_error(std::format("function {} requires at least {} arguments, {} given", args[0]->dump(), arg_count, args.size() - 1));
 		}
 
 		static auto assert_arg(std::span<value const> args, size_t arg_num, json::value_t type = json::value_t::discarded)
 		{
 			if (arg_num >= args.size())
-				throw std::runtime_error(std::format("function {} requires {} arguments, {} given", ref(args[0]).dump(), arg_num, args.size() - 1));
+				throw std::runtime_error(std::format("function {} requires {} arguments, {} given", args[0]->dump(), arg_num, args.size() - 1));
 
-			if (type != json::value_t::discarded && ref(args[arg_num]).type() != type)
+			if (type != json::value_t::discarded && args[arg_num]->type() != type)
 			{
 				throw std::runtime_error(std::format("argument #{} to function {} must be of type {}, {} given",
-					arg_num, ref(args[0]).dump(), detail::json_type_name(type), detail::json_type_name(ref(args[arg_num]).type())));
+					arg_num, args[0]->dump(), detail::json_type_name(type), detail::json_type_name(args[arg_num]->type())));
 			}
 
-			return ref(args[arg_num]).type();
+			return args[arg_num]->type();
 		}
 
 		template <std::same_as<nlohmann::json::value_t>... T>
@@ -414,6 +425,18 @@ namespace ghassanpl
 		{
 			assert_arg(args, n, type);
 			return eval(std::move(args[n]));
+		}
+
+		void eval_args(std::vector<value>& args, size_t n)
+		{
+			assert_args(args, n);
+			for (auto& arg : std::span{ args }.subspan(1))
+				arg = eval(std::move(arg));
+		}
+
+		void eval_args(std::vector<value>& args)
+		{
+			eval_args(args, args.size() - 1);
 		}
 
 		struct base_lib
@@ -442,16 +465,6 @@ namespace ghassanpl
 				throw std::runtime_error(std::format("invalid value index type '{}'", index.type_name()));
 			}
 
-			static void eval_args(env_type& e, std::vector<value>& args, size_t n)
-			{
-				env_type::assert_args(args, n);
-				for (auto& arg : std::span{ args }.subspan(1))
-					arg = e.eval(std::move(arg));
-			}
-			static void eval_args(env_type& e, std::vector<value>& args)
-			{
-				eval_args(e, args, args.size() - 1);
-			}
 		};
 
 		struct lib_core : public base_lib
@@ -461,7 +474,6 @@ namespace ghassanpl
 			using base_lib::env_type;
 			using base_lib::json_pointer;
 			using base_lib::any;
-			using base_lib::eval_args;
 
 			static inline value if_then_else(env_type& e, std::vector<value> args)
 			{
@@ -486,13 +498,13 @@ namespace ghassanpl
 					}
 					catch (e_break const& ex)
 					{
-						if (!e.ref(ex.result).is_discarded())
+						if (!ex.result->is_discarded())
 							last = ex.result;
 						break;
 					}
 					catch (e_continue const& ex)
 					{
-						if (!e.ref(ex.result).is_discarded())
+						if (!ex.result->is_discarded())
 							last = ex.result;
 						continue;
 					}
@@ -518,40 +530,40 @@ namespace ghassanpl
 			static inline value var_get(env_type& e, std::vector<value> args)
 			{
 				auto name = e.eval_arg(args, 1, string);
-				return e.user_var(ref(name));
+				return e.user_var(*name);
 			}
 
 			static inline value var_set(env_type& e, std::vector<value> args)
 			{
 				auto var = e.eval_arg(args, 1);
-				if (var.index() == 1)
+				if (var.is_lval())
 				{
-					*std::get<json*>(var) = forward(e.eval_arg(args, 2));
+					var.lval() = e.eval_arg(args, 2).forward();
 					return var;
 				}
-				return e.rval(e.report_error("trying to assign to a non-variable"));
+				return e.report_error("trying to assign to a non-variable");
 			}
 
 			static inline value new_var(env_type& e, std::vector<value> args)
 			{
 				e.assert_args(args, 2, 3);
 				auto name = e.eval_arg(args, 1, string);
-				auto val = args.size() == 3 ? e.eval_arg(args, 2) : rval(nullptr);
-				return e.lval(e.set_user_var(ref(name), forward(val), true));
+				auto val = args.size() == 3 ? e.eval_arg(args, 2) : value(null_json);
+				return &e.set_user_var(*name, std::move(val), true);
 			}
 
 			static inline value get_of(env_type& e, std::vector<value> args)
 			{
-				eval_args(e, args, 2);
-				const json_pointer index = base_lib::make_pointer(ref(args[1]));
+				e.eval_args(args, 2);
+				const json_pointer index = base_lib::make_pointer(args[1]);
 				value& container = args[2];
-				if (!ref(container).contains(index))
-					return rval(null_json);
-				switch (container.index())
+				if (!container->contains(index))
+					return null_json;
+				switch (container.v.index())
 				{
-				case 0: return e.rval(std::move(std::get<json>(container).at(index)));
-				case 1: return e.lval(std::get<json*>(container)->at(index));
-				case 2: return e.ref(std::get<json const*>(container)->at(index));
+				case 0: return std::move(std::get<json>(container.v).at(index));
+				case 1: return &std::get<json*>(container.v)->at(index);
+				case 2: return &std::get<json const*>(container.v)->at(index);
 				}
 				return e.report_error("internal error: container value is invalid");
 			}
@@ -575,48 +587,48 @@ namespace ghassanpl
 			/// Will evaluate each argument and return a list of the results
 			static inline value list(env_type& e, std::vector<value> args)
 			{
-				eval_args(e, args);
+				e.eval_args(args);
 				std::vector<json> result;
 				for (auto& arg : std::span{ args }.subspan(1))
-					result.push_back(move(std::move(arg)));
-				return rval(std::move(result));
+					result.push_back(arg.forward());
+				return value(std::move(result));
 			}
 
 			static inline value quote(env_type& e, std::vector<value> args) { e.assert_args(args, 1); return std::move(args[1]); }
 
-			static inline value op_eq(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) == ref(args[2])); }
-			static inline value op_neq(env_type& e, std::vector<value> args) { eval_args(e, args, 2); return rval(ref(args[1]) != ref(args[2])); }
-			static inline value op_gt(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) > ref(args[2])); }
-			static inline value op_ge(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) >= ref(args[2])); }
-			static inline value op_lt(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) < ref(args[2])); }
-			static inline value op_le(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) <= ref(args[2])); }
+			static inline value op_eq(env_type& e, std::vector<value> args) { e.eval_args(args, 2);  return *args[1] == *args[2]; }
+			static inline value op_neq(env_type& e, std::vector<value> args) { e.eval_args(args, 2); return *args[1] != *args[2]; }
+			static inline value op_gt(env_type& e, std::vector<value> args) { e.eval_args(args, 2);  return *args[1] > *args[2]; }
+			static inline value op_ge(env_type& e, std::vector<value> args) { e.eval_args(args, 2);  return *args[1] >= *args[2]; }
+			static inline value op_lt(env_type& e, std::vector<value> args) { e.eval_args(args, 2);  return *args[1] < *args[2]; }
+			static inline value op_le(env_type& e, std::vector<value> args) { e.eval_args(args, 2);  return *args[1] <= *args[2]; }
 
-			static inline value op_not(env_type& e, std::vector<value> args) { eval_args(e, args, 1);  return rval(!e.is_true(args[1])); }
+			static inline value op_not(env_type& e, std::vector<value> args) { e.eval_args(args, 1);  return !e.is_true(args[1]); }
 			static inline value op_and(env_type& e, std::vector<value> args) {
-				eval_args(e, args, 2);
+				e.eval_args(args, 2);
 				auto const left = e.eval_arg(args, 1);
 				return e.is_true(left) ? e.eval_arg(args, 2) : std::move(left);
 			}
 			static inline value op_or(env_type& e, std::vector<value> args) {
-				eval_args(e, args, 2);
+				e.eval_args(args, 2);
 				auto const left = e.eval_arg(args, 1);
 				return e.is_true(left) ? std::move(left) : e.eval_arg(args, 2);
 			}
 
-			static inline value op_plus(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) + ref(args[2])); }
-			static inline value op_minus(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) - ref(args[2])); }
-			static inline value op_mul(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) * ref(args[2])); }
-			static inline value op_div(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) / ref(args[2])); }
-			static inline value op_mod(env_type& e, std::vector<value> args) { eval_args(e, args, 2);  return rval(ref(args[1]) % ref(args[2])); }
+			static inline value op_plus(env_type& e, std::vector<value> args) { e.eval_args(args, 2);   return *args[1] + *args[2]; }
+			static inline value op_minus(env_type& e, std::vector<value> args) { e.eval_args(args, 2);  return *args[1] - *args[2]; }
+			static inline value op_mul(env_type& e, std::vector<value> args) { e.eval_args(args, 2);	return *args[1] * *args[2]; }
+			static inline value op_div(env_type& e, std::vector<value> args) { e.eval_args(args, 2);	return *args[1] / *args[2]; }
+			static inline value op_mod(env_type& e, std::vector<value> args) { e.eval_args(args, 2);	return *args[1] % *args[2]; }
 
 			static inline value type_of(env_type& e, std::vector<value> args) {
 				const auto val = e.eval_arg(args, 1);
-				return rval(ref(val).type_name());
+				return val->type_name();
 			}
 			static inline value size_of(env_type& e, std::vector<value> args) {
 				const auto val = e.eval_arg(args, 1);
-				const auto& j = ref(val);
-				return rval(j.is_string() ? j.get_ref<json::string_t const&>().size() : j.size());
+				const json& j = val;
+				return j.is_string() ? j.get_ref<json::string_t const&>().size() : j.size();
 			}
 
 			static inline json prefix_macro_get(env_type const&, std::vector<value> args) {
@@ -626,10 +638,10 @@ namespace ghassanpl
 			static inline void set_macro_prefix_get(env_type& e, std::string const& prefix = ".", std::string const& prefix_eval_func_name = "dot", std::string const& get_func_name = "get")
 			{
 				e.prefix_macros[prefix] = [get_func_name, prefix_size = prefix.size()](eval_env<true> const& e, std::vector<value> args) {
-					return json{ get_func_name, std::string{e.ref(args[0])}.substr(prefix_size) };
+					return json{ get_func_name, std::string{*args[0]}.substr(prefix_size)};
 				};
-				e.funcs[prefix_eval_func_name] = [prefix](self_type const& e, std::vector<value>) {
-					return e.rval(prefix);
+				e.funcs[prefix_eval_func_name] = [prefix](self_type const& e, std::vector<value>) -> value {
+					return prefix;
 				};
 			}
 
