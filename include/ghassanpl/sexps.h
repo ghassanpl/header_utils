@@ -10,7 +10,7 @@
 
 namespace ghassanpl::formats::sexpressions
 {
-	/// Consumes `[list]` or `atom`
+	/// Consumes `[list]` or `atom`; a ',' (comma character) is considered its own atom
 	auto consume_value(std::string_view& sexp_str, std::array<char, 2> braces = { '[', ']' }) -> nlohmann::json;
 
 	/// Consumes a space-delimited `word`, `'string' "literal"`, or `14.46` number
@@ -36,10 +36,20 @@ namespace ghassanpl::formats::sexpressions
 		/// Try string literals first
 		if (sexp_str.starts_with('\''))
 			return parsing::consume_c_string<'\''>(sexp_str).second;
-		else if (sexp_str.starts_with('"'))
+		
+		if (sexp_str.starts_with('"'))
 			return parsing::consume_c_string<'"'>(sexp_str).second;
 
-		auto result = string_ops::consume_until(sexp_str, [=](auto ch) { return string_ops::ascii::isspace(ch) || ch == end_brace; });
+		/// Try comma as a unique token
+		if (string_ops::consume(sexp_str, ','))
+			return nlohmann::json(",");
+
+		/// Then, try everything else until space, closing brace or comma
+		auto result = string_ops::consume_until(sexp_str, [=](auto ch) { 
+			return string_ops::ascii::isspace(ch) || 
+				ch == end_brace ||
+				ch == ',';
+		});
 
 		if (result == "true") return true;
 		if (result == "false") return false;

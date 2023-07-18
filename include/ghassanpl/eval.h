@@ -4,138 +4,110 @@
 
 #pragma once
 
-#include <nlohmann/json.hpp>
+#include "json_helpers.h"
 #include "string_ops.h"
 #include <format>
+#include <print>
 #include <variant>
 #include <span>
 
-namespace ghassanpl
+namespace ghassanpl::eval
 {
-	namespace detail
+	using json = nlohmann::json;
+	static inline const json null_json;
+	struct value
 	{
-		constexpr const char* json_type_name(nlohmann::json::value_t type) noexcept
+		std::variant<json, json*, json const*> v;
+
+		value() noexcept = default;
+		value(value const&) noexcept = default;
+		value(value&&) noexcept = default;
+		value& operator=(value const&) noexcept = default;
+		value& operator=(value&&) noexcept = default;
+
+		template <typename... ARGS>
+		requires std::constructible_from<json, ARGS...>
+		explicit(false) value(ARGS&&... args) noexcept : v(json(std::forward<ARGS>(args)...)) {}
+
+		explicit(false) value(json&& j) noexcept : v(std::move(j)) {}
+		explicit(false) value(json const* j) noexcept : v(std::move(j)) {}
+		explicit(false) value(json* j) noexcept : v(std::move(j)) {}
+
+		bool is_lval() const noexcept { return v.index() == 1; }
+		bool is_rval() const noexcept { return v.index() == 0; }
+		bool is_ref() const noexcept { return v.index() == 2; }
+
+		json& lval() { return *std::get<json*>(v); }
+
+		void ref() && = delete;
+
+		json const& ref() const&
 		{
-			switch (type)
+			switch (v.index())
 			{
-				using enum nlohmann::detail::value_t;
-			case null:
-				return "null";
-			case object:
-				return "object";
-			case array:
-				return "array";
-			case string:
-				return "string";
-			case boolean:
-				return "boolean";
-			case binary:
-				return "binary";
-			case discarded:
-				return "discarded";
-			default:
-				return "number";
+			case 0: return std::get<json>(v);
+			case 1: return *std::get<json*>(v);
+			case 2: return *std::get<json const*>(v);
 			}
+			return null_json;
 		}
-	}
+
+		json const& forward() const&
+		{
+			switch (v.index())
+			{
+			case 0: return std::get<json>(v);
+			case 1: return *std::get<json*>(v);
+			case 2: return *std::get<json const*>(v);
+			}
+			return null_json;
+		}
+
+		json forward() &&
+		{
+			switch (v.index())
+			{
+			case 0: return std::move(std::get<json>(v));
+			case 1: return *std::get<json*>(v);
+			case 2: return *std::get<json const*>(v);
+			}
+			return null_json;
+		}
+
+		explicit(false) operator json const& () const&
+		{
+			return ref();
+		}
+
+		json const& operator*() const&
+		{
+			return ref();
+		}
+
+		explicit(false) operator json () &&
+		{
+			return static_cast<value&&>(*this).forward();
+		}
+
+		json operator*() &&
+		{
+			return static_cast<value&&>(*this).forward();
+		}
+
+		json const* operator->() const& noexcept { return &ref(); }
+	};
 
 	/// NOTE: Decade syntax is slower to execute but more natural
 	template <bool DECADE_SYNTAX = false>
-	struct eval_env
+	struct environment
 	{
-		using json = nlohmann::json;
-
-		static inline const json null_json;
-
-		struct value
-		{
-			std::variant<json, json*, json const*> v;
-
-			value() noexcept = default;
-			value(value const&) noexcept = default;
-			value(value&&) noexcept = default;
-			value& operator=(value const&) noexcept = default;
-			value& operator=(value&&) noexcept = default;
-
-			template <typename... ARGS>
-			requires std::constructible_from<json, ARGS...>
-			explicit(false) value(ARGS&&... args) noexcept : v(json(std::forward<ARGS>(args)...)) {}
-
-			explicit(false) value(json&& j) noexcept : v(std::move(j)) {}
-			explicit(false) value(json const* j) noexcept : v(std::move(j)) {}
-			explicit(false) value(json* j) noexcept : v(std::move(j)) {}
-
-			bool is_lval() const noexcept { return v.index() == 1; }
-			bool is_rval() const noexcept { return v.index() == 0; }
-			bool is_ref() const noexcept { return v.index() == 2; }
-
-			json& lval() { return *std::get<json*>(v); }
-			
-			void ref() && = delete;
-
-			json const& ref() const &
-			{
-				switch (v.index())
-				{
-				case 0: return std::get<json>(v);
-				case 1: return *std::get<json*>(v);
-				case 2: return *std::get<json const*>(v);
-				}
-				return null_json;
-			}
-
-			json const& forward() const &
-			{
-				switch (v.index())
-				{
-				case 0: return std::get<json>(v);
-				case 1: return *std::get<json*>(v);
-				case 2: return *std::get<json const*>(v);
-				}
-				return null_json;
-			}
-
-			json forward() &&
-			{
-				switch (v.index())
-				{
-				case 0: return std::move(std::get<json>(v));
-				case 1: return *std::get<json*>(v);
-				case 2: return *std::get<json const*>(v);
-				}
-				return null_json;
-			}
-
-			operator json const& () const&
-			{
-				return ref();
-			}
-
-			json const& operator*() const &
-			{
-				return ref();
-			}
-
-			operator json () &&
-			{
-				return forward();
-			}
-
-			json operator*() &&
-			{
-				return forward();
-			}
-
-			json const* operator->() const & noexcept { return &ref(); }
-		};
-
-		using self_type = eval_env<DECADE_SYNTAX>;
+		using self_type = environment<DECADE_SYNTAX>;
 		static constexpr bool decade_syntax = DECADE_SYNTAX;
 		static constexpr bool sexps_syntax = !DECADE_SYNTAX;
 
-		using eval_func = std::function<value(eval_env&, std::vector<value>)>;
+		using eval_func = std::function<value(self_type&, std::vector<value>)>;
 
-		eval_env* parent_env = nullptr; /// TODO: How to do const parent envs, or const vars?
+		self_type* parent_env = nullptr; /// TODO: How to do const parent envs, or const vars?
 		std::map<std::string, eval_func, std::less<>> funcs;
 		eval_func unknown_func_eval;
 		std::function<void(std::string_view)> error_handler;
@@ -144,7 +116,7 @@ namespace ghassanpl
 		std::map<std::string, eval_func, std::less<>> prefix_macros; /// eval('.test') -> eval(prefix_macros['.']('.test'))
 		std::function<bool(json const&)> truthiness_function;
 
-		eval_env* get_root_env() const noexcept { return parent_env ? parent_env->get_root_env() : this; }
+		self_type* get_root_env() const noexcept { return parent_env ? parent_env->get_root_env() : this; }
 
 		auto find_in_user_storage(this auto&& self, std::string_view name)
 		{
@@ -227,12 +199,7 @@ namespace ghassanpl
 				const auto args_count = args.size();
 				const bool infix = (args_count % 2) == 1;
 
-				if (args_count >= 1 && (*args[0] == "list" || *args[0] == "eval")) /// Special form: ignore decade syntax and return a sexp
-				{
-					funcname = std::string{ *args[0] } + ":";
-					arguments = std::move(args);
-				}
-				else if (args_count == 1)
+				if (args_count == 1)
 				{
 					funcname = *args[0];
 					arguments = std::move(args);
@@ -249,14 +216,29 @@ namespace ghassanpl
 					bool first = true;
 					/// First, check that all function words are actually words
 					/// TODO: Handle variadic arguments by compressing multiple identical `function_identifier`s into "<function_identifier>*"
+					std::string last_function_identifier;
+					bool argument_variadic = false;
 					for (size_t i = infix; i < args_count; i += 2)
 					{
 						auto& function_identifier = args[i];
-						if (function_identifier->is_string())
+						if (function_identifier->is_string() && !std::string_view{*function_identifier}.empty())
 						{
-							funcname += *function_identifier;
-							funcname += ':';
-
+							if (last_function_identifier == std::string_view{ *function_identifier })
+							{
+								if (!argument_variadic)
+								{
+									funcname.back() = '*';
+									funcname += ':';
+									argument_variadic = true;
+								}
+							}
+							else
+							{
+								argument_variadic = false;
+								funcname += *function_identifier;
+								funcname += ':';
+								last_function_identifier = *function_identifier;
+							}
 							arguments.push_back(std::move(args[i + 1]));
 						}
 						else
@@ -401,7 +383,7 @@ namespace ghassanpl
 			if (type != json::value_t::discarded && args[arg_num]->type() != type)
 			{
 				throw std::runtime_error(std::format("argument #{} to function {} must be of type {}, {} given",
-					arg_num, args[0]->dump(), detail::json_type_name(type), detail::json_type_name(args[arg_num]->type())));
+					arg_num, args[0]->dump(), formats::json::type_name(type), formats::json::type_name(args[arg_num]->type())));
 			}
 
 			return args[arg_num]->type();
@@ -444,7 +426,7 @@ namespace ghassanpl
 			using enum nlohmann::json::value_t;
 			static constexpr nlohmann::json::value_t any = nlohmann::json::value_t::discarded;
 
-			using env_type = eval_env<DECADE_SYNTAX>;
+			using env_type = environment<DECADE_SYNTAX>;
 			using json_pointer = nlohmann::json::json_pointer;
 
 			static json_pointer make_pointer(json const& index)
@@ -554,6 +536,8 @@ namespace ghassanpl
 
 			static inline value get_of(env_type& e, std::vector<value> args)
 			{
+				/// TODO: make this work for strings
+				
 				e.eval_args(args, 2);
 				const json_pointer index = base_lib::make_pointer(args[1]);
 				value& container = args[2];
@@ -605,14 +589,26 @@ namespace ghassanpl
 
 			static inline value op_not(env_type& e, std::vector<value> args) { e.eval_args(args, 1);  return !e.is_true(args[1]); }
 			static inline value op_and(env_type& e, std::vector<value> args) {
-				e.eval_args(args, 2);
-				auto const left = e.eval_arg(args, 1);
-				return e.is_true(left) ? e.eval_arg(args, 2) : std::move(left);
+				e.assert_min_args(args, 2);
+				value left;
+				for (size_t i = 1; i < args.size(); ++i)
+				{
+					left = e.eval_arg(args, i);
+					if (!e.is_true(left))
+						return left;
+				}
+				return left;
 			}
 			static inline value op_or(env_type& e, std::vector<value> args) {
-				e.eval_args(args, 2);
-				auto const left = e.eval_arg(args, 1);
-				return e.is_true(left) ? std::move(left) : e.eval_arg(args, 2);
+				e.assert_min_args(args, 2);
+				value left;
+				for (size_t i = 1; i < args.size(); ++i)
+				{
+					left = e.eval_arg(args, i);
+					if (e.is_true(left))
+						return left;
+				}
+				return left;
 			}
 
 			static inline value op_plus(env_type& e, std::vector<value> args) { e.eval_args(args, 2);   return *args[1] + *args[2]; }
@@ -631,13 +627,63 @@ namespace ghassanpl
 				return j.is_string() ? j.get_ref<json::string_t const&>().size() : j.size();
 			}
 
+			static inline std::string stringify(value const& arg, std::string_view fmt = "{}")
+			{
+				return ghassanpl::formats::json::visit(arg.ref(), [&](auto const& val) {
+					if constexpr (std::is_same_v<std::remove_cvref_t<decltype(val)>, nlohmann::json::array_t>)
+						return std::vformat(fmt, std::make_format_args(arg->dump()));
+					else if constexpr (std::is_same_v<std::remove_cvref_t<decltype(val)>, nlohmann::json::object_t>)
+						return std::vformat(fmt, std::make_format_args(arg->dump()));
+					else if constexpr (std::is_same_v<std::remove_cvref_t<decltype(val)>, nlohmann::json::binary_t>)
+						return std::vformat(fmt, std::make_format_args(arg->dump()));
+					else if constexpr (std::is_same_v<std::remove_cvref_t<decltype(val)>, nullptr_t>)
+						return "null"s;
+					else
+						return std::vformat(fmt, std::make_format_args(val));
+				});
+			}
+
+
+			static inline value str(env_type& e, std::vector<value> args)
+			{
+				auto arg = e.eval_arg(args, 1);
+				return stringify(arg);
+			}
+
+			static inline value format(env_type& e, std::vector<value> args)
+			{
+				e.assert_min_args(args, 1);
+				e.eval_args(args);
+
+				return string_ops::format_callback(args[1].ref(), [&](size_t index, std::string_view fmt, std::string& output) {
+					auto& arg = args[2 + index];
+					output += stringify(arg, fmt);
+				});
+			}
+
+			static inline value print(env_type& e, std::vector<value> args)
+			{
+				e.assert_args(args, 1);
+				auto fmted = format(e, std::move(args));
+				std::print("{}", fmted->get_ref<nlohmann::json::string_t const&>());
+				return null_json;
+			}
+
+			static inline value println(env_type& e, std::vector<value> args)
+			{
+				e.assert_args(args, 1);
+				auto fmted = format(e, std::move(args));
+				std::println("{}", fmted->get_ref<nlohmann::json::string_t const&>());
+				return null_json;
+			}
+
 			static inline json prefix_macro_get(env_type const&, std::vector<value> args) {
 				return json{ "get", string_view{args[0]}.substr(1) };
 			};
 
 			static inline void set_macro_prefix_get(env_type& e, std::string const& prefix = ".", std::string const& prefix_eval_func_name = "dot", std::string const& get_func_name = "get")
 			{
-				e.prefix_macros[prefix] = [get_func_name, prefix_size = prefix.size()](eval_env<true> const& e, std::vector<value> args) {
+				e.prefix_macros[prefix] = [get_func_name, prefix_size = prefix.size()](self_type const& e, std::vector<value> args) {
 					return json{ get_func_name, std::string{*args[0]}.substr(prefix_size)};
 				};
 				e.funcs[prefix_eval_func_name] = [prefix](self_type const& e, std::vector<value>) -> value {
@@ -673,7 +719,11 @@ namespace ghassanpl
 					e.funcs["var:"] = new_var;
 					e.funcs["var:=:"] = new_var;
 					e.funcs["list:"] = list;
+					e.funcs["list:,:"] = list;
+					e.funcs["list:,*:"] = list;
 					e.funcs["eval:"] = eval;
+					e.funcs["eval:,:"] = eval;
+					e.funcs["eval:,*:"] = eval;
 					e.funcs[":==:"] = op_eq;
 					e.funcs[":eq:"] = op_eq;
 					e.funcs[":!=:"] = op_neq;
@@ -687,14 +737,30 @@ namespace ghassanpl
 					e.funcs[":<=:"] = op_le;
 					e.funcs[":le:"] = op_le;
 					e.funcs["not:"] = op_not;
+					e.funcs[":and*:"] = op_and;
 					e.funcs[":and:"] = op_and;
 					e.funcs[":or:"] = op_or;
+					e.funcs[":or*:"] = op_or;
 					e.funcs[":+:"] = op_plus;
 					e.funcs["type-of:"] = type_of;
 					e.funcs["typeof:"] = type_of;
 					e.funcs["size-of:"] = size_of;
 					e.funcs["sizeof:"] = size_of;
 					e.funcs["#:"] = size_of;
+
+					e.funcs["str:"] = str;
+
+					e.funcs["format:"] = format;
+					e.funcs["format:,:"] = format;
+					e.funcs["format:,*:"] = format;
+
+					e.funcs["print:"] = print;
+					e.funcs["print:,:"] = print;
+					e.funcs["print:,*:"] = print;
+
+					e.funcs["println:"] = println;
+					e.funcs["println:,:"] = println;
+					e.funcs["println:,*:"] = println;
 				}
 			}
 		};
@@ -711,13 +777,16 @@ namespace ghassanpl
 			typename LIB_TYPE<decade_syntax>::import_to(*this);
 		}
 
-		/// TODO: lib_list - erase:of:, erase:at:, append:to:, pop:, sublist:from:to:, reverse:, etc.
+		/// TODO: lib_core - erase:at:, insert:at:, append:to:, :..:, floor:, progn: (evaluate within a new scope), iteration over maps
+		/// 
+		/// TODO: misc - parse:, ? cond: ?
+		/// TODO: lib_pred - true? false? null? map? list? string? bool? num? int?
+		/// TODO: lib_list - erase:of:, pop:, sublist:from:to:, reverse:, last-of:, etc.
 		/// TODO: lib_err - try:catch:, try:catch:finally:, throw:, etc.
-		/// TODO: lib_iter - for-each:in:do:, map:using:, etc.
+		/// TODO: lib_iter - for:from:to:do:, for:in:do:, map:using:, :mapped-with: etc.
 		/// TODO: lib_string - :..:, :contains:, etc.
 		/// TODO: lib_math - max-of:and:, max-in:, floor:, ceil:, :**:, abs:, sqrt:
 		/// TODO: lib_json - flattened:, patch, diff, merge, parse, dump, etc.
-		/// TODO: lib_io - print:, println:, print:using:, format:using:, :fmt:
-
 	};
+
 }

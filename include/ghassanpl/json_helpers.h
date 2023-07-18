@@ -290,25 +290,47 @@ namespace ghassanpl::formats
 
 		/// Calls `func` with the actual value inside `j`; similar to `std::visit`
 		template <typename VISIT_FUNC>
-		void visit(nlohmann::json const& j, VISIT_FUNC&& func)
+		auto visit(nlohmann::json const& j, VISIT_FUNC&& func)
 		{
 			switch (j.type())
 			{
-			case nlohmann::json::value_t::object: func(j.get_ref<nlohmann::json::object_t const&>()); return;
-			case nlohmann::json::value_t::array: func(j.get_ref<nlohmann::json::array_t const&>()); return;
-			case nlohmann::json::value_t::string: func(j.get_ref<nlohmann::json::string_t const&>()); return;
-			case nlohmann::json::value_t::boolean: func(j.get_ref<nlohmann::json::boolean_t const&>()); return;
-			case nlohmann::json::value_t::number_integer: func(j.get_ref<nlohmann::json::number_integer_t const&>()); return;
-			case nlohmann::json::value_t::number_unsigned: func(j.get_ref<nlohmann::json::number_unsigned_t const&>()); return;
-			case nlohmann::json::value_t::number_float: func(j.get_ref<nlohmann::json::number_float_t const&>()); return;
-			case nlohmann::json::value_t::binary: func(j.get_ref<nlohmann::json::binary_t const&>()); return;
-			case nlohmann::json::value_t::null: func(nullptr); return;
-			case nlohmann::json::value_t::discarded:
+			using enum nlohmann::detail::value_t;
+			case object: return func(j.get_ref<nlohmann::json::object_t const&>());
+			case array: return func(j.get_ref<nlohmann::json::array_t const&>());
+			case string: return func(j.get_ref<nlohmann::json::string_t const&>());
+			case boolean: return func(j.get_ref<nlohmann::json::boolean_t const&>());
+			case number_integer: return func(j.get_ref<nlohmann::json::number_integer_t const&>());
+			case number_unsigned: return func(j.get_ref<nlohmann::json::number_unsigned_t const&>());
+			case number_float: return func(j.get_ref<nlohmann::json::number_float_t const&>());
+			case binary: return func(j.get_ref<nlohmann::json::binary_t const&>());
 			default:
-				break;
+				return func(nullptr);
 			}
 		}
 
+		constexpr const char* type_name(nlohmann::json::value_t type) noexcept
+		{
+			switch (type)
+			{
+				using enum nlohmann::detail::value_t;
+			case null:
+				return "null";
+			case object:
+				return "object";
+			case array:
+				return "array";
+			case string:
+				return "string";
+			case boolean:
+				return "boolean";
+			case binary:
+				return "binary";
+			case discarded:
+				return "discarded";
+			default:
+				return "number";
+			}
+		}
 		/// @}
 	}
 

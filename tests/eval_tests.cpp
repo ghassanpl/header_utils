@@ -7,7 +7,7 @@ using namespace ghassanpl;
 using namespace std::string_literals;
 using json = nlohmann::json;
 
-using value = ghassanpl::eval_env<true>::value;
+using value = ghassanpl::eval::value;
 
 TEST(eval_and_interpolate, basics)
 {
@@ -15,19 +15,31 @@ TEST(eval_and_interpolate, basics)
 	auto str = parsed.dump(1);
 	EXPECT_EQ(parsed.size(), 4);
 
-	ghassanpl::eval_env<true> env;
-	env.funcs["test:with:"] = [](eval_env<true>& env, std::vector<value> args) -> value { return "dupa"; };
+	ghassanpl::eval::environment<true> env;
+	env.funcs["test:with:"] = [](eval::environment<true>& env, std::vector<value> args) -> value { return "dupa"; };
 	EXPECT_EQ(ghassanpl::interpolate_eval("hel[test 5 with two]lo", env), "heldupalo");
 
 	env.set_user_var("hello", 50);
 }
 
+TEST(eval, variadics)
+{
+	using formats::sexpressions::parse_value;
+	ghassanpl::eval::environment<true> env;
+	env.import_lib<ghassanpl::eval::environment<true>::lib_core>();
+	//env.import_lib<ghassanpl::eval::lib_io>();
+
+	EXPECT_EQ(env.safe_eval(parse_value("[list a, b, c, d, e]")), (json{"a", "b", "c", "d", "e"}));
+	EXPECT_EQ(env.safe_eval(parse_value("[5 and 6 and 7 and 8]")), json(8));
+	EXPECT_EQ(env.safe_eval(parse_value("[format '{} hello {:03} world {}', 5, 6, 7]")), "5 hello 006 world 7");
+	//EXPECT_EQ(env.safe_eval(parse_value("[object [a 5], [b 6], [c 7]")), (json{ {"a", 5}, {"b", 6}, {"c", 7} }));
+}
+
 TEST(eval, lib_base)
 {
 	using formats::sexpressions::parse_value;
-
-	ghassanpl::eval_env<true> env;
-	env.import_lib<ghassanpl::eval_env<true>::lib_core>();
+	ghassanpl::eval::environment<true> env;
+	env.import_lib<ghassanpl::eval::environment<true>::lib_core>();
 
 	env.safe_eval(parse_value("[var a = a]"));
 	env.safe_eval(parse_value("[var b = b]"));
@@ -35,8 +47,8 @@ TEST(eval, lib_base)
 	env.safe_eval(parse_value("[var three = 3]"));
 	env.safe_eval(parse_value("[var five = 5]"));
 
-	EXPECT_EQ(env.safe_eval(parse_value("[list .a .b .c]")), (json{ "a", "b", "c" }));
-	EXPECT_EQ(env.safe_eval(parse_value("[eval .a .b .c]")), json("c"));
+	EXPECT_EQ(env.safe_eval(parse_value("[list .a, .b, .c]")), (json{ "a", "b", "c" }));
+	EXPECT_EQ(env.safe_eval(parse_value("[eval .a, .b, .c]")), json("c"));
 	EXPECT_EQ(env.safe_eval(parse_value("[while true do [break]]")), nullptr);
 	EXPECT_EQ(env.safe_eval(parse_value("[while true do [break .five]]")), json(5));
 	EXPECT_EQ(env.safe_eval(parse_value("[while false do [break 5]]")), nullptr);
@@ -55,7 +67,7 @@ TEST(eval, lib_base)
 	EXPECT_EQ(env.safe_eval(parse_value(".p")), json(10));
 	EXPECT_EQ(env.safe_eval(parse_value(".q")), json(20));
 	
-	env.safe_eval(parse_value("[var l = [list a b c]]"));
+	env.safe_eval(parse_value("[var l = [list a, b, c]]"));
 	EXPECT_EQ(env.safe_eval(parse_value(".l")), (json{"a", "b", "c"}));
 	EXPECT_EQ(env.safe_eval(parse_value("[get 0 of .l]")), (json("a")));
 	EXPECT_EQ(env.safe_eval(parse_value("[get 1 of .l]")), (json("b")));
@@ -97,5 +109,15 @@ TEST(eval, lib_base)
 	EXPECT_EQ(env.safe_eval(parse_value(".c")), json("c"));
 	EXPECT_EQ(env.safe_eval(parse_value(".three")), json(3));
 	EXPECT_EQ(env.safe_eval(parse_value(".five")), json(5));
+	
+	EXPECT_EQ(env.safe_eval(parse_value("[str 5]")), json("5"));
+	EXPECT_EQ(env.safe_eval(parse_value("[str 5.5]")), json("5.5"));
+	EXPECT_EQ(env.safe_eval(parse_value("[str true]")), json("true"));
+	EXPECT_EQ(env.safe_eval(parse_value("[str null]")), json("null"));
+	EXPECT_EQ(env.safe_eval(parse_value("[str [list a, b, c]]")), json("[\"a\",\"b\",\"c\"]"));
+	EXPECT_EQ(env.safe_eval(parse_value("[str \"ass\"")), json("ass"));
+	EXPECT_EQ(env.safe_eval(parse_value("[str sass")), json("sass"));
+	EXPECT_EQ(env.safe_eval(parse_value("[str .c")), json("c"));
+	EXPECT_EQ(env.safe_eval(parse_value("[str .five")), json("5"));
 
 }

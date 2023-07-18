@@ -526,7 +526,7 @@ namespace ghassanpl::string_ops
 	{
 		if (str.ends_with(val))
 		{
-			str.remove_prefix(1);
+			str.remove_suffix(1);
 			return true;
 		}
 		return false;
@@ -1382,6 +1382,46 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] inline double stod(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return detail::string_to_number<double>(str, idx, format); }
 	[[nodiscard]] inline long double stold(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return detail::string_to_number<long double>(str, idx, format); }
 	/// @}
+
+	template <typename CALLBACK>
+	requires std::invocable<CALLBACK, size_t, std::string_view, std::string&>
+	std::string format_callback(std::string_view fmt, CALLBACK&& callback)
+	{
+		std::string result;
+		size_t aid = 0;
+		while (!fmt.empty())
+		{
+			auto text = consume_until(fmt, '{');
+			result += text;
+			if (fmt.empty())
+				continue;
+			std::ignore = consume(fmt, '{');
+
+			if (consume(fmt, '{'))
+			{
+				result += '{';
+				continue;
+			}
+			else
+			{
+				std::string fmt_clause_str = "{";
+				auto fmt_clause = string_ops::consume_until_delim(fmt, '}');
+				if (!string_ops::consume_at_end(fmt_clause, '}'))
+					throw std::format_error("missing '}' in format string");
+				if (!fmt_clause.empty())
+				{
+					auto num = string_ops::consume_until(fmt_clause, ':');
+					if (!num.empty())
+						aid = string_ops::stoull(num);
+					fmt_clause_str += fmt_clause;
+				}
+				fmt_clause_str += '}';
+				callback(aid, std::string_view{ fmt_clause_str }, result);
+				++aid;
+			}
+		}
+		return result;
+	}
 
 /// \showinitializer
 #define GHPL_FORMAT_TEMPLATE typename... GHPL_ARGS

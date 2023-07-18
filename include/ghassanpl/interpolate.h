@@ -31,7 +31,7 @@ namespace ghassanpl
 	}
 
 	template <bool SYNTAX>
-	std::string interpolate_eval(std::string_view str, eval_env<SYNTAX>& env)
+	std::string interpolate_eval(std::string_view str, eval::environment<SYNTAX>& env)
 	{
 		std::string result;
 		while (!str.empty())
@@ -43,7 +43,7 @@ namespace ghassanpl
 				result += '[';
 			else
 			{
-				using value = eval_env<SYNTAX>::value;
+				using eval::value;
 				value call = formats::sexpressions::consume_list(str);
 				value call_result = env.eval(call);
 				formats::json::visit(call_result, [&](auto&& val) {
