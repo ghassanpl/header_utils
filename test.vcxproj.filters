@@ -31,6 +31,9 @@
     <Filter Include="Header Files\cpp98">
       <UniqueIdentifier>{19080340-b9ca-4827-a5ed-e6d3dde2b121}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\eval_libs">
+      <UniqueIdentifier>{4c0e9e65-f1c8-4bc5-ba70-64b3c905ff1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tests\tests_common.h">
@@ -233,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="include\ghassanpl\windows\console.h">
       <Filter>Header Files\windows</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\eval_libs\lib_core.h">
+      <Filter>Header Files\eval_libs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

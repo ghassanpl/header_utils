@@ -1,4 +1,5 @@
 #include "../include/ghassanpl/eval.h"
+#include "../include/ghassanpl/eval_libs/lib_core.h"
 #include "../include/ghassanpl/interpolate.h"
 #include "../include/ghassanpl/wilson.h"
 #include <gtest/gtest.h>
@@ -26,7 +27,7 @@ TEST(eval, variadics)
 {
 	using formats::sexpressions::parse_value;
 	ghassanpl::eval::environment<true> env;
-	env.import_lib<ghassanpl::eval::environment<true>::lib_core>();
+	env.import_lib<ghassanpl::eval::lib_core>();
 	//env.import_lib<ghassanpl::eval::lib_io>();
 
 	EXPECT_EQ(env.safe_eval(parse_value("[list a, b, c, d, e]")), (json{"a", "b", "c", "d", "e"}));
@@ -39,7 +40,7 @@ TEST(eval, lib_base)
 {
 	using formats::sexpressions::parse_value;
 	ghassanpl::eval::environment<true> env;
-	env.import_lib<ghassanpl::eval::environment<true>::lib_core>();
+	env.import_lib<ghassanpl::eval::lib_core>();
 
 	env.safe_eval(parse_value("[var a = a]"));
 	env.safe_eval(parse_value("[var b = b]"));

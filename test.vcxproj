@@ -183,6 +183,7 @@
     <ClInclude Include="include\ghassanpl\enums.h" />
     <ClInclude Include="include\ghassanpl\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\eval.h" />
+    <ClInclude Include="include\ghassanpl\eval_libs\lib_core.h" />
     <ClInclude Include="include\ghassanpl\flag_bits.h" />
     <ClInclude Include="include\ghassanpl\flag_bits_v.h" />
     <ClInclude Include="include\ghassanpl\formats.h" />
