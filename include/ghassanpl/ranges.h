@@ -184,9 +184,6 @@ namespace ghassanpl
 		struct from_range_t { explicit from_range_t() = default; };
 		constexpr inline from_range_t from_range;
 
-		template <class>
-		constexpr inline bool always_false = false;
-
 		template <class RANGE, class CONTAINER>
 		concept _Ref_converts = std::convertible_to<std::ranges::range_reference_t<RANGE>, std::ranges::range_value_t<CONTAINER>>;
 
@@ -267,7 +264,7 @@ namespace ghassanpl
 				return static_cast<decltype(CONTAINER(std::declval<RANGE>(), std::declval<ARGS>()...))*>(nullptr);
 			else if constexpr (requires (RANGE range, ARGS... args) { CONTAINER(from_range, range, args...); })
 				return static_cast<decltype(CONTAINER(from_range, std::declval<RANGE>(), std::declval<ARGS>()...))*>(nullptr);
-			else if constexpr (requires (phony_input_iterator<RANGE> it, ARGS...) { CONTAINER(it, it, args...);})
+			else if constexpr (requires (phony_input_iterator<RANGE> it, ARGS... args) { CONTAINER(it, it, args...);})
 				return static_cast<decltype(CONTAINER(std::declval<phony_input_iterator<RANGE>>(), std::declval<phony_input_iterator<RANGE>>(), std::declval<ARGS>()...))*>(nullptr);
 		}
 

@@ -302,13 +302,13 @@ namespace ghassanpl::formats::wilson
 	inline nlohmann::json load_file(std::filesystem::path const& from, std::error_code& ec)
 	{
 		const auto source = ghassanpl::make_mmap_source<char>(from, ec);
-		return ec ? nlohmann::json{} : wilson::parse(std::string_view{ source });
+		return ec ? nlohmann::json{} : wilson::parse(std::string_view{ source.begin(), source.end() });
 	}
 
 	inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json const& or_json)
 	{
 		std::error_code ec;
 		const auto source = ghassanpl::make_mmap_source<char>(from, ec);
-		return ec ? or_json : wilson::parse(std::string_view{ source });
+		return ec ? or_json : wilson::parse(std::string_view{ source.begin(), source.end() });
 	}
 }

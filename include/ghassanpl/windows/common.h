@@ -187,7 +187,7 @@ namespace ghassanpl::win
 	static constexpr HRESULT E_OUTOFMEMORY_ = (HRESULT)0x8007000EL;
 	static constexpr HRESULT E_INVALIDARG_ = (HRESULT)0x80070057L;
 
-	static constexpr HRESULT RPC_E_CHANGED_MODE = (HRESULT)0x80010106L; /// Possible return value from CoInitializeEx
+	static constexpr HRESULT RPC_E_CHANGED_MODE_ = (HRESULT)0x80010106L; /// Possible return value from CoInitializeEx
 
 	extern "C"
 	{

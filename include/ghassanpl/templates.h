@@ -9,61 +9,11 @@
 #include <optional>
 #include <any>
 
+#include "cpp23.h"
+
 #if !defined(__cpp_concepts)
 #error "This library requires concepts"
 #endif
-
-/// Concepts
-namespace ghassanpl
-{
-	template <class T, class... TYPES>
-	constexpr inline bool is_any_of_v = std::disjunction_v<std::is_same<T, TYPES>...>;
-
-	namespace detail
-	{
-		template <class _Ty>
-		using with_reference = _Ty&;
-
-		template <class T>
-		concept can_reference = requires { typename with_reference<T>; };
-	}
-
-	template <class T>
-	concept dereferenceable = requires(T& t) {
-		{ *t } -> detail::can_reference;
-	};
-
-#if defined(__cpp_lib_forward_like)
-	using std::forward_like;
-#else
-	template <class Ty, class Uty>
-	[[nodiscard]] [[msvc::intrinsic]] constexpr auto&& forward_like(Uty&& Ux) noexcept
-	{
-		static_assert(detail::can_reference<Ty>, "forward_like's first template argument must be a referenceable type.");
-
-		using UnrefT = std::remove_reference_t<Ty>;
-		using UnrefU = std::remove_reference_t<Uty>;
-		if constexpr (std::is_const_v<UnrefT>) {
-			if constexpr (std::is_lvalue_reference_v<Ty>) {
-				return static_cast<const UnrefU&>(Ux);
-			}
-			else {
-				return static_cast<const UnrefU&&>(Ux);
-			}
-		}
-		else {
-			if constexpr (std::is_lvalue_reference_v<Ty>) {
-				return static_cast<UnrefU&>(Ux);
-			}
-			else {
-				return static_cast<UnrefU&&>(Ux);
-			}
-		}
-	}
-#endif
-
-
-}
 
 /// Manipulators
 /// All of these are pretty much stolen from Daisy Hollman (https://twitter.com/the_whole_daisy), her twitter is fantastic

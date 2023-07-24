@@ -240,6 +240,9 @@
     <ClInclude Include="include\ghassanpl\eval_libs\lib_core.h">
       <Filter>Header Files\eval_libs</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\cpp23.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />

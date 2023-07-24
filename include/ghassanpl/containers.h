@@ -117,8 +117,8 @@ namespace ghassanpl
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
-			return std::forward_like<MAP>(it->second);
-		return std::forward<DEF>(def);
+			return forward_like<MAP>(it->second);
+		return decltype(it->second){ std::forward<DEF>(def) };
 	}
 
 	/// Basically map.at() but works with heterogenous key types
@@ -127,7 +127,7 @@ namespace ghassanpl
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
-			return std::forward_like<MAP>(it->second);
+			return forward_like<MAP>(it->second);
 		throw std::out_of_range("invalid map key");
 	}
 

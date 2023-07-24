@@ -76,7 +76,7 @@ namespace ghassanpl::formats
 				return {};
 
 			std::vector<std::string> result;
-			ghassanpl::string_ops::split(std::string_view{ source }, '\n', [&](std::string_view line, bool) { result.emplace_back(line); });
+			ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', [&](std::string_view line, bool) { result.emplace_back(line); });
 			return result;
 		}
 
@@ -88,7 +88,7 @@ namespace ghassanpl::formats
 				throw std::runtime_error(format("file '{}' not found", from.string()));
 
 			std::vector<std::string> result;
-			ghassanpl::string_ops::split(std::string_view{ source }, '\n', [&](std::string_view line, bool) { result.emplace_back(line); });
+			ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', [&](std::string_view line, bool) { result.emplace_back(line); });
 			return result;
 		}
 
@@ -101,7 +101,7 @@ namespace ghassanpl::formats
 				throw std::runtime_error(format("file '{}' not found", from.string()));
 
 			std::vector<std::string> result;
-			ghassanpl::string_ops::split(std::string_view{ source }, '\n', [&](std::string_view line, bool) { callback(line); });
+			ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', [&](std::string_view line, bool) { callback(line); });
 			return result;
 		}
 

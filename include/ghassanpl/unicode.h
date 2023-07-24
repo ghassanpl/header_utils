@@ -5,6 +5,7 @@
 #pragma once
 
 #include "string_ops.h"
+#include "cpp23.h"
 
 namespace ghassanpl::string_ops
 {
@@ -291,7 +292,7 @@ namespace ghassanpl::string_ops
 			T result{};
 			std::memcpy(&result, source, sizeof(T));
 			if (std::endian::native != source_endianness)
-				return std::byteswap(result);
+				return byteswap(result);
 			return result;
 		}
 	}

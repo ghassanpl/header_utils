@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../eval.h"
+#include <print>
 
 namespace ghassanpl::eval
 {
@@ -38,9 +39,10 @@ namespace ghassanpl::eval
 	{
 		using enum nlohmann::json::value_t;
 
-		using base_lib::env_type;
-		using base_lib::json_pointer;
-		using base_lib::any;
+		using base_type = base_lib<DECADE_SYNTAX>;
+		using base_type::env_type;
+		using base_type::json_pointer;
+		using base_type::any;
 
 		static inline value if_then_else(env_type& e, std::vector<value> args)
 		{
@@ -122,7 +124,7 @@ namespace ghassanpl::eval
 			/// TODO: make this work for strings
 
 			e.eval_args(args, 2);
-			const json_pointer index = base_lib::make_pointer(args[1]);
+			const json_pointer index = base_type::make_pointer(args[1]);
 			value& container = args[2];
 			if (!container->contains(index))
 				return null_json;
@@ -241,7 +243,7 @@ namespace ghassanpl::eval
 			return string_ops::format_callback(args[1].ref(), [&](size_t index, std::string_view fmt, std::string& output) {
 				auto& arg = args[2 + index];
 				output += stringify(arg, fmt);
-				});
+			});
 		}
 
 		static inline value print(env_type& e, std::vector<value> args)
@@ -293,7 +295,6 @@ namespace ghassanpl::eval
 				e.funcs["get:of:"] = get_of;
 				e.funcs[":@:"] = get_of_inv;
 				e.funcs[":at:"] = get_of_inv;
-				e.funcs[":in:"] = get_of;
 				e.funcs[":=:"] = var_set;
 				e.funcs["var:"] = new_var;
 				e.funcs["var:=:"] = new_var;
@@ -347,13 +348,16 @@ namespace ghassanpl::eval
 
 
 	/// TODO: lib_core - erase:at:, insert:at:, append:to:, :..:, floor:, progn: (evaluate within a new scope), iteration over maps
-	/// TODO: misc - parse:, ? cond: ?, :contains: / :in:, move:<varname> (std::move()ing a variable), apply:<funcname>to:<list>
+	///			parse:, ? cond: ?, ? match: / switch: ? :contains: / :in:, move:<varname> (std::move()ing a variable), apply:<funcname>to:<list>
+	///			var?:<varname> (whether a var exists)
 	/// 
-	/// TODO: lib_pred - true?, false?, null?, map?, list?, string?, bool?, num?, int?, empty?, :is:
-	/// TODO: lib_list - erase:of:, pop:, sublist:from:to:, reverse:, last-of:, etc.
+	/// TODO: lib_pred - true?:, false?:, null?:, map?:, list?:, string?:, bool?:, num?:, int?:, empty?:, :is: ([a is b] -> [b? a])
+	/// TODO: lib_list - erase:of:, pop:, sublist:from:to:, reverse:, last-of:, index-of:, :++:, sort:, etc.
 	/// TODO: lib_err - try:catch:, try:catch:finally:, throw:, etc.
-	/// TODO: lib_iter - for:from:to:do:, for:in:do:, map:using:, :mapped-with:, keys-of:, values-of: etc.
-	/// TODO: lib_string - :..:, :contains:, etc.
-	/// TODO: lib_math - max-of:and:, max-in:, floor:, ceil:, :**:, abs:, sqrt:
+	/// TODO: lib_iter - for:<varname>from:<int>to:<int>do:<block>, for:in:do:, map:using:, erase-from:<cont>if:<pred>, <list>:only-if:<pred>, <list>:mapped-with:<pred>, keys-of:<map>, values-of:<map>, etc.
+	/// TODO: lib_string - :..*:, :contains:, substr, parse:as:, split:[by:], join:[via:], index-of:, ascii/alpha?:, ascii/digit?:, etc.
+	/// TODO: lib_math - max-of:and:, max-in:, floor:, ceil:, :**:, abs:, sqrt:, hex:<str>, bin:<>
 	/// TODO: lib_json - flattened:, patch, diff, merge, parse, dump, etc.
+	/// TODO: lib_bit - :&:, :|:, :^:, ~:, etc
+	/// TODO: lib_ffi - stuff in libffi
 }

@@ -1028,7 +1028,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <string_or_char NEEDLE, string_or_char REPLACE>
-	[[nodiscard]] inline std::string replaced(std::string&& subject, NEEDLE&& search, REPLACE&& replace)
+	[[nodiscard]] inline std::string replaced(std::string subject, NEEDLE&& search, REPLACE&& replace)
 	{
 		string_ops::replace(subject, std::forward<NEEDLE>(search), std::forward<REPLACE>(replace));
 		return subject;

@@ -9,6 +9,8 @@
 #include <bit>
 #include <stdexcept>
 
+#include "cpp23.h"
+
 #if !defined(__cpp_concepts)
 #error "This library requires concepts"
 #endif
@@ -16,41 +18,6 @@
 namespace ghassanpl
 {
 	
-#if __cpp_lib_byteswap < 202110L
-	template <class>
-	inline constexpr bool always_false = false;
-
-	[[nodiscard]] constexpr unsigned short byteswap_ushort(const unsigned short val) noexcept {
-		return static_cast<unsigned short>((val << 8) | (val >> 8));
-	}
-
-	[[nodiscard]] constexpr unsigned long byteswap_ulong(const unsigned long val) noexcept {
-		return (val << 24) | ((val << 8) & 0x00FF'0000) | ((val >> 8) & 0x0000'FF00) | (val >> 24);
-	}
-
-	[[nodiscard]] constexpr unsigned long long byteswap_uint64(const unsigned long long val) noexcept {
-		return (val << 56) | ((val << 40) & 0x00FF'0000'0000'0000) | ((val << 24) & 0x0000'FF00'0000'0000)
-			| ((val << 8) & 0x0000'00FF'0000'0000) | ((val >> 8) & 0x0000'0000'FF00'0000)
-			| ((val >> 24) & 0x0000'0000'00FF'0000) | ((val >> 40) & 0x0000'0000'0000'FF00) | (val >> 56);
-	}
-
-	template <class T, std::enable_if_t<std::is_integral_v<T>, int> = 0>
-	[[nodiscard]] constexpr T byteswap(const T val) noexcept
-	{
-		if constexpr (sizeof(T) == 1)
-			return val;
-		else if constexpr (sizeof(T) == 2)
-			return static_cast<T>(byteswap_ushort(static_cast<unsigned short>(val)));
-		else if constexpr (sizeof(T) == 4)
-			return static_cast<T>(byteswap_ulong(static_cast<unsigned long>(val)));
-		else if constexpr (sizeof(T) == 8)
-			return static_cast<T>(byteswap_uint64(static_cast<unsigned long long>(val)));
-		else
-			static_assert(always_false<T>, "unsupported integer size");
-	}
-#else
-	using std::byteswap;
-#endif
 
 	/// \addtogroup Bits
 	/// Types and functions for retrieving and manipulating bits in integral values

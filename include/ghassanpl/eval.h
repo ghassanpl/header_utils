@@ -7,7 +7,6 @@
 #include "json_helpers.h"
 #include "string_ops.h"
 #include <format>
-#include <print>
 #include <variant>
 #include <span>
 
@@ -207,6 +206,7 @@ namespace ghassanpl::eval
 						funcname += ':';
 					}
 
+					/// TODO: We need to put every variadic run of arguments into a separate list!
 					std::string last_function_identifier;
 					bool argument_variadic = false;
 					for (size_t i = infix; i < args_count; i += 2)

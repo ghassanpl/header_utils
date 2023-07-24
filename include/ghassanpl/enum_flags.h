@@ -356,7 +356,9 @@ namespace ghassanpl
 			case enum_flag_change::unset: return unset(args...);
 			case enum_flag_change::toggle: return toggle(args...);
 			}
+#if defined(__cpp_lib_unreachable) && __cpp_lib_unreachable >= 202202L
 			std::unreachable();
+#endif
 		}
 
 		constexpr enum_flag_change change_of(enum_type flag) const noexcept
