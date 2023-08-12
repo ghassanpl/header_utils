@@ -957,10 +957,10 @@ namespace ghassanpl::string_ops
 	/// Returns a string that is created by joining together string representation of the elements in the `source` range, separated by `delim`; `delim` is only added between elements; 
 	/// the last element is delimited by `last_delim` instead of `delim`.
 	template <std::ranges::range T, string_or_char DELIM, string_or_char LAST_DELIM>
-	[[nodiscard]] inline auto join_and(T const& source, DELIM const& delim, LAST_DELIM&& last_delim)
+	[[nodiscard]] inline auto join_and(T&& source, DELIM const& delim, LAST_DELIM&& last_delim)
 	{
-		using std::begin;
-		using std::end;
+		using std::ranges::begin;
+		using std::ranges::end;
 		using std::next;
 
 		std::stringstream strm;
@@ -986,7 +986,7 @@ namespace ghassanpl::string_ops
 	/// except each element is transformed by `transform_func` before being stringified and added to the result.
 	/// \param transform_func must be invocable as `transform_fun(el)` for each element in the `source` range
 	template <std::ranges::range T, typename FUNC, string_or_char DELIM>
-	[[nodiscard]] inline auto join(T const& source, DELIM const& delim, FUNC&& transform_func)
+	[[nodiscard]] inline auto join(T&& source, DELIM const& delim, FUNC&& transform_func)
 	{
 		std::stringstream strm;
 		bool first = true;

@@ -103,6 +103,7 @@ namespace ghassanpl::eval
 		self_type* parent_env = nullptr; /// TODO: How to do const parent envs, or const vars?
 		std::map<std::string, eval_func, std::less<>> funcs;
 		eval_func unknown_func_eval;
+		std::function<value(self_type&, std::string_view)> unknown_var_eval;
 		std::function<void(std::string_view)> error_handler;
 		std::map<std::string, json, std::less<>> user_storage;
 		void* user_data = nullptr;
@@ -124,7 +125,7 @@ namespace ghassanpl::eval
 			auto var = find_in_user_storage(name);
 			if (var.first)
 				return &var.second->second;
-			return null_json;
+			return unknown_var_eval ? unknown_var_eval(*this, name) : value(null_json);
 		}
 
 		json& set_user_var(std::string_view name, value val, bool force_local = false)
