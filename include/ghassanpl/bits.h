@@ -170,7 +170,7 @@ namespace ghassanpl
 		static constexpr bool is_static = BIT_NUM != dynamic_bit_number;
 		static constexpr bool is_const = std::is_const_v<VALUE_TYPE>;
 
-		constexpr bit_reference(VALUE_TYPE& ref, size_t bitnum) requires !is_static
+		constexpr bit_reference(VALUE_TYPE& ref, size_t bitnum) requires (!is_static)
 			: base_type(bitnum)
 			, m_value_ref(ref)
 		{
@@ -198,14 +198,14 @@ namespace ghassanpl
 			return (m_value_ref & this->m_bit_mask) != 0;
 		}
 
-		template <bit_integral VALUE_TYPE, size_t BIT_NUM>
-		[[nodiscard]] constexpr bool operator==(bit_reference<VALUE_TYPE, BIT_NUM> const& other) const noexcept
+		template <bit_integral OTHER_VALUE_TYPE, size_t OTHER_BIT_NUM>
+		[[nodiscard]] constexpr bool operator==(bit_reference<OTHER_VALUE_TYPE, OTHER_BIT_NUM> const& other) const noexcept
 		{
 			return this->operator bool() == other.operator bool();
 		}
 
-		template <bit_integral VALUE_TYPE, size_t BIT_NUM>
-		[[nodiscard]] constexpr auto operator<=>(bit_reference<VALUE_TYPE, BIT_NUM> const& other) const noexcept
+		template <bit_integral OTHER_VALUE_TYPE, size_t OTHER_BIT_NUM>
+		[[nodiscard]] constexpr auto operator<=>(bit_reference<OTHER_VALUE_TYPE, OTHER_BIT_NUM> const& other) const noexcept
 		{
 			return this->operator bool() <=> other.operator bool();
 		}

@@ -8,10 +8,6 @@
 #include <algorithm>
 #include <iostream>
 
-#if !defined(__cpp_nontype_template_args) || __cpp_nontype_template_args < 201911L
-#error "This library requires non-type template parameters with class type support"
-#endif
-
 namespace ghassanpl
 {
 
@@ -59,14 +55,14 @@ namespace ghassanpl
 		struct is_displacement_of {
 			using location_type = LOCATION_NAMED_TYPE;
 			template <typename SELF_TYPE>
-			static constexpr bool applies_to = std::same_as<std::remove_cvref_t<LOCATION_NAMED_TYPE>::base_type, SELF_TYPE::base_type>;
+			static constexpr bool applies_to = std::same_as<typename std::remove_cvref_t<LOCATION_NAMED_TYPE>::base_type, typename SELF_TYPE::base_type>;
 		};
 
 		template <typename DISPLACEMENT_NAMED_TYPE>
 		struct is_location_of {
 			using displacement_type = DISPLACEMENT_NAMED_TYPE;
 			template <typename SELF_TYPE>
-			static constexpr bool applies_to = std::same_as<std::remove_cvref_t<DISPLACEMENT_NAMED_TYPE>::base_type, SELF_TYPE::base_type>;
+			static constexpr bool applies_to = std::same_as<typename std::remove_cvref_t<DISPLACEMENT_NAMED_TYPE>::base_type, typename SELF_TYPE::base_type>;
 		};
 
 		template <typename DISPLACEMENT_TYPE, typename LOCATION_TYPE>
@@ -86,15 +82,14 @@ namespace ghassanpl
 		using subtractable = traits::subtractable;
 		using location = traits::location;
 		using displacement = traits::displacement;
-		using is_displacement_of = traits::is_displacement_of;
-
+		
 		using base_type = T;
 		using self_type = named<T, PARAMETER, TRAITS...>;
 		static constexpr detail::FixedString name = PARAMETER;
 
 	private:
-		template <typename T>
-		static constexpr auto find_displacement_type_impl(traits::is_location_of<T>)
+		template <typename U>
+		static constexpr auto find_displacement_type_impl(traits::is_location_of<U>)
 		{
 			return std::type_identity<std::remove_cvref_t<T>>{};
 		}
@@ -103,8 +98,8 @@ namespace ghassanpl
 			return std::type_identity<void>{};
 		}
 
-		template <typename FIRST_TRAIT, typename... TRAITS>
-		static constexpr auto find_displacement_type_traits(FIRST_TRAIT trait, TRAITS... traits)
+		template <typename FIRST_TRAIT, typename... REST>
+		static constexpr auto find_displacement_type_traits(FIRST_TRAIT trait, REST... traits)
 		{
 			using type_candidate = std::remove_cvref_t<typename decltype(find_displacement_type_impl(trait))::type>;
 			if constexpr (std::is_same_v<type_candidate, void>)
@@ -130,7 +125,7 @@ namespace ghassanpl
 
 		template <typename... ARGS>
 		requires std::constructible_from<T, ARGS...>
-		constexpr explicit named(ARGS&&... args) noexcept(std::is_nothrow_constructible<T, ARGS...>) : value(std::forward<ARGS>(args)...) {}
+		constexpr explicit named(ARGS&&... args) noexcept(std::is_nothrow_constructible_v<T, ARGS...>) : value(std::forward<ARGS>(args)...) {}
 
 		template <typename U>
 		requires has_trait<traits::implicitly_constructible> && std::is_same_v<std::remove_cvref_t<U>, T>

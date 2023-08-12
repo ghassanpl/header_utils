@@ -272,8 +272,8 @@ namespace ghassanpl
 		using basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>::basic_mmap;
 		using typename basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>::mmap_context;
 
-		template <typename VALUE_TYPE>
-		friend mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length, std::error_code& error) noexcept;
+		template <typename VALUE_TYPE_>
+		friend mmap_source<VALUE_TYPE_> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE_>::size_type offset, typename mmap_source<VALUE_TYPE_>::size_type length, std::error_code& error) noexcept;
 
 	protected:
 

@@ -84,7 +84,7 @@ namespace ghassanpl::string_ops
 	/// 
 	/// @{
 
-	[[nodiscard]] constexpr std::string_view make_sv(nullptr_t, nullptr_t) noexcept { return std::string_view{}; }
+	[[nodiscard]] constexpr std::string_view make_sv(std::nullptr_t, std::nullptr_t) noexcept { return std::string_view{}; }
 
 	template <std::contiguous_iterator IT, std::contiguous_iterator IT2>
 	requires std::is_same_v<std::iter_value_t<IT>, char>&& std::is_same_v<std::iter_value_t<IT2>, char>
@@ -100,7 +100,7 @@ namespace ghassanpl::string_ops
 	template <typename C>
 	[[nodiscard]] constexpr std::basic_string_view<C> make_sv(std::basic_string<C> const& id) noexcept { return id; }
 
-	[[nodiscard]] constexpr std::string make_string(nullptr_t, nullptr_t) { return std::string{}; }
+	[[nodiscard]] constexpr std::string make_string(std::nullptr_t, std::nullptr_t) { return std::string{}; }
 
 	template <std::contiguous_iterator IT, std::contiguous_iterator IT2>
 	requires std::is_same_v<std::iter_value_t<IT>, char>&& std::is_same_v<std::iter_value_t<IT2>, char>

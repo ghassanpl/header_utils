@@ -171,9 +171,13 @@ namespace ghassanpl::formats::wilson
 		{
 			double result = 0;
 			const auto fcresult = string_ops::from_chars(str, result);
-			str = string_ops::make_sv(fcresult.ptr, str.end());
-			return result;
+			if (fcresult.ec == std::errc{})
+			{
+				str = string_ops::make_sv(fcresult.ptr, str.end());
+				return result;
+			}
 		}
+		/// TODO: Maybe throw instead? Or use optional api?
 		return std::string(1, string_ops::consume(str)); /// eat at least 1 character so we don't fall into an infinite loop
 	}
 
