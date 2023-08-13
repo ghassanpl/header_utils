@@ -11,6 +11,9 @@ namespace ghassanpl
 	template <typename T>
 	concept bytelike = (alignof(T) == alignof(std::byte) && sizeof(T) == sizeof(std::byte) && std::is_trivial_v<T>);
 
+	template <typename T>
+	concept bytelike_range = std::ranges::range<T> && bytelike<std::ranges::range_value_t<T>>;
+
 	/// Converts a span of trivial values to a span of \c bytelike s
 	template <bytelike TO, typename FROM>
 	requires std::is_trivially_copyable_v<FROM>
@@ -26,6 +29,12 @@ namespace ghassanpl
 	{
 		return { reinterpret_cast<TO const*>(std::addressof(pod)), sizeof(pod) };
 	}
+	
+	template <bytelike FROM> constexpr auto to_u8(FROM byte) noexcept { return std::bit_cast<uint8_t>(byte); }
+	template <bytelike FROM> constexpr auto to_char(FROM byte) noexcept { return std::bit_cast<char>(byte); }
+	template <bytelike FROM> constexpr auto to_byte(FROM byte) noexcept { return std::bit_cast<std::byte>(byte); }
+	template <bytelike FROM> constexpr auto to_uchar(FROM byte) noexcept { return std::bit_cast<unsigned char>(byte); }
+	template <bytelike FROM> constexpr auto to_char8(FROM byte) noexcept { return std::bit_cast<char8_t>(byte); }
 
 	template <bytelike FROM> constexpr auto as_chars(std::span<FROM const> bytes) noexcept { return as_bytelikes<char>(bytes); }
 	template <bytelike FROM> constexpr auto as_bytes(std::span<FROM const> bytes) noexcept { return as_bytelikes<std::byte>(bytes); }

@@ -59,29 +59,22 @@ namespace ghassanpl
 		0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 	};
 
-	/// Calculates a CRC32 for a span of bytelikes
+	/// Calculates a CRC32 for a range of bytelikes
 	/// \ingroup Hashes
-	template <bytelike T>
-	[[nodiscard]] constexpr uint32_t crc32(std::span<T const> bytes)
+	template <bytelike_range RANGE>
+	[[nodiscard]] constexpr uint32_t crc32(RANGE&& bytes)
 	{
 		uint32_t crc = 0xFFFFFFFFu;
-		for (auto byte: as_u8s(bytes))
-			crc = crc32_table[(crc ^ byte) & 0xFF] ^ (crc >> 8);
+		for (auto byte: bytes)
+			crc = crc32_table[(crc ^ to_u8(byte)) & 0xFF] ^ (crc >> 8);
 		return ~crc;
-	}
-
-	/// Calculates a CRC32 for a string
-	/// \ingroup Hashes
-	[[nodiscard]] constexpr uint32_t crc32(std::string_view bytes)
-	{
-		return crc32(std::span{ bytes });
 	}
 
 	/// Calculates a CRC32 of a source_location (constexpr, so can be used at compile time)
 	/// \ingroup Hashes
 	[[nodiscard]] constexpr auto crc32(const std::source_location& k)
 	{
-		return crc32(k.file_name()) ^ k.line() ^ k.column();
+		return crc32(std::string_view{ k.file_name() }) ^ k.line() ^ k.column();
 	}
 
 	static constexpr inline uint64_t crc64_table[256] = {
@@ -119,62 +112,93 @@ namespace ghassanpl
 		0x14DEA25F3AF9026D, 0x562E43B4931334FE, 0x913F6188692D6F4B, 0xD3CF8063C0C759D8, 0x5DEDC41A34BBEEB2, 0x1F1D25F19D51D821, 0xD80C07CD676F8394, 0x9AFCE626CE85B507,
 	};
 
-	/// Calculates a CRC4 for a span of bytelikes
+	/// Calculates a CRC4 for a range of bytelikes
 	/// \ingroup Hashes
-	template <bytelike T>
-	[[nodiscard]] constexpr uint64_t crc64(std::span<T const> bytes)
+	template <bytelike_range RANGE>
+	[[nodiscard]] constexpr uint64_t crc64(RANGE&& bytes)
 	{
 		uint64_t crc = 0;
-		for (auto byte : as_u8s(bytes))
-			crc = crc64_table[crc >> 56] ^ ((crc << 8U) ^ byte);
+		for (auto byte : bytes)
+			crc = crc64_table[crc >> 56] ^ ((crc << 8U) ^ to_u8(byte));
 		return ~crc;
-	}
-
-	/// Calculates a CRC64 for a string
-	/// \ingroup Hashes
-	[[nodiscard]] constexpr auto crc64(std::string_view bytes)
-	{
-		return crc64(std::span{ bytes });
 	}
 
 	/// Calculates a CRC64 of a source_location (constexpr, so can be used at compile time)
 	/// \ingroup Hashes
 	[[nodiscard]] constexpr auto crc64(const std::source_location& k)
 	{
-		return crc64(k.file_name()) ^ k.line() ^ k.column();
+		return crc64(std::string_view{ k.file_name() }) ^ k.line() ^ k.column();
 	}
 
-	/// Calculates a FNV Hash for a span of bytes
+	/// Calculates a FNV Hash for a range of bytes
 	/// \ingroup Hashes
-	template <bytelike T>
-	[[nodiscard]] constexpr uint64_t fnv(std::span<T const> bytes)
+	template <bytelike_range RANGE>
+	[[nodiscard]] constexpr uint64_t fnv(RANGE&& bytes)
 	{
 		uint64_t result = 0xcbf29ce484222325;
-		for (auto byte: bytes)
+		for (auto byte : bytes)
 			result = (result ^ std::bit_cast<uint8_t>(byte)) * 0x00000100000001b3U;
 		return result;
 	}
 
-	struct splitmix_state { uint64_t state{}; };
-	/// 
-	[[nodiscard]] constexpr uint64_t splitmix(splitmix_state& state, uint64_t stream_id = 0x9e3779b97f4a7c15)
+	namespace integer
 	{
-		state.state = state.state + stream_id;
-		uint64_t z = state.state;
-		z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;
-		z = (z ^ (z >> 27)) * 0x94d049bb133111eb;
-		z = z ^ (z >> 31);
-		return z;
-	}
+		struct splitmix_state { uint64_t state{}; };
+		/// 
+		[[nodiscard]] constexpr uint64_t splitmix(splitmix_state& state, uint64_t stream_id = 0x9e3779b97f4a7c15)
+		{
+			state.state = state.state + stream_id;
+			uint64_t z = state.state;
+			z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;
+			z = (z ^ (z >> 27)) * 0x94d049bb133111eb;
+			z = z ^ (z >> 31);
+			return z;
+		}
 
-	///
-	[[nodiscard]] constexpr uint64_t splitmix(uint64_t seed, uint64_t index, uint64_t stream_id = 0x9e3779b97f4a7c15)
-	{
-		uint64_t z = seed + index * stream_id;
-		z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;
-		z = (z ^ (z >> 27)) * 0x94d049bb133111eb;
-		z = z ^ (z >> 31);
-		return z;
+		///
+		[[nodiscard]] constexpr uint64_t splitmix(uint64_t seed, uint64_t index, uint64_t stream_id = 0x9e3779b97f4a7c15)
+		{
+			uint64_t z = seed + index * stream_id;
+			z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;
+			z = (z ^ (z >> 27)) * 0x94d049bb133111eb;
+			z = z ^ (z >> 31);
+			return z;
+		}
+
+		///
+		[[nodiscard]] constexpr uint64_t murmurhash(uint64_t k)
+		{
+			k ^= k >> 33;
+			k *= 0xff51afd7ed558ccdULL;
+			k ^= k >> 33;
+			k *= 0xc4ceb9fe1a85ec53ULL;
+			k ^= k >> 33;
+			return k;
+		}
+
+		///
+		[[nodiscard]] constexpr uint64_t murmurhash_2(uint64_t x, uint64_t y)
+		{
+			constexpr auto kMul = 0x9ddfea08eb382d69ULL;
+			auto a = (x ^ y) * kMul;
+			a ^= (a >> 47);
+			auto b = (y ^ a) * kMul;
+			b ^= (b >> 47);
+			b *= kMul;
+			return b;
+		}
+
+		[[nodiscard]] constexpr uint32_t triple32(uint32_t x)
+		{
+			x ^= x >> 17;
+			x *= 0xed5ad4bbU;
+			x ^= x >> 11;
+			x *= 0xac4c1b51U;
+			x ^= x >> 15;
+			x *= 0x31848babU;
+			x ^= x >> 14;
+			return x;
+		}
 	}
 
 	constexpr void ce_hash_combine(size_t& hash1, size_t hash2) noexcept
@@ -198,7 +222,7 @@ namespace ghassanpl
 	[[nodiscard]] constexpr size_t ce_hash(T const& val) noexcept { return fnv(as_u8s(val)); }
 
 	template <typename T>
-	[[nodiscard]] constexpr size_t ce_hash(std::basic_string_view<T> const& val) noexcept { return fnv(std::span{ val }); }
+	[[nodiscard]] constexpr size_t ce_hash(std::basic_string_view<T> const& val) noexcept { return fnv(val); }
 
 	template <typename FIRST, typename... T>
 	requires (sizeof...(T) > 0)

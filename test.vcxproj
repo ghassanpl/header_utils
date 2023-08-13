@@ -206,10 +206,12 @@
     <ClInclude Include="include\ghassanpl\mmap.h" />
     <ClInclude Include="include\ghassanpl\mmap_impl.h" />
     <ClInclude Include="include\ghassanpl\named.h" />
+    <ClInclude Include="include\ghassanpl\noise.h" />
     <ClInclude Include="include\ghassanpl\parsing.h" />
     <ClInclude Include="include\ghassanpl\platform.h" />
     <ClInclude Include="include\ghassanpl\random.h" />
     <ClInclude Include="include\ghassanpl\random_geom.h" />
+    <ClInclude Include="include\ghassanpl\random_seq.h" />
     <ClInclude Include="include\ghassanpl\ranges.h" />
     <ClInclude Include="include\ghassanpl\rec2.h" />
     <ClInclude Include="include\ghassanpl\regex.h" />
@@ -245,6 +247,7 @@
     <ClCompile Include="tests\align_tests.cpp" />
     <ClCompile Include="tests\assuming_tests.cpp" />
     <ClCompile Include="tests\buffers_tests.cpp" />
+    <ClCompile Include="tests\byte_tests.cpp" />
     <ClCompile Include="tests\colors_test.cpp" />
     <ClCompile Include="tests\configs_tests.cpp" />
     <ClCompile Include="tests\containers_tests.cpp" />

@@ -13,12 +13,9 @@ namespace ghassanpl::random
 {
 	/// TODO: Tests
 	/// check out https://github.com/effolkronium/random/
-
-	namespace
-	{
-		thread_local inline std::default_random_engine default_random_engine;
-	}
-
+	
+	thread_local inline std::default_random_engine default_random_engine;
+	
 	template <typename INTEGER = uint64_t, typename RANDOM = std::default_random_engine>
 	constexpr INTEGER integer(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -102,7 +99,7 @@ namespace ghassanpl::random
 
 	template <typename RANDOM = std::default_random_engine, typename T>
 	requires is_any_of_v<T, short, int, long, long long, unsigned short, unsigned int, unsigned long, unsigned long long>
-	T integer_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	T in_integer_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		if (from >= to) return T{};
 		std::uniform_int_distribution<T> dist{ from, to };
@@ -110,7 +107,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine, std::floating_point T>
-	T real_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	T in_real_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		if (from >= to) return T{};
 		std::uniform_real_distribution<T> dist{ from, to };
@@ -118,7 +115,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
-	auto range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	auto in_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		if (from >= to) return T{};
 
@@ -128,20 +125,20 @@ namespace ghassanpl::random
 			return (T)dist(rng);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
-			return real_range(from, to, rng);
+			return in_real_range(from, to, rng);
 		else if constexpr (is_any_of_v<T, short, int, long, long long, unsigned short, unsigned int, unsigned long, unsigned long long>)
-			return integer_range(from, to, rng);
+			return in_integer_range(from, to, rng);
 		else if constexpr (is_any_of_v<T, unsigned char, signed char, char, wchar_t, char8_t, char16_t, char32_t>)
 		{
 			/// Unfortunately `uniform_int_distribution` and, as a result, `integer_range` is defined only on the non-char integral types,
 			/// which means we have to cast
 			using signed_as_T = std::conditional_t<std::is_signed_v<T>, int64_t, uint64_t>; /// 64bits because char32_t can TECHNICALLY be 64-bit
-			return static_cast<T>(integer_range(static_cast<signed_as_T>(from), static_cast<signed_as_T>(to), rng));
+			return static_cast<T>(in_integer_range(static_cast<signed_as_T>(from), static_cast<signed_as_T>(to), rng));
 		}
 		else
 		{
 			const auto i = to - from;
-			const auto r = ::ghassanpl::random::range(decltype(i){}, i);
+			const auto r = ::ghassanpl::random::in_range(decltype(i){}, i);
 			return from + r;
 		}
 	}
@@ -167,6 +164,13 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine>
+	bool with_probability(double probability, double& result, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	{
+		auto res = result = percentage(rng);
+		return res < std::clamp(probability, 0.0, 1.0);
+	}
+
+	template <typename RANDOM = std::default_random_engine>
 	bool one_in(size_t n, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		if (n == 0) return false;
@@ -187,10 +191,11 @@ namespace ghassanpl::random
 	{
 		using std::size;
 		using std::begin;
-		return begin(cont) + integer_range(0LL, (int64_t)size(cont) - 1, rng);
+		return begin(cont) + in_integer_range(0LL, (int64_t)size(cont) - 1, rng);
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
+	requires std::ranges::sized_range<T>
 	auto iterator(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::size;
@@ -199,23 +204,27 @@ namespace ghassanpl::random
 		auto begin_it = begin(cont);
 		const auto end_it = end(cont);
 		const auto valid_count = std::count_if(begin_it, end_it, pred);
-		auto item_position = integer_range(0LL, (int64_t)valid_count - 1, rng);
+		auto item_position = in_integer_range(0LL, (int64_t)valid_count - 1, rng);
 		for (; begin_it != end_it; ++begin_it)
-			if (pred(*begin_it) && item_position-- == 0)
+		{
+			if (pred(*begin_it) && (item_position--) == 0)
+			{
 				return begin_it;
+			}
+		}
 		return end_it;
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
 	auto index(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		return std::distance(begin(cont), iterator(cont, rng)) - 1;
+		return std::distance(begin(cont), iterator(cont, rng));
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
 	auto index(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		return std::distance(begin(cont), iterator(cont, std::forward<PRED>(pred), rng)) - 1;
+		return std::distance(begin(cont), iterator(cont, std::forward<PRED>(pred), rng));
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
@@ -233,6 +242,27 @@ namespace ghassanpl::random
 		auto result = iterator(cont, std::forward<PRED>(predicate), rng);
 		return (result != end(cont)) ? std::to_address(result) : nullptr;
 	}
+
+	template <typename... T>
+	auto one_of(T&&... values)
+	{
+		/// TODO: Forward except last, if last matches rng concept, use last as rng, else use default_random_engine
+		static_assert(sizeof...(values) > 0, "at least one value must be provided");
+		auto v = std::array{ std::forward<T>(values)... };
+		return std::move(*element(v, ::ghassanpl::random::default_random_engine));
+	}
+
+	template <typename RANDOM = std::default_random_engine, typename T>
+	auto one_of(std::initializer_list<T> values, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	{
+		if (values.size() == 0) throw std::invalid_argument("values");
+		return *element(values, rng);
+	}
+
+	/// TODO: random_range()
+	/// 
+	/// TODO: template <typename T> T enum_value(enum_flags<T> set);
+	
 
 	template <typename RANDOM = std::default_random_engine, typename T>
 	auto make_bag_randomizer(T& container, RANDOM& rng = ::ghassanpl::random::default_random_engine)
