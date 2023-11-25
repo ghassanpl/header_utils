@@ -6,15 +6,16 @@
 
 #include <concepts>
 #include "source_location.h"
+#include "hashes.h"
 
 #if !defined(__cpp_concepts)
 #error "This library requires concepts"
 #endif
 
 #ifdef __INTELLISENSE__
-#define EQ_SOURCE_LOCATION = std::source_location{}
+#define EQ_SOURCE_LOCATION = source_location{}
 #else
-#define EQ_SOURCE_LOCATION = std::source_location::current()
+#define EQ_SOURCE_LOCATION = source_location::current()
 #endif
 
 namespace ghassanpl
@@ -39,9 +40,9 @@ namespace ghassanpl
 	struct with_sl
 	{
 		T Object;
-		std::source_location Location;
+		source_location Location;
 
-		with_sl(T t, std::source_location loc EQ_SOURCE_LOCATION)
+		with_sl(T t, source_location loc EQ_SOURCE_LOCATION)
 			: Object(std::move(t)), Location(std::move(loc))
 		{
 		}
@@ -54,21 +55,22 @@ namespace ghassanpl
 
 	/// Use as a function parameter type to capture both the parameter and the hash of the call-site source location.
 	/// \tparam HASH_FUNC a std::hash-style object type whose instances can hash `std::source_location`
-	template <typename T, typename HASH_FUNC>
+	template <typename T, typename HASH_FUNC = crc64_hasher>
 	struct with_slh
 	{
 		using hash_func = HASH_FUNC;
-		using hash_type = decltype(HASH_FUNC{}(std::source_location{}));
+		using hash_type = decltype(HASH_FUNC{}(source_location{}));
 		
 		T Object;
 		hash_type LocationHash;
 
+		template <typename U>
 #ifdef __INTELLISENSE__
-		with_slh(T t, hash_type loc)
+		with_slh(U&& t, hash_type loc = {})
 #else
-		with_slh(T t, hash_type loc = HASH_FUNC{}(std::source_location::current()))
+		with_slh(U&& t, hash_type loc = HASH_FUNC{}(source_location::current()))
 #endif
-			: Object(std::move(t)), LocationHash(loc)
+			: Object(std::forward<U>(t)), LocationHash(loc)
 		{
 		}
 

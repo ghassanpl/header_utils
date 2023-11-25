@@ -72,7 +72,7 @@ namespace ghassanpl
 
 	/// Calculates a CRC32 of a source_location (constexpr, so can be used at compile time)
 	/// \ingroup Hashes
-	[[nodiscard]] constexpr auto crc32(const std::source_location& k)
+	[[nodiscard]] constexpr auto crc32(const source_location& k)
 	{
 		return crc32(std::string_view{ k.file_name() }) ^ k.line() ^ k.column();
 	}
@@ -125,10 +125,15 @@ namespace ghassanpl
 
 	/// Calculates a CRC64 of a source_location (constexpr, so can be used at compile time)
 	/// \ingroup Hashes
-	[[nodiscard]] constexpr auto crc64(const std::source_location& k)
+	[[nodiscard]] constexpr auto crc64(const source_location& k)
 	{
 		return crc64(std::string_view{ k.file_name() }) ^ k.line() ^ k.column();
 	}
+
+	struct crc64_hasher
+	{
+		constexpr uint64_t operator()(source_location const& l) const { return crc64(l); }
+	};
 
 	/// Calculates a FNV Hash for a range of bytes
 	/// \ingroup Hashes
@@ -253,8 +258,8 @@ namespace ghassanpl
 
 	/// Combines an existing hash value (`seed`) with the hash of value `v`
 	/// \ingroup Hashes
-	template <typename T, typename HASHER = std::hash<T>>
-	constexpr void hash_combine_to(size_t& seed, T&& v, HASHER&& hasher = {})
+	template <typename T, typename HASHER = std::hash<std::remove_cvref_t<T>>>
+	constexpr void hash_combine_to(size_t& seed, T&& v, HASHER&& hasher = HASHER{})
 	{
 		constexpr size_t kMul = 0x9ddfea08eb382d69ULL;
 		size_t a = (hasher(v) ^ seed) * kMul;

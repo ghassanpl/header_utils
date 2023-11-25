@@ -10,6 +10,7 @@
 #include <charconv>
 #include <optional>
 #include <ranges>
+#include <numeric>
 
 #if !defined(__cpp_concepts)
 #error "This library requires concepts"
@@ -492,6 +493,29 @@ namespace ghassanpl::string_ops
 			return true;
 		}
 		return false;
+	}
+
+	/// Consumes any of the characters in 'chars' if it's the first char of `str`. 
+	/// \returns the consumed character, or \0 if none found
+	[[nodiscard]] inline char consume_any(std::string_view& str, std::string_view chars)
+	{
+		if (!str.empty() && chars.contains(str[0]))
+		{
+			const auto result = str[0];
+			str.remove_prefix(1);
+			return result;
+		}
+		return 0;
+	}
+
+	/// Consumes a run of any of the characters in 'chars' at the beginning of str
+	/// \returns the consumed character, or \0 if none found
+	[[nodiscard]] inline std::string_view consume_while_any(std::string_view& str, std::string_view chars)
+	{
+		const auto start = str.begin();
+		while (!str.empty() && chars.contains(str[0]))
+			str.remove_prefix(1);
+		return make_sv(start, str.begin());
 	}
 
 	/// Consumes a character from the beginning of `str` if it matches `pred(str[0])`.
@@ -1343,6 +1367,37 @@ namespace ghassanpl::string_ops
 	std::vector<std::string_view> word_wrap(std::string_view _source, T max_width, T letter_width)
 	{
 		return ::ghassanpl::string_ops::word_wrap(_source, max_width, [letter_width](std::string_view str) { return T(str.size() * letter_width); });
+	}
+
+	inline size_t levenshtein_distance(std::string_view s1, std::string_view s2)
+	{
+		if (s1.size() > s2.size())
+			std::swap(s1, s2);
+
+		const auto min_size = s1.size();
+		const auto max_size = s2.size();
+
+		std::vector<size_t> lev_dist(min_size + 1);
+		std::ranges::iota(lev_dist, 0);
+
+		for (size_t j = 1; j <= max_size; ++j)
+		{
+			size_t previous_diagonal = lev_dist[0];
+			size_t previous_diagonal_save{};
+			++lev_dist[0];
+
+			for (size_t i = 1; i <= min_size; ++i) 
+			{
+				previous_diagonal_save = lev_dist[i];
+				if (s1[i - 1] == s2[j - 1])
+					lev_dist[i] = previous_diagonal;
+				else
+					lev_dist[i] = std::min({ lev_dist[i - 1], lev_dist[i], previous_diagonal }) + 1;
+				previous_diagonal = previous_diagonal_save;
+			}
+		}
+
+		return lev_dist[min_size];
 	}
 
 	namespace detail

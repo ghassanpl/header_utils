@@ -189,14 +189,13 @@ namespace ghassanpl
 
 	/// std::variant get index of type
 
-
 	template <typename T, typename>
 	struct get_index;
 
 	template <size_t I, typename... Ts>
-	struct get_index_impl
+	struct get_index_impl : std::integral_constant<size_t, (size_t)-1>
 	{
-		static_assert((std::is_same_v<size_t, Ts> && ...), "type not a member");
+		//static_assert((std::is_same_v<size_t, Ts> && ...), "type not a member");
 	};
 
 	template <size_t I, typename T, typename... Ts>
@@ -221,7 +220,10 @@ namespace ghassanpl
 
 
 	template <typename T, typename U>
-	inline constexpr size_t get_index_v = get_index<T, U>::value;
+	inline constexpr size_t get_index_v = get_index<T, U>::value;\
+	
+	template <typename T, typename U>
+	inline constexpr bool has_type_v = get_index<T, U>::value != (size_t)-1;
 
 
 	//-------------------------------------------------------------------------------------------------------------

@@ -9,9 +9,7 @@
 #if !defined(__cpp_lib_format)
 #error "This library requires std::format"
 #endif
-#if !defined(__cpp_lib_source_location)
-#error "This library requires std::source_location"
-#endif
+#include "source_location.h"
 
 /// \defgroup Assuming Assuming
 /// An in-my-humble-opinion better version of the `assert` concept.
@@ -104,15 +102,23 @@
 		static std::thread::id _assuming_thread_id = std::this_thread::get_id(); \
 		auto _assuming_current_thread_id = std::this_thread::get_id(); \
 		if (_assuming_thread_id != _assuming_current_thread_id)\
-			::ghassanpl::ReportAssumptionFailure("this code will be executed in one thread only", { {"required_thread_id", ::ghassanpl::detail::GetFormattable(_assuming_thread_id)}, {"thread_id", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id)} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
+			::ghassanpl::ReportAssumptionFailure("this code will be executed in one thread only", { {"required_thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_thread_id))}, {"thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id))} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
 	}
 
-/// Assumes the point in code executes in the specified thread
+/// Assumes the point in code executes on the specified thread
 #define AssumingOnThread(thread_to_check, ...) { \
 		auto _assuming_thread_id = (thread_to_check); \
 		auto _assuming_current_thread_id = std::this_thread::get_id(); \
 		if (_assuming_thread_id != _assuming_current_thread_id)\
-			::ghassanpl::ReportAssumptionFailure("this code will be executed in one thread only", { {"required_thread_id", ::ghassanpl::detail::GetFormattable(_assuming_thread_id)}, { "thread_id", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id)} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
+			::ghassanpl::ReportAssumptionFailure("this code will be executed in one thread only", { {"required_thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_thread_id))}, { "thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id))} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
+	}
+
+/// Assumes the point in code DOES NOT execute on the specified thread
+#define AssumingNotOnThread(thread_to_check, ...) { \
+		auto _assuming_thread_id = (thread_to_check); \
+		auto _assuming_current_thread_id = std::this_thread::get_id(); \
+		if (_assuming_thread_id == _assuming_current_thread_id)\
+			::ghassanpl::ReportAssumptionFailure("this code will not be executed in specific thread", { {"forbidden_thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_thread_id))}, { "thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id))} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
 	}
 
 /// Assumes the expression is not (convertible to) a null pointer.
@@ -314,11 +320,11 @@ namespace ghassanpl
 	/// \param values The values of the expressions the assumption macro checked
 	/// \param data Any additional arguments you gave to the macro, std-formatted.
 	/// \param loc
-	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, std::source_location loc
+	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
 #if __INTELLISENSE__
 		= {}
 #else
-		= std::source_location::current()
+		= source_location::current()
 #endif
 	);
 }

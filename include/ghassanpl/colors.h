@@ -42,13 +42,13 @@ namespace ghassanpl
 	{
 #define DEF_COLOR(name, r, g, b) \
 	constexpr color_t get_##name(float alpha) { return color_t{ float(r), float(g), float(b), alpha }; } \
-	constexpr color_t name = get_##name(1.0f); 
+	constexpr inline color_t name = get_##name(1.0f); 
 #define DEF_COLORS(name, r, g, b) \
 	DEF_COLOR(name, r, g, b) \
 	constexpr color_t get_dark_##name(float alpha) { return color_t{ float(r) * 0.5f, float(g) * 0.5f, float(b) * 0.5f, alpha }; } \
-	constexpr color_t dark_##name = get_dark_##name(1.0f); \
+	constexpr inline color_t dark_##name = get_dark_##name(1.0f); \
 	constexpr color_t get_light_##name(float alpha) { return color_t{ r + float(1.0f-r) * 0.5f, g + float(1.0f-g) * 0.5f, b + float(1.0f-b) * 0.5f, alpha }; } \
-	constexpr color_t light_##name = get_light_##name(1.0f);
+	constexpr inline color_t light_##name = get_light_##name(1.0f);
 
 		DEF_COLORS(red, 1, 0, 0)
 		DEF_COLORS(green, 0, 1, 0)
@@ -64,7 +64,7 @@ namespace ghassanpl
 		
 		DEF_COLOR(black, 0, 0, 0)
 		DEF_COLOR(white, 1, 1, 1)
-		constexpr color_t transparent = get_black(0.0f);
+		constexpr inline color_t transparent = get_black(0.0f);
 
 		#undef DEF_COLOR
 		#undef DEF_COLORS

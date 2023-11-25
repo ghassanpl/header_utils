@@ -5,6 +5,7 @@
 #pragma once
 
 #include <functional>
+#include <optional>
 #include <utility>
 #include <map>
 #include <ranges>
@@ -145,6 +146,13 @@ namespace ghassanpl
 	auto make_single_time_function(FUNC&& func)
 	{
 		return make_single_time_function(std::function{ std::forward<FUNC>(func) });
+	}
+
+	///
+	template <typename T, typename FUNC>
+	auto transform(std::optional<T> const& value, FUNC&& func) -> decltype(std::optional{ func(value.value()) })
+	{
+		return value ? std::optional{ func(value.value()) } : std::nullopt;
 	}
 
 } // namespace util

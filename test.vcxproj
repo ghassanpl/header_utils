@@ -177,6 +177,7 @@
     <ClInclude Include="include\ghassanpl\constexpr_math.h" />
     <ClInclude Include="include\ghassanpl\containers.h" />
     <ClInclude Include="include\ghassanpl\cpp11\named.h" />
+    <ClInclude Include="include\ghassanpl\cpp11\string_view.h" />
     <ClInclude Include="include\ghassanpl\cpp23.h" />
     <ClInclude Include="include\ghassanpl\cpp98\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\di.h" />

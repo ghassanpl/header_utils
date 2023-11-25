@@ -7,8 +7,12 @@
 
 #if defined(__cpp_lib_source_location) && __cpp_lib_source_location >= 201907L && !defined(DOXYGEN)
 #include <source_location>
+namespace ghassanpl
+{
+    using std::source_location;
+}
 #else
-namespace std
+namespace ghassanpl
 {
 	struct source_location
 	{

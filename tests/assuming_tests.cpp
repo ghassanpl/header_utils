@@ -24,7 +24,7 @@ using name_value_pair = std::pair<std::string_view, std::string>;
 struct assuming_test : public ::testing::Test
 {
 	bool assumption_failed = false;
-	std::source_location last_where;
+	source_location last_where;
 	std::string last_expectation;
 	std::vector<name_value_pair> last_values;
 	std::string last_data;
@@ -38,7 +38,7 @@ struct assuming_test : public ::testing::Test
 		return std::forward<T>(v);
 	}
 
-	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<name_value_pair> values, std::string data, std::source_location where)
+	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<name_value_pair> values, std::string data, source_location where)
 	{
 		assumption_failed = true;
 		last_where = where;
@@ -72,7 +72,7 @@ struct assuming_test : public ::testing::Test
 #if ASSUMING_DEBUG
 #define EXPECT_ASSUMPTION_FAILED(func_name, ...) {\
 	assumption_failed = false; \
-	func_name (__VA_ARGS__ __VA_OPT__(,) "test({}, {})", 0, 5) ; auto current_location = std::source_location::current(); \
+	func_name (__VA_ARGS__ __VA_OPT__(,) "test({}, {})", 0, 5) ; auto current_location = source_location::current(); \
 	EXPECT_TRUE(assumption_failed) << #func_name; \
 	EXPECT_EQ(last_where.line(), current_location.line()); \
 	EXPECT_EQ(last_where.file_name(), current_location.file_name()); \
@@ -245,7 +245,7 @@ TEST_F(assuming_test, assumings_dont_copy_unnecessarily)
 
 /// TODO: Make sure everything works when ASSUMING_DEBUG is not defined
 
-void ghassanpl::ReportAssumptionFailure(std::string_view expectation, std::initializer_list<name_value_pair> values, std::string data, std::source_location where)
+void ghassanpl::ReportAssumptionFailure(std::string_view expectation, std::initializer_list<name_value_pair> values, std::string data, source_location where)
 {
 	current_test->ReportAssumptionFailure(expectation, std::move(values), std::move(data), where);
 }
