@@ -318,7 +318,6 @@ namespace ghassanpl::string_ops
 			return str;
 		}
 
-
 		/// Convert a number between 0 and 9 to its ASCII representation (only gives meaningful results with arguments between 0 and 9)
 		[[nodiscard]] constexpr char32_t number_to_digit(int v) noexcept { return char32_t(v) + 48; }
 		/// Convert a number between 0 and 15 to its ASCII representation (only gives meaningful results with arguments between 0 and 15)
@@ -420,7 +419,7 @@ namespace ghassanpl::string_ops
 #if __cpp_lib_string_contains
 		return str.contains(c);
 #else
-		return ::std::ranges::find(str, c) != str.end();
+		return str.find(c) != std::string_view::npos;
 #endif
 	}
 
@@ -499,7 +498,7 @@ namespace ghassanpl::string_ops
 	/// \returns the consumed character, or \0 if none found
 	[[nodiscard]] inline char consume_any(std::string_view& str, std::string_view chars)
 	{
-		if (!str.empty() && chars.contains(str[0]))
+		if (!str.empty() && contains(chars, str[0]))
 		{
 			const auto result = str[0];
 			str.remove_prefix(1);
@@ -513,7 +512,7 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] inline std::string_view consume_while_any(std::string_view& str, std::string_view chars)
 	{
 		const auto start = str.begin();
-		while (!str.empty() && chars.contains(str[0]))
+		while (!str.empty() && contains(chars, str[0]))
 			str.remove_prefix(1);
 		return make_sv(start, str.begin());
 	}
@@ -1006,7 +1005,37 @@ namespace ghassanpl::string_ops
 		return strm.str();
 	}
 
-	/// Same as \c join(T&& source, DELIM&& delim)
+
+	/// Same as \c join(T&& source, DELIM const& delim, LAST_DELIM&& last_delim)
+	/// except each element is transformed by `transform_func` before being stringified and added to the result.
+	/// \param transform_func must be invocable as `transform_fun(el)` for each element in the `source` range
+	template <std::ranges::range T, string_or_char DELIM, string_or_char LAST_DELIM, typename FUNC>
+	[[nodiscard]] inline auto join_and(T&& source, DELIM const& delim, LAST_DELIM&& last_delim, FUNC&& transform_func)
+	{
+		using std::ranges::begin;
+		using std::ranges::end;
+		using std::next;
+
+		std::stringstream strm;
+		bool first = true;
+
+		auto&& endit = end(source);
+		for (auto it = begin(source); it != endit; ++it)
+		{
+			if (!first)
+			{
+				if (next(it) == endit)
+					strm << std::forward<LAST_DELIM>(last_delim);
+				else
+					strm << delim;
+			}
+			strm << transform_func(*it);
+			first = false;
+		}
+		return strm.str();
+	}
+
+	/// Same as \c join(T&& source, DELIM const& delim)
 	/// except each element is transformed by `transform_func` before being stringified and added to the result.
 	/// \param transform_func must be invocable as `transform_fun(el)` for each element in the `source` range
 	template <std::ranges::range T, typename FUNC, string_or_char DELIM>
@@ -1378,7 +1407,8 @@ namespace ghassanpl::string_ops
 		const auto max_size = s2.size();
 
 		std::vector<size_t> lev_dist(min_size + 1);
-		std::ranges::iota(lev_dist, 0);
+		for (size_t i = 0; i < lev_dist.size(); ++i)
+			lev_dist[i] = i;
 
 		for (size_t j = 1; j <= max_size; ++j)
 		{

@@ -247,6 +247,7 @@
     <ClCompile Include="playground.cpp" />
     <ClCompile Include="tests\align_tests.cpp" />
     <ClCompile Include="tests\assuming_tests.cpp" />
+    <ClCompile Include="tests\bits_tests.cpp" />
     <ClCompile Include="tests\buffers_tests.cpp" />
     <ClCompile Include="tests\byte_tests.cpp" />
     <ClCompile Include="tests\colors_test.cpp" />

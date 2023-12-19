@@ -70,7 +70,6 @@
 #define GHPL_CPP23_ASSUME(...)
 #endif
 
-
 #if !ASSUMING_DEBUG
 #ifdef _MSC_VER
 #define ASSUMING_ASSUME(cond) GHPL_CPP23_ASSUME(cond) (__assume(cond), (::std::ignore = (cond)))
@@ -208,7 +207,7 @@
 #define Assuming(exp, ...) ASSUMING_ASSUME(!!(exp))
 #define AssumingNotReachable(...) ASSUMING_ASSUME(false)
 
-// NOTE: TODO: The below two macros have a significant codegen overhead, should we even try their assumptions? I don't think the compiler can infer any useful information from them...
+// NOTE: TODO: The three macros below have a significant codegen overhead, should we even try their assumptions? I don't think the compiler can infer any useful information from them...
 #define AssumingNotRecursive(...) \
 	static int _assuming_recursion_counter##__LINE__ = 0; \
 	ASSUMING_ASSUME(_assuming_recursion_counter##__LINE__ == 0); \
@@ -320,6 +319,9 @@ namespace ghassanpl
 	/// \param values The values of the expressions the assumption macro checked
 	/// \param data Any additional arguments you gave to the macro, std-formatted.
 	/// \param loc
+#if defined(ASSUMING_REPORT_NORETURN) && ASSUMING_REPORT_NORETURN
+	[[noreturn]]
+#endif
 	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
 #if __INTELLISENSE__
 		= {}

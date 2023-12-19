@@ -284,3 +284,10 @@ TEST(enum_flags_test, changes_work)
 	changes.toggle(TestEnum::Fifteen, TestEnum::Nine);
 	EXPECT_EQ(test + changes, enum_flags<TestEnum>{TestEnum::Nine});
 }
+
+static_assert(enum_flags<int>::all().contains_all_of());
+static_assert(enum_flags<int>{5}.contains_all_of());
+static_assert(enum_flags<int>::none().contains_all_of());
+static_assert(enum_flags<int>::all().full());
+static_assert(!enum_flags<int>{5}.full());
+static_assert(!enum_flags<int>::none().full());

@@ -95,6 +95,8 @@ namespace ghassanpl::string_ops
 	/// Consumes (see \c consume()) a UTF-8 codepoint from `str`.
 	constexpr char32_t consume_utf8(string_view8 auto& str);
 
+	constexpr size_t count_utf8_codepoints(stringable8 auto str);
+
 	/// Appends octets to `buffer` by encoding `cp` into UTF-8
 	constexpr size_t append_utf8(string8 auto& buffer, char32_t cp);
 	
@@ -107,7 +109,7 @@ namespace ghassanpl::string_ops
 	/// \tparam RESULT the type of string to return (`std::string` by default)
 	template <string8 RESULT = std::string, stringable16 STR>
 	constexpr RESULT to_utf8(STR str);
-	
+
 	/// Returns `str` (a UTF-16-encoded string) encoded as a UTF-8 string
 	std::string to_string(std::wstring_view str);
 
@@ -556,6 +558,31 @@ namespace ghassanpl::string_ops
 		str.remove_prefix(length);
 		return cp;
 	}
+
+	constexpr size_t count_utf8_codepoints(stringable8 auto str)
+	{
+		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
+		using unsigned_char_type = std::make_unsigned_t<char_type>;
+
+		auto it = std::to_address(str.begin());
+		const auto end = std::to_address(str.end());
+
+		size_t result = 0;
+		while (it < end)
+		{
+			char32_t cp = static_cast<unsigned_char_type>(*it);
+
+			int length = 1;
+			if ((cp >> 5) == 0x6)  length = 2;
+			else if ((cp >> 4) == 0xe)  length = 3;
+			else if ((cp >> 3) == 0x1e) length = 4;
+
+			it += length;
+			result++;
+		}
+		return result;
+	}
+
 
 	/// \pre `str` must be valid UTF-8
 #ifndef __clang__

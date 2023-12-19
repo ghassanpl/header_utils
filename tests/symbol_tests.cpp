@@ -18,6 +18,8 @@ TEST(symbol_test, symbol_works_on_empty_strings)
 	EXPECT_EQ(symbol{ "" }, std::string_view{});
 
 	EXPECT_EQ(symbol::values().size(), 0);
+
+	/// TODO: Also check if empty symbols have the same value across different translation units and across library boundaries
 }
 
 TEST(symbol_test, symbol_works_on_stringable_objects)
@@ -56,12 +58,28 @@ TEST(symbol_test, doesnt_make_unnecessary_copies)
 
 	s3 = sym2;
 
-	std::set<const char*> ptrs;
-	ptrs.insert(sym.value.data());
-	ptrs.insert(sym2.value.data());
-	ptrs.insert(s2.value.data());
-	ptrs.insert(s3.value.data());
+	std::set<std::string const*> ptrs;
+	ptrs.insert(sym.value);
+	ptrs.insert(sym2.value);
+	ptrs.insert(s2.value);
+	ptrs.insert(s3.value);
 
 	EXPECT_EQ(symbol::values().size(), 1);
 	EXPECT_EQ(ptrs.size(), 1);
+}
+
+TEST(symbol_test, hashes_properly)
+{
+	symbol::values().clear();
+
+	symbol sym{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec augue libero. Fusce eget ipsum vulputate, rutrum turpis vel, tincidunt nunc. Aliquam erat volutpat. Ut elementum, dui at lacinia lacinia, mauris dolor ornare nisl, vitae bibendum dui odio vitae arcu. Aenean tempor volutpat quam at vestibulum." };
+	symbol sym2{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec augue libero. Fusce eget ipsum vulputate, rutrum turpis vel, tincidunt nunc. Aliquam erat volutpat. Ut elementum, dui at lacinia lacinia, mauris dolor ornare nisl, vitae bibendum dui odio vitae arcu. Aenean tempor volutpat quam at vestibulum." };
+	symbol sym3{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec augue libero. Fusce eget ipsum vulputate, rutrum turpis vel, tincidunt nunc. Aliquam erat volutpat. Ut elementum, dui at lacinia lacinia, mauris dolor ornare nisl, vitae bibendum dui odio vitae arcu. Aenean tempor volutpat quam at vestibulum.." };
+	symbol sym4{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec augue libero. Fusce eget ipsum vulputate, rutrum turpis vel, tincidunt nunc. Aliquam erat volutpat. Ut elementum, dui at lacinia lacinia, mauris dolor ornare nisl, vitae bibendum dui odio vitae arcu. Aenean tempor volutpat quam at vestibulum" };
+
+	std::hash<symbol> hasher;
+	EXPECT_EQ(hasher(sym), hasher(sym2));
+	EXPECT_NE(hasher(sym2), hasher(sym3));
+	EXPECT_NE(hasher(sym3), hasher(sym4));
+	EXPECT_NE(hasher(sym2), hasher(sym4));
 }

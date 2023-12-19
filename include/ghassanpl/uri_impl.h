@@ -200,7 +200,7 @@ namespace ghassanpl
 			split(path, QUERY_DELIMITER, [&elements](std::string_view el, bool last) {
 				auto k = consume_until(el, KEY_DELIMITER); std::ignore = consume(el);
 				elements.push_back({ std::string{k}, std::string{el} });
-				});
+			});
 		}
 
 		static std::tuple<std::string, std::vector<std::pair<std::string, std::string>>> parse_query(uri_view& uri, enum_flags<uri_decompose_flags> const flags)
@@ -275,7 +275,7 @@ namespace ghassanpl
 			if (string_ops::consume(uri, '#'))
 				result.fragment = detail::parse_fragment(uri, flags);
 
-			if (flags.are_all_set(uri_decompose_flags::lowercase_when_appropriate, uri_decompose_flags::normalize_path))
+			if (flags.contains_all_of(uri_decompose_flags::lowercase_when_appropriate, uri_decompose_flags::normalize_path))
 				result.canonical_form = true;
 
 			return result;

@@ -104,12 +104,26 @@ namespace ghassanpl
 			return {}; /// unreachable
 		}
 
+		template <typename U> struct values_t { U left; U top; U right; U bottom; };
+		template <typename U> values_t(U&& left, U&& top, U&& right, U&& bottom) -> values_t<U>;
+		template <typename SELF>
+		constexpr auto values(this SELF&& self) noexcept
+		{
+			return values_t {
+				std::forward_like<SELF>(self.p1.x),
+				std::forward_like<SELF>(self.p1.y),
+				std::forward_like<SELF>(self.p2.x),
+				std::forward_like<SELF>(self.p2.y)
+			};
+		}
+
 		constexpr tvec size() const noexcept { return p2 - p1; }
 		constexpr tvec position() const noexcept { return p1; }
 		constexpr trec2& set_position(tvec pos) noexcept { p2 += pos - p1; p1 = pos; return *this; }
 		constexpr trec2& set_position(T x, T y) noexcept { p2.x += x - p1.x; p2.y += y - p1.y; p1 = { x, y }; return *this; }
 		constexpr trec2& set_size(tvec size) noexcept { p2 = p1 + size; return *this; }
 		constexpr trec2& set_size(T w, T h) noexcept { p2.x = p1.x + w; p2.y = p1.y + h; return *this; }
+		
 		constexpr trec2& grow(T by) noexcept { p1.x -= by; p1.y -= by; p2.x += by; p2.y += by; return *this; }
 		constexpr trec2& shrink(T by) noexcept { return grow(-by); }
 		constexpr trec2& grow(tvec by) noexcept { p1 -= by; p2 += by; return *this; }
@@ -118,6 +132,11 @@ namespace ghassanpl
 		constexpr trec2 shrunk(T by) const noexcept { return grown(-by); }
 		constexpr trec2 grown(tvec by) const noexcept { auto copy = *this; copy.p1 -= by; copy.p2 += by; return copy; }
 		constexpr trec2 shrunk(tvec by) const noexcept { return grown(-by); }
+		constexpr trec2& grow(T left, T top, T right, T bottom) noexcept { p1.x -= left; p1.y -= top; p2.x += right; p2.y += bottom; return *this; }
+		constexpr trec2& shrink(T left, T top, T right, T bottom) noexcept { return grow(-left, -top, -right, -bottom); }
+		constexpr trec2 grown(T left, T top, T right, T bottom) const noexcept { auto copy = *this; copy.p1.x -= left; copy.p1.y -= top; copy.p2.x += right; copy.p2.y += bottom; return copy; }
+		constexpr trec2 shrunk(T left, T top, T right, T bottom) const noexcept { return grown(-left, -top, -right, -bottom); }
+
 		constexpr trec2 at_position(tvec pos) const noexcept { auto copy = *this; copy.set_position(pos); return copy; }
 		constexpr trec2 at_position(T x, T y) const noexcept { auto copy = *this; copy.set_position(x, y); return copy; }
 		constexpr trec2 sized(tvec size) const noexcept { auto copy = *this; copy.set_size(size); return copy; }
@@ -148,6 +167,8 @@ namespace ghassanpl
 
 		constexpr trec2 local() const noexcept { return { tvec{}, size() }; }
 		constexpr trec2 relative_to(trec2 const& other) const noexcept { return { p1 - other.position(), p2 - other.position() }; }
+
+		constexpr trec2 to_global(trec2 const& parent_rect) const noexcept { return { p1 + parent_rect.position(), p2 + parent_rect.position() }; }
 
 		constexpr glm::vec2 to_rect_space(tvec world_space) const noexcept { return glm::vec2{ world_space - p1 } / glm::vec2{ size() }; }
 		constexpr tvec to_world_space(glm::vec2 rect_space) const noexcept { return tvec{ rect_space * glm::vec2{ size() } } + p1; }

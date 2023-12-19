@@ -17,9 +17,9 @@ namespace ghassanpl
 	/// Converts a span of trivial values to a span of \c bytelike s
 	template <bytelike TO, typename FROM>
 	requires std::is_trivially_copyable_v<FROM>
-	constexpr std::span<TO const> as_bytelikes(std::span<FROM const> bytes) noexcept
+	constexpr std::span<TO> as_bytelikes(std::span<FROM> bytes) noexcept
 	{
-		return { reinterpret_cast<TO const*>(bytes.data()), bytes.size() * sizeof(FROM) };
+		return { reinterpret_cast<TO*>(bytes.data()), bytes.size() * sizeof(FROM) };
 	}
 
 	/// Returns a span of \c bytelike s that represents the internal object representation of the argument
@@ -36,17 +36,11 @@ namespace ghassanpl
 	template <bytelike FROM> constexpr auto to_uchar(FROM byte) noexcept { return std::bit_cast<unsigned char>(byte); }
 	template <bytelike FROM> constexpr auto to_char8(FROM byte) noexcept { return std::bit_cast<char8_t>(byte); }
 
-	template <bytelike FROM> constexpr auto as_chars(std::span<FROM const> bytes) noexcept { return as_bytelikes<char>(bytes); }
-	template <bytelike FROM> constexpr auto as_bytes(std::span<FROM const> bytes) noexcept { return as_bytelikes<std::byte>(bytes); }
-	template <bytelike FROM> constexpr auto as_uchars(std::span<FROM const> bytes) noexcept { return as_bytelikes<unsigned char>(bytes); }
-	template <bytelike FROM> constexpr auto as_u8s(std::span<FROM const> bytes) noexcept { return as_bytelikes<uint8_t>(bytes); }
-	template <bytelike FROM> constexpr auto as_char8s(std::span<FROM const> bytes) noexcept { return as_bytelikes<char8_t>(bytes); }
-
-	constexpr auto as_chars(std::string_view bytes) noexcept { return as_bytelikes<char>(std::span{ bytes }); }
-	constexpr auto as_bytes(std::string_view bytes) noexcept { return as_bytelikes<std::byte>(std::span{ bytes }); }
-	constexpr auto as_uchars(std::string_view bytes) noexcept { return as_bytelikes<unsigned char>(std::span{ bytes }); }
-	constexpr auto as_u8s(std::string_view bytes) noexcept { return as_bytelikes<uint8_t>(std::span{ bytes }); }
-	constexpr auto as_char8s(std::string_view bytes) noexcept { return as_bytelikes<char8_t>(std::span{ bytes }); }
+	template <bytelike FROM> constexpr auto as_chars(std::span<FROM> bytes) noexcept { return as_bytelikes<char>(bytes); }
+	template <bytelike FROM> constexpr auto as_bytes(std::span<FROM> bytes) noexcept { return as_bytelikes<std::byte>(bytes); }
+	template <bytelike FROM> constexpr auto as_uchars(std::span<FROM> bytes) noexcept { return as_bytelikes<unsigned char>(bytes); }
+	template <bytelike FROM> constexpr auto as_u8s(std::span<FROM> bytes) noexcept { return as_bytelikes<uint8_t>(bytes); }
+	template <bytelike FROM> constexpr auto as_char8s(std::span<FROM> bytes) noexcept { return as_bytelikes<char8_t>(bytes); }
 
 	template <typename T> requires std::is_trivial_v<T> constexpr auto as_chars(T const& data) noexcept { return as_bytelikes<char>(data); }
 	template <typename T> requires std::is_trivial_v<T> constexpr auto as_bytes(T const& data) noexcept { return as_bytelikes<std::byte>(data); }

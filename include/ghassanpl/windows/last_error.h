@@ -11,7 +11,6 @@
 namespace ghassanpl
 {
 
-
 	struct last_windows_error_t
 	{
 		uint32_t value{};

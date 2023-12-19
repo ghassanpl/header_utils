@@ -13,6 +13,9 @@ namespace ghassanpl
 	template <integral_or_enum ENUM, detail::valid_integral VALUE_TYPE = unsigned long long>
 	struct enum_flag_changes;
 
+	constexpr inline struct all_flags_t {} all_flags;
+	constexpr inline struct no_flags_t {} no_flags;
+	
 	/// A value struct that represents a set of bits mapped to an enum.
 	/// \ingroup Flags
 	/// 
@@ -22,7 +25,7 @@ namespace ghassanpl
 	/// enum_flags<door_flags> flags;
 	/// flags.set(door_flags::closed, door_flags::blue);
 	/// if (flags.is_set(door_flags::locked)) { ... }
-	/// if (flags.are_all_set(door_flags::closed, door_flags::locked)) { print("Not getting in"); }
+	/// if (flags.contains_all_of(door_flags::closed, door_flags::locked)) { print("Not getting in"); }
 	/// flags.toggle(door_flags::locked);
 	/// for (auto flag : flags)
 	///   print("{} is set", flag);
@@ -76,6 +79,8 @@ namespace ghassanpl
 		[[nodiscard]]
 		constexpr static self_type all() noexcept { return self_type::from_bits(~VALUE_TYPE{ 0 }); }
 
+		constexpr enum_flags(all_flags_t) noexcept : bits(~VALUE_TYPE{0}) {}
+
 		/// Returns a value with all bits set, up to and including the `last`
 		[[nodiscard]]
 		constexpr static self_type all(enum_type last) noexcept { return self_type::from_bits(flag_bits<VALUE_TYPE>(last) | (flag_bits<VALUE_TYPE>(last) - 1)); }
@@ -83,6 +88,8 @@ namespace ghassanpl
 		/// Returns a value with none of the bits set
 		[[nodiscard]]
 		constexpr static self_type none() noexcept { return {}; }
+		
+		constexpr enum_flags(no_flags_t) noexcept : bits(VALUE_TYPE{0}) {}
 
 		/// Returns whether or not `flag` is set
 		[[nodiscard]]
@@ -114,7 +121,7 @@ namespace ghassanpl
 		/// Returns whether or not *any* of the given flags are set
 		template <typename T, typename... ARGS>
 		[[nodiscard]]
-		constexpr bool are_any_set(T arg, ARGS... args) const noexcept
+		constexpr bool contains_any_of(T arg, ARGS... args) const noexcept
 		{
 			return this->is_set(arg) || (this->is_set(args) || ...);
 		}
@@ -123,22 +130,26 @@ namespace ghassanpl
 		[[nodiscard]]
 		constexpr bool are_any_set() const noexcept { return bits != 0; }
 
-		/// Returns whether or not *any* of the flags in the `other` set are set
-		/// \note are_any_set({}) is true, which is correct or not, depending on whether you want it to be correct or not :P
+		/// Returns whether *this == all()
 		[[nodiscard]]
-		constexpr bool are_any_set(self_type other) const noexcept { return other.bits == 0 /* empty set */ || (bits & other.bits) != 0; }
+		constexpr bool full() const noexcept { return (~bits) == 0; }
+
+		/// Returns whether or not *any* of the flags in the `other` set are set
+		/// \note contains_any_of({}) is true, which is correct or not, depending on whether you want it to be correct or not :P
+		[[nodiscard]]
+		constexpr bool contains_any_of(self_type other) const noexcept { return other.bits == 0 /* empty set */ || (bits & other.bits) != 0; }
 
 		/// Returns whether or not *all* of the given flags are set
 		template <typename... ARGS>
 		[[nodiscard]]
-		constexpr bool are_all_set(ARGS... args) const noexcept
+		constexpr bool contains_all_of(ARGS... args) const noexcept
 		{
 			return (this->is_set(args) && ...);
 		}
 
 		/// Returns whether or not *all* of the flags in the `other` set are set
 		[[nodiscard]]
-		constexpr bool are_all_set(self_type other) const noexcept { return (bits & other.bits) == other.bits; }
+		constexpr bool contains_all_of(self_type other) const noexcept { return (bits & other.bits) == other.bits; }
 		
 		constexpr explicit operator bool() const noexcept { return bits != 0; }
 
@@ -308,6 +319,15 @@ namespace ghassanpl
 		}
 	};
 
+	template <typename TYPE>
+	struct is_enum_flags : std::false_type {};
+
+	template <typename ENUM, typename VALUE_TYPE>
+	struct is_enum_flags<enum_flags<ENUM, VALUE_TYPE>> : std::true_type {};
+
+	template <typename TYPE>
+	constexpr bool is_enum_flags_v = is_enum_flags<TYPE>::value;
+	
 	enum class enum_flag_change : uint8_t
 	{
 		no_change,

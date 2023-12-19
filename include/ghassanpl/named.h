@@ -50,6 +50,8 @@ namespace ghassanpl
 
 		struct implicitly_convertible { template <typename SELF_TYPE> static constexpr bool applies_to = true; };
 		struct implicitly_constructible { template <typename SELF_TYPE> static constexpr bool applies_to = true; };
+		template <typename T>
+		struct implicitly_constructible_from { using type = T; template <typename SELF_TYPE> static constexpr bool applies_to = true; };
 		
 		template <typename LOCATION_NAMED_TYPE>
 		struct is_displacement_of {
@@ -134,6 +136,13 @@ namespace ghassanpl
 		{
 		}
 
+		template <typename U>
+		requires has_trait<traits::implicitly_constructible_from<U>>
+		constexpr named(U&& arg) noexcept(std::is_nothrow_move_constructible_v<T>)
+			: value((T)std::forward<U>(arg))
+		{
+		}
+
 		constexpr named() noexcept(std::is_nothrow_default_constructible_v<T>) = default;
 		constexpr named(named const&) noexcept(std::is_nothrow_copy_constructible_v<T>) = default;
 		constexpr named(named&&) noexcept(std::is_nothrow_move_constructible_v<T>) = default;
@@ -147,6 +156,9 @@ namespace ghassanpl
 		{
 
 		}
+
+		constexpr T const& operator*() const & noexcept { return value; }
+		constexpr T operator*() && noexcept { return std::move(value); }
 
 		constexpr T* operator->() noexcept { return &value; }
 		constexpr T const* operator->() const noexcept { return &value; }

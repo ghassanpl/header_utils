@@ -110,7 +110,7 @@ namespace ghassanpl
 		auto it = map.find(std::forward<KEY>(key));
 		return (it != map.end()) ? &it->second : nullptr;
 	}
-
+	
 	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
 	template <typename DEF, typename KEY, typename MAP>
 	auto map_at_or_default(MAP&& map, KEY&& key, DEF&& def)

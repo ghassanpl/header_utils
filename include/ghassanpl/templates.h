@@ -219,11 +219,11 @@ namespace ghassanpl
 	{ };
 
 
-	template <typename T, typename U>
-	inline constexpr size_t get_index_v = get_index<T, U>::value;\
+	template <typename TYPE, typename TYPE_CONTAINER>
+	inline constexpr size_t get_index_v = get_index<TYPE, TYPE_CONTAINER>::value;\
 	
-	template <typename T, typename U>
-	inline constexpr bool has_type_v = get_index<T, U>::value != (size_t)-1;
+	template <typename TYPE, typename TYPE_CONTAINER>
+	inline constexpr bool has_type_v = get_index<TYPE, TYPE_CONTAINER>::value != (size_t)-1;
 
 
 	//-------------------------------------------------------------------------------------------------------------

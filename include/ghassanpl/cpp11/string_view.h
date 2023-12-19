@@ -8,10 +8,10 @@
 #include <cassert>
 #include <iterator>
 #include <limits>
-#include <string>
-#include <stdexcept>
-#include <type_traits>
 #include <sstream>
+#include <stdexcept>
+#include <string>
+#include <type_traits>
 
 struct string_view
 {
