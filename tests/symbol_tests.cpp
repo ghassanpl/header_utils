@@ -7,9 +7,15 @@
 #include <gtest/gtest.h>
 
 using ghassanpl::symbol;
+using ghassanpl::default_symbol_provider;
+
+
+static_assert(ghassanpl::symbol_provider<default_symbol_provider>);
+static_assert(std::regular<symbol>);
+
 TEST(symbol_test, symbol_works_on_empty_strings)
 {
-	symbol::values().clear();
+	default_symbol_provider::instance().clear();
 
 	EXPECT_EQ(symbol{ {} }, symbol{});
 
@@ -17,14 +23,14 @@ TEST(symbol_test, symbol_works_on_empty_strings)
 	EXPECT_EQ("", symbol{ {} });
 	EXPECT_EQ(symbol{ "" }, std::string_view{});
 
-	EXPECT_EQ(symbol::values().size(), 0);
+	EXPECT_EQ(default_symbol_provider::instance().size(), 1);
 
 	/// TODO: Also check if empty symbols have the same value across different translation units and across library boundaries
 }
 
 TEST(symbol_test, symbol_works_on_stringable_objects)
 {
-	symbol::values().clear();
+	default_symbol_provider::instance().clear();
 
 	std::string str = "hello";
 	std::string_view sv = "hello";
@@ -43,12 +49,12 @@ TEST(symbol_test, symbol_works_on_stringable_objects)
 	EXPECT_EQ(b, d);
 	EXPECT_EQ(c, d);
 
-	EXPECT_EQ(symbol::values().size(), 1);
+	default_symbol_provider::instance().clear();
 }
 
 TEST(symbol_test, doesnt_make_unnecessary_copies)
 {
-	symbol::values().clear();
+	default_symbol_provider::instance().clear();
 
 	symbol sym{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec augue libero. Fusce eget ipsum vulputate, rutrum turpis vel, tincidunt nunc. Aliquam erat volutpat. Ut elementum, dui at lacinia lacinia, mauris dolor ornare nisl, vitae bibendum dui odio vitae arcu. Aenean tempor volutpat quam at vestibulum." };
 	symbol sym2{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec augue libero. Fusce eget ipsum vulputate, rutrum turpis vel, tincidunt nunc. Aliquam erat volutpat. Ut elementum, dui at lacinia lacinia, mauris dolor ornare nisl, vitae bibendum dui odio vitae arcu. Aenean tempor volutpat quam at vestibulum." };
@@ -64,13 +70,13 @@ TEST(symbol_test, doesnt_make_unnecessary_copies)
 	ptrs.insert(s2.value);
 	ptrs.insert(s3.value);
 
-	EXPECT_EQ(symbol::values().size(), 1);
+	EXPECT_EQ(default_symbol_provider::instance().size(), 2);
 	EXPECT_EQ(ptrs.size(), 1);
 }
 
 TEST(symbol_test, hashes_properly)
 {
-	symbol::values().clear();
+	default_symbol_provider::instance().clear();
 
 	symbol sym{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec augue libero. Fusce eget ipsum vulputate, rutrum turpis vel, tincidunt nunc. Aliquam erat volutpat. Ut elementum, dui at lacinia lacinia, mauris dolor ornare nisl, vitae bibendum dui odio vitae arcu. Aenean tempor volutpat quam at vestibulum." };
 	symbol sym2{ "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec augue libero. Fusce eget ipsum vulputate, rutrum turpis vel, tincidunt nunc. Aliquam erat volutpat. Ut elementum, dui at lacinia lacinia, mauris dolor ornare nisl, vitae bibendum dui odio vitae arcu. Aenean tempor volutpat quam at vestibulum." };

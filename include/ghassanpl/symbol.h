@@ -10,87 +10,104 @@
 
 namespace ghassanpl
 {
-	/// TODO:
-	/// Instead of tags, we need to have a struct that models the following concept:
-	/// struct default_symbol_provider
-	/// {
-	/// 	using internal_value_type = std::string const*;
-	///		using hash_type = size_t;
-	/// 	static constexpr inline std::string empty_string;
-	/// 	static internal_value_type empty_value() noexcept { return &empty_string; }
-	///		static internal_value_type insert(std::string_view val)
-	///		{
-	///			auto& values = default_symbol_provider::values();
-	///			if (auto v = values.find(val); v == values.end())
-	///				return &*values.insert(std::string{ val }).first;
-	///			else
-	///				return &*v;
-	///		}
-	/// 	static std::string_view string_for(internal_value_type val) { return val ? std::string_view{*val} : std::string_view{}; }
-	/// 	static hash_type hash_for(internal_value_type val) { return std::hash<const void*>{}(val); }
-	/// 
-	/// 	static std::set<std::string, std::less<>>& values() noexcept
-	/// 	{
-	/// 		static std::set<std::string, std::less<>> values;
-	/// 		return values;
-	/// 	}
-	/// 
-	/// };
-
-	/// template <typename T>
-	/// concept symbol_provider = std::is_class_v<T> && requires { typename T::internal_value_type;  };
-
-	template <typename TAG>
-	struct namespaced_symbol
+	template <typename SYMBOL_PROVIDER>
+	struct symbol_base
 	{
-		static constexpr inline std::string empty_string;
-		std::string const* value = &empty_string;
+		using symbol_provider = SYMBOL_PROVIDER;
+		using internal_value_type = typename symbol_provider::internal_value_type;
+		using hash_type = typename symbol_provider::hash_type;
 
-		explicit namespaced_symbol(std::string_view val) : value{ val.empty() ? &empty_string : insert(val) } { }
-		namespaced_symbol() noexcept = default;
-		namespaced_symbol(namespaced_symbol const&) noexcept = default;
-		namespaced_symbol(namespaced_symbol&&) noexcept = default;
-		namespaced_symbol& operator=(namespaced_symbol const&) noexcept = default;
-		namespaced_symbol& operator=(namespaced_symbol&&) noexcept = default;
+		internal_value_type value = symbol_provider::empty_value();
 
-		static std::set<std::string, std::less<>>& values() noexcept
+		explicit symbol_base(std::string_view val) : value{ symbol_provider::insert(val) } { }
+		symbol_base() noexcept = default;
+
+		hash_type get_hash() const noexcept { return symbol_provider::hash_for(value); }
+		std::string_view get_string() const noexcept { return symbol_provider::string_for(value); }
+		explicit operator std::string_view() const noexcept { return symbol_provider::string_for(value); }
+
+		auto operator->() const noexcept requires std::is_pointer_v<internal_value_type> { return value; }
+
+		bool operator==(symbol_base const& other) const noexcept { return value == other.value; }
+		auto operator<=>(symbol_base const& other) const noexcept { return value <=> other.value; }
+
+		friend bool operator==(std::string_view a, symbol_base const& b) noexcept { return a == b.get_string(); }
+		friend auto operator<=>(std::string_view a, symbol_base const& b) noexcept { return a <=> b.get_string(); }
+	};
+}
+
+template <typename SYMBOL_PROVIDER>
+struct std::hash<ghassanpl::symbol_base<SYMBOL_PROVIDER>> {
+	size_t operator()(const ghassanpl::symbol_base<SYMBOL_PROVIDER>& x) const noexcept { return x.get_hash(); }
+};
+
+namespace ghassanpl
+{
+
+	template <typename T>
+	concept symbol_provider = 
+		std::is_class_v<T> 
+		&& requires {
+			typename T::internal_value_type;
+			typename T::hash_type;
+			{ T::empty_value() } noexcept -> std::same_as<typename T::internal_value_type>;
+			{ T::insert(std::string_view{}) } -> std::same_as<typename T::internal_value_type>;
+			{ T::string_for(typename T::internal_value_type{}) } noexcept -> std::same_as<std::string_view>;
+			{ T::hash_for(typename T::internal_value_type{}) } noexcept -> std::same_as<typename T::hash_type>;
+		}
+		&& std::three_way_comparable<typename T::internal_value_type>
+		&& std::regular<typename T::internal_value_type>
+	;
+
+	template <typename TAG = void>
+	struct default_symbol_provider_t
+	{
+		static default_symbol_provider_t& instance() noexcept
 		{
-			static std::set<std::string, std::less<>> values;
-			return values;
+			static default_symbol_provider_t inst;
+			return inst;
 		}
 
-		static std::string const* insert(std::string_view val)
+		using internal_value_type = std::string const*;
+		using hash_type = size_t;
+		static internal_value_type empty_value() noexcept { return instance().m_empty_string; }
+		static internal_value_type insert(std::string_view val)
 		{
-			auto& values = namespaced_symbol<TAG>::values();
+			if (val.empty())
+				return empty_value();
+
+			auto& values = instance().m_values;
 			if (auto v = values.find(val); v == values.end())
 				return &*values.insert(std::string{ val }).first;
 			else
 				return &*v;
 		}
+		static std::string_view string_for(internal_value_type val) noexcept { return val ? std::string_view{ *val } : std::string_view{}; }
+		static hash_type hash_for(internal_value_type val) noexcept { return std::hash<const void*>{}(val); }
 
-		explicit operator std::string_view() const noexcept { return *value; }
+		/// Utility functions
 
-		std::string const* operator->() const noexcept { return value; }
+		void clear() noexcept
+		{
+			m_values.clear();
+			m_values.insert(std::string{});
+			m_empty_string = &*m_values.begin();
+		}
 
-		bool operator==(namespaced_symbol const& other) const noexcept { return value == other.value; }
-		auto operator<=>(namespaced_symbol const& other) const noexcept { return value <=> other.value; }
+		size_t size() const noexcept { return m_values.size(); }
+		size_t count() const noexcept { return size(); }
 
-		friend bool operator==(std::string_view a, namespaced_symbol const& b) noexcept { return a == *b.value; }
-		friend auto operator<=>(std::string_view a, namespaced_symbol const& b) noexcept { return a <=> *b.value; }
+		auto const& values() const noexcept { return m_values; }
+		auto empty_string() const noexcept { return m_empty_string; }
+
+	private:
+
+		std::set<std::string, std::less<>> m_values{ std::string{} };
+		std::string const* m_empty_string = &*m_values.begin();
 	};
 
-	using symbol = namespaced_symbol<void>;
-
-	template <typename TAG = void>
-	std::string_view symbol_for(std::string_view val)
-	{
-		auto& sym_values = namespaced_symbol<TAG>::values();
-		const auto v = sym_values.find(val);
-		return (v == sym_values.end()) ? **sym_values.insert(std::string{ val }).first : **v;
-	}
-
+	using default_symbol_provider = default_symbol_provider_t<void>;
+	using symbol = symbol_base<default_symbol_provider>;
 }
 
 /// TODO: ostream << and formatter, or enable stringification
-
-template <> struct std::hash<ghassanpl::symbol> { size_t operator()(const ghassanpl::symbol& x) const noexcept { return std::hash<void const*>{}(x.value); } };
