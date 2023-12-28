@@ -121,6 +121,8 @@ namespace ghassanpl
 		constexpr tvec position() const noexcept { return p1; }
 		constexpr trec2& set_position(tvec pos) noexcept { p2 += pos - p1; p1 = pos; return *this; }
 		constexpr trec2& set_position(T x, T y) noexcept { p2.x += x - p1.x; p2.y += y - p1.y; p1 = { x, y }; return *this; }
+		constexpr trec2& set_x(T x) noexcept { p2.x += x - p1.x; p1.x = x; return *this; }
+		constexpr trec2& set_y(T y) noexcept { p2.y += y - p1.y; p1.y = y; return *this; }
 		constexpr trec2& set_size(tvec size) noexcept { p2 = p1 + size; return *this; }
 		constexpr trec2& set_size(T w, T h) noexcept { p2.x = p1.x + w; p2.y = p1.y + h; return *this; }
 		

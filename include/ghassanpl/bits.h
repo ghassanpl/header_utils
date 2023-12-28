@@ -17,8 +17,6 @@
 
 namespace ghassanpl
 {
-	
-
 	/// \addtogroup Bits
 	/// Types and functions for retrieving and manipulating bits in integral values
 	/// @{
@@ -46,6 +44,9 @@ namespace ghassanpl
 	/// Value with all bits available for the FOR type set (e.g. first 8 bits for uint8_t will be set, etc.)
 	template <bit_integral FOR>
 	constexpr inline uint64_t bit_mask_for_v = (all_bits >> (64 - bit_count<FOR>));
+
+	template <typename TO, typename FROM>
+	concept bit_castable = std::is_trivially_copyable_v<TO> && std::is_trivially_copyable_v<FROM> && sizeof(TO) == sizeof(FROM);
 
 	namespace detail
 	{

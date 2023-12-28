@@ -178,6 +178,7 @@
     <ClInclude Include="include\ghassanpl\containers.h" />
     <ClInclude Include="include\ghassanpl\cpp11\named.h" />
     <ClInclude Include="include\ghassanpl\cpp11\string_view.h" />
+    <ClInclude Include="include\ghassanpl\cpp20.h" />
     <ClInclude Include="include\ghassanpl\cpp23.h" />
     <ClInclude Include="include\ghassanpl\cpp98\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\di.h" />
@@ -217,6 +218,7 @@
     <ClInclude Include="include\ghassanpl\rec2.h" />
     <ClInclude Include="include\ghassanpl\regex.h" />
     <ClInclude Include="include\ghassanpl\sexps.h" />
+    <ClInclude Include="include\ghassanpl\soptional.h" />
     <ClInclude Include="include\ghassanpl\source_location.h" />
     <ClInclude Include="include\ghassanpl\stringification.h" />
     <ClInclude Include="include\ghassanpl\string_ops.h" />
@@ -274,6 +276,7 @@
     <ClCompile Include="tests\parsing_tests.cpp" />
     <ClCompile Include="tests\random_tests.cpp" />
     <ClCompile Include="tests\ranges_tests.cpp" />
+    <ClCompile Include="tests\soptional_tests.cpp" />
     <ClCompile Include="tests\symbol_tests.cpp" />
     <ClCompile Include="tests\rec2_tests.cpp" />
     <ClCompile Include="tests\string_ops_tests.cpp" />

@@ -6,6 +6,8 @@
 
 #include "source_location.h"
 #include "bytes.h"
+#include "bits.h"
+#include <array>
 #include <bit>
 
 namespace ghassanpl
@@ -59,14 +61,26 @@ namespace ghassanpl
 		0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 	};
 
-	/// Calculates a CRC32 for a range of bytelikes
+	/// Calculates a CRC32 for a range of bytelikes. constexpr!
 	/// \ingroup Hashes
 	template <bytelike_range RANGE>
 	[[nodiscard]] constexpr uint32_t crc32(RANGE&& bytes)
 	{
+		/// TODO: if (!is_constant_evaluated), we could use _mm_crc32_u8 & duff's - requires is_constant_evaluated and SSE4.2,
+		/// and there are probably libraries for that already.
 		uint32_t crc = 0xFFFFFFFFu;
 		for (auto byte: bytes)
 			crc = crc32_table[(crc ^ to_u8(byte)) & 0xFF] ^ (crc >> 8);
+		return ~crc;
+	}
+
+	/// Calculates a CRC32 for a variadic number of bytelikes. constexpr!
+	/// \ingroup Hashes
+	template <bytelike... BYTES>
+	[[nodiscard]] constexpr uint32_t crc32(BYTES... bytes)
+	{
+		uint32_t crc = 0xFFFFFFFFu;
+		(crc = crc32_table[(crc ^ to_u8(bytes)) & 0xFF] ^ (crc >> 8), ...);
 		return ~crc;
 	}
 
@@ -123,6 +137,16 @@ namespace ghassanpl
 		return ~crc;
 	}
 
+	/// Calculates a CRC4 for a variadic number of bytelikes
+	/// \ingroup Hashes
+	template <bytelike... BYTES>
+	[[nodiscard]] constexpr uint64_t crc64(BYTES... bytes)
+	{
+		uint64_t crc = 0;
+		(crc = crc64_table[crc >> 56] ^ ((crc << 8U) ^ to_u8(bytes)), ...);
+		return ~crc;
+	}
+
 	/// Calculates a CRC64 of a source_location (constexpr, so can be used at compile time)
 	/// \ingroup Hashes
 	[[nodiscard]] constexpr auto crc64(const source_location& k)
@@ -135,22 +159,35 @@ namespace ghassanpl
 		constexpr uint64_t operator()(source_location const& l) const { return crc64(l); }
 	};
 
+	/// TODO: Add support for non-64bit hashes to all the functions below, especially since
+	/// std::hash operates on size_t
+
 	/// Calculates a FNV Hash for a range of bytes
 	/// \ingroup Hashes
 	template <bytelike_range RANGE>
-	[[nodiscard]] constexpr uint64_t fnv(RANGE&& bytes)
+	[[nodiscard]] constexpr uint64_t fnv64(RANGE&& bytes)
 	{
 		uint64_t result = 0xcbf29ce484222325;
 		for (auto byte : bytes)
-			result = (result ^ std::bit_cast<uint8_t>(byte)) * 0x00000100000001b3U;
+			result = (result ^ to_u8(byte)) * 0x00000100000001b3U;
+		return result;
+	}
+
+	/// Calculates a FNV Hash for a variadic number of bytes
+	/// \ingroup Hashes
+	template <bytelike... BYTES>
+	[[nodiscard]] constexpr uint64_t fnv64(BYTES... bytes)
+	{
+		uint64_t result = 0xcbf29ce484222325;
+		(result = (result ^ to_u8(bytes)) * 0x00000100000001b3U, ...);
 		return result;
 	}
 
 	namespace integer
 	{
-		struct splitmix_state { uint64_t state{}; };
+		struct splitmix64_state { uint64_t state{}; };
 		/// 
-		[[nodiscard]] constexpr uint64_t splitmix(splitmix_state& state, uint64_t stream_id = 0x9e3779b97f4a7c15)
+		[[nodiscard]] constexpr uint64_t splitmix64(splitmix64_state& state, uint64_t stream_id = 0x9e3779b97f4a7c15)
 		{
 			state.state = state.state + stream_id;
 			uint64_t z = state.state;
@@ -161,7 +198,7 @@ namespace ghassanpl
 		}
 
 		///
-		[[nodiscard]] constexpr uint64_t splitmix(uint64_t seed, uint64_t index, uint64_t stream_id = 0x9e3779b97f4a7c15)
+		[[nodiscard]] constexpr uint64_t splitmix64(uint64_t seed, uint64_t index, uint64_t stream_id = 0x9e3779b97f4a7c15)
 		{
 			uint64_t z = seed + index * stream_id;
 			z = (z ^ (z >> 30)) * 0xbf58476d1ce4e5b9;
@@ -171,7 +208,7 @@ namespace ghassanpl
 		}
 
 		///
-		[[nodiscard]] constexpr uint64_t murmurhash(uint64_t k)
+		[[nodiscard]] constexpr uint64_t murmurhash64(uint64_t k)
 		{
 			k ^= k >> 33;
 			k *= 0xff51afd7ed558ccdULL;
@@ -182,7 +219,7 @@ namespace ghassanpl
 		}
 
 		///
-		[[nodiscard]] constexpr uint64_t murmurhash_2(uint64_t x, uint64_t y)
+		[[nodiscard]] constexpr uint64_t murmurhash64_2(uint64_t x, uint64_t y)
 		{
 			constexpr auto kMul = 0x9ddfea08eb382d69ULL;
 			auto a = (x ^ y) * kMul;
@@ -206,115 +243,118 @@ namespace ghassanpl
 		}
 	}
 
-	constexpr void ce_hash_combine(size_t& hash1, size_t hash2) noexcept
+	constexpr void fold_in_hash64(uint64_t& hash1, uint64_t hash2) noexcept
 	{
-		constexpr size_t kMul = 0x9ddfea08eb382d69ULL;
+		constexpr uint64_t kMul = 0x9ddfea08eb382d69ULL;
 		const auto seed = hash1;
-		size_t a = (hash2 ^ seed) * kMul;
+		uint64_t a = (hash2 ^ seed) * kMul;
 		a ^= (a >> 47);
-		size_t b = (seed ^ a) * kMul;
+		uint64_t b = (seed ^ a) * kMul;
 		b ^= (b >> 47);
 		b *= kMul;
 		hash1 = b;
 	}
 
-	[[nodiscard]] constexpr size_t ce_hash(float val) noexcept { return fnv(as_u8s(val == 0.0f ? 0.0f : val)); }
-	[[nodiscard]] constexpr size_t ce_hash(double val) noexcept { return fnv(as_u8s(val == 0.0 ? 0.0 : val)); }
-	[[nodiscard]] constexpr size_t ce_hash(long double val) noexcept { return fnv(as_u8s(val == 0.0L ? 0.0L : val)); }
-	[[nodiscard]] constexpr size_t ce_hash(nullptr_t) noexcept { return fnv(as_u8s((void*)nullptr)); }
 	template <typename T>
-	requires (!std::is_const_v<T> && !std::is_volatile_v<T> && (std::is_enum_v<T> || std::is_integral_v<T> || std::is_pointer_v<T>))
-	[[nodiscard]] constexpr size_t ce_hash(T const& val) noexcept { return fnv(as_u8s(val)); }
+	requires 
+		(sizeof(T) <= sizeof(uint64_t)) && 
+		((sizeof(T) & (sizeof(T) - 1)) == 0) && /// Power of 2
+		std::is_trivially_copyable_v<T>
+	[[nodiscard]] consteval uint64_t ce_hash64(T val) noexcept
+	{
+		if constexpr (std::floating_point<T>)
+		{
+			if (val == T{ 0 }) val = T{ 0 }; /// -0 == 0
+		}
+		const auto as_int = std::bit_cast<uintN_t<bit_count<T>>>(val);
+		const auto as_array = to_u8_array(as_int);
+		return fnv64(as_array);
+	}
 
-	template <typename T>
-	[[nodiscard]] constexpr size_t ce_hash(std::basic_string_view<T> const& val) noexcept { return fnv(val); }
+	template <bytelike T>
+	[[nodiscard]] consteval uint64_t ce_hash64(std::basic_string_view<T> const& val) noexcept { return fnv64(val); }
 
 	template <typename FIRST, typename... T>
 	requires (sizeof...(T) > 0)
-	[[nodiscard]] constexpr size_t ce_hash(FIRST const& first, T const&... values)
+	[[nodiscard]] consteval uint64_t ce_hash64(FIRST const& first, T const&... values)
 	{
-		size_t result = ce_hash(first);
-		(ce_hash_combine(result, ce_hash(values)), ...);
+		uint64_t result = ce_hash64(first);
+		(fold_in_hash64(result, ce_hash64(values)), ...);
 		return result;
 	}
 
-	template<typename TUPLE_TYPE, size_t... Is>
-	constexpr void ce_hash_combine_tuple(size_t& hash, TUPLE_TYPE const& t, std::index_sequence<Is...>)
+	template <typename TUPLE_TYPE, uint64_t... Is>
+	consteval void ce_hash64_tuple_elements(uint64_t& hash, TUPLE_TYPE const& t, std::index_sequence<Is...>)
 	{
-		(ce_hash_combine(hash, std::get<Is>(t)), ...);
+		(fold_in_hash64(hash, ce_hash64(std::get<Is>(t))), ...);
 	}
 
 	template <typename... T>
-	[[nodiscard]] constexpr size_t ce_hash(std::tuple<T...> const& tupl) noexcept
+	[[nodiscard]] consteval uint64_t ce_hash64(std::tuple<T...> const& tupl) noexcept
 	{
-		size_t result = 0;
-		ce_hash_combine_tuple(result, tupl, std::index_sequence_for<T...>{});
+		uint64_t result = 0;
+		ce_hash64_tuple_elements(result, tupl, std::index_sequence_for<T...>{});
 		return result;
 	}
 
-	/// TODO: ce_hash(path)
-	/// TODO: ce_hash(thread::id) ?
-	/// TODO: ce_hash(optional/variant) ?
+	/// TODO: ce_hash64(array/span)
+	/// TODO: ce_hash64(thread::id) ?
+	/// TODO: ce_hash64(optional/variant) ?
 
 	/// Combines an existing hash value (`seed`) with the hash of value `v`
 	/// \ingroup Hashes
 	template <typename T, typename HASHER = std::hash<std::remove_cvref_t<T>>>
-	constexpr void hash_combine_to(size_t& seed, T&& v, HASHER&& hasher = HASHER{})
+	constexpr void hash64_combine_to(uint64_t& seed, T&& v, HASHER&& hasher = HASHER{})
 	{
-		constexpr size_t kMul = 0x9ddfea08eb382d69ULL;
-		size_t a = (hasher(v) ^ seed) * kMul;
-		a ^= (a >> 47);
-		size_t b = (seed ^ a) * kMul;
-		b ^= (b >> 47);
-		b *= kMul;
-		seed = b;
-	}
-
-	constexpr size_t hash_combine(size_t seed, size_t with)
-	{
-		constexpr size_t kMul = 0x9ddfea08eb382d69ULL;
-		size_t a = (with ^ seed) * kMul;
-		a ^= (a >> 47);
-		size_t b = (seed ^ a) * kMul;
-		b ^= (b >> 47);
-		b *= kMul;
-		return b;
+		static_assert(std::same_as<decltype(hasher(v)), uint64_t>, "hasher() must return a uint64_t");
+		fold_in_hash64(seed, hasher(v));
 	}
 
 	template <template<typename> typename HASHER = std::hash, typename FIRST, typename... T>
-	[[nodiscard]] constexpr size_t hash(FIRST&& first, T&&... values)
+	[[nodiscard]] constexpr uint64_t hash64(FIRST&& first, T&&... values)
 	{
-		size_t result = HASHER<std::remove_cvref_t<FIRST>>{}(std::forward<FIRST>(first));
-		(ghassanpl::hash_combine_to(result, std::forward<T>(values), HASHER<std::remove_cvref_t<T>>{}), ...);
+		using hasher_type = HASHER<std::remove_cvref_t<FIRST>>;
+		auto hasher = hasher_type{};
+		
+		static_assert(
+			std::same_as<decltype(hasher(std::declval<FIRST>>())), uint64_t> &&
+			(std::same_as<decltype(hasher(std::declval<T>())), uint64_t> && ... && true)
+			"hasher() must return a uint64_t for each type");
+
+		uint64_t result = (std::forward<FIRST>(first));
+		(ghassanpl::hash64_combine_to(result, std::forward<T>(values), hasher), ...);
 		return result;
 	}
 
 	/// Combines an existing hash value (`seed`) with the hash of a range of values
 	/// \ingroup Hashes
 	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
-	constexpr void hash_range(std::size_t& seed, It first, It last, HASHER const& hasher = {})
+	constexpr void hash64_range(std::uint64_t& seed, It first, It last, HASHER const& hasher = {})
 	{
+		static_assert(std::same_as<decltype(hasher(std::declval<std::iter_value_t<It>>())), uint64_t>, "hasher() must return a uint64_t");
 		for (; first != last; ++first)
-			hash_combine_to(seed, *first, hasher);
+			hash64_combine_to(seed, *first, hasher);
 	}
 
 	/// Hashes a range of values
 	/// \ingroup Hashes
 	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
-	[[nodiscard]] constexpr std::size_t hash_range(It first, It last, HASHER&& hasher = {})
+	[[nodiscard]] constexpr std::uint64_t hash64_range(It first, It last, HASHER&& hasher = {})
 	{
-		size_t seed = 0;
-		hash_range(seed, first, last, std::forward<HASHER>(hasher));
+		static_assert(std::same_as<decltype(hasher(std::declval<std::iter_value_t<It>>())), uint64_t>, "hasher() must return a uint64_t");
+		uint64_t seed = 0;
+		hash64_range(seed, first, last, std::forward<HASHER>(hasher));
 		return seed;
 	}
 
 	/// Hashes a range of values
 	/// \ingroup Hashes
 	template <std::ranges::range T, typename HASHER = std::hash<std::ranges::range_value_t<T>>>
-	[[nodiscard]] constexpr std::size_t hash_range(T range, HASHER&& hasher = {})
+	[[nodiscard]] constexpr std::uint64_t hash64_range(T range, HASHER&& hasher = {})
 	{
-		size_t seed = 0;
-		hash_range(seed, std::ranges::begin(range), std::ranges::end(range), std::forward<HASHER>(hasher));
+		static_assert(std::same_as<decltype(hasher(std::declval<std::ranges::range_value_t<T>>())), uint64_t>, "hasher() must return a uint64_t");
+		uint64_t seed = 0;
+		hash64_range(seed, std::ranges::begin(range), std::ranges::end(range), std::forward<HASHER>(hasher));
 		return seed;
 	}
 }

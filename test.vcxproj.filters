@@ -252,6 +252,12 @@
     <ClInclude Include="include\ghassanpl\cpp11\string_view.h">
       <Filter>Header Files\cpp11</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\soptional.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\cpp20.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -359,6 +365,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\bits_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\soptional_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

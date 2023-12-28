@@ -6,7 +6,7 @@
 
 namespace ghassanpl::noise
 {
-	using ghassanpl::integer::splitmix;
+	using ghassanpl::integer::splitmix64;
 
 	/// Value Noise
 
