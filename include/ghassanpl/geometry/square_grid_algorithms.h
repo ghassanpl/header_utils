@@ -52,8 +52,8 @@ namespace ghassanpl::geometry::squares
 	}
 
 
-	template <typename TILE_DATA, bool RESIZABLE, query_tile_callback<TILE_DATA> SHOULD_FLOOD_FUNC, change_tile_callback<TILE_DATA> FLOOD_FUNC>
-	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, SHOULD_FLOOD_FUNC&& should_flood, FLOOD_FUNC&& flood)
+	template <typename TILE_DATA, bool RESIZABLE, change_tile_callback<TILE_DATA> FLOOD_FUNC, query_tile_callback<TILE_DATA> SHOULD_FLOOD_FUNC>
+	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, FLOOD_FUNC&& flood, SHOULD_FLOOD_FUNC&& should_flood)
 	{
 		std::queue<glm::ivec2> queue;
 		if (!grid.is_valid(start)) return;
@@ -89,6 +89,26 @@ namespace ghassanpl::geometry::squares
 					queue.push(down);
 			}
 		}
+	}
+
+	template <typename TILE_DATA, bool RESIZABLE, change_tile_callback<TILE_DATA> FLOOD_FUNC>
+	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, FLOOD_FUNC&& flood)
+	{
+		const auto data_at_start = grid.at(start);
+		flood_at(grid, start, std::forward<FLOOD_FUNC>(flood), [&](glm::ivec2 at, TILE_DATA const& data) { return data == data_at_start; });
+	}
+
+
+	template <typename TILE_DATA, bool RESIZABLE, query_tile_callback<TILE_DATA> SHOULD_FLOOD_FUNC>
+	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, TILE_DATA const& replace_with, SHOULD_FLOOD_FUNC&& should_flood)
+	{
+		flood_at(grid, start, [&](glm::ivec2 at, TILE_DATA& data) { data = replace_with; }, std::forward<SHOULD_FLOOD_FUNC>(should_flood));
+	}
+
+	template <typename TILE_DATA, bool RESIZABLE>
+	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, TILE_DATA const& replace_with)
+	{
+		flood_at(grid, start, [&](glm::ivec2 at, TILE_DATA& data) { data = replace_with; });
 	}
 
 }

@@ -8,6 +8,10 @@
 #include <bit>
 #include <iterator>
 
+/// TODO: std::bitset is constexpr since C++23, so we can internally use that as soon as support for C++23 is widespread enough
+///		For example, we could have a version of enum_flags that takes an ENUM MIN_VALUE and an ENUM MAX_VALUE template parameters,
+///		and uses those to create a std::bitset<MAX_VALUE - MIN_VALUE + 1> internally, and then use that to store the bits.
+
 namespace ghassanpl
 {
 	template <integral_or_enum ENUM, detail::valid_integral VALUE_TYPE = unsigned long long>
@@ -16,7 +20,7 @@ namespace ghassanpl
 	constexpr inline struct all_flags_t {} all_flags;
 	constexpr inline struct no_flags_t {} no_flags;
 	
-	/// A value struct that represents a set of bits mapped to an enum.
+	/// A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset)
 	/// \ingroup Flags
 	/// 
 	/// \par Example
@@ -163,12 +167,16 @@ namespace ghassanpl
 		/// Sets the flags in the `other`
 		constexpr self_type& set(self_type other) noexcept { bits |= other.bits; return *this; }
 
+		/// TODO: `insert()` as an alias for `set()`
+
 		/// Unsets the given flags
 		template <std::convertible_to<ENUM>... ARGS>
 		constexpr self_type& unset(ARGS... args) noexcept { bits &= ~ flag_bits<VALUE_TYPE>(args...); return *this; }
 		/// Unsets the flags in the `other` set
 		constexpr self_type& unset(self_type other) noexcept { bits &= ~other.bits; return *this; }
 
+		/// TODO: `erase()` as an alias for `unset()`
+		
 		/// Toggles the given flags
 		template <std::convertible_to<ENUM>... ARGS>
 		constexpr self_type& toggle(ARGS... args) noexcept { bits ^= flag_bits<VALUE_TYPE>(args...); return *this; }

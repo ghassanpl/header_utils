@@ -57,6 +57,9 @@
 #define NOPROFILER
 #define NOMCX
 
+/// TODO: Should we do #define byte _win32_byte here? `using namespace std` will put std::byte into the global namespace, 
+///		causing a conflict with the `byte` declared in windows.h
+
 #include <Windows.h>
 
 /*

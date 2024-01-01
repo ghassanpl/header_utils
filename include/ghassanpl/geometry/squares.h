@@ -8,6 +8,12 @@
 
 namespace ghassanpl::geometry::squares
 {
+	/// TODO: Should probably define the terms somewhere (surrounding, neighbor, adjacent, tile, world, etc)
+	
+	constexpr bool is_surrounding(glm::ivec2 a, glm::ivec2 b) { return glm::abs(a.x - b.x) < 2 && glm::abs(a.y - b.y) < 2; }
+	constexpr bool is_neighbor(glm::ivec2 a, glm::ivec2 b) { return is_surrounding(a, b) && glm::abs(a.y - b.y) != glm::abs(a.x - b.x); }
+	constexpr bool is_diagonal_neighbor(glm::ivec2 a, glm::ivec2 b) { return is_surrounding(a, b) && glm::abs(a.y - b.y) == glm::abs(a.x - b.x); }
+
 	template <typename T>
 	concept metric = false;
 
@@ -21,12 +27,12 @@ namespace ghassanpl::geometry::squares
 		}
 
 		template <std::integral T>
-		static constexpr auto valid_neighbor(glm::tvec2<T> a, glm::tvec2<T> b)
+		static constexpr auto is_valid_neighbor(glm::tvec2<T> a, glm::tvec2<T> b)
 		{
-			
+			return is_neighbor(a, b);
 		}
 
-		static constexpr auto valid_direction(direction dir)
+		static constexpr auto is_valid_direction(direction dir)
 		{
 			return is_cardinal(dir);
 		}
@@ -45,7 +51,7 @@ namespace ghassanpl::geometry::squares
 		template <std::integral T>
 		static constexpr bool is_valid_neighbor(glm::tvec2<T> a, glm::tvec2<T> b)
 		{
-
+			return is_surrounding(a, b);
 		}
 
 		static constexpr bool is_valid_direction(direction dir)
@@ -53,7 +59,7 @@ namespace ghassanpl::geometry::squares
 			return is_valid(dir);
 		}
 	};
-	using adjacent_metric = chebyshev_metric;
+	using surrounding_metric = chebyshev_metric;
 
 	template <std::integral T>
 	constexpr auto manhattan_distance(glm::tvec2<T> a, glm::tvec2<T> b)
@@ -66,10 +72,6 @@ namespace ghassanpl::geometry::squares
 	{
 		return chebyshev_metric::distance(a, b);
 	}
-
-	constexpr bool is_surrounding(glm::ivec2 a, glm::ivec2 b) { return glm::abs(a.x - b.x) < 2 && glm::abs(a.y - b.y) < 2; }
-	constexpr bool is_neighbor(glm::ivec2 a, glm::ivec2 b) { return is_surrounding(a, b) && glm::abs(a.y - b.y) != glm::abs(a.x - b.x); }
-	constexpr bool is_diagonal_neighbor(glm::ivec2 a, glm::ivec2 b) { return is_surrounding(a, b) && glm::abs(a.y - b.y) == glm::abs(a.x - b.x); }
 
 	constexpr glm::vec2 tile_pos_to_world_pos(glm::ivec2 tile_pos, glm::vec2 tile_size) { return glm::vec2(tile_pos) * tile_size; }
 	constexpr glm::vec2 tile_pos_to_world_pos(glm::ivec2 tile_pos, float tile_size) { return glm::vec2(tile_pos) * tile_size; }

@@ -17,14 +17,14 @@
 namespace glm
 {
 	template <typename STRINGIFIER>
-	bool stringify(STRINGIFIER& str, glm::vec4& b) { return str('[', b.x, ',', b.y, ',', b.z, ',', b.w, ']'); }
+	auto stringify(STRINGIFIER& str, glm::vec4& b) { return str('[', b.x, ',', b.y, ',', b.z, ',', b.w, ']'); }
 	template <typename STRINGIFIER>
-	bool stringify(STRINGIFIER& str, glm::vec4 const& b) { return str('[', b.x, ',', b.y, ',', b.z, ',', b.w, ']'); }
+	auto stringify(STRINGIFIER& str, glm::vec4 const& b) { return str('[', b.x, ',', b.y, ',', b.z, ',', b.w, ']'); }
 
 	template <typename STRINGIFIER>
-	bool stringify(STRINGIFIER& str, glm::vec2& b) { return str('[', b.x, ',', b.y, ']'); }
+	auto stringify(STRINGIFIER& str, glm::vec2& b) { return str('[', b.x, ',', b.y, ']'); }
 	template <typename STRINGIFIER>
-	bool stringify(STRINGIFIER& str, glm::vec2 const& b) { return str('[', b.x, ',', b.y, ']'); }
+	auto stringify(STRINGIFIER& str, glm::vec2 const& b) { return str('[', b.x, ',', b.y, ']'); }
 }
 
 namespace ghassanpl::geometry

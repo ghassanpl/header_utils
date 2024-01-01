@@ -42,9 +42,6 @@
     <ClInclude Include="include\ghassanpl\windows\common.h">
       <Filter>Header Files\windows</Filter>
     </ClInclude>
-    <ClInclude Include="include\ghassanpl\windows\message_box.h">
-      <Filter>Header Files\windows</Filter>
-    </ClInclude>
     <ClInclude Include="include\ghassanpl\windows\include.h">
       <Filter>Header Files\windows</Filter>
     </ClInclude>
@@ -229,9 +226,6 @@
       <Filter>Header Files\windows</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\windows\wm.h">
-      <Filter>Header Files\windows</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ghassanpl\windows\folders.h">
       <Filter>Header Files\windows</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\windows\console.h">

@@ -18,6 +18,8 @@ namespace ghassanpl
 	template <template<typename> typename HASHER, typename FIRST, typename... T>
 	[[nodiscard]] constexpr size_t hash(FIRST&& first, T&&... values);
 
+	static inline constexpr struct bounding_box_for_t {} bounding_box_for;
+
 	template <typename T>
 	struct trec2
 	{
@@ -35,6 +37,14 @@ namespace ghassanpl
 			for (auto& p : points)
 				include(p);
 		}
+
+		template <std::same_as<tvec>... ARGS>
+		explicit constexpr trec2(bounding_box_for_t, ARGS&&... args) noexcept
+		{
+			*this = trec2::exclusive();
+			(this->include(std::forward<ARGS>(args)), ...);
+		}
+
 		constexpr explicit trec2(tvec a) noexcept : p1(), p2(a) { }
 		constexpr trec2(T x1, T y1, T x2, T y2) noexcept : p1(x1, y1), p2(x2, y2) { }
 		constexpr trec2(const trec2&) noexcept = default;
@@ -43,10 +53,13 @@ namespace ghassanpl
 		constexpr explicit trec2(const trec2<U>& other) noexcept : p1(glm::tvec2<U>(other.p1)), p2(glm::tvec2<U>(other.p2)) {}
 		template <typename U>
 		constexpr explicit trec2(trec2<U>&& other) noexcept : p1(glm::tvec2<U>(other.p1)), p2(glm::tvec2<U>(other.p2)) {}
+
 		constexpr trec2& operator=(const trec2&) noexcept = default;
 		constexpr trec2& operator=(trec2&&) noexcept = default;
 
 		static constexpr trec2 from_points(std::span<tvec const> points) noexcept { return trec2{points}; }
+		template <std::same_as<tvec>... ARGS>
+		static constexpr trec2 from_points(ARGS&&... args) noexcept { return trec2(bounding_box_for, std::forward<ARGS>(args)...); }
 		static constexpr trec2 from_size(tvec s) noexcept { return { tvec{}, s }; };
 		static constexpr trec2 from_size(tvec p, tvec s) noexcept { return { p, p + s }; };
 		static constexpr trec2 from_size(T x, T y, T w, T h) noexcept { return { x, y, x + w, y + h }; };
@@ -300,9 +313,9 @@ namespace ghassanpl
 	trec2<T> operator+(glm::tvec2<T> op, trec2<T> rec) noexcept { return { rec.p1 + op, rec.p2 + op }; }
 
 	template <typename T, typename STRINGIFIER>
-	bool stringify(STRINGIFIER& str, trec2<T>& b) { return str('[', b.p1.x, ',', b.p1.y, ',', b.p2.x, ',', b.p2.y, ']'); }
+	auto stringify(STRINGIFIER& str, trec2<T>& b) { return str('[', b.p1.x, ',', b.p1.y, ',', b.p2.x, ',', b.p2.y, ']'); }
 	template <typename T, typename STRINGIFIER>
-	bool stringify(STRINGIFIER& str, trec2<T> const& b) { return str('[', b.p1.x, ',', b.p1.y, ',', b.p2.x, ',', b.p2.y, ']'); }
+	auto stringify(STRINGIFIER& str, trec2<T> const& b) { return str('[', b.p1.x, ',', b.p1.y, ',', b.p2.x, ',', b.p2.y, ']'); }
 }
 
 

@@ -201,6 +201,7 @@ namespace ghassanpl::geometry
 	polygon_triangulation<T> triangulate(tpolygon<T> const& poly)
 	{
 		polygon_triangulation<T> result{poly};
+		/// https://github.com/mapbox/earcut.hpp
 		throw "unimplemented";
 		return result;
 	}

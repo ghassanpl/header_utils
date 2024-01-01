@@ -19,6 +19,9 @@ namespace ghassanpl
 	namespace detail
 	{
 		template<typename T>
+		concept bit_integral = std::is_integral_v<T> && !std::is_same_v<std::decay_t<T>, bool>;
+
+		template<typename T>
 		concept valid_integral = bit_integral<T> || requires (T other, int t) {
 			{ other &= t } -> bit_integral;
 			{ other ^= t } -> bit_integral;

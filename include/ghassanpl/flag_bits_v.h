@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "bits.h"
+#include <type_traits>
+#include <climits> /// Only for CHAR_BIT, sigh
 
 #if !__has_cpp_attribute(nodiscard)
 #error "This library requires [[nodiscard]]"
@@ -13,7 +14,7 @@
 namespace ghassanpl
 {
 	template<typename T>
-	concept integral_or_enum = bit_integral<T> || std::is_enum_v<T>;
+	concept integral_or_enum = std::is_integral_v<T> && !std::is_same_v<std::decay_t<T>, bool> || std::is_enum_v<T>;
 
 	namespace detail
 	{
@@ -32,7 +33,7 @@ namespace ghassanpl
 
 		template <typename RESULT_TYPE, auto... VALUES>
 		concept valid_flag_bits_v_arguments =
-			 bit_integral<RESULT_TYPE> &&
+			std::is_integral_v<RESULT_TYPE> && !std::is_same_v<std::decay_t<RESULT_TYPE>, bool> && /// Same as bit_integral concept
 			(integral_or_enum<decltype(VALUES)> && ...) &&
 			(detail::allowed_bit_num<RESULT_TYPE, static_cast<decltype(detail::to_underlying_type(VALUES))>(VALUES)> && ...);
 	}

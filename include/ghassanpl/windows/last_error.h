@@ -8,6 +8,8 @@
 
 #include <string>
 
+/// DEPRECATED: Use the `moal` library instead of this functionality
+
 namespace ghassanpl
 {
 
