@@ -13,6 +13,7 @@
 //using namespace glm;
 using namespace std;
 using namespace ghassanpl::geometry;
+using namespace ghassanpl::geometry::angles;
 
 TEST(geometry_common, degrees_and_radians_work)
 {
@@ -33,6 +34,42 @@ TEST(geometry_common, degrees_and_radians_work)
 	EXPECT_EQ((360.0f), degrees(radians_t{ glm::pi<float>() * 2.0f }).value);
 	EXPECT_EQ(0, degrees(radians_t{}).value);
 	*/
+}
+
+using namespace ghassanpl::geometry::squares;
+TEST(squares, tile_world_grid_functions_work)
+{
+	using glm::vec2;
+	{
+		auto snapped = snap_world_pos_to_tile_grid(vec2{ 0,0 }, vec2{ 1,1 });
+		EXPECT_EQ(snapped, vec2(0, 0));
+	}
+	{
+		auto snapped = snap_world_pos_to_tile_grid(vec2{ 0.2,0.2 }, vec2{ 1,1 });
+		EXPECT_EQ(snapped, vec2(0, 0));
+	}
+	{
+		auto snapped = snap_world_pos_to_tile_grid(vec2{ 0.7,0.7 }, vec2{ 1,1 });
+		EXPECT_EQ(snapped, vec2(1, 1));
+	}
+	{
+		auto snapped = snap_world_pos_to_tile_grid(vec2{ -0.2,-0.2 }, vec2{ 1,1 });
+		EXPECT_EQ(snapped, vec2(0, 0));
+	}
+	{
+		auto snapped = snap_world_pos_to_tile_grid(vec2{ -0.7,-0.7 }, vec2{ 1,1 });
+		EXPECT_EQ(snapped, vec2(-1, -1));
+	}
+}
+
+TEST(polar, works)
+{
+	using namespace glm;
+	{
+		auto p = euclidean(polar(vec2{10, 20}));
+		EXPECT_NEAR(p.x, 10, 0.00001);
+		EXPECT_NEAR(p.y, 20, 0.00001);
+	}
 }
 
 /*

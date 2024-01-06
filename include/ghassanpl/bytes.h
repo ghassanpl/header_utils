@@ -52,6 +52,81 @@ namespace ghassanpl
 	template <typename T> requires std::is_trivial_v<T> auto as_u8s(T const& data) noexcept { return as_bytelikes<uint8_t>(data); }
 	template <typename T> requires std::is_trivial_v<T> auto as_char8s(T const& data) noexcept { return as_bytelikes<char8_t>(data); }
 
+
+	template <bytelike B>
+	bool nth_bit(std::span<B const> range, size_t n) noexcept
+	{
+		if (n >= u8range.size() * CHAR_BIT)
+			return false;
+		const auto u8range = as_u8s(range);
+		const auto byte = u8range[n / CHAR_BIT];
+		return byte & (1 << (n % CHAR_BIT));
+	}
+
+	template <bytelike B>
+	void set_nth_bit(std::span<B> range, size_t n, bool value) noexcept
+	{
+		if (n >= u8range.size() * CHAR_BIT)
+			return;
+		auto u8range = as_u8s(range);
+		auto byte = u8range[n / CHAR_BIT];
+		if (value)
+			byte |= (1 << (n % CHAR_BIT));
+		else
+			byte &= ~(1 << (n % CHAR_BIT));
+	}
+
+	template <typename T>
+	requires std::is_trivially_copyable_v<T>
+	bool nth_bit(T const& pod, size_t n) noexcept
+	{
+		return nth_bit(as_u8s(pod), n);
+	}
+
+	template <typename T>
+	requires std::is_trivially_copyable_v<T>
+	void set_nth_bit(T& pod, size_t n, bool value) noexcept
+	{
+		set_nth_bit(as_u8s(pod), n, value);
+	}
+
+	template <size_t N, bytelike B>
+	bool nth_bit(std::span<B const> range) noexcept
+	{
+		if (N >= u8range.size() * CHAR_BIT)
+			return false;
+		const auto u8range = as_u8s(range);
+		const auto byte = u8range[N / CHAR_BIT];
+		return byte & (1 << (N % CHAR_BIT));
+	}
+
+	template <size_t N, bytelike B>
+	void set_nth_bit(std::span<B> range, bool value) noexcept
+	{
+		if (N >= u8range.size() * CHAR_BIT)
+			return;
+		auto u8range = as_u8s(range);
+		auto byte = u8range[N / CHAR_BIT];
+		if (value)
+			byte |= (1 << (N % CHAR_BIT));
+		else
+			byte &= ~(1 << (N % CHAR_BIT));
+	}
+
+	template <size_t N, typename T>
+	requires std::is_trivially_copyable_v<T>
+	bool nth_bit(T const& pod) noexcept
+	{
+		return nth_bit<N>(as_u8s(pod));
+	}
+
+	template <size_t N, typename T>
+	requires std::is_trivially_copyable_v<T>
+	void set_nth_bit(T& pod, bool value) noexcept
+	{
+		set_nth_bit<N>(as_u8s(pod), value);
+	}
+
 	/// A constexpr function that converts an integral value to its constituent bytelikes
 	/// TODO: This is NOT like a reinterpret_cast to u8, because it's not endian-aware
 	template <bytelike B, std::integral T>
@@ -162,82 +237,4 @@ namespace ghassanpl
 		}
 	}
 
-#if 0
-	/// Returns a `char` span that represents the internal object representation of the argument
-	template <typename T>
-	requires std::is_trivially_copyable_v<T>
-	std::span<char const> as_uchars(T const& pod)
-	{
-		return { reinterpret_cast<unsigned char const*>(&pod), sizeof(pod) };
-	}
-
-
-	/// Converts a span of bytelikes to a span of `std::byte`s
-	template <bytelike T>
-	std::span<std::byte const> as_bytes(std::span<T const> bytes)
-	{
-		return { reinterpret_cast<std::byte const*>(bytes.data()), bytes.size() };
-	}
-
-	/// Returns a `std::byte` span that represents the internal object representation of the argument
-	template <typename T>
-	requires std::is_trivially_copyable_v<T>
-	std::span<std::byte const> as_bytes(T const& pod)
-	{
-		return { reinterpret_cast<std::byte const*>(&pod), sizeof(pod) };
-	}
-
-	/// Returns a span that represents the internal object representation of the argument, of any \ref bytelike type
-	template <bytelike B, typename T>
-	requires std::is_trivially_copyable_v<T>
-	std::span<B const> as_bytes(T const& pod)
-	{
-		return { reinterpret_cast<B const*>(&pod), sizeof(pod) };
-	}
-
-	/// Converts a span of \ref bytelike s to a span of `char`s
-	template <bytelike T>
-	std::span<char const> as_chars(std::span<T const> bytes)
-	{
-		return { reinterpret_cast<char const*>(bytes.data()), bytes.size() };
-	}
-
-	/// Returns a `char` span that represents the internal object representation of the argument
-	template <typename T>
-	requires std::is_trivially_copyable_v<T>
-	std::span<char const> as_chars(T const& pod)
-	{
-		return { reinterpret_cast<char const*>(&pod), sizeof(pod) };
-	}
-
-	/// Converts a span of \ref bytelike s to a span of `char`s
-	template <bytelike T>
-	std::span<char const> as_uchars(std::span<T const> bytes)
-	{
-		return { reinterpret_cast<unsigned char const*>(bytes.data()), bytes.size() };
-	}
-
-	/// Returns a `char` span that represents the internal object representation of the argument
-	template <typename T>
-	requires std::is_trivially_copyable_v<T>
-	std::span<char const> as_uchars(T const& pod)
-	{
-		return { reinterpret_cast<unsigned char const*>(&pod), sizeof(pod) };
-	}
-
-	/// Converts a span of \ref bytelike s to a span of `char`s
-	template <bytelike T>
-	std::span<char const> as_u8s(std::span<T const> bytes)
-	{
-		return { reinterpret_cast<unsigned char const*>(bytes.data()), bytes.size() };
-	}
-
-	/// Returns a `char` span that represents the internal object representation of the argument
-	template <typename T>
-		requires std::is_trivially_copyable_v<T>
-	std::span<char const> as_u8s(T const& pod)
-	{
-		return { reinterpret_cast<unsigned char const*>(&pod), sizeof(pod) };
-	}
-#endif
 }

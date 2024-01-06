@@ -329,7 +329,7 @@ namespace ghassanpl
 	/// Combines an existing hash value (`seed`) with the hash of a range of values
 	/// \ingroup Hashes
 	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
-	constexpr void hash64_range(std::uint64_t& seed, It first, It last, HASHER const& hasher = {})
+	constexpr void hash64_range(uint64_t& seed, It first, It last, HASHER const& hasher = {})
 	{
 		static_assert(std::same_as<decltype(hasher(std::declval<std::iter_value_t<It>>())), uint64_t>, "hasher() must return a uint64_t");
 		for (; first != last; ++first)
@@ -339,7 +339,7 @@ namespace ghassanpl
 	/// Hashes a range of values
 	/// \ingroup Hashes
 	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
-	[[nodiscard]] constexpr std::uint64_t hash64_range(It first, It last, HASHER&& hasher = {})
+	[[nodiscard]] constexpr uint64_t hash64_range(It first, It last, HASHER&& hasher = {})
 	{
 		static_assert(std::same_as<decltype(hasher(std::declval<std::iter_value_t<It>>())), uint64_t>, "hasher() must return a uint64_t");
 		uint64_t seed = 0;
@@ -350,7 +350,7 @@ namespace ghassanpl
 	/// Hashes a range of values
 	/// \ingroup Hashes
 	template <std::ranges::range T, typename HASHER = std::hash<std::ranges::range_value_t<T>>>
-	[[nodiscard]] constexpr std::uint64_t hash64_range(T range, HASHER&& hasher = {})
+	[[nodiscard]] constexpr uint64_t hash64_range(T range, HASHER&& hasher = {})
 	{
 		static_assert(std::same_as<decltype(hasher(std::declval<std::ranges::range_value_t<T>>())), uint64_t>, "hasher() must return a uint64_t");
 		uint64_t seed = 0;

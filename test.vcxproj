@@ -195,6 +195,7 @@
     <ClInclude Include="include\ghassanpl\geometry\direction.h" />
     <ClInclude Include="include\ghassanpl\geometry\ellipse.h" />
     <ClInclude Include="include\ghassanpl\geometry\geometry_common.h" />
+    <ClInclude Include="include\ghassanpl\geometry\points.h" />
     <ClInclude Include="include\ghassanpl\geometry\polygon.h" />
     <ClInclude Include="include\ghassanpl\geometry\segment.h" />
     <ClInclude Include="include\ghassanpl\geometry\shape_concepts.h" />
@@ -203,7 +204,8 @@
     <ClInclude Include="include\ghassanpl\geometry\squares.h" />
     <ClInclude Include="include\ghassanpl\geometry\triangles.h" />
     <ClInclude Include="include\ghassanpl\hashes.h" />
-    <ClInclude Include="include\ghassanpl\interpolate.h" />
+    <ClInclude Include="include\ghassanpl\interpolation.h" />
+    <ClInclude Include="include\ghassanpl\string_interpolate.h" />
     <ClInclude Include="include\ghassanpl\json_helpers.h" />
     <ClInclude Include="include\ghassanpl\mmap.h" />
     <ClInclude Include="include\ghassanpl\mmap_impl.h" />
@@ -217,6 +219,7 @@
     <ClInclude Include="include\ghassanpl\ranges.h" />
     <ClInclude Include="include\ghassanpl\rec2.h" />
     <ClInclude Include="include\ghassanpl\regex.h" />
+    <ClInclude Include="include\ghassanpl\scope.h" />
     <ClInclude Include="include\ghassanpl\sexps.h" />
     <ClInclude Include="include\ghassanpl\soptional.h" />
     <ClInclude Include="include\ghassanpl\source_location.h" />
@@ -250,6 +253,7 @@
     <ClCompile Include="tests\bits_tests.cpp" />
     <ClCompile Include="tests\buffers_tests.cpp" />
     <ClCompile Include="tests\byte_tests.cpp" />
+    <ClCompile Include="tests\cemath_tests.cpp" />
     <ClCompile Include="tests\colors_test.cpp" />
     <ClCompile Include="tests\configs_tests.cpp" />
     <ClCompile Include="tests\containers_tests.cpp" />
@@ -274,6 +278,7 @@
     <ClCompile Include="tests\parsing_tests.cpp" />
     <ClCompile Include="tests\random_tests.cpp" />
     <ClCompile Include="tests\ranges_tests.cpp" />
+    <ClCompile Include="tests\scope_tests.cpp" />
     <ClCompile Include="tests\soptional_tests.cpp" />
     <ClCompile Include="tests\symbol_tests.cpp" />
     <ClCompile Include="tests\rec2_tests.cpp" />

@@ -8,6 +8,7 @@
 #include "rec2.h"
 #include "geometry/ellipse.h"
 #include "geometry/polygon.h"
+#include "geometry/shape_concepts.h"
 
 namespace ghassanpl::random
 {
@@ -43,6 +44,7 @@ namespace ghassanpl::random
 		return { range(T{}, max.x, rng), range(T{}, max.y, rng) };
 	}
 
+	/// TODO: This doesn't seem uniform
 	template <typename T, typename RANDOM = std::default_random_engine>
 	glm::tvec2<T> point_in(geometry::tellipse<T> const& el, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -81,7 +83,39 @@ namespace ghassanpl::random
 		return point_in(poly.triangle(i), rng);
 	}
 
-	/// TODO: in(circle), in(poly)?, on(rect), on(circle)
+	/// \brief Returns a random point on the edge of the shape.
+	template <typename T, geometry::shape<T> S, typename RANDOM = std::default_random_engine>
+	glm::tvec2<T> point_on(S const& shape, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	{
+		return s.edge_point_alpha(percentage(rng));
+	}
+
+	/// TODO: in(circle), in(poly)?, on(rect), on(circle), on(arc)
+	/*
+	template <typename T>
+	auto RandomNotIn(ghassanpl::trec2<T> const& verboten, ghassanpl::trec2<T> const& bounds)
+	{
+		/// Must be true: bounds.contains(verboten);
+		const std::array<ghassanpl::trec2<T>, 4> surrounding = {
+			ghassanpl::trec2<T>{ bounds.p1.x, bounds.p1.y, bounds.p2.x, verboten.p1.y },
+			ghassanpl::trec2<T>{ bounds.p1.x, verboten.p2.y, bounds.p2.x, bounds.p2.y },
+			ghassanpl::trec2<T>{ bounds.p1.x, bounds.p1.y, verboten.p1.x, bounds.p2.y },
+			ghassanpl::trec2<T>{ verboten.p2.x, bounds.p1.y, bounds.p2.x, bounds.p2.y },
+		};
+		const std::array<T, 4> areas = {
+			surrounding[0].calculate_area(),
+			surrounding[1].calculate_area(),
+			surrounding[2].calculate_area(),
+			surrounding[3].calculate_area()
+		};
+		const int total_area = areas[0] + areas[1] + areas[2] + areas[3];
+		const int rand_pos = RandomIn(total_area);
+		if (rand_pos < areas[0]) return Random(surrounding[0]);
+		if (rand_pos < areas[0] + areas[1]) return Random(surrounding[1]);
+		if (rand_pos < areas[0] + areas[1] + areas[2]) return Random(surrounding[2]);
+		return Random(surrounding[3]);
+	}
+	*/
 
 	template <typename RANDOM = std::default_random_engine>
 	glm::ivec2 neighbor(RANDOM& rng = ::ghassanpl::random::default_random_engine)

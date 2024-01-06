@@ -301,7 +301,7 @@ namespace ghassanpl
 		constexpr glm::vec2 projected(glm::vec2 pt) const
 		{
 			const auto d = (pt - p1) / size();
-			const auto c = glm::round(glm::saturate(d));
+			const auto c = glm::saturate(d);
 			return p1 + c * size();
 		}
 

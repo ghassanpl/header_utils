@@ -210,7 +210,7 @@
     <ClInclude Include="include\ghassanpl\eval.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ghassanpl\interpolate.h">
+    <ClInclude Include="include\ghassanpl\string_interpolate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\ghassanpl\sexps.h">
@@ -251,6 +251,15 @@
     </ClInclude>
     <ClInclude Include="include\ghassanpl\cpp20.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\scope.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\interpolation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\points.h">
+      <Filter>Header Files\geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -362,6 +371,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\soptional_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\scope_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\cemath_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -75,11 +75,11 @@ TEST(random, basics)
 
 		auto ix = random::index(woo);
 		EXPECT_GE(ix, 0);
-		EXPECT_LT(ix, woo.size());
+		EXPECT_LT(ix, (ptrdiff_t)woo.size());
 
 		auto ixe = random::index(woo, [](auto v) { return (v % 2); });
 		EXPECT_GE(ixe, 0);
-		EXPECT_LT(ixe, woo.size());
+		EXPECT_LT(ixe, (ptrdiff_t)woo.size());
 		EXPECT_EQ((woo[ixe] % 2), 1);
 
 		{

@@ -1,6 +1,6 @@
 #include "../include/ghassanpl/eval.h"
 #include "../include/ghassanpl/eval_libs/lib_core.h"
-#include "../include/ghassanpl/interpolate.h"
+#include "../include/ghassanpl/string_interpolate.h"
 #include "../include/ghassanpl/wilson.h"
 #include <gtest/gtest.h>
 

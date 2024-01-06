@@ -103,7 +103,7 @@ namespace ghassanpl
 	private:
 
 		std::set<std::string, std::less<>> m_values{ std::string{} };
-		std::string const* m_empty_string = &*m_values.begin();
+		std::string const* m_empty_string = &*m_values.begin(); /// TODO: Could be made atomic
 	};
 
 	using default_symbol_provider = default_symbol_provider_t<void>;
@@ -111,3 +111,4 @@ namespace ghassanpl
 }
 
 /// TODO: ostream << and formatter, or enable stringification
+/// TODO: a thread-safe version of the symbol provider
