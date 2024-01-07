@@ -23,14 +23,6 @@ namespace ghassanpl::geometry
 		template <typename FUNC>
 		void for_each_edge(FUNC&& func)
 		{
-			func(a, b);
-			func(b, c);
-			func(c, a);
-		}
-
-		template <typename FUNC>
-		void for_each_segment(FUNC&& func)
-		{
 			func(tsegment<T>{a, b});
 			func(tsegment<T>{b, c});
 			func(tsegment<T>{c, a});
@@ -52,12 +44,18 @@ namespace ghassanpl::geometry
 		glm::tvec2<T> edge_point(T t) const;
 		glm::tvec2<T> projected(glm::tvec2<T> pt) const;
 
-		float sign(tvec const& p1, tvec const& p2, tvec const& p3)
+		static auto sign(tvec const& p1, tvec const& p2, tvec const& p3) noexcept
 		{
 			return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
 		}
 
-		bool contains(tvec pt) const 
+		winding_order winding() const noexcept
+		{
+			const auto d = sign(a, b, c);
+			return d > 0 ? winding_order::clockwise : winding_order::counter_clockwise;
+		}
+
+		bool contains(tvec pt) const noexcept
 		{
 			const auto d1 = sign(pt, a, b);
 			const auto d2 = sign(pt, b, c);
@@ -67,13 +65,13 @@ namespace ghassanpl::geometry
 			return !(has_neg && has_pos);
 		}
 
-		T calculate_area() const
+		auto calculate_area() const noexcept
 		{
-			const auto A = glm::sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
-			const auto B = glm::sqrt((b.x - c.x) * (b.x - c.x) + (b.y - c.y) * (b.y - c.y));
-			const auto C = glm::sqrt((b.x - c.x) * (a.x - c.x) + (a.y - c.y) * (a.y - c.y));
+			const auto A = std::sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
+			const auto B = std::sqrt((b.x - c.x) * (b.x - c.x) + (b.y - c.y) * (b.y - c.y));
+			const auto C = std::sqrt((b.x - c.x) * (a.x - c.x) + (a.y - c.y) * (a.y - c.y));
 			const auto s = (A + B + C) * T(0.5);
-			return glm::sqrt(s * (s - A) * (s - B) * (s - C));
+			return std::sqrt(s * (s - A) * (s - B) * (s - C));
 		}
 	};
 

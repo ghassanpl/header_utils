@@ -55,3 +55,9 @@ namespace ghassanpl
     };
 }
 #endif
+
+namespace ghassanpl
+{
+    template <typename STRINGIFIER>
+    auto stringify(STRINGIFIER& str, const source_location& b) { return str(b.file_name(), '(', b.line(), ", ", b.column(), "):"); }
+}

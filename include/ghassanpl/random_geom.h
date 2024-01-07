@@ -162,4 +162,14 @@ namespace ghassanpl::random
 		}
 		return {};
 	}
+
+	/// TODO: Should we move the below to random_seq?
+	
+	/// \brief Returns the nth quasi-random vector in the [0, 1]^2 space.
+	template <std::floating_point T = float>
+	constexpr glm::tvec2<T> halton_sequence_2d(size_t index, size_t base_x = 2, size_t base_y = 3)
+	{
+		return { halton_sequence<T>(index, base_x), halton_sequence<T>(index, base_y) };
+	}
+
 }

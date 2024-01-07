@@ -32,6 +32,32 @@ namespace ghassanpl::geometry
 
 		bool is_valid() const noexcept { return vertices.size() > 2; }
 
+		struct convexity {
+			bool simple = false;
+			bool convex = false;
+			constexpr bool is_simple() const { return simple; }
+			constexpr bool intersects_itself() const { return !simple; }
+			constexpr bool is_convex() const { return convex; }
+			constexpr bool is_concave() const noexcept { return simple && !convex; }
+		};
+
+		convexity calculate_convexity() const noexcept;
+		tpolygon<T> convex_hull() const noexcept;
+
+		std::optional<tsegment<T>> edge(size_t index) const
+		{
+			const auto c = vertices.size();
+			if (c < 2 || index >= c - 1) return std::nullopt;
+			return tsegment<T>{vertices[index], vertices[index + 1]};
+		}
+
+		std::optional<tvec> vertex(size_t index) const
+		{
+			const auto c = vertices.size();
+			if (c < 2 || index >= c) return std::nullopt;
+			return vertices[index];
+		}
+
 		template <typename FUNC>
 		void for_each_edge(FUNC&& func)
 		{
@@ -39,18 +65,17 @@ namespace ghassanpl::geometry
 			if (c < 2) return;
 
 			for (size_t i = 0; i < c - 1; ++i)
-				func(vertices[i], vertices[i + 1]);
-		}
-
-		template <typename FUNC>
-		void for_each_segment(FUNC&& func)
-		{
-			const auto c = vertices.size();
-			if (c < 2) return;
-
-			for (size_t i = 0; i < c - 1; ++i)
 				func(tsegment<T>{vertices[i], vertices[i + 1]});
 		}
+
+		std::vector<tsegment<T>> edges() const noexcept
+		{
+			std::vector<tsegment<T>> result;
+			for_each_edge([&](auto&& seg) { result.push_back(seg); });
+			return result;
+		}
+		
+		std::vector<T> interior_angles() const noexcept;
 
 		T edge_length() const
 		{

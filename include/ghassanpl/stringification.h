@@ -140,6 +140,33 @@ struct std::formatter<T> : std::formatter<std::string>
 	template<typename U, class FormatContext>
 	auto format(U&& t, FormatContext& fc) const
 	{
-		return std::formatter<std::string>::format(to_string(std::forward<U>(t)), fc);
+		std::string result;
+		ghassanpl::string_stringifier<true> str{ result };
+		stringify(str, std::forward<U>(t));
+		return std::formatter<std::string>::format(std::move(result), fc);
 	}
 };
+
+template <typename T>
+requires requires (T val) { { (std::string_view)val } -> std::same_as<std::string_view>; } && (!std::convertible_to<T, std::string_view>)
+struct std::formatter<T> : std::formatter<std::string_view>
+{
+	template<typename U, class FormatContext>
+	auto format(U&& t, FormatContext& fc) const
+	{
+		return std::formatter<std::string_view>::format((std::string_view)std::forward<U>(t), fc);
+	}
+};
+
+/*
+template <typename T>
+requires (requires (T val) { ghassanpl::to_string(val); }) && (!requires (T val) { std::to_string(val); })
+struct std::formatter<T> : std::formatter<std::string>
+{
+	template<typename U, class FormatContext>
+	auto format(U&& t, FormatContext& fc) const
+	{
+		return std::formatter<std::string>::format(ghassanpl::to_string(std::forward<U>(t)), fc);
+	}
+};
+*/

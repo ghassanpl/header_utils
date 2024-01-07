@@ -100,7 +100,7 @@ namespace ghassanpl
 		auto const& values() const noexcept { return m_values; }
 		auto empty_string() const noexcept { return m_empty_string; }
 
-	private:
+	protected:
 
 		std::set<std::string, std::less<>> m_values{ std::string{} };
 		std::string const* m_empty_string = &*m_values.begin(); /// TODO: Could be made atomic

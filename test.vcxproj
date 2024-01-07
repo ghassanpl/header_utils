@@ -197,6 +197,7 @@
     <ClInclude Include="include\ghassanpl\geometry\geometry_common.h" />
     <ClInclude Include="include\ghassanpl\geometry\points.h" />
     <ClInclude Include="include\ghassanpl\geometry\polygon.h" />
+    <ClInclude Include="include\ghassanpl\geometry\rectangles.h" />
     <ClInclude Include="include\ghassanpl\geometry\segment.h" />
     <ClInclude Include="include\ghassanpl\geometry\shape_concepts.h" />
     <ClInclude Include="include\ghassanpl\geometry\square_grid.h" />

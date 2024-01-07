@@ -9,6 +9,8 @@
 
 #include <gtest/gtest.h>
 
+#include "test_system.h"
+
 using namespace ghassanpl;
 
 TEST(to_bytelike_array, works_like_reinterpret_cast)
@@ -41,6 +43,25 @@ TEST(bytelike_range, applies_to_common_types)
 	static_assert(bytelike_range<std::span<uint8_t>>);
 	static_assert(bytelike_range<std::span<uint8_t const>>);
 	static_assert(!bytelike_range<const char*>);
+}
+
+ConceptUnderTest(bytelike_range)
+{
+	ForEachType(std::string, std::string_view, std::span<uint8_t>, std::span<uint8_t const>)
+	{
+		CheckingIfConcept("is true for common type {}", typeid(TypeParam).name())
+		{
+			ConceptShouldBe(TrueForThisType).If(bytelike_range<TypeParam>);
+
+			ConceptShouldBe(TrueForConstVersionOfThisType);
+			IsTrueForConstVersionOfThisType.If(bytelike_range<const TypeParam>);
+		}
+	};
+
+	CheckingIfConcept("is false for pointer types")
+	{
+		ConceptShouldBe(FalseForConstChar).If(bytelike_range<const char*> == false);
+	}
 }
 
 TEST(byte_range_align_front_to, works)

@@ -1,11 +1,37 @@
 #include "test_system.h"
+#include "../include/ghassanpl/string_ops.h"
+#include "../include/ghassanpl/stringification.h"
+#include <magic_enum.hpp>
+#include <fstream>
+#include <print>
 
 namespace ghassanpl::tests
 {
-	predicates::TestPredicate::TestPredicate(TestRunner& runner, std::string_view name, std::source_location loc)
+	static std::string IdentifierToDescription(std::string_view str) noexcept
+	{
+		std::string result;
+		for (auto c : str)
+		{
+			if (ghassanpl::string_ops::ascii::isupper(c) || result.empty())
+			{
+				if (!result.empty())
+					result += ' ';
+				result += (char)ghassanpl::string_ops::ascii::tolower(c);
+			}
+			else
+			{
+				result += c;
+			}
+		}
+		return result;
+	}
+
+
+	predicates::TestPredicate::TestPredicate(TestRunner& runner, with_sl<std::string_view> prefix, std::string_view name)
 		: ParentRunner(runner)
+		, Prefix(prefix.Object)
 		, Name(name)
-		, SourceLocation(loc)
+		, SourceLocation(prefix.Location)
 	{
 		runner.RegisterPredicate(*this);
 	}
@@ -15,11 +41,18 @@ namespace ghassanpl::tests
 		ParentRunner.UnregisterPredicate(*this);
 	}
 
-	void predicates::TestPredicate::Report(bool value, std::source_location l)
+	void predicates::TestPredicate::Report(bool value, std::string expectation, std::string reality, source_location l)
 	{
+		++mReportCount;
 		ParentRunner.ReportPredicateValue(*this, value, l);
+		DoReport(value, l);
 
-		DoReport(value);
+		/*
+		if (!value)
+		{
+			std::cout << std::format("Expected '{}', got '{}'\n", expectation, reality);
+		}
+		*/
 	}
 
 	void predicates::TestPredicate::ReportFailure(std::string error_description)
@@ -32,74 +65,107 @@ namespace ghassanpl::tests
 		ParentRunner.ReportPredicateSuccess(*this);
 	}
 
-	TestRunner::AssumptionScopeGuard TestRunner::PushAssumption(std::string what_do_we_assume, std::source_location loc)
+	TestRunner::RequirementScopeGuard TestRunner::PushRequirement(std::string what_do_we_require, source_location loc)
 	{
-		mCurrentAssumption = mCurrentAssumption->AddChild(std::move(what_do_we_assume), loc);
+		auto id = NewID();
+		AddCommand(CommandType::StartRequirement, mCurrentRequirement->ID, id, Symbol{ what_do_we_require }, loc);
 
-		std::cout << std::format("Assuming {}...\n", mCurrentAssumption->FullName());
+		mCurrentRequirement = mCurrentRequirement->AddChild(std::move(what_do_we_require), loc, id);
+
+		//std::cout << std::format("Requiring {}...\n", mCurrentAssumption->FullName());
 
 		return { *this };
 	}
 
-	void TestRunner::PopAssumption()
+	void TestRunner::PopRequirement()
 	{
-		//std::cout << std::format("\t[Done assuming {}]\n", mCurrentAssumption->FullName());
+		//std::cout << std::format("\t[Done requiring {}]\n", mCurrentAssumption->FullName());
 
-		mCurrentAssumption = mCurrentAssumption->ParentAssumption;
+		AddCommand(CommandType::EndRequirement, mCurrentRequirement->ID);
+
+		mCurrentRequirement = mCurrentRequirement->ParentRequirement;
 	}
 
 	void TestRunner::RegisterPredicate(predicates::TestPredicate& predicate)
 	{
 		//std::cout << std::format("\t[Registering predicate {}]\n", predicate.Name);
 
-		mCurrentAssumption->mPredicates[predicate.Name] = { predicate.Name };
+		auto& pred = mCurrentRequirement->mPredicates[predicate.Name] = { predicate.Name };
+
+		pred.ID = predicate.ID = NewID();
+		AddCommand(CommandType::StartPredicate, mCurrentRequirement->ID, predicate.ID, Symbol{ predicate.Prefix }, Symbol{ predicate.Name }, predicate.SourceLocation);
 	}
 
 	void TestRunner::UnregisterPredicate(predicates::TestPredicate& predicate)
 	{
-		auto& pred = mCurrentAssumption->mPredicates[predicate.Name];
+		auto& pred = mCurrentRequirement->mPredicates[predicate.Name];
+		
+		AddCommand(CommandType::EndPredicate, pred.ID, (size_t)pred.Result);
+
 		if (pred.Result == PredicateResult::NotReported)
 			std::cout << std::format("[Warning: Predicate {} did not report a final result!]\n", predicate.Name);
 	}
 
-	void TestRunner::ReportPredicateValue(predicates::TestPredicate& predicate, bool new_value, std::source_location where)
+	void TestRunner::ReportPredicateValue(predicates::TestPredicate& predicate, bool new_value, source_location where)
 	{
 		//std::cout << std::format("\t[Predicate {} was reported as {}]\n", predicate.Name, new_value);
-		auto& pred = mCurrentAssumption->mPredicates[predicate.Name];
-		pred.Values.push_back(new_value);
-		pred.Locations.push_back(where);
+		auto& pred = mCurrentRequirement->mPredicates[predicate.Name];
+		pred.Values.push_back({ new_value, where });
 		++pred.ReportCount;
+
+		AddCommand(CommandType::ReportPredicateValue, pred.ID, new_value, where);
 	}
 
 	void TestRunner::ReportPredicateFailure(TestPredicate& predicate, std::string error_description)
 	{
-		auto& pred = mCurrentAssumption->mPredicates[predicate.Name];
+		auto& pred = mCurrentRequirement->mPredicates[predicate.Name];
 		pred.Result = PredicateResult::Failed;
 		pred.FailureDescription = std::move(error_description);
-		std::cout << std::format("Assumption \"{}\" failed\n\tbecause predicate \"{}\" failed:\n\t{}\n", mCurrentAssumption->FullName(), predicate.Name, pred.FailureDescription);
+
+		/// TODO: Instead of immediately reporting, move `pred` to a list of failed predicates and report them all at the end of the test
+
+		if (pred.Values.size() == 1)
+		{
+			std::cout << std::format("Requirement \"{}\" not met\n\tbecause it was not {} at line {}\n", mCurrentRequirement->FullName(),
+				IdentifierToDescription(predicate.Name), pred.Values[0].second.line());
+		}
+		else
+		{
+			std::cout << std::format("Requirement \"{}\" not met\n\tbecause it was not {}\n", mCurrentRequirement->FullName(), IdentifierToDescription(predicate.Name));
+			for (auto& [value, loc] : pred.Values)
+			{
+				std::cout << std::format("\t\tat line {}\n", loc.line());
+			}
+		}
 	}
 
 	void TestRunner::ReportPredicateSuccess(TestPredicate& predicate)
 	{
-		auto& pred = mCurrentAssumption->mPredicates[predicate.Name];
+		auto& pred = mCurrentRequirement->mPredicates[predicate.Name];
 		pred.Result = PredicateResult::Succeeded;
 		pred.FailureDescription = {};
 		//std::cout << std::format("\t[Predicate {} succeeded!]\n", predicate.Name);
 	}
 
-	int TestRunner::RegisterTest(void(*func)(TestRunner&), std::string_view test_suite, std::source_location loc)
+	id_t TestRunner::RegisterTest(void(*func)(TestRunner&), std::string_view test_suite, source_location loc)
 	{
-		RegisteredSuites.emplace_back(func, std::string{ test_suite }, loc);
-		return 0;
+		auto id = NewID();
+		RegisteredSuites.emplace_back(func, std::string{ test_suite }, loc, id);
+		AddCommand(CommandType::RegisterTest, id, Symbol{ test_suite }, loc);
+		return id;
 	}
 
 	void TestRunner::Run()
 	{
+		AddCommand(CommandType::StartTestRunner);
+
 		for (auto& suite : RegisteredSuites)
 		{
 			//std::cout << std::format("[Testing {}]\n", suite.Name);
 
-			mCurrentAssumption = &suite;
+			mCurrentRequirement = &suite;
+			auto id = NewID();
+			AddCommand(CommandType::StartTest, id);
 			try
 			{
 				suite.TestFunction(*this);
@@ -108,33 +174,82 @@ namespace ghassanpl::tests
 			{
 				std::cout << std::format("Unexpected exception caught\n");
 			}
+			AddCommand(CommandType::EndTest, id);
+		}
+
+		AddCommand(CommandType::EndTestRunner, !mRunning);
+
+		std::ofstream test_stream("test_stream.txt");
+
+		for (auto& [sym, id] : SymbolTable)
+		{
+			std::println(test_stream, "{:?} = #{}", *sym, id.value);
+		}
+
+		const auto cargs = CommandArgs.size();
+		size_t n = 0;
+		for (auto& [cmd, arg_count] : Commands)
+		{
+			std::print(test_stream, "{}(", magic_enum::enum_name(cmd));
+			std::vector<std::string> args;
+			for (size_t i=0; i<arg_count; ++i)
+			{
+				args.push_back(std::visit([](auto&& arg) {
+					if constexpr (std::is_same_v<std::decay_t<decltype(arg)>, id_t>)
+						return std::format("#{}", arg);
+					else if constexpr (requires (std::decay_t<decltype(arg)> val) { std::string_view{ val }; })
+						return std::format("{:?}", arg);
+					else if constexpr (std::same_as<std::decay_t<decltype(arg)>, source_location>)
+						return std::format("`{}`", arg);
+					else
+						return std::format("{}", arg);
+				}, CommandArgs[n++]));
+			}
+			std::print(test_stream, "{}", ghassanpl::string_ops::join(args, ", "));
+			std::print(test_stream, ")\n");
 		}
 	}
 
-	std::string TestRunner::AssumptionScope::FullName() const
+	std::string TestRunner::RequirementScope::FullName() const
 	{
-		if (ParentAssumption == nullptr) /// Test suite: <UnderTest>
+		if (ParentRequirement == nullptr) /// Test suite: <UnderTest>
 			return Name;
-		else if (!ParentAssumption->ParentAssumption) /// Primary assumption: <UnderTest> <Assumes>
-			return std::format("{} {}", ParentAssumption->FullName(), Name);
-		else /// Sub-assumption: <Parent> \n\twhich assumes <Assumes>
-			return std::format("{}\n\twhich assumes {}", ParentAssumption->FullName(), Name);
+		else if (!ParentRequirement->ParentRequirement) /// Primary requirement: <UnderTest> <Requires>
+			return std::format("{} {}", ParentRequirement->FullName(), Name);
+		else /// Sub-requirement: <Parent> \n\twhich requires <Requires>
+			return std::format("{}\n\twhich requires {}", ParentRequirement->FullName(), Name);
 	}
 
-	TestRunner::AssumptionScope* TestRunner::AssumptionScope::AddChild(std::string name, std::source_location loc)
+	TestRunner::RequirementScope* TestRunner::RequirementScope::AddChild(std::string name, source_location loc, id_t id)
 	{
-		for (auto& child : mChildAssumptions)
+		for (auto& child : mChildRequirements)
 		{
 			if (child->Name == name)
 			{
-				std::cout << std::format("Warning: this test already has the assumption \"{}\" declared at line {}\n", name, loc.line());
+				std::cout << std::format("Warning: this test already has the requirement \"{}\" declared at line {}\n", name, loc.line());
 				break;
 			}
 		}
-		auto ptr = std::make_unique<AssumptionScope>(this, std::move(name), loc);
+		auto ptr = std::make_unique<RequirementScope>(this, std::move(name), loc, id);
 		auto result = ptr.get();
-		mChildAssumptions.push_back(std::move(ptr));
+		mChildRequirements.push_back(std::move(ptr));
 		return result;
+	}
+
+	TestSymbolProvider::internal_value_type TestSymbolProvider::insert(std::string_view val)
+	{
+		if (val.empty())
+			return empty_value();
+
+		auto& values = instance().m_values;
+		if (auto v = values.find(val); v == values.end())
+		{
+			auto internal_value = &*values.insert(std::string{ val }).first;
+			TestRunner::Get().RegisterSymbol(internal_value);
+			return internal_value;
+		}
+		else
+			return &*v;
 	}
 
 }

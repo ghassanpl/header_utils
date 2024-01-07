@@ -3,6 +3,9 @@
 #include "../include/ghassanpl/geometry/ellipse.h"
 #include "../include/ghassanpl/geometry/polygon.h"
 #include "../include/ghassanpl/geometry/segment.h"
+
+#include "../include/ghassanpl/geometry/points.h"
+#include "../include/ghassanpl/geometry/rectangles.h"
 //#include "../include/ghassanpl/geometry/squares.h"
 //#include "../include/ghassanpl/geometry/grid_algorithms.h"
 //#include "../include/ghassanpl/geometry/block_navigation_grid.h"
@@ -72,6 +75,17 @@ TEST(polar, works)
 	}
 }
 
+TEST(triangle, basics_work)
+{
+	{
+		ttriangle<float> t{ {0,0}, {1,0}, {0,1} };
+		EXPECT_EQ(t.winding(), winding_order::clockwise);
+	}
+	{
+		ttriangle<float> t{ {0,0}, {1,0}, {0,-1} };
+		EXPECT_EQ(t.winding(), winding_order::counter_clockwise);
+	}
+}
 /*
 
 struct tile_data {};

@@ -143,8 +143,10 @@ namespace ghassanpl::random
 		}
 	}
 
+	/// TODO: Should we move the below to random_seq?
+	
 	template <std::floating_point T = float>
-	constexpr T halton_sequence(unsigned index, unsigned base = 2)
+	constexpr T halton_sequence(size_t index, size_t base = 2)
 	{
 		auto result = T(0);
 		auto fraction = T(1);

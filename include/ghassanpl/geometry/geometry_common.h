@@ -52,6 +52,12 @@ namespace ghassanpl::geometry
 
 	using rec2 = trec2<float>;
 	using irec2 = trec2<int>;
+
+	enum class winding_order
+	{
+		clockwise,
+		counter_clockwise
+	};
 }
 
 namespace ghassanpl::geometry::normals

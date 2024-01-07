@@ -298,7 +298,7 @@ namespace ghassanpl
 	template <typename T, detail::FixedString PARAMETER, typename STRINGIFIER>
 	auto stringify(STRINGIFIER& str, named<T, PARAMETER> const& val)
 	{
-		return stringify(str, val.value);
+		return str(val.value);
 	}
 
 	template <typename ALPHA, typename T, detail::FixedString PARAMETER, typename... TRAITS>

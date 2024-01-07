@@ -27,67 +27,80 @@ UnderTest(ghassanpl::string_ops::ascii)
 		FU(isblank),
 		FU(isgraph),
 		FU(isprint),
+		//asciifunc{ &std::tolower, [](char32_t) { return false; }, "failing"}
 	};
 
-	for (auto& function : ascii_functions)
+	for (auto& [std_version, my_version, name] : ascii_functions)
 	{
-		Assumption("::{0} function will give the same results as std::{0}", function.name)
+		CheckingIfFunction("ghassanpl::ascii::{0} gives the same results as std::{0}", name)
 		{
-			Will(GiveTheSameResult, 257_times);
-			for (int i = -1; i < 256; ++i)
-				DidGiveTheSameResult.BecauseEqual((bool)function.std_func(i), (bool)function.my_func(i));
+			FunctionShouldForValuesInRange(-1, 256, GiveTheSameResult)
+			{
+				DoesGiveTheSameResult.IfEqual((bool)std_version(Value), (bool)my_version(Value));
+			}
 		}
 	}
+
+	/*
+	CheckingIfIt("is even for every value between 0 and 10")
+	{
+		ShouldBeForValuesInRange(0, 10, Even)
+		{
+			IsEven.IfEqual((Value % 2), 0);
+		}
+	}
+	*/
 }
 
 /*
-UnderTest(ghassanpl::enumerate_pack)
+FunctionUnderTest(ghassanpl::enumerate_pack)
 {
-	Assumption("will not copy its arguments unnecessarily")
+	CheckingIfIt("will not copy its arguments unnecessarily")
 	{
-		Will(CallFunctionWithUncopyableArgument);
-		WillNot(CopyArgument);
+		FunctionShould(CallFunctionWithUncopyableArgument);
+		FunctionShouldNot(CopyArgument);
 
-		ghassanpl::enumerate_pack([&](size_t i, auto&& a) { DidCallFunctionWithUncopyableArgument.Yes(); }, uncopyable);
+		ghassanpl::enumerate_pack([&](size_t i, auto&& a) { DdoesCallFunctionWithUncopyableArgument.Yes(); }, uncopyable);
 	}
 
-	Assumption("will forward references")
+	CheckingIfIt("will forward references")
 	{
-		Will(ForwardAReference);
+		FunctionShould(ForwardAReference);
 
 		int test = 0;
 		ghassanpl::enumerate_pack([](size_t i, auto&& a) { a = 10; }, test);
 
-		DidForwardAReference.BecauseEqual(test, 10);
+		DoesForwardAReference.BecauseEqual(test, 10);
 	}
 
-	Assumption("will call callback with all arguments in order")
+	CheckingIfIt("will call callback with all arguments in order")
 	{
-		Will(CallFunction, 4_times);
+		FunctionShould(CallFunction, 4_times);
 
 		int test = 0;
-		ghassanpl::enumerate_pack([&](size_t i, auto&& a) { DidCallFunction.Yes(); }, 10, 20, "hello", test);
+		ghassanpl::enumerate_pack([&](size_t i, auto&& a) { DoesCallFunction.Yes(); }, 10, 20, "hello", test);
 	}
 
-	Assumption("will not call the callback when no arguments")
+	CheckingIfIt("will not call the callback when no arguments")
 	{
-		WillNot(CallFunction);
+		FunctionShouldNot(CallFunction);
 
-		ghassanpl::enumerate_pack([&](size_t i, auto&& a) { DidCallFunction.Yes(); });
+		ghassanpl::enumerate_pack([&](size_t i, auto&& a) { DoesCallFunction.Yes(); });
 	}
 
 	for (int i = 0; i < 10; i++)
 	{
-		Assumption("will not fail for argument {}", i)
+		CheckingIfIt("will not fail for argument {}", i)
 		{
 		}
 	}
 
-	ForEachType({
-		Assumption("will not fail for type {}", typeid(TypeParam).name())
+	ForEachType(char, unsigned char, signed char)
+	{
+		CheckingIfIt("will not fail for type {}", typeid(TypeParam).name())
 		{
 		}
-		}, char, unsigned char, signed char);
+	};
 
 	/// TODO: How to test private members/friend classes etc?
 }
