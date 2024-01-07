@@ -41,18 +41,11 @@ namespace ghassanpl::tests
 		ParentRunner.UnregisterPredicate(*this);
 	}
 
-	void predicates::TestPredicate::Report(bool value, std::string expectation, std::string reality, source_location l)
+	void predicates::TestPredicate::Report(bool value, source_location l)
 	{
 		++mReportCount;
 		ParentRunner.ReportPredicateValue(*this, value, l);
 		DoReport(value, l);
-
-		/*
-		if (!value)
-		{
-			std::cout << std::format("Expected '{}', got '{}'\n", expectation, reality);
-		}
-		*/
 	}
 
 	void predicates::TestPredicate::ReportFailure(std::string error_description)
@@ -100,50 +93,53 @@ namespace ghassanpl::tests
 	{
 		auto& pred = mCurrentRequirement->mPredicates[predicate.Name];
 		
-		AddCommand(CommandType::EndPredicate, pred.ID, (size_t)pred.Result);
+		AddCommand(CommandType::EndPredicate, pred.ID, pred.ReportCount);
 
-		if (pred.Result == PredicateResult::NotReported)
-			std::cout << std::format("[Warning: Predicate {} did not report a final result!]\n", predicate.Name);
+		//if (pred.Result == PredicateResult::NotReported)
+			//std::cout << std::format("[Warning: Predicate {} did not report a final result!]\n", predicate.Name);
 	}
 
 	void TestRunner::ReportPredicateValue(predicates::TestPredicate& predicate, bool new_value, source_location where)
 	{
-		//std::cout << std::format("\t[Predicate {} was reported as {}]\n", predicate.Name, new_value);
 		auto& pred = mCurrentRequirement->mPredicates[predicate.Name];
-		pred.Values.push_back({ new_value, where });
 		++pred.ReportCount;
 
-		AddCommand(CommandType::ReportPredicateValue, pred.ID, new_value, where);
+		if (new_value == false)
+		{
+			auto context = GetCurrentContextValues(&predicate);
+
+			for (auto& [name, val] : context)
+				AddCommand(CommandType::SetContextValue, pred.ID, name, val);
+
+			AddCommand(CommandType::ReportPredicateValue, pred.ID, new_value, where);
+
+			pred.Failures.push_back({ where, {}, std::move(context) });
+		}
 	}
 
 	void TestRunner::ReportPredicateFailure(TestPredicate& predicate, std::string error_description)
 	{
 		auto& pred = mCurrentRequirement->mPredicates[predicate.Name];
-		pred.Result = PredicateResult::Failed;
-		pred.FailureDescription = std::move(error_description);
+		//pred.Result = PredicateResult::Failed;
+		//pred.FailureDescription = std::move(error_description);
 
 		/// TODO: Instead of immediately reporting, move `pred` to a list of failed predicates and report them all at the end of the test
 
-		if (pred.Values.size() == 1)
+		std::cout << std::format("Requirement \"{}\" not met\n\tbecause it was not {}\n", mCurrentRequirement->FullName(), IdentifierToDescription(predicate.Name));
+		for (auto& [location, description, context] : pred.Failures)
 		{
-			std::cout << std::format("Requirement \"{}\" not met\n\tbecause it was not {} at line {}\n", mCurrentRequirement->FullName(),
-				IdentifierToDescription(predicate.Name), pred.Values[0].second.line());
-		}
-		else
-		{
-			std::cout << std::format("Requirement \"{}\" not met\n\tbecause it was not {}\n", mCurrentRequirement->FullName(), IdentifierToDescription(predicate.Name));
-			for (auto& [value, loc] : pred.Values)
-			{
-				std::cout << std::format("\t\tat line {}\n", loc.line());
-			}
+			std::cout << std::format("\t\t{} error: {}\n", location, description);
+			std::cout << std::format("\t\tcontext:\n");
+			for (auto& [k, v]: context)
+				std::cout << std::format("\t\t\t{}: {}\n", k, v);
 		}
 	}
 
 	void TestRunner::ReportPredicateSuccess(TestPredicate& predicate)
 	{
 		auto& pred = mCurrentRequirement->mPredicates[predicate.Name];
-		pred.Result = PredicateResult::Succeeded;
-		pred.FailureDescription = {};
+		//pred.Result = PredicateResult::Succeeded;
+		//pred.FailureDescription = {};
 		//std::cout << std::format("\t[Predicate {} succeeded!]\n", predicate.Name);
 	}
 
@@ -168,6 +164,7 @@ namespace ghassanpl::tests
 			AddCommand(CommandType::StartTest, id);
 			try
 			{
+				suite.ContextMap.clear();
 				suite.TestFunction(*this);
 			}
 			catch (...)
@@ -250,6 +247,12 @@ namespace ghassanpl::tests
 		}
 		else
 			return &*v;
+	}
+
+	void ContextHolder::SetContextValue(id_t parent_id, std::string_view name, std::string_view value)
+	{
+		//TestRunner::Get().AddCommand(TestRunner::CommandType::SetContextValue, parent_id, Symbol{ name }, Symbol{ value });
+		this->ContextMap[Symbol{ name }] = Symbol{ value };
 	}
 
 }

@@ -51,16 +51,16 @@ ConceptUnderTest(bytelike_range)
 	{
 		CheckingIfConcept("is true for common type {}", typeid(TypeParam).name())
 		{
-			ConceptShouldBe(TrueForThisType).If(bytelike_range<TypeParam>);
+			ConceptShouldBe(TrueForThisType).WhenTrue(bytelike_range<TypeParam>);
 
 			ConceptShouldBe(TrueForConstVersionOfThisType);
-			IsTrueForConstVersionOfThisType.If(bytelike_range<const TypeParam>);
+			IsTrueForConstVersionOfThisType.WhenTrue(bytelike_range<const TypeParam>);
 		}
 	};
 
 	CheckingIfConcept("is false for pointer types")
 	{
-		ConceptShouldBe(FalseForConstChar).If(bytelike_range<const char*> == false);
+		ConceptShouldBe(FalseForConstChar).WhenTrue(bytelike_range<const char*> == false);
 	}
 }
 

@@ -4,9 +4,8 @@
 
 #pragma once
 
-#include <compare>
 #include <algorithm>
-#include <iostream>
+#include <cmath>
 
 namespace ghassanpl
 {
@@ -181,7 +180,7 @@ namespace ghassanpl
 
 		template <typename U>
 		requires requires(self_type const& self) { { named_cast<U>(self) } -> std::same_as<U>; }
-		constexpr operator U() const
+		constexpr explicit operator U() const
 		{
 			return named_cast<U>(*this);
 		}
@@ -194,7 +193,7 @@ namespace ghassanpl
 		template <typename U>
 		constexpr auto operator<=>(U const& b) const { return value <=> b; }
 		template <typename U>
-		constexpr auto operator==(U const& b) const { return value == b; }
+		constexpr bool operator==(U const& b) const { return value == b; }
 		//friend constexpr auto operator ==(T const& a, named const& b) { return a == b.value; }
 
 		constexpr named& operator++()
@@ -285,6 +284,8 @@ namespace ghassanpl
 	private:
 
 	};
+
+	static_assert(std::is_trivially_copyable_v<named<int, "int">> == std::is_trivially_copyable_v<int>);
 
 	namespace detail {
 		template <typename U, detail::FixedString OTHER_PARAMETER, typename... OTHER_CAPABILITIES>

@@ -14,7 +14,7 @@ static_assert(area_shape<trec2<float>, float>);
 static_assert(area_shape<trec2<double>, double>);
 static_assert(area_shape<trec2<int>, int>);
 
-
+#ifndef __clang__
 TEST(rec2, values_func_forwards_value_category)
 {
 	irec2 a{ 1, 2, 3, 4 };
@@ -36,6 +36,7 @@ TEST(rec2, values_func_forwards_value_category)
 		static_assert(!std::is_const_v<std::remove_reference_t<decltype(left)>>);
 	}
 }
+#endif
 
 TEST(rec2, bounding_box_for_overload_works)
 {

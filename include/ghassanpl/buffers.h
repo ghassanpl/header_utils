@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include <ranges>
-#include <concepts>
 #include "bytes.h"
 
 namespace ghassanpl
@@ -58,7 +56,7 @@ namespace ghassanpl
 		}
 		else
 		{
-			static_assert(!std::same_as<std::void_t<BUFFER>, void>, "buffer cannot be appended with this value type - buffer_append might need to be specialized");
+			static_assert(!std::same_as<T, T>, "buffer cannot be appended with this value type - buffer_append might need to be specialized");
 			return false;
 		}
 	}

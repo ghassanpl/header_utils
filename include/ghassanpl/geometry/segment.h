@@ -52,8 +52,8 @@ namespace ghassanpl::geometry
 		/// Shape interface
 
 		T edge_length() const { return glm::distance(p1, p2); }
-		tvec edge_point_alpha(T t) const { return glm::lerp(p1, p2, t); }
-		tvec edge_point(T t) const { return glm::lerp(p1, p2, t / edge_length()); }
+		tvec edge_point_alpha(T t) const { return glm::mix(p1, p2, t); }
+		tvec edge_point(T t) const { return glm::mix(p1, p2, t / edge_length()); }
 		trec2<T> bounding_box() const { return trec2<T>::from_points({ &p1, &p1 + 2 }); }
 		tvec projected(tvec pt) const
 		{

@@ -4,15 +4,16 @@
 
 #pragma once
 
-#include "../enum_flags.h"
 #include "../align.h"
+#include "../constexpr_math.h"
+#include "../enum_flags.h"
 #include "../named.h"
 #include "../rec2.h"
-#include "../constexpr_math.h"
 
-#include <glm/glm.hpp>
-#include <glm/vec2.hpp>
-#include <format>
+#include <glm/geometric.hpp>
+#include <glm/trigonometric.hpp>
+#include <glm/ext/vector_float2.hpp>
+#include <glm/ext/vector_float4.hpp>
 
 namespace glm
 {
@@ -175,14 +176,14 @@ namespace ghassanpl::geometry
 		T b{};
 		T c{};
 
-		template <typename T>
-		T distance(glm::tvec2<T> const& point)
+		template <typename U>
+		U distance(glm::tvec2<U> const& point)
 		{
 			return (a * point.x + b * point.y + c) / std::hypot(a, b);
 		}
 
-		template <typename T>
-		glm::tvec2<T> projected(glm::tvec2<T> const& point)
+		template <typename U>
+		glm::tvec2<U> projected(glm::tvec2<U> const& point)
 		{
 			const auto d = glm::distance(point);
 			return point - glm::tvec2<T>{ a, b } * d;
@@ -203,23 +204,26 @@ namespace ghassanpl::geometry
 
 }
 
+/*
 template <typename T>
 struct std::formatter<glm::tvec2<T>> : std::formatter<std::string>
 {
 	template<class FormatContext>
-	auto format(glm::tvec2<T> const& p, FormatContext& ctx) { return std::formatter<string>::format(std::format("[{}, {}]", p.x, p.y), ctx); }
+	auto format(glm::tvec2<T> const& p, FormatContext& ctx) const { return std::formatter<string>::format(std::format("[{}, {}]", p.x, p.y), ctx); }
 };
 
 template <typename T>
 struct std::formatter<glm::tvec3<T>> : std::formatter<std::string>
 {
 	template<class FormatContext>
-	auto format(glm::tvec2<T> const& p, FormatContext& ctx) { return std::formatter<string>::format(std::format("[{}, {}, {}]", p.x, p.y, p.z), ctx); }
+	auto format(glm::tvec3<T> const& p, FormatContext& ctx) const { return std::formatter<string>::format(std::format("[{}, {}, {}]", p.x, p.y, p.z), ctx); }
 };
 
 template <typename T>
 struct std::formatter<glm::tvec4<T>> : std::formatter<std::string>
 {
 	template<class FormatContext>
-	auto format(glm::tvec2<T> const& p, FormatContext& ctx) { return std::formatter<string>::format(std::format("[{}, {}, {}, {}]", p.x, p.y, p.z, p.w), ctx); }
+	auto format(glm::tvec4<T> const& p, FormatContext& ctx) const { return std::formatter<string>::format(std::format("[{}, {}, {}, {}]", p.x, p.y, p.z, p.w), ctx); }
 };
+
+*/

@@ -139,7 +139,7 @@ namespace ghassanpl::geometry
 			{
 				const auto d = glm::distance(vertices[i], vertices[i + 1]);
 				if (t <= d)
-					return glm::lerp(vertices[i], vertices[i + 1], t / d);
+					return glm::mix(vertices[i], vertices[i + 1], t / d);
 
 				t -= d;
 			}

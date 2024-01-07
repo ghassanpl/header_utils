@@ -4,8 +4,8 @@
 
 #pragma once
 
-//#include <glm/vec2.hpp>
-#include <glm/gtx/compatibility.hpp>
+#include <glm/common.hpp>
+#include <glm/vec2.hpp>
 #include <span>
 #include <functional>
 
@@ -119,6 +119,7 @@ namespace ghassanpl
 
 		template <typename U> struct values_t { U left; U top; U right; U bottom; };
 		template <typename U> values_t(U&& left, U&& top, U&& right, U&& bottom) -> values_t<U>;
+#ifndef __clang__
 		template <typename SELF>
 		constexpr auto values(this SELF&& self) noexcept
 		{
@@ -129,6 +130,7 @@ namespace ghassanpl
 				std::forward_like<SELF>(self.p2.y)
 			};
 		}
+#endif
 
 		constexpr tvec size() const noexcept { return p2 - p1; }
 		constexpr tvec position() const noexcept { return p1; }
@@ -269,13 +271,13 @@ namespace ghassanpl
 			const auto el = (w + h) * 2;
 			const auto d = static_cast<T>(edge_progress * el);
 			if (d < w)
-				return glm::lerp(this->left_top(), this->right_top(), d / w);
+				return glm::mix(this->left_top(), this->right_top(), d / w);
 			else if (d < w + h)
-				return glm::lerp(this->right_top(), this->right_bottom(), (d - w) / h);
+				return glm::mix(this->right_top(), this->right_bottom(), (d - w) / h);
 			else if (d < w + h + w)
-				return glm::lerp(this->right_bottom(), this->left_bottom(), (d - (w + h)) / w);
+				return glm::mix(this->right_bottom(), this->left_bottom(), (d - (w + h)) / w);
 			else
-				return glm::lerp(this->left_bottom(), this->left_top(), (d - (w + h + w)) / h);
+				return glm::mix(this->left_bottom(), this->left_top(), (d - (w + h + w)) / h);
 		}
 
 		constexpr glm::vec2 edge_point(double edge_pos) const
@@ -284,13 +286,13 @@ namespace ghassanpl
 			const auto h = height();
 			edge_pos = fmod(edge_pos, (w + h) * 2);
 			if (edge_pos < w)
-				return glm::lerp(this->left_top(), this->right_top(), edge_pos / w);
+				return glm::mix(this->left_top(), this->right_top(), edge_pos / w);
 			else if (edge_pos < w + h)
-				return glm::lerp(this->right_top(), this->right_bottom(), (edge_pos - w) / h);
+				return glm::mix(this->right_top(), this->right_bottom(), (edge_pos - w) / h);
 			else if (edge_pos < w + h + w)
-				return glm::lerp(this->right_bottom(), this->left_bottom(), (edge_pos - (w + h)) / w);
+				return glm::mix(this->right_bottom(), this->left_bottom(), (edge_pos - (w + h)) / w);
 			else
-				return glm::lerp(this->left_bottom(), this->left_top(), (edge_pos - (w + h + w)) / h);
+				return glm::mix(this->left_bottom(), this->left_top(), (edge_pos - (w + h + w)) / h);
 		}
 
 		constexpr trec2 bounding_box() const noexcept
@@ -301,7 +303,7 @@ namespace ghassanpl
 		constexpr glm::vec2 projected(glm::vec2 pt) const
 		{
 			const auto d = (pt - p1) / size();
-			const auto c = glm::saturate(d);
+			const auto c = glm::clamp(d, glm::vec2{ 0 }, glm::vec2{ 1 });
 			return p1 + c * size();
 		}
 

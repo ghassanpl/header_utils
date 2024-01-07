@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include <type_traits>
-#include <cstdint>
 #include <bit>
 #include <stdexcept>
 
@@ -99,7 +97,7 @@ namespace ghassanpl
 	{
 		constexpr auto bit_count = ghassanpl::bit_count<T>;
 		constexpr auto bit_count_half = bit_count / 2;
-		return sintN_t<std::is_signed_v<T>, bit_count_half>{ (v >> bit_count_half) & bit_mask_v<0, bit_count_half> };
+		return static_cast<sintN_t<std::is_signed_v<T>, bit_count_half>>((v >> bit_count_half) & bit_mask_v<0, bit_count_half>);
 	}
 
 	/// Returns an integer with the N/2 least significant bits of the given N-bit integer
@@ -108,7 +106,7 @@ namespace ghassanpl
 	{
 		constexpr auto bit_count = ghassanpl::bit_count<T>;
 		constexpr auto bit_count_half = bit_count / 2;
-		return sintN_t<std::is_signed_v<T>, bit_count_half>{ v & bit_mask_v<0, bit_count_half> };
+		return static_cast<sintN_t<std::is_signed_v<T>, bit_count_half>>(v & bit_mask_v<0, bit_count_half>);
 	}
 
 	/// \name Endianness

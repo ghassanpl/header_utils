@@ -136,7 +136,7 @@ TEST(templates_test, apply_to_nth_works)
 	EXPECT_TRUE(can_apply_to_nth<3>);
 	EXPECT_FALSE(can_apply_to_nth<4>);
 	EXPECT_FALSE(can_apply_to_nth<54>);
-	EXPECT_FALSE(can_apply_to_nth<-1>);
+	EXPECT_FALSE(can_apply_to_nth<(size_t)-1>);
 
 	bool called = false;
 	ghassanpl::apply_to_nth<0>([&](auto&& a) { called = true; }, UnCopyable{});

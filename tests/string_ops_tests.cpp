@@ -117,12 +117,12 @@ class StringableTestFixture : public ::testing::Test
 {
 public:
 	T null_value = {};
-	T empty_string_value = "";
-	T complex_value = "ZCoo(01_;";
-	T embedded_zeroes_value = "asdf\0ZXCV";
+	T empty_string_value{ "" };
+	T complex_value{ "ZCoo(01_;" };
+	T embedded_zeroes_value{ "asdf\0ZXCV" };
 };
 
-using StringableTypes = ::testing::Types<char const*, std::string_view, const char(&)[10], std::string>;
+using StringableTypes = ::testing::Types<char const*, std::string_view, const char[10], std::string>;
 TYPED_TEST_SUITE(StringableTestFixture, StringableTypes);
 
 TYPED_TEST(StringableTestFixture, ascii_works_with_all_stringable_types)
@@ -152,7 +152,7 @@ public:
 	T zero_value = '\0';
 	T a_value = 'a';
 	narrow_type<T, 'long'> long_value = 'long';
-	narrow_type<T, 'ą'> utf_value = 'ą';
+	narrow_type<T, U'ą'> utf_value = U'ą';
 };
 
 using CharTypes = ::testing::Types<char, signed char, unsigned char, wchar_t, char8_t, char16_t, char32_t>;

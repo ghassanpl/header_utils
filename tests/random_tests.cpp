@@ -67,7 +67,7 @@ TEST(random, basics)
 		EXPECT_LT(std::to_address(it), woo.data() + woo.size());
 		EXPECT_NO_THROW(std::ignore = *it);
 
-		auto ite = random::iterator(woo, [](auto v) { return (v % 2); });
+		auto ite = random::iterator_if(woo, [](auto v) { return (v % 2); });
 		EXPECT_GE(std::to_address(ite), woo.data());
 		EXPECT_LT(std::to_address(ite), woo.data() + woo.size());
 		EXPECT_NO_THROW(std::ignore = *ite);
@@ -77,7 +77,7 @@ TEST(random, basics)
 		EXPECT_GE(ix, 0);
 		EXPECT_LT(ix, (ptrdiff_t)woo.size());
 
-		auto ixe = random::index(woo, [](auto v) { return (v % 2); });
+		auto ixe = random::index_if(woo, [](auto v) { return (v % 2); });
 		EXPECT_GE(ixe, 0);
 		EXPECT_LT(ixe, (ptrdiff_t)woo.size());
 		EXPECT_EQ((woo[ixe] % 2), 1);
@@ -87,7 +87,7 @@ TEST(random, basics)
 			EXPECT_GE(std::to_address(e), woo.data());
 			EXPECT_LT(std::to_address(e), woo.data() + woo.size());
 
-			auto ee = random::element(woo, [](auto v) { return (v % 2); });
+			auto ee = random::element_if(woo, [](auto v) { return (v % 2); });
 			EXPECT_GE(std::to_address(ee), woo.data());
 			EXPECT_LT(std::to_address(ee), woo.data() + woo.size());
 			EXPECT_EQ(((*ee) % 2), 1);

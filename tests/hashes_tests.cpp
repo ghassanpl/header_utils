@@ -33,9 +33,13 @@ TEST(constexpr_hashes, work_for_all_supported_types)
 	constexpr auto i32_hash = ce_hash64(int32_t(14));
 	static_assert(ui32_hash == i32_hash);
 	constexpr auto szt_hash = ce_hash64(size_t(14));
+	static_assert(szt_hash != 0);
 	constexpr auto dbl_hash = ce_hash64(14.0);
+	static_assert(dbl_hash != 0);
 	constexpr auto flt_hash = ce_hash64(14.0f);
-	constexpr auto null_hash = ce_hash64(nullptr);
+	static_assert(flt_hash != 0);
+	/// constexpr auto null_hash = ce_hash64(nullptr); /// bit_cast isn't constexpr on pointers
+	/// constexpr auto null_hash = ce_hash64((void*)0); /// bit_cast isn't constexpr on pointers
 
 	/// This only works on MSVC because it uses the same hash algo (fnv)
 	/// EXPECT_EQ(std::hash<float>{}(14.0f), flt_hash);

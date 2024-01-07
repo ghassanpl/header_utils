@@ -4,6 +4,7 @@
 #include <span>
 #include <string_view>
 #include <array>
+#include <bit>
 
 namespace ghassanpl
 {
@@ -192,7 +193,6 @@ namespace ghassanpl
 		else
 		{
 			const auto size = bytes.size();
-			const auto data = bytes.data();
 
 			if (size < ALIGN)
 				return { {}, bytes };

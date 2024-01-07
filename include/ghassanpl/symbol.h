@@ -29,7 +29,7 @@ namespace ghassanpl
 		auto operator->() const noexcept requires std::is_pointer_v<internal_value_type> { return value; }
 
 		bool operator==(symbol_base const& other) const noexcept { return value == other.value; }
-		auto operator<=>(symbol_base const& other) const noexcept { return value <=> other.value; }
+		auto operator<=>(symbol_base const& other) const noexcept { return symbol_provider::compare(value, other.value); }
 
 		friend bool operator==(std::string_view a, symbol_base const& b) noexcept { return a == b.get_string(); }
 		friend auto operator<=>(std::string_view a, symbol_base const& b) noexcept { return a <=> b.get_string(); }
@@ -54,6 +54,7 @@ namespace ghassanpl
 			{ T::insert(std::string_view{}) } -> std::same_as<typename T::internal_value_type>;
 			{ T::string_for(typename T::internal_value_type{}) } noexcept -> std::same_as<std::string_view>;
 			{ T::hash_for(typename T::internal_value_type{}) } noexcept -> std::same_as<typename T::hash_type>;
+			{ T::compare(typename T::internal_value_type{}, typename T::internal_value_type{}) } noexcept -> std::same_as<std::strong_ordering>;
 		}
 		&& std::three_way_comparable<typename T::internal_value_type>
 		&& std::regular<typename T::internal_value_type>
@@ -84,6 +85,10 @@ namespace ghassanpl
 		}
 		static std::string_view string_for(internal_value_type val) noexcept { return val ? std::string_view{ *val } : std::string_view{}; }
 		static hash_type hash_for(internal_value_type val) noexcept { return std::hash<const void*>{}(val); }
+
+		static std::strong_ordering compare(internal_value_type a, internal_value_type b) noexcept { 
+			return (a == b) ? std::strong_ordering::equal : (*a <=> *b);
+		}
 
 		/// Utility functions
 

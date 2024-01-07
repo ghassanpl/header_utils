@@ -12,6 +12,7 @@
 
 #include <gtest/gtest.h>
 #include <set>
+#include <glm/gtc/constants.hpp>
 
 //using namespace glm;
 using namespace std;

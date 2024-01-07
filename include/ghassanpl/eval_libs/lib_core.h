@@ -28,6 +28,7 @@ namespace ghassanpl::eval
 					ptr /= make_pointer(e);
 				return ptr;
 			}
+			default: break;
 			}
 			throw std::runtime_error(std::format("invalid value index type '{}'", index.type_name()));
 		}
@@ -40,9 +41,8 @@ namespace ghassanpl::eval
 		using enum nlohmann::json::value_t;
 
 		using base_type = base_lib<DECADE_SYNTAX>;
-		using base_type::env_type;
-		using base_type::json_pointer;
-		using base_type::any;
+		using env_type = base_type::env_type;
+		using json_pointer = base_type::json_pointer;
 
 		static inline value if_then_else(env_type& e, std::vector<value> args)
 		{
@@ -250,7 +250,7 @@ namespace ghassanpl::eval
 		{
 			e.assert_args(args, 1);
 			auto fmted = format(e, std::move(args));
-			std::print("{}", fmted->get_ref<nlohmann::json::string_t const&>());
+			std::print("{}", fmted->template get_ref<nlohmann::json::string_t const&>());
 			return null_json;
 		}
 
@@ -258,7 +258,7 @@ namespace ghassanpl::eval
 		{
 			e.assert_args(args, 1);
 			auto fmted = format(e, std::move(args));
-			std::println("{}", fmted->get_ref<nlohmann::json::string_t const&>());
+			std::println("{}", fmted->template get_ref<nlohmann::json::string_t const&>());
 			return null_json;
 		}
 

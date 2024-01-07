@@ -80,7 +80,7 @@ namespace ghassanpl
 	[[nodiscard]] constexpr uint32_t crc32(BYTES... bytes)
 	{
 		uint32_t crc = 0xFFFFFFFFu;
-		(crc = crc32_table[(crc ^ to_u8(bytes)) & 0xFF] ^ (crc >> 8), ...);
+		((crc = crc32_table[(crc ^ to_u8(bytes)) & 0xFF] ^ (crc >> 8)), ...);
 		return ~crc;
 	}
 
@@ -143,7 +143,7 @@ namespace ghassanpl
 	[[nodiscard]] constexpr uint64_t crc64(BYTES... bytes)
 	{
 		uint64_t crc = 0;
-		(crc = crc64_table[crc >> 56] ^ ((crc << 8U) ^ to_u8(bytes)), ...);
+		((crc = crc64_table[crc >> 56] ^ ((crc << 8U) ^ to_u8(bytes))), ...);
 		return ~crc;
 	}
 
@@ -179,7 +179,7 @@ namespace ghassanpl
 	[[nodiscard]] constexpr uint64_t fnv64(BYTES... bytes)
 	{
 		uint64_t result = 0xcbf29ce484222325;
-		(result = (result ^ to_u8(bytes)) * 0x00000100000001b3U, ...);
+		((result = (result ^ to_u8(bytes)) * 0x00000100000001b3U), ...);
 		return result;
 	}
 
@@ -262,6 +262,7 @@ namespace ghassanpl
 		std::is_trivially_copyable_v<T>
 	[[nodiscard]] consteval uint64_t ce_hash64(T val) noexcept
 	{
+		static_assert(!std::is_pointer_v<T>, "cannot hash pointers at compile-time");
 		if constexpr (std::floating_point<T>)
 		{
 			if (val == T{ 0 }) val = T{ 0 }; /// -0 == 0
@@ -317,8 +318,8 @@ namespace ghassanpl
 		auto hasher = hasher_type{};
 		
 		static_assert(
-			std::same_as<decltype(hasher(std::declval<FIRST>>())), uint64_t> &&
-			(std::same_as<decltype(hasher(std::declval<T>())), uint64_t> && ... && true)
+			std::same_as<decltype(hasher(std::declval<FIRST>())), uint64_t> &&
+			(std::same_as<decltype(hasher(std::declval<T>())), uint64_t> && ... && true),
 			"hasher() must return a uint64_t for each type");
 
 		uint64_t result = (std::forward<FIRST>(first));

@@ -34,6 +34,9 @@
     <Filter Include="Header Files\eval_libs">
       <UniqueIdentifier>{4c0e9e65-f1c8-4bc5-ba70-64b3c905ff1d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\standalone_include_tests">
+      <UniqueIdentifier>{bfbb067f-c079-4a3f-ab48-d84e359145a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tests\tests_common.h">
@@ -381,6 +384,24 @@
     </ClCompile>
     <ClCompile Include="tests\cemath_tests.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\standalone_include_tests\align.cpp">
+      <Filter>Source Files\standalone_include_tests</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\standalone_include_tests\assuming.cpp">
+      <Filter>Source Files\standalone_include_tests</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\standalone_include_tests\rec2.cpp">
+      <Filter>Source Files\standalone_include_tests</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\standalone_include_tests\colors.cpp">
+      <Filter>Source Files\standalone_include_tests</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\standalone_include_tests\bit_view.cpp">
+      <Filter>Source Files\standalone_include_tests</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\standalone_include_tests\bits.cpp">
+      <Filter>Source Files\standalone_include_tests</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

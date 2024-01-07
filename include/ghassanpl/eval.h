@@ -133,7 +133,7 @@ namespace ghassanpl::eval
 			auto* storage = &user_storage;
 			if (!force_local)
 			{
-				auto [owning_store, it] = find_in_user_storage(name);
+				auto [owning_store, it] = this->find_in_user_storage(name);
 				if (owning_store)
 					storage = &owning_store->user_storage;
 			}
@@ -249,7 +249,7 @@ namespace ghassanpl::eval
 				{
 					auto eres = eval_args(func.get_ref<json::array_t const&>());
 					if (eres.is_string())
-						funcname = eres.get_ref<json::string_t const&>();
+						funcname = eres.template get_ref<json::string_t const&>();
 				}
 				if (funcname.empty())
 					return report_error("first element of eval array must eval to a string func name, got: {}", func.dump());
@@ -293,21 +293,21 @@ namespace ghassanpl::eval
 				{
 				case 0:
 				{
-					json::array_t arr = std::move(std::get<json>(val.v).get_ref<json::array_t&>());
+					json::array_t arr = std::move(std::get<json>(val.v).template get_ref<json::array_t&>());
 					for (auto& a : arr)
 						args.push_back(std::move(a));
 					break;
 				}
 				case 1:
 				{
-					json::array_t& arr = std::get<json*>(val.v)->get_ref<json::array_t&>();
+					json::array_t& arr = std::get<json*>(val.v)->template get_ref<json::array_t&>();
 					for (auto& a : arr)
 						args.push_back(&a);
 					break;
 				}
 				case 2:
 				{
-					json::array_t const& arr = std::get<json const*>(val.v)->get_ref<json::array_t const&>();
+					json::array_t const& arr = std::get<json const*>(val.v)->template get_ref<json::array_t const&>();
 					for (auto const& a : arr)
 						args.push_back(&a);
 					break;
@@ -420,7 +420,7 @@ namespace ghassanpl::eval
 		template <template<bool> typename LIB_TYPE>
 		void import_lib()
 		{
-			typename LIB_TYPE<decade_syntax>::import_to(*this);
+			LIB_TYPE<decade_syntax>::import_to(*this);
 		}
 	};
 

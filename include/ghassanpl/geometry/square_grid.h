@@ -109,7 +109,7 @@ namespace ghassanpl::geometry::squares
 
 		/// TODO: set_* functions that mirror for_each_*, e.g. set_rect(rect, tile);
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::with_self, iteration_flags::only_valid }, typename FUNC >
+		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::with_self, iteration_flags::only_valid }, typename FUNC >
 		auto for_each_neighbor(glm::ivec2 of, FUNC&& func) const
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
@@ -152,7 +152,7 @@ namespace ghassanpl::geometry::squares
 			}
 		}
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::with_self, IterationFlags::only_valid }, typename FUNC >
+		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::with_self, iteration_flags::only_valid }, typename FUNC >
 		auto for_each_selected_neighbor(glm::ivec2 of, direction_set neighbor_set, FUNC&& func) const
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
@@ -178,7 +178,7 @@ namespace ghassanpl::geometry::squares
 			}
 		}
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC>
+		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
 		auto for_each_tile_in_rect(this auto&& self, irec2 const& tile_rect, FUNC&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
@@ -203,7 +203,7 @@ namespace ghassanpl::geometry::squares
 			return return_type{};
 		}
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC >
+		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC >
 		auto for_each_tile_in_perimeter(irec2 const& tile_rect, FUNC&& func) const
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
@@ -243,7 +243,7 @@ namespace ghassanpl::geometry::squares
 			}
 		}
 
-		template<enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename TILE_SET, typename FUNC >
+		template<enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename TILE_SET, typename FUNC >
 		auto for_each_tile_in_set(TILE_SET&& tiles, FUNC&& func) const
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
@@ -262,20 +262,20 @@ namespace ghassanpl::geometry::squares
 			}
 		}
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC>
+		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
 		auto for_each_tile(this auto&& self, FUNC&& func)
 		{
 			irec2 rect = { 0, 0, self.mWidth, self.mHeight };
 			return self.template for_each_tile_in_rect<FLAGS>(rect, std::forward<FUNC>(func));
 		}
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC>
+		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
 		auto for_each_tile_in_polygon(std::span<glm::vec2 const> poly_points, glm::vec2 tile_size, FUNC&& func) const;
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC>
+		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
 		auto for_each_tile_in_row(int row, FUNC&& func) const;
 
-		template <enum_flags<iteration_flags> FLAGS = { iteration_flags::only_valid }, typename FUNC>
+		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
 		auto for_each_tile_in_column(int column, FUNC&& func) const;
 
 		/// Function: line_cast

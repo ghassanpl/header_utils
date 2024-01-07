@@ -91,8 +91,8 @@ TEST(cemath_functions, work)
 	{
 		{ constexpr auto val = cem::signbit(-3.5f); static_assert(true == val); }
 		{ constexpr auto val = cem::signbit(3.5f); static_assert(false == val); }
-		{ constexpr auto val = cem::signbit(NAN); static_assert(false == val); }
-		{ constexpr auto val = cem::signbit(-NAN); static_assert(true == val); }
+		{ constexpr auto val = cem::signbit(std::numeric_limits<float>::quiet_NaN()); static_assert(false == val); }
+		{ constexpr auto val = cem::signbit(-std::numeric_limits<float>::quiet_NaN()); static_assert(true == val); }
 		{ constexpr auto val = cem::signbit(INFINITY); static_assert(false == val); }
 		{ constexpr auto val = cem::signbit(-INFINITY); static_assert(true == val); }
 		{ constexpr auto val = cem::signbit(-0.0f); static_assert(true == val); }

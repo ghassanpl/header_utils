@@ -198,7 +198,7 @@ namespace ghassanpl::random
 
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
 	requires std::ranges::sized_range<T>
-	auto iterator(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	auto iterator_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::size;
 		using std::begin;
@@ -224,9 +224,9 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
-	auto index(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	auto index_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		return std::distance(begin(cont), iterator(cont, std::forward<PRED>(pred), rng));
+		return std::distance(begin(cont), iterator_if(cont, std::forward<PRED>(pred), rng));
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
@@ -238,10 +238,10 @@ namespace ghassanpl::random
 	}
 	
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
-	auto* element(T& cont, PRED&& predicate, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	auto* element_if(T& cont, PRED&& predicate, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::end;
-		auto result = iterator(cont, std::forward<PRED>(predicate), rng);
+		auto result = iterator_if(cont, std::forward<PRED>(predicate), rng);
 		return (result != end(cont)) ? std::to_address(result) : nullptr;
 	}
 

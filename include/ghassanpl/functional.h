@@ -87,7 +87,7 @@ namespace ghassanpl
 		template <typename... CALL_ARGS>
 		auto operator()(CALL_ARGS&&... args) const
 		{
-			return call_helper<R, ARGS...>::call(m_listeners, std::forward<CALL_ARGS>(args)...);
+			return call_helper<R>::template call(m_listeners, std::forward<CALL_ARGS>(args)...);
 		}
 
 		/// Removes all the invocables from this objects
@@ -101,7 +101,7 @@ namespace ghassanpl
 
 	private:
 
-		template <typename R, typename... ARGS>
+		template <typename R>
 		struct call_helper
 		{
 			template <typename... CALL_ARGS>
@@ -115,8 +115,8 @@ namespace ghassanpl
 			}
 		};
 
-		template <typename... ARGS>
-		struct call_helper<void, ARGS...>
+		template <>
+		struct call_helper<void>
 		{
 			template <typename... CALL_ARGS>
 			static void call(std::map<handle, std::function<void(ARGS...)>> const& listeners, CALL_ARGS&&... args)

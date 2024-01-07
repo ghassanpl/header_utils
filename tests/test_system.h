@@ -22,6 +22,10 @@ namespace ghassanpl::tests
 
 	struct TestRunner;
 
+	namespace test_literals
+	{
+	}
+
 	struct TestSymbolProvider : public default_symbol_provider_t<TestRunner>
 	{
 		static TestSymbolProvider& instance() noexcept
@@ -34,22 +38,17 @@ namespace ghassanpl::tests
 	};
 	using Symbol = symbol_base<TestSymbolProvider>;
 
-	namespace test_literals
+	struct ContextHolder
 	{
-		struct TimesLiteral /// Change to named<size_t, "times">
-		{
-			size_t Times;
-		};
+		std::map<Symbol, Symbol, std::less<>> ContextMap;
+		virtual ~ContextHolder() noexcept = default;
 
-		inline constexpr TimesLiteral operator""_times(size_t val)
-		{
-			return TimesLiteral{ val };
-		}
-	}
+		void SetContextValue(id_t parent_id, std::string_view name, std::string_view value);
+	};
 
 	namespace predicates
 	{
-		struct TestPredicate
+		struct TestPredicate : ContextHolder
 		{
 			TestRunner& ParentRunner;
 			std::string const Prefix;
@@ -60,27 +59,70 @@ namespace ghassanpl::tests
 			TestPredicate(TestRunner& runner, with_sl<std::string_view> prefix, std::string_view name);
 			virtual ~TestPredicate() noexcept;
 
-			void Yes(source_location l = source_location::current()) noexcept { Report(true, {}, {}, l); }
-			void No(source_location l = source_location::current()) noexcept { Report(false, {}, {}, l); }
+			void Yes(source_location l = source_location::current()) noexcept { Report(true, l); }
+			void No(source_location l = source_location::current()) noexcept { Report(false, l); }
 
 			template <typename A, typename B>
-			TestPredicate& IfEqual(A&& a, B&& b, source_location l = source_location::current())
+			TestPredicate& WhenEqual(A&& a, std::string_view astr, B&& b, std::string_view bstr, source_location l = source_location::current())
 			{
-				Report(a == b, std::format("{}", a), std::format("{}", b), l);
+				if (a != b)
+				{
+					SetContextValue(ID, "Expected", "equality of these values");
+					auto aval_str = std::format("{}", a);
+					auto bval_str = std::format("{}", b);
+					SetContextValue(ID, "Left", astr);
+					if (aval_str != astr)
+						SetContextValue(ID, "LeftActually", aval_str);
+					SetContextValue(ID, "Right", bstr);
+					if (bval_str != bstr)
+						SetContextValue(ID, "RightActually", bval_str);
+				}
+				Report(a == b, l);
 				return *this;
 			}
 
-			TestPredicate& If(bool value, source_location l = source_location::current())
+#define WhenEqual(a, b) WhenEqual(a, #a, b, #b)
+
+			template <typename A, typename B>
+			TestPredicate& WhenNotEqual(A&& a, std::string_view astr, B&& b, std::string_view bstr, source_location l = source_location::current())
 			{
-				Report(value, "true", std::format("{}", value), l);
+				if (a == b)
+				{
+					SetContextValue(ID, "Expected", std::format("{} != {}", astr, bstr));
+					SetContextValue(ID, "Left", std::format("{}", a));
+					SetContextValue(ID, "Right", std::format("{}", b));
+				}
+				Report(a != b, l);
 				return *this;
 			}
 
-			TestPredicate& IfNot(bool value, source_location l = source_location::current())
+#define WhenNotEqual(a, b) WhenNotEqual(a, #a, b, #b)
+
+			TestPredicate& WhenTrue(bool value, std::string_view vstr, source_location l = source_location::current())
 			{
-				Report(value, "false", std::format("{}", value), l);
+				if (!value)
+				{
+					SetContextValue(ID, "Expected", std::format("{} == true", vstr));
+					SetContextValue(ID, "Got", std::to_string(value));
+				}
+				Report(value, l);
 				return *this;
 			}
+
+#define WhenTrue(a) WhenTrue(a, #a)
+
+			TestPredicate& WhenFalse(bool value, std::string_view vstr, source_location l = source_location::current())
+			{
+				if (value)
+				{
+					SetContextValue(ID, "Expected", std::format("{} == false", vstr));
+					SetContextValue(ID, "Got", std::to_string(value));
+				}
+				Report(value, l);
+				return *this;
+			}
+
+#define WhenFalse(a) WhenFalse(a, #a)
 
 		protected:
 
@@ -90,50 +132,42 @@ namespace ghassanpl::tests
 
 			size_t mReportCount = 0;
 
-			void Report(bool value, std::string expectation, std::string reality, source_location l);
+			void Report(bool value, source_location l);
 
-			void ReportFailure(std::string error_description);
+			void ReportFailure(std::string error_description = {});
 			void ReportSuccess();
+			void ReportStatus()
+			{
+				if (std::uncaught_exceptions())
+					ReportFailure("exception was thrown");
+				else if (!Succeeded())
+					ReportFailure();
+				else
+					ReportSuccess();
+			}
+
+			virtual bool Succeeded() const noexcept = 0;
 		};
 
-		struct ShouldTimesPredicate : TestPredicate
+		struct ShouldPredicate : TestPredicate
 		{
-			ShouldTimesPredicate(TestRunner& runner, with_sl<std::string_view> prefix, std::string_view name, test_literals::TimesLiteral exactly = { 1 })
-				: TestPredicate(runner, prefix, name)
-				, MinCount(exactly.Times)
-				, MaxCount(exactly.Times)
-			{
-
-			}
-
-			ShouldTimesPredicate(TestRunner& runner, with_sl<std::string_view> prefix, std::string_view name, test_literals::TimesLiteral min, test_literals::TimesLiteral max)
-				: TestPredicate(runner, prefix, name)
-				, MinCount(min.Times)
-				, MaxCount(max.Times)
-			{
-
-			}
-
+			using TestPredicate::TestPredicate;
+			
 			virtual void DoReport(bool value, source_location l) override
 			{
 				if (value)
 					++TrueCount;
 			}
 
-			~ShouldTimesPredicate()
-			{
-				if (!Succeeded())
-					ReportFailure("Well fuck");
-				else
-					ReportSuccess();
-			}
+			~ShouldPredicate() { ReportStatus(); }
 
 		private:
 
-			size_t MinCount = 0, MaxCount = 0;
 			size_t TrueCount = 0;
 
-			constexpr bool Succeeded() const noexcept { return TrueCount >= MinCount && TrueCount <= MaxCount; }
+			virtual bool Succeeded() const noexcept override { 
+				return TrueCount == mReportCount;
+			}
 		};
 
 		template <typename T>
@@ -155,18 +189,12 @@ namespace ghassanpl::tests
 				Results[CurrentValue - Start] = value;
 			}
 
-			~ShouldForValuesInRangePredicate()
-			{
-				if (!Succeeded())
-					ReportFailure("Well fuck");
-				else
-					ReportSuccess();
-			}
+			~ShouldForValuesInRangePredicate() { ReportStatus(); }
 
 			auto StartIteration()
 			{
 				CurrentValue = Start;
-				ParentRunner.PushContextValue("Value", std::format("{}", CurrentValue));
+				SetContextValue(ID, "LoopValue", std::format("{}", CurrentValue));
 				return CurrentValue;
 			}
 
@@ -177,21 +205,71 @@ namespace ghassanpl::tests
 
 			auto Next()
 			{
-				ParentRunner.PopContextValue();
 				CurrentValue += ((Start < End) ? 1 : -1);
-				ParentRunner.PushContextValue("Value", std::format("{}", CurrentValue));
+				SetContextValue(ID, "LoopValue", std::format("{}", CurrentValue));
 				return CurrentValue;
 			}
 
 		private:
 
 			T CurrentValue = {};
-			size_t TrueCount = 0;
 			std::vector<bool> Results;
 
-			constexpr bool Succeeded() const noexcept { return !std::ranges::contains(Results, false); }
+			bool Succeeded() const noexcept override { return !std::ranges::contains(Results, false); }
 		};
 
+		template <typename TUPLE_TYPE>
+		struct ShouldForEachValuePredicate;
+
+		template <typename... ARGS>
+		struct ShouldForEachValuePredicate<std::tuple<ARGS...>> : TestPredicate
+		{
+			using tuple_type = std::tuple<ARGS...>;
+			tuple_type Values;
+
+			ShouldForEachValuePredicate(TestRunner& runner, with_sl<std::string_view> prefix, std::string_view name, tuple_type values)
+				: TestPredicate(runner, prefix, name)
+				, Values(std::move(values))
+			{
+				Results.resize(sizeof...(ARGS));
+			}
+
+			virtual void DoReport(bool value, source_location l) override
+			{
+				Results[CurrentIndex] = value;
+			}
+
+			~ShouldForEachValuePredicate() { ReportStatus(); }
+
+			struct Executor
+			{
+				ShouldForEachValuePredicate& Parent;
+
+				template <typename FUNC>
+				void operator=(FUNC&& func) const
+				{
+					Parent.CurrentIndex = 0;
+					::ghassanpl::for_each_in_tuple(Parent.Values, [this, func = std::forward<FUNC>(func)](size_t index, auto&& value) {
+						Parent.SetContextValue(Parent.ID, "LoopIndex", std::format("{}", index));
+						Parent.SetContextValue(Parent.ID, "LoopValue", std::format("{}", value));
+						Parent.SetContextValue(Parent.ID, "LoopValueType", typeid(value).name());
+						Parent.CurrentIndex = index;
+						func(value);
+					});
+				}
+			};
+
+			Executor Execute{ *this };
+
+		private:
+
+			friend struct Executor;
+
+			size_t CurrentIndex = 0;
+			std::vector<bool> Results;
+
+			bool Succeeded() const noexcept override { return !std::ranges::contains(Results, false); }
+		};
 	}
 
 	namespace helpers
@@ -201,7 +279,7 @@ namespace ghassanpl::tests
 		struct ForEachTypeExecutor
 		{
 			template <typename FUNC>
-			ForEachTypeExecutor(FUNC&& func)
+			[[maybe_unused]] ForEachTypeExecutor(FUNC&& func)
 			{
 				::ghassanpl::for_each<ARGS...>(std::forward<FUNC>(func));
 			}
@@ -209,7 +287,7 @@ namespace ghassanpl::tests
 
 	}
 
-	struct TestRunner
+	struct TestRunner : ContextHolder
 	{
 		using TestPredicate = predicates::TestPredicate;
 
@@ -250,25 +328,11 @@ namespace ghassanpl::tests
 
 		id_t RegisterTest(void(*func)(TestRunner&), std::string_view test_suite, source_location loc = source_location::current());
 
-		id_t PushContextValue(std::string name, std::string value)
-		{
-			auto id = NewID();
-			AddCommand(CommandType::PushContextValue, mCurrentRequirement->ID, Symbol{ name }, Symbol{ value }, id);
-			mContextStack.emplace_back(Symbol{ name }, Symbol{ value });
-			return id;
-		}
-
-		void PopContextValue()
-		{
-			AddCommand(CommandType::PopContextValue);
-			mContextStack.pop_back();
-		}
-
 		enum class CommandType : uint8_t
 		{
-			PushContextValue, /// ParentReqOrTestId, ValueId, SName, TValue
-			SetContextValue, /// ValueId, TValue
-			PopContextValue,
+			//PushContextValue, /// ParentReqOrTestId, ValueId, SName, TValue
+			SetContextValue, /// ParentReqOrTestId, SName, TValue
+			//PopContextValue,
 			
 			RegisterTest, /// TestId, SName, Loc
 			StartTest, /// TestId, SName
@@ -308,30 +372,55 @@ namespace ghassanpl::tests
 
 		std::map<Symbol::internal_value_type, id_t> SymbolTable;
 
-	private:
-
-		enum class PredicateResult
+		auto GetCurrentContextValues(predicates::TestPredicate const* predicate)
 		{
-			NotReported = 0,
-			Succeeded,
-			Failed,
-		};
+			std::map<Symbol, Symbol> context;
+			std::vector<RequirementScope*> requirements;
+
+			auto req = mCurrentRequirement;
+			while (req)
+			{
+				requirements.push_back(req);
+				req = req->ParentRequirement;
+			}
+
+			for (auto it = requirements.rbegin(); it != requirements.rend(); ++it)
+			{
+				for (auto& [name, val] : (*it)->ContextMap)
+					context[name] = val;
+			}
+
+			if (predicate)
+			{
+				for (auto& [name, val] : predicate->ContextMap)
+					context[name] = val;
+			}
+
+			return context;
+		}
+
+	private:
 
 		struct PredicateInfo
 		{
+			struct FailureInfo
+			{
+				source_location Location;
+				std::string Description;
+				std::map<Symbol, Symbol> Context;
+			};
+
 			std::string What;
-			std::vector<std::pair<bool, source_location>> Values;
-			PredicateResult Result = PredicateResult::NotReported;
-			std::string FailureDescription;
+			std::vector<FailureInfo> Failures;
 			size_t ReportCount = 0;
 			id_t ID = {};
 		};
 
-		struct RequirementScope
+		struct RequirementScope : ContextHolder
 		{
-			RequirementScope* const ParentRequirement;
-			std::string const Name;
-			source_location const Location;
+			RequirementScope* ParentRequirement;
+			std::string Name;
+			source_location Location;
 			id_t ID = {};
 
 			RequirementScope(RequirementScope* const parent, std::string name, source_location loc, id_t id/*, std::string fullname*/)
@@ -343,9 +432,9 @@ namespace ghassanpl::tests
 
 			}
 
-			RequirementScope(RequirementScope const&) = delete;
+			RequirementScope(RequirementScope const&) noexcept = delete;
 			RequirementScope(RequirementScope&&) noexcept = default;
-			RequirementScope& operator=(RequirementScope const&) = delete;
+			RequirementScope& operator=(RequirementScope const&) noexcept = delete;
 			RequirementScope& operator=(RequirementScope&&) noexcept = default;
 
 			std::string FullName() const;
@@ -366,11 +455,6 @@ namespace ghassanpl::tests
 			{
 
 			}
-
-			TestSuite(TestSuite const&) = delete;
-			TestSuite(TestSuite&&) noexcept = default;
-			TestSuite& operator=(TestSuite const&) = delete;
-			TestSuite& operator=(TestSuite&&) noexcept = default;
 		};
 
 		void Run();
@@ -381,13 +465,11 @@ namespace ghassanpl::tests
 		void ReportPredicateValue(TestPredicate& predicate, bool new_value, source_location where);
 		void ReportPredicateFailure(TestPredicate& predicate, std::string error_description);
 		void ReportPredicateSuccess(TestPredicate& predicate);
-		friend struct TestPredicate;
+		friend struct ghassanpl::tests::predicates::TestPredicate;
 
 		bool mRunning = true;
 		RequirementScope* mCurrentRequirement = nullptr;
 		std::vector<TestSuite> RegisteredSuites;
-
-		std::vector<std::pair<Symbol, Symbol>> mContextStack;
 	};
 
 	/// TODO: This
@@ -438,18 +520,20 @@ namespace ghassanpl::tests
 
 #define Should(should_what, ...) \
 	using namespace ::ghassanpl::tests::test_literals; \
-	auto Does##should_what = runner__.MakePredicate<::ghassanpl::tests::predicates::ShouldTimesPredicate>("Should", #should_what __VA_OPT__(,) __VA_ARGS__); \
+	auto Does##should_what = runner__.MakePredicate<::ghassanpl::tests::predicates::ShouldPredicate>("Should", #should_what __VA_OPT__(,) __VA_ARGS__); \
 	Does##should_what
 
+#define ItShould(...) Should(__VA_ARGS__)
 #define ClassShould(...) Should(__VA_ARGS__)
 #define ConceptShould(...) Should(__VA_ARGS__)
 #define FunctionShould(...) Should(__VA_ARGS__)
 
 #define ShouldBe(should_what, ...) \
 	using namespace ::ghassanpl::tests::test_literals; \
-	auto Is##should_what = runner__.MakePredicate<::ghassanpl::tests::predicates::ShouldTimesPredicate>("ShouldBe", #should_what __VA_OPT__(,) __VA_ARGS__); \
+	auto Is##should_what = runner__.MakePredicate<::ghassanpl::tests::predicates::ShouldPredicate>("ShouldBe", #should_what __VA_OPT__(,) __VA_ARGS__); \
 	Is##should_what
 
+#define ItShouldBe(...) ShouldBe(__VA_ARGS__)
 #define ClassShouldBe(...) ShouldBe(__VA_ARGS__)
 #define ConceptShouldBe(...) ShouldBe(__VA_ARGS__)
 #define FunctionShouldBe(...) ShouldBe(__VA_ARGS__)
@@ -464,9 +548,21 @@ namespace ghassanpl::tests
 	auto Is##should_what = runner__.MakePredicate<::ghassanpl::tests::predicates::ShouldForValuesInRangePredicate<decltype(start_range)>>("ShouldBeForValuesInRange(" #start_range ", " #end_range ")", #should_what __VA_OPT__(,) __VA_ARGS__, start_range, end_range); \
 	for (auto Value = Is##should_what.StartIteration(); Is##should_what.ShouldContinue(); Value = Is##should_what.Next())
 
+#define ItShouldForValuesInRange(...) ShouldForValuesInRange(__VA_ARGS__)
 #define FunctionShouldForValuesInRange(...) ShouldForValuesInRange(__VA_ARGS__)
 #define ClassShouldForValuesInRange(...) ShouldForValuesInRange(__VA_ARGS__)
 #define ConceptShouldForValuesInRange(...) ShouldForValuesInRange(__VA_ARGS__)
+
+#define ShouldForEachValue(should_what, ...) \
+	using namespace ::ghassanpl::tests::test_literals; \
+	auto should_what##Values = std::make_tuple(__VA_ARGS__); \
+	auto Does##should_what = runner__.MakePredicate<::ghassanpl::tests::predicates::ShouldForEachValuePredicate<decltype(should_what##Values)>>("ShouldForEachValue", #should_what, should_what##Values); \
+	Does##should_what.Execute = [&]<typename Type>(Type Value)
+
+#define ItShouldForEachValue(...) ShouldForEachValue(__VA_ARGS__)
+#define FunctionShouldForEachValue(...) ShouldForEachValue(__VA_ARGS__)
+#define ClassShouldForEachValue(...) ShouldForEachValue(__VA_ARGS__)
+#define ConceptShouldForEachValue(...) ShouldForEachValue(__VA_ARGS__)
 
 /*
 #define ShouldForEachType(should_what, body, ...) \
@@ -480,5 +576,5 @@ namespace ghassanpl::tests
 	*/
 
 //#define ForEachType(block, ...) ::ghassanpl::for_each<__VA_ARGS__>([&]<typename TypeParam>(std::type_identity<TypeParam>) block)
-#define ForEachType(...) ::ghassanpl::tests::helpers::ForEachTypeExecutor<__VA_ARGS__> CONCAT(ForEachTypeExecutor, __LINE__) = [&]<typename TypeParam>(std::type_identity<TypeParam>)
+#define ForEachType(...) [[maybe_unused]] ::ghassanpl::tests::helpers::ForEachTypeExecutor<__VA_ARGS__> CONCAT(ForEachTypeExecutor, __LINE__) = [&]<typename TypeParam>(std::type_identity<TypeParam>)
 #define AbortTest() runner__.Abort()

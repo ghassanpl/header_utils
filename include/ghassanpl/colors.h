@@ -4,7 +4,10 @@
 
 #pragma once
 
-#include <glm/glm.hpp>
+#include <charconv>
+#include <string_view>
+#include <glm/common.hpp>
+#include <glm/ext/vector_float4.hpp>
 #include "named.h"
 
 namespace ghassanpl
@@ -26,7 +29,7 @@ namespace ghassanpl
 
 	/// Represents a color in RGBA color space, with 0.0-1.0 float elements
 	using color_rgba_t = glm::vec4;
-	/// Represents a color in HSVA color space, with 0.0-1.0 float elements
+	/// Represents a color in HSVA color space, with H=0.0-6.0, S=0.0-1.0, V=0.0-1.0, A=0.0-1.0 float elements
 	using color_hsva_t = named<glm::vec4, "color_hsva">;
 	/// Default `color_t` type is RGBA
 	using color_t = color_rgba_t;
@@ -145,7 +148,10 @@ namespace ghassanpl
 	
 	namespace detail 
 	{
-		constexpr float byte_to_float(uint32_t byte) { return (byte & 0xFF) / 255.0f; } 
+		constexpr float b2f(uint32_t byte) { return (byte & 0xFF) / 255.0f; } 
+		constexpr uint32_t f2b(float f) { return uint8_t(f * 255.0f); } 
+		constexpr uint32_t f2u4(float b1, float b2, float b3, float b4) { return (f2b(b1) << 24) | (f2b(b2) << 16) | (f2b(b3) << 8) | f2b(b4); }
+		constexpr uint32_t f2u4(float b1, float b2, float b3) { return (f2b(b1) << 16) | (f2b(b2) << 8) | f2b(b3); }
 
 		/// RATIONALE: glm has two versions of 3-param min/max for some reason. NEITHER are constexpr :/
 		template <typename T> constexpr auto min(const T& x, const T& y, const T& z) { return glm::min(glm::min(x, y), z); }
@@ -153,30 +159,30 @@ namespace ghassanpl
 	}
 
 	/// Gets a color from an RGB 8bpp integer, with R being most significant
-	constexpr color_t from_u32_rgb(uint32_t rgb) { return color_t(detail::byte_to_float(rgb >> 16), detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb), 1.0f); }
+	constexpr color_t from_u32_rgb(uint32_t rgb) { return color_t(detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), 1.0f); }
 	/// Gets a color from an BGR 8bpp integer, with R being least significant
-	constexpr color_t from_u32_bgr(uint32_t rgb) { return color_t(detail::byte_to_float(rgb), detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb >> 16), 1.0f); }
+	constexpr color_t from_u32_bgr(uint32_t rgb) { return color_t(detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), 1.0f); }
 	/// Gets a color from an RGBA 8bpp integer, with R being most significant
-	constexpr color_t from_u32_rgba(uint32_t rgb) { return color_t(detail::byte_to_float(rgb >> 24), detail::byte_to_float(rgb >> 16), detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb)); }
+	constexpr color_t from_u32_rgba(uint32_t rgb) { return color_t(detail::b2f(rgb >> 24), detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb)); }
 	/// Gets a color from an BGRA 8bpp integer, with A being least significant, and B being most significant
-	constexpr color_t from_u32_bgra(uint32_t rgb) { return color_t(detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb >> 16), detail::byte_to_float(rgb >> 24), detail::byte_to_float(rgb)); }
+	constexpr color_t from_u32_bgra(uint32_t rgb) { return color_t(detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24), detail::b2f(rgb)); }
 	/// Gets a color from an ARGB 8bpp integer, with A being most significant, and B being least significant
-	constexpr color_t from_u32_argb(uint32_t rgb) { return color_t(detail::byte_to_float(rgb >> 16), detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb), detail::byte_to_float(rgb >> 24)); }
+	constexpr color_t from_u32_argb(uint32_t rgb) { return color_t(detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), detail::b2f(rgb >> 24)); }
 	/// Gets a color from an ABGR 8bpp integer, with A being most significant, and R being least significant
-	constexpr color_t from_u32_abgr(uint32_t rgb) { return color_t(detail::byte_to_float(rgb), detail::byte_to_float(rgb >> 8), detail::byte_to_float(rgb >> 16), detail::byte_to_float(rgb >> 24)); }
+	constexpr color_t from_u32_abgr(uint32_t rgb) { return color_t(detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24)); }
 
 	/// Creates an 8bpp ARGB integer from a color
-	constexpr uint32_t to_u32_argb(color_t const& rgba) { return uint32_t(rgba.a * 255.0f) << 24 | uint32_t(rgba.r * 255.0f) << 16 | uint32_t(rgba.g * 255.0f) << 8 | uint32_t(rgba.b * 255.0f); }
+	constexpr uint32_t to_u32_argb(color_t const& rgba) { return detail::f2u4(rgba.a, rgba.r, rgba.g, rgba.b); }
 	/// Creates an 8bpp ABGR integer from a color
-	constexpr uint32_t to_u32_abgr(color_t const& rgba) { return uint32_t(rgba.a * 255.0f) << 24 | uint32_t(rgba.b * 255.0f) << 16 | uint32_t(rgba.g * 255.0f) << 8 | uint32_t(rgba.r * 255.0f); }
+	constexpr uint32_t to_u32_abgr(color_t const& rgba) { return detail::f2u4(rgba.a, rgba.b, rgba.g, rgba.r); }
 	/// Creates an 8bpp RGBA integer from a color
-	constexpr uint32_t to_u32_rgba(color_t const& rgba) { return uint32_t(rgba.r * 255.0f) << 24 | uint32_t(rgba.g * 255.0f) << 16 | uint32_t(rgba.b * 255.0f) << 8 | uint32_t(rgba.a * 255.0f); }
+	constexpr uint32_t to_u32_rgba(color_t const& rgba) { return detail::f2u4(rgba.r, rgba.g, rgba.b, rgba.a); }
 	/// Creates an 8bpp BGRA integer from a color
-	constexpr uint32_t to_u32_bgra(color_t const& rgba) { return uint32_t(rgba.b * 255.0f) << 24 | uint32_t(rgba.g * 255.0f) << 16 | uint32_t(rgba.r * 255.0f) << 8 | uint32_t(rgba.a * 255.0f); }
-	/// Creates a 32 bit, 8bpp RGB integer from a color, with the most significant 8 bits set to 0
-	constexpr uint32_t to_u32_rgb(color_t const& rgba) { return uint32_t(rgba.r * 255.0f) << 16 | uint32_t(rgba.g * 255.0f) << 8 | uint32_t(rgba.b * 255.0f); }
-	/// Creates a 32 bit, 8bpp BGR integer from a color, with the most significant 8 bits set to 0
-	constexpr uint32_t to_u32_bgr(color_t const& rgba) { return uint32_t(rgba.b * 255.0f) << 16 | uint32_t(rgba.g * 255.0f) << 8 | uint32_t(rgba.r * 255.0f); }
+	constexpr uint32_t to_u32_bgra(color_t const& rgba) { return detail::f2u4(rgba.b, rgba.g, rgba.r, rgba.a); }
+	/// Creates a 32 bitbpp RGB integer from a color, with the most significant 8 bits set to 0
+	constexpr uint32_t to_u32_rgb(color_t const& rgba) { return detail::f2u4(rgba.r, rgba.g, rgba.b); }
+	/// Creates a 32 bitbpp BGR integer from a color, with the most significant 8 bits set to 0
+	constexpr uint32_t to_u32_bgr(color_t const& rgba) { return detail::f2u4(rgba.b, rgba.g, rgba.r); }
 
 	template <std::same_as<color_rgba_u32_t> TO>
 	constexpr TO named_cast(color_rgba_t const& from)
@@ -188,6 +194,12 @@ namespace ghassanpl
 	constexpr TO named_cast(color_rgba_t const& from)
 	{
 		return TO{ to_u32_abgr(from) };
+	}
+
+	template <typename TO, typename FROM>
+	TO color_cast(FROM const& from)
+	{
+		return named_cast<TO>(from);
 	}
 
 	/// Returns the color as a `glm::vec4` of `uint8_t`s
@@ -230,14 +242,11 @@ namespace ghassanpl
 		if (delta != 0)
 		{
 			if (rgba.r == max)
-				h = (rgba.g - rgba.b) / delta;
+				h = fmod((rgba.g - rgba.b) / delta, 6.0f);
 			else if (rgba.g == max)
 				h = 2 + (rgba.b - rgba.r) / delta;
 			else
 				h = 4 + (rgba.r - rgba.g) / delta;
-			h /= 6.0f;
-			if (h < 0)
-				h += 1.0f;
 		}
 
 		return color_hsva_t{

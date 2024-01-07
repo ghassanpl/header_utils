@@ -220,7 +220,7 @@ template <class CharT>
 struct std::formatter<UnCopyable, CharT> : std::formatter<std::basic_string<CharT>, CharT>
 {
 	template<class FormatContext>
-	auto format(UnCopyable const& t, FormatContext& fc) {
+	auto format(UnCopyable const& t, FormatContext& fc) const {
 		return std::formatter<std::basic_string<CharT>, CharT>::format("UnCopyable", fc);
 	}
 };
@@ -228,7 +228,7 @@ template <class CharT>
 struct std::formatter<UnMovable, CharT> : std::formatter<std::basic_string<CharT>, CharT>
 {
 	template<class FormatContext>
-	auto format(UnMovable const& t, FormatContext& fc) {
+	auto format(UnMovable const& t, FormatContext& fc) const {
 		return std::formatter<std::basic_string<CharT>, CharT>::format("UnMovable", fc);
 	}
 };
@@ -238,9 +238,9 @@ TEST_F(assuming_test, assumings_dont_copy_unnecessarily)
 	/// TODO: Fix formatting these
 	//int i = 0;
 	UnCopyable a;
-	//EXPECT_ASSUMPTION_SUCCEEDED(AssumingEqual, a, UnCopyable{});
+	EXPECT_ASSUMPTION_SUCCEEDED(AssumingEqual, a, UnCopyable{});
 	UnMovable b;
-	//EXPECT_ASSUMPTION_SUCCEEDED(AssumingEqual, b, UnMovable{});
+	EXPECT_ASSUMPTION_SUCCEEDED(AssumingEqual, b, UnMovable{});
 }
 
 /// TODO: Make sure everything works when ASSUMING_DEBUG is not defined

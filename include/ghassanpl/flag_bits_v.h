@@ -14,7 +14,7 @@
 namespace ghassanpl
 {
 	template<typename T>
-	concept integral_or_enum = std::is_integral_v<T> && !std::is_same_v<std::decay_t<T>, bool> || std::is_enum_v<T>;
+	concept integral_or_enum = (std::is_integral_v<T> && !std::is_same_v<std::decay_t<T>, bool>) || std::is_enum_v<T>;
 
 	namespace detail
 	{

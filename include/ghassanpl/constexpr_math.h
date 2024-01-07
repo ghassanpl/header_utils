@@ -2,6 +2,8 @@
 
 #include <concepts>
 #include <limits>
+#include <cmath>
+#include <bit>
 
 namespace ghassanpl::constexpr_math
 {
@@ -83,10 +85,12 @@ namespace ghassanpl::constexpr_math
 				else if constexpr (sizeof(T) == sizeof(uint8_t))
 					return (std::bit_cast<uint8_t>(num) & 0x80u) != 0;
 				else
-					static_assert(false, "unsupported floating point type");
+					static_assert(sizeof(T) == sizeof(uint8_t), "unsupported floating point type");
 			}
 			else
+			{
 				return num < T{};
+			}
 		}
 		else
 			return std::signbit(num);

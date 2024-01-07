@@ -14,7 +14,7 @@ UnderTest(ghassanpl::string_ops::ascii)
 
 #define FU(name) asciifunc{ &std::name, &ghassanpl::string_ops::ascii::name, #name }
 
-	static constexpr std::array ascii_functions{
+	static std::array ascii_functions{
 		FU(isalpha),
 		FU(isdigit),
 		FU(isxdigit),
@@ -36,7 +36,7 @@ UnderTest(ghassanpl::string_ops::ascii)
 		{
 			FunctionShouldForValuesInRange(-1, 256, GiveTheSameResult)
 			{
-				DoesGiveTheSameResult.IfEqual((bool)std_version(Value), (bool)my_version(Value));
+				DoesGiveTheSameResult.WhenEqual((bool)std_version(Value), (bool)my_version(Value));
 			}
 		}
 	}
@@ -46,7 +46,7 @@ UnderTest(ghassanpl::string_ops::ascii)
 	{
 		ShouldBeForValuesInRange(0, 10, Even)
 		{
-			IsEven.IfEqual((Value % 2), 0);
+			IsEven.WhenEqual((Value % 2), 0);
 		}
 	}
 	*/
