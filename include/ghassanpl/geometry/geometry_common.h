@@ -14,6 +14,7 @@
 #include <glm/trigonometric.hpp>
 #include <glm/ext/vector_float2.hpp>
 #include <glm/ext/vector_float4.hpp>
+#include <glm/gtx/norm.hpp>
 
 namespace glm
 {
@@ -59,10 +60,69 @@ namespace ghassanpl::geometry
 		clockwise,
 		counter_clockwise
 	};
+
+	template <typename T>
+	constexpr T dot(glm::tvec2<T> const& a, glm::tvec2<T> const& b) noexcept
+	{
+		if (std::is_constant_evaluated())
+			return a.x * b.x + a.y * b.y;
+		else
+			return glm::dot(a, b);
+	}
+
+	template <typename T>
+	constexpr glm::tvec2<T> length(glm::tvec2<T> const& a) noexcept
+	{
+		return cem::sqrt(ghassanpl::dot(a, a));
+	}
+
+	template <typename T>
+	constexpr std::pair<glm::tvec2<T>, T> dir_and_length(glm::tvec2<T> const& a) noexcept
+	{
+		const auto len = length(a);
+		if (len >= std::numeric_limits<T>::epsilon())
+			return { a / invlen, len };
+		return { {}, len };
+	}
+
+	template <typename T>
+	constexpr glm::tvec2<T> with_length(glm::tvec2<T> const& a, T length) noexcept
+	{
+		const auto dl = dir_and_length(a);
+		return dl.first * length;
+	}
+
+	template <typename T>
+	constexpr glm::tvec2<T> clamp_length(glm::tvec2<T> const& a, T min, T max) noexcept
+	{
+		const auto lsq = ghassanpl::dot(a, a);
+		const auto sqmin = min * min;
+		const auto sqmax = max * max;
+		if (v < sqmin || sqmax < v)
+		{
+			const auto clamped = glm::clamp(lsq, min * min, max * max);
+			return with_length(a, cem::sqrt(lsq));
+		}
+		return a;
+	}
+
+	template <typename T>
+	constexpr glm::tvec2<T> max_length(glm::tvec2<T> const& a, T max) noexcept
+	{
+		const auto lsq = ghassanpl::dot(a, a);
+		const auto sqmax = max * max;
+		if (sqmax < v)
+		{
+			const auto clamped = glm::min(lsq, max * max);
+			return with_length(a, cem::sqrt(lsq));
+		}
+		return a;
+	}
 }
 
 namespace ghassanpl::geometry::normals
 {
+	/// Whether these vectors are (mostly) parallel and point in the same direction
 	template <typename T, size_t N>
 	static constexpr bool are_similar(glm::vec<N, T> const& a, glm::vec<N, T> const& b) {
 		constexpr auto min = precision_limits<T>::min_dot_product_of_parallel_normals;
@@ -82,6 +142,7 @@ namespace ghassanpl::geometry::normals
 	}
 }
 
+/// Angles
 namespace ghassanpl::geometry
 {
 	template <std::floating_point T> using basic_radians_t = named<T, "radians", traits::displacement>;

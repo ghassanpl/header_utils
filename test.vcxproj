@@ -124,7 +124,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/Zc:__cplusplus /utf-8  /Zc:preprocessor</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /Zc:preprocessor /source-charset:utf-8 /execution-charset:utf-8</AdditionalOptions>
       <AdditionalIncludeDirectories>$(ExternalIncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
       <DisableLanguageExtensions>true</DisableLanguageExtensions>
@@ -151,7 +151,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalOptions>/Zc:__cplusplus /utf-8  /Zc:preprocessor</AdditionalOptions>
+      <AdditionalOptions>/Zc:__cplusplus /Zc:preprocessor /source-charset:utf-8 /execution-charset:utf-8</AdditionalOptions>
       <EnableModules>false</EnableModules>
       <BuildStlModules>false</BuildStlModules>
       <LanguageStandard>stdcpplatest</LanguageStandard>
@@ -197,6 +197,7 @@
     <ClInclude Include="include\ghassanpl\geometry\geometry_common.h" />
     <ClInclude Include="include\ghassanpl\geometry\points.h" />
     <ClInclude Include="include\ghassanpl\geometry\polygon.h" />
+    <ClInclude Include="include\ghassanpl\geometry\ray.h" />
     <ClInclude Include="include\ghassanpl\geometry\rectangles.h" />
     <ClInclude Include="include\ghassanpl\geometry\segment.h" />
     <ClInclude Include="include\ghassanpl\geometry\shape_concepts.h" />
@@ -243,6 +244,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Doxyfile" />
+    <None Include="include\ghassanpl\constexpr_math.inl" />
     <None Include="include\ghassanpl\platform_impl.inl" />
     <None Include="README.md" />
     <None Include="vcpkg.json" />
@@ -277,6 +279,7 @@
     <ClCompile Include="tests\mmap_tests.cpp" />
     <ClCompile Include="tests\named_tests.cpp" />
     <ClCompile Include="tests\parsing_tests.cpp" />
+    <ClCompile Include="tests\paths_tests.cpp" />
     <ClCompile Include="tests\random_tests.cpp" />
     <ClCompile Include="tests\ranges_tests.cpp" />
     <ClCompile Include="tests\scope_tests.cpp" />

@@ -3,6 +3,7 @@
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "../include/ghassanpl/enum_flags.h"
+#include "../include/ghassanpl/atomic_enum_flags.h"
 #include "../include/ghassanpl/bit_view.h"
 
 #include <gtest/gtest.h>

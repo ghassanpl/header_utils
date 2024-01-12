@@ -220,6 +220,7 @@ namespace ghassanpl
 			return other.x >= p1.x && other.y >= p1.y && other.x < p2.x && other.y < p2.y;
 		}
 
+		/// \pre `other` must be valid
 		constexpr bool contains(trec2 const& other) const noexcept
 		{
 			return other.p1.x >= p1.x && other.p1.y >= p1.y && other.p2.x <= p2.x && other.p2.y <= p2.y;

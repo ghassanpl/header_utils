@@ -9,10 +9,15 @@
 
 namespace ghassanpl
 {
+	/// Probably best to force a manual retrieval/storage of the value from atomic variables,
+	/// because a lot of functions of enum_flags call other functions in order independently,
+	/// which is technically not atomic without making a local copy of the bits first.
+	/*
 	template <integral_or_enum ENUM, detail::valid_integral VALUE_TYPE = unsigned long long>
 	struct atomic_enum_flags : enum_flags<ENUM, std::atomic<VALUE_TYPE>>
 	{
 		using base_type = enum_flags<ENUM, std::atomic<VALUE_TYPE>>;
 		using base_type::base_type;
 	};
+	*/
 }

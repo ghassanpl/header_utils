@@ -267,6 +267,9 @@
     <ClInclude Include="include\ghassanpl\geometry\rectangles.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\ray.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -275,6 +278,9 @@
       <Filter>Header Files</Filter>
     </None>
     <None Include="Doxyfile" />
+    <None Include="include\ghassanpl\constexpr_math.inl">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tests\align_tests.cpp">
@@ -402,6 +408,9 @@
     </ClCompile>
     <ClCompile Include="tests\standalone_include_tests\bits.cpp">
       <Filter>Source Files\standalone_include_tests</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\paths_tests.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

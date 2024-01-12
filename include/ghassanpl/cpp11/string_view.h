@@ -832,7 +832,7 @@ namespace detail
 			++next;
 		}
 
-		using unsigned_t = std::make_unsigned<T>::type;
+		using unsigned_t = typename std::make_unsigned<T>::type;
 
 		const unsigned_t uint_max_val = static_cast<unsigned_t>(-1);
 		const unsigned_t int_max_val = static_cast<unsigned_t>(uint_max_val >> 1);

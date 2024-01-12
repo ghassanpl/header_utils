@@ -8,6 +8,16 @@
 
 #include "../include/ghassanpl/colors.h"
 #include "../include/ghassanpl/geometry/geometry_common.h"
+#include "../include/ghassanpl/constexpr_math.h"
+
+static_assert(glm::clamp(std::numeric_limits<double>::quiet_NaN(), 0.0, 1.0) == 0.0);
+
+FunctionUnderTest(ghassanpl::gamma_correct)
+{
+	using namespace ghassanpl;
+	constexpr auto c = gamma_correct(colors::dark_red, 2.2f);
+	//ItShould(ReturnCorrectValueForRed).WhenEqual(c.r, 0.72941f);
+}
 
 FunctionUnderTest(ghassanpl::color_cast)
 {

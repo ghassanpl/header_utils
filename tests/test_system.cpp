@@ -249,7 +249,7 @@ namespace ghassanpl::tests
 			return &*v;
 	}
 
-	void ContextHolder::SetContextValue(id_t parent_id, std::string_view name, std::string_view value)
+	void ContextHolder::SetContextValue(std::string_view name, std::string_view value)
 	{
 		//TestRunner::Get().AddCommand(TestRunner::CommandType::SetContextValue, parent_id, Symbol{ name }, Symbol{ value });
 		this->ContextMap[Symbol{ name }] = Symbol{ value };

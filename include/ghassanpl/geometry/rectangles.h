@@ -33,15 +33,6 @@ namespace ghassanpl::geometry
 		};
 	}
 
-	template <typename T>
-	tellipse<T> inner_ellipse(const trec2<T>& r)
-	{
-		return tellipse<T>{r.center(), r.half_size()};
-	}
-
-	template <typename T>
-	tellipse<T> outer_ellipse(const trec2<T>& r);
-
 	/*
 	template <typename T>
 	tcircle<T> inner_circle(const trec2<T>& r);

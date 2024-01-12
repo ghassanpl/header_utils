@@ -16,26 +16,26 @@ namespace ghassanpl::string_ops
 	/// @{
 	
 	/// Returns whether `cp` is a codepoint that encodes the high part of a codepoint with a more-than-16-bit value
-	constexpr bool is_high_surrogate(char32_t cp) noexcept;
+	[[nodiscard]] constexpr bool is_high_surrogate(char32_t cp) noexcept;
 	
 	/// Returns whether `cp` is a codepoint that encodes the low part of a codepoint with a more-than-16-bit value
-	constexpr bool is_low_surrogate(char32_t cp) noexcept;
+	[[nodiscard]] constexpr bool is_low_surrogate(char32_t cp) noexcept;
 	
 	/// Returns whether `cp` is a codepoint that encodes any part of a codepoint with a more-than-16-bit value
-	constexpr bool is_surrogate(char32_t cp) noexcept;
+	[[nodiscard]] constexpr bool is_surrogate(char32_t cp) noexcept;
 
 	/// Returns whether `cp` has a value that is a valid Unicode codepoint (ie. between 0 and 0x10FFFF).
-	constexpr bool is_unicode(char32_t cp) noexcept;
+	[[nodiscard]] constexpr bool is_unicode(char32_t cp) noexcept;
 
 	/// Returns whether `cp` has a value that is a valid Unicode character (ie. a value that encodes a (part of a) character).
 	/// Specifically, byte order marks are not characters, but surrogates technically are part of a character.
-	constexpr bool is_unicode_character(char32_t cp) noexcept;
+	[[nodiscard]] constexpr bool is_unicode_character(char32_t cp) noexcept;
 	
 	/// Returns the codepoint encoded by two surrogates
-	constexpr char32_t surrogate_pair_to_codepoint(char32_t high, char32_t low) noexcept;
+	[[nodiscard]] constexpr char32_t surrogate_pair_to_codepoint(char32_t high, char32_t low) noexcept;
 
 	enum class unicode_plane;
-	constexpr auto get_unicode_plane(char32_t cp) noexcept -> unicode_plane;
+	[[nodiscard]] constexpr auto get_unicode_plane(char32_t cp) noexcept -> unicode_plane;
 
 	/// Specifies a base text-encoding, ignoring endianness for multi-byte encodings
 	enum class base_text_encoding
@@ -69,12 +69,12 @@ namespace ghassanpl::string_ops
 	/// \internal https://bjoern.hoehrmann.de/utf-8/decoder/dfa/
 
 	/// Returns the number of UTF-8 octets necessarity to encode the given codepoint
-	constexpr size_t codepoint_utf8_count(char32_t cp) noexcept;
+	[[nodiscard]] constexpr size_t codepoint_utf8_count(char32_t cp) noexcept;
 
 	struct text_decode_result;
 
 	/// Attempts to decode the first codepoint in 8-bit range `str`, assuming it is encoded in `encoding`.
-	text_decode_result decode_codepoint(stringable8 auto str, text_encoding encoding);
+	[[nodiscard]] text_decode_result decode_codepoint(stringable8 auto str, text_encoding encoding);
 
 	/// Consumes (see \c consume()) a [byte order mark](https://en.wikipedia.org/wiki/Byte_order_mark) from the beginning of sv, 
 	/// and returns the encoding that the BOM represents (or \c unknown_text_encoding) if no BOM.
@@ -90,12 +90,12 @@ namespace ghassanpl::string_ops
 	
 	/// Attempts to detect the encoding of a given 8-bit range.
 	/// \note If no BOM is present, only detects UTF encodings.
-	text_encoding detect_encoding(stringable8 auto str);
+	[[nodiscard]] text_encoding detect_encoding(stringable8 auto str);
 
 	/// Consumes (see \c consume()) a UTF-8 codepoint from `str`.
 	constexpr char32_t consume_utf8(string_view8 auto& str);
 
-	constexpr size_t count_utf8_codepoints(stringable8 auto str);
+	[[nodiscard]] constexpr size_t count_utf8_codepoints(stringable8 auto str);
 
 	/// Appends octets to `buffer` by encoding `cp` into UTF-8
 	constexpr size_t append_utf8(string8 auto& buffer, char32_t cp);
@@ -103,15 +103,20 @@ namespace ghassanpl::string_ops
 	/// Returns `cp` encoded as a UTF-8 string
 	/// \tparam RESULT the type of string to return (`std::string` by default)
 	template <string8 RESULT = std::string>
-	constexpr RESULT to_utf8(char32_t cp);
-	
+	[[nodiscard]] constexpr RESULT to_utf8(char32_t cp);
+
 	/// Returns `str` (a UTF-16-encoded string) encoded as a UTF-8 string
 	/// \tparam RESULT the type of string to return (`std::string` by default)
 	template <string8 RESULT = std::string, stringable16 STR>
-	constexpr RESULT to_utf8(STR str);
+	[[nodiscard]] constexpr RESULT to_utf8(STR&& str);
+
+	/// Returns `str` (a UTF-32-encoded string) encoded as a UTF-8 string
+	/// \tparam RESULT the type of string to return (`std::string` by default)
+	template <string8 RESULT = std::string, stringable32 STR>
+	[[nodiscard]] constexpr RESULT to_utf8(STR&& str);
 
 	/// Returns `str` (a UTF-16-encoded string) encoded as a UTF-8 string
-	std::string to_string(std::wstring_view str);
+	[[nodiscard]] std::string to_string(std::wstring_view str);
 
 	/// A simple view over an UTF8 string range with codepoint values
 	template <std::ranges::view R>
@@ -120,21 +125,29 @@ namespace ghassanpl::string_ops
 	/// Consumes (see \c consume()) a UTF-16 codepoint from `str`.
 	constexpr char32_t consume_utf16(string_view16 auto& str);
 
+	/// Consumes (see \c consume()) a UTF-32 codepoint from `str`.
+	constexpr char32_t consume_utf32(string_view32 auto& str);
+
 	/// Appends 16-bit values to `buffer` by encoding `cp` into UTF-16
+	/// \return the number of 16-bit codepoints appended
 	constexpr size_t append_utf16(string16 auto& buffer, char32_t cp);
+
+	/// Appends 32-bit values to `buffer` by encoding `cp` into UTF-16
+	/// \return the number of 32-bit codepoints appended
+	constexpr size_t append_utf32(string32 auto& buffer, char32_t cp);
 
 	/// Returns `cp` encoded as a UTF-16 string
 	/// \tparam RESULT the type of string to return (`std::wstring` by default)
 	template <string16 RESULT = std::wstring>
-	constexpr RESULT to_utf16(char32_t cp);
+	[[nodiscard]] constexpr RESULT to_utf16(char32_t cp);
 
 	/// Returns `str` (a UTF-8-encoded string) encoded as a UTF-16 string
 	/// \tparam RESULT the type of string to return (`std::wstring` by default)
 	template <string16 RESULT, stringable8 STR>
-	constexpr RESULT to_utf16(STR str);
+	[[nodiscard]] constexpr RESULT to_utf16(STR str);
 
 	/// Returns `str` (a UTF-8-encoded string) encoded as a UTF-16 string
-	std::wstring to_wstring(std::string_view str);
+	[[nodiscard]] std::wstring to_wstring(std::string_view str);
 
 	/// Transcodes an [Extended ASCII](https://en.wikipedia.org/wiki/Extended_ASCII) string `source` into UTF-8 `dest`, according to `codepage_map`
 	/// \param codepage_map A span of 128 Unicode codepoints that will be substituted for EASCII values 128-255
@@ -145,7 +158,53 @@ namespace ghassanpl::string_ops
 	/// \param codepage_map A span of 128 Unicode codepoints that will be substituted for EASCII values 128-255
 	/// \returns a UTF-8-encoded string of type T
 	template <string8 RESULT = std::string>
-	constexpr auto transcode_codepage_to_utf8(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> RESULT;
+	[[nodiscard]] constexpr auto transcode_codepage_to_utf8(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> RESULT;
+
+	/// Consumes a codepoint from a UTF-encoded string and returns its
+	template <typename T>
+	constexpr char32_t consume_codepoint(T& str)
+	{
+		if (std::empty(str))
+			return 0;
+		using in_char_type = std::ranges::range_value_t<std::remove_cvref_t<T>>;
+		if constexpr (stringable8<T>)
+			return consume_utf8(str);
+		else if constexpr (stringable16<T>)
+			return consume_utf16(str);
+		else if constexpr (stringable32<T>)
+			return consume_utf32(str);
+		else
+			static_assert(stringable8<T>, "Unsupported character type");
+	}
+
+	template <typename T>
+	constexpr void append_codepoint(T& str, char32_t cp)
+	{
+		if constexpr (string8<T>)
+			append_utf8(str, cp);
+		else if constexpr (string16<T>)
+			append_utf16(str, cp);
+		else if constexpr (string32<T>)
+			append_utf32(str, cp);
+		else
+			static_assert(string8<T>, "Unsupported character type");
+	}
+
+	template <typename TO, typename FROM>
+	constexpr void transcode_unicode(FROM const& from, TO& out)
+	{
+		auto from_sv = make_sv(from);
+		while (!std::empty(from_sv))
+			append_codepoint(out, consume_codepoint(from_sv));
+	}
+
+	template <typename TO, typename FROM>
+	[[nodiscard]] constexpr TO transcode_unicode(FROM const& from)
+	{
+		TO result{};
+		transcode_unicode(from, result);
+		return result;
+	}
 
 	/// @}
 
@@ -684,6 +743,14 @@ namespace ghassanpl::string_ops
 		return cp;
 	}
 
+	[[nodiscard]] constexpr char32_t consume_utf32(string_view32 auto& str)
+	{
+		if (str.empty()) return 0;
+		const auto result = str[0];
+		str.remove_prefix(1);
+		return result;
+	}
+
 	/// \pre `str` must be valid UTF-16
 #ifndef __clang__
 	[[gsl::suppress(type.1)]]
@@ -702,6 +769,12 @@ namespace ghassanpl::string_ops
 		buffer += static_cast<char_type>((cp >> 10) + 0xD800);
 		buffer += static_cast<char_type>((cp & 0x3FF) + 0xDC00);
 		return 2;
+	}
+
+	constexpr size_t append_utf32(string32 auto& buffer, char32_t cp)
+	{
+		buffer += cp;
+		return 1;
 	}
 
 	template <string8 T>
@@ -724,14 +797,38 @@ namespace ghassanpl::string_ops
 			return { static_cast<char_type>((cp >> 18) | 0xf0), static_cast<char_type>(((cp >> 12) & 0x3f) | 0x80), static_cast<char_type>(((cp >> 6) & 0x3f) | 0x80), static_cast<char_type>((cp & 0x3f) | 0x80) };
 	}
 
+	/// \pre `str` must be valid UTF-8
+	template <string8 RESULT, stringable8 STR>
+	[[nodiscard]] constexpr RESULT to_utf8(STR&& str)
+	{
+		if constexpr (std::same_as<STR, RESULT>)
+			return std::forward<STR>(str);
+		else
+		{
+			using char_type = typename RESULT::value_type;
+			return RESULT{ string_view_cast<char_type>(make_sv(std::forward<STR>(str))) };
+		}
+	}
+
 	/// \pre `str` must be valid UTF-16
 	template <string8 RESULT, stringable16 STR>
-	[[nodiscard]] constexpr RESULT to_utf8(STR str)
+	[[nodiscard]] constexpr RESULT to_utf8(STR&& str)
 	{
 		RESULT result{};
 		auto sv = make_sv(str);
 		while (!sv.empty())
 			append_utf8(result, consume_utf16(sv));
+		return result;
+	}
+
+	/// \pre `str` must be valid UTF-16
+	template <string8 RESULT, stringable32 STR>
+	[[nodiscard]] constexpr RESULT to_utf8(STR&& str)
+	{
+		RESULT result{};
+		auto sv = make_sv(str);
+		while (!sv.empty())
+			append_utf8(result, consume_utf32(sv));
 		return result;
 	}
 

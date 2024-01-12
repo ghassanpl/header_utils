@@ -5,8 +5,12 @@
 #include <cmath>
 #include <bit>
 
+namespace ghassanpl::constexpr_math {}
+namespace ghassanpl { namespace cem = ghassanpl::constexpr_math; }
+
 namespace ghassanpl::constexpr_math
 {
+
 	template <typename T>
 	concept arithmetic = std::is_arithmetic_v<T>;
 
@@ -20,48 +24,51 @@ namespace ghassanpl::constexpr_math
 	using std::abs;
 	using std::fma;
 	using std::fmod;
+	using std::isnan;
 #else
 
+	constexpr bool isnan(std::integral auto f) noexcept { return false; }
+	constexpr bool isnan(float f) { 
+		if (std::is_constant_evaluated())
+			return (std::bit_cast<uint32_t>(f) & 0x7FFFFFFFu) > 0x7F800000u;
+		else
+			return std::isnan(f);
+	}
+	constexpr bool isnan(double f) { 
+		if (std::is_constant_evaluated())
+			return (std::bit_cast<uint64_t>(f) & 0x7FFFFFFFFFFFFFFFull) > 0x7FF0000000000000ull;
+		else
+			return std::isnan(f);
+	}
+	constexpr bool isfinite(float f) {
+		if (std::is_constant_evaluated())
+			return (std::bit_cast<uint32_t>(f) & 0x7F800000u) != 0x7F800000u;
+		else
+			return std::isfinite(f);
+	}
+	constexpr bool isfinite(double f) {
+		if (std::is_constant_evaluated())
+			return (std::bit_cast<uint64_t>(f) & 0x7FF0000000000000ull) != 0x7FF0000000000000ull;
+		else
+			return std::isfinite(f);
+	}
+
 	/// Shamelessly stolen from https://gist.github.com/Redchards/7f1b357bf3e686b55362
-
-	/// TODO: negative exponents
-	template <typename T, typename E>
-	constexpr auto pow(T base, E exponent) noexcept
-	{
-		static_assert(std::integral<E> && std::is_unsigned_v<E>, "exponent must be of unsigned integral type");
-
-		if (std::is_constant_evaluated())
-		{
-			T result = static_cast<T>(1);
-			while (exponent-- > 0)
-				result = result * base;
-			return result;
-		}
-		else
-			return (T)std::pow(base, (T)exponent);
-	}
-
-	template <size_t N, typename T>
-	constexpr auto pow(T base) noexcept
-	{
-		if (std::is_constant_evaluated())
-		{
-			T result = static_cast<T>(1);
-			for (size_t i = 0; i < N; ++i)
-				result = result * base;
-			return result;
-		}
-		else
-			return std::pow(base, (T)N);
-	}
 
 	template <std::floating_point T, typename RESULT = T>
 	constexpr RESULT floor(T num) noexcept
 	{
 		if (std::is_constant_evaluated())
 		{
+			if (num == -std::numeric_limits<T>::infinity())
+				return static_cast<RESULT>(-std::numeric_limits<T>::infinity());
+			else if (num == std::numeric_limits<T>::infinity())
+				return static_cast<RESULT>(std::numeric_limits<T>::infinity());
+			else if (num != num)
+				return static_cast<RESULT>(std::numeric_limits<T>::quiet_NaN());
+
 			const auto res = static_cast<int64_t>(num);
-			return static_cast<RESULT>((res > num) ?  res-1 : res);
+			return static_cast<RESULT>((res > num) ? res - 1 : res);
 		}
 		else
 			return std::floor(num);
@@ -106,7 +113,7 @@ namespace ghassanpl::constexpr_math
 	template <typename T>
 	constexpr int sign(T val)
 	{
-		if (signbit(val))
+		if (::ghassanpl::cem::signbit(val))
 			return -1;
 		else if (val == T{})
 			return 0;
@@ -121,8 +128,15 @@ namespace ghassanpl::constexpr_math
 	{
 		if (std::is_constant_evaluated())
 		{
+			if (num == -std::numeric_limits<T>::infinity())
+				return static_cast<RESULT>(-std::numeric_limits<T>::infinity());
+			else if (num == std::numeric_limits<T>::infinity())
+				return static_cast<RESULT>(std::numeric_limits<T>::infinity());
+			else if (::ghassanpl::cem::isnan(num))
+				return static_cast<RESULT>(std::numeric_limits<T>::quiet_NaN());
+
 			const auto res = static_cast<int64_t>(num);
-			return static_cast<RESULT>((res > num) ? res : res + 1);
+			return static_cast<RESULT>((res >= num) ? res : res + 1);
 		}
 		else
 			return std::ceil(num);
@@ -132,9 +146,7 @@ namespace ghassanpl::constexpr_math
 	constexpr RESULT trunc(T num) noexcept
 	{
 		if (std::is_constant_evaluated())
-		{
-			return num < T{} ? -floor<T, RESULT>(-num) : floor<T, RESULT>(num);
-		}
+			return num < T{} ? -::ghassanpl::cem::floor<T, RESULT>(-num) : ::ghassanpl::cem::floor<T, RESULT>(num);
 		else
 			return std::trunc(num);
 	}
@@ -145,7 +157,7 @@ namespace ghassanpl::constexpr_math
 	constexpr auto abs(T num) /// can throw
 	{
 		if (std::is_constant_evaluated())
-			return signbit(num) ? -num : num;
+			return ::ghassanpl::cem::signbit(num) ? -num : num;
 		else if constexpr (std::is_signed_v<T>)
 			return std::abs(num);
 		else
@@ -168,13 +180,6 @@ namespace ghassanpl::constexpr_math
 		}
 	}
 
-	/// TODO: 
-	/// template <typename T, typename U>
-	/// requires std::floating_point<T> || std::floating_point<U>
-	/// auto fmod(T a, U b) -> decltype(<calc>) { 
-	///		using CT = decltype(<calc>);
-	///		return ((CT)<calc>);
-	/// }
 	template <arithmetic T, arithmetic U>
 	constexpr auto fmod(T a, U b) noexcept
 	{
@@ -184,14 +189,73 @@ namespace ghassanpl::constexpr_math
 			double
 		>;
 		if (std::is_constant_evaluated())
-			return fma(trunc((CT)a / (CT)b), -(CT)b, (CT)a);
+		{
+			if (b == 0)
+				return std::numeric_limits<CT>::quiet_NaN();
+			else if (a == 0)
+				return CT{};
+			else if (a == std::numeric_limits<T>::infinity() || a == -std::numeric_limits<T>::infinity())
+				return std::numeric_limits<CT>::quiet_NaN();
+			else if (b == std::numeric_limits<U>::infinity() || b == -std::numeric_limits<U>::infinity())
+				return CT{};
+			else if (::ghassanpl::cem::isnan(a) || ::ghassanpl::cem::isnan(b))
+				return std::numeric_limits<CT>::quiet_NaN();
+
+			return ::ghassanpl::cem::fma(::ghassanpl::cem::trunc((CT)a / (CT)b), -(CT)b, (CT)a);
+		}
 		else
 			return std::fmod((CT)a, (CT)b);
 	}
 #endif
-}
 
-namespace ghassanpl
-{
-	namespace cem = ghassanpl::constexpr_math;
+	#include "constexpr_math.inl"
+
+	template <arithmetic T>
+	constexpr auto sqrt(T value) noexcept
+	{
+		using CT = std::conditional_t<std::floating_point<T>, T, double>;
+		if (std::is_constant_evaluated())
+		{
+			static_assert(std::numeric_limits<double>::is_iec559, "sqrt only works for IEEE 754 floating point types");
+			return (CT)::ghassanpl::cem::detail::sqrt_impl((double)value);
+		}
+		else
+			return (CT)std::sqrt(value);
+	}
+
+	template <arithmetic T, arithmetic U>
+	constexpr auto pow(T base, U exponent) noexcept
+	{
+		using CT = decltype(base * exponent);
+		if (std::is_constant_evaluated())
+		{
+			if constexpr (std::integral<T> && std::integral<U>)
+			{
+				CT result = static_cast<CT>(1);
+				while (exponent-- > 0)
+					result = result * base;
+				return result;
+			}
+			else
+			{
+				static_assert(std::numeric_limits<double>::is_iec559, "pow only works for IEEE 754 floating point types");
+				return (CT)::ghassanpl::cem::detail::pow_impl((double)base, (double)exponent);
+			}
+		}
+		else
+			return (CT)std::pow(base, exponent);
+	}
+
+	template <std::integral T>
+	constexpr unsigned ilog2(T val) noexcept
+	{
+		unsigned result = 0;
+		if (val >= (1ULL << 32)) { result += 32; val >>= 32ULL; }
+		if (val >= (1ULL << 16)) { result += 16; val >>= 16ULL; }
+		if (val >= (1ULL << 8)) { result += 8; val >>= 8ULL; }
+		if (val >= (1ULL << 4)) { result += 4; val >>= 4ULL; }
+		if (val >= (1ULL << 2)) { result += 2; val >>= 2ULL; }
+		if (val >= (1ULL << 1)) result += 1;
+		return result;
+	}
 }

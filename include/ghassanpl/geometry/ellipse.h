@@ -15,10 +15,12 @@ namespace ghassanpl::geometry
 		glm::tvec2<T> center;
 		glm::tvec2<T> radii;
 
-		static tellipse from_rect(trec2<T> const& rec) noexcept
+		static tellipse inside_rect(trec2<T> const& rec) noexcept
 		{
 			return { rec.center(), rec.half_size() };
 		}
+
+		static tellipse outside_rect(trec2<T> const& rec) noexcept;
 
 		bool contains(glm::tvec2<T> pt) const
 		{

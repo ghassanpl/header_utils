@@ -74,6 +74,42 @@ namespace ghassanpl::string_ops
 	template <typename T>
 	concept string_view32 = (sizeof(wchar_t) == sizeof(char32_t) && std::same_as<T, std::wstring_view>) || std::same_as<T, std::u32string_view>;
 
+	/// The default 16-bit char type for the current platform (wchar_t if it is 16-bit, char16_t otherwise)
+	using wide_char16_t = std::conditional_t<sizeof(wchar_t) == sizeof(char16_t), wchar_t, char16_t>;
+
+	/// The default 32-bit char type for the current platform (wchar_t if it is 32-bit, char32_t otherwise)
+	using wide_char32_t = std::conditional_t<sizeof(wchar_t) == sizeof(char32_t), wchar_t, char32_t>;
+
+	/// Can a type be converted to a native/utf char type?
+	template <typename T>
+	concept charable = (std::is_trivially_copyable_v<T> && (sizeof(T) == 4 || sizeof(T) == 2 || sizeof(T) == 1));
+
+	/// Whether the type is a native char type
+	template <typename T>
+	concept char_type = std::same_as<T, char> || std::same_as<T, wchar_t>;
+
+	/// Whether the type is a utf char type
+	template <typename T>
+	concept utf_type = std::same_as<T, char8_t> || std::same_as<T, char16_t> || std::same_as<T, char32_t>;
+
+	/// Whether the type is a native or utf char type
+	template <typename T>
+	concept stringable_base_type = char_type<T> || utf_type<T>;
+
+	/// The utf char type corresponding to the charable type
+	template <charable T>
+	using charable_utf_t = std::conditional_t<sizeof(T) == 1, char8_t, std::conditional_t<sizeof(T) == 2, char16_t, char32_t>>;
+
+	/// The native char type corresponding to the charable type
+	template <charable T>
+	using charable_char_t = std::conditional_t<sizeof(T) == 1, char, std::conditional_t<sizeof(T) == 2, wide_char16_t, wide_char32_t>>;
+
+	template <charable T>
+	using best_stringable_type = std::conditional_t<stringable_base_type<T>,
+		T,
+		charable_char_t<T>
+	>;
+
 	/// \name Make Functions
 	/// Functions that create `string_view` and `string` types from various values
 	/// 
@@ -85,27 +121,71 @@ namespace ghassanpl::string_ops
 	/// 
 	/// @{
 
-	[[nodiscard]] constexpr std::string_view make_sv(std::nullptr_t, std::nullptr_t) noexcept { return std::string_view{}; }
+	template <typename C = char>
+	[[nodiscard]] constexpr std::basic_string_view<C> make_sv(std::nullptr_t, std::nullptr_t) noexcept { return {}; }
+
+	template <stringable_base_type CT, std::contiguous_iterator IT, std::contiguous_iterator IT2>
+	requires charable<std::iter_value_t<IT>>
+	[[nodiscard]] constexpr auto make_sv(IT start, IT2 end) noexcept(noexcept(std::to_address(start))) { 
+		return std::basic_string_view<CT>{
+			reinterpret_cast<CT const*>(std::to_address(start)),
+			static_cast<size_t>(std::to_address(end) - std::to_address(start)) 
+		};
+	}
 
 	template <std::contiguous_iterator IT, std::contiguous_iterator IT2>
-	requires std::is_same_v<std::iter_value_t<IT>, char>&& std::is_same_v<std::iter_value_t<IT2>, char>
-	[[nodiscard]] constexpr std::string_view make_sv(IT start, IT2 end) noexcept(noexcept(std::to_address(start))) { return std::string_view{ std::to_address(start), static_cast<size_t>(std::to_address(end) - std::to_address(start)) }; }
+	requires charable<std::iter_value_t<IT>>
+	[[nodiscard]] constexpr auto make_sv(IT start, IT2 end) noexcept(noexcept(std::to_address(start))) { 
+		using char_type = best_stringable_type<std::iter_value_t<IT>>;
+		return make_sv<char_type, IT, IT2>(std::move(start), std::move(end));
+	}
 
-	[[nodiscard]] constexpr std::string_view make_sv(char& single_char) noexcept { return make_sv(&single_char, &single_char + 1); }
-	[[nodiscard]] constexpr std::string_view make_sv(const char* str) noexcept { return str ? std::string_view{ str } : std::string_view{}; }
-	[[nodiscard]] constexpr std::string_view make_sv(const unsigned char* str) noexcept { return str ? std::string_view{ (const char*)str } : std::string_view{}; }
-	[[nodiscard]] constexpr std::wstring_view make_sv(const wchar_t* str) noexcept { return str ? std::wstring_view{ str } : std::wstring_view{}; }
+	template <typename T>
+	requires stringable_base_type<std::remove_cvref_t<T>>
+	[[nodiscard]] constexpr auto make_sv(T&& single_char) noexcept { 
+		static_assert(!std::is_rvalue_reference_v<decltype(single_char)>, "cannot create string_view's from single char rvalues");
+		return make_sv(&single_char, &single_char + 1); 
+	}
+
+	template <charable T>
+	[[nodiscard]] constexpr auto make_sv(const T* str) noexcept { 
+		using CT = best_stringable_type<T>;
+		return str ? std::basic_string_view<CT>{ reinterpret_cast<const CT*>(str) } : std::basic_string_view<CT>{};
+	}
 
 	template <typename C>
 	[[nodiscard]] constexpr std::basic_string_view<C> make_sv(std::basic_string_view<C> id) noexcept { return id; }
 	template <typename C>
 	[[nodiscard]] constexpr std::basic_string_view<C> make_sv(std::basic_string<C> const& id) noexcept { return id; }
+	template <typename C>
+	[[nodiscard]] constexpr std::basic_string_view<C> make_sv(std::basic_string<C>&& id) noexcept = delete;
 
-	[[nodiscard]] constexpr std::string make_string(std::nullptr_t, std::nullptr_t) { return std::string{}; }
+	template <std::ranges::range RANGE>
+	requires charable<std::ranges::range_value_t<RANGE>>
+	[[nodiscard]] constexpr auto make_sv(RANGE&& range) noexcept
+	{
+		return make_sv(std::ranges::begin(range), std::ranges::end(range));
+	}
 
+	template <typename COUT, typename CIN>
+	requires charable<COUT> && charable<CIN> && (sizeof(COUT) == sizeof(CIN))
+	[[nodiscard]] constexpr std::basic_string_view<COUT> string_view_cast(std::basic_string_view<CIN> id) noexcept
+	{
+		return { reinterpret_cast<COUT const*>(id.data()), id.size() };
+	}
+
+	template <typename... NONARGS, typename... ARGS>
+	[[nodiscard]] constexpr auto make_string(ARGS&&... args) { 
+		auto sv = make_sv<NONARGS...>(std::forward<ARGS>(args)...);
+		using char_type = typename decltype(sv)::value_type;
+		return std::basic_string<char_type>{ sv };
+	}
+	
+	/*
 	template <std::contiguous_iterator IT, std::contiguous_iterator IT2>
 	requires std::is_same_v<std::iter_value_t<IT>, char>&& std::is_same_v<std::iter_value_t<IT2>, char>
 	[[nodiscard]] inline std::string make_string(IT start, IT2 end) noexcept(noexcept(std::to_address(start))) { return std::string{ ::ghassanpl::string_ops::make_sv(start, end) }; }
+	*/
 
 	/// @}
 	
@@ -818,28 +898,52 @@ namespace ghassanpl::string_ops
 		func(source.substr(start), true);
 	}
 
-	/// Splits `src` once on `delim`
-	/// \returns a pair of string_views: the left and right parts of `src` split the first instance of `delim`; if no delim is found, returns `{ src, {} }`
-	[[nodiscard]] constexpr std::pair<std::string_view, std::string_view> single_split(std::string_view src, char delim) noexcept
+	[[nodiscard]] constexpr std::pair<std::string_view, std::string_view> split_at(std::string_view src, size_t split_at) noexcept
 	{
-		size_t split_at = src.find_first_of(delim);
 		if (split_at == std::string::npos)
 			return { src, {} };
 		return { src.substr(0, split_at), src.substr(split_at + 1) };
 	}
 
-	/// Splits `src` once on `delim`
-	/// \returns whether delim was found
-	/// \param first will be filled with the left part of the string, if delim is found
-	/// \param second will be filled with the right part of the string, if delim is found
-	[[nodiscard]] constexpr bool single_split(std::string_view src, char delim, std::string_view& first, std::string_view& second) noexcept
+	[[nodiscard]] constexpr bool split_at(std::string_view src, size_t split_at, std::string_view& first, std::string_view& second) noexcept
 	{
-		size_t split_at = src.find_first_of(delim);
 		if (split_at == std::string::npos)
 			return false;
 		first = src.substr(0, split_at);
 		second = src.substr(split_at + 1);
 		return true;
+	}
+
+	/// Splits `src` once on the first instance of `delim`
+	/// \returns a pair of string_views: the left and right parts of `src` split the first instance of `delim`; if no delim is found, returns `{ src, {} }`
+	[[nodiscard]] constexpr std::pair<std::string_view, std::string_view> single_split(std::string_view src, char delim) noexcept
+	{
+		return split_at(src, src.find_first_of(delim));
+	}
+
+	/// Splits `src` once on the last instance of `delim`
+	/// \returns a pair of string_views: the left and right parts of `src` split the first instance of `delim`; if no delim is found, returns `{ src, {} }`
+	[[nodiscard]] constexpr std::pair<std::string_view, std::string_view> single_split_last(std::string_view src, char delim) noexcept
+	{
+		return split_at(src, src.find_last_of(delim));
+	}
+
+	/// Splits `src` once on the first instance of `delim`
+	/// \returns whether delim was found
+	/// \param first will be filled with the left part of the string, if delim is found
+	/// \param second will be filled with the right part of the string, if delim is found
+	[[nodiscard]] constexpr bool single_split(std::string_view src, char delim, std::string_view& first, std::string_view& second) noexcept
+	{
+		return split_at(src, src.find_first_of(delim), first, second);
+	}
+
+	/// Splits `src` once on the last instance of `delim`
+	/// \returns whether delim was found
+	/// \param first will be filled with the left part of the string, if delim is found
+	/// \param second will be filled with the right part of the string, if delim is found
+	[[nodiscard]] constexpr bool single_split_last(std::string_view src, char delim, std::string_view& first, std::string_view& second) noexcept
+	{
+		return split_at(src, src.find_last_of(delim), first, second);
 	}
 
 	/// Performs a more natural split of the string, that is: ignoring multiple delimiters in a row, and empty items

@@ -129,7 +129,7 @@ namespace ghassanpl
 	}
 
 	/// A constexpr function that converts an integral value to its constituent bytelikes
-	/// TODO: This is NOT like a reinterpret_cast to u8, because it's not endian-aware
+	/// TODO: This is NOT like a reinterpret_/bit_cast to u8s, because it's not endian-aware
 	template <bytelike B, std::integral T>
 	constexpr auto to_bytelike_array(T value)
 	{

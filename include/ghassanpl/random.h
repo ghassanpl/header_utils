@@ -290,12 +290,38 @@ namespace ghassanpl::random
 		return Randomizer{ rng, container };
 	}
 
+	/// When probability calculations are known ahead of time or expensive
+	/// \complexity O(N) space, O(N+logN) time
 	template <std::convertible_to<double> T, typename RANDOM>
 	size_t option_with_probability(std::span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		/// Well, <random> is pretty dope it seems
 		std::discrete_distribution<size_t> dist(option_probabilities.begin(), option_probabilities.end());
 		return dist(rng);
+	}
+
+	/// For cheap probability functions
+	/// \pre prob_func will never return < 0.0
+	/// \complexity O(1) space, O(2N) time
+	template <typename RANGE, typename FUNC, typename RANDOM>
+	auto iterator_with_probability(RANGE&& range, FUNC&& prob_func, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	{
+		static_assert(std::ranges::forward_range<RANGE>, "range must be forward range");
+		static_assert(std::is_invocable_v<FUNC, std::ranges::range_reference_t<RANGE>>);
+		static_assert(std::convertible_to<std::invoke_result_t<FUNC, std::ranges::range_reference_t<RANGE>>, double>);
+
+		const auto sum = std::ranges::accumulate(range, 0.0, [&](auto acc, auto&& item) { return acc + (double)prob_func(item); });
+		auto target = in_real_range(0.0, sum, rng);
+
+		for (auto it = std::ranges::begin(range); it != std::ranges::end(range); ++it)
+		{
+			const auto weight = (double)prob_func(*it);
+			if (target < weight)
+				return it;
+			target = target - weight;
+		}
+
+		return std::ranges::end(range);
 	}
 
 }

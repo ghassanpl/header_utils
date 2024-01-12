@@ -43,7 +43,7 @@ namespace ghassanpl::tests
 		std::map<Symbol, Symbol, std::less<>> ContextMap;
 		virtual ~ContextHolder() noexcept = default;
 
-		void SetContextValue(id_t parent_id, std::string_view name, std::string_view value);
+		void SetContextValue(std::string_view name, std::string_view value);
 	};
 
 	namespace predicates
@@ -65,19 +65,27 @@ namespace ghassanpl::tests
 			template <typename A, typename B>
 			TestPredicate& WhenEqual(A&& a, std::string_view astr, B&& b, std::string_view bstr, source_location l = source_location::current())
 			{
-				if (a != b)
+				bool equal = a == b;
+
+				if constexpr (std::floating_point<std::remove_cvref_t<A>> && std::floating_point<std::remove_cvref_t<B>>)
 				{
-					SetContextValue(ID, "Expected", "equality of these values");
+					if (std::isnan(a) && std::isnan(b))
+						equal = true;
+				}
+
+				if (!equal)
+				{
+					SetContextValue("Expected", "equality of these values");
 					auto aval_str = std::format("{}", a);
 					auto bval_str = std::format("{}", b);
-					SetContextValue(ID, "Left", astr);
+					SetContextValue("Left", astr);
 					if (aval_str != astr)
-						SetContextValue(ID, "LeftActually", aval_str);
-					SetContextValue(ID, "Right", bstr);
+						SetContextValue("LeftActually", aval_str);
+					SetContextValue("Right", bstr);
 					if (bval_str != bstr)
-						SetContextValue(ID, "RightActually", bval_str);
+						SetContextValue("RightActually", bval_str);
 				}
-				Report(a == b, l);
+				Report(equal, l);
 				return *this;
 			}
 
@@ -88,9 +96,9 @@ namespace ghassanpl::tests
 			{
 				if (a == b)
 				{
-					SetContextValue(ID, "Expected", std::format("{} != {}", astr, bstr));
-					SetContextValue(ID, "Left", std::format("{}", a));
-					SetContextValue(ID, "Right", std::format("{}", b));
+					SetContextValue("Expected", std::format("{} != {}", astr, bstr));
+					SetContextValue("Left", std::format("{}", a));
+					SetContextValue("Right", std::format("{}", b));
 				}
 				Report(a != b, l);
 				return *this;
@@ -102,8 +110,8 @@ namespace ghassanpl::tests
 			{
 				if (!value)
 				{
-					SetContextValue(ID, "Expected", std::format("{} == true", vstr));
-					SetContextValue(ID, "Got", std::to_string(value));
+					SetContextValue("Expected", std::format("{} == true", vstr));
+					SetContextValue("Got", std::to_string(value));
 				}
 				Report(value, l);
 				return *this;
@@ -115,8 +123,8 @@ namespace ghassanpl::tests
 			{
 				if (value)
 				{
-					SetContextValue(ID, "Expected", std::format("{} == false", vstr));
-					SetContextValue(ID, "Got", std::to_string(value));
+					SetContextValue("Expected", std::format("{} == false", vstr));
+					SetContextValue("Got", std::to_string(value));
 				}
 				Report(value, l);
 				return *this;
@@ -194,7 +202,7 @@ namespace ghassanpl::tests
 			auto StartIteration()
 			{
 				CurrentValue = Start;
-				SetContextValue(ID, "LoopValue", std::format("{}", CurrentValue));
+				SetContextValue("LoopValue", std::format("{}", CurrentValue));
 				return CurrentValue;
 			}
 
@@ -203,16 +211,77 @@ namespace ghassanpl::tests
 				return CurrentValue != End;
 			}
 
-			auto Next()
+			void Next(T& value)
 			{
 				CurrentValue += ((Start < End) ? 1 : -1);
-				SetContextValue(ID, "LoopValue", std::format("{}", CurrentValue));
-				return CurrentValue;
+				if (ShouldContinue())
+				{
+					SetContextValue("LoopValue", std::format("{}", CurrentValue));
+					value = CurrentValue;
+				}
 			}
 
 		private:
 
 			T CurrentValue = {};
+			std::vector<bool> Results;
+
+			bool Succeeded() const noexcept override { return !std::ranges::contains(Results, false); }
+		};
+
+		template <typename T>
+		struct ShouldForValuesInContainerPredicate : TestPredicate
+		{
+			T const& Container;
+			using Iterator = decltype(std::begin(Container));
+			Iterator Start = std::begin(Container);
+			Iterator End = std::end(Container);
+
+			ShouldForValuesInContainerPredicate(TestRunner& runner, with_sl<std::string_view> prefix, std::string_view name, T&& container) = delete;
+
+			ShouldForValuesInContainerPredicate(TestRunner& runner, with_sl<std::string_view> prefix, std::string_view name, T const& container)
+				: TestPredicate(runner, prefix, name)
+				, Container(container)
+			{
+				Results.resize(std::size(Container));
+			}
+
+			virtual void DoReport(bool value, source_location l) override
+			{
+				Results[std::abs(std::distance(CurrentIt, Start))] = value;
+			}
+
+			~ShouldForValuesInContainerPredicate() { 
+				ReportStatus(); 
+			}
+
+			auto StartIteration()
+			{
+				CurrentIt = Start;
+				SetContextValue("LoopIndex", std::format("{}", 0));
+				SetContextValue("LoopValue", std::format("{}", *CurrentIt));
+				return *CurrentIt;
+			}
+
+			bool ShouldContinue()
+			{
+				return CurrentIt != End;
+			}
+
+			void Next(auto& value)
+			{
+				++CurrentIt;
+				if (ShouldContinue())
+				{
+					SetContextValue("LoopIndex", std::format("{}", std::abs(std::distance(CurrentIt, Start))));
+					SetContextValue("LoopValue", std::format("{}", *CurrentIt));
+					value = *CurrentIt;
+				}
+			}
+
+		private:
+
+			Iterator CurrentIt = {};
 			std::vector<bool> Results;
 
 			bool Succeeded() const noexcept override { return !std::ranges::contains(Results, false); }
@@ -250,9 +319,9 @@ namespace ghassanpl::tests
 				{
 					Parent.CurrentIndex = 0;
 					::ghassanpl::for_each_in_tuple(Parent.Values, [this, func = std::forward<FUNC>(func)](size_t index, auto&& value) {
-						Parent.SetContextValue(Parent.ID, "LoopIndex", std::format("{}", index));
-						Parent.SetContextValue(Parent.ID, "LoopValue", std::format("{}", value));
-						Parent.SetContextValue(Parent.ID, "LoopValueType", typeid(value).name());
+						Parent.SetContextValue("LoopIndex", std::format("{}", index));
+						Parent.SetContextValue("LoopValue", std::format("{}", value));
+						Parent.SetContextValue("LoopValueType", typeid(value).name());
 						Parent.CurrentIndex = index;
 						func(value);
 					});
@@ -541,12 +610,12 @@ namespace ghassanpl::tests
 #define ShouldForValuesInRange(start_range, end_range, should_what, ...) \
 	using namespace ::ghassanpl::tests::test_literals; \
 	auto Does##should_what = runner__.MakePredicate<::ghassanpl::tests::predicates::ShouldForValuesInRangePredicate<decltype(start_range)>>("ShouldForValuesInRange(" #start_range ", " #end_range ")", #should_what __VA_OPT__(,) __VA_ARGS__, start_range, end_range); \
-	for (auto Value = Does##should_what.StartIteration(); Does##should_what.ShouldContinue(); Value = Does##should_what.Next())
+	for (auto Value = Does##should_what.StartIteration(); Does##should_what.ShouldContinue(); Does##should_what.Next(Value))
 
 #define ShouldBeForValuesInRange(start_range, end_range, should_what, ...) \
 	using namespace ::ghassanpl::tests::test_literals; \
 	auto Is##should_what = runner__.MakePredicate<::ghassanpl::tests::predicates::ShouldForValuesInRangePredicate<decltype(start_range)>>("ShouldBeForValuesInRange(" #start_range ", " #end_range ")", #should_what __VA_OPT__(,) __VA_ARGS__, start_range, end_range); \
-	for (auto Value = Is##should_what.StartIteration(); Is##should_what.ShouldContinue(); Value = Is##should_what.Next())
+	for (auto Value = Is##should_what.StartIteration(); Is##should_what.ShouldContinue(); Is##should_what.Next(Value))
 
 #define ItShouldForValuesInRange(...) ShouldForValuesInRange(__VA_ARGS__)
 #define FunctionShouldForValuesInRange(...) ShouldForValuesInRange(__VA_ARGS__)
@@ -563,6 +632,11 @@ namespace ghassanpl::tests
 #define FunctionShouldForEachValue(...) ShouldForEachValue(__VA_ARGS__)
 #define ClassShouldForEachValue(...) ShouldForEachValue(__VA_ARGS__)
 #define ConceptShouldForEachValue(...) ShouldForEachValue(__VA_ARGS__)
+
+#define ShouldForValuesInContainer(container, should_what, ...) \
+	using namespace ::ghassanpl::tests::test_literals; \
+	auto Does##should_what = runner__.MakePredicate<::ghassanpl::tests::predicates::ShouldForValuesInContainerPredicate<decltype(container)>>("ShouldForValuesInContainer(" #container ")", #should_what __VA_OPT__(,) __VA_ARGS__, container); \
+	for (auto Value = Does##should_what.StartIteration(); Does##should_what.ShouldContinue(); Does##should_what.Next(Value))
 
 /*
 #define ShouldForEachType(should_what, body, ...) \

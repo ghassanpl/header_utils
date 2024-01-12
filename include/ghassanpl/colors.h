@@ -9,11 +9,14 @@
 #include <glm/common.hpp>
 #include <glm/ext/vector_float4.hpp>
 #include "named.h"
+#include "constexpr_math.h"
 
 namespace ghassanpl
 {
 	/// \defgroup Colors Colors
 	/// Colors and things
+
+	/// Implementation note: These functions use the .xyzw members instead of the .rgba members because accessing the latter is not constexpr
 
 	/// \ingroup Colors
 	///@{
@@ -76,22 +79,22 @@ namespace ghassanpl
 	/// Returns the color multiplied by its own alpha
 	constexpr color_t premultiplied(color_t const& color)
 	{
-		return { color.r * color.a, color.g * color.a, color.b * color.a, color.a };
+		return { color.x * color.w, color.y * color.w, color.z * color.w, color.w };
 	}
 
 	/// Returns a color with all elements clamped between 0 and 1
 	constexpr color_t saturated(color_t const& color)
 	{
-		return glm::clamp(color_t(color.r, color.g, color.b, color.a), color_t{ 0,0,0,0 }, color_t{ 1,1,1,1 });
+		return glm::clamp(color_t(color.x, color.y, color.z, color.w), color_t{ 0,0,0,0 }, color_t{ 1,1,1,1 });
 	}
 
 	/// Returns a color lightened by a coefficient
 	constexpr color_t lighten(color_t const& color, float coef)
 	{
-		const auto rgb_max = glm::max(color.r, glm::max(color.g, color.b));
+		const auto rgb_max = glm::max(color.x, glm::max(color.y, color.z));
 		const auto lighter = color * (1.0f / rgb_max);
 		const auto dif = rgb_max;
-		return saturated(color_t(lighter.r + dif * coef, lighter.g + dif * coef, lighter.b + dif * coef, 1.0f) * rgb_max);
+		return saturated(color_t(lighter.x + dif * coef, lighter.y + dif * coef, lighter.z + dif * coef, 1.0f) * rgb_max);
 	}
 
 	/// Returns a color with its contrast changed
@@ -100,7 +103,7 @@ namespace ghassanpl
 	constexpr color_t contrast(color_t const& color, float contrast)
 	{
 		const auto t = (1.0f - contrast) * 0.5f;
-		return color_t(color.r*contrast + t, color.g*contrast + t, color.b*contrast + t, color.a);
+		return color_t(color.x*contrast + t, color.y*contrast + t, color.z*contrast + t, color.w);
 	}
 
 	/// Returns a color with its contrast changed
@@ -111,45 +114,45 @@ namespace ghassanpl
 	{
 		constexpr double m = 1.0156862745098039215686274509804;
 		const auto t = (m * (contrast + 1.0f)) / (m - contrast);
-		return color_t(t * (color.r - 0.5f) + 0.5f, t * (color.g - 0.5f) + 0.5f, t * (color.b - 0.5f) + 0.5f, color.a);
+		return color_t(t * (color.x - 0.5f) + 0.5f, t * (color.y - 0.5f) + 0.5f, t * (color.z - 0.5f) + 0.5f, color.w);
 	}
 
 	/// Returns a gamma corrected color
 	constexpr color_t gamma_correct(color_t const& color, const float gamma)
 	{
 		const auto gamma_correct = 1.0f / gamma;
-		return { std::pow(color.r, gamma_correct), std::pow(color.g, gamma_correct),std::pow(color.b, gamma_correct), color.a };
+		return { cem::pow(color.x, gamma_correct), cem::pow(color.y, gamma_correct), cem::pow(color.z, gamma_correct), color.w };
 	}
 
 	/// Returns an inverted color, i.e. with (1.0-x) on all of its elements, excluding its alpha
 	constexpr color_t inverted(color_t const& color)
 	{
-		return color_t(1.0f - color.r, 1.0f - color.g, 1.0f - color.b, color.a);
+		return color_t(1.0f - color.x, 1.0f - color.y, 1.0f - color.z, color.w);
 	}
 
 	/// Returns a color that's a good contrasting color for the original
 	constexpr color_t contrasting(color_t const& color)
 	{
-		return color_t(fmod(color.r + 0.5f, 1.0f), fmod(color.g + 0.5f, 1.0f), fmod(color.b + 0.5f, 1.0f), color.a);
+		return color_t(cem::fmod(color.x + 0.5f, 1.0f), cem::fmod(color.y + 0.5f, 1.0f), cem::fmod(color.z + 0.5f, 1.0f), color.w);
 	}
 	
 	/// Get brightness of color
 	constexpr float luminance(color_t const& color)
 	{		
-		return color.r * 0.3f + color.g * 0.59f + color.b * 0.11f;
+		return color.x * 0.3f + color.y * 0.59f + color.z * 0.11f;
 	}
 
-	/// Returns a color sapped of `desaturation` (0-1) of its saturation.
+	/// Returns a color sapped of `desaturation` percent (0-1) of its saturation.
 	constexpr color_t desaturated(color_t const& color, float desaturation)
 	{
 		const auto l = luminance(color);
-		return glm::mix(color, color_t{l, l, l, color.a}, desaturation);
+		return glm::mix(color, color_t{l, l, l, color.w}, desaturation);
 	}
 	
 	namespace detail 
 	{
 		constexpr float b2f(uint32_t byte) { return (byte & 0xFF) / 255.0f; } 
-		constexpr uint32_t f2b(float f) { return uint8_t(f * 255.0f); } 
+		constexpr uint32_t f2b(float f) { return uint8_t(0.5f + f * 255.0f); } 
 		constexpr uint32_t f2u4(float b1, float b2, float b3, float b4) { return (f2b(b1) << 24) | (f2b(b2) << 16) | (f2b(b3) << 8) | f2b(b4); }
 		constexpr uint32_t f2u4(float b1, float b2, float b3) { return (f2b(b1) << 16) | (f2b(b2) << 8) | f2b(b3); }
 
@@ -172,17 +175,17 @@ namespace ghassanpl
 	constexpr color_t from_u32_abgr(uint32_t rgb) { return color_t(detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24)); }
 
 	/// Creates an 8bpp ARGB integer from a color
-	constexpr uint32_t to_u32_argb(color_t const& rgba) { return detail::f2u4(rgba.a, rgba.r, rgba.g, rgba.b); }
+	constexpr uint32_t to_u32_argb(color_t const& rgba) { return detail::f2u4(rgba.w, rgba.x, rgba.y, rgba.z); }
 	/// Creates an 8bpp ABGR integer from a color
-	constexpr uint32_t to_u32_abgr(color_t const& rgba) { return detail::f2u4(rgba.a, rgba.b, rgba.g, rgba.r); }
+	constexpr uint32_t to_u32_abgr(color_t const& rgba) { return detail::f2u4(rgba.w, rgba.z, rgba.y, rgba.x); }
 	/// Creates an 8bpp RGBA integer from a color
-	constexpr uint32_t to_u32_rgba(color_t const& rgba) { return detail::f2u4(rgba.r, rgba.g, rgba.b, rgba.a); }
+	constexpr uint32_t to_u32_rgba(color_t const& rgba) { return detail::f2u4(rgba.x, rgba.y, rgba.z, rgba.w); }
 	/// Creates an 8bpp BGRA integer from a color
-	constexpr uint32_t to_u32_bgra(color_t const& rgba) { return detail::f2u4(rgba.b, rgba.g, rgba.r, rgba.a); }
+	constexpr uint32_t to_u32_bgra(color_t const& rgba) { return detail::f2u4(rgba.z, rgba.y, rgba.x, rgba.w); }
 	/// Creates a 32 bitbpp RGB integer from a color, with the most significant 8 bits set to 0
-	constexpr uint32_t to_u32_rgb(color_t const& rgba) { return detail::f2u4(rgba.r, rgba.g, rgba.b); }
+	constexpr uint32_t to_u32_rgb(color_t const& rgba) { return detail::f2u4(rgba.x, rgba.y, rgba.z); }
 	/// Creates a 32 bitbpp BGR integer from a color, with the most significant 8 bits set to 0
-	constexpr uint32_t to_u32_bgr(color_t const& rgba) { return detail::f2u4(rgba.b, rgba.g, rgba.r); }
+	constexpr uint32_t to_u32_bgr(color_t const& rgba) { return detail::f2u4(rgba.z, rgba.y, rgba.x); }
 
 	template <std::same_as<color_rgba_u32_t> TO>
 	constexpr TO named_cast(color_rgba_t const& from)
@@ -203,7 +206,7 @@ namespace ghassanpl
 	}
 
 	/// Returns the color as a `glm::vec4` of `uint8_t`s
-	constexpr glm::tvec4<uint8_t> to_u8(color_t const& rgba) { return { uint8_t(rgba.r * 255.0f), uint8_t(rgba.g * 255.0f), uint8_t(rgba.b * 255.0f), uint8_t(rgba.a * 255.0f) }; }
+	constexpr glm::tvec4<uint8_t> to_u8(color_t const& rgba) { return { detail::f2b(rgba.x), detail::f2b(rgba.y), detail::f2b(rgba.z), detail::f2b(rgba.w) }; }
 
 	/// Converts a HSVA color to RGBA space
 	constexpr color_t to_rgb(color_hsva_t const& hsva)
@@ -233,27 +236,27 @@ namespace ghassanpl
 	/// Converts an RGBA color to HSVA space
 	constexpr color_hsva_t to_hsv(color_t const& rgba)
 	{
-		const auto min = detail::min(rgba.r, rgba.g, rgba.b);
-		const auto max = detail::max(rgba.r, rgba.g, rgba.b);
+		const auto min = detail::min(rgba.x, rgba.y, rgba.z);
+		const auto max = detail::max(rgba.x, rgba.y, rgba.z);
 		const auto delta = max - min;
 
 		float h = 0;
 
 		if (delta != 0)
 		{
-			if (rgba.r == max)
-				h = fmod((rgba.g - rgba.b) / delta, 6.0f);
-			else if (rgba.g == max)
-				h = 2 + (rgba.b - rgba.r) / delta;
+			if (rgba.x == max)
+				h = fmod((rgba.y - rgba.z) / delta, 6.0f);
+			else if (rgba.y == max)
+				h = 2 + (rgba.z - rgba.x) / delta;
 			else
-				h = 4 + (rgba.r - rgba.g) / delta;
+				h = 4 + (rgba.x - rgba.y) / delta;
 		}
 
 		return color_hsva_t{
 			h,
 			(max != 0) ? (delta / max) : 0,
 			max,
-			rgba.a
+			rgba.w
 		};
 	}
 
@@ -362,19 +365,19 @@ namespace ghassanpl
 			return Lerp(func(*this, other), other, A);
 		}
 		/*
-		static Color Multiply(const Color& c1, const Color& c2 ) { return Color(c1.r*c2.r, c1.g*c2.g, c1.b*c2.b); }
+		static Color Multiply(const Color& c1, const Color& c2 ) { return Color(c1.x*c2.x, c1.y*c2.y, c1.z*c2.z); }
 		static Color Screen(const Color& c1, const Color& c2) { return Multiply(c1.Inverted(), c2.Inverted()).Inverted(); }
 		static Color Overlay(const Color& c1, const Color& c2) {
 			return Color(
-				c2.r < 0.5f ? c1.r*c2.r * 2 : (1 - 2 * (1 - c2.r)*(1 - c1.r)),
-				c2.g < 0.5f ? c1.g*c2.g * 2 : (1 - 2 * (1 - c2.g)*(1 - c1.g)),
-				c2.b < 0.5f ? c1.b*c2.b * 2 : (1 - 2 * (1 - c2.b)*(1 - c1.b)));
+				c2.x < 0.5f ? c1.x*c2.x * 2 : (1 - 2 * (1 - c2.x)*(1 - c1.x)),
+				c2.y < 0.5f ? c1.y*c2.y * 2 : (1 - 2 * (1 - c2.y)*(1 - c1.y)),
+				c2.z < 0.5f ? c1.z*c2.z * 2 : (1 - 2 * (1 - c2.z)*(1 - c1.z)));
 		}
 		static Color HardLight(const Color& c2, const Color& c1) {
 			return Color(
-				c2.r < 0.5f ? c1.r*c2.r * 2 : (1 - 2 * (1 - c2.r)*(1 - c1.r)),
-				c2.g < 0.5f ? c1.g*c2.g * 2 : (1 - 2 * (1 - c2.g)*(1 - c1.g)),
-				c2.b < 0.5f ? c1.b*c2.b * 2 : (1 - 2 * (1 - c2.b)*(1 - c1.b)));
+				c2.x < 0.5f ? c1.x*c2.x * 2 : (1 - 2 * (1 - c2.x)*(1 - c1.x)),
+				c2.y < 0.5f ? c1.y*c2.y * 2 : (1 - 2 * (1 - c2.y)*(1 - c1.y)),
+				c2.z < 0.5f ? c1.z*c2.z * 2 : (1 - 2 * (1 - c2.z)*(1 - c1.z)));
 		}
 		static Color Overlay(const Color& c1, const Color& c2) {
 			return Multiply((2 * c2).Inverted(), Multiply(c1, c1)) + 2 * Multiply(c1, c2); /// pegtop!
