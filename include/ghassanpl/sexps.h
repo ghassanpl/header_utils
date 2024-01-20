@@ -6,6 +6,7 @@
 
 #include "string_ops.h"
 #include "parsing.h"
+#include "ranges.h"
 #include <nlohmann/json.hpp>
 
 namespace ghassanpl::formats::sexpressions
@@ -44,13 +45,10 @@ namespace ghassanpl::formats::sexpressions
 		if (string_ops::consume(sexp_str, ','))
 			return nlohmann::json(",");
 
-		/// Then, try everything else until space, closing brace or comma
-		auto result = string_ops::consume_until(sexp_str, [=](auto ch) { 
-			return string_ops::ascii::isspace(ch) || 
-				ch == end_brace ||
-				ch == ',';
-		});
-
+		/// Then, try everything else until whitespace, closing brace or comma
+		auto result = string_ops::consume_until_any(sexp_str, 
+			string_ops::ascii::whitespace_chars, end_brace, ',');
+		
 		if (result == "true") return true;
 		if (result == "false") return false;
 		if (result == "null") return nullptr;

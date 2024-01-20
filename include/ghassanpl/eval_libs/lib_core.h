@@ -240,7 +240,7 @@ namespace ghassanpl::eval
 			e.assert_min_args(args, 1);
 			e.eval_args(args);
 
-			return string_ops::format_callback(args[1].ref(), [&](size_t index, std::string_view fmt, std::string& output) {
+			return string_ops::callback_format(args[1].ref(), [&](size_t index, std::string_view fmt, std::string& output) {
 				auto& arg = args[2 + index];
 				output += stringify(arg, fmt);
 			});

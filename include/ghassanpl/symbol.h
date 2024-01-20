@@ -28,11 +28,17 @@ namespace ghassanpl
 
 		auto operator->() const noexcept requires std::is_pointer_v<internal_value_type> { return value; }
 
-		bool operator==(symbol_base const& other) const noexcept { return value == other.value; }
+		bool operator==(symbol_base const& other) const noexcept { return value == other.value || symbol_provider::compare(value, other.value) == 0; }
 		auto operator<=>(symbol_base const& other) const noexcept { return symbol_provider::compare(value, other.value); }
 
 		friend bool operator==(std::string_view a, symbol_base const& b) noexcept { return a == b.get_string(); }
 		friend auto operator<=>(std::string_view a, symbol_base const& b) noexcept { return a <=> b.get_string(); }
+
+		friend std::ostream& operator<<(std::ostream& o, const symbol_base& ptr)
+		{
+			o << ptr.get_string();
+			return o;
+		}
 	};
 }
 

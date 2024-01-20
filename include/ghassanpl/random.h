@@ -292,6 +292,7 @@ namespace ghassanpl::random
 
 	/// When probability calculations are known ahead of time or expensive
 	/// \complexity O(N) space, O(N+logN) time
+	/// TODO: Check if works with known-sized spans
 	template <std::convertible_to<double> T, typename RANDOM>
 	size_t option_with_probability(std::span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -310,7 +311,7 @@ namespace ghassanpl::random
 		static_assert(std::is_invocable_v<FUNC, std::ranges::range_reference_t<RANGE>>);
 		static_assert(std::convertible_to<std::invoke_result_t<FUNC, std::ranges::range_reference_t<RANGE>>, double>);
 
-		const auto sum = std::ranges::accumulate(range, 0.0, [&](auto acc, auto&& item) { return acc + (double)prob_func(item); });
+		const auto sum = std::accumulate(std::ranges::begin(range), std::ranges::end(range), 0.0, [&](auto acc, auto&& item) { return acc + (double)prob_func(item); });
 		auto target = in_real_range(0.0, sum, rng);
 
 		for (auto it = std::ranges::begin(range); it != std::ranges::end(range); ++it)

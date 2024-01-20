@@ -1,32 +1,33 @@
 #pragma once
 
+#include <gtest/gtest.h>	
 #include <string>
 
 struct UnCopyable
 {
-  UnCopyable() = default;
-  UnCopyable(UnCopyable const&) = delete;
-  UnCopyable(UnCopyable&&) = default;
-  UnCopyable& operator=(UnCopyable const&) = delete;
-  UnCopyable& operator=(UnCopyable&&) = default;
+  constexpr UnCopyable() noexcept = default;
+  constexpr UnCopyable(UnCopyable const&) noexcept = delete;
+  constexpr UnCopyable(UnCopyable&&) noexcept = default;
+  constexpr UnCopyable& operator=(UnCopyable const&) noexcept = delete;
+  constexpr UnCopyable& operator=(UnCopyable&&) noexcept = default;
 
-  bool operator==(UnCopyable const&) const noexcept { return true; }
+  constexpr bool operator==(UnCopyable const&) const noexcept { return true; }
 };
 
-inline const UnCopyable uncopyable{};
+inline constexpr UnCopyable uncopyable{};
 
 struct UnMovable
 {
-  UnMovable() = default;
-  UnMovable(UnMovable const&) = delete;
-  UnMovable(UnMovable&&) = delete;
-  UnMovable& operator=(UnMovable const&) = delete;
-  UnMovable& operator=(UnMovable&&) = delete;
+  constexpr UnMovable() noexcept = default;
+  constexpr UnMovable(UnMovable const&) noexcept = delete;
+  constexpr UnMovable(UnMovable&&) noexcept = delete;
+  constexpr UnMovable& operator=(UnMovable const&) noexcept = delete;
+  constexpr UnMovable& operator=(UnMovable&&) noexcept = delete;
 
-  bool operator==(UnMovable const&) const noexcept { return true; }
+  constexpr bool operator==(UnMovable const&) const noexcept { return true; }
 };
 
-inline const UnMovable unmovable{};
+inline constexpr UnMovable unmovable{};
 
 inline std::string to_string(UnCopyable const& cp) { return "UnCopyable"; }
 inline std::string to_string(UnMovable const& cp) { return "UnMovable"; }

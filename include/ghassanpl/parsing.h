@@ -12,6 +12,41 @@ namespace ghassanpl::parsing
 {
 	using namespace string_ops;
 
+
+
+	[[nodiscard]] inline size_t find_line_number(std::string_view of_string, std::string_view in_document) noexcept
+	{
+		if (of_string.empty() || in_document.empty())
+			return 0;
+		const auto start_line = of_string.data();
+		const auto start_doc = in_document.data();
+		if (start_line < start_doc || start_line > start_doc + in_document.size())
+			return 0;
+		return std::count(start_doc, start_line, '\n') + 1;
+	}
+
+	[[nodiscard]] inline std::pair<size_t, size_t> find_line_and_column(std::string_view of_string, std::string_view in_document) noexcept
+	{
+		if (of_string.empty() || in_document.empty())
+			return {};
+		const auto start_line = of_string.data();
+		auto start_doc = in_document.data();
+		if (start_line < start_doc || start_line > start_doc + in_document.size())
+			return {};
+
+		size_t count = 0;
+		auto last_line = start_doc;
+
+		for (; start_line != start_doc; ++start_doc) {
+			if (*start_doc == '\n') {
+				++count;
+				last_line = start_doc + 1;
+			}
+		}
+
+		return { count + 1, start_line - last_line + 1 };
+	}
+
 	[[nodiscard]] inline std::string_view consume_c_identifier(std::string_view& str)
 	{
 		if (str.empty() || !ascii::isidentstart(str[0]))

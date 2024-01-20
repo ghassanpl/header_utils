@@ -102,7 +102,7 @@ TEST(byte_range_align_back_to, works)
 
 TEST(byte_range_align_to, works)
 {
-	const std::span<char> span{ (char*)13, 69 };
+	const std::span<char, 69> span{ (char*)13, 69 };
 
 	auto [prefix, aligned, suffix] = align_to<16>(span);
 	ASSERT_FALSE(prefix.empty());

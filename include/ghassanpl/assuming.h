@@ -5,6 +5,7 @@
 #pragma once
 
 #include <version>
+#include <cassert>
 
 #if !defined(__cpp_lib_format)
 #error "This library requires std::format"
@@ -313,22 +314,40 @@ namespace ghassanpl
 #endif
 	}
 
-	/// This function must be defined in your own code, as it is called by an assumption macro with a failing assumption.
+	inline void DefaultReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc)
+	{
+		throw std::make_tuple(
+			std::move(expectation),
+			std::move(values),
+			std::move(data),
+			std::move(loc)
+		);
+	}
+
+	/// This function must be provided by your own code, as it is called by an assumption macro with a failing assumption.
 	/// \ingroup Assuming
 	/// \param expectation An explanation of which assumption failed
 	/// \param values The values of the expressions the assumption macro checked
 	/// \param data Any additional arguments you gave to the macro, std-formatted.
 	/// \param loc
+	inline void (*AssumptionFailureHandler)(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc) = nullptr;
+
 #if defined(ASSUMING_REPORT_NORETURN) && ASSUMING_REPORT_NORETURN
 	[[noreturn]]
 #endif
-	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
+	inline void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
 #if __INTELLISENSE__
 		= {}
 #else
 		= source_location::current()
 #endif
-	);
+	)
+	{
+		if (AssumptionFailureHandler)
+			AssumptionFailureHandler(std::move(expectation), std::move(values), std::move(data), std::move(loc));
+		else
+			DefaultReportAssumptionFailure(std::move(expectation), std::move(values), std::move(data), std::move(loc));
+	}
 }
 
 /// \namespace ghassanpl

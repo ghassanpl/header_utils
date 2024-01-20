@@ -437,3 +437,21 @@ TEST(stringification_test, sanity_check)
 	EXPECT_TRUE(ghassanpl::from_string<ghassanpl::trec2<float>>(stringified, unstringified));
 	EXPECT_EQ(unstringified, val);
 }
+
+TEST(string_ops, any_versions)
+{
+	{
+		auto sv = "hello"sv;
+		auto ret = consume_any(sv, 'a', "he");
+		EXPECT_EQ(ret, 'h');
+		EXPECT_EQ(sv, "ello"sv);
+	}
+	{
+		auto sv = "hello"sv;
+		auto ret = consume_while_any(sv, "eh", 'l');
+		EXPECT_EQ(ret, "hell"sv);
+		EXPECT_EQ(sv, "o"sv);
+	}
+
+	isany(char32_t(500), -1);
+}

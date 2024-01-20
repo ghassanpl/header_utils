@@ -1,3 +1,7 @@
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 namespace ghassanpl
 {
 	namespace detail
@@ -14,9 +18,9 @@ namespace ghassanpl
 
 		static constexpr auto isscheme(char c) { return ascii::isalnum(c) || c == '+' || c == '-' || c == '.'; };
 		static constexpr auto isunreserved(char c) { return ascii::isalnum(c) || c == '-' || c == '.' || c == '_' || c == '~'; };
-		static constexpr auto isgendelims(char c) { return ascii::isany(c, ":/?#[]@"); };
-		static constexpr auto issubdelims(char c) { return ascii::isany(c, "!$&'()*+,;="); };
-		static constexpr auto isreserved(char c) { return ascii::isany(c, ":/?#[]@!$&'()*+,;="); };
+		static constexpr auto isgendelims(char c) { return isany(c, ":/?#[]@"); };
+		static constexpr auto issubdelims(char c) { return isany(c, "!$&'()*+,;="); };
+		static constexpr auto isreserved(char c) { return isany(c, ":/?#[]@!$&'()*+,;="); };
 
 		template <typename T>
 		std::string condlower(T&& s, enum_flags<uri_decompose_flags> const flags)
@@ -245,7 +249,7 @@ namespace ghassanpl
 			result.scheme = detail::parse_scheme(uri, flags);
 
 			if (!string_ops::consume(uri, ':'))
-				return tl::unexpected(uri_error_code::scheme_malformed);
+				return unexpected(uri_error_code::scheme_malformed);
 
 			if (string_ops::consume(uri, "//"))
 			{
@@ -282,7 +286,7 @@ namespace ghassanpl
 		}
 		catch (uri_error_code code)
 		{
-			return tl::unexpected(code);
+			return unexpected(code);
 		}
 	}
 
@@ -324,13 +328,21 @@ namespace ghassanpl
 		struct url_schemes : known_uri_scheme
 		{
 			/// https://www.rfc-editor.org/rfc/rfc1738.html
-			virtual uri_error validate_host(std::string_view element) const noexcept override { if (element.empty()) return uri_error_code::host_required_in_scheme; return {}; }
+			virtual uri_error validate_host(std::string_view element) const noexcept override { 
+				if (element.empty()) 
+					return unexpected(uri_error_code::host_required_in_scheme);
+				return {}; 
+			}
 		};
 
 		struct http_schemes : url_schemes
 		{
 			virtual uri_error validate_user_info(std::string_view element) const noexcept override { return {}; }
-			virtual uri_error validate_path(std::string_view element) const noexcept override { if (!element.empty() || element.starts_with("/")) return uri_error_code::path_malformed; return {}; }
+			virtual uri_error validate_path(std::string_view element) const noexcept override { 
+				if (!element.empty() || element.starts_with("/"))
+					return unexpected(uri_error_code::path_malformed);
+				return {};
+			}
 
 			virtual std::string normalize_port(std::string_view element) const noexcept override { if (string_ops::trimmed(element, '0') == default_port()) return {}; return std::string{ element }; }
 			virtual std::string normalize_path(std::string_view element) const noexcept { if (element.empty()) return "/"; return std::string{ element }; }

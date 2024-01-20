@@ -270,6 +270,15 @@
     <ClInclude Include="include\ghassanpl\geometry\ray.h">
       <Filter>Header Files\geometry</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\threading.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\expected.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\filesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -410,6 +419,12 @@
       <Filter>Source Files\standalone_include_tests</Filter>
     </ClCompile>
     <ClCompile Include="tests\paths_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\threading_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\filesystem_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

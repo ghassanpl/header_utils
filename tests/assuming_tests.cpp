@@ -57,11 +57,17 @@ struct assuming_test : public ::testing::Test
 	void SetUp() override
 	{
 		current_test = this;
+
+		AssumptionFailureHandler = [](std::string_view expectation, std::initializer_list<name_value_pair> values, std::string data, source_location where)
+		{
+			current_test->ReportAssumptionFailure(expectation, std::move(values), std::move(data), where);
+		};
 	}
 
 	void TearDown() override
 	{
 		current_test = nullptr;
+		AssumptionFailureHandler = nullptr;
 	}
 };
 
@@ -244,10 +250,5 @@ TEST_F(assuming_test, assumings_dont_copy_unnecessarily)
 }
 
 /// TODO: Make sure everything works when ASSUMING_DEBUG is not defined
-
-void ghassanpl::ReportAssumptionFailure(std::string_view expectation, std::initializer_list<name_value_pair> values, std::string data, source_location where)
-{
-	current_test->ReportAssumptionFailure(expectation, std::move(values), std::move(data), where);
-}
 
 #endif

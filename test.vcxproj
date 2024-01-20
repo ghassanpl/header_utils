@@ -187,6 +187,8 @@
     <ClInclude Include="include\ghassanpl\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\eval.h" />
     <ClInclude Include="include\ghassanpl\eval_libs\lib_core.h" />
+    <ClInclude Include="include\ghassanpl\expected.h" />
+    <ClInclude Include="include\ghassanpl\filesystem.h" />
     <ClInclude Include="include\ghassanpl\flag_bits.h" />
     <ClInclude Include="include\ghassanpl\flag_bits_v.h" />
     <ClInclude Include="include\ghassanpl\formats.h" />
@@ -229,6 +231,7 @@
     <ClInclude Include="include\ghassanpl\string_ops.h" />
     <ClInclude Include="include\ghassanpl\symbol.h" />
     <ClInclude Include="include\ghassanpl\templates.h" />
+    <ClInclude Include="include\ghassanpl\threading.h" />
     <ClInclude Include="include\ghassanpl\unicode.h" />
     <ClInclude Include="include\ghassanpl\uri.h" />
     <ClInclude Include="include\ghassanpl\uri_impl.h" />
@@ -271,6 +274,7 @@
     <ClCompile Include="tests\di_tests.cpp" />
     <ClCompile Include="tests\enum_flags_tests.cpp" />
     <ClCompile Include="tests\eval_tests.cpp" />
+    <ClCompile Include="tests\filesystem_tests.cpp" />
     <ClCompile Include="tests\formats_tests.cpp" />
     <ClCompile Include="tests\functional_tests.cpp" />
     <ClCompile Include="tests\geometry_tests.cpp" />
@@ -301,6 +305,7 @@
       <DisableLanguageExtensions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DisableLanguageExtensions>
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
     </ClCompile>
+    <ClCompile Include="tests\threading_tests.cpp" />
     <ClCompile Include="tests\uri_tests.cpp" />
     <ClCompile Include="tests\windows_tests.cpp" />
   </ItemGroup>

@@ -1,10 +1,14 @@
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #pragma once
 
 #include <vector>
 #include <stdexcept>
 #include <system_error>
 
-#include <tl/expected.hpp> /// TODO: Until MSVC fixes its expected impl
+#include "expected.h"
 
 #include "enum_flags.h"
 #include "string_ops.h"
@@ -77,11 +81,11 @@ namespace ghassanpl
 	/// Holds the constituents of a URI
 	struct decomposed_uri
 	{
-		decomposed_uri() = default;
-		decomposed_uri(decomposed_uri const&) = default;
-		decomposed_uri(decomposed_uri&&) = default;
-		decomposed_uri& operator=(decomposed_uri const&) = default;
-		decomposed_uri& operator=(decomposed_uri&&) = default;
+		decomposed_uri() noexcept = default;
+		decomposed_uri(decomposed_uri const&) noexcept = default;
+		decomposed_uri(decomposed_uri&&) noexcept = default;
+		decomposed_uri& operator=(decomposed_uri const&) noexcept = default;
+		decomposed_uri& operator=(decomposed_uri&&) noexcept = default;
 
 		std::string scheme{};
 		std::string authority{};
@@ -104,8 +108,8 @@ namespace ghassanpl
 	};
 
 	template <typename T>
-	using uri_expected = tl::expected<T, uri_error_code>;
-	using uri_error = std::optional<uri_error_code>; // TODO: MSVS has a bug where std::expected doesn't work with std::error_condition error types
+	using uri_expected = expected<T, uri_error_code>;
+	using uri_error = expected<void, uri_error_code>;
 
 	/// Removes data that should not be displayed to an untrusted user (user-info after the first ':', perhaps other things)
 	uri_expected<uri> make_uri_safe_for_display(uri_view uri);
@@ -147,26 +151,23 @@ namespace ghassanpl
 		virtual uri_error validate(uri_view uri) const noexcept
 		{
 			auto decomposed = decompose_uri(uri);
-			if (!decomposed) return decomposed.error();
+			if (!decomposed) return decomposed.transform([](auto) {});
 
-			if (decomposed.value().scheme != scheme()) return uri_error_code::scheme_invalid;
+			if (decomposed.value().scheme != scheme()) return unexpected(uri_error_code::scheme_invalid);
 
-			if (auto err = validate_authority(decomposed.value().authority)) return err;
-			if (auto err = validate_path(decomposed.value().path)) return err;
-			if (auto err = validate_query(decomposed.value().query)) return err;
-			if (auto err = validate_fragment(decomposed.value().fragment)) return err;
-
-			return {};
+			return validate_authority(decomposed.value().authority)
+				.and_then([&] { return validate_path(decomposed.value().path); })
+				.and_then([&] { return validate_query(decomposed.value().query); })
+				.and_then([&] { return validate_fragment(decomposed.value().fragment); });
 		}
 
 		virtual std::string_view scheme() const noexcept = 0;
 
 		virtual uri_error validate_authority(std::string_view fragment) const noexcept
 		{
-			if (auto err = validate_user_info(fragment)) return err;
-			if (auto err = validate_host(fragment)) return err;
-			if (auto err = validate_port(fragment)) return err;
-			return {};
+			return validate_user_info(fragment)
+				.and_then([&] { return validate_host(fragment); })
+				.and_then([&] { return validate_port(fragment); });
 		}
 		virtual uri_error validate_user_info(std::string_view element) const noexcept { return {}; }
 		virtual uri_error validate_host(std::string_view element) const noexcept { return {}; }

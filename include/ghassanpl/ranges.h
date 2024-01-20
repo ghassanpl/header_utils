@@ -6,6 +6,7 @@
 
 #include <ranges>
 #include <stdexcept>
+#include <span>
 
 namespace ghassanpl
 {
@@ -38,11 +39,18 @@ namespace ghassanpl
 		return index >= 0 && index < std::ranges::size(range);
 	}
 
+	constexpr auto modulo_index(size_t range_size, std::integral auto index)
+	{
+		const auto cpp_modulo_sucks = (index % static_cast<decltype(index)>(range_size));
+		return (index < 0) ? (range_size + cpp_modulo_sucks) : cpp_modulo_sucks;
+	}
+
 	/// Returns an valid index into `range`, created from `index` as if `range` is circular
+	/// \pre range must not be empty
 	constexpr auto modulo_index(random_access_range auto& range, std::integral auto index)
 	{
 		const auto range_size = std::ranges::size(range);
-		return (index < 0) ? range_size + (index % range_size) : index % range_size;
+		return modulo_index(range_size, index);
 	}
 
 	/// Returns a reference to the value at `index` of `range`
@@ -63,6 +71,7 @@ namespace ghassanpl
 	}
 
 	/// Returns a reference to the value at \ref modulo_index of `range`
+	/// \pre range must not be empty
 	constexpr decltype(auto) modulo_at(random_access_range auto& range, std::integral auto index)
 	{
 		return at(range, modulo_index(range, index)); /// TODO: make sure this is inlined properly 'cause we're quering size a couple of times, for example
@@ -128,7 +137,87 @@ namespace ghassanpl
 	constexpr bool valid_address(RANGE&& range, range_value<RANGE>* pointer)
 	{
 		if (std::ranges::empty(range)) return false;
-		return std::to_address(std::ranges::begin(range)) >= pointer && pointer < std::to_address(std::ranges::end(range));
+		return pointer >= std::to_address(std::ranges::begin(range)) && pointer < std::to_address(std::ranges::end(range));
+	}
+
+	/// Span stuff
+	
+	template <typename T, size_t N = std::dynamic_extent>
+	constexpr std::pair<std::span<T>, std::span<T>> split_at(std::span<T, N> span, size_t index)
+	{
+		if (index >= span.size())
+			return { span, std::span<T>{} };
+		return { span.subspan(0, index), span.subspan(index) };
+	}
+
+	template <typename T, size_t N = std::dynamic_extent>
+	constexpr std::array<std::span<T>, 3> split_at(std::span<T, N> span, size_t index, size_t size)
+	{
+		if (index >= span.size() || index + size >= span.size())
+			return { span, std::span<T>{}, std::span<T>{} };
+		return { span.subspan(0, index), span.subspan(index, size), span.subspan(index + size) };
+	}
+	
+	template <typename T, size_t N = std::dynamic_extent>
+	constexpr std::pair<T*, T*> as_range(std::span<T, N> span)
+	{
+		return { span.data(), span.data() + span.size() };
+	}
+
+	/// Casts a span of objects of type FROM to a span of objects of type TO
+	/// Does not perform any checks, specifically, no alignment or size checks are performed.
+	template <typename TO, typename FROM, size_t N = std::dynamic_extent>
+	auto span_cast(std::span<FROM, N> bytes) noexcept
+	{
+		return std::span<TO>{ reinterpret_cast<TO*>(bytes.data()), (bytes.size() * sizeof(FROM)) / sizeof(TO) };
+	}
+
+	template <typename T1, size_t N1, typename T2, size_t N2>
+	constexpr bool are_adjacent(std::span<T1, N1> s1, std::span<T2, N2> s2)
+	{
+		return reinterpret_cast<char const*>(s1.data() + s1.size()) == reinterpret_cast<char const*>(s2.data())
+			|| reinterpret_cast<char const*>(s2.data() + s2.size()) == reinterpret_cast<char const*>(s1.data());
+	}
+
+	template <typename T1, size_t N1, typename T2, size_t N2>
+	constexpr bool are_overlapping(std::span<T1, N1> s1, std::span<T2, N2> s2)
+	{
+		return valid_address(s1, s2.data()) || valid_address(s2, s1.data());
+	}
+
+	template <typename T, size_t N1, size_t N2>
+	constexpr bool ends_with(std::span<T, N1> s1, std::span<T, N2> s2)
+	{
+		if (s1.size() < s2.size()) return false;
+		return std::ranges::equal(s1.subspan(s1.size() - s2.size()), s2);
+	}
+
+	template <typename T, size_t N1, size_t N2>
+	constexpr bool starts_with(std::span<T, N1> s1, std::span<T, N2> s2)
+	{
+		if (s1.size() < s2.size()) return false;
+		return std::ranges::equal(s1.subspan(0, s2.size()), s2);
+	}
+
+	/// Arrays
+	
+	template <typename T, std::size_t... Ns>
+	constexpr auto join(std::array<T, Ns>... arrays)
+	{
+		std::array<T, (Ns + ...)> result;
+		std::size_t index = 0;
+		((std::copy_n(std::make_move_iterator(arrays.begin()), Ns, result.begin() + index), index += Ns), ...);
+		return result;
+	}
+
+	template<typename T, size_t LL, typename... ARGS>
+	requires (std::same_as<std::remove_cvref_t<ARGS>, T> && ...)
+	constexpr auto join(std::array<T, LL> rhs, ARGS&&... args)
+	{
+		std::array<T, LL + sizeof...(ARGS)> ar;
+		auto current = std::move(rhs.begin(), rhs.end(), ar.begin());
+		((*current++ = args), ...);
+		return ar;
 	}
 
 #ifndef __cpp_lib_ranges_contains

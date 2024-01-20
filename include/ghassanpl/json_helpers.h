@@ -8,6 +8,7 @@
 #include <fstream>
 #include "string_ops.h"
 #include "mmap.h"
+#include "expected.h"
 
 namespace ghassanpl::formats
 {
@@ -37,11 +38,12 @@ namespace ghassanpl::formats
 			return std::string{ source.begin(), source.end() };
 		}
 
-		/// Returns the contents of a text file as a string, or an empty string on failure.
-		inline std::string try_load_file(std::filesystem::path const& from)
+		/// Returns the contents of a text file as a string
+		inline expected<std::string, std::error_code> try_load_file(std::filesystem::path const& from)
 		{
 			std::error_code ec;
-			return load_file(from, ec);
+			auto result = load_file(from, ec);
+			return ec ? unexpected(ec) : expected<std::string, std::error_code>{ std::move(result) };
 		}
 
 		inline bool save_file(std::filesystem::path const& to, std::string_view string, std::error_code& ec)
@@ -93,6 +95,7 @@ namespace ghassanpl::formats
 		}
 
 		template <typename CALLBACK>
+		requires std::invocable<CALLBACK, std::string_view>
 		inline void load_file(std::filesystem::path const& from, CALLBACK&& callback)
 		{
 			std::error_code ec;
