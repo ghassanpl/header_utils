@@ -2,6 +2,7 @@
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "../include/ghassanpl/multicast.h"
 #include "../include/ghassanpl/functional.h"
 #include "tests_common.h"
 
@@ -114,4 +115,32 @@ TEST(optional_transform, works)
 
 	auto res2 = i.transform([](int i) { return std::to_string(i); });
 	EXPECT_EQ(res2, "50");
+}
+
+TEST(predicates, work)
+{
+
+}
+
+template <typename... ARGS>
+constexpr bool resulting_works()
+{
+	return requires () { ghassanpl::resulting([](ARGS...) {}); };
+}
+
+template <typename... ARGS>
+constexpr bool resulting_call_auto()
+{
+	return requires () { ghassanpl::resulting([](auto&, ARGS...) {}); };
+}
+
+TEST(op_functions, work)
+{
+	static_assert(resulting_works<int&>());
+	static_assert(!resulting_works<int&, int>());
+	static_assert(!resulting_works<int const&>());
+	static_assert(!resulting_works<int>());
+	static_assert(!resulting_works<int const>());
+	static_assert(!resulting_works<>());
+	static_assert(!resulting_call_auto());
 }

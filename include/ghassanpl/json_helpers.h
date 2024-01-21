@@ -9,6 +9,7 @@
 #include "string_ops.h"
 #include "mmap.h"
 #include "expected.h"
+#include "functional.h"
 
 namespace ghassanpl::formats
 {
@@ -77,9 +78,9 @@ namespace ghassanpl::formats
 			if (ec)
 				return {};
 
-			std::vector<std::string> result;
-			ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', [&](std::string_view line, bool) { result.emplace_back(line); });
-			return result;
+			return resulting([&](std::vector<std::string>& result) {
+				ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', op::emplace_back_to(result));
+			});
 		}
 
 		inline std::vector<std::string> load_file(std::filesystem::path const& from)
@@ -89,9 +90,9 @@ namespace ghassanpl::formats
 			if (ec)
 				throw std::runtime_error(format("file '{}' not found", from.string()));
 
-			std::vector<std::string> result;
-			ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', [&](std::string_view line, bool) { result.emplace_back(line); });
-			return result;
+			return resulting([&](std::vector<std::string>& result) {
+				ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', op::emplace_back_to(result));
+			});
 		}
 
 		template <typename CALLBACK>
@@ -103,9 +104,10 @@ namespace ghassanpl::formats
 			if (ec)
 				throw std::runtime_error(format("file '{}' not found", from.string()));
 
-			std::vector<std::string> result;
-			ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', [&](std::string_view line, bool) { callback(line); });
-			return result;
+
+			return resulting([&](std::vector<std::string>& result) {
+				ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', callback);
+			});
 		}
 
 		inline std::vector<std::string> try_load_file(std::filesystem::path const& from)

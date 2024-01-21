@@ -5,6 +5,7 @@
 #pragma once
 
 #include <regex>
+#include "functional.h"
 
 namespace ghassanpl::regex
 {
@@ -18,9 +19,9 @@ namespace ghassanpl::regex
 		std::string s;
 
 		typename std::match_results<BidirIt>::difference_type positionOfLastMatch = 0;
-		auto endOfLastMatch = first;
 
-		auto callback = [&](const std::match_results<BidirIt>& match) {
+		auto endOfLastMatch = first;
+		std::for_each(std::regex_iterator<BidirIt>{first, last, re}, {}, [&](const std::match_results<BidirIt>& match) {
 			auto positionOfThisMatch = match.position(0);
 			auto diff = positionOfThisMatch - positionOfLastMatch;
 
@@ -36,10 +37,7 @@ namespace ghassanpl::regex
 
 			endOfLastMatch = startOfThisMatch;
 			std::advance(endOfLastMatch, lengthOfMatch);
-		};
-
-		std::regex_iterator<BidirIt> begin(first, last, re), end{};
-		std::for_each(begin, end, callback);
+		});
 
 		s.append(endOfLastMatch, last);
 
@@ -52,16 +50,13 @@ namespace ghassanpl::regex
 		return regex_replace(s.cbegin(), s.cend(), re, std::forward<UnaryFunction>(f));
 	}
 
-	template<class BidirIt, class UnaryFunction>
+	template <class BidirIt, class UnaryFunction>
 	void regex_split(BidirIt first, BidirIt last, const std::regex& re, UnaryFunction&& f)
 	{
-		std::regex_token_iterator<BidirIt> iter(first, last, re, -1);
-		std::regex_token_iterator<BidirIt> end;
-		for (; iter != end; ++iter)
-			f(*iter);
+		std::for_each(std::regex_token_iterator<BidirIt>{first, last, re, -1}, {}, std::forward<UnaryFunction>(f));
 	}
 
-	template<class UnaryFunction>
+	template <class UnaryFunction>
 	void regex_split(std::string_view s, const std::regex& re, UnaryFunction&& f)
 	{
 		regex_split(s.begin(), s.end(), re, std::forward<UnaryFunction>(f));
@@ -69,9 +64,9 @@ namespace ghassanpl::regex
 
 	[[nodiscard]] inline std::vector<std::string> regex_split(std::string_view s, const std::regex& re)
 	{
-		std::vector<std::string> result;
-		regex_split(s.begin(), s.end(), re, [&result](auto&& m) { result.push_back(m.str()); });
-		return result;
+		return resulting([&](std::vector<std::string>& result) { 
+			regex_split(s.begin(), s.end(), re, op::push_back_to(result)); 
+		});
 	}
 
 }

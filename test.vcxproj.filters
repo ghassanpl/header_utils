@@ -282,6 +282,9 @@
     <ClInclude Include="include\ghassanpl\span.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\multicast.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -440,6 +443,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\cpp_version_tests\cpp20_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\regex_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

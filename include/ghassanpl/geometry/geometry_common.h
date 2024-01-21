@@ -9,6 +9,7 @@
 #include "../enum_flags.h"
 #include "../named.h"
 #include "../rec2.h"
+#include "../functional.h"
 
 #include <glm/geometric.hpp>
 #include <glm/trigonometric.hpp>

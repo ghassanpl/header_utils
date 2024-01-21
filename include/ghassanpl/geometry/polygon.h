@@ -59,7 +59,7 @@ namespace ghassanpl::geometry
 		}
 
 		template <typename FUNC>
-		void for_each_edge(FUNC&& func)
+		void for_each_edge(FUNC&& func) const
 		{
 			const auto c = vertices.size();
 			if (c < 2) return;
@@ -70,9 +70,9 @@ namespace ghassanpl::geometry
 
 		std::vector<tsegment<T>> edges() const noexcept
 		{
-			std::vector<tsegment<T>> result;
-			for_each_edge([&](auto&& seg) { result.push_back(seg); });
-			return result;
+			return resulting([this](std::vector<tsegment<T>>& result) {
+				for_each_edge(op::push_back_to(result));
+			});
 		}
 		
 		std::vector<T> interior_angles() const noexcept;

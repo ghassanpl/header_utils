@@ -209,6 +209,7 @@
     <ClInclude Include="include\ghassanpl\geometry\triangles.h" />
     <ClInclude Include="include\ghassanpl\hashes.h" />
     <ClInclude Include="include\ghassanpl\interpolation.h" />
+    <ClInclude Include="include\ghassanpl\multicast.h" />
     <ClInclude Include="include\ghassanpl\span.h" />
     <ClInclude Include="include\ghassanpl\string_interpolate.h" />
     <ClInclude Include="include\ghassanpl\json_helpers.h" />
@@ -297,6 +298,7 @@
     <ClCompile Include="tests\paths_tests.cpp" />
     <ClCompile Include="tests\random_tests.cpp" />
     <ClCompile Include="tests\ranges_tests.cpp" />
+    <ClCompile Include="tests\regex_tests.cpp" />
     <ClCompile Include="tests\scope_tests.cpp" />
     <ClCompile Include="tests\soptional_tests.cpp" />
     <ClCompile Include="tests\standalone_include_tests\align.cpp" />

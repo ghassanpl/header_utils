@@ -39,7 +39,7 @@ namespace ghassanpl
 
 		static std::string parse_authority(uri_view& uri, enum_flags<uri_decompose_flags> const flags)
 		{
-			return std::string(consume_until(uri, [](char c) { return c == '/' || c == '?' || c == '#'; }));
+			return std::string(consume_until_any(uri, '/', '?', '#'));
 		}
 
 		static char parse_pct(std::string_view& str)
@@ -168,7 +168,7 @@ namespace ghassanpl
 		static std::tuple<std::string, std::vector<std::string>> parse_path(bool with_authority, uri_view& uri, enum_flags<uri_decompose_flags> const flags)
 		{
 			/// If with_authority == true, the path component must either be empty or begin with a slash("/") character.
-			auto path = consume_until(uri, [](char c) { return c == '?' || c == '#'; });
+			auto path = consume_until_any(uri, '?', '#');
 
 			if (with_authority && !path.empty() && path[0] != '/')
 				throw uri_error_code::path_malformed;

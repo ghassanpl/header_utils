@@ -25,6 +25,7 @@
 #error "This library requires std::to_address"
 #endif
 
+#include "expected.h"
 
 static_assert(CHAR_BIT >= 8);
 
@@ -460,6 +461,7 @@ namespace ghassanpl::string_ops
 		[[nodiscard]] constexpr int xdigit_to_number(char32_t cp) noexcept { return isdigit(cp) ? int(cp - 48) : ((int(cp) & ~0b100000) - 55); }
 
 		/// \name Case-invariant Comparisons
+		/// TODO: Add rfind, find_first_of, find_last_of, find_first_not_of, find_last_not_of
 		/// @{
 		[[nodiscard]] constexpr bool strings_equal_ignore_case(std::string_view sa, std::string_view sb)
 		{
@@ -512,6 +514,15 @@ namespace ghassanpl::string_ops
 				[](char ca, char cb) { return ::ghassanpl::string_ops::ascii::toupper(ca) <=> ::ghassanpl::string_ops::ascii::toupper(cb); });
 		}
 
+		[[nodiscard]] constexpr uint64_t hash_ignore_case(std::string_view str)
+		{
+			/// FNV-1a hash
+			uint64_t result = 0xcbf29ce484222325;
+			for (auto byte : str)
+				result = (result ^ static_cast<uint8_t>(tolower(byte))) * 0x00000100000001b3U;
+			return result;
+		}
+
 		namespace detail
 		{
 			struct string_view_case_insensitive
@@ -526,8 +537,8 @@ namespace ghassanpl::string_ops
 			};
 		}
 
-		/// A version of the `sv` suffix that returns a special type allowing for case-insensitive comparisons
-		consteval detail::string_view_case_insensitive operator"" _i(const char* str, size_t size) noexcept { return detail::string_view_case_insensitive{ std::string_view{str, str + size} }; }
+		/// A version of the `sv` suffix that returns a special type allowing for case-insensitive comparisons (e.g. `if (str == "hello"_i)`)
+		[[nodiscard]] consteval detail::string_view_case_insensitive operator"" _i(const char* str, size_t size) noexcept { return detail::string_view_case_insensitive{ std::string_view{str, str + size} }; }
 
 		/// @}
 
@@ -620,6 +631,8 @@ namespace ghassanpl::string_ops
 	template <typename FUNC>
 	requires std::is_invocable_r_v<bool, FUNC, char>
 	[[nodiscard]] inline std::string_view trimmed_while(std::string_view str, FUNC&& func) noexcept { return ::ghassanpl::string_ops::make_sv(std::find_if_not(str.begin(), str.end(), std::forward<FUNC>(func)), str.end()); }
+
+	/// TODO: trim_*(std::string&) overloads
 
 	constexpr void trim_whitespace_right(std::string_view& str) noexcept { str = make_sv(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ::ghassanpl::string_ops::ascii::isspace).base()); }
 	constexpr void trim_whitespace_left(std::string_view& str) noexcept { str = make_sv(std::ranges::find_if_not(str, ::ghassanpl::string_ops::ascii::isspace), str.end()); }
@@ -946,29 +959,40 @@ namespace ghassanpl::string_ops
 	/// \name Split Functions
 	/// Functions that split strings into multiple parts, each delimited with some sort of delimiter.
 	/// @{
-
-	/// Performs a basic "split" operation, calling `func` for each part of `source` delimited by `delim`.
-	/// If no delimiters are found, calls `func` for entire string.
-	/// \param func must be invocable as `func(string_view, bool)`; the second argument specifies if the given string is the final part of the split
+	
 	template <typename FUNC>
-	requires std::is_invocable_v<FUNC, std::string_view, bool>
-	constexpr void split(std::string_view source, char delim, FUNC&& func) noexcept(noexcept(func(std::string_view{}, true)))
+	requires (std::is_invocable_v<FUNC, std::string_view, bool> && !std::is_invocable_v<FUNC, std::string_view>)
+	constexpr auto split_invoke(FUNC& func, std::string_view sv, bool is_final) noexcept(noexcept(func(std::string_view{}, true)))
 	{
-		size_t next = 0;
-		while ((next = source.find_first_of(delim)) != std::string::npos)
-		{
-			func(source.substr(0, next), false);
-			source.remove_prefix(next + 1);
-		}
-		func(source, true);
+		return func(sv, is_final);
+	}
+	template <typename FUNC>
+	requires std::is_invocable_v<FUNC, std::string_view>
+	constexpr auto split_invoke(FUNC& func, std::string_view sv, bool is_final) noexcept(noexcept(func(std::string_view{})))
+	{
+		return func(sv);
 	}
 
 	/// Performs a basic "split" operation, calling `func` for each part of `source` delimited by `delim`.
 	/// If no delimiters are found, calls `func` for entire string.
 	/// \param func must be invocable as `func(string_view, bool)`; the second argument specifies if the given string is the final part of the split
 	template <typename FUNC>
-	requires std::is_invocable_v<FUNC, std::string_view, bool>
-	constexpr void split(std::string_view source, std::string_view delim, FUNC&& func) noexcept(noexcept(func(std::string_view{}, true)))
+	constexpr void split(std::string_view source, char delim, FUNC&& func) noexcept(noexcept(split_invoke(func, std::string_view{}, true)))
+	{
+		size_t next = 0;
+		while ((next = source.find_first_of(delim)) != std::string::npos)
+		{
+			split_invoke(func, source.substr(0, next), false);
+			source.remove_prefix(next + 1);
+		}
+		split_invoke(func, source, true);
+	}
+
+	/// Performs a basic "split" operation, calling `func` for each part of `source` delimited by `delim`.
+	/// If no delimiters are found, calls `func` for entire string.
+	/// \param func must be invocable as `func(string_view, bool)`; the second argument specifies if the given string is the final part of the split
+	template <typename FUNC>
+	constexpr void split(std::string_view source, std::string_view delim, FUNC&& func) noexcept(noexcept(split_invoke(func, std::string_view{}, true)))
 	{
 		const size_t delim_size = delim.size();
 		if (delim_size == 0) return;
@@ -976,18 +1000,17 @@ namespace ghassanpl::string_ops
 		size_t next = 0;
 		while ((next = source.find(delim)) != std::string::npos)
 		{
-			func(source.substr(0, next), false);
+			split_invoke(func, source.substr(0, next), false);
 			source.remove_prefix(next + delim_size);
 		}
-		func(source, true);
+		split_invoke(func, source, true);
 	}
 
 	/// Performs a basic "split" operation, calling `func` for each part of `source` delimited by any character in `delim`.
 	/// If no delimiters are found, calls `func` for entire string.
 	/// \param func must be invocable as `func(string_view, bool)`; the second argument specifies if the given string is the final part of the split
 	template <typename FUNC>
-	requires std::is_invocable_v<FUNC, std::string_view, bool>
-	constexpr void split_on_any(std::string_view source, std::string_view delim, FUNC&& func) noexcept(noexcept(func(std::string_view{}, true)))
+	constexpr void split_on_any(std::string_view source, std::string_view delim, FUNC&& func) noexcept(noexcept(split_invoke(func, std::string_view{}, true)))
 	{
 		/// TODO: change `delim` type to isany-able
 		if (delim.empty()) return;
@@ -995,10 +1018,10 @@ namespace ghassanpl::string_ops
 		size_t next = 0;
 		while ((next = source.find_first_of(std::string_view{ delim })) != std::string::npos)
 		{
-			func(source.substr(0, next), false);
+			split_invoke(func, source.substr(0, next), false);
 			source.remove_prefix(next + 1);
 		}
-		func(source, true);
+		split_invoke(func, source, true);
 	}
 
 	/// Performs a basic "split" operation, calling `func` for each part of `source` delimited by the `delim` function.
@@ -1016,15 +1039,15 @@ namespace ghassanpl::string_ops
 	///		if it returns `std::string::npos`, splitting ends there, calling `func` for the rest of the string
 	/// \param func must be invocable as `func(string_view, bool)`; the second argument specifies if the given string is the final part of the split
 	template <typename DELIM_FUNC, typename FUNC>
-	requires std::is_invocable_v<FUNC, std::string_view, bool>&& std::is_invocable_r_v<size_t, DELIM_FUNC, std::string_view>
-	inline void split_on(std::string_view source, DELIM_FUNC&& delim, FUNC&& func) noexcept(noexcept(func(std::string_view{}, true)) && noexcept(delim(std::string_view{})))
+	requires std::is_invocable_r_v<size_t, DELIM_FUNC, std::string_view>
+	inline void split_on(std::string_view source, DELIM_FUNC&& delim, FUNC&& func) noexcept(noexcept(split_invoke(func, std::string_view{}, true)) && noexcept(delim(std::string_view{})))
 	{
 		size_t start = 0;
 		size_t end = 0;
 		end = delim(source);
 		while (end != std::string::npos)
 		{
-			func(source.substr(start, end - start), false);
+			split_invoke(func, source.substr(start, end - start), false);
 			//source.remove_prefix(end);
 			start = end;
 			auto next = delim(source.substr(end + 1));
@@ -1032,7 +1055,7 @@ namespace ghassanpl::string_ops
 				break;
 			end = next + end + 1;
 		}
-		func(source.substr(start), true);
+		split_invoke(func, source.substr(start), true);
 	}
 
 	/// Does not include the character at `split_at` in the returned strings
@@ -1097,13 +1120,12 @@ namespace ghassanpl::string_ops
 	/// 'words'
 	/// ```
 	template <typename FUNC>
-	requires std::is_invocable_v<FUNC, std::string_view, bool>
-	inline void natural_split(std::string_view source, char delim, FUNC&& func) noexcept
+	inline void natural_split(std::string_view source, char delim, FUNC&& func) noexcept(noexcept(split_invoke(func, source, delim)))
 	{
 		size_t next = 0;
 		while ((next = source.find_first_of(delim)) != std::string::npos)
 		{
-			func(source.substr(0, next), false);
+			split_invoke(func, source.substr(0, next), false);
 			source.remove_prefix(next + 1);
 
 			if ((next = source.find_first_not_of(delim)) == std::string::npos)
@@ -1113,7 +1135,7 @@ namespace ghassanpl::string_ops
 		}
 
 		if (!source.empty())
-			func(source, true);
+			split_invoke(func, source, true);
 	}
 
 	/// Performs a basic "split" operation, returning a `std::vector` of the split parts
@@ -1123,7 +1145,7 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] constexpr std::vector<RESULT_TYPE> split(std::string_view source, DELIM&& delim) noexcept
 	{
 		std::vector<RESULT_TYPE> result;
-		::ghassanpl::string_ops::split(source, std::forward<DELIM>(delim), [&result](std::string_view str, bool) {
+		::ghassanpl::string_ops::split(source, std::forward<DELIM>(delim), [&result](std::string_view str) {
 			result.push_back(RESULT_TYPE{ str });
 		});
 		return result;
@@ -1137,7 +1159,7 @@ namespace ghassanpl::string_ops
 	{
 		/// TODO: change `delim` type to isany-able
 		std::vector<RESULT_TYPE> result;
-		::ghassanpl::string_ops::split_on_any(source, delim, [&result](std::string_view str, bool) {
+		::ghassanpl::string_ops::split_on_any(source, delim, [&result](std::string_view str) {
 			result.push_back(RESULT_TYPE{ str });
 		});
 		return result;
@@ -1152,7 +1174,7 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] std::vector<RESULT_TYPE> split_on(std::string_view source, DELIM_FUNC&& delim) noexcept(noexcept(delim(std::string_view{})))
 	{
 		std::vector<RESULT_TYPE> result;
-		::ghassanpl::string_ops::split_on(source, std::forward<DELIM_FUNC>(delim), [&result](std::string_view str, bool last) {
+		::ghassanpl::string_ops::split_on(source, std::forward<DELIM_FUNC>(delim), [&result](std::string_view str) {
 			result.push_back(RESULT_TYPE{ str });
 		});
 		return result;
@@ -1164,9 +1186,9 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] inline std::vector<RESULT_TYPE> natural_split(std::string_view source, DELIM&& delim) noexcept
 	{
 		std::vector<RESULT_TYPE> result;
-		::ghassanpl::string_ops::natural_split(source, std::forward<DELIM>(delim), [&result](std::string_view str, bool last) {
+		::ghassanpl::string_ops::natural_split(source, std::forward<DELIM>(delim), [&result](std::string_view str) {
 			result.push_back(RESULT_TYPE{ str });
-			});
+		});
 		return result;
 	}
 
@@ -1661,6 +1683,8 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
+	/// TODO: wildcard_match
+
 	/// Word-wrapping function for constant-width characters.
 	/// \see word_wrap(std::string_view _source, T max_width, FUNC width_getter)
 	template <typename RESULT_TYPE = std::string_view, typename T>
@@ -1739,6 +1763,28 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] inline double stod(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return detail::string_to_number<double>(str, idx, format); }
 	[[nodiscard]] inline long double stold(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return detail::string_to_number<long double>(str, idx, format); }
 	/// @}
+
+	/// If `str` contains an integral number (and nothing else), returns that number, else an error-carrying `from_chars_result`.
+	template <std::integral T = std::make_unsigned_t<size_t>>
+	[[nodiscard]] inline auto to_number(std::string_view str, int base = 10) -> expected<T, std::from_chars_result> {
+		const auto begin = str.data();
+		auto end = str.data() + str.size();
+		T value{};
+		if (auto res = std::from_chars(begin, end, value, base); res.ec != std::error_code{} || res.ptr != end)
+			return unexpected(res);
+		return value;
+	}
+
+	/// If `str` contains an floating-point number (and nothing else), returns that number, else an error-carrying `from_chars_result`.
+	template <std::floating_point T = std::float_t>
+	[[nodiscard]] inline auto to_number(std::string_view str, std::chars_format format = std::chars_format::general) -> expected<T, std::from_chars_result> {
+		const auto begin = str.data();
+		auto end = str.data() + str.size();
+		T value{};
+		if (auto res = std::from_chars(begin, end, value, format); res.ec != std::error_code{} || res.ptr != end)
+			return unexpected(res);
+		return value;
+	}
 
 	template <typename CALLBACK>
 	requires std::invocable<CALLBACK, size_t, std::string_view, std::string&>

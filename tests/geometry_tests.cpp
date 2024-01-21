@@ -6,6 +6,7 @@
 
 #include "../include/ghassanpl/geometry/points.h"
 #include "../include/ghassanpl/geometry/rectangles.h"
+#include "../include/ghassanpl/functional.h"
 //#include "../include/ghassanpl/geometry/squares.h"
 //#include "../include/ghassanpl/geometry/grid_algorithms.h"
 //#include "../include/ghassanpl/geometry/block_navigation_grid.h"
@@ -87,6 +88,13 @@ TEST(triangle, basics_work)
 		EXPECT_EQ(t.winding(), winding_order::counter_clockwise);
 	}
 }
+
+TEST(polygon, edges)
+{
+	polygon p{};
+	p.edges();;
+}
+
 /*
 
 struct tile_data {};

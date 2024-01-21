@@ -22,9 +22,7 @@ namespace ghassanpl::geometry::squares
 			std::vector<glm::ivec2> neighbors;
 			current_iteration.for_each_tile_in_rect(rect, [&](glm::ivec2 pos) {
 				neighbors.clear();
-				current_iteration.for_each_neighbor<neighbor_iteration_flags>(pos, [&](glm::ivec2 neighbor_pos) {
-					neighbors.push_back(neighbor_pos);
-				});
+				current_iteration.for_each_neighbor<neighbor_iteration_flags>(pos, op::push_back_to(neighbors));
 				func(previous_iteration[pos], std::span<glm::ivec2 const>{ neighbors });
 			});
 
@@ -59,6 +57,8 @@ namespace ghassanpl::geometry::squares
 		if (!grid.is_valid(start)) return;
 		if (!should_flood(start, *grid.at(start))) return;
 
+		/// TODO: We could probably use grid.apply<> to call `should_flood`
+		 
 		queue.push(start);
 		while (!queue.empty())
 		{

@@ -299,7 +299,7 @@ namespace ghassanpl::formats::wilson
 	inline std::string to_string(nlohmann::json const& value)
 	{
 		std::string result;
-		wilson::output([&](std::string_view val) { result += val; }, value);
+		wilson::output(op::append_to(result), value);
 		return result;
 	}
 
