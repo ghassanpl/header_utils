@@ -73,6 +73,10 @@ namespace ghassanpl::di
 			{
 				return [](Container&) { return std::make_shared<T>(); };
 			}
+			static T* Create(Container& c)
+			{
+				return new T;
+			}
 		};
 
 		template <typename T>
@@ -86,6 +90,10 @@ namespace ghassanpl::di
 				return [](Container& container) {
 					return std::make_shared<T>(ArgumentResolverInvoker<typename TAnyArgument::Type>(container)...);
 				};
+			}
+			static T* Create(Container& c)
+			{
+				return new T(ArgumentResolverInvoker<typename TAnyArgument::Type>(c)...);
 			}
 		};
 
@@ -396,6 +404,18 @@ namespace ghassanpl::di
 	std::vector<std::shared_ptr<INTERFACE>> Container::ResolveAll()
 	{
 		return GetInterfaceContainer<INTERFACE>().ResolveAll(*this, DefaultLifetime);
+	}
+
+	template <typename TYPE>
+	std::shared_ptr<TYPE> Container::Create()
+	{
+		return std::shared_ptr<TYPE>{ detail::ConstructorDescriptorForClass<TYPE>::Create(*this) };
+	}
+
+	template <typename TYPE>
+	std::unique_ptr<TYPE> Container::CreateRaw()
+	{
+		return std::unique_ptr<TYPE>{ detail::ConstructorDescriptorForClass<TYPE>::Create(*this) };
 	}
 
 	template<typename INTERFACE>

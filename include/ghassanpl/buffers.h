@@ -106,7 +106,13 @@ namespace ghassanpl
 		}
 		else 
 		*/
-		if constexpr (requires { buffer.write(std::to_address(std::ranges::begin(range)), std::ranges::size(range)); } && std::ranges::sized_range<RANGE>) /// for ostreams
+		if constexpr (requires { buffer.append(std::to_address(std::ranges::begin(range)), std::ranges::size(range)); } && std::ranges::sized_range<RANGE>) /// for strings etc
+		{
+			const auto size = std::ranges::size(range);
+			buffer.append(std::to_address(std::ranges::begin(range)), size);
+			return size;
+		}
+		else if constexpr (requires { buffer.write(std::to_address(std::ranges::begin(range)), std::ranges::size(range)); } && std::ranges::sized_range<RANGE>) /// for ostreams
 		{
 			const auto size = std::ranges::size(range);
 			/// const auto pos = buffer.tellp();
@@ -200,6 +206,46 @@ namespace ghassanpl
 	size_t buffer_append_pod(BUFFER& buffer, POD const& pod)
 	{
 		return buffer_append_range(buffer, as_bytelikes<buffer_element_type<BUFFER>, POD>(pod));
+	}
+
+	/// TODO: Make this work - currently needs `string_ops`
+	template <typename BUFFER, typename CALLBACK>
+	requires std::invocable<CALLBACK, size_t, std::string_view, BUFFER&>
+	void callback_format_to(BUFFER& buffer, std::string_view fmt, CALLBACK&& callback)
+	{
+		/// TODO: Make this respect `}}` as an escaped `}`
+		size_t aid = 0;
+		while (!fmt.empty())
+		{
+			auto text = consume_until(fmt, '{');
+			buffer_append_range(buffer, text);
+			if (fmt.empty())
+				continue;
+			std::ignore = consume(fmt, '{');
+
+			if (consume(fmt, '{'))
+			{
+				buffer_append_range(buffer, '{');
+				continue;
+			}
+			else
+			{
+				std::string fmt_clause_str = "{";
+				auto fmt_clause = string_ops::consume_until_delim(fmt, '}');
+				if (!string_ops::consume_at_end(fmt_clause, '}'))
+					throw std::format_error("missing '}' in format string");
+				if (!fmt_clause.empty())
+				{
+					auto num = string_ops::consume_until(fmt_clause, ':');
+					if (!num.empty())
+						aid = string_ops::stoull(num);
+					fmt_clause_str += fmt_clause;
+				}
+				fmt_clause_str += '}';
+				callback(aid, std::string_view{ fmt_clause_str }, buffer);
+				++aid;
+			}
+		}
 	}
 
 	///@}

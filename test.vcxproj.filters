@@ -367,9 +367,6 @@
     <ClCompile Include="tests\random_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="playground.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tests\geometry_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

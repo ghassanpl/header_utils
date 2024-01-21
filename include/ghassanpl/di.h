@@ -70,6 +70,14 @@ namespace ghassanpl::di
 		template <typename INTERFACE>
 		std::vector<std::shared_ptr<INTERFACE>> ResolveAll();
 
+		/// Other
+
+		template <typename TYPE>
+		std::shared_ptr<TYPE> Create();
+
+		template <typename TYPE>
+		std::unique_ptr<TYPE> CreateRaw();
+
 		void DestroyAll()
 		{
 			mContainers.clear();
