@@ -16,6 +16,5 @@ var modules =
     [ "Bits", "group___bits.html", "group___bits" ],
     [ "Flags", "group___flags.html", "group___flags" ],
     [ "Formats", "group___formats.html", "group___formats" ],
-    [ "Functional", "group___functional.html", "group___functional" ],
-    [ "Windows", "group___windows.html", "group___windows" ]
+    [ "Functional", "group___functional.html", "group___functional" ]
 ];

@@ -77,5 +77,34 @@ namespace ghassanpl::fs
     inline auto is_symlink(stdfs::file_status s) noexcept { return stdfs::is_symlink(s); }
     inline auto is_symlink(const stdfs::path& p) { return call_with_expected_ec(GHPL_CALL_WEC(stdfs::is_symlink), p); }
 
+    //using path_view = std::basic_string_view<stdfs::path::value_type>;
+
+    /// As if `to /= p`
+    inline void path_append(std::string& to, path const& p)
+    {
+#if 1
+        static_assert(stdfs::path::preferred_separator < 128);
+
+        if (p.is_absolute() || to.empty())
+        {
+			to = p.string();
+			return;
+        }
+
+        while (to.ends_with(stdfs::path::preferred_separator))
+            to.pop_back();
+
+        auto str = p.string();
+        auto sv = std::string_view{ str };
+        while (sv.starts_with(stdfs::path::preferred_separator))
+			sv.remove_prefix(1);
+        
+        to += (char)stdfs::path::preferred_separator;
+        to += sv;
+#else
+        to = (to / p).string(); /// Possibly slower but provably correct
+#endif
+    }
+
 #undef GHPL_CALL_WEC
 }

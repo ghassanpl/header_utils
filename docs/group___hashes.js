@@ -1,14 +1,15 @@
 var group___hashes =
 [
-    [ "ghassanpl::crc32", "group___hashes.html#gac5a6ff64d16ab8a7322f93d9490e747a", null ],
-    [ "ghassanpl::crc32", "group___hashes.html#gab22384b2b159f0ac127885404ad38610", null ],
-    [ "ghassanpl::crc32", "group___hashes.html#gade41ff537e7771e74e4f4ab645360ed1", null ],
-    [ "ghassanpl::crc64", "group___hashes.html#ga1d7e9f44014f3e6abca2616d70d5d2d1", null ],
-    [ "ghassanpl::crc64", "group___hashes.html#ga6eefe4af6f55bdec5953821f76935766", null ],
-    [ "ghassanpl::crc64", "group___hashes.html#ga0291920741995e26024dec9d20809eaa", null ],
-    [ "ghassanpl::fnv", "group___hashes.html#ga9555c5e5423b56dbc1301bf40279429b", null ],
-    [ "ghassanpl::hash_combine_to", "group___hashes.html#ga4c2a69108025b071d1d96ceca255325c", null ],
-    [ "ghassanpl::hash_range", "group___hashes.html#ga45039b209524090a86b2b0c9f5121625", null ],
-    [ "ghassanpl::hash_range", "group___hashes.html#gafd8e31874d46440cdfedfd12fc3bbe76", null ],
-    [ "ghassanpl::hash_range", "group___hashes.html#ga69aaa553c61457935b18d1dd9e600f75", null ]
+    [ "ghassanpl::crc32", "group___hashes.html#ga27a9c9cbfb214d40aca1c461d51d76f0", null ],
+    [ "ghassanpl::crc32", "group___hashes.html#gab3fa58a81d05725137e820edb9b57900", null ],
+    [ "ghassanpl::crc32", "group___hashes.html#gaf559378f05624ae0996944830c41bff9", null ],
+    [ "ghassanpl::crc64", "group___hashes.html#ga9656f460b372051539fd8df108d85f29", null ],
+    [ "ghassanpl::crc64", "group___hashes.html#ga4dfdbe00234881bd248f0ab1e8fd80c9", null ],
+    [ "ghassanpl::crc64", "group___hashes.html#ga2d2ddcf061f773bafad7f9a10c64767a", null ],
+    [ "ghassanpl::fnv64", "group___hashes.html#gab2275a78b23399267a860926c46d5d1f", null ],
+    [ "ghassanpl::fnv64", "group___hashes.html#ga0e168d1a17e11e72dd1d66775f073139", null ],
+    [ "ghassanpl::hash64_combine_to", "group___hashes.html#ga6f04675eaaa69c1d1a6edb6c51ba0af6", null ],
+    [ "ghassanpl::hash64_range", "group___hashes.html#gaeb2a33e18b58a0126d504024a1420185", null ],
+    [ "ghassanpl::hash64_range", "group___hashes.html#gab7f3f666d0e5aed44729a6fed8e61655", null ],
+    [ "ghassanpl::hash64_range", "group___hashes.html#gad309fb81967d86cb78a3c9acf969d6cf", null ]
 ];

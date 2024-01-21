@@ -1,19 +1,4 @@
 var searchData=
 [
-  ['colors_0',['colors',['../namespaceghassanpl_1_1colors.html',1,'ghassanpl']]],
-  ['config_1',['config',['../namespaceghassanpl_1_1config.html',1,'ghassanpl']]],
-  ['di_2',['di',['../namespaceghassanpl_1_1di.html',1,'ghassanpl']]],
-  ['formats_3',['formats',['../namespaceghassanpl_1_1formats.html',1,'ghassanpl']]],
-  ['geometry_4',['geometry',['../namespaceghassanpl_1_1geometry.html',1,'ghassanpl']]],
-  ['ghassanpl_5',['ghassanpl',['../namespaceghassanpl.html',1,'']]],
-  ['glm_6',['glm',['../namespaceglm.html',1,'']]],
-  ['msg_7',['msg',['../namespaceghassanpl_1_1msg.html',1,'ghassanpl']]],
-  ['parsing_8',['parsing',['../namespaceghassanpl_1_1parsing.html',1,'ghassanpl']]],
-  ['random_9',['random',['../namespaceghassanpl_1_1random.html',1,'ghassanpl']]],
-  ['regex_10',['regex',['../namespaceghassanpl_1_1regex.html',1,'ghassanpl']]],
-  ['sexpressions_11',['sexpressions',['../namespaceghassanpl_1_1formats_1_1sexpressions.html',1,'ghassanpl::formats']]],
-  ['squares_12',['squares',['../namespaceghassanpl_1_1geometry_1_1squares.html',1,'ghassanpl::geometry']]],
-  ['string_5fops_13',['string_ops',['../namespaceghassanpl_1_1string__ops.html',1,'ghassanpl']]],
-  ['wilson_14',['wilson',['../namespaceghassanpl_1_1formats_1_1wilson.html',1,'ghassanpl::formats']]],
-  ['win_15',['win',['../namespaceghassanpl_1_1win.html',1,'ghassanpl']]]
+  ['detail_0',['detail',['../namespacedetail.html',1,'']]]
 ];

@@ -118,13 +118,13 @@ $(document).ready(function(){initNavTree('group___unicode.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 
-<p>Functions and types that work on Unicode strings.  
+<p>Functions and types that operate on Unicode codepoints and strings.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:structghassanpl_1_1string__ops_1_1text__encoding"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">ghassanpl::string_ops::text_encoding</a></td></tr>
-<tr class="memdesc:structghassanpl_1_1string__ops_1_1text__encoding"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type that represents a specific text encoding - a combination of <code><a class="el" href="group___unicode.html#ga1a8f96ed84ab50f48ff0925ecb6fa08a" title="Specifies a base text-encoding, ignoring endianness for multi-byte encodings.">ghassanpl::string_ops::base_text_encoding</a></code> and endianness.  <a href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">More...</a><br /></td></tr>
+<tr class="memdesc:structghassanpl_1_1string__ops_1_1text__encoding"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type that represents a specific text encoding - a combination of <code><a class="el" href="group___unicode.html#ga05990bf332d1e3aeefa175160e9dd0ea" title="Specifies a base text-encoding, ignoring endianness for multi-byte encodings.">ghassanpl::string_ops::text_encoding_type</a></code> and endianness.  <a href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">More...</a><br /></td></tr>
 <tr class="separator:structghassanpl_1_1string__ops_1_1text__encoding"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structghassanpl_1_1string__ops_1_1utf8__view.html">ghassanpl::string_ops::utf8_view&lt; R &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A simple view over an UTF8 string range with codepoint values.  <a href="structghassanpl_1_1string__ops_1_1utf8__view.html#details">More...</a><br /></td></tr>
@@ -132,7 +132,7 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ga1a8f96ed84ab50f48ff0925ecb6fa08a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga1a8f96ed84ab50f48ff0925ecb6fa08a">ghassanpl::string_ops::base_text_encoding</a> { <br />
+<tr class="memitem:ga05990bf332d1e3aeefa175160e9dd0ea"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga05990bf332d1e3aeefa175160e9dd0ea">ghassanpl::string_ops::text_encoding_type</a> { <br />
 &#160;&#160;<b>unknown</b>
 , <b>utf8</b>
 , <b>utf16</b>
@@ -147,8 +147,8 @@ Enumerations</h2></td></tr>
 , <b>gb18030</b>
 <br />
  }</td></tr>
-<tr class="memdesc:ga1a8f96ed84ab50f48ff0925ecb6fa08a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies a base text-encoding, ignoring endianness for multi-byte encodings.  <a href="group___unicode.html#ga1a8f96ed84ab50f48ff0925ecb6fa08a">More...</a><br /></td></tr>
-<tr class="separator:ga1a8f96ed84ab50f48ff0925ecb6fa08a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:ga05990bf332d1e3aeefa175160e9dd0ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies a base text-encoding, ignoring endianness for multi-byte encodings.  <a href="group___unicode.html#ga05990bf332d1e3aeefa175160e9dd0ea">More...</a><br /></td></tr>
+<tr class="separator:ga05990bf332d1e3aeefa175160e9dd0ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga007c8637e05a857a043fb9f64ff34470"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga007c8637e05a857a043fb9f64ff34470">ghassanpl::string_ops::unicode_plane</a> { <br />
 &#160;&#160;<a class="el" href="group___unicode.html#gga007c8637e05a857a043fb9f64ff34470afedb2d84cafe20862cb4399751a8a7e3">ghassanpl::string_ops::unicode_plane::invalid</a>
 , <b>basic_multilingual_plane</b>
@@ -178,105 +178,149 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gaadf6779c103593d59cfce286ff88f478"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaadf6779c103593d59cfce286ff88f478">ghassanpl::string_ops::is_high_surrogate</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:gaadf6779c103593d59cfce286ff88f478"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaadf6779c103593d59cfce286ff88f478">ghassanpl::string_ops::is_high_surrogate</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:gaadf6779c103593d59cfce286ff88f478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether <code>cp</code> is a codepoint that encodes the high part of a codepoint with a more-than-16-bit value.  <br /></td></tr>
 <tr class="separator:gaadf6779c103593d59cfce286ff88f478"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae7e4635e6f2f2d686f371f2405e51403"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gae7e4635e6f2f2d686f371f2405e51403">ghassanpl::string_ops::is_low_surrogate</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:gae7e4635e6f2f2d686f371f2405e51403"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gae7e4635e6f2f2d686f371f2405e51403">ghassanpl::string_ops::is_low_surrogate</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:gae7e4635e6f2f2d686f371f2405e51403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether <code>cp</code> is a codepoint that encodes the low part of a codepoint with a more-than-16-bit value.  <br /></td></tr>
 <tr class="separator:gae7e4635e6f2f2d686f371f2405e51403"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga83d57b46b8e1f4ea956bee4f2e757fbd"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga83d57b46b8e1f4ea956bee4f2e757fbd">ghassanpl::string_ops::is_surrogate</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga83d57b46b8e1f4ea956bee4f2e757fbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga83d57b46b8e1f4ea956bee4f2e757fbd">ghassanpl::string_ops::is_surrogate</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:ga83d57b46b8e1f4ea956bee4f2e757fbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether <code>cp</code> is a codepoint that encodes any part of a codepoint with a more-than-16-bit value.  <br /></td></tr>
 <tr class="separator:ga83d57b46b8e1f4ea956bee4f2e757fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6464275acc31e963653bcf8974bff260"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga6464275acc31e963653bcf8974bff260">ghassanpl::string_ops::is_unicode</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga6464275acc31e963653bcf8974bff260"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga6464275acc31e963653bcf8974bff260">ghassanpl::string_ops::is_unicode</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:ga6464275acc31e963653bcf8974bff260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether <code>cp</code> has a value that is a valid Unicode codepoint (ie. between 0 and 0x10FFFF).  <br /></td></tr>
 <tr class="separator:ga6464275acc31e963653bcf8974bff260"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga435b274b58154448f23240e03d6a01b8"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga435b274b58154448f23240e03d6a01b8">ghassanpl::string_ops::is_unicode_character</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga435b274b58154448f23240e03d6a01b8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga435b274b58154448f23240e03d6a01b8">ghassanpl::string_ops::is_unicode_character</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:ga435b274b58154448f23240e03d6a01b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether <code>cp</code> has a value that is a valid Unicode character (ie.  <br /></td></tr>
 <tr class="separator:ga435b274b58154448f23240e03d6a01b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4d593a64af4e46f3710c95d30d88ce76"><td class="memItemLeft" align="right" valign="top">constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga4d593a64af4e46f3710c95d30d88ce76">ghassanpl::string_ops::surrogate_pair_to_codepoint</a> (char32_t high, char32_t low) noexcept</td></tr>
+<tr class="memitem:ga4d593a64af4e46f3710c95d30d88ce76"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga4d593a64af4e46f3710c95d30d88ce76">ghassanpl::string_ops::surrogate_pair_to_codepoint</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">high</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">low</a>) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:ga4d593a64af4e46f3710c95d30d88ce76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the codepoint encoded by two surrogates.  <br /></td></tr>
 <tr class="separator:ga4d593a64af4e46f3710c95d30d88ce76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga35b62b292d99c5ff617c7ef41f05c702"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga35b62b292d99c5ff617c7ef41f05c702">ghassanpl::string_ops::get_unicode_plane</a> (char32_t cp) noexcept -&gt; <a class="el" href="group___unicode.html#ga007c8637e05a857a043fb9f64ff34470">unicode_plane</a></td></tr>
+<tr class="memitem:ga35b62b292d99c5ff617c7ef41f05c702"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga35b62b292d99c5ff617c7ef41f05c702">ghassanpl::string_ops::get_unicode_plane</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a> -&gt; <a class="el" href="group___unicode.html#ga007c8637e05a857a043fb9f64ff34470">unicode_plane</a></td></tr>
 <tr class="separator:ga35b62b292d99c5ff617c7ef41f05c702"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaad67659b9308e2629cd17598cb8ce3e6"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaad67659b9308e2629cd17598cb8ce3e6">ghassanpl::string_ops::codepoint_utf8_count</a> (char32_t cp) noexcept</td></tr>
-<tr class="memdesc:gaad67659b9308e2629cd17598cb8ce3e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of UTF-8 octets necessarity to encode the given codepoint.  <br /></td></tr>
-<tr class="separator:gaad67659b9308e2629cd17598cb8ce3e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8c686512efefbd56b5ae201779104929"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structghassanpl_1_1string__ops_1_1text__decode__result.html">text_decode_result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga8c686512efefbd56b5ae201779104929">ghassanpl::string_ops::decode_codepoint</a> (stringable8 auto str, <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> encoding)</td></tr>
-<tr class="memdesc:ga8c686512efefbd56b5ae201779104929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to decode the first codepoint in 8-bit range <code>str</code>, assuming it is encoded in <code>encoding</code>.  <br /></td></tr>
-<tr class="separator:ga8c686512efefbd56b5ae201779104929"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga15c8928c9b43a41800036b6b94d37dfe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga15c8928c9b43a41800036b6b94d37dfe">ghassanpl::string_ops::consume_bom</a> (stringable8 auto &amp;sv)</td></tr>
-<tr class="memdesc:ga15c8928c9b43a41800036b6b94d37dfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the encoding that the BOM represents (or <code>unknown_text_encoding</code>) if no BOM.  <br /></td></tr>
-<tr class="separator:ga15c8928c9b43a41800036b6b94d37dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae0570958daa717ab6b51e1eb8249083f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gae0570958daa717ab6b51e1eb8249083f">ghassanpl::string_ops::consume_bom</a> (stringable16 auto &amp;sv)</td></tr>
-<tr class="memdesc:gae0570958daa717ab6b51e1eb8249083f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the UTF-16 encoding that the BOM represents (or <code>unknown_text_encoding</code>) if no BOM.  <br /></td></tr>
-<tr class="separator:gae0570958daa717ab6b51e1eb8249083f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga28ebb2c8962050e3db6fe49c53eaeb29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga28ebb2c8962050e3db6fe49c53eaeb29">ghassanpl::string_ops::consume_bom</a> (stringable32 auto &amp;sv)</td></tr>
-<tr class="memdesc:ga28ebb2c8962050e3db6fe49c53eaeb29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the UTF-32 encoding that the BOM represents (or <code>unknown_text_encoding</code>) if no BOM.  <br /></td></tr>
-<tr class="separator:ga28ebb2c8962050e3db6fe49c53eaeb29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab082e7bc304878d5b920aaca18f319e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gab082e7bc304878d5b920aaca18f319e1">ghassanpl::string_ops::detect_encoding</a> (stringable8 auto str)</td></tr>
-<tr class="memdesc:gab082e7bc304878d5b920aaca18f319e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to detect the encoding of a given 8-bit range.  <br /></td></tr>
-<tr class="separator:gab082e7bc304878d5b920aaca18f319e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaabb8707b3bf08b1bd916097122af10a1"><td class="memItemLeft" align="right" valign="top">constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaabb8707b3bf08b1bd916097122af10a1">ghassanpl::string_ops::consume_utf8</a> (string_view8 auto &amp;str)</td></tr>
-<tr class="memdesc:gaabb8707b3bf08b1bd916097122af10a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a UTF-8 codepoint from <code>str</code>.  <br /></td></tr>
-<tr class="separator:gaabb8707b3bf08b1bd916097122af10a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6d920b2c90ab2d2df9dc19f9dd14e106"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga6d920b2c90ab2d2df9dc19f9dd14e106">ghassanpl::string_ops::append_utf8</a> (string8 auto &amp;buffer, char32_t cp)</td></tr>
-<tr class="memdesc:ga6d920b2c90ab2d2df9dc19f9dd14e106"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends octets to <code>buffer</code> by encoding <code>cp</code> into UTF-8.  <br /></td></tr>
-<tr class="separator:ga6d920b2c90ab2d2df9dc19f9dd14e106"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga788d1f171ccb13006224d1822f0d7ed5"><td class="memTemplParams" colspan="2">template&lt;string8 RESULT = std::string&gt; </td></tr>
-<tr class="memitem:ga788d1f171ccb13006224d1822f0d7ed5"><td class="memTemplItemLeft" align="right" valign="top">constexpr RESULT&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga788d1f171ccb13006224d1822f0d7ed5">ghassanpl::string_ops::to_utf8</a> (char32_t cp)</td></tr>
-<tr class="memdesc:ga788d1f171ccb13006224d1822f0d7ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>cp</code> encoded as a UTF-8 string.  <br /></td></tr>
-<tr class="separator:ga788d1f171ccb13006224d1822f0d7ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9c6f53e6ffcc5877622e3ad78f607647"><td class="memTemplParams" colspan="2">template&lt;string8 RESULT = std::string, stringable16 STR&gt; </td></tr>
-<tr class="memitem:ga9c6f53e6ffcc5877622e3ad78f607647"><td class="memTemplItemLeft" align="right" valign="top">constexpr RESULT&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga9c6f53e6ffcc5877622e3ad78f607647">ghassanpl::string_ops::to_utf8</a> (STR str)</td></tr>
-<tr class="memdesc:ga9c6f53e6ffcc5877622e3ad78f607647"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>str</code> (a UTF-16-encoded string) encoded as a UTF-8 string.  <br /></td></tr>
-<tr class="separator:ga9c6f53e6ffcc5877622e3ad78f607647"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga570f84f9b126f2153403148c3e65500a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga570f84f9b126f2153403148c3e65500a">ghassanpl::string_ops::to_string</a> (std::wstring_view str)</td></tr>
-<tr class="memdesc:ga570f84f9b126f2153403148c3e65500a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>str</code> (a UTF-16-encoded string) encoded as a UTF-8 string.  <br /></td></tr>
-<tr class="separator:ga570f84f9b126f2153403148c3e65500a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga81083535d71b90ee2aee200a3d372784"><td class="memItemLeft" align="right" valign="top">constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga81083535d71b90ee2aee200a3d372784">ghassanpl::string_ops::consume_utf16</a> (string_view16 auto &amp;str)</td></tr>
-<tr class="memdesc:ga81083535d71b90ee2aee200a3d372784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a UTF-16 codepoint from <code>str</code>.  <br /></td></tr>
-<tr class="separator:ga81083535d71b90ee2aee200a3d372784"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaccb33ce68e70425b3a3bf5dc0ec0cb5b"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaccb33ce68e70425b3a3bf5dc0ec0cb5b">ghassanpl::string_ops::append_utf16</a> (string16 auto &amp;buffer, char32_t cp)</td></tr>
-<tr class="memdesc:gaccb33ce68e70425b3a3bf5dc0ec0cb5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends 16-bit values to <code>buffer</code> by encoding <code>cp</code> into UTF-16.  <br /></td></tr>
-<tr class="separator:gaccb33ce68e70425b3a3bf5dc0ec0cb5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga81ec61b363c30f534e1b9c42f100bf0f"><td class="memTemplParams" colspan="2">template&lt;string16 RESULT = std::wstring&gt; </td></tr>
-<tr class="memitem:ga81ec61b363c30f534e1b9c42f100bf0f"><td class="memTemplItemLeft" align="right" valign="top">constexpr RESULT&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga81ec61b363c30f534e1b9c42f100bf0f">ghassanpl::string_ops::to_utf16</a> (char32_t cp)</td></tr>
-<tr class="memdesc:ga81ec61b363c30f534e1b9c42f100bf0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>cp</code> encoded as a UTF-16 string.  <br /></td></tr>
-<tr class="separator:ga81ec61b363c30f534e1b9c42f100bf0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeafd75b2b78f3a870b93a8efbededad7"><td class="memTemplParams" colspan="2">template&lt;string16 RESULT, stringable8 STR&gt; </td></tr>
-<tr class="memitem:gaeafd75b2b78f3a870b93a8efbededad7"><td class="memTemplItemLeft" align="right" valign="top">constexpr RESULT&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaeafd75b2b78f3a870b93a8efbededad7">ghassanpl::string_ops::to_utf16</a> (STR str)</td></tr>
-<tr class="memdesc:gaeafd75b2b78f3a870b93a8efbededad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>str</code> (a UTF-8-encoded string) encoded as a UTF-16 string.  <br /></td></tr>
-<tr class="separator:gaeafd75b2b78f3a870b93a8efbededad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gade111cdf93cef3b188cefda67a94e581"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gade111cdf93cef3b188cefda67a94e581">ghassanpl::string_ops::to_wstring</a> (std::string_view str)</td></tr>
-<tr class="memdesc:gade111cdf93cef3b188cefda67a94e581"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>str</code> (a UTF-8-encoded string) encoded as a UTF-16 string.  <br /></td></tr>
-<tr class="separator:gade111cdf93cef3b188cefda67a94e581"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga65fee844cea2c10814b73f80f79fe803"><td class="memItemLeft" align="right" valign="top">constexpr void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga65fee844cea2c10814b73f80f79fe803">ghassanpl::string_ops::transcode_codepage_to_utf8</a> (string8 auto &amp;dest, stringable8 auto source, std::span&lt; char32_t const, 128 &gt; codepage_map)</td></tr>
-<tr class="memdesc:ga65fee844cea2c10814b73f80f79fe803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transcodes an <a href="https://en.wikipedia.org/wiki/Extended_ASCII">Extended ASCII</a> string <code>source</code> into UTF-8 <code>dest</code>, according to <code>codepage_map</code>  <br /></td></tr>
-<tr class="separator:ga65fee844cea2c10814b73f80f79fe803"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf1786d135711f4339dad9990de38d500"><td class="memTemplParams" colspan="2">template&lt;string8 RESULT = std::string&gt; </td></tr>
-<tr class="memitem:gaf1786d135711f4339dad9990de38d500"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaf1786d135711f4339dad9990de38d500">ghassanpl::string_ops::transcode_codepage_to_utf8</a> (stringable8 auto source, std::span&lt; char32_t const, 128 &gt; codepage_map) -&gt; RESULT</td></tr>
-<tr class="memdesc:gaf1786d135711f4339dad9990de38d500"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transcodes an <a href="https://en.wikipedia.org/wiki/Extended_ASCII">Extended ASCII</a> string <code>source</code> into UTF-8, according to <code>codepage_map</code>  <br /></td></tr>
-<tr class="separator:gaf1786d135711f4339dad9990de38d500"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gace991b45b9450fc8bece3f81630aa7ff"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structghassanpl_1_1string__ops_1_1text__decode__result.html">text_decode_result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gace991b45b9450fc8bece3f81630aa7ff">ghassanpl::string_ops::decode_codepoint</a> (bytelike_range <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">range</a>, <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">encoding</a>)</td></tr>
+<tr class="memdesc:gace991b45b9450fc8bece3f81630aa7ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to decode the first codepoint in <code>bytelike</code> range <code>range</code>, assuming it is encoded in <code>encoding</code>.  <br /></td></tr>
+<tr class="separator:gace991b45b9450fc8bece3f81630aa7ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae9f7b0c577c591a294c0d3687f7961e6"><td class="memTemplParams" colspan="2">template&lt;bytelike BYTE_TYPE, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a> N&gt; </td></tr>
+<tr class="memitem:gae9f7b0c577c591a294c0d3687f7961e6"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#gae9f7b0c577c591a294c0d3687f7961e6">ghassanpl::string_ops::consume_bom</a> (std::span&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">BYTE_TYPE</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">N</a> &gt; &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">spn</a>)</td></tr>
+<tr class="memdesc:gae9f7b0c577c591a294c0d3687f7961e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of spn (a <code>span</code> of <code>bytelike</code>), and returns the encoding that the BOM represents (or <code>unknown_text_encoding</code> if no BOM).  <br /></td></tr>
+<tr class="separator:gae9f7b0c577c591a294c0d3687f7961e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4dbca6e7c98b06a3e7d89643f415118f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga4dbca6e7c98b06a3e7d89643f415118f">ghassanpl::string_ops::consume_bom</a> (string_view8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">sv</a>)</td></tr>
+<tr class="memdesc:ga4dbca6e7c98b06a3e7d89643f415118f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the encoding that the BOM represents (or <code>unknown_text_encoding</code> if no BOM).  <br /></td></tr>
+<tr class="separator:ga4dbca6e7c98b06a3e7d89643f415118f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7020fd6d0c8ea08ff3bf9b682331242c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga7020fd6d0c8ea08ff3bf9b682331242c">ghassanpl::string_ops::consume_bom</a> (string_view16 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">sv</a>)</td></tr>
+<tr class="memdesc:ga7020fd6d0c8ea08ff3bf9b682331242c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the UTF-16 encoding that the BOM represents (or <code>unknown_text_encoding</code> if no BOM).  <br /></td></tr>
+<tr class="separator:ga7020fd6d0c8ea08ff3bf9b682331242c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga07f76e59b03c73f24eb37bd08cd6696e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga07f76e59b03c73f24eb37bd08cd6696e">ghassanpl::string_ops::consume_bom</a> (string_view32 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">sv</a>)</td></tr>
+<tr class="memdesc:ga07f76e59b03c73f24eb37bd08cd6696e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the UTF-32 encoding that the BOM represents (or <code>unknown_text_encoding</code> if no BOM).  <br /></td></tr>
+<tr class="separator:ga07f76e59b03c73f24eb37bd08cd6696e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab6c4e64793bbc00da550e8350a5eb1b9"><td class="memTemplParams" colspan="2">template&lt;bytelike_range T&gt; </td></tr>
+<tr class="memitem:gab6c4e64793bbc00da550e8350a5eb1b9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#gab6c4e64793bbc00da550e8350a5eb1b9">ghassanpl::string_ops::detect_encoding</a> (T <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">range</a>)</td></tr>
+<tr class="memdesc:gab6c4e64793bbc00da550e8350a5eb1b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts to detect the encoding of a given bytelike range.  <br /></td></tr>
+<tr class="separator:gab6c4e64793bbc00da550e8350a5eb1b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga90970e0e19290acdba2b94358dbdd8ef"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> T &gt; </td></tr>
+<tr class="memitem:ga90970e0e19290acdba2b94358dbdd8ef"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga90970e0e19290acdba2b94358dbdd8ef">ghassanpl::string_ops::consume_codepoint</a> (T &amp;str)</td></tr>
+<tr class="memdesc:ga90970e0e19290acdba2b94358dbdd8ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes a codepoint from a UTF-encoded string and returns it.  <br /></td></tr>
+<tr class="separator:ga90970e0e19290acdba2b94358dbdd8ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8c2d260876a76010b61cbe54766262e0"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> T &gt; </td></tr>
+<tr class="memitem:ga8c2d260876a76010b61cbe54766262e0"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga8c2d260876a76010b61cbe54766262e0">ghassanpl::string_ops::append_codepoint</a> (T &amp;str, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp)</td></tr>
+<tr class="memdesc:ga8c2d260876a76010b61cbe54766262e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a codepoint to a UTF-encoded string. Supports UTF-8, UTF-16 and UTF-32, decides based on char type of <code>str</code>.  <br /></td></tr>
+<tr class="separator:ga8c2d260876a76010b61cbe54766262e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga197fd19e599bac5d315b0521c5d3380d"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> , <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> &gt; </td></tr>
+<tr class="memitem:ga197fd19e599bac5d315b0521c5d3380d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga197fd19e599bac5d315b0521c5d3380d">ghassanpl::string_ops::transcode_unicode</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;from, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">out</a>)</td></tr>
+<tr class="memdesc:ga197fd19e599bac5d315b0521c5d3380d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a UTF-encoded string to a UTF-encoded string, of a different encoding. Decides the encodings based on the char type of <code>TO</code> and <code>FROM</code>.  <br /></td></tr>
+<tr class="separator:ga197fd19e599bac5d315b0521c5d3380d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0ff86417c93ba15ea1fa3facd984dc3b"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> , <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> &gt; </td></tr>
+<tr class="memitem:ga0ff86417c93ba15ea1fa3facd984dc3b"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga0ff86417c93ba15ea1fa3facd984dc3b">ghassanpl::string_ops::transcode_unicode</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;from)</td></tr>
+<tr class="memdesc:ga0ff86417c93ba15ea1fa3facd984dc3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a UTF-encoded string to a UTF-encoded string, of a different encoding. Decides the encodings based on the char type of <code>TO</code> and <code>FROM</code>.  <br /></td></tr>
+<tr class="separator:ga0ff86417c93ba15ea1fa3facd984dc3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3c082d1c632a75aab0f27e8e448361bd"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> T &gt; </td></tr>
+<tr class="memitem:ga3c082d1c632a75aab0f27e8e448361bd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga3c082d1c632a75aab0f27e8e448361bd">ghassanpl::string_ops::transcode_codepage_to_unicode</a> (T &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">dest</a>, stringable8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> source, std::span&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a>, 128 &gt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">codepage_map</a>)</td></tr>
+<tr class="memdesc:ga3c082d1c632a75aab0f27e8e448361bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transcodes an <a href="https://en.wikipedia.org/wiki/Extended_ASCII">Extended ASCII</a> string <code>source</code> into unicode-encoded <code>dest</code>, according to <code>codepage_map</code>.  <br /></td></tr>
+<tr class="separator:ga3c082d1c632a75aab0f27e8e448361bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaba2b4665676b855e8f4cbe809b302d27"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a>  = std::string&gt; </td></tr>
+<tr class="memitem:gaba2b4665676b855e8f4cbe809b302d27"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaba2b4665676b855e8f4cbe809b302d27">ghassanpl::string_ops::transcode_codepage_to_unicode</a> (stringable8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> source, std::span&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a>, 128 &gt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">codepage_map</a>) -&gt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a></td></tr>
+<tr class="memdesc:gaba2b4665676b855e8f4cbe809b302d27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transcodes an <a href="https://en.wikipedia.org/wiki/Extended_ASCII">Extended ASCII</a> string <code>source</code> into a unicode encoding, according to <code>codepage_map</code>  <br /></td></tr>
+<tr class="separator:gaba2b4665676b855e8f4cbe809b302d27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Encodings</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>Values representing UTF encodings </p>
 </td></tr>
-<tr class="memitem:gaab573311eb5cee44f95c08afb24d0b49"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaab573311eb5cee44f95c08afb24d0b49">ghassanpl::string_ops::utf8_encoding</a></td></tr>
+<tr class="memitem:gaab573311eb5cee44f95c08afb24d0b49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaab573311eb5cee44f95c08afb24d0b49">ghassanpl::string_ops::utf8_encoding</a></td></tr>
 <tr class="separator:gaab573311eb5cee44f95c08afb24d0b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga71e03cbfce0ef996a29756061e0652a5"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga71e03cbfce0ef996a29756061e0652a5">ghassanpl::string_ops::utf16_le_encoding</a></td></tr>
+<tr class="memitem:ga71e03cbfce0ef996a29756061e0652a5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga71e03cbfce0ef996a29756061e0652a5">ghassanpl::string_ops::utf16_le_encoding</a></td></tr>
 <tr class="separator:ga71e03cbfce0ef996a29756061e0652a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga124932c2f3f0eaf957eaaf642b2498b7"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga124932c2f3f0eaf957eaaf642b2498b7">ghassanpl::string_ops::utf16_be_encoding</a></td></tr>
+<tr class="memitem:ga124932c2f3f0eaf957eaaf642b2498b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga124932c2f3f0eaf957eaaf642b2498b7">ghassanpl::string_ops::utf16_be_encoding</a></td></tr>
 <tr class="separator:ga124932c2f3f0eaf957eaaf642b2498b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac61ac85fff3decbf6c95585775d45756"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gac61ac85fff3decbf6c95585775d45756">ghassanpl::string_ops::utf32_le_encoding</a></td></tr>
+<tr class="memitem:gac61ac85fff3decbf6c95585775d45756"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gac61ac85fff3decbf6c95585775d45756">ghassanpl::string_ops::utf32_le_encoding</a></td></tr>
 <tr class="separator:gac61ac85fff3decbf6c95585775d45756"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga52b2b14c1006359de00dc7830d232cc9"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga52b2b14c1006359de00dc7830d232cc9">ghassanpl::string_ops::utf32_be_encoding</a></td></tr>
+<tr class="memitem:ga52b2b14c1006359de00dc7830d232cc9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga52b2b14c1006359de00dc7830d232cc9">ghassanpl::string_ops::utf32_be_encoding</a></td></tr>
 <tr class="separator:ga52b2b14c1006359de00dc7830d232cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadc4891692418e510624d01a02b02f491"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gadc4891692418e510624d01a02b02f491">ghassanpl::string_ops::unknown_text_encoding</a></td></tr>
+<tr class="memitem:gadc4891692418e510624d01a02b02f491"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gadc4891692418e510624d01a02b02f491">ghassanpl::string_ops::unknown_text_encoding</a></td></tr>
 <tr class="memdesc:gadc4891692418e510624d01a02b02f491"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents an unknown text encoding (e.g. when an encoding could not be determined)  <br /></td></tr>
 <tr class="separator:gadc4891692418e510624d01a02b02f491"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">UTF-8 functions</h2></td></tr>
+<tr class="memitem:gaad67659b9308e2629cd17598cb8ce3e6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaad67659b9308e2629cd17598cb8ce3e6">ghassanpl::string_ops::codepoint_utf8_count</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
+<tr class="memdesc:gaad67659b9308e2629cd17598cb8ce3e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of UTF-8 octets necessarity to encode the given codepoint.  <br /></td></tr>
+<tr class="separator:gaad67659b9308e2629cd17598cb8ce3e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaabb8707b3bf08b1bd916097122af10a1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaabb8707b3bf08b1bd916097122af10a1">ghassanpl::string_ops::consume_utf8</a> (string_view8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;str)</td></tr>
+<tr class="memdesc:gaabb8707b3bf08b1bd916097122af10a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a UTF-8 codepoint from <code>str</code>.  <br /></td></tr>
+<tr class="separator:gaabb8707b3bf08b1bd916097122af10a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga56a176ef0258918dd7735278818a0a15"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga56a176ef0258918dd7735278818a0a15">ghassanpl::string_ops::count_utf8_codepoints</a> (stringable8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> str)</td></tr>
+<tr class="memdesc:ga56a176ef0258918dd7735278818a0a15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of codepoints in the given UTF-8 string <code>str</code>  <br /></td></tr>
+<tr class="separator:ga56a176ef0258918dd7735278818a0a15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6d920b2c90ab2d2df9dc19f9dd14e106"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga6d920b2c90ab2d2df9dc19f9dd14e106">ghassanpl::string_ops::append_utf8</a> (string8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">buffer</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp)</td></tr>
+<tr class="memdesc:ga6d920b2c90ab2d2df9dc19f9dd14e106"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends octets to <code>buffer</code> by encoding <code>cp</code> into UTF-8.  <br /></td></tr>
+<tr class="separator:ga6d920b2c90ab2d2df9dc19f9dd14e106"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga788d1f171ccb13006224d1822f0d7ed5"><td class="memTemplParams" colspan="2">template&lt;string8 RESULT = std::string&gt; </td></tr>
+<tr class="memitem:ga788d1f171ccb13006224d1822f0d7ed5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga788d1f171ccb13006224d1822f0d7ed5">ghassanpl::string_ops::to_utf8</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp)</td></tr>
+<tr class="memdesc:ga788d1f171ccb13006224d1822f0d7ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>cp</code> encoded as a UTF-8 string.  <br /></td></tr>
+<tr class="separator:ga788d1f171ccb13006224d1822f0d7ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga27fcf27c88719d429202fa65de47eb60"><td class="memTemplParams" colspan="2">template&lt;string8 RESULT = std::string, stringable16 STR&gt; </td></tr>
+<tr class="memitem:ga27fcf27c88719d429202fa65de47eb60"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga27fcf27c88719d429202fa65de47eb60">ghassanpl::string_ops::to_utf8</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">STR</a> &amp;&amp;str)</td></tr>
+<tr class="memdesc:ga27fcf27c88719d429202fa65de47eb60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>str</code> (a UTF-16-encoded string) encoded as a UTF-8 string.  <br /></td></tr>
+<tr class="separator:ga27fcf27c88719d429202fa65de47eb60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga570f84f9b126f2153403148c3e65500a"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga570f84f9b126f2153403148c3e65500a">ghassanpl::string_ops::to_string</a> (std::wstring_view str)</td></tr>
+<tr class="memdesc:ga570f84f9b126f2153403148c3e65500a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>str</code> (a UTF-16-encoded string) encoded as a UTF-8 string.  <br /></td></tr>
+<tr class="separator:ga570f84f9b126f2153403148c3e65500a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga65fee844cea2c10814b73f80f79fe803"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga65fee844cea2c10814b73f80f79fe803">ghassanpl::string_ops::transcode_codepage_to_utf8</a> (string8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">dest</a>, stringable8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> source, std::span&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a>, 128 &gt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">codepage_map</a>)</td></tr>
+<tr class="memdesc:ga65fee844cea2c10814b73f80f79fe803"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transcodes an <a href="https://en.wikipedia.org/wiki/Extended_ASCII">Extended ASCII</a> string <code>source</code> into UTF-8 <code>dest</code>, according to <code>codepage_map</code>  <br /></td></tr>
+<tr class="separator:ga65fee844cea2c10814b73f80f79fe803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf1786d135711f4339dad9990de38d500"><td class="memTemplParams" colspan="2">template&lt;string8 RESULT = std::string&gt; </td></tr>
+<tr class="memitem:gaf1786d135711f4339dad9990de38d500"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaf1786d135711f4339dad9990de38d500">ghassanpl::string_ops::transcode_codepage_to_utf8</a> (stringable8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> source, std::span&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a>, 128 &gt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">codepage_map</a>) -&gt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a></td></tr>
+<tr class="memdesc:gaf1786d135711f4339dad9990de38d500"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transcodes an <a href="https://en.wikipedia.org/wiki/Extended_ASCII">Extended ASCII</a> string <code>source</code> into UTF-8, according to <code>codepage_map</code>  <br /></td></tr>
+<tr class="separator:gaf1786d135711f4339dad9990de38d500"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">UTF-16 functions</h2></td></tr>
+<tr class="memitem:ga81083535d71b90ee2aee200a3d372784"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga81083535d71b90ee2aee200a3d372784">ghassanpl::string_ops::consume_utf16</a> (string_view16 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;str)</td></tr>
+<tr class="memdesc:ga81083535d71b90ee2aee200a3d372784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a UTF-16 codepoint from <code>str</code>.  <br /></td></tr>
+<tr class="separator:ga81083535d71b90ee2aee200a3d372784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaccb33ce68e70425b3a3bf5dc0ec0cb5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaccb33ce68e70425b3a3bf5dc0ec0cb5b">ghassanpl::string_ops::append_utf16</a> (string16 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">buffer</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp)</td></tr>
+<tr class="memdesc:gaccb33ce68e70425b3a3bf5dc0ec0cb5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends 16-bit values to <code>buffer</code> by encoding <code>cp</code> into UTF-16.  <br /></td></tr>
+<tr class="separator:gaccb33ce68e70425b3a3bf5dc0ec0cb5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga81ec61b363c30f534e1b9c42f100bf0f"><td class="memTemplParams" colspan="2">template&lt;string16 RESULT = std::wstring&gt; </td></tr>
+<tr class="memitem:ga81ec61b363c30f534e1b9c42f100bf0f"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga81ec61b363c30f534e1b9c42f100bf0f">ghassanpl::string_ops::to_utf16</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp)</td></tr>
+<tr class="memdesc:ga81ec61b363c30f534e1b9c42f100bf0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>cp</code> encoded as a UTF-16 string.  <br /></td></tr>
+<tr class="separator:ga81ec61b363c30f534e1b9c42f100bf0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaeafd75b2b78f3a870b93a8efbededad7"><td class="memTemplParams" colspan="2">template&lt;string16 RESULT = std::wstring, stringable8 STR&gt; </td></tr>
+<tr class="memitem:gaeafd75b2b78f3a870b93a8efbededad7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___unicode.html#gaeafd75b2b78f3a870b93a8efbededad7">ghassanpl::string_ops::to_utf16</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">STR</a> str)</td></tr>
+<tr class="memdesc:gaeafd75b2b78f3a870b93a8efbededad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>str</code> (a UTF-8-encoded string) encoded as a UTF-16 string.  <br /></td></tr>
+<tr class="separator:gaeafd75b2b78f3a870b93a8efbededad7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gade111cdf93cef3b188cefda67a94e581"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#gade111cdf93cef3b188cefda67a94e581">ghassanpl::string_ops::to_wstring</a> (std::string_view str)</td></tr>
+<tr class="memdesc:gade111cdf93cef3b188cefda67a94e581"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>str</code> (a UTF-8-encoded string) encoded as a UTF-16/32 string in a std::wstring (depending on the size of wchar_t)  <br /></td></tr>
+<tr class="separator:gade111cdf93cef3b188cefda67a94e581"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">UTF-32 functions</h2></td></tr>
+<tr class="memitem:ga0281323488c3f378f3c27a170b0d29e1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga0281323488c3f378f3c27a170b0d29e1">ghassanpl::string_ops::consume_utf32</a> (string_view32 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;str)</td></tr>
+<tr class="memdesc:ga0281323488c3f378f3c27a170b0d29e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a UTF-32 codepoint from <code>str</code>.  <br /></td></tr>
+<tr class="separator:ga0281323488c3f378f3c27a170b0d29e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4bac563db6cd37343f722794f5391532"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___unicode.html#ga4bac563db6cd37343f722794f5391532">ghassanpl::string_ops::append_utf32</a> (string32 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">buffer</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp)</td></tr>
+<tr class="memdesc:ga4bac563db6cd37343f722794f5391532"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends 32-bit values to <code>buffer</code> by encoding <code>cp</code> into UTF-32.  <br /></td></tr>
+<tr class="separator:ga4bac563db6cd37343f722794f5391532"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>Functions and types that work on Unicode strings. </p>
+<p>Functions and types that operate on Unicode codepoints and strings. </p>
 <p>This code uses <code>char32_t</code> to represent single Unicode codepoints (as UTF-32 code units). </p>
 <hr/><h2 class="groupheader">Class Documentation</h2>
 <a name="structghassanpl_1_1string__ops_1_1text__encoding" id="structghassanpl_1_1string__ops_1_1text__encoding"></a>
@@ -290,21 +334,21 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<div class="textblock"><p>Type that represents a specific text encoding - a combination of <code><a class="el" href="group___unicode.html#ga1a8f96ed84ab50f48ff0925ecb6fa08a" title="Specifies a base text-encoding, ignoring endianness for multi-byte encodings.">ghassanpl::string_ops::base_text_encoding</a></code> and endianness. </p>
+<div class="textblock"><p>Type that represents a specific text encoding - a combination of <code><a class="el" href="group___unicode.html#ga05990bf332d1e3aeefa175160e9dd0ea" title="Specifies a base text-encoding, ignoring endianness for multi-byte encodings.">ghassanpl::string_ops::text_encoding_type</a></code> and endianness. </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00048">48</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00050">50</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 </div><table class="fieldtable">
 <tr><th colspan="3">Class Members</th></tr>
 <tr><td class="fieldtype">
-<a id="a3269919d397ce655ce123c9d45ee120e" name="a3269919d397ce655ce123c9d45ee120e"></a><a class="el" href="group___unicode.html#ga1a8f96ed84ab50f48ff0925ecb6fa08a">base_text_encoding</a></td>
+<a id="a3aab533bd5b8ae1be3d9b2ef7fea0eb5" name="a3aab533bd5b8ae1be3d9b2ef7fea0eb5"></a><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">endian</a></td>
 <td class="fieldname">
-base_encoding</td>
+endianness</td>
 <td class="fielddoc">
 </td></tr>
 <tr><td class="fieldtype">
-<a id="a3aab533bd5b8ae1be3d9b2ef7fea0eb5" name="a3aab533bd5b8ae1be3d9b2ef7fea0eb5"></a>endian</td>
+<a id="a13e5a18332a0245d957966fb9f4b6ba8" name="a13e5a18332a0245d957966fb9f4b6ba8"></a><a class="el" href="group___unicode.html#ga05990bf332d1e3aeefa175160e9dd0ea">text_encoding_type</a></td>
 <td class="fieldname">
-endianness</td>
+type</td>
 <td class="fielddoc">
 </td></tr>
 </table>
@@ -312,8 +356,8 @@ endianness</td>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="ga1a8f96ed84ab50f48ff0925ecb6fa08a" name="ga1a8f96ed84ab50f48ff0925ecb6fa08a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga1a8f96ed84ab50f48ff0925ecb6fa08a">&#9670;&#160;</a></span>base_text_encoding</h2>
+<a id="ga05990bf332d1e3aeefa175160e9dd0ea" name="ga05990bf332d1e3aeefa175160e9dd0ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga05990bf332d1e3aeefa175160e9dd0ea">&#9670;&#160;</a></span>text_encoding_type</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -322,7 +366,7 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="group___unicode.html#ga1a8f96ed84ab50f48ff0925ecb6fa08a">ghassanpl::string_ops::base_text_encoding</a></td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">enum</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">class</a> <a class="el" href="group___unicode.html#ga05990bf332d1e3aeefa175160e9dd0ea">ghassanpl::string_ops::text_encoding_type</a></td>
         </tr>
       </table>
   </td>
@@ -334,7 +378,7 @@ endianness</td>
 
 <p>Specifies a base text-encoding, ignoring endianness for multi-byte encodings. </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00040">40</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00042">42</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -348,7 +392,7 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class <a class="el" href="group___unicode.html#ga007c8637e05a857a043fb9f64ff34470">ghassanpl::string_ops::unicode_plane</a></td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">enum</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">class</a> <a class="el" href="group___unicode.html#ga007c8637e05a857a043fb9f64ff34470">ghassanpl::string_ops::unicode_plane</a></td>
         </tr>
       </table>
   </td>
@@ -365,11 +409,53 @@ endianness</td>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00242">242</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00392">392</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga8c2d260876a76010b61cbe54766262e0" name="ga8c2d260876a76010b61cbe54766262e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8c2d260876a76010b61cbe54766262e0">&#9670;&#160;</a></span>append_codepoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">void</a> ghassanpl::string_ops::append_codepoint </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
+          <td class="paramname"><em>cp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Appends a codepoint to a UTF-encoded string. Supports UTF-8, UTF-16 and UTF-32, decides based on char type of <code>str</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00218">218</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
 <a id="gaccb33ce68e70425b3a3bf5dc0ec0cb5b" name="gaccb33ce68e70425b3a3bf5dc0ec0cb5b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaccb33ce68e70425b3a3bf5dc0ec0cb5b">&#9670;&#160;</a></span>append_utf16()</h2>
 
@@ -380,15 +466,15 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t ghassanpl::string_ops::append_utf16 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a> ghassanpl::string_ops::append_utf16 </td>
           <td>(</td>
-          <td class="paramtype">string16 auto &amp;&#160;</td>
+          <td class="paramtype">string16 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;&#160;</td>
           <td class="paramname"><em>buffer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em>&#160;</td>
         </tr>
         <tr>
@@ -405,9 +491,50 @@ endianness</td>
 </div><div class="memdoc">
 
 <p>Appends 16-bit values to <code>buffer</code> by encoding <code>cp</code> into UTF-16. </p>
-<dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-16 </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>the number of 16-bit codepoints appended </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00665">665</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00865">865</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
+<a id="ga4bac563db6cd37343f722794f5391532" name="ga4bac563db6cd37343f722794f5391532"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4bac563db6cd37343f722794f5391532">&#9670;&#160;</a></span>append_utf32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a> ghassanpl::string_ops::append_utf32 </td>
+          <td>(</td>
+          <td class="paramtype">string32 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
+          <td class="paramname"><em>cp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Appends 32-bit values to <code>buffer</code> by encoding <code>cp</code> into UTF-32. </p>
+<dl class="section return"><dt>Returns</dt><dd>the number of 32-bit codepoints appended </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00879">879</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -421,15 +548,15 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t ghassanpl::string_ops::append_utf8 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a> ghassanpl::string_ops::append_utf8 </td>
           <td>(</td>
-          <td class="paramtype">string8 auto &amp;&#160;</td>
+          <td class="paramtype">string8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;&#160;</td>
           <td class="paramname"><em>buffer</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em>&#160;</td>
         </tr>
         <tr>
@@ -446,9 +573,8 @@ endianness</td>
 </div><div class="memdoc">
 
 <p>Appends octets to <code>buffer</code> by encoding <code>cp</code> into UTF-8. </p>
-<dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-8 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00565">565</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00738">738</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -462,9 +588,9 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr size_t ghassanpl::string_ops::codepoint_utf8_count </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a> ghassanpl::string_ops::codepoint_utf8_count </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -478,12 +604,44 @@ endianness</td>
 
 <p>Returns the number of UTF-8 octets necessarity to encode the given codepoint. </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00299">299</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00449">449</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
-<a id="gae0570958daa717ab6b51e1eb8249083f" name="gae0570958daa717ab6b51e1eb8249083f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gae0570958daa717ab6b51e1eb8249083f">&#9670;&#160;</a></span>consume_bom() <span class="overload">[1/3]</span></h2>
+<a id="gae9f7b0c577c591a294c0d3687f7961e6" name="gae9f7b0c577c591a294c0d3687f7961e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae9f7b0c577c591a294c0d3687f7961e6">&#9670;&#160;</a></span>consume_bom() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bytelike BYTE_TYPE, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a> N&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::consume_bom </td>
+          <td>(</td>
+          <td class="paramtype">std::span&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">BYTE_TYPE</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">N</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>spn</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of spn (a <code>span</code> of <code>bytelike</code>), and returns the encoding that the BOM represents (or <code>unknown_text_encoding</code> if no BOM). </p>
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00273">273</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
+<a id="ga7020fd6d0c8ea08ff3bf9b682331242c" name="ga7020fd6d0c8ea08ff3bf9b682331242c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7020fd6d0c8ea08ff3bf9b682331242c">&#9670;&#160;</a></span>consume_bom() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -494,7 +652,7 @@ endianness</td>
         <tr>
           <td class="memname"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::consume_bom </td>
           <td>(</td>
-          <td class="paramtype">stringable16 auto &amp;&#160;</td>
+          <td class="paramtype">string_view16 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;&#160;</td>
           <td class="paramname"><em>sv</em></td><td>)</td>
           <td></td>
         </tr>
@@ -506,14 +664,14 @@ endianness</td>
 </table>
 </div><div class="memdoc">
 
-<p>Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the UTF-16 encoding that the BOM represents (or <code>unknown_text_encoding</code>) if no BOM. </p>
+<p>Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the UTF-16 encoding that the BOM represents (or <code>unknown_text_encoding</code> if no BOM). </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00191">191</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00341">341</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
-<a id="ga28ebb2c8962050e3db6fe49c53eaeb29" name="ga28ebb2c8962050e3db6fe49c53eaeb29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga28ebb2c8962050e3db6fe49c53eaeb29">&#9670;&#160;</a></span>consume_bom() <span class="overload">[2/3]</span></h2>
+<a id="ga07f76e59b03c73f24eb37bd08cd6696e" name="ga07f76e59b03c73f24eb37bd08cd6696e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga07f76e59b03c73f24eb37bd08cd6696e">&#9670;&#160;</a></span>consume_bom() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -524,7 +682,7 @@ endianness</td>
         <tr>
           <td class="memname"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::consume_bom </td>
           <td>(</td>
-          <td class="paramtype">stringable32 auto &amp;&#160;</td>
+          <td class="paramtype">string_view32 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;&#160;</td>
           <td class="paramname"><em>sv</em></td><td>)</td>
           <td></td>
         </tr>
@@ -536,14 +694,14 @@ endianness</td>
 </table>
 </div><div class="memdoc">
 
-<p>Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the UTF-32 encoding that the BOM represents (or <code>unknown_text_encoding</code>) if no BOM. </p>
+<p>Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the UTF-32 encoding that the BOM represents (or <code>unknown_text_encoding</code> if no BOM). </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00206">206</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00356">356</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
-<a id="ga15c8928c9b43a41800036b6b94d37dfe" name="ga15c8928c9b43a41800036b6b94d37dfe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga15c8928c9b43a41800036b6b94d37dfe">&#9670;&#160;</a></span>consume_bom() <span class="overload">[3/3]</span></h2>
+<a id="ga4dbca6e7c98b06a3e7d89643f415118f" name="ga4dbca6e7c98b06a3e7d89643f415118f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4dbca6e7c98b06a3e7d89643f415118f">&#9670;&#160;</a></span>consume_bom() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -554,7 +712,7 @@ endianness</td>
         <tr>
           <td class="memname"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::consume_bom </td>
           <td>(</td>
-          <td class="paramtype">stringable8 auto &amp;&#160;</td>
+          <td class="paramtype">string_view8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;&#160;</td>
           <td class="paramname"><em>sv</em></td><td>)</td>
           <td></td>
         </tr>
@@ -566,9 +724,41 @@ endianness</td>
 </table>
 </div><div class="memdoc">
 
-<p>Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the encoding that the BOM represents (or <code>unknown_text_encoding</code>) if no BOM. </p>
+<p>Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a <a href="https://en.wikipedia.org/wiki/Byte_order_mark">byte order mark</a> from the beginning of sv, and returns the encoding that the BOM represents (or <code>unknown_text_encoding</code> if no BOM). </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00158">158</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00308">308</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
+<a id="ga90970e0e19290acdba2b94358dbdd8ef" name="ga90970e0e19290acdba2b94358dbdd8ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga90970e0e19290acdba2b94358dbdd8ef">&#9670;&#160;</a></span>consume_codepoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> ghassanpl::string_ops::consume_codepoint </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Consumes a codepoint from a UTF-encoded string and returns it. </p>
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00201">201</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -582,9 +772,9 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char32_t ghassanpl::string_ops::consume_utf16 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> ghassanpl::string_ops::consume_utf16 </td>
           <td>(</td>
-          <td class="paramtype">string_view16 auto &amp;&#160;</td>
+          <td class="paramtype">string_view16 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -599,7 +789,38 @@ endianness</td>
 <p>Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a UTF-16 codepoint from <code>str</code>. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-16 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00639">639</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00832">832</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
+<a id="ga0281323488c3f378f3c27a170b0d29e1" name="ga0281323488c3f378f3c27a170b0d29e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0281323488c3f378f3c27a170b0d29e1">&#9670;&#160;</a></span>consume_utf32()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> ghassanpl::string_ops::consume_utf32 </td>
+          <td>(</td>
+          <td class="paramtype">string_view32 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a UTF-32 codepoint from <code>str</code>. </p>
+<dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-32 </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00852">852</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -613,9 +834,9 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char32_t ghassanpl::string_ops::consume_utf8 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> ghassanpl::string_ops::consume_utf8 </td>
           <td>(</td>
-          <td class="paramtype">string_view8 auto &amp;&#160;</td>
+          <td class="paramtype">string_view8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -630,12 +851,43 @@ endianness</td>
 <p>Consumes (see <code><a class="el" href="group___string_ops.html#ga6e43007861928dffb3636b9a46255165" title="Consumes and returns the first character in the str, or \0 if no more characters.">consume()</a></code>) a UTF-8 codepoint from <code>str</code>. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-8 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00525">525</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00674">674</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
-<a id="ga8c686512efefbd56b5ae201779104929" name="ga8c686512efefbd56b5ae201779104929"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga8c686512efefbd56b5ae201779104929">&#9670;&#160;</a></span>decode_codepoint()</h2>
+<a id="ga56a176ef0258918dd7735278818a0a15" name="ga56a176ef0258918dd7735278818a0a15"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga56a176ef0258918dd7735278818a0a15">&#9670;&#160;</a></span>count_utf8_codepoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a> ghassanpl::string_ops::count_utf8_codepoints </td>
+          <td>(</td>
+          <td class="paramtype">stringable8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the number of codepoints in the given UTF-8 string <code>str</code> </p>
+<dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-8 </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00708">708</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
+<a id="gace991b45b9450fc8bece3f81630aa7ff" name="gace991b45b9450fc8bece3f81630aa7ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gace991b45b9450fc8bece3f81630aa7ff">&#9670;&#160;</a></span>decode_codepoint()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -646,8 +898,8 @@ endianness</td>
         <tr>
           <td class="memname"><a class="el" href="structghassanpl_1_1string__ops_1_1text__decode__result.html">text_decode_result</a> ghassanpl::string_ops::decode_codepoint </td>
           <td>(</td>
-          <td class="paramtype">stringable8 auto&#160;</td>
-          <td class="paramname"><em>str</em>, </td>
+          <td class="paramtype">bytelike_range <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td>
+          <td class="paramname"><em>range</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -668,17 +920,19 @@ endianness</td>
 </table>
 </div><div class="memdoc">
 
-<p>Attempts to decode the first codepoint in 8-bit range <code>str</code>, assuming it is encoded in <code>encoding</code>. </p>
+<p>Attempts to decode the first codepoint in <code>bytelike</code> range <code>range</code>, assuming it is encoded in <code>encoding</code>. </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00305">305</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00455">455</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
-<a id="gab082e7bc304878d5b920aaca18f319e1" name="gab082e7bc304878d5b920aaca18f319e1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab082e7bc304878d5b920aaca18f319e1">&#9670;&#160;</a></span>detect_encoding()</h2>
+<a id="gab6c4e64793bbc00da550e8350a5eb1b9" name="gab6c4e64793bbc00da550e8350a5eb1b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab6c4e64793bbc00da550e8350a5eb1b9">&#9670;&#160;</a></span>detect_encoding()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;bytelike_range T&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -686,8 +940,8 @@ endianness</td>
         <tr>
           <td class="memname"><a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::detect_encoding </td>
           <td>(</td>
-          <td class="paramtype">stringable8 auto&#160;</td>
-          <td class="paramname"><em>str</em></td><td>)</td>
+          <td class="paramtype">T <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
+          <td class="paramname"><em>range</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -698,10 +952,10 @@ endianness</td>
 </table>
 </div><div class="memdoc">
 
-<p>Attempts to detect the encoding of a given 8-bit range. </p>
+<p>Attempts to detect the encoding of a given bytelike range. </p>
 <dl class="section note"><dt>Note</dt><dd>If no BOM is present, only detects UTF encodings. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00383">383</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00534">534</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -715,9 +969,9 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto ghassanpl::string_ops::get_unicode_plane </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::get_unicode_plane </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td> -&gt; <a class="el" href="group___unicode.html#ga007c8637e05a857a043fb9f64ff34470">unicode_plane</a></td>
         </tr>
@@ -729,7 +983,7 @@ endianness</td>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00273">273</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00423">423</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -743,9 +997,9 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::is_high_surrogate </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::is_high_surrogate </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -759,7 +1013,7 @@ endianness</td>
 
 <p>Returns whether <code>cp</code> is a codepoint that encodes the high part of a codepoint with a more-than-16-bit value. </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00269">269</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00419">419</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -773,9 +1027,9 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::is_low_surrogate </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::is_low_surrogate </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -789,7 +1043,7 @@ endianness</td>
 
 <p>Returns whether <code>cp</code> is a codepoint that encodes the low part of a codepoint with a more-than-16-bit value. </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00270">270</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00420">420</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -803,9 +1057,9 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::is_surrogate </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::is_surrogate </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -819,7 +1073,7 @@ endianness</td>
 
 <p>Returns whether <code>cp</code> is a codepoint that encodes any part of a codepoint with a more-than-16-bit value. </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00271">271</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00421">421</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -833,9 +1087,9 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::is_unicode </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::is_unicode </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -849,7 +1103,7 @@ endianness</td>
 
 <p>Returns whether <code>cp</code> has a value that is a valid Unicode codepoint (ie. between 0 and 0x10FFFF). </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00272">272</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00422">422</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -863,9 +1117,9 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::is_unicode_character </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::is_unicode_character </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -880,7 +1134,7 @@ endianness</td>
 <p>Returns whether <code>cp</code> has a value that is a valid Unicode character (ie. </p>
 <p>a value that encodes a (part of a) character). Specifically, byte order marks are not characters, but surrogates technically are part of a character. </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00274">274</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00424">424</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -894,15 +1148,15 @@ endianness</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char32_t ghassanpl::string_ops::surrogate_pair_to_codepoint </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> ghassanpl::string_ops::surrogate_pair_to_codepoint </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>high</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>low</em>&#160;</td>
         </tr>
         <tr>
@@ -920,7 +1174,7 @@ endianness</td>
 
 <p>Returns the codepoint encoded by two surrogates. </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00276">276</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00426">426</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -951,7 +1205,7 @@ endianness</td>
 <p>Returns <code>str</code> (a UTF-16-encoded string) encoded as a UTF-8 string. </p>
 <dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-16 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00711">711</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00938">938</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -967,9 +1221,9 @@ template&lt;string16 RESULT = std::wstring&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr RESULT ghassanpl::string_ops::to_utf16 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a> ghassanpl::string_ops::to_utf16 </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -984,13 +1238,13 @@ template&lt;string16 RESULT = std::wstring&gt; </div>
 <p>Returns <code>cp</code> encoded as a UTF-16 string. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">RESULT</td><td>the type of string to return (<code>std::wstring</code> by default)</td></tr>
+    <tr><td class="paramname">RESULT</td><td>the type of string to return (<code>std::wstring</code> by default) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section pre"><dt>Precondition</dt><dd><code>cp</code> must be a valid Unicode codepoint </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00723">723</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00949">949</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -1000,15 +1254,15 @@ template&lt;string16 RESULT = std::wstring&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;string16 RESULT, stringable8 STR&gt; </div>
+template&lt;string16 RESULT = std::wstring, stringable8 STR&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr RESULT ghassanpl::string_ops::to_utf16 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a> ghassanpl::string_ops::to_utf16 </td>
           <td>(</td>
-          <td class="paramtype">STR&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">STR</a>&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1023,13 +1277,13 @@ template&lt;string16 RESULT, stringable8 STR&gt; </div>
 <p>Returns <code>str</code> (a UTF-8-encoded string) encoded as a UTF-16 string. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">RESULT</td><td>the type of string to return (<code>std::wstring</code> by default)</td></tr>
+    <tr><td class="paramname">RESULT</td><td>the type of string to return (<code>std::wstring</code> by default) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-8 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00734">734</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00959">959</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -1045,9 +1299,9 @@ template&lt;string8 RESULT = std::string&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr RESULT ghassanpl::string_ops::to_utf8 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a> ghassanpl::string_ops::to_utf8 </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1062,18 +1316,18 @@ template&lt;string8 RESULT = std::string&gt; </div>
 <p>Returns <code>cp</code> encoded as a UTF-8 string. </p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">RESULT</td><td>the type of string to return (<code>std::string</code> by default)</td></tr>
+    <tr><td class="paramname">RESULT</td><td>the type of string to return (<code>std::string</code> by default) </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section pre"><dt>Precondition</dt><dd><code>cp</code> must be a valid Unicode codepoint </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00686">686</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00891">891</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
-<a id="ga9c6f53e6ffcc5877622e3ad78f607647" name="ga9c6f53e6ffcc5877622e3ad78f607647"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9c6f53e6ffcc5877622e3ad78f607647">&#9670;&#160;</a></span>to_utf8() <span class="overload">[2/2]</span></h2>
+<a id="ga27fcf27c88719d429202fa65de47eb60" name="ga27fcf27c88719d429202fa65de47eb60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga27fcf27c88719d429202fa65de47eb60">&#9670;&#160;</a></span>to_utf8() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1084,9 +1338,9 @@ template&lt;string8 RESULT = std::string, stringable16 STR&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr RESULT ghassanpl::string_ops::to_utf8 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a> ghassanpl::string_ops::to_utf8 </td>
           <td>(</td>
-          <td class="paramtype">STR&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">STR</a> &amp;&amp;&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1099,15 +1353,25 @@ template&lt;string8 RESULT = std::string, stringable16 STR&gt; </div>
 </div><div class="memdoc">
 
 <p>Returns <code>str</code> (a UTF-16-encoded string) encoded as a UTF-8 string. </p>
+<p>Returns <code>str</code> (a UTF-32-encoded string) encoded as a UTF-8 string.</p>
 <dl class="tparams"><dt>Template Parameters</dt><dd>
   <table class="tparams">
-    <tr><td class="paramname">RESULT</td><td>the type of string to return (<code>std::string</code> by default)</td></tr>
+    <tr><td class="paramname">RESULT</td><td>the type of string to return (<code>std::string</code> by default) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-16 </dd></dl>
+<dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-16</dd></dl>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">RESULT</td><td>the type of string to return (<code>std::string</code> by default) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-32</dd>
+<dd>
+<code>str</code> must be valid UTF-16 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00701">701</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00905">905</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -1135,10 +1399,119 @@ template&lt;string8 RESULT = std::string, stringable16 STR&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns <code>str</code> (a UTF-8-encoded string) encoded as a UTF-16 string. </p>
+<p>Returns <code>str</code> (a UTF-8-encoded string) encoded as a UTF-16/32 string in a std::wstring (depending on the size of wchar_t) </p>
 <dl class="section pre"><dt>Precondition</dt><dd><code>str</code> must be valid UTF-8 </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00744">744</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00968">968</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
+<a id="gaba2b4665676b855e8f4cbe809b302d27" name="gaba2b4665676b855e8f4cbe809b302d27"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaba2b4665676b855e8f4cbe809b302d27">&#9670;&#160;</a></span>transcode_codepage_to_unicode() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a>  = std::string&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::transcode_codepage_to_unicode </td>
+          <td>(</td>
+          <td class="paramtype">stringable8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::span&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a>, 128 &gt;&#160;</td>
+          <td class="paramname"><em>codepage_map</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Transcodes an <a href="https://en.wikipedia.org/wiki/Extended_ASCII">Extended ASCII</a> string <code>source</code> into a unicode encoding, according to <code>codepage_map</code> </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">RESULT</td><td>the type of string to return (<code>std::string</code> by default) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">codepage_map</td><td>A span of 128 Unicode codepoints that will be substituted for EASCII values 128-255 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a Unicode-encoded string of type T; encoding is decided based on the char type of <code>RESULT</code> </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00812">812</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
+<a id="ga3c082d1c632a75aab0f27e8e448361bd" name="ga3c082d1c632a75aab0f27e8e448361bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3c082d1c632a75aab0f27e8e448361bd">&#9670;&#160;</a></span>transcode_codepage_to_unicode() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">void</a> ghassanpl::string_ops::transcode_codepage_to_unicode </td>
+          <td>(</td>
+          <td class="paramtype">T &amp;&#160;</td>
+          <td class="paramname"><em>dest</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">stringable8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::span&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a>, 128 &gt;&#160;</td>
+          <td class="paramname"><em>codepage_map</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Transcodes an <a href="https://en.wikipedia.org/wiki/Extended_ASCII">Extended ASCII</a> string <code>source</code> into unicode-encoded <code>dest</code>, according to <code>codepage_map</code>. </p>
+<p>Destination encoding will be decided based on the char type of <code>dest</code>. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">codepage_map</td><td>A span of 128 Unicode codepoints that will be substituted for EASCII values 128-255 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00799">799</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -1152,21 +1525,21 @@ template&lt;string8 RESULT = std::string, stringable16 STR&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr void ghassanpl::string_ops::transcode_codepage_to_utf8 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">void</a> ghassanpl::string_ops::transcode_codepage_to_utf8 </td>
           <td>(</td>
-          <td class="paramtype">string8 auto &amp;&#160;</td>
+          <td class="paramtype">string8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> &amp;&#160;</td>
           <td class="paramname"><em>dest</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">stringable8 auto&#160;</td>
+          <td class="paramtype">stringable8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td>
           <td class="paramname"><em>source</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::span&lt; char32_t const, 128 &gt;&#160;</td>
+          <td class="paramtype">std::span&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a>, 128 &gt;&#160;</td>
           <td class="paramname"><em>codepage_map</em>&#160;</td>
         </tr>
         <tr>
@@ -1185,12 +1558,12 @@ template&lt;string8 RESULT = std::string, stringable16 STR&gt; </div>
 <p>Transcodes an <a href="https://en.wikipedia.org/wiki/Extended_ASCII">Extended ASCII</a> string <code>source</code> into UTF-8 <code>dest</code>, according to <code>codepage_map</code> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">codepage_map</td><td>A span of 128 Unicode codepoints that will be substituted for EASCII values 128-255 </td></tr>
+    <tr><td class="paramname">codepage_map</td><td>A span of 128 Unicode codepoints that will be substituted for EASCII values 128-255 TODO: Is this needed since we have <code>transcode_codepage_to_unicode</code>? </td></tr>
   </table>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00613">613</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00786">786</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -1206,21 +1579,21 @@ template&lt;string8 RESULT = std::string&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto ghassanpl::string_ops::transcode_codepage_to_utf8 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::transcode_codepage_to_utf8 </td>
           <td>(</td>
-          <td class="paramtype">stringable8 auto&#160;</td>
+          <td class="paramtype">stringable8 <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td>
           <td class="paramname"><em>source</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::span&lt; char32_t const, 128 &gt;&#160;</td>
+          <td class="paramtype">std::span&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a>, 128 &gt;&#160;</td>
           <td class="paramname"><em>codepage_map</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
           <td>)</td>
-          <td></td><td> -&gt; RESULT</td>
+          <td></td><td> -&gt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">RESULT</a></td>
         </tr>
       </table>
   </td>
@@ -1243,9 +1616,83 @@ template&lt;string8 RESULT = std::string&gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a UTF-8-encoded string of type T </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a UTF-8-encoded string of type T TODO: Is this needed since we have <code>transcode_codepage_to_unicode</code>? </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00626">626</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00820">820</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
+<a id="ga0ff86417c93ba15ea1fa3facd984dc3b" name="ga0ff86417c93ba15ea1fa3facd984dc3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0ff86417c93ba15ea1fa3facd984dc3b">&#9670;&#160;</a></span>transcode_unicode() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> , <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> ghassanpl::string_ops::transcode_unicode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
+          <td class="paramname"><em>from</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts a UTF-encoded string to a UTF-encoded string, of a different encoding. Decides the encodings based on the char type of <code>TO</code> and <code>FROM</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00241">241</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
+<a id="ga197fd19e599bac5d315b0521c5d3380d" name="ga197fd19e599bac5d315b0521c5d3380d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga197fd19e599bac5d315b0521c5d3380d">&#9670;&#160;</a></span>transcode_unicode() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> , <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">void</a> ghassanpl::string_ops::transcode_unicode </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
+          <td class="paramname"><em>from</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> &amp;&#160;</td>
+          <td class="paramname"><em>out</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts a UTF-encoded string to a UTF-encoded string, of a different encoding. Decides the encodings based on the char type of <code>TO</code> and <code>FROM</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00232">232</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -1260,7 +1707,7 @@ template&lt;string8 RESULT = std::string&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::unknown_text_encoding</td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::unknown_text_encoding</td>
         </tr>
       </table>
   </td>
@@ -1272,7 +1719,7 @@ template&lt;string8 RESULT = std::string&gt; </div>
 
 <p>Represents an unknown text encoding (e.g. when an encoding could not be determined) </p>
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00065">65</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00067">67</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>
@@ -1286,55 +1733,7 @@ template&lt;string8 RESULT = std::string&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::utf16_be_encoding</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00061">61</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
-
-</div>
-</div>
-<a id="ga71e03cbfce0ef996a29756061e0652a5" name="ga71e03cbfce0ef996a29756061e0652a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga71e03cbfce0ef996a29756061e0652a5">&#9670;&#160;</a></span>utf16_le_encoding</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::utf16_le_encoding</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00060">60</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
-
-</div>
-</div>
-<a id="ga52b2b14c1006359de00dc7830d232cc9" name="ga52b2b14c1006359de00dc7830d232cc9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga52b2b14c1006359de00dc7830d232cc9">&#9670;&#160;</a></span>utf32_be_encoding</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::utf32_be_encoding</td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::utf16_be_encoding</td>
         </tr>
       </table>
   </td>
@@ -1348,8 +1747,8 @@ template&lt;string8 RESULT = std::string&gt; </div>
 
 </div>
 </div>
-<a id="gac61ac85fff3decbf6c95585775d45756" name="gac61ac85fff3decbf6c95585775d45756"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gac61ac85fff3decbf6c95585775d45756">&#9670;&#160;</a></span>utf32_le_encoding</h2>
+<a id="ga71e03cbfce0ef996a29756061e0652a5" name="ga71e03cbfce0ef996a29756061e0652a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga71e03cbfce0ef996a29756061e0652a5">&#9670;&#160;</a></span>utf16_le_encoding</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1358,7 +1757,7 @@ template&lt;string8 RESULT = std::string&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::utf32_le_encoding</td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::utf16_le_encoding</td>
         </tr>
       </table>
   </td>
@@ -1372,6 +1771,54 @@ template&lt;string8 RESULT = std::string&gt; </div>
 
 </div>
 </div>
+<a id="ga52b2b14c1006359de00dc7830d232cc9" name="ga52b2b14c1006359de00dc7830d232cc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga52b2b14c1006359de00dc7830d232cc9">&#9670;&#160;</a></span>utf32_be_encoding</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::utf32_be_encoding</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00065">65</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
+<a id="gac61ac85fff3decbf6c95585775d45756" name="gac61ac85fff3decbf6c95585775d45756"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac61ac85fff3decbf6c95585775d45756">&#9670;&#160;</a></span>utf32_le_encoding</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::utf32_le_encoding</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00064">64</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+
+</div>
+</div>
 <a id="gaab573311eb5cee44f95c08afb24d0b49" name="gaab573311eb5cee44f95c08afb24d0b49"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaab573311eb5cee44f95c08afb24d0b49">&#9670;&#160;</a></span>utf8_encoding</h2>
 
@@ -1382,7 +1829,7 @@ template&lt;string8 RESULT = std::string&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::utf8_encoding</td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding">text_encoding</a> ghassanpl::string_ops::utf8_encoding</td>
         </tr>
       </table>
   </td>
@@ -1392,7 +1839,7 @@ template&lt;string8 RESULT = std::string&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00059">59</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="unicode_8h_source.html#l00061">61</a> of file <a class="el" href="unicode_8h_source.html">unicode.h</a>.</p>
 
 </div>
 </div>

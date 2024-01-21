@@ -6,6 +6,7 @@ var group___colors =
     [ "ghassanpl::color_rgba_t", "group___colors.html#ga72f54ee837994b9599b6411792c7cd84", null ],
     [ "ghassanpl::color_rgba_u32_t", "group___colors.html#ga803c17af533306efe6944ba28ae07017", null ],
     [ "ghassanpl::color_t", "group___colors.html#ga2135250e4bfc4091c3456ec5e303884c", null ],
+    [ "ghassanpl::color_space", "group___colors.html#ga2bd76b8baeed4f6153cd3d087e83b8f4", null ],
     [ "ghassanpl::contrast", "group___colors.html#ga7b770114a3975680d67ff5a5789d0be1", null ],
     [ "ghassanpl::contrast2", "group___colors.html#ga8412b721aff95aa0b8524e7e9bea4f08", null ],
     [ "ghassanpl::contrasting", "group___colors.html#gac5a99d76f132942d1e06e5ca147d3573", null ],

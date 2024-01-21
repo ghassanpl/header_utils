@@ -121,40 +121,42 @@ $(document).ready(function(){initNavTree('last__error_8h_source.html',''); initR
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceghassanpl.html">ghassanpl</a></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>{</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">struct </span>last_windows_error_t</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    {</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>        uint32_t value{};</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        std::string formatted;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    };</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keyword">namespace </span>detail</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    {</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#if !defined(DOXYGEN)</span></div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>        <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> __declspec(dllimport) win::DWORD __stdcall FormatMessageA(win::DWORD dwFlags, <span class="keyword">const</span> <span class="keywordtype">void</span>* lpSource, win::DWORD dwMessageId, win::DWORD dwLanguageId, <span class="keywordtype">char</span>* lpBuffer, win::DWORD nSize, va_list * Arguments);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> __declspec(dllimport) win::HANDLE __stdcall LocalFree(win::HANDLE hMem);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    }</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    last_windows_error_t get_last_windows_error()</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    {</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keyword">const</span> <span class="keyword">auto</span> le = win::GetLastError(); </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        last_windows_error_t result{};</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        result.value = le;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        <span class="keywordflow">if</span> (le != 0)</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        {</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>            <span class="keywordtype">char</span>* messageBuffer = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="keywordtype">size_t</span> size = detail::FormatMessageA(0x00000100 | 0x00001000 | 0x00000200 | 0xFF, <span class="keyword">nullptr</span>, le, 0, (<span class="keywordtype">char</span>*)&amp;messageBuffer, 0, <span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            result.formatted = std::string{ messageBuffer, size };</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            detail::LocalFree(messageBuffer);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        }</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    }</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>}</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceghassanpl.html">ghassanpl</a></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>{</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">struct </span>last_windows_error_t</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>        <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> value{};</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>        std::string formatted;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    };</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">namespace </span><a class="code hl_namespace" href="namespacedetail.html">detail</a></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#if !defined(DOXYGEN)</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>        <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">__declspec</a>(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">dllimport</a>) win::DWORD <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">__stdcall</a> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FormatMessageA</a>(win::DWORD dwFlags, <span class="keyword">const</span> <span class="keywordtype">void</span>* <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">lpSource</a>, win::DWORD <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">dwMessageId</a>, win::DWORD <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">dwLanguageId</a>, <span class="keywordtype">char</span>* <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">lpBuffer</a>, win::DWORD nSize, <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">va_list</a> * <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">Arguments</a>);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        <span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">__declspec</a>(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">dllimport</a>) win::HANDLE <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">__stdcall</a> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">LocalFree</a>(win::HANDLE <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">hMem</a>);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    }</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    last_windows_error_t get_last_windows_error()</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        <span class="keyword">const</span> <span class="keyword">auto</span> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">le</a> = win::GetLastError(); </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        last_windows_error_t result{};</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        result.value = <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">le</a>;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">le</a> != 0)</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        {</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>            <span class="keywordtype">char</span>* <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">messageBuffer</a> = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>            <span class="keywordtype">size_t</span> size = detail::FormatMessageA(0x00000100 | 0x00001000 | 0x00000200 | 0xFF, <span class="keyword">nullptr</span>, <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">le</a>, 0, (<span class="keywordtype">char</span>*)&amp;<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">messageBuffer</a>, 0, <span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            result.formatted = std::string{ <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">messageBuffer</a>, size };</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>            detail::LocalFree(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">messageBuffer</a>);</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        }</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>}</div>
+<div class="ttc" id="agroup___bits_html_gac47c8e8b6a53fb7495f97f2a15fd618d"><div class="ttname"><a href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ghassanpl::bit_count</a></div><div class="ttdeci">constexpr auto bit_count</div><div class="ttdoc">Equal to the number of bits in the type.</div><div class="ttdef"><b>Definition</b> <a href="bits_8h_source.html#l00033">bits.h:33</a></div></div>
+<div class="ttc" id="anamespacedetail_html"><div class="ttname"><a href="namespacedetail.html">detail</a></div><div class="ttdoc">The below code is based on Sun's libm library code, which is licensed under the following license:</div><div class="ttdef"><b>Definition</b> <a href="constexpr__math_8inl_source.html#l00011">constexpr_math.inl:12</a></div></div>
 <div class="ttc" id="anamespaceghassanpl_html"><div class="ttname"><a href="namespaceghassanpl.html">ghassanpl</a></div><div class="ttdoc">Primary namespace for everything in this library.</div><div class="ttdef"><b>Definition</b> <a href="align_09rec2_8h_source.html#l00009">align+rec2.h:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

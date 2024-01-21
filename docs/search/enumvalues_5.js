@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['information_0',['Information',['../group__msg.html#ggaf049eb70754b94acdf580d575d826731aa82be0f551b8708bc08eb33cd9ded0cf',1,'ghassanpl']]],
-  ['invalid_1',['invalid',['../group___unicode.html#gga007c8637e05a857a043fb9f64ff34470afedb2d84cafe20862cb4399751a8a7e3',1,'ghassanpl::string_ops']]]
+  ['middle_0',['middle',['../namespaceghassanpl.html#ga93c615403286c16bdf1f3952f9a2fdb8a4a548addbfb239bbd12f5afe11a4b6dc',1,'ghassanpl']]],
+  ['middle_5fcenter_1',['middle_center',['../namespaceghassanpl.html#ga01bf04cf94bf7689c267eafb7d0a21bcaeff04a32daf451a273d55ca9d9245e92',1,'ghassanpl']]],
+  ['middle_5fleft_2',['middle_left',['../namespaceghassanpl.html#ga01bf04cf94bf7689c267eafb7d0a21bca4d8a5580bcd972246c9910900a6efc09',1,'ghassanpl']]],
+  ['middle_5fright_3',['middle_right',['../namespaceghassanpl.html#ga01bf04cf94bf7689c267eafb7d0a21bcaff1bb2ef26708d2a4dc98bdda5c48071',1,'ghassanpl']]]
 ];

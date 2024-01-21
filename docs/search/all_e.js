@@ -1,9 +1,20 @@
 var searchData=
 [
-  ['parse_5fstring_5fliteral_0',['parse_string_literal',['../namespaceghassanpl_1_1formats_1_1wilson.html#a0eb3873998bc8c1d367b7aa685e95b6a',1,'ghassanpl::formats::wilson']]],
-  ['parse_5fstring_5fvalue_1',['parse_string_value',['../namespaceghassanpl_1_1formats_1_1wilson.html#a63d4e67e0cb838e735853e384c07bc42',1,'ghassanpl::formats::wilson']]],
-  ['parse_5fword_5for_5fstring_2',['parse_word_or_string',['../namespaceghassanpl_1_1formats_1_1wilson.html#a4464d8e63288b5e7084a1c9b56d51999',1,'ghassanpl::formats::wilson']]],
-  ['point_3',['point',['../structghassanpl_1_1string__ops_1_1text__decode__result.html#afc10cc68387f983d960526ce6a0b3c2a',1,'ghassanpl::string_ops::text_decode_result']]],
-  ['premultiplied_4',['premultiplied',['../group___colors.html#ga30f26bfb288572cfe5fad259de10e360',1,'ghassanpl']]],
-  ['push_5fback_5funique_5',['push_back_unique',['../group___containers.html#gab9eebf4d39381f960789a1b41a9a6d89',1,'ghassanpl']]]
+  ['p1_0',['P1',['../namespacedetail.html#ae7e677a9ba718113a64170fae3e4f425',1,'detail']]],
+  ['p2_1',['P2',['../namespacedetail.html#a7f4efa704e634e2d9d505c6e271b2901',1,'detail']]],
+  ['p3_2',['P3',['../namespacedetail.html#aeb93457b897dc5f14c058d5810f72b57',1,'detail']]],
+  ['p4_3',['P4',['../namespacedetail.html#aae7b9cde0ade31a99ce656c65dd7285d',1,'detail']]],
+  ['p5_4',['P5',['../namespacedetail.html#a0897d361d1ef511e748f624df24b17f0',1,'detail']]],
+  ['parse_5fstring_5fliteral_5',['parse_string_literal',['../namespaceghassanpl_1_1formats_1_1wilson.html#a0eb3873998bc8c1d367b7aa685e95b6a',1,'ghassanpl::formats::wilson']]],
+  ['parse_5fstring_5fvalue_6',['parse_string_value',['../namespaceghassanpl_1_1formats_1_1wilson.html#a63d4e67e0cb838e735853e384c07bc42',1,'ghassanpl::formats::wilson']]],
+  ['parse_5fword_5for_5fstring_7',['parse_word_or_string',['../namespaceghassanpl_1_1formats_1_1wilson.html#a4464d8e63288b5e7084a1c9b56d51999',1,'ghassanpl::formats::wilson']]],
+  ['path_5fappend_8',['path_append',['../namespaceghassanpl_1_1fs.html#a521e3e4e6a824eb0aa0e1b319d4d496c',1,'ghassanpl::fs']]],
+  ['point_9',['point',['../structghassanpl_1_1string__ops_1_1text__decode__result.html#afc10cc68387f983d960526ce6a0b3c2a',1,'ghassanpl::string_ops::text_decode_result']]],
+  ['point_5fin_10',['point_in',['../namespaceghassanpl_1_1random.html#ac843abd8f4b98e96609e9b9d3538e67b',1,'ghassanpl::random']]],
+  ['point_5fon_11',['point_on',['../namespaceghassanpl_1_1random.html#ab48ee997dd577455c1e42c367658de59',1,'ghassanpl::random']]],
+  ['prefix_12',['prefix',['../group___string_ops.html#gaf1bad5f6e96d58d0b7fec3a7041ea085',1,'ghassanpl::string_ops']]],
+  ['premultiplied_13',['premultiplied',['../group___colors.html#ga30f26bfb288572cfe5fad259de10e360',1,'ghassanpl']]],
+  ['printable_5fchars_14',['printable_chars',['../group___a_s_c_i_i.html#ga8abe9e58a670307ba5db4723027bb172',1,'ghassanpl::string_ops::ascii']]],
+  ['punctuation_5fchars_15',['punctuation_chars',['../group___a_s_c_i_i.html#ga476f4798612d3858b90b9ca90959113f',1,'ghassanpl::string_ops::ascii']]],
+  ['push_5fback_5funique_16',['push_back_unique',['../group___containers.html#gab9eebf4d39381f960789a1b41a9a6d89',1,'ghassanpl']]]
 ];

@@ -116,115 +116,161 @@ $(document).ready(function(){initNavTree('group___a_s_c_i_i.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 
-<p>These functions operate on codepoints and strings encoded as ASCII.  
+<p>Functions that operate on codepoints and strings encoded as ASCII.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gafb68b85a8d5d9353fc5c6e9f45bfda7d"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gafb68b85a8d5d9353fc5c6e9f45bfda7d">ghassanpl::string_ops::ascii::isany</a> (char32_t cp, std::string_view chars) noexcept</td></tr>
-<tr class="memdesc:gafb68b85a8d5d9353fc5c6e9f45bfda7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return true if <code>cp</code> is ascii and any of the chars in <code>chars</code>  <br /></td></tr>
-<tr class="separator:gafb68b85a8d5d9353fc5c6e9f45bfda7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad042cc80ed757d2c3b9f6b730d1a237d"><td class="memTemplParams" colspan="2">template&lt;stringable T&gt; </td></tr>
-<tr class="memitem:gad042cc80ed757d2c3b9f6b730d1a237d"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gad042cc80ed757d2c3b9f6b730d1a237d">ghassanpl::string_ops::ascii::is_identifier</a> (T const &amp;str) noexcept</td></tr>
+<tr class="memitem:gad042cc80ed757d2c3b9f6b730d1a237d"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gad042cc80ed757d2c3b9f6b730d1a237d">ghassanpl::string_ops::ascii::is_identifier</a> (T <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;str) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:gad042cc80ed757d2c3b9f6b730d1a237d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the given <code>str</code> is a C-style identifier (e.g. matches <code>/[\w_][\w_0-9]+/</code>)  <br /></td></tr>
 <tr class="separator:gad042cc80ed757d2c3b9f6b730d1a237d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacfea70638fc762f65c2e387ca2a8228a"><td class="memTemplParams" colspan="2">template&lt;stringable T&gt; </td></tr>
-<tr class="memitem:gacfea70638fc762f65c2e387ca2a8228a"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gacfea70638fc762f65c2e387ca2a8228a">ghassanpl::string_ops::ascii::tolower</a> (T const &amp;str) noexcept</td></tr>
+<tr class="memitem:gacfea70638fc762f65c2e387ca2a8228a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gacfea70638fc762f65c2e387ca2a8228a">ghassanpl::string_ops::ascii::tolower</a> (T <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;str) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:gacfea70638fc762f65c2e387ca2a8228a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of the string with all characters transformed to lower case.  <br /></td></tr>
 <tr class="separator:gacfea70638fc762f65c2e387ca2a8228a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaadaf601f7518263d8cbd9e39ee19fe9e"><td class="memItemLeft" align="right" valign="top">constexpr std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaadaf601f7518263d8cbd9e39ee19fe9e">ghassanpl::string_ops::ascii::tolower</a> (std::string str) noexcept</td></tr>
+<tr class="memitem:gaadaf601f7518263d8cbd9e39ee19fe9e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaadaf601f7518263d8cbd9e39ee19fe9e">ghassanpl::string_ops::ascii::tolower</a> (std::string str) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:gaadaf601f7518263d8cbd9e39ee19fe9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of the string with all characters transformed to lower case.    <br /></td></tr>
 <tr class="separator:gaadaf601f7518263d8cbd9e39ee19fe9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa4b6f17f2b50b491e1c9b154edd5ecf9"><td class="memItemLeft" align="right" valign="top">constexpr std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaa4b6f17f2b50b491e1c9b154edd5ecf9">ghassanpl::string_ops::ascii::tolower</a> (const char *str) noexcept</td></tr>
+<tr class="memitem:gaa4b6f17f2b50b491e1c9b154edd5ecf9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaa4b6f17f2b50b491e1c9b154edd5ecf9">ghassanpl::string_ops::ascii::tolower</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char</a> *str) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:gaa4b6f17f2b50b491e1c9b154edd5ecf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of the string with all characters transformed to lower case.    <br /></td></tr>
 <tr class="separator:gaa4b6f17f2b50b491e1c9b154edd5ecf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4f3d0e008f246d1fad05041faff4c0ce"><td class="memTemplParams" colspan="2">template&lt;stringable T&gt; </td></tr>
-<tr class="memitem:ga4f3d0e008f246d1fad05041faff4c0ce"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga4f3d0e008f246d1fad05041faff4c0ce">ghassanpl::string_ops::ascii::toupper</a> (T const &amp;str) noexcept</td></tr>
+<tr class="memitem:ga4f3d0e008f246d1fad05041faff4c0ce"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga4f3d0e008f246d1fad05041faff4c0ce">ghassanpl::string_ops::ascii::toupper</a> (T <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;str) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:ga4f3d0e008f246d1fad05041faff4c0ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of the string with all characters transformed to upper case.  <br /></td></tr>
 <tr class="separator:ga4f3d0e008f246d1fad05041faff4c0ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7e5f14168eced65aea12d40d719c8545"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga7e5f14168eced65aea12d40d719c8545">ghassanpl::string_ops::ascii::toupper</a> (std::string str) noexcept</td></tr>
+<tr class="memitem:ga7e5f14168eced65aea12d40d719c8545"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga7e5f14168eced65aea12d40d719c8545">ghassanpl::string_ops::ascii::toupper</a> (std::string str) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:ga7e5f14168eced65aea12d40d719c8545"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of the string with all characters transformed to upper case.    <br /></td></tr>
 <tr class="separator:ga7e5f14168eced65aea12d40d719c8545"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac61f02994d264d18dcb632aa4085a424"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gac61f02994d264d18dcb632aa4085a424">ghassanpl::string_ops::ascii::toupper</a> (const char *str) noexcept</td></tr>
+<tr class="memitem:gac61f02994d264d18dcb632aa4085a424"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gac61f02994d264d18dcb632aa4085a424">ghassanpl::string_ops::ascii::toupper</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char</a> *str) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:gac61f02994d264d18dcb632aa4085a424"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of the string with all characters transformed to upper case.    <br /></td></tr>
 <tr class="separator:gac61f02994d264d18dcb632aa4085a424"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaeec2ff98d555b9eb475aed6cdf9704b5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaeec2ff98d555b9eb475aed6cdf9704b5">ghassanpl::string_ops::ascii::capitalize</a> (std::string str) noexcept</td></tr>
+<tr class="memitem:gaeec2ff98d555b9eb475aed6cdf9704b5"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaeec2ff98d555b9eb475aed6cdf9704b5">ghassanpl::string_ops::ascii::capitalize</a> (std::string str) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:gaeec2ff98d555b9eb475aed6cdf9704b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a copy of the string with the first letter transformed to upper case if possible.  <br /></td></tr>
 <tr class="separator:gaeec2ff98d555b9eb475aed6cdf9704b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga09eca75865c90f7986463fc89f6776db"><td class="memItemLeft" align="right" valign="top">constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga09eca75865c90f7986463fc89f6776db">ghassanpl::string_ops::ascii::number_to_digit</a> (int v) noexcept</td></tr>
+<tr class="memitem:ga09eca75865c90f7986463fc89f6776db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga09eca75865c90f7986463fc89f6776db">ghassanpl::string_ops::ascii::number_to_digit</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">int</a> v) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:ga09eca75865c90f7986463fc89f6776db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a number between 0 and 9 to its ASCII representation (only gives meaningful results with arguments between 0 and 9)  <br /></td></tr>
 <tr class="separator:ga09eca75865c90f7986463fc89f6776db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga911b7133b039bb85f9c5f6881181852c"><td class="memItemLeft" align="right" valign="top">constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga911b7133b039bb85f9c5f6881181852c">ghassanpl::string_ops::ascii::number_to_xdigit</a> (int v) noexcept</td></tr>
+<tr class="memitem:ga911b7133b039bb85f9c5f6881181852c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga911b7133b039bb85f9c5f6881181852c">ghassanpl::string_ops::ascii::number_to_xdigit</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">int</a> v) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:ga911b7133b039bb85f9c5f6881181852c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert a number between 0 and 15 to its ASCII representation (only gives meaningful results with arguments between 0 and 15)  <br /></td></tr>
 <tr class="separator:ga911b7133b039bb85f9c5f6881181852c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9039e2389bf058ef0ea0a338b9e4aad5"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga9039e2389bf058ef0ea0a338b9e4aad5">ghassanpl::string_ops::ascii::digit_to_number</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga9039e2389bf058ef0ea0a338b9e4aad5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga9039e2389bf058ef0ea0a338b9e4aad5">ghassanpl::string_ops::ascii::digit_to_number</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:ga9039e2389bf058ef0ea0a338b9e4aad5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert an ASCII digit character to its numerical value (only gives meaningful results with valid digit arguments)  <br /></td></tr>
 <tr class="separator:ga9039e2389bf058ef0ea0a338b9e4aad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gada6e5854a0de58fda09a180edf5fe828"><td class="memItemLeft" align="right" valign="top">constexpr int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gada6e5854a0de58fda09a180edf5fe828">ghassanpl::string_ops::ascii::xdigit_to_number</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:gada6e5854a0de58fda09a180edf5fe828"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gada6e5854a0de58fda09a180edf5fe828">ghassanpl::string_ops::ascii::xdigit_to_number</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:gada6e5854a0de58fda09a180edf5fe828"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert an ASCII xdigit to its numerical value (only gives meaningful results with valid xdigit arguments)  <br /></td></tr>
 <tr class="separator:gada6e5854a0de58fda09a180edf5fe828"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader">*_chars variables</h2></td></tr>
+<tr><td class="ititle" colspan="2"><p>Constexpr arrays listing the characters that match their respective ascii::is* functions </p>
+</td></tr>
+<tr class="memitem:gaba5afdd37262f975f9f29b83b3ce7434"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaba5afdd37262f975f9f29b83b3ce7434">ghassanpl::string_ops::ascii::alphabetic_chars</a></td></tr>
+<tr class="memdesc:gaba5afdd37262f975f9f29b83b3ce7434"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isalpha</code>.  <br /></td></tr>
+<tr class="separator:gaba5afdd37262f975f9f29b83b3ce7434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9e3603b9683f439fcaa5a2fa1488246f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga9e3603b9683f439fcaa5a2fa1488246f">ghassanpl::string_ops::ascii::digit_chars</a></td></tr>
+<tr class="memdesc:ga9e3603b9683f439fcaa5a2fa1488246f"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isdigit</code>.  <br /></td></tr>
+<tr class="separator:ga9e3603b9683f439fcaa5a2fa1488246f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabe5e5409719d907828cbbe005b924da3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gabe5e5409719d907828cbbe005b924da3">ghassanpl::string_ops::ascii::octal_digit_chars</a></td></tr>
+<tr class="memdesc:gabe5e5409719d907828cbbe005b924da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isodigit</code>.  <br /></td></tr>
+<tr class="separator:gabe5e5409719d907828cbbe005b924da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga37679a010c6ef26c8b60d05783fcfe62"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga37679a010c6ef26c8b60d05783fcfe62">ghassanpl::string_ops::ascii::hex_digit_chars</a></td></tr>
+<tr class="memdesc:ga37679a010c6ef26c8b60d05783fcfe62"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isxdigit</code>.  <br /></td></tr>
+<tr class="separator:ga37679a010c6ef26c8b60d05783fcfe62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga54dc6a890c5467a2e9ed402a698444da"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga54dc6a890c5467a2e9ed402a698444da">ghassanpl::string_ops::ascii::alphanumeric_chars</a></td></tr>
+<tr class="memdesc:ga54dc6a890c5467a2e9ed402a698444da"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isalnum</code>.  <br /></td></tr>
+<tr class="separator:ga54dc6a890c5467a2e9ed402a698444da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaffb6059c931e30c972ddd48107e195d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaffb6059c931e30c972ddd48107e195d3">ghassanpl::string_ops::ascii::identifier_chars</a></td></tr>
+<tr class="memdesc:gaffb6059c931e30c972ddd48107e195d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isident</code>.  <br /></td></tr>
+<tr class="separator:gaffb6059c931e30c972ddd48107e195d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2bf572a94e40b400d85ad0996ada6ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gab2bf572a94e40b400d85ad0996ada6ea">ghassanpl::string_ops::ascii::identifier_start_chars</a></td></tr>
+<tr class="memdesc:gab2bf572a94e40b400d85ad0996ada6ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isidentstart</code>.  <br /></td></tr>
+<tr class="separator:gab2bf572a94e40b400d85ad0996ada6ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga890d58fe01750f1c182057b3c7d20509"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga890d58fe01750f1c182057b3c7d20509">ghassanpl::string_ops::ascii::whitespace_chars</a></td></tr>
+<tr class="memdesc:ga890d58fe01750f1c182057b3c7d20509"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isspace</code>.  <br /></td></tr>
+<tr class="separator:ga890d58fe01750f1c182057b3c7d20509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga476f4798612d3858b90b9ca90959113f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga476f4798612d3858b90b9ca90959113f">ghassanpl::string_ops::ascii::punctuation_chars</a></td></tr>
+<tr class="memdesc:ga476f4798612d3858b90b9ca90959113f"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::ispunct</code>.  <br /></td></tr>
+<tr class="separator:ga476f4798612d3858b90b9ca90959113f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4aab61f41de43417a717a703f1e0a706"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga4aab61f41de43417a717a703f1e0a706">ghassanpl::string_ops::ascii::lowercase_chars</a></td></tr>
+<tr class="memdesc:ga4aab61f41de43417a717a703f1e0a706"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::islower</code>.  <br /></td></tr>
+<tr class="separator:ga4aab61f41de43417a717a703f1e0a706"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab2dd001af161bcdff863e380eaab5761"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gab2dd001af161bcdff863e380eaab5761">ghassanpl::string_ops::ascii::uppercase_chars</a></td></tr>
+<tr class="memdesc:gab2dd001af161bcdff863e380eaab5761"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isupper</code>.  <br /></td></tr>
+<tr class="separator:gab2dd001af161bcdff863e380eaab5761"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga43a5533980fd81ca4001116c7911e9fd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga43a5533980fd81ca4001116c7911e9fd">ghassanpl::string_ops::ascii::control_chars</a></td></tr>
+<tr class="memdesc:ga43a5533980fd81ca4001116c7911e9fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::iscntrl</code>.  <br /></td></tr>
+<tr class="separator:ga43a5533980fd81ca4001116c7911e9fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga394c5334a58a457786476d68e51f5a8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga394c5334a58a457786476d68e51f5a8e">ghassanpl::string_ops::ascii::blank_chars</a></td></tr>
+<tr class="memdesc:ga394c5334a58a457786476d68e51f5a8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isblank</code>.  <br /></td></tr>
+<tr class="separator:ga394c5334a58a457786476d68e51f5a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae7174316ab9982fa015bc9f5a7c6bbd2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gae7174316ab9982fa015bc9f5a7c6bbd2">ghassanpl::string_ops::ascii::graphical_chars</a></td></tr>
+<tr class="memdesc:gae7174316ab9982fa015bc9f5a7c6bbd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isgraph</code>.  <br /></td></tr>
+<tr class="separator:gae7174316ab9982fa015bc9f5a7c6bbd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8abe9e58a670307ba5db4723027bb172"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga8abe9e58a670307ba5db4723027bb172">ghassanpl::string_ops::ascii::printable_chars</a></td></tr>
+<tr class="memdesc:ga8abe9e58a670307ba5db4723027bb172"><td class="mdescLeft">&#160;</td><td class="mdescRight">All characters that match <code>ascii::isprint</code>.  <br /></td></tr>
+<tr class="separator:ga8abe9e58a670307ba5db4723027bb172"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">is* and to* functions</h2></td></tr>
 <tr><td class="ititle" colspan="2"><p>These are our own versions of &lt;cctype&gt; functions that do not block, are defined (false) for values outside of uint8_t, and do not depend on locale (plus you can take pointers to them). </p>
 </td></tr>
-<tr class="memitem:ga636f78f9eb5ac99b905c62c4848acc20"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga636f78f9eb5ac99b905c62c4848acc20">ghassanpl::string_ops::ascii::isalpha</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga636f78f9eb5ac99b905c62c4848acc20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga636f78f9eb5ac99b905c62c4848acc20">ghassanpl::string_ops::ascii::isalpha</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga636f78f9eb5ac99b905c62c4848acc20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5abd8e31aace569197f6d82465b24dc8"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga5abd8e31aace569197f6d82465b24dc8">ghassanpl::string_ops::ascii::isdigit</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga5abd8e31aace569197f6d82465b24dc8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga5abd8e31aace569197f6d82465b24dc8">ghassanpl::string_ops::ascii::isdigit</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga5abd8e31aace569197f6d82465b24dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafb550888c44c16262be59b4673a9dddc"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gafb550888c44c16262be59b4673a9dddc">ghassanpl::string_ops::ascii::isodigit</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:gafb550888c44c16262be59b4673a9dddc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gafb550888c44c16262be59b4673a9dddc">ghassanpl::string_ops::ascii::isodigit</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:gafb550888c44c16262be59b4673a9dddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1c4e01fd4d9220a50415e657ed418325"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga1c4e01fd4d9220a50415e657ed418325">ghassanpl::string_ops::ascii::isxdigit</a> (char32_t d) noexcept</td></tr>
+<tr class="memitem:ga1c4e01fd4d9220a50415e657ed418325"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga1c4e01fd4d9220a50415e657ed418325">ghassanpl::string_ops::ascii::isxdigit</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">d</a>) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga1c4e01fd4d9220a50415e657ed418325"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8131aa363af98af07be068004525d088"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga8131aa363af98af07be068004525d088">ghassanpl::string_ops::ascii::isalnum</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga8131aa363af98af07be068004525d088"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga8131aa363af98af07be068004525d088">ghassanpl::string_ops::ascii::isalnum</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga8131aa363af98af07be068004525d088"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2f27105056a49a80b0563dd298d10a8e"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga2f27105056a49a80b0563dd298d10a8e">ghassanpl::string_ops::ascii::isident</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga2f27105056a49a80b0563dd298d10a8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga2f27105056a49a80b0563dd298d10a8e">ghassanpl::string_ops::ascii::isident</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga2f27105056a49a80b0563dd298d10a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa0c6ebccaff758ad195ae04d26dcfff2"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaa0c6ebccaff758ad195ae04d26dcfff2">ghassanpl::string_ops::ascii::isidentstart</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:gaa0c6ebccaff758ad195ae04d26dcfff2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaa0c6ebccaff758ad195ae04d26dcfff2">ghassanpl::string_ops::ascii::isidentstart</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:gaa0c6ebccaff758ad195ae04d26dcfff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad9a2a2aa62cbb1f61530e648feebaeb7"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gad9a2a2aa62cbb1f61530e648feebaeb7">ghassanpl::string_ops::ascii::isspace</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:gad9a2a2aa62cbb1f61530e648feebaeb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gad9a2a2aa62cbb1f61530e648feebaeb7">ghassanpl::string_ops::ascii::isspace</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:gad9a2a2aa62cbb1f61530e648feebaeb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga791195edb4fe8a0be9ef6a993edf92ab"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga791195edb4fe8a0be9ef6a993edf92ab">ghassanpl::string_ops::ascii::ispunct</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga791195edb4fe8a0be9ef6a993edf92ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga791195edb4fe8a0be9ef6a993edf92ab">ghassanpl::string_ops::ascii::ispunct</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga791195edb4fe8a0be9ef6a993edf92ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga85dd1c5a6b408a770bb258a931a5362a"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga85dd1c5a6b408a770bb258a931a5362a">ghassanpl::string_ops::ascii::islower</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga85dd1c5a6b408a770bb258a931a5362a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga85dd1c5a6b408a770bb258a931a5362a">ghassanpl::string_ops::ascii::islower</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga85dd1c5a6b408a770bb258a931a5362a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa6ef9b7aa35d34f5a3a32b9b6e336648"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaa6ef9b7aa35d34f5a3a32b9b6e336648">ghassanpl::string_ops::ascii::isupper</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:gaa6ef9b7aa35d34f5a3a32b9b6e336648"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaa6ef9b7aa35d34f5a3a32b9b6e336648">ghassanpl::string_ops::ascii::isupper</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:gaa6ef9b7aa35d34f5a3a32b9b6e336648"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacbaf79448d97595ed3e92b0d58a20b70"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gacbaf79448d97595ed3e92b0d58a20b70">ghassanpl::string_ops::ascii::iscntrl</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:gacbaf79448d97595ed3e92b0d58a20b70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gacbaf79448d97595ed3e92b0d58a20b70">ghassanpl::string_ops::ascii::iscntrl</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:gacbaf79448d97595ed3e92b0d58a20b70"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae75e7ebd9242c2beaabefa4440fcfbe0"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gae75e7ebd9242c2beaabefa4440fcfbe0">ghassanpl::string_ops::ascii::isblank</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:gae75e7ebd9242c2beaabefa4440fcfbe0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gae75e7ebd9242c2beaabefa4440fcfbe0">ghassanpl::string_ops::ascii::isblank</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:gae75e7ebd9242c2beaabefa4440fcfbe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga98bb1927a23f8a93161c19cd3e51055d"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga98bb1927a23f8a93161c19cd3e51055d">ghassanpl::string_ops::ascii::isgraph</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga98bb1927a23f8a93161c19cd3e51055d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga98bb1927a23f8a93161c19cd3e51055d">ghassanpl::string_ops::ascii::isgraph</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga98bb1927a23f8a93161c19cd3e51055d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0ab7a043ab31f10dce51181f47a10efe"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga0ab7a043ab31f10dce51181f47a10efe">ghassanpl::string_ops::ascii::isprint</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga0ab7a043ab31f10dce51181f47a10efe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga0ab7a043ab31f10dce51181f47a10efe">ghassanpl::string_ops::ascii::isprint</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga0ab7a043ab31f10dce51181f47a10efe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga544a15f7c15375e21a85a63ac892a1e4"><td class="memItemLeft" align="right" valign="top">constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga544a15f7c15375e21a85a63ac892a1e4">ghassanpl::string_ops::ascii::toupper</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga544a15f7c15375e21a85a63ac892a1e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga544a15f7c15375e21a85a63ac892a1e4">ghassanpl::string_ops::ascii::toupper</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga544a15f7c15375e21a85a63ac892a1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3e88dcededf90a662a1bdc7cfba65843"><td class="memItemLeft" align="right" valign="top">constexpr char32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga3e88dcededf90a662a1bdc7cfba65843">ghassanpl::string_ops::ascii::tolower</a> (char32_t cp) noexcept</td></tr>
+<tr class="memitem:ga3e88dcededf90a662a1bdc7cfba65843"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga3e88dcededf90a662a1bdc7cfba65843">ghassanpl::string_ops::ascii::tolower</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> cp) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="separator:ga3e88dcededf90a662a1bdc7cfba65843"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader">Case-invariant Comparisons</h2></td></tr>
-<tr class="memitem:ga1056a5ec2eb982d05c1be25dee3ad7ba"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga1056a5ec2eb982d05c1be25dee3ad7ba">ghassanpl::string_ops::ascii::strings_equal_ignore_case</a> (std::string_view sa, std::string_view sb)</td></tr>
+<tr class="memitem:ga1056a5ec2eb982d05c1be25dee3ad7ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga1056a5ec2eb982d05c1be25dee3ad7ba">ghassanpl::string_ops::ascii::strings_equal_ignore_case</a> (std::string_view <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">sa</a>, std::string_view <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">sb</a>)</td></tr>
 <tr class="separator:ga1056a5ec2eb982d05c1be25dee3ad7ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac3223a64c8f94dcea33d5f5632c98c5c"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gac3223a64c8f94dcea33d5f5632c98c5c">ghassanpl::string_ops::ascii::string_starts_with_ignore_case</a> (std::string_view a, std::string_view b)</td></tr>
+<tr class="memitem:gac3223a64c8f94dcea33d5f5632c98c5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gac3223a64c8f94dcea33d5f5632c98c5c">ghassanpl::string_ops::ascii::string_starts_with_ignore_case</a> (std::string_view a, std::string_view b)</td></tr>
 <tr class="separator:gac3223a64c8f94dcea33d5f5632c98c5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga87a4c32f76934e9fc7586768fb077746"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga87a4c32f76934e9fc7586768fb077746">ghassanpl::string_ops::ascii::string_ends_with_ignore_case</a> (std::string_view a, std::string_view b)</td></tr>
+<tr class="memitem:ga87a4c32f76934e9fc7586768fb077746"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga87a4c32f76934e9fc7586768fb077746">ghassanpl::string_ops::ascii::string_ends_with_ignore_case</a> (std::string_view a, std::string_view b)</td></tr>
 <tr class="separator:ga87a4c32f76934e9fc7586768fb077746"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf8ed885e815b6709d791c0e87f24e578"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaf8ed885e815b6709d791c0e87f24e578">ghassanpl::string_ops::ascii::string_find_ignore_case</a> (std::string_view haystack, std::string_view pattern)</td></tr>
+<tr class="memitem:gaf8ed885e815b6709d791c0e87f24e578"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaf8ed885e815b6709d791c0e87f24e578">ghassanpl::string_ops::ascii::string_find_ignore_case</a> (std::string_view <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">haystack</a>, std::string_view <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">pattern</a>)</td></tr>
 <tr class="separator:gaf8ed885e815b6709d791c0e87f24e578"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf51002e98092959095f0e789cfc67014"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaf51002e98092959095f0e789cfc67014">ghassanpl::string_ops::ascii::string_find_last_ignore_case</a> (std::string_view a, std::string_view b)</td></tr>
+<tr class="memitem:gaf51002e98092959095f0e789cfc67014"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gaf51002e98092959095f0e789cfc67014">ghassanpl::string_ops::ascii::string_find_last_ignore_case</a> (std::string_view a, std::string_view b)</td></tr>
 <tr class="separator:gaf51002e98092959095f0e789cfc67014"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1827312d7799606f6445552f562060c9"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga1827312d7799606f6445552f562060c9">ghassanpl::string_ops::ascii::string_contains_ignore_case</a> (std::string_view a, std::string_view b)</td></tr>
+<tr class="memitem:ga1827312d7799606f6445552f562060c9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga1827312d7799606f6445552f562060c9">ghassanpl::string_ops::ascii::string_contains_ignore_case</a> (std::string_view a, std::string_view b)</td></tr>
 <tr class="separator:ga1827312d7799606f6445552f562060c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga49ffc566929edf8974b2d39f9334348e"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga49ffc566929edf8974b2d39f9334348e">ghassanpl::string_ops::ascii::lexicographical_compare_ignore_case</a> (std::string_view first, std::string_view second)</td></tr>
+<tr class="memitem:ga49ffc566929edf8974b2d39f9334348e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga49ffc566929edf8974b2d39f9334348e">ghassanpl::string_ops::ascii::lexicographical_compare_ignore_case</a> (std::string_view <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">first</a>, std::string_view <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">second</a>)</td></tr>
 <tr class="separator:ga49ffc566929edf8974b2d39f9334348e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga80118ba80f451f9d3fc71261ddd1ad92"><td class="memItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga80118ba80f451f9d3fc71261ddd1ad92">ghassanpl::string_ops::ascii::lexicographical_compare_ignore_case_three_way</a> (std::string_view a, std::string_view b)</td></tr>
+<tr class="memitem:ga80118ba80f451f9d3fc71261ddd1ad92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#ga80118ba80f451f9d3fc71261ddd1ad92">ghassanpl::string_ops::ascii::lexicographical_compare_ignore_case_three_way</a> (std::string_view a, std::string_view b)</td></tr>
 <tr class="separator:ga80118ba80f451f9d3fc71261ddd1ad92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadf9573b4c9f1fb99e1f07bc86e3bcf2e"><td class="memItemLeft" align="right" valign="top">consteval detail::string_view_case_insensitive&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gadf9573b4c9f1fb99e1f07bc86e3bcf2e">ghassanpl::string_ops::ascii::operator&quot;&quot;_i</a> (const char *str, size_t size) noexcept</td></tr>
+<tr class="memitem:gadf9573b4c9f1fb99e1f07bc86e3bcf2e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">consteval</a> detail::string_view_case_insensitive&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___a_s_c_i_i.html#gadf9573b4c9f1fb99e1f07bc86e3bcf2e">ghassanpl::string_ops::ascii::operator&quot;&quot;_i</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char</a> *str, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a> size) <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">noexcept</a></td></tr>
 <tr class="memdesc:gadf9573b4c9f1fb99e1f07bc86e3bcf2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">A version of the <code>sv</code> suffix that returns a special type allowing for case-insensitive comparisons.  <br /></td></tr>
 <tr class="separator:gadf9573b4c9f1fb99e1f07bc86e3bcf2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<p>These functions operate on codepoints and strings encoded as ASCII. </p>
+<p>Functions that operate on codepoints and strings encoded as ASCII. </p>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="gaeec2ff98d555b9eb475aed6cdf9704b5" name="gaeec2ff98d555b9eb475aed6cdf9704b5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaeec2ff98d555b9eb475aed6cdf9704b5">&#9670;&#160;</a></span>capitalize()</h2>
@@ -252,7 +298,7 @@ Functions</h2></td></tr>
 
 <p>Returns a copy of the string with the first letter transformed to upper case if possible. </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00314">314</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00445">445</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -266,9 +312,9 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr int ghassanpl::string_ops::ascii::digit_to_number </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">int</a> ghassanpl::string_ops::ascii::digit_to_number </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -282,7 +328,7 @@ Functions</h2></td></tr>
 
 <p>Convert an ASCII digit character to its numerical value (only gives meaningful results with valid digit arguments) </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00327">327</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00457">457</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -298,9 +344,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::is_identifier </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::is_identifier </td>
           <td>(</td>
-          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramtype">T <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -314,7 +360,7 @@ template&lt;stringable T&gt; </div>
 
 <p>Returns true if the given <code>str</code> is a C-style identifier (e.g. matches <code>/[\w_][\w_0-9]+/</code>) </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00258">258</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00389">389</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -328,9 +374,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isalnum </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isalnum </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -342,7 +388,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00231">231</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00330">330</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -356,9 +402,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isalpha </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isalpha </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -370,47 +416,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00227">227</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
-
-</div>
-</div>
-<a id="gafb68b85a8d5d9353fc5c6e9f45bfda7d" name="gafb68b85a8d5d9353fc5c6e9f45bfda7d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gafb68b85a8d5d9353fc5c6e9f45bfda7d">&#9670;&#160;</a></span>isany()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isany </td>
-          <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
-          <td class="paramname"><em>cp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string_view&#160;</td>
-          <td class="paramname"><em>chars</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">constexpr</span><span class="mlabel">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Return true if <code>cp</code> is ascii and any of the chars in <code>chars</code> </p>
-
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00253">253</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00326">326</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -424,9 +430,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isblank </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isblank </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -438,7 +444,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00239">239</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00338">338</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -452,9 +458,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::iscntrl </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::iscntrl </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -466,7 +472,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00238">238</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00337">337</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -480,9 +486,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isdigit </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isdigit </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -494,7 +500,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00228">228</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00327">327</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -508,9 +514,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isgraph </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isgraph </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -522,7 +528,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00240">240</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00339">339</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -536,9 +542,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isident </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isident </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -550,7 +556,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00232">232</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00331">331</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -564,9 +570,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isidentstart </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isidentstart </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -578,7 +584,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00233">233</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00332">332</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -592,9 +598,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::islower </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::islower </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -606,7 +612,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00236">236</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00335">335</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -620,9 +626,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isodigit </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isodigit </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -634,7 +640,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00229">229</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00328">328</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -648,9 +654,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isprint </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isprint </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -662,7 +668,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00241">241</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00340">340</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -676,9 +682,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::ispunct </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::ispunct </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -690,7 +696,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00235">235</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00334">334</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -704,9 +710,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isspace </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isspace </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -718,7 +724,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00234">234</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00333">333</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -732,9 +738,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isupper </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isupper </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -746,7 +752,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00237">237</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00336">336</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -760,9 +766,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::isxdigit </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::isxdigit </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>d</em></td><td>)</td>
           <td></td>
         </tr>
@@ -774,7 +780,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00230">230</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00329">329</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -788,7 +794,7 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::lexicographical_compare_ignore_case </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::lexicographical_compare_ignore_case </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>first</em>, </td>
@@ -812,7 +818,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00373">373</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00503">503</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -826,7 +832,7 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto ghassanpl::string_ops::ascii::lexicographical_compare_ignore_case_three_way </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::lexicographical_compare_ignore_case_three_way </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>a</em>, </td>
@@ -850,7 +856,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00379">379</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00509">509</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -864,9 +870,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char32_t ghassanpl::string_ops::ascii::number_to_digit </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> ghassanpl::string_ops::ascii::number_to_digit </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">int</a>&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>
@@ -880,7 +886,7 @@ template&lt;stringable T&gt; </div>
 
 <p>Convert a number between 0 and 9 to its ASCII representation (only gives meaningful results with arguments between 0 and 9) </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00322">322</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00452">452</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -894,9 +900,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char32_t ghassanpl::string_ops::ascii::number_to_xdigit </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> ghassanpl::string_ops::ascii::number_to_xdigit </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">int</a>&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
           <td></td>
         </tr>
@@ -910,7 +916,7 @@ template&lt;stringable T&gt; </div>
 
 <p>Convert a number between 0 and 15 to its ASCII representation (only gives meaningful results with arguments between 0 and 15) </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00324">324</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00454">454</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -924,15 +930,15 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">consteval detail::string_view_case_insensitive ghassanpl::string_ops::ascii::operator&quot;&quot;_i </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">consteval</a> detail::string_view_case_insensitive ghassanpl::string_ops::ascii::operator&quot;&quot;_i </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char</a> *&#160;</td>
           <td class="paramname"><em>str</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a>&#160;</td>
           <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>
@@ -950,7 +956,7 @@ template&lt;stringable T&gt; </div>
 
 <p>A version of the <code>sv</code> suffix that returns a special type allowing for case-insensitive comparisons. </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00400">400</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00530">530</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -964,7 +970,7 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto ghassanpl::string_ops::ascii::string_contains_ignore_case </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::string_contains_ignore_case </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>a</em>, </td>
@@ -988,7 +994,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00368">368</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00498">498</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1002,7 +1008,7 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::string_ends_with_ignore_case </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::string_ends_with_ignore_case </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>a</em>, </td>
@@ -1026,7 +1032,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00344">344</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00474">474</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1040,7 +1046,7 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto ghassanpl::string_ops::ascii::string_find_ignore_case </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::string_find_ignore_case </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>haystack</em>, </td>
@@ -1064,7 +1070,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00350">350</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00480">480</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1078,7 +1084,7 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr auto ghassanpl::string_ops::ascii::string_find_last_ignore_case </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::string_find_last_ignore_case </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>a</em>, </td>
@@ -1102,7 +1108,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00359">359</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00489">489</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1116,7 +1122,7 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::string_starts_with_ignore_case </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::string_starts_with_ignore_case </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>a</em>, </td>
@@ -1140,7 +1146,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00339">339</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00469">469</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1154,7 +1160,7 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr bool ghassanpl::string_ops::ascii::strings_equal_ignore_case </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bool</a> ghassanpl::string_ops::ascii::strings_equal_ignore_case </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>sa</em>, </td>
@@ -1178,7 +1184,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00334">334</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00464">464</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1192,9 +1198,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char32_t ghassanpl::string_ops::ascii::tolower </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> ghassanpl::string_ops::ascii::tolower </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1206,7 +1212,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00246">246</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00345">345</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1220,9 +1226,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr std::string ghassanpl::string_ops::ascii::tolower </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> std::string ghassanpl::string_ops::ascii::tolower </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char</a> *&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1236,7 +1242,7 @@ template&lt;stringable T&gt; </div>
 
 <p>Returns a copy of the string with all characters transformed to lower case.   </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00282">282</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00413">413</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1250,7 +1256,7 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr std::string ghassanpl::string_ops::ascii::tolower </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> std::string ghassanpl::string_ops::ascii::tolower </td>
           <td>(</td>
           <td class="paramtype">std::string&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
@@ -1266,7 +1272,7 @@ template&lt;stringable T&gt; </div>
 
 <p>Returns a copy of the string with all characters transformed to lower case.   </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00276">276</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00407">407</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1282,9 +1288,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr std::string ghassanpl::string_ops::ascii::tolower </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> std::string ghassanpl::string_ops::ascii::tolower </td>
           <td>(</td>
-          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramtype">T <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1298,7 +1304,7 @@ template&lt;stringable T&gt; </div>
 
 <p>Returns a copy of the string with all characters transformed to lower case. </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00265">265</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00396">396</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1312,9 +1318,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr char32_t ghassanpl::string_ops::ascii::toupper </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a> ghassanpl::string_ops::ascii::toupper </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1326,7 +1332,7 @@ template&lt;stringable T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00243">243</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00342">342</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1342,7 +1348,7 @@ template&lt;stringable T&gt; </div>
         <tr>
           <td class="memname">std::string ghassanpl::string_ops::ascii::toupper </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char</a> *&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1356,7 +1362,7 @@ template&lt;stringable T&gt; </div>
 
 <p>Returns a copy of the string with all characters transformed to upper case.   </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00307">307</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00438">438</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1386,7 +1392,7 @@ template&lt;stringable T&gt; </div>
 
 <p>Returns a copy of the string with all characters transformed to upper case.   </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00301">301</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00432">432</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1404,7 +1410,7 @@ template&lt;stringable T&gt; </div>
         <tr>
           <td class="memname">std::string ghassanpl::string_ops::ascii::toupper </td>
           <td>(</td>
-          <td class="paramtype">T const &amp;&#160;</td>
+          <td class="paramtype">T <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1418,7 +1424,7 @@ template&lt;stringable T&gt; </div>
 
 <p>Returns a copy of the string with all characters transformed to upper case. </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00290">290</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00421">421</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>
@@ -1432,9 +1438,9 @@ template&lt;stringable T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr int ghassanpl::string_ops::ascii::xdigit_to_number </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">int</a> ghassanpl::string_ops::ascii::xdigit_to_number </td>
           <td>(</td>
-          <td class="paramtype">char32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char32_t</a>&#160;</td>
           <td class="paramname"><em>cp</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1448,7 +1454,398 @@ template&lt;stringable T&gt; </div>
 
 <p>Convert an ASCII xdigit to its numerical value (only gives meaningful results with valid xdigit arguments) </p>
 
-<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00330">330</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00460">460</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="gaba5afdd37262f975f9f29b83b3ce7434" name="gaba5afdd37262f975f9f29b83b3ce7434"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaba5afdd37262f975f9f29b83b3ce7434">&#9670;&#160;</a></span>alphabetic_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::alphabetic_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isalpha</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00370">370</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="ga54dc6a890c5467a2e9ed402a698444da" name="ga54dc6a890c5467a2e9ed402a698444da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga54dc6a890c5467a2e9ed402a698444da">&#9670;&#160;</a></span>alphanumeric_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::alphanumeric_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isalnum</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00374">374</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="ga394c5334a58a457786476d68e51f5a8e" name="ga394c5334a58a457786476d68e51f5a8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga394c5334a58a457786476d68e51f5a8e">&#9670;&#160;</a></span>blank_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::blank_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isblank</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00382">382</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="ga43a5533980fd81ca4001116c7911e9fd" name="ga43a5533980fd81ca4001116c7911e9fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga43a5533980fd81ca4001116c7911e9fd">&#9670;&#160;</a></span>control_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::control_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::iscntrl</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00381">381</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="ga9e3603b9683f439fcaa5a2fa1488246f" name="ga9e3603b9683f439fcaa5a2fa1488246f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9e3603b9683f439fcaa5a2fa1488246f">&#9670;&#160;</a></span>digit_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::digit_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isdigit</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00371">371</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="gae7174316ab9982fa015bc9f5a7c6bbd2" name="gae7174316ab9982fa015bc9f5a7c6bbd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae7174316ab9982fa015bc9f5a7c6bbd2">&#9670;&#160;</a></span>graphical_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::graphical_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isgraph</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00383">383</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="ga37679a010c6ef26c8b60d05783fcfe62" name="ga37679a010c6ef26c8b60d05783fcfe62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga37679a010c6ef26c8b60d05783fcfe62">&#9670;&#160;</a></span>hex_digit_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::hex_digit_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isxdigit</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00373">373</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="gaffb6059c931e30c972ddd48107e195d3" name="gaffb6059c931e30c972ddd48107e195d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaffb6059c931e30c972ddd48107e195d3">&#9670;&#160;</a></span>identifier_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::identifier_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isident</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00375">375</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="gab2bf572a94e40b400d85ad0996ada6ea" name="gab2bf572a94e40b400d85ad0996ada6ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab2bf572a94e40b400d85ad0996ada6ea">&#9670;&#160;</a></span>identifier_start_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::identifier_start_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isidentstart</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00376">376</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="ga4aab61f41de43417a717a703f1e0a706" name="ga4aab61f41de43417a717a703f1e0a706"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4aab61f41de43417a717a703f1e0a706">&#9670;&#160;</a></span>lowercase_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::lowercase_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::islower</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00379">379</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="gabe5e5409719d907828cbbe005b924da3" name="gabe5e5409719d907828cbbe005b924da3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabe5e5409719d907828cbbe005b924da3">&#9670;&#160;</a></span>octal_digit_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::octal_digit_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isodigit</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00372">372</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="ga8abe9e58a670307ba5db4723027bb172" name="ga8abe9e58a670307ba5db4723027bb172"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8abe9e58a670307ba5db4723027bb172">&#9670;&#160;</a></span>printable_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::printable_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isprint</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00384">384</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="ga476f4798612d3858b90b9ca90959113f" name="ga476f4798612d3858b90b9ca90959113f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga476f4798612d3858b90b9ca90959113f">&#9670;&#160;</a></span>punctuation_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::punctuation_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::ispunct</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00378">378</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="gab2dd001af161bcdff863e380eaab5761" name="gab2dd001af161bcdff863e380eaab5761"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab2dd001af161bcdff863e380eaab5761">&#9670;&#160;</a></span>uppercase_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::uppercase_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isupper</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00380">380</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
+
+</div>
+</div>
+<a id="ga890d58fe01750f1c182057b3c7d20509" name="ga890d58fe01750f1c182057b3c7d20509"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga890d58fe01750f1c182057b3c7d20509">&#9670;&#160;</a></span>whitespace_chars</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">auto</a> ghassanpl::string_ops::ascii::whitespace_chars</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>All characters that match <code>ascii::isspace</code>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00377">377</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
 
 </div>
 </div>

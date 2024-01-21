@@ -119,66 +119,72 @@ $(document).ready(function(){initNavTree('with__sl_8h_source.html',''); initResi
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;concepts&gt;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;source_location.h&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#if !defined(__cpp_concepts)</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#error &quot;This library requires concepts&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#ifdef __INTELLISENSE__</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#define EQ_SOURCE_LOCATION = std::source_location{}</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#define EQ_SOURCE_LOCATION = std::source_location::current()</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceghassanpl.html">ghassanpl</a></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>{</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="structghassanpl_1_1with__sl.html">   39</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    {</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        T Object;</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        std::source_location Location;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>(T t, std::source_location loc EQ_SOURCE_LOCATION)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>            : Object(std::move(t)), Location(std::move(loc))</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        {</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        }</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>(<a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a> <span class="keyword">const</span>&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>(<a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>&amp;&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>&amp; operator=(<a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a> <span class="keyword">const</span>&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>&amp; operator=(<a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>&amp;&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    };</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> HASH_FUNC&gt;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="structghassanpl_1_1with__slh.html">   58</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keyword">using </span>hash_func = HASH_FUNC;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        <span class="keyword">using </span>hash_type = <span class="keyword">decltype</span>(HASH_FUNC{}(std::source_location{}));</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        T Object;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        hash_type LocationHash;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#ifdef __INTELLISENSE__</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>(T t, hash_type loc)</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>(T t, hash_type loc = HASH_FUNC{}(std::source_location::current()))</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            : Object(std::move(t)), LocationHash(loc)</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        {</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        }</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>(<a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a> <span class="keyword">const</span>&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>(<a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>&amp;&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>&amp; operator=(<a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a> <span class="keyword">const</span>&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>&amp; operator=(<a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>&amp;&amp; other) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    };</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>}</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;hashes.h&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#if !defined(__cpp_concepts)</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#error &quot;This library requires concepts&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#ifdef __INTELLISENSE__</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#define EQ_SOURCE_LOCATION = source_location{}</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#define EQ_SOURCE_LOCATION = source_location::current()</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceghassanpl.html">ghassanpl</a></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>{</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structghassanpl_1_1with__sl.html">   40</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    {</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        T Object;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        source_location Location;</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U&gt;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keyword">requires</span> (!std::same_as&lt;std::remove_cvref_t&lt;U&gt;, <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl&lt;T&gt;</a>&gt;)</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">U</a>&amp;&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">u</a>, source_location <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">loc</a> EQ_SOURCE_LOCATION)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            : Object(std::forward&lt;U&gt;(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">u</a>)), Location(std::move(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">loc</a>))</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>(<a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a> <span class="keyword">const</span>&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">other</a>) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>(<a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>&amp;&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">other</a>) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>&amp; operator=(<a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a> <span class="keyword">const</span>&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">other</a>) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>        <a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>&amp; operator=(<a class="code hl_struct" href="structghassanpl_1_1with__sl.html">with_sl</a>&amp;&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">other</a>) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    };</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> HASH_FUNC = crc64_hasher&gt;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="structghassanpl_1_1with__slh.html">   61</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        <span class="keyword">using </span>hash_func = <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">HASH_FUNC</a>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keyword">using </span>hash_type = <span class="keyword">decltype</span>(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">HASH_FUNC</a>{}(source_location{}));</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        T Object;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        hash_type LocationHash;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> U&gt;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keyword">requires</span> (!std::same_as&lt;std::remove_cvref_t&lt;U&gt;, <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh&lt;T&gt;</a>&gt;)</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>#<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ifdef</a> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">__INTELLISENSE__</a></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">U</a>&amp;&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">t</a>, hash_type <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">loc</a> = {})</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>#<span class="keywordflow">else</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">U</a>&amp;&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">t</a>, hash_type <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">loc</a> = <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">HASH_FUNC</a>{}(source_location::current()))</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            : Object(std::forward&lt;U&gt;(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">t</a>)), LocationHash(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">loc</a>)</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>(<a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a> <span class="keyword">const</span>&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">other</a>) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>(<a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>&amp;&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">other</a>) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>&amp; operator=(<a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a> <span class="keyword">const</span>&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">other</a>) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>&amp; operator=(<a class="code hl_struct" href="structghassanpl_1_1with__slh.html">with_slh</a>&amp;&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">other</a>) <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    };</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>}</div>
+<div class="ttc" id="agroup___bits_html_gac47c8e8b6a53fb7495f97f2a15fd618d"><div class="ttname"><a href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ghassanpl::bit_count</a></div><div class="ttdeci">constexpr auto bit_count</div><div class="ttdoc">Equal to the number of bits in the type.</div><div class="ttdef"><b>Definition</b> <a href="bits_8h_source.html#l00033">bits.h:33</a></div></div>
 <div class="ttc" id="anamespaceghassanpl_html"><div class="ttname"><a href="namespaceghassanpl.html">ghassanpl</a></div><div class="ttdoc">Primary namespace for everything in this library.</div><div class="ttdef"><b>Definition</b> <a href="align_09rec2_8h_source.html#l00009">align+rec2.h:10</a></div></div>
-<div class="ttc" id="astructghassanpl_1_1with__sl_html"><div class="ttname"><a href="structghassanpl_1_1with__sl.html">ghassanpl::with_sl</a></div><div class="ttdoc">Use as a function parameter type to capture both the parameter and the call-site source location.</div><div class="ttdef"><b>Definition</b> <a href="with__sl_8h_source.html#l00039">with_sl.h:40</a></div></div>
-<div class="ttc" id="astructghassanpl_1_1with__slh_html"><div class="ttname"><a href="structghassanpl_1_1with__slh.html">ghassanpl::with_slh</a></div><div class="ttdoc">Use as a function parameter type to capture both the parameter and the hash of the call-site source l...</div><div class="ttdef"><b>Definition</b> <a href="with__sl_8h_source.html#l00058">with_sl.h:59</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1with__sl_html"><div class="ttname"><a href="structghassanpl_1_1with__sl.html">ghassanpl::with_sl</a></div><div class="ttdoc">Use as a function parameter type to capture both the parameter and the call-site source location.</div><div class="ttdef"><b>Definition</b> <a href="with__sl_8h_source.html#l00040">with_sl.h:41</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1with__slh_html"><div class="ttname"><a href="structghassanpl_1_1with__slh.html">ghassanpl::with_slh</a></div><div class="ttdoc">Use as a function parameter type to capture both the parameter and the hash of the call-site source l...</div><div class="ttdef"><b>Definition</b> <a href="with__sl_8h_source.html#l00061">with_sl.h:62</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -322,9 +322,18 @@ TEST(string_ops_test, transcode)
 TEST(string_ops_test, consume_bom_and_detect_encoding)
 {
 	{
+		auto carray = std::array{ char(0xEF), char(0xBB), char(0xBF), 'h', 'e', 'l', 'l', 'o', };
+		auto cspan = std::span{ carray.data(), carray.size() }; /// We need it to be a dynamic span
+		auto [encoding, endianness] = consume_bom(cspan);
+		EXPECT_EQ(encoding, text_encoding_type::utf8);
+		EXPECT_EQ(endianness, std::endian::native);
+		EXPECT_EQ(std::string_view{ cspan }, "hello"sv);
+	}
+
+	{
 		std::string_view str = "hello";
 		auto [encoding, endianness] = consume_bom(str);
-		EXPECT_EQ(encoding, base_text_encoding::unknown);
+		EXPECT_EQ(encoding, text_encoding_type::unknown);
 		EXPECT_EQ(endianness, std::endian::native);
 		EXPECT_EQ(str, "hello"sv);
 	}
@@ -332,7 +341,7 @@ TEST(string_ops_test, consume_bom_and_detect_encoding)
 	{
 		std::string_view str = "\xEF\xBB\xBFhello";
 		auto [encoding, endianness] = consume_bom(str);
-		EXPECT_EQ(encoding, base_text_encoding::utf8);
+		EXPECT_EQ(encoding, text_encoding_type::utf8);
 		EXPECT_EQ(endianness, std::endian::native);
 		EXPECT_EQ(str, "hello"sv);
 	}
@@ -347,11 +356,11 @@ TEST(string_ops_test, consume_bom_and_detect_encoding)
 
 		std::string_view str = hello;
 		auto [encoding, endianness] = consume_bom(str);
-		EXPECT_EQ(encoding, base_text_encoding::utf16);
+		EXPECT_EQ(encoding, text_encoding_type::utf16);
 		EXPECT_EQ(endianness, std::endian::native);
 
 		auto detected_encoding = detect_encoding(str);
-		EXPECT_EQ(detected_encoding.base_encoding, base_text_encoding::utf16);
+		EXPECT_EQ(detected_encoding.type, text_encoding_type::utf16);
 		EXPECT_EQ(detected_encoding.endianness, std::endian::native);
 	}
 
@@ -365,11 +374,11 @@ TEST(string_ops_test, consume_bom_and_detect_encoding)
 
 		std::string_view str = hello;
 		auto bom_encoding = consume_bom(str);
-		EXPECT_EQ(bom_encoding.base_encoding, base_text_encoding::utf32);
+		EXPECT_EQ(bom_encoding.type, text_encoding_type::utf32);
 		EXPECT_EQ(bom_encoding.endianness, std::endian::native);
 
 		auto detected_encoding = detect_encoding(str);
-		EXPECT_EQ(detected_encoding.base_encoding, base_text_encoding::utf32);
+		EXPECT_EQ(detected_encoding.type, text_encoding_type::utf32);
 		EXPECT_EQ(detected_encoding.endianness, std::endian::native);
 		//EXPECT_EQ(str, "hello"sv);
 	}
@@ -387,11 +396,11 @@ TEST(string_ops_test, consume_bom_and_detect_encoding)
 
 		std::string_view str = hello;
 		auto [encoding, endianness] = consume_bom(str);
-		EXPECT_EQ(encoding, base_text_encoding::utf16);
+		EXPECT_EQ(encoding, text_encoding_type::utf16);
 		EXPECT_EQ(endianness, std::endian(!(int)std::endian::native));
 
 		auto detected_encoding = detect_encoding(str);
-		EXPECT_EQ(detected_encoding.base_encoding, base_text_encoding::utf16);
+		EXPECT_EQ(detected_encoding.type, text_encoding_type::utf16);
 		EXPECT_EQ(detected_encoding.endianness, std::endian(!(int)std::endian::native));
 	}
 
@@ -411,18 +420,20 @@ TEST(string_ops_test, consume_bom_and_detect_encoding)
 
 		std::string_view str = hello;
 		auto bom_encoding = consume_bom(str);
-		EXPECT_EQ(bom_encoding.base_encoding, base_text_encoding::utf32);
+		EXPECT_EQ(bom_encoding.type, text_encoding_type::utf32);
 		EXPECT_EQ(bom_encoding.endianness, std::endian(!(int)std::endian::native));
 
 		auto detected_encoding = detect_encoding(str);
-		EXPECT_EQ(detected_encoding.base_encoding, base_text_encoding::utf32);
+		EXPECT_EQ(detected_encoding.type, text_encoding_type::utf32);
 		EXPECT_EQ(detected_encoding.endianness, std::endian(!(int)std::endian::native));
 		//EXPECT_EQ(str, "hello"sv);
 	}
 
 	{
+		decltype(auto) str = "hello world";
+		static_assert(ghassanpl::bytelike_range<decltype(str)>);
 		auto [encoding, endianness] = detect_encoding("hello world");
-		EXPECT_EQ(encoding, base_text_encoding::utf8);
+		EXPECT_EQ(encoding, text_encoding_type::utf8);
 		EXPECT_EQ(endianness, std::endian::native);
 	}
 }
@@ -454,4 +465,40 @@ TEST(string_ops, any_versions)
 	}
 
 	isany(char32_t(500), -1);
+}
+
+TEST(string_ops, substr_functions_work)
+{
+	auto sv = "0123456789"sv;
+
+	EXPECT_EQ(prefix(sv, 4), "0123"sv);
+	EXPECT_EQ(suffix(sv, 6), "456789"sv);
+	EXPECT_EQ(without_prefix(sv, 4), "456789"sv);
+	EXPECT_EQ(without_suffix(sv, 6), "0123"sv);
+
+	EXPECT_EQ(prefix(sv, 0), ""sv);
+	EXPECT_EQ(suffix(sv, 0), ""sv);
+	EXPECT_EQ(without_prefix(sv, 0), sv);
+	EXPECT_EQ(without_suffix(sv, 0), sv);
+
+	EXPECT_EQ(prefix(sv, 1000), sv);
+	EXPECT_EQ(suffix(sv, 1000), sv);
+	EXPECT_EQ(without_prefix(sv, 1000), ""sv);
+	EXPECT_EQ(without_suffix(sv, 1000), ""sv);
+
+	{
+		std::string s = "0123456789";
+		erase_outside_n(s, 4, 3);
+		EXPECT_EQ(s, "456");
+	}
+	{
+		std::string s = "0123456789";
+		erase_outside_from_to(s, 4, 7);
+		EXPECT_EQ(s, "456");
+	}
+	{
+		std::string s = "0123456789";
+		erase_outside_from_to(s, 7, 4);
+		EXPECT_EQ(s, "456");
+	}
 }

@@ -130,11 +130,12 @@ Classes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>A set of usesful types (<code><a class="el" href="structghassanpl_1_1with__sl.html" title="Use as a function parameter type to capture both the parameter and the call-site source location.">with_sl</a></code> and <code><a class="el" href="structghassanpl_1_1with__slh.html" title="Use as a function parameter type to capture both the parameter and the hash of the call-site source l...">with_slh</a></code>) that allow for variadic functions taking a <code>std::source_location</code>. </p>
-<dl class="section user"><dt>Example Usage</dt><dd><div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... ARGS&gt; </div>
-<div class="line"><span class="keywordtype">void</span> Debug(with_sl&lt;string_view&gt; fmt, ARGS&amp;&amp;... args)</div>
+<dl class="section user"><dt>Example Usage</dt><dd><div class="fragment"><div class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ARGS</a>&gt; </div>
+<div class="line"><span class="keywordtype">void</span> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">Debug</a>(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">with_sl&lt;string_view&gt;</a> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">fmt</a>, <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ARGS</a>&amp;&amp;... <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">args</a>)</div>
 <div class="line">{ </div>
-<div class="line">    Log(LogType::Debug, fmt.Location, format(fmt.Object, forward&lt;ARGS&gt;(args)...));</div>
+<div class="line">    <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">Log</a>(LogType::Debug, <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">fmt</a>.Location, format(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">fmt</a>.Object, <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">forward&lt;ARGS&gt;</a>(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">args</a>)...));</div>
 <div class="line">}</div>
+<div class="ttc" id="agroup___bits_html_gac47c8e8b6a53fb7495f97f2a15fd618d"><div class="ttname"><a href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ghassanpl::bit_count</a></div><div class="ttdeci">constexpr auto bit_count</div><div class="ttdoc">Equal to the number of bits in the type.</div><div class="ttdef"><b>Definition</b> <a href="bits_8h_source.html#l00033">bits.h:33</a></div></div>
 </div><!-- fragment --> </dd></dl>
 </div><!-- contents -->
 </div><!-- doc-content -->

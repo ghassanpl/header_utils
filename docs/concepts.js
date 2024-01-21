@@ -16,7 +16,11 @@ var concepts =
         [ "string_view16", "conceptghassanpl_1_1string__ops_1_1string__view16.html", null ],
         [ "string32", "conceptghassanpl_1_1string__ops_1_1string32.html", null ],
         [ "stringable32", "conceptghassanpl_1_1string__ops_1_1stringable32.html", null ],
-        [ "string_view32", "conceptghassanpl_1_1string__ops_1_1string__view32.html", null ]
+        [ "string_view32", "conceptghassanpl_1_1string__ops_1_1string__view32.html", null ],
+        [ "charable", "conceptghassanpl_1_1string__ops_1_1charable.html", null ],
+        [ "char_type", "conceptghassanpl_1_1string__ops_1_1char__type.html", null ],
+        [ "utf_type", "conceptghassanpl_1_1string__ops_1_1utf__type.html", null ],
+        [ "stringable_base_type", "conceptghassanpl_1_1string__ops_1_1stringable__base__type.html", null ]
       ] ],
       [ "bit_integral", "conceptghassanpl_1_1bit__integral.html", null ],
       [ "output_buffer", "conceptghassanpl_1_1output__buffer.html", null ],

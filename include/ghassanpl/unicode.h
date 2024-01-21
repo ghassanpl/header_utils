@@ -5,12 +5,13 @@
 #pragma once
 
 #include "string_ops.h"
+#include "bytes.h"
 #include "cpp23.h"
 
 namespace ghassanpl::string_ops
 {
 	/// \defgroup Unicode Unicode
-	/// Functions and types that work on Unicode strings. 
+	/// Functions and types that operate on Unicode codepoints and strings.
 	/// This code uses `char32_t` to represent single Unicode codepoints (as UTF-32 code units).
 	/// \ingroup StringOps
 	/// @{
@@ -38,17 +39,17 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] constexpr auto get_unicode_plane(char32_t cp) noexcept -> unicode_plane;
 
 	/// Specifies a base text-encoding, ignoring endianness for multi-byte encodings
-	enum class base_text_encoding
+	enum class text_encoding_type
 	{
 		unknown, utf8, utf16, utf32,
 		utf7, utf1, utf_ebcdic,
 		scsu, bocu1, gb18030,
 	};
 
-	/// Type that represents a specific text encoding - a combination of \c ghassanpl::string_ops::base_text_encoding and endianness
+	/// Type that represents a specific text encoding - a combination of \c ghassanpl::string_ops::text_encoding_type and endianness
 	struct text_encoding
 	{
-		base_text_encoding base_encoding;
+		text_encoding_type type;
 		std::endian endianness;
 
 		[[nodiscard]] constexpr auto operator<=>(text_encoding const& other) const noexcept = default;
@@ -57,44 +58,56 @@ namespace ghassanpl::string_ops
 	/// \name Encodings
 	/// Values representing UTF encodings
 	/// @{
-	constexpr inline text_encoding utf8_encoding = { base_text_encoding::utf8, std::endian::native };
-	constexpr inline text_encoding utf16_le_encoding = { base_text_encoding::utf16, std::endian::little };
-	constexpr inline text_encoding utf16_be_encoding = { base_text_encoding::utf16, std::endian::big };
-	constexpr inline text_encoding utf32_le_encoding = { base_text_encoding::utf32, std::endian::little };
-	constexpr inline text_encoding utf32_be_encoding = { base_text_encoding::utf32, std::endian::big };
+	constexpr inline text_encoding utf8_encoding = { text_encoding_type::utf8, std::endian::native };
+	constexpr inline text_encoding utf16_le_encoding = { text_encoding_type::utf16, std::endian::little };
+	constexpr inline text_encoding utf16_be_encoding = { text_encoding_type::utf16, std::endian::big };
+	constexpr inline text_encoding utf32_le_encoding = { text_encoding_type::utf32, std::endian::little };
+	constexpr inline text_encoding utf32_be_encoding = { text_encoding_type::utf32, std::endian::big };
 	/// Represents an unknown text encoding (e.g. when an encoding could not be determined)
-	constexpr inline text_encoding unknown_text_encoding = { base_text_encoding::unknown, std::endian::native };
+	constexpr inline text_encoding unknown_text_encoding = { text_encoding_type::unknown, std::endian::native };
 	/// @}
 
 	/// \internal https://bjoern.hoehrmann.de/utf-8/decoder/dfa/
 
+	struct text_decode_result;
+
+	/// Attempts to decode the first codepoint in \c bytelike range `range`, assuming it is encoded in `encoding`.
+	[[nodiscard]] text_decode_result decode_codepoint(bytelike_range auto range, text_encoding encoding);
+
+	/// Consumes (see \c consume()) a [byte order mark](https://en.wikipedia.org/wiki/Byte_order_mark) from the beginning of spn (a `span` of \c bytelike),
+	/// and returns the encoding that the BOM represents (or \c unknown_text_encoding if no BOM).
+	template <bytelike BYTE_TYPE, size_t N>
+	text_encoding consume_bom(std::span<BYTE_TYPE, N>& spn);
+
+	/// Consumes (see \c consume()) a [byte order mark](https://en.wikipedia.org/wiki/Byte_order_mark) from the beginning of sv, 
+	/// and returns the encoding that the BOM represents (or \c unknown_text_encoding if no BOM).
+	text_encoding consume_bom(string_view8 auto& sv);
+	
+	/// Consumes (see \c consume()) a [byte order mark](https://en.wikipedia.org/wiki/Byte_order_mark) from the beginning of sv, 
+	/// and returns the UTF-16 encoding that the BOM represents (or \c unknown_text_encoding if no BOM).
+	text_encoding consume_bom(string_view16 auto& sv);
+	
+	/// Consumes (see \c consume()) a [byte order mark](https://en.wikipedia.org/wiki/Byte_order_mark) from the beginning of sv, 
+	/// and returns the UTF-32 encoding that the BOM represents (or \c unknown_text_encoding if no BOM).
+	text_encoding consume_bom(string_view32 auto& sv);
+	
+	/// Attempts to detect the encoding of a given bytelike range.
+	/// \note If no BOM is present, only detects UTF encodings.
+	template <bytelike_range T>
+	[[nodiscard]] text_encoding detect_encoding(T const& range);
+
+	/// \name UTF-8 functions
+	/// @{
+
 	/// Returns the number of UTF-8 octets necessarity to encode the given codepoint
 	[[nodiscard]] constexpr size_t codepoint_utf8_count(char32_t cp) noexcept;
 
-	struct text_decode_result;
-
-	/// Attempts to decode the first codepoint in 8-bit range `str`, assuming it is encoded in `encoding`.
-	[[nodiscard]] text_decode_result decode_codepoint(stringable8 auto str, text_encoding encoding);
-
-	/// Consumes (see \c consume()) a [byte order mark](https://en.wikipedia.org/wiki/Byte_order_mark) from the beginning of sv, 
-	/// and returns the encoding that the BOM represents (or \c unknown_text_encoding) if no BOM.
-	text_encoding consume_bom(stringable8 auto& sv);
-	
-	/// Consumes (see \c consume()) a [byte order mark](https://en.wikipedia.org/wiki/Byte_order_mark) from the beginning of sv, 
-	/// and returns the UTF-16 encoding that the BOM represents (or \c unknown_text_encoding) if no BOM.
-	text_encoding consume_bom(stringable16 auto& sv);
-	
-	/// Consumes (see \c consume()) a [byte order mark](https://en.wikipedia.org/wiki/Byte_order_mark) from the beginning of sv, 
-	/// and returns the UTF-32 encoding that the BOM represents (or \c unknown_text_encoding) if no BOM.
-	text_encoding consume_bom(stringable32 auto& sv);
-	
-	/// Attempts to detect the encoding of a given 8-bit range.
-	/// \note If no BOM is present, only detects UTF encodings.
-	[[nodiscard]] text_encoding detect_encoding(stringable8 auto str);
-
 	/// Consumes (see \c consume()) a UTF-8 codepoint from `str`.
+	/// \pre `str` must be valid UTF-8
 	constexpr char32_t consume_utf8(string_view8 auto& str);
 
+	/// Returns the number of codepoints in the given UTF-8 string `str`
+	/// \pre `str` must be valid UTF-8
 	[[nodiscard]] constexpr size_t count_utf8_codepoints(stringable8 auto str);
 
 	/// Appends octets to `buffer` by encoding `cp` into UTF-8
@@ -102,65 +115,88 @@ namespace ghassanpl::string_ops
 	
 	/// Returns `cp` encoded as a UTF-8 string
 	/// \tparam RESULT the type of string to return (`std::string` by default)
+	/// \pre `cp` must be a valid Unicode codepoint
 	template <string8 RESULT = std::string>
 	[[nodiscard]] constexpr RESULT to_utf8(char32_t cp);
 
 	/// Returns `str` (a UTF-16-encoded string) encoded as a UTF-8 string
 	/// \tparam RESULT the type of string to return (`std::string` by default)
+	/// \pre `str` must be valid UTF-16
 	template <string8 RESULT = std::string, stringable16 STR>
 	[[nodiscard]] constexpr RESULT to_utf8(STR&& str);
 
 	/// Returns `str` (a UTF-32-encoded string) encoded as a UTF-8 string
 	/// \tparam RESULT the type of string to return (`std::string` by default)
+	/// \pre `str` must be valid UTF-32
 	template <string8 RESULT = std::string, stringable32 STR>
 	[[nodiscard]] constexpr RESULT to_utf8(STR&& str);
 
 	/// Returns `str` (a UTF-16-encoded string) encoded as a UTF-8 string
 	[[nodiscard]] std::string to_string(std::wstring_view str);
 
-	/// A simple view over an UTF8 string range with codepoint values
-	template <std::ranges::view R>
-	struct utf8_view;
-
-	/// Consumes (see \c consume()) a UTF-16 codepoint from `str`.
-	constexpr char32_t consume_utf16(string_view16 auto& str);
-
-	/// Consumes (see \c consume()) a UTF-32 codepoint from `str`.
-	constexpr char32_t consume_utf32(string_view32 auto& str);
-
-	/// Appends 16-bit values to `buffer` by encoding `cp` into UTF-16
-	/// \return the number of 16-bit codepoints appended
-	constexpr size_t append_utf16(string16 auto& buffer, char32_t cp);
-
-	/// Appends 32-bit values to `buffer` by encoding `cp` into UTF-16
-	/// \return the number of 32-bit codepoints appended
-	constexpr size_t append_utf32(string32 auto& buffer, char32_t cp);
-
-	/// Returns `cp` encoded as a UTF-16 string
-	/// \tparam RESULT the type of string to return (`std::wstring` by default)
-	template <string16 RESULT = std::wstring>
-	[[nodiscard]] constexpr RESULT to_utf16(char32_t cp);
-
-	/// Returns `str` (a UTF-8-encoded string) encoded as a UTF-16 string
-	/// \tparam RESULT the type of string to return (`std::wstring` by default)
-	template <string16 RESULT, stringable8 STR>
-	[[nodiscard]] constexpr RESULT to_utf16(STR str);
-
-	/// Returns `str` (a UTF-8-encoded string) encoded as a UTF-16 string
-	[[nodiscard]] std::wstring to_wstring(std::string_view str);
-
 	/// Transcodes an [Extended ASCII](https://en.wikipedia.org/wiki/Extended_ASCII) string `source` into UTF-8 `dest`, according to `codepage_map`
 	/// \param codepage_map A span of 128 Unicode codepoints that will be substituted for EASCII values 128-255
+	/// TODO: Is this needed since we have `transcode_codepage_to_unicode`?
 	constexpr void transcode_codepage_to_utf8(string8 auto& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map);
 
 	/// Transcodes an [Extended ASCII](https://en.wikipedia.org/wiki/Extended_ASCII) string `source` into UTF-8, according to `codepage_map`
 	/// \tparam RESULT the type of string to return (`std::string` by default)
 	/// \param codepage_map A span of 128 Unicode codepoints that will be substituted for EASCII values 128-255
 	/// \returns a UTF-8-encoded string of type T
+	/// TODO: Is this needed since we have `transcode_codepage_to_unicode`?
 	template <string8 RESULT = std::string>
 	[[nodiscard]] constexpr auto transcode_codepage_to_utf8(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> RESULT;
 
-	/// Consumes a codepoint from a UTF-encoded string and returns its
+	/// @}
+
+	/// A simple view over an UTF8 string range with codepoint values
+	template <std::ranges::view R>
+	struct utf8_view;
+
+	/// \name UTF-16 functions
+	/// @{
+
+	/// Consumes (see \c consume()) a UTF-16 codepoint from `str`.
+	/// \pre `str` must be valid UTF-16
+	constexpr char32_t consume_utf16(string_view16 auto& str);
+
+	/// Appends 16-bit values to `buffer` by encoding `cp` into UTF-16
+	/// \return the number of 16-bit codepoints appended
+	constexpr size_t append_utf16(string16 auto& buffer, char32_t cp);
+
+	/// Returns `cp` encoded as a UTF-16 string
+	/// \tparam RESULT the type of string to return (`std::wstring` by default)
+	/// \pre `cp` must be a valid Unicode codepoint
+	template <string16 RESULT = std::wstring>
+	[[nodiscard]] constexpr RESULT to_utf16(char32_t cp);
+
+	/// Returns `str` (a UTF-8-encoded string) encoded as a UTF-16 string
+	/// \tparam RESULT the type of string to return (`std::wstring` by default)
+	/// \pre `str` must be valid UTF-8
+	template <string16 RESULT = std::wstring, stringable8 STR>
+	[[nodiscard]] constexpr RESULT to_utf16(STR str);
+
+	/// Returns `str` (a UTF-8-encoded string) encoded as a UTF-16/32 string in a std::wstring (depending on the size of wchar_t)
+	/// \pre `str` must be valid UTF-8
+	[[nodiscard]] std::wstring to_wstring(std::string_view str);
+
+	/// @}
+
+
+	/// \name UTF-32 functions
+	/// @{
+
+	/// Consumes (see \c consume()) a UTF-32 codepoint from `str`.
+	/// \pre `str` must be valid UTF-32
+	constexpr char32_t consume_utf32(string_view32 auto& str);
+
+	/// Appends 32-bit values to `buffer` by encoding `cp` into UTF-32
+	/// \return the number of 32-bit codepoints appended
+	constexpr size_t append_utf32(string32 auto& buffer, char32_t cp);
+
+	/// @}
+
+	/// Consumes a codepoint from a UTF-encoded string and returns it
 	template <typename T>
 	constexpr char32_t consume_codepoint(T& str)
 	{
@@ -177,6 +213,7 @@ namespace ghassanpl::string_ops
 			static_assert(stringable8<T>, "Unsupported character type");
 	}
 
+	/// Appends a codepoint to a UTF-encoded string. Supports UTF-8, UTF-16 and UTF-32, decides based on char type of `str`.
 	template <typename T>
 	constexpr void append_codepoint(T& str, char32_t cp)
 	{
@@ -190,6 +227,7 @@ namespace ghassanpl::string_ops
 			static_assert(string8<T>, "Unsupported character type");
 	}
 
+	/// Converts a UTF-encoded string to a UTF-encoded string, of a different encoding. Decides the encodings based on the char type of `TO` and `FROM`.
 	template <typename TO, typename FROM>
 	constexpr void transcode_unicode(FROM const& from, TO& out)
 	{
@@ -198,6 +236,7 @@ namespace ghassanpl::string_ops
 			append_codepoint(out, consume_codepoint(from_sv));
 	}
 
+	/// Converts a UTF-encoded string to a UTF-encoded string, of a different encoding. Decides the encodings based on the char type of `TO` and `FROM`.
 	template <typename TO, typename FROM>
 	[[nodiscard]] constexpr TO transcode_unicode(FROM const& from)
 	{
@@ -205,6 +244,19 @@ namespace ghassanpl::string_ops
 		transcode_unicode(from, result);
 		return result;
 	}
+
+	/// Transcodes an [Extended ASCII](https://en.wikipedia.org/wiki/Extended_ASCII) string `source` into unicode-encoded `dest`, according to `codepage_map`.
+	/// Destination encoding will be decided based on the char type of `dest`.
+	/// \param codepage_map A span of 128 Unicode codepoints that will be substituted for EASCII values 128-255
+	template <typename T>
+	constexpr void transcode_codepage_to_unicode(T& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map);
+
+	/// Transcodes an [Extended ASCII](https://en.wikipedia.org/wiki/Extended_ASCII) string `source` into a unicode encoding, according to `codepage_map`
+	/// \tparam RESULT the type of string to return (`std::string` by default)
+	/// \param codepage_map A span of 128 Unicode codepoints that will be substituted for EASCII values 128-255
+	/// \returns a Unicode-encoded string of type T; encoding is decided based on the char type of `RESULT`
+	template <typename RESULT = std::string>
+	[[nodiscard]] constexpr auto transcode_codepage_to_unicode(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> RESULT;
 
 	/// @}
 
@@ -216,8 +268,44 @@ namespace ghassanpl::string_ops
 	/// 
 	/// TODO: upper-, lower-, titlecasing, case folding, collation, transliteration
 	/// Though it would need ICU access...
-	
-	inline text_encoding consume_bom(stringable8 auto & sv)
+
+	template <bytelike BYTE_TYPE, size_t N>
+	inline text_encoding consume_bom(std::span<BYTE_TYPE, N>& sv)
+	{
+		static_assert(N == std::dynamic_extent, "consume_bom() can only be used with dynamic spans");
+
+		static constexpr auto bom_for_gb18030 = std::array{ static_cast<BYTE_TYPE>(0x84), static_cast<BYTE_TYPE>(0x31), static_cast<BYTE_TYPE>(0x95), static_cast<BYTE_TYPE>(0x33) };
+		static constexpr auto bom_for_utf32_be = std::array{ static_cast<BYTE_TYPE>(0x00), static_cast<BYTE_TYPE>(0x00), static_cast<BYTE_TYPE>(0xFE), static_cast<BYTE_TYPE>(0xFF) };
+		static constexpr auto bom_for_utf32_le = std::array{ static_cast<BYTE_TYPE>(0xFF), static_cast<BYTE_TYPE>(0xFE), static_cast<BYTE_TYPE>(0x00), static_cast<BYTE_TYPE>(0x00) };
+		static constexpr auto bom_for_utf_ebcdic = std::array{ static_cast<BYTE_TYPE>(0xDD), static_cast<BYTE_TYPE>(0x73), static_cast<BYTE_TYPE>(0x66), static_cast<BYTE_TYPE>(0x73) };
+		static constexpr auto bom_for_utf8 = std::array{ static_cast<BYTE_TYPE>(0xEF), static_cast<BYTE_TYPE>(0xBB), static_cast<BYTE_TYPE>(0xBF) };
+		static constexpr auto bom_for_utf7 = std::array{ static_cast<BYTE_TYPE>(0x2B), static_cast<BYTE_TYPE>(0x2F), static_cast<BYTE_TYPE>(0x76) };
+		static constexpr auto bom_for_utf1 = std::array{ static_cast<BYTE_TYPE>(0xF7), static_cast<BYTE_TYPE>(0x64), static_cast<BYTE_TYPE>(0x4C) };
+		static constexpr auto bom_for_scsu = std::array{ static_cast<BYTE_TYPE>(0x0E), static_cast<BYTE_TYPE>(0xFE), static_cast<BYTE_TYPE>(0xFF) };
+		static constexpr auto bom_for_bocu1 = std::array{ static_cast<BYTE_TYPE>(0xFB), static_cast<BYTE_TYPE>(0xEE), static_cast<BYTE_TYPE>(0x28) };
+		static constexpr auto bom_for_utf16_be = std::array{ static_cast<BYTE_TYPE>(0xFE), static_cast<BYTE_TYPE>(0xFF) };
+		static constexpr auto bom_for_utf16_le = std::array{ static_cast<BYTE_TYPE>(0xFF), static_cast<BYTE_TYPE>(0xFE) };
+
+		if (!sv.empty())
+		{
+			using enum std::endian;
+			using enum ghassanpl::string_ops::text_encoding_type;
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_gb18030 })) { sv = sv.subspan(bom_for_gb18030.size()); return { gb18030, native }; }
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_utf32_be })) { sv = sv.subspan(bom_for_utf32_be.size()); return { utf32, big }; }
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_utf32_le })) { sv = sv.subspan(bom_for_utf32_le.size()); return { utf32, little }; }
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_utf_ebcdic })) { sv = sv.subspan(bom_for_utf_ebcdic.size()); return { utf_ebcdic, native }; }
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_utf8 })) { sv = sv.subspan(bom_for_utf8.size()); return { utf8, native }; }
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_utf7 })) { sv = sv.subspan(bom_for_utf7.size()); return { utf7, native }; }
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_utf1 })) { sv = sv.subspan(bom_for_utf1.size()); return { utf1, native }; }
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_scsu })) { sv = sv.subspan(bom_for_scsu.size()); return { scsu, native }; }
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_bocu1 })) { sv = sv.subspan(bom_for_bocu1.size()); return { bocu1, native }; }
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_utf16_be })) { sv = sv.subspan(bom_for_utf16_be.size()); return { utf16, big }; }
+			if (starts_with(sv, std::span<BYTE_TYPE const>{ bom_for_utf16_le })) { sv = sv.subspan(bom_for_utf16_le.size()); return { utf16, little }; }
+		}
+		return unknown_text_encoding;
+	}
+
+	inline text_encoding consume_bom(string_view8 auto & sv)
 	{
 		static constexpr std::string_view bom_for_gb18030{ "\x84\x31\x95\x33", 4 };
 		static constexpr std::string_view bom_for_utf32_be{ "\x00\x00\xFE\xFF", 4 };
@@ -234,7 +322,7 @@ namespace ghassanpl::string_ops
 		if (!sv.empty())
 		{
 			using enum std::endian;
-			using enum ghassanpl::string_ops::base_text_encoding;
+			using enum ghassanpl::string_ops::text_encoding_type;
 			if (sv.starts_with(bom_for_gb18030)) { sv.remove_prefix(bom_for_gb18030.size()); return { gb18030, native }; }
 			if (sv.starts_with(bom_for_utf32_be)) { sv.remove_prefix(bom_for_utf32_be.size()); return { utf32, big }; }
 			if (sv.starts_with(bom_for_utf32_le)) { sv.remove_prefix(bom_for_utf32_le.size()); return { utf32, little }; }
@@ -250,7 +338,7 @@ namespace ghassanpl::string_ops
 		return unknown_text_encoding;
 	}
 
-	inline text_encoding consume_bom(stringable16 auto& sv)
+	inline text_encoding consume_bom(string_view16 auto& sv)
 	{
 		static constexpr std::string_view bom_for_utf16_be{ "\xFE\xFF", 2 };
 		static constexpr std::string_view bom_for_utf16_le{ "\xFF\xFE", 2 };
@@ -259,13 +347,13 @@ namespace ghassanpl::string_ops
 		{
 			const auto as_bytes = std::string_view{ (char*)sv.data(), sv.size() * sizeof(char16_t) };
 
-			if (as_bytes.starts_with(bom_for_utf16_be)) { sv.remove_prefix(1); return { base_text_encoding::utf16, std::endian::big }; }
-			if (as_bytes.starts_with(bom_for_utf16_le)) { sv.remove_prefix(1); return { base_text_encoding::utf16, std::endian::little }; }
+			if (as_bytes.starts_with(bom_for_utf16_be)) { sv.remove_prefix(1); return { text_encoding_type::utf16, std::endian::big }; }
+			if (as_bytes.starts_with(bom_for_utf16_le)) { sv.remove_prefix(1); return { text_encoding_type::utf16, std::endian::little }; }
 		}
 		return unknown_text_encoding;
-	}
+	} 
 
-	inline text_encoding consume_bom(stringable32 auto& sv)
+	inline text_encoding consume_bom(string_view32 auto& sv)
 	{
 		static constexpr std::string_view bom_for_utf32_be{ "\xFF\xFE\x00\x00", 4 };
 		static constexpr std::string_view bom_for_utf32_le{ "\x00\x00\xFE\xFF", 4 };
@@ -274,8 +362,8 @@ namespace ghassanpl::string_ops
 		{
 			const auto as_bytes = std::string_view{ (char*)sv.data(), sv.size() * sizeof(char32_t) };
 
-			if (as_bytes.starts_with(bom_for_utf32_be)) { sv.remove_prefix(1); return { base_text_encoding::utf32, std::endian::big }; }
-			if (as_bytes.starts_with(bom_for_utf32_le)) { sv.remove_prefix(1); return { base_text_encoding::utf32, std::endian::little }; }
+			if (as_bytes.starts_with(bom_for_utf32_be)) { sv.remove_prefix(1); return { text_encoding_type::utf32, std::endian::big }; }
+			if (as_bytes.starts_with(bom_for_utf32_le)) { sv.remove_prefix(1); return { text_encoding_type::utf32, std::endian::little }; }
 		}
 		return unknown_text_encoding;
 	}
@@ -364,15 +452,15 @@ namespace ghassanpl::string_ops
 		return lut[std::countl_zero(std::bit_cast<uint32_t>(cp))];
 	}
 
-	inline text_decode_result decode_codepoint(stringable8 auto _str, text_encoding encoding)
+	inline text_decode_result decode_codepoint(bytelike_range auto _str, text_encoding encoding)
 	{
 		auto sv = make_sv(_str);
 		if (sv.empty())
 			return { text_decode_result::truncated };
 
-		switch (encoding.base_encoding)
+		switch (encoding.type)
 		{
-		case base_text_encoding::utf8:
+		case text_encoding_type::utf8:
 		{
 			const auto first = std::bit_cast<uint8_t>(sv[0]);
 			if (first < 0x80)
@@ -404,7 +492,7 @@ namespace ghassanpl::string_ops
 				return { text_decode_result::valid, value, length };
 			}
 		}
-		case base_text_encoding::utf16:
+		case text_encoding_type::utf16:
 		{
 			if (sv.size() < 2)
 				return { text_decode_result::truncated };
@@ -427,7 +515,7 @@ namespace ghassanpl::string_ops
 
 			return { text_decode_result::valid, first, 2 };
 		}
-		case base_text_encoding::utf32:
+		case text_encoding_type::utf32:
 		{
 			if (sv.size() < 4)
 				return { text_decode_result::truncated };
@@ -442,7 +530,8 @@ namespace ghassanpl::string_ops
 		}
 	}
 
-	inline text_encoding detect_encoding(stringable8 auto str)
+	template <bytelike_range T>
+	[[nodiscard]] inline text_encoding detect_encoding(T const& str)
 	{
 		struct TextFileStats {
 			size_t points = 0;
@@ -456,7 +545,7 @@ namespace ghassanpl::string_ops
 			float score() const { return (2.5f * whitespace + plain_ascii - 100.f * invalid_points() - 50.f * control_points + 5.f * extended_codepoints) * one_over_points; }
 		};
 
-		static const auto calculate_stats = [](TextFileStats& stats, stringable8 auto sv, text_encoding encoding) {
+		static const auto calculate_stats = [](TextFileStats& stats, bytelike_range auto sv, text_encoding encoding) {
 			size_t numBytes = 0;
 			while (!sv.empty())
 			{
@@ -577,8 +666,6 @@ namespace ghassanpl::string_ops
 		return encoding16;
 	}
 
-
-	/// \pre `str` must be valid UTF-8
 #ifndef __clang__
 	[[gsl::suppress(type.1, es.79)]]
 #else
@@ -618,7 +705,7 @@ namespace ghassanpl::string_ops
 		return cp;
 	}
 
-	constexpr size_t count_utf8_codepoints(stringable8 auto str)
+	[[nodiscard]] constexpr size_t count_utf8_codepoints(stringable8 auto str)
 	{
 		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
 		using unsigned_char_type = std::make_unsigned_t<char_type>;
@@ -643,8 +730,7 @@ namespace ghassanpl::string_ops
 	}
 
 
-	/// \pre `str` must be valid UTF-8
-#ifndef __clang__
+	#ifndef __clang__
 	[[gsl::suppress(type.1)]]
 #else
 	[[gsl::suppress("type.1")]]
@@ -705,8 +791,29 @@ namespace ghassanpl::string_ops
 			if (cp < 0x80)
 				dest += static_cast<dest_char>(cp);
 			else
-				append_utf8(dest, codepage_map[cp - 0x80]);
+				append_utf8(dest, codepage_map[static_cast<size_t>(cp) - 0x80]);
 		}
+	}
+	
+	template <typename T>
+	constexpr void transcode_codepage_to_unicode(T& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
+	{
+		using dest_char = typename std::decay_t<decltype(dest)>::value_type;
+		for (uint8_t cp : source)
+		{
+			if (cp < 0x80)
+				dest += static_cast<dest_char>(cp);
+			else
+				append_codepoint(dest, codepage_map[static_cast<size_t>(cp) - 0x80]);
+		}
+	}
+
+	template <typename RESULT>
+	[[nodiscard]] constexpr auto transcode_codepage_to_unicode(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> RESULT
+	{
+		RESULT result{};
+		transcode_codepage_to_unicode(result, source, codepage_map);
+		return result;
 	}
 
 	template <string8 T>
@@ -717,7 +824,6 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
-	/// \pre `str` must be valid UTF-16
 #ifndef __clang__
 	[[gsl::suppress(type.1, es.79)]]
 #else
@@ -751,7 +857,6 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
-	/// \pre `str` must be valid UTF-16
 #ifndef __clang__
 	[[gsl::suppress(type.1)]]
 #else
@@ -783,7 +888,6 @@ namespace ghassanpl::string_ops
 #else
 	[[gsl::suppress("type.1")]]
 #endif
-	/// \pre `cp` must be a valid Unicode codepoint
 	[[nodiscard]] constexpr T to_utf8(char32_t cp)
 	{
 		using char_type = typename T::value_type;
@@ -797,7 +901,6 @@ namespace ghassanpl::string_ops
 			return { static_cast<char_type>((cp >> 18) | 0xf0), static_cast<char_type>(((cp >> 12) & 0x3f) | 0x80), static_cast<char_type>(((cp >> 6) & 0x3f) | 0x80), static_cast<char_type>((cp & 0x3f) | 0x80) };
 	}
 
-	/// \pre `str` must be valid UTF-8
 	template <string8 RESULT, stringable8 STR>
 	[[nodiscard]] constexpr RESULT to_utf8(STR&& str)
 	{
@@ -810,7 +913,6 @@ namespace ghassanpl::string_ops
 		}
 	}
 
-	/// \pre `str` must be valid UTF-16
 	template <string8 RESULT, stringable16 STR>
 	[[nodiscard]] constexpr RESULT to_utf8(STR&& str)
 	{
@@ -844,7 +946,6 @@ namespace ghassanpl::string_ops
 #else
 	[[gsl::suppress("type.1")]]
 #endif
-	/// \pre `cp` must be a valid Unicode codepoint
 	[[nodiscard]] constexpr T to_utf16(char32_t cp)
 	{
 		using char_type = T::value_type;
@@ -854,7 +955,6 @@ namespace ghassanpl::string_ops
 			return { static_cast<char_type>((cp >> 10) + 0xD800), static_cast<char_type>((cp & 0x3FF) + 0xDC00) };
 	}
 
-	/// \pre `str` must be valid UTF-8
 	template <string16 T, stringable8 STR>
 	[[nodiscard]] constexpr T to_utf16(STR str)
 	{
@@ -865,10 +965,9 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
-	/// \pre `str` must be valid UTF-8
 	[[nodiscard]] inline std::wstring to_wstring(std::string_view str)
 	{
-		return to_utf16<std::wstring>(str);
+		return transcode_unicode<std::wstring>(str);
 	}
 
 	template <std::ranges::view R>

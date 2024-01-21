@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['checkbox_5ftext_0',['checkbox_text',['../group__msg.html#structghassanpl_1_1msg_1_1checkbox__text',1,'ghassanpl::msg']]],
-  ['container_1',['Container',['../structghassanpl_1_1di_1_1_container.html',1,'ghassanpl::di']]]
+  ['decomposed_5furi_0',['decomposed_uri',['../structghassanpl_1_1decomposed__uri.html',1,'ghassanpl']]],
+  ['displacement_1',['displacement',['../structghassanpl_1_1traits_1_1displacement.html',1,'ghassanpl::traits']]]
 ];

@@ -39,6 +39,8 @@ namespace ghassanpl
 		return index >= 0 && index < std::ranges::size(range);
 	}
 
+	/// Returns `index` converted to a valid index into a range of `range_size` as if using modulo arithmetic
+	/// \pre range_size > 0
 	constexpr auto modulo_index(size_t range_size, std::integral auto index)
 	{
 		const auto cpp_modulo_sucks = (index % static_cast<decltype(index)>(range_size));
@@ -185,15 +187,17 @@ namespace ghassanpl
 		return valid_address(s1, s2.data()) || valid_address(s2, s1.data());
 	}
 
-	template <typename T, size_t N1, size_t N2>
-	constexpr bool ends_with(std::span<T, N1> s1, std::span<T, N2> s2)
+	template <typename T, size_t N1, typename U, size_t N2>
+	requires std::same_as<std::remove_cvref_t<T>, std::remove_cvref_t<U>>
+	constexpr bool ends_with(std::span<T, N1> s1, std::span<U, N2> s2)
 	{
 		if (s1.size() < s2.size()) return false;
 		return std::ranges::equal(s1.subspan(s1.size() - s2.size()), s2);
 	}
 
-	template <typename T, size_t N1, size_t N2>
-	constexpr bool starts_with(std::span<T, N1> s1, std::span<T, N2> s2)
+	template <typename T, size_t N1, typename U, size_t N2>
+	requires std::same_as<std::remove_cvref_t<T>, std::remove_cvref_t<U>>
+	constexpr bool starts_with(std::span<T, N1> s1, std::span<U, N2> s2)
 	{
 		if (s1.size() < s2.size()) return false;
 		return std::ranges::equal(s1.subspan(0, s2.size()), s2);

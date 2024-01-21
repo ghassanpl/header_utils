@@ -131,7 +131,7 @@ $(document).ready(function(){initNavTree('di_8h_source.html',''); initResizable(
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno"><a class="line" href="namespaceghassanpl_1_1di.html">   30</a></span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceghassanpl_1_1di.html">ghassanpl::di</a></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>{</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... OTHERS&gt;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>... <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">OTHERS</a>&gt;</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">constexpr</span> <span class="keyword">inline</span> <span class="keywordtype">bool</span> is_same_as_any_v = std::disjunction_v&lt;std::is_same&lt;std::decay_t&lt;OTHERS&gt;, std::decay_t&lt;T&gt;&gt;...&gt;;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">enum class</span> Lifetime</div>
@@ -152,8 +152,8 @@ $(document).ready(function(){initNavTree('di_8h_source.html',''); initResizable(
 <div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        Lifetime DefaultLifetime = Lifetime::Transient;</div>
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE, <span class="keyword">typename</span> IMPLEMENTATION, <span class="keyword">typename</span>... ARGS&gt;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#ad414006ffcca833f2a2bb9b5353632c7">RegisterType</a>(ARGS&amp;&amp;... args);</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">INTERFACE</a>, <span class="keyword">typename</span> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">IMPLEMENTATION</a>, <span class="keyword">typename</span>... <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ARGS</a>&gt;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#ad414006ffcca833f2a2bb9b5353632c7">RegisterType</a>(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ARGS</a>&amp;&amp;... <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">args</a>);</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keywordtype">bool</span> HasAnyImplementationsOf() <span class="keyword">const</span>;</div>
@@ -168,63 +168,72 @@ $(document).ready(function(){initNavTree('di_8h_source.html',''); initResizable(
 <div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
 <div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        std::vector&lt;std::shared_ptr&lt;INTERFACE&gt;&gt; ResolveAll();</div>
 <div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordtype">void</span> DestroyAll()</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        {</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            mContainers.clear();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            mParentContainer = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        }</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="keyword">auto</span> <span class="keyword">const</span>&amp; Containers()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> mContainers; }</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keyword">auto</span> <span class="keyword">const</span>&amp; DebugStore()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> mDebugStore; }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="keyword">struct </span>BaseInterfaceContainer</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        {</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            <span class="keyword">virtual</span> ~BaseInterfaceContainer() <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            <span class="keyword">explicit</span> BaseInterfaceContainer(Lifetime default_lifetime) : DefaultLifetime(default_lifetime) {}</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            Lifetime DefaultLifetime = Lifetime::Default;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        };</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keyword">struct </span>InterfaceContainer;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="keyword">struct </span>ImplementationContainer;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        InterfaceContainer&lt;INTERFACE&gt;&amp; GetInterfaceContainer();</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE, <span class="keyword">typename</span> IMPLEMENTATION&gt;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        ImplementationContainer&lt;INTERFACE&gt;* GetImplementationContainer();</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        std::map&lt;std::type_index, std::unique_ptr&lt;BaseInterfaceContainer&gt;&gt; mContainers;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        std::vector&lt;std::type_index&gt; mResolutionStack;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        std::vector&lt;std::pair&lt;std::shared_ptr&lt;void&gt;, std::function&lt;void(<a class="code hl_struct" href="structghassanpl_1_1di_1_1_container.html">Container</a>&amp;, std::shared_ptr&lt;void&gt;)&gt;&gt;&gt; mCreationsToReport;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <a class="code hl_struct" href="structghassanpl_1_1di_1_1_container.html">Container</a>* mParentContainer = <span class="keyword">nullptr</span>; </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> TYPE&gt;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        std::shared_ptr&lt;TYPE&gt; <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>();</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> TYPE&gt;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        std::unique_ptr&lt;TYPE&gt; CreateRaw();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="keywordtype">void</span> DestroyAll()</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            mContainers.clear();</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            mParentContainer = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keyword">auto</span> <span class="keyword">const</span>&amp; Containers()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> mContainers; }</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keyword">auto</span> <span class="keyword">const</span>&amp; DebugStore()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> mDebugStore; }</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keyword">struct </span>BaseInterfaceContainer</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            <span class="keyword">virtual</span> ~BaseInterfaceContainer() <span class="keyword">noexcept</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keyword">explicit</span> BaseInterfaceContainer(Lifetime <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">default_lifetime</a>) : DefaultLifetime(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">default_lifetime</a>) {}</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            Lifetime DefaultLifetime = Lifetime::Default;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        };</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keyword">struct </span>InterfaceContainer;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        <span class="keyword">struct </span>ImplementationContainer;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">InterfaceContainer&lt;INTERFACE&gt;</a>&amp; GetInterfaceContainer();</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        std::map&lt;void const*, std::pair&lt;std::type_index, std::weak_ptr&lt;void&gt;&gt;&gt; mDebugStore;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INSTANCE&gt;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <span class="keywordtype">void</span> ReportCreation(std::shared_ptr&lt;INSTANCE&gt; <span class="keyword">const</span>&amp; obj, std::function&lt;<span class="keywordtype">void</span>(<a class="code hl_struct" href="structghassanpl_1_1di_1_1_container.html">Container</a>&amp;, std::shared_ptr&lt;void&gt;)&gt; func);</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <span class="keywordtype">void</span> ReportAwaitingCreations()</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        {</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            <span class="keyword">auto</span> creations = std::exchange(mCreationsToReport, {}); </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; [ptr, callback] : creations)</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                callback(*<span class="keyword">this</span>, std::move(ptr));</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        }</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE, <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        std::shared_ptr&lt;INTERFACE&gt; Instantiate(T&amp; factory);</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    };</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>}</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">#include &quot;di_impl.h&quot;</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE, <span class="keyword">typename</span> IMPLEMENTATION&gt;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ImplementationContainer&lt;INTERFACE&gt;</a>* GetImplementationContainer();</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        std::map&lt;std::type_index, std::unique_ptr&lt;BaseInterfaceContainer&gt;&gt; mContainers;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        std::vector&lt;std::type_index&gt; mResolutionStack;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        std::vector&lt;std::pair&lt;std::shared_ptr&lt;void&gt;, std::function&lt;<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">void</a>(<a class="code hl_struct" href="structghassanpl_1_1di_1_1_container.html">Container</a>&amp;, std::shared_ptr&lt;void&gt;)&gt;&gt;&gt; mCreationsToReport;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <a class="code hl_struct" href="structghassanpl_1_1di_1_1_container.html">Container</a>* mParentContainer = <span class="keyword">nullptr</span>; </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        std::map&lt;void const*, std::pair&lt;std::type_index, std::weak_ptr&lt;void&gt;&gt;&gt; mDebugStore;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INSTANCE&gt;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keywordtype">void</span> ReportCreation(std::shared_ptr&lt;INSTANCE&gt; <span class="keyword">const</span>&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">obj</a>, std::function&lt;<span class="keywordtype">void</span>(<a class="code hl_struct" href="structghassanpl_1_1di_1_1_container.html">Container</a>&amp;, std::shared_ptr&lt;void&gt;)&gt; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">func</a>);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <span class="keywordtype">void</span> ReportAwaitingCreations()</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        {</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>            <span class="keyword">auto</span> <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">creations</a> = std::exchange(mCreationsToReport, {}); </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp;&amp; [<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ptr</a>, <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">callback</a>] : <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">creations</a>)</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>                <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">callback</a>(*<span class="keyword">this</span>, std::move(<a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ptr</a>));</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        }</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE, <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        std::shared_ptr&lt;INTERFACE&gt; Instantiate(T&amp; <a class="code hl_variable" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">factory</a>);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    };</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>}</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="preprocessor">#include &quot;di_impl.h&quot;</span></div>
+<div class="ttc" id="agroup___bits_html_gac47c8e8b6a53fb7495f97f2a15fd618d"><div class="ttname"><a href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">ghassanpl::bit_count</a></div><div class="ttdeci">constexpr auto bit_count</div><div class="ttdoc">Equal to the number of bits in the type.</div><div class="ttdef"><b>Definition</b> <a href="bits_8h_source.html#l00033">bits.h:33</a></div></div>
 <div class="ttc" id="anamespaceghassanpl_1_1di_html"><div class="ttname"><a href="namespaceghassanpl_1_1di.html">ghassanpl::di</a></div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00030">di.h:31</a></div></div>
 <div class="ttc" id="astructghassanpl_1_1di_1_1_container_html"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html">ghassanpl::di::Container</a></div><div class="ttdoc">TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...</div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00050">di.h:51</a></div></div>
-<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_a2dedfff52f46ecde8b040c995ff8d9b2"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2">ghassanpl::di::Container::Resolve</a></div><div class="ttdeci">std::shared_ptr&lt; INTERFACE &gt; Resolve()</div><div class="ttdoc">Resolves.</div><div class="ttdef"><b>Definition</b> <a href="di__impl_8h_source.html#l00378">di_impl.h:378</a></div></div>
-<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_ad414006ffcca833f2a2bb9b5353632c7"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#ad414006ffcca833f2a2bb9b5353632c7">ghassanpl::di::Container::RegisterType</a></div><div class="ttdeci">void RegisterType(ARGS &amp;&amp;... args)</div><div class="ttdoc">Registers.</div><div class="ttdef"><b>Definition</b> <a href="di__impl_8h_source.html#l00358">di_impl.h:358</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_a167c78d25429fd305113edbeca8469e4"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">ghassanpl::di::Container::Create</a></div><div class="ttdeci">std::shared_ptr&lt; TYPE &gt; Create()</div><div class="ttdoc">Other.</div><div class="ttdef"><b>Definition</b> <a href="di__impl_8h_source.html#l00410">di_impl.h:410</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_a2dedfff52f46ecde8b040c995ff8d9b2"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2">ghassanpl::di::Container::Resolve</a></div><div class="ttdeci">std::shared_ptr&lt; INTERFACE &gt; Resolve()</div><div class="ttdoc">Resolves.</div><div class="ttdef"><b>Definition</b> <a href="di__impl_8h_source.html#l00386">di_impl.h:386</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_ad414006ffcca833f2a2bb9b5353632c7"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#ad414006ffcca833f2a2bb9b5353632c7">ghassanpl::di::Container::RegisterType</a></div><div class="ttdeci">void RegisterType(ARGS &amp;&amp;... args)</div><div class="ttdoc">Registers.</div><div class="ttdef"><b>Definition</b> <a href="di__impl_8h_source.html#l00366">di_impl.h:366</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

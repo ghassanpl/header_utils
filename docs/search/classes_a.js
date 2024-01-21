@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['utf8_5fview_0',['utf8_view',['../structghassanpl_1_1string__ops_1_1utf8__view.html',1,'ghassanpl::string_ops']]]
+  ['with_5fsl_0',['with_sl',['../structghassanpl_1_1with__sl.html',1,'ghassanpl']]],
+  ['with_5fslh_1',['with_slh',['../structghassanpl_1_1with__slh.html',1,'ghassanpl']]]
 ];

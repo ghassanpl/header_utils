@@ -184,13 +184,6 @@ namespace ghassanpl::string_ops
 		return make_sv(std::ranges::begin(range), std::ranges::end(range));
 	}
 
-	template <typename COUT, typename CIN>
-	requires charable<COUT> && charable<CIN> && same_size_and_alignment<COUT, CIN>
-	[[nodiscard]] constexpr std::basic_string_view<COUT> string_view_cast(std::basic_string_view<CIN> id) noexcept
-	{
-		return { reinterpret_cast<COUT const*>(id.data()), id.size() };
-	}
-
 	template <typename... NONARGS, typename... ARGS>
 	[[nodiscard]] constexpr auto make_string(ARGS&&... args) { 
 		auto sv = make_sv<NONARGS...>(std::forward<ARGS>(args)...);
@@ -206,6 +199,14 @@ namespace ghassanpl::string_ops
 
 	/// @}
 	
+	/// Casts a string_view to a string_view with a different char type via a simple reinterpret_cast
+	template <typename COUT, typename CIN>
+	requires charable<COUT> && charable<CIN> && same_size_and_alignment<COUT, CIN>
+	[[nodiscard]] constexpr std::basic_string_view<COUT> string_view_cast(std::basic_string_view<CIN> id) noexcept
+	{
+		return { reinterpret_cast<COUT const*>(id.data()), id.size() };
+	}
+
 	/// \name to_string Functions
 	/// Basic identity and utility `to_string` functions.
 	/// \see Stringification
@@ -271,7 +272,7 @@ namespace ghassanpl::string_ops
 	{
 
 		/// \defgroup ASCII ASCII
-		/// These functions operate on codepoints and strings encoded as ASCII.
+		/// Functions that operate on codepoints and strings encoded as ASCII.
 		/// 
 		/// \ingroup StringOps
 		/// @{
@@ -338,6 +339,15 @@ namespace ghassanpl::string_ops
 		[[nodiscard]] constexpr bool isgraph(char32_t cp) noexcept { return cp >= 33 && cp <= 126; }
 		[[nodiscard]] constexpr bool isprint(char32_t cp) noexcept { return cp >= 32 && cp <= 126; }
 
+		[[nodiscard]] constexpr char32_t toupper(char32_t cp) noexcept {
+			return (cp >= 97 && cp <= 122) ? (cp ^ 0b100000) : cp;
+		}
+		[[nodiscard]] constexpr char32_t tolower(char32_t cp) noexcept {
+			return (cp >= 65 && cp <= 90) ? (cp | 0b100000) : cp;
+		}
+
+		/// @}
+
 		namespace detail
 		{
 			template <auto FUNC>
@@ -353,29 +363,25 @@ namespace ghassanpl::string_ops
 				return result;
 			}
 		}
-		constexpr inline auto alphabetic_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isalpha>();
-		constexpr inline auto digit_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isdigit>();
-		constexpr inline auto octal_digit_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isodigit>();
-		constexpr inline auto hex_digit_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isxdigit>();
-		constexpr inline auto alphanumeric_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isalnum>();
-		constexpr inline auto identifier_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isident>();
-		constexpr inline auto identifier_start_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isidentstart>();
-		constexpr inline auto whitespace_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isspace>();
-		constexpr inline auto punctuation_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::ispunct>();
-		constexpr inline auto lowercase_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::islower>();
-		constexpr inline auto uppercase_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isupper>();
-		constexpr inline auto control_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::iscntrl>();
-		constexpr inline auto blank_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isblank>();
-		constexpr inline auto graphical_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isgraph>();
-		constexpr inline auto printable_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isprint>();
 
-		[[nodiscard]] constexpr char32_t toupper(char32_t cp) noexcept {
-			return (cp >= 97 && cp <= 122) ? (cp ^ 0b100000) : cp;
-		}
-		[[nodiscard]] constexpr char32_t tolower(char32_t cp) noexcept {
-			return (cp >= 65 && cp <= 90) ? (cp | 0b100000) : cp;
-		}
-
+		/// \name *_chars variables
+		/// Constexpr arrays listing the characters that match their respective ascii::is* functions
+		/// @{
+		constexpr inline auto alphabetic_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isalpha>(); ///< All characters that match \c ascii::isalpha
+		constexpr inline auto digit_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isdigit>(); ///< All characters that match \c ascii::isdigit
+		constexpr inline auto octal_digit_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isodigit>(); ///< All characters that match \c ascii::isodigit
+		constexpr inline auto hex_digit_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isxdigit>(); ///< All characters that match \c ascii::isxdigit
+		constexpr inline auto alphanumeric_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isalnum>(); ///< All characters that match \c ascii::isalnum
+		constexpr inline auto identifier_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isident>(); ///< All characters that match \c ascii::isident
+		constexpr inline auto identifier_start_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isidentstart>(); ///< All characters that match \c ascii::isidentstart
+		constexpr inline auto whitespace_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isspace>(); ///< All characters that match \c ascii::isspace
+		constexpr inline auto punctuation_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::ispunct>(); ///< All characters that match \c ascii::ispunct
+		constexpr inline auto lowercase_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::islower>(); ///< All characters that match \c ascii::islower
+		constexpr inline auto uppercase_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isupper>(); ///< All characters that match \c ascii::isupper
+		constexpr inline auto control_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::iscntrl>(); ///< All characters that match \c ascii::iscntrl
+		constexpr inline auto blank_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isblank>(); ///< All characters that match \c ascii::isblank
+		constexpr inline auto graphical_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isgraph>(); ///< All characters that match \c ascii::isgraph
+		constexpr inline auto printable_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isprint>(); ///< All characters that match \c ascii::isprint
 		/// @}
 
 		/// Returns true if the given `str` is a C-style identifier (e.g. matches `/[\w_][\w_0-9]+/`)
@@ -547,6 +553,54 @@ namespace ghassanpl::string_ops
 #endif
 	}
 
+	/// Gets a substring of `str` starting at `start` and containing `count` characters. The result will always be valid, clamped to the bounds of `str` (or empty).
+	/// \param count the (maximum) number of characters to get
+	/// \param start if negative, starts `-start` characters before the end
+	[[nodiscard]] inline std::string_view substr(std::string_view str, intptr_t start, size_t count = std::string::npos) noexcept
+	{
+		if (start < 0)
+		{
+			start = str.size() + start;
+			if (start < 0) start = 0;
+		}
+		if (start >= static_cast<intptr_t>(str.size())) return {};
+		return str.substr(start, static_cast<size_t>(count));
+	}
+
+	/// Returns a substring containing the `count` leftmost characters of `str`. Always valid, clamped to the bounds of `str` (or empty).
+	[[nodiscard]] inline std::string_view prefix(std::string_view str, size_t count) noexcept {
+		return str.substr(0, count);
+	}
+
+	/// Returns a substring created by removing `count` characters from the end. Always valid, clamped to the bounds of `str` (or empty).
+	[[nodiscard]] inline std::string_view without_suffix(std::string_view str, size_t count) noexcept {
+		return str.substr(0, str.size() - std::min(str.size(), count));
+	}
+
+	/// Returns a substring containing the `count` rightmost characters of `str`. Always valid, clamped to the bounds of `str` (or empty).
+	[[nodiscard]] inline std::string_view suffix(std::string_view str, size_t count) noexcept { 
+		return str.substr(str.size() - std::min(count, str.size()));
+	}
+
+	/// Returns a substring created by removing `count` characters from the start. Always valid, clamped to the bounds of `str` (or empty).
+	[[nodiscard]] inline std::string_view without_prefix(std::string_view str, size_t count) noexcept {
+		return str.substr(std::min(str.size(), count));
+	}
+
+	/// Erases all characters in `str` outside of the range `[start, start + count]`. Always safe.
+	[[nodiscard]] inline void erase_outside_n(std::string& str, size_t start, size_t count) noexcept {
+		str.erase(std::min(start + count, str.size()));
+		str.erase(0, std::min(start, str.size()));
+	}
+
+	/// Erases all characters in `str` outside of the range `[from, to]`. Always safe.
+	/// If from > to, acts as if calling `erase_outside_from_to(str, to, from)`
+	[[nodiscard]] inline void erase_outside_from_to(std::string& str, size_t from, size_t to) noexcept {
+		const auto from_ = std::min(from, to);
+		const auto to_ = std::max(from, to);
+		erase_outside_n(str, from_, to_ - from_);
+	}
+
 	/// \name Trimming Functions
 	/// Functions that trim (remove ascii whitespace from) strings and string_views.
 	/// @{
@@ -578,12 +632,14 @@ namespace ghassanpl::string_ops
 
 	/// @}
 
+	/// Checks if `cp` is any of the characters in `chars`
 	template <std::ranges::random_access_range T>
 	requires stringable_base_type<std::ranges::range_value_t<T>>
 	[[nodiscard]] constexpr bool isany(char32_t cp, T&& chars) noexcept {
 		using char_type = std::ranges::range_value_t<T>;
 		return std::ranges::find(chars, static_cast<char_type>(cp)) != std::ranges::end(chars);
 	}
+	/// A \c isany overload that takes a single character
 	constexpr bool isany(char32_t c, char32_t c2) noexcept { return c == c2; }
 
 	/// \name Consume Functions

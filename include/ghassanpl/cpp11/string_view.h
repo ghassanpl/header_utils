@@ -1,4 +1,6 @@
 #pragma once
+
+#ifndef DOXYGEN
 /// Based on https://github.com/martinmoene/string-view-lite
 /// Distributed under the Boost Software License, Version 1.0.
 
@@ -420,16 +422,8 @@ inline bool operator>= (string_view lhs, string_view rhs) noexcept { return lhs.
 
 inline std::string to_string(string_view v) { return { v.begin(), v.end() }; }
 
-/// \defgroup ASCII ASCII
-/// These functions operate on codepoints and strings encoded as ASCII.
-/// @{
 namespace ascii
 {
-
-	/// \name is* and to* functions
-	/// These are our own versions of \<cctype\> functions that do not block, are defined (false) for values outside of uint8_t, and do not depend on locale (plus you can take pointers to them).
-	/// @{
-
 	constexpr bool isalpha(char32_t cp) noexcept { return (cp >= 65 && cp <= 90) || (cp >= 97 && cp <= 122); }
 	constexpr bool isdigit(char32_t cp) noexcept { return cp >= 48 && cp <= 57; }
 	constexpr bool isodigit(char32_t cp) noexcept { return cp >= 48 && cp <= 55; }
@@ -449,8 +443,6 @@ namespace ascii
 	constexpr char32_t toupper(char32_t cp) noexcept { return (cp >= 97 && cp <= 122) ? (cp ^ 0b100000) : cp; }
 	constexpr char32_t tolower(char32_t cp) noexcept { return (cp >= 65 && cp <= 90) ? (cp | 0b100000) : cp; }
 
-	/// @}
-
 	/// Convert a number between 0 and 9 to its ASCII representation (only gives meaningful results with arguments between 0 and 9)
 	constexpr char32_t number_to_digit(int v) noexcept { return char32_t(v) + 48; }
 	/// Convert a number between 0 and 15 to its ASCII representation (only gives meaningful results with arguments between 0 and 15)
@@ -462,8 +454,6 @@ namespace ascii
 	//constexpr int xdigit_to_number(char32_t cp) noexcept { return (cp >= 97 && cp <= 102) ? int(cp - 97) : int((cp >= 65 && cp <= 70) ? (cp - 55) : (cp - 48)); }
 	constexpr int xdigit_to_number(char32_t cp) noexcept { return isdigit(cp) ? int(cp - 48) : ((int(cp) & ~0b100000) - 55); }
 }
-/// @}
-
 
 /// \name Trimming Functions
 /// Functions that trim strings and string_views.
@@ -937,3 +927,5 @@ bool consume_num(string_view& str, T& out_val, int base = 10) noexcept
 	return !res.failed;
 }
 /// @}
+
+#endif

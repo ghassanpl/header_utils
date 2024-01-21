@@ -13,8 +13,10 @@ var searchData=
   ['is_5flow_5fsurrogate_10',['is_low_surrogate',['../group___unicode.html#gae7e4635e6f2f2d686f371f2405e51403',1,'ghassanpl::string_ops']]],
   ['is_5fset_11',['is_set',['../structghassanpl_1_1enum__flags.html#ae49536f6cd928ef467df994f27c74adc',1,'ghassanpl::enum_flags::is_set(enum_type flag) const EF_NOEXCEPT'],['../structghassanpl_1_1enum__flags.html#a177cfee7e35808cd5b0ef5a5ccf48761',1,'ghassanpl::enum_flags::is_set(enum_type flag) const noexcept']]],
   ['is_5fsurrogate_12',['is_surrogate',['../group___unicode.html#ga83d57b46b8e1f4ea956bee4f2e757fbd',1,'ghassanpl::string_ops']]],
-  ['is_5funicode_13',['is_unicode',['../group___unicode.html#ga6464275acc31e963653bcf8974bff260',1,'ghassanpl::string_ops']]],
-  ['is_5funicode_5fcharacter_14',['is_unicode_character',['../group___unicode.html#ga435b274b58154448f23240e03d6a01b8',1,'ghassanpl::string_ops']]],
-  ['isany_15',['isany',['../group___a_s_c_i_i.html#gafb68b85a8d5d9353fc5c6e9f45bfda7d',1,'ghassanpl::string_ops::ascii']]],
-  ['isascii_16',['isascii',['../group___string_ops.html#ga0020f77460bec9f336727d824d730aa1',1,'ghassanpl::string_ops']]]
+  ['is_5fsurrounding_13',['is_surrounding',['../namespaceghassanpl_1_1geometry_1_1squares.html#a6240512830a6037c6b42765af3f226a4',1,'ghassanpl::geometry::squares']]],
+  ['is_5funicode_14',['is_unicode',['../group___unicode.html#ga6464275acc31e963653bcf8974bff260',1,'ghassanpl::string_ops']]],
+  ['is_5funicode_5fcharacter_15',['is_unicode_character',['../group___unicode.html#ga435b274b58154448f23240e03d6a01b8',1,'ghassanpl::string_ops']]],
+  ['isany_16',['isany',['../group___string_ops.html#ga9fb17c4ffa210b4276cfda9b680d8bc6',1,'ghassanpl::string_ops::isany(char32_t cp, T &amp;&amp;chars) noexcept'],['../group___string_ops.html#ga9fc6c9deb645fb0cfa1895a0891b02c2',1,'ghassanpl::string_ops::isany(char32_t c, char32_t c2) noexcept']]],
+  ['isascii_17',['isascii',['../group___string_ops.html#ga0020f77460bec9f336727d824d730aa1',1,'ghassanpl::string_ops']]],
+  ['iterator_5fwith_5fprobability_18',['iterator_with_probability',['../namespaceghassanpl_1_1random.html#a9a4799e5f181e136f7b6ee673fe3ab46',1,'ghassanpl::random']]]
 ];

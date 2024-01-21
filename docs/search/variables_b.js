@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vertical_5faligns_5fin_5forder_0',['vertical_aligns_in_order',['../group___alignment.html#ga20b8dd791fae1b933ff5ce57c7e37a82',1,'ghassanpl']]]
+  ['status_0',['status',['../structghassanpl_1_1string__ops_1_1text__decode__result.html#a2a29153ca59a097f4f46cb8212c57a90',1,'ghassanpl::string_ops::text_decode_result']]]
 ];

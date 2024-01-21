@@ -124,112 +124,116 @@ Namespaces</h2></td></tr>
 <tr class="memitem:namespaceghassanpl_1_1colors"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceghassanpl_1_1colors.html">ghassanpl::colors</a></td></tr>
 <tr class="memdesc:namespaceghassanpl_1_1colors"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains the basic colors as variables and functions. <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2bd76b8baeed4f6153cd3d087e83b8f4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><b>color_space</b> { <b>linear_rgba</b>
+<tr class="memitem:ga2bd76b8baeed4f6153cd3d087e83b8f4"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga2bd76b8baeed4f6153cd3d087e83b8f4">ghassanpl::color_space</a> { <b>linear_rgba</b>
 , <b>srgb</b>
 , <b>hsva</b>
 , <b>rgbe</b>
  }</td></tr>
+<tr class="memdesc:ga2bd76b8baeed4f6153cd3d087e83b8f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation note: These functions use the .xyzw members instead of the .rgba members because accessing the latter is not constexpr.  <a href="group___colors.html#ga2bd76b8baeed4f6153cd3d087e83b8f4">More...</a><br /></td></tr>
 <tr class="separator:ga2bd76b8baeed4f6153cd3d087e83b8f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga72f54ee837994b9599b6411792c7cd84"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">ghassanpl::color_rgba_t</a> = glm::vec4</td></tr>
+<tr class="memitem:ga72f54ee837994b9599b6411792c7cd84"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">ghassanpl::color_rgba_t</a> = glm::vec4</td></tr>
 <tr class="memdesc:ga72f54ee837994b9599b6411792c7cd84"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a color in RGBA color space, with 0.0-1.0 float elements.  <br /></td></tr>
 <tr class="separator:ga72f54ee837994b9599b6411792c7cd84"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">ghassanpl::color_hsva_t</a> = named&lt; glm::vec4, &quot;color_hsva&quot;&gt;</td></tr>
-<tr class="memdesc:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a color in HSVA color space, with 0.0-1.0 float elements.  <br /></td></tr>
+<tr class="memitem:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">ghassanpl::color_hsva_t</a> = named&lt; glm::vec4, &quot;color_hsva&quot;&gt;</td></tr>
+<tr class="memdesc:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents a color in HSVA color space, with H=0.0-6.0, S=0.0-1.0, V=0.0-1.0, A=0.0-1.0 float elements.  <br /></td></tr>
 <tr class="separator:gaf87e189a1a3e95c9d619a14f5ec6b03b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2135250e4bfc4091c3456ec5e303884c"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">ghassanpl::color_t</a> = <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a></td></tr>
+<tr class="memitem:ga2135250e4bfc4091c3456ec5e303884c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">ghassanpl::color_t</a> = <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a></td></tr>
 <tr class="memdesc:ga2135250e4bfc4091c3456ec5e303884c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default <code>color_t</code> type is RGBA.  <br /></td></tr>
 <tr class="separator:ga2135250e4bfc4091c3456ec5e303884c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga803c17af533306efe6944ba28ae07017"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga803c17af533306efe6944ba28ae07017">ghassanpl::color_rgba_u32_t</a> = named&lt; uint32_t, &quot;color_rgba_u32&quot;&gt;</td></tr>
+<tr class="memitem:ga803c17af533306efe6944ba28ae07017"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga803c17af533306efe6944ba28ae07017">ghassanpl::color_rgba_u32_t</a> = named&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>, &quot;color_rgba_u32&quot;&gt;</td></tr>
 <tr class="memdesc:ga803c17af533306efe6944ba28ae07017"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represent a packed RGBA color with 8 bits per pixel.  <br /></td></tr>
 <tr class="separator:ga803c17af533306efe6944ba28ae07017"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga18250fa0b3fa91baf8f9aab7ff847c7e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga18250fa0b3fa91baf8f9aab7ff847c7e">ghassanpl::color_abgr_u32_t</a> = named&lt; uint32_t, &quot;color_abgr_u32&quot;&gt;</td></tr>
+<tr class="memitem:ga18250fa0b3fa91baf8f9aab7ff847c7e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga18250fa0b3fa91baf8f9aab7ff847c7e">ghassanpl::color_abgr_u32_t</a> = named&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>, &quot;color_abgr_u32&quot;&gt;</td></tr>
 <tr class="memdesc:ga18250fa0b3fa91baf8f9aab7ff847c7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represent a packed ABGR color with 8 bits per pixel.  <br /></td></tr>
 <tr class="separator:ga18250fa0b3fa91baf8f9aab7ff847c7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga30f26bfb288572cfe5fad259de10e360"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga30f26bfb288572cfe5fad259de10e360">ghassanpl::premultiplied</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
+<tr class="memitem:ga30f26bfb288572cfe5fad259de10e360"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga30f26bfb288572cfe5fad259de10e360">ghassanpl::premultiplied</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">color</a>)</td></tr>
 <tr class="memdesc:ga30f26bfb288572cfe5fad259de10e360"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the color multiplied by its own alpha.  <br /></td></tr>
 <tr class="separator:ga30f26bfb288572cfe5fad259de10e360"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4b7e3ffaf17692c029d94bc1c19a08f2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga4b7e3ffaf17692c029d94bc1c19a08f2">ghassanpl::saturated</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
+<tr class="memitem:ga4b7e3ffaf17692c029d94bc1c19a08f2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga4b7e3ffaf17692c029d94bc1c19a08f2">ghassanpl::saturated</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">color</a>)</td></tr>
 <tr class="memdesc:ga4b7e3ffaf17692c029d94bc1c19a08f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color with all elements clamped between 0 and 1.  <br /></td></tr>
 <tr class="separator:ga4b7e3ffaf17692c029d94bc1c19a08f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga424eb26450c5b94374828f9aa1f33648"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga424eb26450c5b94374828f9aa1f33648">ghassanpl::lighten</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float coef)</td></tr>
+<tr class="memitem:ga424eb26450c5b94374828f9aa1f33648"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga424eb26450c5b94374828f9aa1f33648">ghassanpl::lighten</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">color</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">coef</a>)</td></tr>
 <tr class="memdesc:ga424eb26450c5b94374828f9aa1f33648"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color lightened by a coefficient.  <br /></td></tr>
 <tr class="separator:ga424eb26450c5b94374828f9aa1f33648"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7b770114a3975680d67ff5a5789d0be1"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">ghassanpl::contrast</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float contrast)</td></tr>
+<tr class="memitem:ga7b770114a3975680d67ff5a5789d0be1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">ghassanpl::contrast</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">color</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a> contrast)</td></tr>
 <tr class="memdesc:ga7b770114a3975680d67ff5a5789d0be1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color with its contrast changed.  <br /></td></tr>
 <tr class="separator:ga7b770114a3975680d67ff5a5789d0be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8412b721aff95aa0b8524e7e9bea4f08"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga8412b721aff95aa0b8524e7e9bea4f08">ghassanpl::contrast2</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float <a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">contrast</a>)</td></tr>
+<tr class="memitem:ga8412b721aff95aa0b8524e7e9bea4f08"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga8412b721aff95aa0b8524e7e9bea4f08">ghassanpl::contrast2</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">color</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a> <a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">contrast</a>)</td></tr>
 <tr class="memdesc:ga8412b721aff95aa0b8524e7e9bea4f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color with its contrast changed This uses a differen algorithm and <code>contrast</code> value than <a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1">contrast</a>.  <br /></td></tr>
 <tr class="separator:ga8412b721aff95aa0b8524e7e9bea4f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gab597f8f103a37a9d100b5c20c799082d"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gab597f8f103a37a9d100b5c20c799082d">ghassanpl::gamma_correct</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, const float gamma)</td></tr>
+<tr class="memitem:gab597f8f103a37a9d100b5c20c799082d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gab597f8f103a37a9d100b5c20c799082d">ghassanpl::gamma_correct</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">color</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">gamma</a>)</td></tr>
 <tr class="memdesc:gab597f8f103a37a9d100b5c20c799082d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a gamma corrected color.  <br /></td></tr>
 <tr class="separator:gab597f8f103a37a9d100b5c20c799082d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacbce8d4add6360aac71fe4de184b0260"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gacbce8d4add6360aac71fe4de184b0260">ghassanpl::inverted</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
+<tr class="memitem:gacbce8d4add6360aac71fe4de184b0260"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gacbce8d4add6360aac71fe4de184b0260">ghassanpl::inverted</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">color</a>)</td></tr>
 <tr class="memdesc:gacbce8d4add6360aac71fe4de184b0260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an inverted color, i.e. with (1.0-x) on all of its elements, excluding its alpha.  <br /></td></tr>
 <tr class="separator:gacbce8d4add6360aac71fe4de184b0260"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac5a99d76f132942d1e06e5ca147d3573"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gac5a99d76f132942d1e06e5ca147d3573">ghassanpl::contrasting</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
+<tr class="memitem:gac5a99d76f132942d1e06e5ca147d3573"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gac5a99d76f132942d1e06e5ca147d3573">ghassanpl::contrasting</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">color</a>)</td></tr>
 <tr class="memdesc:gac5a99d76f132942d1e06e5ca147d3573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color that's a good contrasting color for the original.  <br /></td></tr>
 <tr class="separator:gac5a99d76f132942d1e06e5ca147d3573"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga036c395e3bf0b1ae2c6c6afe0f035a11"><td class="memItemLeft" align="right" valign="top">constexpr float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11">ghassanpl::luminance</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color)</td></tr>
+<tr class="memitem:ga036c395e3bf0b1ae2c6c6afe0f035a11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11">ghassanpl::luminance</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">color</a>)</td></tr>
 <tr class="memdesc:ga036c395e3bf0b1ae2c6c6afe0f035a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get brightness of color.  <br /></td></tr>
 <tr class="separator:ga036c395e3bf0b1ae2c6c6afe0f035a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gace8c71252f6168960b135e89a167dc3b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gace8c71252f6168960b135e89a167dc3b">ghassanpl::desaturated</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;color, float desaturation)</td></tr>
-<tr class="memdesc:gace8c71252f6168960b135e89a167dc3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color sapped of <code>desaturation</code> (0-1) of its saturation.  <br /></td></tr>
+<tr class="memitem:gace8c71252f6168960b135e89a167dc3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gace8c71252f6168960b135e89a167dc3b">ghassanpl::desaturated</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">color</a>, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">desaturation</a>)</td></tr>
+<tr class="memdesc:gace8c71252f6168960b135e89a167dc3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a color sapped of <code>desaturation</code> percent (0-1) of its saturation.  <br /></td></tr>
 <tr class="separator:gace8c71252f6168960b135e89a167dc3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad66512e84d142f2bf947fdf6ac340567"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gad66512e84d142f2bf947fdf6ac340567">ghassanpl::from_u32_rgb</a> (uint32_t rgb)</td></tr>
+<tr class="memitem:gad66512e84d142f2bf947fdf6ac340567"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gad66512e84d142f2bf947fdf6ac340567">ghassanpl::from_u32_rgb</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgb</a>)</td></tr>
 <tr class="memdesc:gad66512e84d142f2bf947fdf6ac340567"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an RGB 8bpp integer, with R being most significant.  <br /></td></tr>
 <tr class="separator:gad66512e84d142f2bf947fdf6ac340567"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3ac5863dcf6ff11ad9fc9f288d3c1772"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga3ac5863dcf6ff11ad9fc9f288d3c1772">ghassanpl::from_u32_bgr</a> (uint32_t rgb)</td></tr>
+<tr class="memitem:ga3ac5863dcf6ff11ad9fc9f288d3c1772"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga3ac5863dcf6ff11ad9fc9f288d3c1772">ghassanpl::from_u32_bgr</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgb</a>)</td></tr>
 <tr class="memdesc:ga3ac5863dcf6ff11ad9fc9f288d3c1772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an BGR 8bpp integer, with R being least significant.  <br /></td></tr>
 <tr class="separator:ga3ac5863dcf6ff11ad9fc9f288d3c1772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3462a38134c3cc60c3bf097c30cd0ca6"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga3462a38134c3cc60c3bf097c30cd0ca6">ghassanpl::from_u32_rgba</a> (uint32_t rgb)</td></tr>
+<tr class="memitem:ga3462a38134c3cc60c3bf097c30cd0ca6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga3462a38134c3cc60c3bf097c30cd0ca6">ghassanpl::from_u32_rgba</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgb</a>)</td></tr>
 <tr class="memdesc:ga3462a38134c3cc60c3bf097c30cd0ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an RGBA 8bpp integer, with R being most significant.  <br /></td></tr>
 <tr class="separator:ga3462a38134c3cc60c3bf097c30cd0ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaee02db2b8051d87b456f29b9cdad9d0c"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaee02db2b8051d87b456f29b9cdad9d0c">ghassanpl::from_u32_bgra</a> (uint32_t rgb)</td></tr>
+<tr class="memitem:gaee02db2b8051d87b456f29b9cdad9d0c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaee02db2b8051d87b456f29b9cdad9d0c">ghassanpl::from_u32_bgra</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgb</a>)</td></tr>
 <tr class="memdesc:gaee02db2b8051d87b456f29b9cdad9d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an BGRA 8bpp integer, with A being least significant, and B being most significant.  <br /></td></tr>
 <tr class="separator:gaee02db2b8051d87b456f29b9cdad9d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9f15a265a1fd662fe51138eaa5c1e018"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga9f15a265a1fd662fe51138eaa5c1e018">ghassanpl::from_u32_argb</a> (uint32_t rgb)</td></tr>
+<tr class="memitem:ga9f15a265a1fd662fe51138eaa5c1e018"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga9f15a265a1fd662fe51138eaa5c1e018">ghassanpl::from_u32_argb</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgb</a>)</td></tr>
 <tr class="memdesc:ga9f15a265a1fd662fe51138eaa5c1e018"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an ARGB 8bpp integer, with A being most significant, and B being least significant.  <br /></td></tr>
 <tr class="separator:ga9f15a265a1fd662fe51138eaa5c1e018"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga842e7acf1d544fa8cc9bc6d8fcfff04e"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga842e7acf1d544fa8cc9bc6d8fcfff04e">ghassanpl::from_u32_abgr</a> (uint32_t rgb)</td></tr>
+<tr class="memitem:ga842e7acf1d544fa8cc9bc6d8fcfff04e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga842e7acf1d544fa8cc9bc6d8fcfff04e">ghassanpl::from_u32_abgr</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgb</a>)</td></tr>
 <tr class="memdesc:ga842e7acf1d544fa8cc9bc6d8fcfff04e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets a color from an ABGR 8bpp integer, with A being most significant, and R being least significant.  <br /></td></tr>
 <tr class="separator:ga842e7acf1d544fa8cc9bc6d8fcfff04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gace89926fcd87552a1a36ce2ca87423ba"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gace89926fcd87552a1a36ce2ca87423ba">ghassanpl::to_u32_argb</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memitem:gace89926fcd87552a1a36ce2ca87423ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gace89926fcd87552a1a36ce2ca87423ba">ghassanpl::to_u32_argb</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgba</a>)</td></tr>
 <tr class="memdesc:gace89926fcd87552a1a36ce2ca87423ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp ARGB integer from a color.  <br /></td></tr>
 <tr class="separator:gace89926fcd87552a1a36ce2ca87423ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5eff765fb4a9125d3a4da5a15e0c210a"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga5eff765fb4a9125d3a4da5a15e0c210a">ghassanpl::to_u32_abgr</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memitem:ga5eff765fb4a9125d3a4da5a15e0c210a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga5eff765fb4a9125d3a4da5a15e0c210a">ghassanpl::to_u32_abgr</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgba</a>)</td></tr>
 <tr class="memdesc:ga5eff765fb4a9125d3a4da5a15e0c210a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp ABGR integer from a color.  <br /></td></tr>
 <tr class="separator:ga5eff765fb4a9125d3a4da5a15e0c210a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5758267a057452433341dff0756b92f1"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga5758267a057452433341dff0756b92f1">ghassanpl::to_u32_rgba</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memitem:ga5758267a057452433341dff0756b92f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga5758267a057452433341dff0756b92f1">ghassanpl::to_u32_rgba</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgba</a>)</td></tr>
 <tr class="memdesc:ga5758267a057452433341dff0756b92f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp RGBA integer from a color.  <br /></td></tr>
 <tr class="separator:ga5758267a057452433341dff0756b92f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga255b095856a5d974a39ca5b457402bbb"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga255b095856a5d974a39ca5b457402bbb">ghassanpl::to_u32_bgra</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memitem:ga255b095856a5d974a39ca5b457402bbb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga255b095856a5d974a39ca5b457402bbb">ghassanpl::to_u32_bgra</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgba</a>)</td></tr>
 <tr class="memdesc:ga255b095856a5d974a39ca5b457402bbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an 8bpp BGRA integer from a color.  <br /></td></tr>
 <tr class="separator:ga255b095856a5d974a39ca5b457402bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga30e505f9dbf5267f8fc04cfe721fa995">ghassanpl::to_u32_rgb</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
-<tr class="memdesc:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 32 bit, 8bpp RGB integer from a color, with the most significant 8 bits set to 0.  <br /></td></tr>
+<tr class="memitem:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga30e505f9dbf5267f8fc04cfe721fa995">ghassanpl::to_u32_rgb</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgba</a>)</td></tr>
+<tr class="memdesc:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 32 bitbpp RGB integer from a color, with the most significant 8 bits set to 0.  <br /></td></tr>
 <tr class="separator:ga30e505f9dbf5267f8fc04cfe721fa995"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf3c2764491b233be2e04558f85ee1e9f"><td class="memItemLeft" align="right" valign="top">constexpr uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaf3c2764491b233be2e04558f85ee1e9f">ghassanpl::to_u32_bgr</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
-<tr class="memdesc:gaf3c2764491b233be2e04558f85ee1e9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 32 bit, 8bpp BGR integer from a color, with the most significant 8 bits set to 0.  <br /></td></tr>
+<tr class="memitem:gaf3c2764491b233be2e04558f85ee1e9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaf3c2764491b233be2e04558f85ee1e9f">ghassanpl::to_u32_bgr</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgba</a>)</td></tr>
+<tr class="memdesc:gaf3c2764491b233be2e04558f85ee1e9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 32 bitbpp BGR integer from a color, with the most significant 8 bits set to 0.  <br /></td></tr>
 <tr class="separator:gaf3c2764491b233be2e04558f85ee1e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga07999481d80aa0d552f59e9aa6d5d4da"><td class="memTemplParams" colspan="2">template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af533306efe6944ba28ae07017">color_rgba_u32_t</a> &gt; TO&gt; </td></tr>
-<tr class="memitem:ga07999481d80aa0d552f59e9aa6d5d4da"><td class="memTemplItemLeft" align="right" valign="top">constexpr TO&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___colors.html#ga07999481d80aa0d552f59e9aa6d5d4da">ghassanpl::named_cast</a> (<a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> const &amp;from)</td></tr>
+<tr class="memitem:ga07999481d80aa0d552f59e9aa6d5d4da"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___colors.html#ga07999481d80aa0d552f59e9aa6d5d4da">ghassanpl::named_cast</a> (<a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;from)</td></tr>
 <tr class="separator:ga07999481d80aa0d552f59e9aa6d5d4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaaf62b0f704e860622e7d8a5eebc09533"><td class="memItemLeft" align="right" valign="top">constexpr glm::tvec4&lt; uint8_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaaf62b0f704e860622e7d8a5eebc09533">ghassanpl::to_u8</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memitem:gae3761930eb6b35de76ea747f135128d1"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> , <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> &gt; </td></tr>
+<tr class="memitem:gae3761930eb6b35de76ea747f135128d1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="group___colors.html#gae3761930eb6b35de76ea747f135128d1">ghassanpl::color_cast</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;from)</td></tr>
+<tr class="separator:gae3761930eb6b35de76ea747f135128d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaaf62b0f704e860622e7d8a5eebc09533"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> glm::tvec4&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint8_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaaf62b0f704e860622e7d8a5eebc09533">ghassanpl::to_u8</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgba</a>)</td></tr>
 <tr class="memdesc:gaaf62b0f704e860622e7d8a5eebc09533"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the color as a <code>glm::vec4</code> of <code>uint8_t</code>s.  <br /></td></tr>
 <tr class="separator:gaaf62b0f704e860622e7d8a5eebc09533"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga53ca83b37b93b9c00484bd13b5e84713"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga53ca83b37b93b9c00484bd13b5e84713">ghassanpl::to_rgb</a> (<a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a> const &amp;hsva)</td></tr>
+<tr class="memitem:ga53ca83b37b93b9c00484bd13b5e84713"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga53ca83b37b93b9c00484bd13b5e84713">ghassanpl::to_rgb</a> (<a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;hsva)</td></tr>
 <tr class="memdesc:ga53ca83b37b93b9c00484bd13b5e84713"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a HSVA color to RGBA space.  <br /></td></tr>
 <tr class="separator:ga53ca83b37b93b9c00484bd13b5e84713"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac688b79c326f6c0f2ea98a64630adec2"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gac688b79c326f6c0f2ea98a64630adec2">ghassanpl::to_hsv</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;rgba)</td></tr>
+<tr class="memitem:gac688b79c326f6c0f2ea98a64630adec2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gac688b79c326f6c0f2ea98a64630adec2">ghassanpl::to_hsv</a> (<a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">rgba</a>)</td></tr>
 <tr class="memdesc:gac688b79c326f6c0f2ea98a64630adec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an RGBA color to HSVA space.  <br /></td></tr>
 <tr class="separator:gac688b79c326f6c0f2ea98a64630adec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaacdfa0902641ad0035aeabb46b13bc12"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaacdfa0902641ad0035aeabb46b13bc12">ghassanpl::from_html</a> (const char *str, size_t n)</td></tr>
+<tr class="memitem:gaacdfa0902641ad0035aeabb46b13bc12"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#gaacdfa0902641ad0035aeabb46b13bc12">ghassanpl::from_html</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char</a> *str, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">n</a>)</td></tr>
 <tr class="memdesc:gaacdfa0902641ad0035aeabb46b13bc12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a HTML color string (like #FBA or fafafa) to an RGBA color.  <br /></td></tr>
 <tr class="separator:gaacdfa0902641ad0035aeabb46b13bc12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga798d3e275a07838260b9d5d4db4d41d2"><td class="memItemLeft" align="right" valign="top">consteval <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga798d3e275a07838260b9d5d4db4d41d2">ghassanpl::operator&quot;&quot;_rgb</a> (const char *str, size_t n)</td></tr>
+<tr class="memitem:ga798d3e275a07838260b9d5d4db4d41d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">consteval</a> <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga798d3e275a07838260b9d5d4db4d41d2">ghassanpl::operator&quot;&quot;_rgb</a> (<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char</a> *str, <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">n</a>)</td></tr>
 <tr class="memdesc:ga798d3e275a07838260b9d5d4db4d41d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a HTML color string (like #FBA or fafafa) to an RGBA color.  <br /></td></tr>
 <tr class="separator:ga798d3e275a07838260b9d5d4db4d41d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga8b80e6be402ca04009143b7c92562bf8"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga8b80e6be402ca04009143b7c92562bf8">ghassanpl::from_html</a> (std::string_view html)</td></tr>
+<tr class="memitem:ga8b80e6be402ca04009143b7c92562bf8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___colors.html#ga8b80e6be402ca04009143b7c92562bf8">ghassanpl::from_html</a> (std::string_view <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">html</a>)</td></tr>
 <tr class="memdesc:ga8b80e6be402ca04009143b7c92562bf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a HTML color string (like #FBA or fafafa) to an RGBA color.  <br /></td></tr>
 <tr class="separator:ga8b80e6be402ca04009143b7c92562bf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -243,14 +247,14 @@ Namespaces</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group___colors.html#ga18250fa0b3fa91baf8f9aab7ff847c7e">ghassanpl::color_abgr_u32_t</a> = typedef named&lt;uint32_t, &quot;color_abgr_u32&quot;&gt;</td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">using</a> <a class="el" href="group___colors.html#ga18250fa0b3fa91baf8f9aab7ff847c7e">ghassanpl::color_abgr_u32_t</a> = <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typedef</a> named&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>, &quot;color_abgr_u32&quot;&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Represent a packed ABGR color with 8 bits per pixel. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00037">37</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00043">43</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -261,14 +265,14 @@ Namespaces</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">ghassanpl::color_hsva_t</a> = typedef named&lt;glm::vec4, &quot;color_hsva&quot;&gt;</td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">using</a> <a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">ghassanpl::color_hsva_t</a> = <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typedef</a> named&lt;glm::vec4, &quot;color_hsva&quot;&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Represents a color in HSVA color space, with 0.0-1.0 float elements. </p>
+<p>Represents a color in HSVA color space, with H=0.0-6.0, S=0.0-1.0, V=0.0-1.0, A=0.0-1.0 float elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00030">30</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00036">36</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -279,14 +283,14 @@ Namespaces</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">ghassanpl::color_rgba_t</a> = typedef glm::vec4</td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">using</a> <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">ghassanpl::color_rgba_t</a> = <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typedef</a> glm::vec4</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Represents a color in RGBA color space, with 0.0-1.0 float elements. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00028">28</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00034">34</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -297,14 +301,14 @@ Namespaces</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group___colors.html#ga803c17af533306efe6944ba28ae07017">ghassanpl::color_rgba_u32_t</a> = typedef named&lt;uint32_t, &quot;color_rgba_u32&quot;&gt;</td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">using</a> <a class="el" href="group___colors.html#ga803c17af533306efe6944ba28ae07017">ghassanpl::color_rgba_u32_t</a> = <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typedef</a> named&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>, &quot;color_rgba_u32&quot;&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Represent a packed RGBA color with 8 bits per pixel. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00035">35</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00041">41</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -315,14 +319,14 @@ Namespaces</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">ghassanpl::color_t</a> = typedef <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a></td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">using</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">ghassanpl::color_t</a> = <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typedef</a> <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Default <code>color_t</code> type is RGBA. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00032">32</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00038">38</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -337,7 +341,7 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class ghassanpl::color_space</td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">enum</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">class</a> <a class="el" href="group___colors.html#ga2bd76b8baeed4f6153cd3d087e83b8f4">ghassanpl::color_space</a></td>
         </tr>
       </table>
   </td>
@@ -347,11 +351,35 @@ Namespaces</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00018">18</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p>Implementation note: These functions use the .xyzw members instead of the .rgba members because accessing the latter is not constexpr. </p>
+
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00024">24</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="gae3761930eb6b35de76ea747f135128d1" name="gae3761930eb6b35de76ea747f135128d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae3761930eb6b35de76ea747f135128d1">&#9670;&#160;</a></span>color_cast()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> , <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">typename</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> ghassanpl::color_cast </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">FROM</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
+          <td class="paramname"><em>from</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00203">203</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+
+</div>
+</div>
 <a id="ga7b770114a3975680d67ff5a5789d0be1" name="ga7b770114a3975680d67ff5a5789d0be1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7b770114a3975680d67ff5a5789d0be1">&#9670;&#160;</a></span>contrast()</h2>
 
@@ -362,15 +390,15 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::contrast </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::contrast </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a>&#160;</td>
           <td class="paramname"><em>contrast</em>&#160;</td>
         </tr>
         <tr>
@@ -390,7 +418,7 @@ Namespaces</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd><code>contrast</code> here is between 0.0 and 1.0 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group___colors.html#ga8412b721aff95aa0b8524e7e9bea4f08" title="Returns a color with its contrast changed This uses a differen algorithm and contrast value than cont...">contrast2</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00097">97</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00103">103</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -404,15 +432,15 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::contrast2 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::contrast2 </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a>&#160;</td>
           <td class="paramname"><em>contrast</em>&#160;</td>
         </tr>
         <tr>
@@ -432,7 +460,7 @@ Namespaces</h2></td></tr>
 <dl class="section note"><dt>Note</dt><dd><code>contrast</code> here is between -1.0 and 1.0 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group___colors.html#ga7b770114a3975680d67ff5a5789d0be1" title="Returns a color with its contrast changed.">contrast</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00107">107</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00113">113</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -446,9 +474,9 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::contrasting </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::contrasting </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em></td><td>)</td>
           <td></td>
         </tr>
@@ -462,7 +490,7 @@ Namespaces</h2></td></tr>
 
 <p>Returns a color that's a good contrasting color for the original. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00128">128</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00134">134</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -476,15 +504,15 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::desaturated </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::desaturated </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a>&#160;</td>
           <td class="paramname"><em>desaturation</em>&#160;</td>
         </tr>
         <tr>
@@ -500,9 +528,9 @@ Namespaces</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Returns a color sapped of <code>desaturation</code> (0-1) of its saturation. </p>
+<p>Returns a color sapped of <code>desaturation</code> percent (0-1) of its saturation. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00140">140</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00146">146</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -516,15 +544,15 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> ghassanpl::from_html </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> ghassanpl::from_html </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char</a> *&#160;</td>
           <td class="paramname"><em>str</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a>&#160;</td>
           <td class="paramname"><em>n</em>&#160;</td>
         </tr>
         <tr>
@@ -542,7 +570,7 @@ Namespaces</h2></td></tr>
 
 <p>Converts a HTML color string (like #FBA or fafafa) to an RGBA color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00252">252</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00264">264</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -556,7 +584,7 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> ghassanpl::from_html </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> ghassanpl::from_html </td>
           <td>(</td>
           <td class="paramtype">std::string_view&#160;</td>
           <td class="paramname"><em>html</em></td><td>)</td>
@@ -572,7 +600,7 @@ Namespaces</h2></td></tr>
 
 <p>Converts a HTML color string (like #FBA or fafafa) to an RGBA color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00295">295</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00307">307</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -586,9 +614,9 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_abgr </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_abgr </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td>
           <td class="paramname"><em>rgb</em></td><td>)</td>
           <td></td>
         </tr>
@@ -602,7 +630,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an ABGR 8bpp integer, with A being most significant, and R being least significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00166">166</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00175">175</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -616,9 +644,9 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_argb </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_argb </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td>
           <td class="paramname"><em>rgb</em></td><td>)</td>
           <td></td>
         </tr>
@@ -632,7 +660,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an ARGB 8bpp integer, with A being most significant, and B being least significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00164">164</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00173">173</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -646,9 +674,9 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_bgr </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_bgr </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td>
           <td class="paramname"><em>rgb</em></td><td>)</td>
           <td></td>
         </tr>
@@ -662,7 +690,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an BGR 8bpp integer, with R being least significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00158">158</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00167">167</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -676,9 +704,9 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_bgra </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_bgra </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td>
           <td class="paramname"><em>rgb</em></td><td>)</td>
           <td></td>
         </tr>
@@ -692,7 +720,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an BGRA 8bpp integer, with A being least significant, and B being most significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00162">162</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00171">171</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -706,9 +734,9 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_rgb </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_rgb </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td>
           <td class="paramname"><em>rgb</em></td><td>)</td>
           <td></td>
         </tr>
@@ -722,7 +750,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an RGB 8bpp integer, with R being most significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00156">156</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00165">165</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -736,9 +764,9 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_rgba </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::from_u32_rgba </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a>&#160;</td>
           <td class="paramname"><em>rgb</em></td><td>)</td>
           <td></td>
         </tr>
@@ -752,7 +780,7 @@ Namespaces</h2></td></tr>
 
 <p>Gets a color from an RGBA 8bpp integer, with R being most significant. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00160">160</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00169">169</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -766,15 +794,15 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::gamma_correct </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::gamma_correct </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const float&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a>&#160;</td>
           <td class="paramname"><em>gamma</em>&#160;</td>
         </tr>
         <tr>
@@ -792,7 +820,7 @@ Namespaces</h2></td></tr>
 
 <p>Returns a gamma corrected color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00115">115</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00121">121</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -806,9 +834,9 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::inverted </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::inverted </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em></td><td>)</td>
           <td></td>
         </tr>
@@ -822,7 +850,7 @@ Namespaces</h2></td></tr>
 
 <p>Returns an inverted color, i.e. with (1.0-x) on all of its elements, excluding its alpha. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00122">122</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00128">128</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -836,15 +864,15 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::lighten </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::lighten </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">float&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a>&#160;</td>
           <td class="paramname"><em>coef</em>&#160;</td>
         </tr>
         <tr>
@@ -862,7 +890,7 @@ Namespaces</h2></td></tr>
 
 <p>Returns a color lightened by a coefficient. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00086">86</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00092">92</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -876,9 +904,9 @@ Namespaces</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr float ghassanpl::luminance </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">float</a> ghassanpl::luminance </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em></td><td>)</td>
           <td></td>
         </tr>
@@ -892,7 +920,7 @@ Namespaces</h2></td></tr>
 
 <p>Get brightness of color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00134">134</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00140">140</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -908,9 +936,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr TO ghassanpl::named_cast </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">TO</a> ghassanpl::named_cast </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>from</em></td><td>)</td>
           <td></td>
         </tr>
@@ -922,7 +950,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00182">182</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00191">191</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -933,15 +961,15 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">consteval <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> ghassanpl::operator&quot;&quot;_rgb </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">consteval</a> <a class="el" href="group___colors.html#ga72f54ee837994b9599b6411792c7cd84">color_rgba_t</a> ghassanpl::operator&quot;&quot;_rgb </td>
           <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">char</a> *&#160;</td>
           <td class="paramname"><em>str</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">size_t</a>&#160;</td>
           <td class="paramname"><em>n</em>&#160;</td>
         </tr>
         <tr>
@@ -954,7 +982,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 
 <p>Converts a HTML color string (like #FBA or fafafa) to an RGBA color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00289">289</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00301">301</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -968,9 +996,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::premultiplied </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::premultiplied </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em></td><td>)</td>
           <td></td>
         </tr>
@@ -984,7 +1012,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 
 <p>Returns the color multiplied by its own alpha. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00074">74</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00080">80</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -998,9 +1026,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::saturated </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::saturated </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>color</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1014,7 +1042,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 
 <p>Returns a color with all elements clamped between 0 and 1. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00080">80</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00086">86</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -1028,9 +1056,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a> ghassanpl::to_hsv </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a> ghassanpl::to_hsv </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>rgba</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1044,7 +1072,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 
 <p>Converts an RGBA color to HSVA space. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00222">222</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00237">237</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -1058,9 +1086,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::to_rgb </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> ghassanpl::to_rgb </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b">color_hsva_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>hsva</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1074,7 +1102,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 
 <p>Converts a HSVA color to RGBA space. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00197">197</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00212">212</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -1088,9 +1116,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint32_t ghassanpl::to_u32_abgr </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> ghassanpl::to_u32_abgr </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>rgba</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1104,7 +1132,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 
 <p>Creates an 8bpp ABGR integer from a color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00171">171</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00180">180</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -1118,9 +1146,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint32_t ghassanpl::to_u32_argb </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> ghassanpl::to_u32_argb </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>rgba</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1134,7 +1162,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 
 <p>Creates an 8bpp ARGB integer from a color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00169">169</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00178">178</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -1148,9 +1176,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint32_t ghassanpl::to_u32_bgr </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> ghassanpl::to_u32_bgr </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>rgba</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1162,9 +1190,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 </table>
 </div><div class="memdoc">
 
-<p>Creates a 32 bit, 8bpp BGR integer from a color, with the most significant 8 bits set to 0. </p>
+<p>Creates a 32 bitbpp BGR integer from a color, with the most significant 8 bits set to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00179">179</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00188">188</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -1178,9 +1206,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint32_t ghassanpl::to_u32_bgra </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> ghassanpl::to_u32_bgra </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>rgba</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1194,7 +1222,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 
 <p>Creates an 8bpp BGRA integer from a color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00175">175</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00184">184</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -1208,9 +1236,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint32_t ghassanpl::to_u32_rgb </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> ghassanpl::to_u32_rgb </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>rgba</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1222,9 +1250,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 </table>
 </div><div class="memdoc">
 
-<p>Creates a 32 bit, 8bpp RGB integer from a color, with the most significant 8 bits set to 0. </p>
+<p>Creates a 32 bitbpp RGB integer from a color, with the most significant 8 bits set to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00177">177</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00186">186</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -1238,9 +1266,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr uint32_t ghassanpl::to_u32_rgba </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint32_t</a> ghassanpl::to_u32_rgba </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>rgba</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1254,7 +1282,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 
 <p>Creates an 8bpp RGBA integer from a color. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00173">173</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00182">182</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>
@@ -1268,9 +1296,9 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">constexpr glm::tvec4&lt; uint8_t &gt; ghassanpl::to_u8 </td>
+          <td class="memname"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">constexpr</a> glm::tvec4&lt; <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">uint8_t</a> &gt; ghassanpl::to_u8 </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> const &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="group___colors.html#ga2135250e4bfc4091c3456ec5e303884c">color_t</a> <a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">const</a> &amp;&#160;</td>
           <td class="paramname"><em>rgba</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1284,7 +1312,7 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga803c17af5
 
 <p>Returns the color as a <code>glm::vec4</code> of <code>uint8_t</code>s. </p>
 
-<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00194">194</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00209">209</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
 
 </div>
 </div>

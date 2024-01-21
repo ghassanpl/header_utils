@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['bit_5freference_0',['bit_reference',['../structghassanpl_1_1bit__reference.html',1,'ghassanpl']]],
-  ['bit_5fview_1',['bit_view',['../structghassanpl_1_1bit__view.html',1,'ghassanpl']]]
+  ['container_0',['Container',['../structghassanpl_1_1di_1_1_container.html',1,'ghassanpl::di']]],
+  ['counted_5fscope_5fguard_1',['counted_scope_guard',['../structghassanpl_1_1counted__scope__guard.html',1,'ghassanpl']]]
 ];

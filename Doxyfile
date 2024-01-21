@@ -1061,7 +1061,9 @@ EXCLUDE_SYMLINKS       = NO
 # exclude all test directories for example use the pattern */test/*
 
 EXCLUDE_PATTERNS       = */not-ready/* \
-                         */old/*
+                         */old/* \
+                         */vcpkg_installed/* \
+                         */packages/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -1070,6 +1072,8 @@ EXCLUDE_PATTERNS       = */not-ready/* \
 # ANamespace::AClass, ANamespace::*Test
 
 EXCLUDE_SYMBOLS        = std \
+                         nlohmann \
+                         glm \
                          GHPL_CPP23_ASSUME \
                          *::detail \
 

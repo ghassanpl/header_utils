@@ -17,6 +17,7 @@ var group___assuming =
     [ "AssumingNotEqual", "group___assuming.html#ga49c25821f7995e357b15b6342d2c87ea", null ],
     [ "AssumingNotNull", "group___assuming.html#ga3f80192f69d1545b5fbb4f4941ed8651", null ],
     [ "AssumingNotNullOrEmpty", "group___assuming.html#gab449f4627221f91f565f8da14bcb5c19", null ],
+    [ "AssumingNotOnThread", "group___assuming.html#gadc003192dd58699d97929df0edad9ceb", null ],
     [ "AssumingNotReachable", "group___assuming.html#ga61e53b2612cb6d55989b08882742ec36", null ],
     [ "AssumingNotRecursive", "group___assuming.html#gabf3129454270c3596424d0e793a64876", null ],
     [ "AssumingNull", "group___assuming.html#ga75b7a913f9747460eca1f785d0c12462", null ],
@@ -26,5 +27,5 @@ var group___assuming =
     [ "AssumingValidIndex", "group___assuming.html#ga4ab076fb853ecd9649018a317ffc4d8d", null ],
     [ "AssumingValidIterator", "group___assuming.html#gab69ef973b6e5447cd919a3817e0e9638", null ],
     [ "AssumingZero", "group___assuming.html#gae4de7ca77b434bc22a814bc06f675281", null ],
-    [ "ghassanpl::ReportAssumptionFailure", "group___assuming.html#ga4ca7bb14ed5c4e66df69a84a01a6957d", null ]
+    [ "ghassanpl::AssumptionFailureHandler", "group___assuming.html#gaa5fc5b7b2d9ff7eca18f0f1e38f613e5", null ]
 ];
