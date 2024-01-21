@@ -18,22 +18,22 @@ namespace ghassanpl::formats::wilson
 
 	using wilson = nlohmann::json;
 
-	auto parse(std::string_view wilson_str) -> wilson;
-	auto parse_object(std::string_view wilson_str, char closing_char = '}') -> wilson;
-	auto parse_array(std::string_view wilson_str) -> wilson;
+	auto parse(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>;
+	auto parse_object(std::string_view wilson_str, char closing_char = '}') -> expected<wilson, wilson_parsing_error>;
+	auto parse_array(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>;
 	/// Parses: a word as a string value or bool/null value; a "string literal" as a string value
-	auto parse_word_or_string(std::string_view wilson_str) -> wilson;
+	auto parse_word_or_string(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>;
 	/// Parses a word or a string literal a string value
-	auto parse_string_value(std::string_view wilson_str) -> std::string;
+	auto parse_string_value(std::string_view wilson_str) -> expected<std::string, wilson_parsing_error>;
 	/// Parses a string literal as a string value
-	auto parse_string_literal(std::string_view wilson_str) -> std::string;
+	auto parse_string_literal(std::string_view wilson_str) -> expected<std::string, wilson_parsing_error>;
 
-	auto consume_string_literal(std::string_view& _str) -> std::string;
-	auto consume_string_value(std::string_view& str) -> std::string;
-	auto consume_word_or_string(std::string_view& str) -> wilson;
-	auto consume_object(std::string_view& wilson_str, char closing_char = '}') -> wilson;
-	auto consume_array(std::string_view& wilson_str, char closing_char = ']') -> wilson;
-	auto consume_value(std::string_view& wilson_str) -> wilson;
+	auto consume_string_literal(std::string_view& _str) -> expected<std::string, wilson_parsing_error>;
+	auto consume_string_value(std::string_view& str) -> expected<std::string, wilson_parsing_error>;
+	auto consume_word_or_string(std::string_view& str) -> expected<wilson, wilson_parsing_error>;
+	auto consume_object(std::string_view& wilson_str, char closing_char = '}') -> expected<wilson, wilson_parsing_error>;
+	auto consume_array(std::string_view& wilson_str, char closing_char = ']') -> expected<wilson, wilson_parsing_error>;
+	auto consume_value(std::string_view& wilson_str) -> expected<wilson, wilson_parsing_error>;
 
 	template <typename OUTFUNC>
 	void output(OUTFUNC&& out, wilson const& value);
@@ -45,13 +45,13 @@ namespace ghassanpl::formats::wilson
 
 	std::string to_string(wilson const& value);
 
-	wilson load_file(std::filesystem::path const& from, std::error_code& ec);
-	wilson try_load_file(std::filesystem::path const& from, wilson const& or_json = json::empty_json);
+	expected<wilson, wilson_parsing_error> load_file(std::filesystem::path const& from);
+	wilson try_load_file(std::filesystem::path const& from, wilson or_json = json::empty_json);
 }
 
 namespace ghassanpl::formats::wilson
 {
-	inline wilson consume_array(std::string_view& str, char closing_char)
+	inline expected<wilson, wilson_parsing_error> consume_array(std::string_view& str, char closing_char)
 	{
 		auto obj = wilson::array();
 		do
@@ -60,7 +60,10 @@ namespace ghassanpl::formats::wilson
 			if (string_ops::consume(str, closing_char))
 				return obj;
 
-			obj.push_back(formats::wilson::consume_value(str));
+			auto element = formats::wilson::consume_value(str);
+			if (!element)
+				return element;
+			obj.push_back(std::move(element.value()));
 
 			string_ops::trim_whitespace_left(str);
 
@@ -72,7 +75,7 @@ namespace ghassanpl::formats::wilson
 	}
 
 	/// Consumes a string literal returning a string value
-	inline std::string consume_string_literal(std::string_view& _str)
+	inline expected<std::string, wilson_parsing_error> consume_string_literal(std::string_view& _str)
 	{
 		std::pair<std::string_view, std::string> result;
 		if (_str[0] == '\'')
@@ -83,7 +86,7 @@ namespace ghassanpl::formats::wilson
 	}
 
 	/// Consumes a word or a string literal returning a string value
-	inline std::string consume_string_value(std::string_view& str)
+	inline expected<std::string, wilson_parsing_error> consume_string_value(std::string_view& str)
 	{
 		string_ops::trim_whitespace_left(str);
 		const auto first = str[0];
@@ -92,11 +95,11 @@ namespace ghassanpl::formats::wilson
 		else if (string_ops::ascii::isidentstart(first))
 			return std::string{ string_ops::consume_while(str, &string_ops::ascii::isident) };
 
-		return {};
+		return unexpected(wilson_parsing_error{ str.data(), "expected quote character or identifier" });
 	}
 
 	/// Consumes: a word, returning a string/bool/null value; or a "string literal", returning a string value
-	inline wilson consume_word_or_string(std::string_view& str)
+	inline expected<wilson, wilson_parsing_error> consume_word_or_string(std::string_view& str)
 	{
 		if (string_ops::ascii::isalpha(str[0]))
 		{
@@ -109,13 +112,10 @@ namespace ghassanpl::formats::wilson
 				return nullptr;
 			return string;
 		}
-		else
-		{
-			return consume_string_value(str);
-		}
+		return consume_string_value(str);
 	}
 
-	inline wilson consume_object(std::string_view& str, char closing_char)
+	inline expected<wilson, wilson_parsing_error> consume_object(std::string_view& str, char closing_char)
 	{
 		auto obj = wilson::object();
 
@@ -126,17 +126,20 @@ namespace ghassanpl::formats::wilson
 				return obj;
 
 			auto key = consume_string_value(str);
+			if (!key)
+				return key;
+
 			string_ops::trim_whitespace_left(str);
 
 			if (str.empty() || string_ops::consume(str, closing_char))
 			{
-				obj[std::move(key)] = true;
+				obj[std::move(key.value())] = true;
 				break;
 			}
 
 			if (str[0] == ',' || str[0] == ';')
 			{
-				obj[std::move(key)] = true;
+				obj[std::move(key.value())] = true;
 			}
 			else
 			{
@@ -146,7 +149,9 @@ namespace ghassanpl::formats::wilson
 				string_ops::trim_whitespace_left(str);
 
 				auto val = formats::wilson::consume_value(str);
-				obj[std::move(key)] = std::move(val);
+				if (!val)
+					return val;
+				obj[std::move(key.value())] = std::move(val.value());
 			}
 
 			string_ops::trim_whitespace_left(str);
@@ -158,10 +163,10 @@ namespace ghassanpl::formats::wilson
 		return obj;
 	}
 
-	inline wilson consume_value(std::string_view& str)
+	inline expected<wilson, wilson_parsing_error> consume_value(std::string_view& str)
 	{
 		string_ops::trim_whitespace_left(str);
-		if (str.empty()) return {};
+		if (str.empty()) return unexpected(wilson_parsing_error{str.data(), "expected value"});
 
 		const auto first = str[0];
 		if (string_ops::consume(str, '{'))
@@ -182,37 +187,37 @@ namespace ghassanpl::formats::wilson
 				return result;
 			}
 		}
-		/// TODO: Maybe throw instead? Or use optional api?
-		return std::string(1, string_ops::consume(str)); /// eat at least 1 character so we don't fall into an infinite loop
+
+		return unexpected(wilson_parsing_error{ str.data(), "expected object, array, or valid scalar" });
 	}
 
-	inline auto parse(std::string_view wilson_str) -> wilson
+	inline auto parse(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>
 	{
 		const auto start = wilson_str.data(); /// TODO: on exception, get current wilson_str.data() and figure out line position, etc. to throw a proper exception
 		return formats::wilson::consume_value(wilson_str);
 	}
 
-	inline auto parse_object(std::string_view wilson_str, char closing_char) -> wilson
+	inline auto parse_object(std::string_view wilson_str, char closing_char) -> expected<wilson, wilson_parsing_error>
 	{
 		return formats::wilson::consume_object(wilson_str, closing_char);
 	}
 
-	inline auto parse_array(std::string_view wilson_str) -> wilson
+	inline auto parse_array(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>
 	{
 		return formats::wilson::consume_array(wilson_str);
 	}
 
-	inline auto parse_word_or_string(std::string_view wilson_str) -> wilson
+	inline auto parse_word_or_string(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>
 	{
 		return formats::wilson::consume_word_or_string(wilson_str);
 	}
 
-	inline auto parse_string_value(std::string_view wilson_str) -> std::string
+	inline auto parse_string_value(std::string_view wilson_str) -> expected<std::string, wilson_parsing_error>
 	{
 		return formats::wilson::consume_string_value(wilson_str);
 	}
 
-	inline auto parse_string_literal(std::string_view wilson_str) -> std::string
+	inline auto parse_string_literal(std::string_view wilson_str) -> expected<std::string, wilson_parsing_error>
 	{
 		return formats::wilson::consume_string_literal(wilson_str);
 	}
@@ -308,16 +313,17 @@ namespace ghassanpl::formats::wilson
 		return result;
 	}
 
-	inline wilson load_file(std::filesystem::path const& from, std::error_code& ec)
-	{
-		const auto source = ghassanpl::make_mmap_source<char>(from, ec);
-		return ec ? wilson{} : formats::wilson::parse(std::string_view{ source.begin(), source.end() });
-	}
-
-	inline wilson try_load_file(std::filesystem::path const& from, wilson const& or_json)
+	inline expected<wilson, wilson_parsing_error> load_file(std::filesystem::path const& from)
 	{
 		std::error_code ec;
 		const auto source = ghassanpl::make_mmap_source<char>(from, ec);
-		return ec ? or_json : formats::wilson::parse(std::string_view{ source.begin(), source.end() });
+		if (ec)
+			return unexpected(wilson_parsing_error{ {}, ec.message() });
+		return formats::wilson::parse(std::string_view{source.begin(), source.end()});
+	}
+
+	inline wilson try_load_file(std::filesystem::path const& from, wilson or_json)
+	{
+		return formats::wilson::load_file(from).value_or(std::move(or_json));
 	}
 }

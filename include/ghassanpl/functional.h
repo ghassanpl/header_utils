@@ -75,17 +75,17 @@ namespace ghassanpl
 	namespace xf
 	{
 		template <typename T>
-		constexpr auto cast_to() { return [](auto&& val) { return (T)std::forward<decltype(val)>(val); } }
+		constexpr auto cast_to() { return [](auto&& val) { return (T)std::forward<decltype(val)>(val); }; }
 		template <typename T>
-		constexpr auto dynamic_cast_to() { return [](auto&& val) { return dynamic_cast<T>(std::forward<decltype(val)>(val)); } }
+		constexpr auto dynamic_cast_to() { return [](auto&& val) { return dynamic_cast<T>(std::forward<decltype(val)>(val)); }; }
 #if defined(__cpp_lib_bit_cast)
 		template <typename T>
-		constexpr auto bit_cast_to() { return [](auto&& val) { return std::bit_cast<T>(std::forward<decltype(val)>(val)); } }
+		constexpr auto bit_cast_to() { return [](auto&& val) { return std::bit_cast<T>(std::forward<decltype(val)>(val)); }; }
 #endif
 
 		template <typename T>
 		constexpr auto constructed_as() {
-			return [](auto&& val) { return T{ std::forward<decltype(val)>(val) }; }
+			return [](auto&& val) { return T{ std::forward<decltype(val)>(val) }; };
 		}
 		
 		template <typename T>
@@ -119,11 +119,10 @@ namespace ghassanpl
 	/// Returns a new object transformed by `func`. The first argument to `func` determines what the object's type is.
 	template <typename FUNC, typename ARG_TYPE = typename decltype(detail::detect_first_arg(std::function{ std::declval<FUNC>() }))::type >
 	GHPL_REQUIRES((!std::is_void_v<ARG_TYPE>&& requires { std::function{ std::declval<FUNC>() }; }))
-		constexpr auto resulting(FUNC&& func)
+	constexpr auto resulting(FUNC&& func)
 	{
 		/// Because std::function can deduce function signature, but that magic is not available to us mortals via the stdlib:
 		/// https://en.cppreference.com/w/cpp/utility/functional/function/deduction_guides
-		//using type = ;
 		static_assert(!std::is_void_v<ARG_TYPE>, "function must take a single l-value reference argument");
 		std::remove_reference_t<ARG_TYPE> result{};
 		func(result);

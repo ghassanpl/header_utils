@@ -40,11 +40,11 @@ TEST(wilson, parses_undelimited_strings_correctly)
 	EXPECT_EQ(formats::wilson::parse_word_or_string("false"), false);
 	EXPECT_EQ(formats::wilson::parse_word_or_string("null"), nullptr);
 	EXPECT_EQ(formats::wilson::parse_word_or_string("nil"), nullptr);
-	EXPECT_EQ(formats::wilson::parse_word_or_string("0"), nullptr);
+	EXPECT_FALSE(formats::wilson::parse_word_or_string("0"));
 }
 
 TEST(wilson, outputs_as_string_correctly)
 {
-	auto result = formats::wilson::parse("{ Required = true, int = 1, float = 5.5, string = 'hello'; arr = [5 6 7], arrpar = (5; 6; 7), n = null\n nested = { nested = {} } }");
-	EXPECT_EQ(formats::wilson::parse(formats::wilson::to_string(result)), result);
+	auto result = formats::wilson::parse("{ Required = true, int = 1, float = 5.5, string = 'hello'; arr = [5 6 7], arrpar = (5; 6; 7), n = null\n nested = { nested = {} } }").value();
+	EXPECT_EQ(formats::wilson::parse(formats::wilson::to_string(result)).value(), result);
 }

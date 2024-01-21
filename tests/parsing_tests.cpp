@@ -22,7 +22,7 @@ Once)"sv;
 
 TEST(parsing_functions, wilson_parsing_basic_decade)
 {
-	auto parsed = formats::wilson::parse_array(wilson_decade);
+	auto parsed = formats::wilson::parse_array(wilson_decade).value();
 	//std::cout << parsed.dump(1) << "\n";
 	EXPECT_EQ(parsed.size(), 4);
 }

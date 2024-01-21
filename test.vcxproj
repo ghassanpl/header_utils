@@ -285,6 +285,7 @@
     <ClCompile Include="tests\di_tests.cpp" />
     <ClCompile Include="tests\enum_flags_tests.cpp" />
     <ClCompile Include="tests\eval_tests.cpp" />
+    <ClCompile Include="tests\expected_tests.cpp" />
     <ClCompile Include="tests\filesystem_tests.cpp" />
     <ClCompile Include="tests\formats_tests.cpp" />
     <ClCompile Include="tests\functional_tests.cpp" />

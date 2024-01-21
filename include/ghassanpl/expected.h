@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include <system_error>
+#include <optional>
 #define GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS 1939 
 #if __has_include(<expected>) && (_MSC_VER > GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS)
 #include <expected>
@@ -50,5 +52,40 @@ namespace ghassanpl
 			return result;
 		}
 	}
+	
+	template <typename T>
+	struct undroppable final
+	{
+		template <typename... ARGS, typename = std::enable_if_t<std::is_constructible_v<T, ARGS...>>>
+		undroppable(ARGS&&... args) noexcept(std::is_nothrow_constructible_v<T, ARGS...>)
+			: m_value(std::forward<ARGS>(args)...)
+		{
+		}
+		
+		undroppable(undroppable const& other) noexcept(std::is_nothrow_copy_constructible_v<T>) = default;
+		undroppable& operator=(undroppable const& other) noexcept(std::is_nothrow_copy_assignable_v<T>) = default;
+		undroppable(undroppable&& other) noexcept(std::is_nothrow_move_constructible_v<T>) = default;
+		undroppable& operator=(undroppable&& other) noexcept(std::is_nothrow_move_assignable_v<T>) = default;
+
+		T handle() noexcept
+		{
+			return std::exchange(m_value, {}).value();
+		}
+
+		bool was_handled() const noexcept { return !m_value.has_value(); }
+
+		T const& value() const noexcept { return m_value.value(); }
+		T& value() noexcept { return m_value.value(); }
+
+		~undroppable() noexcept(false)
+		{
+			if (m_value)
+				throw std::move(m_value.value());
+		}
+
+	private:
+
+		std::optional<T> m_value;
+	};
 
 }

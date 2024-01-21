@@ -145,51 +145,51 @@ namespace ghassanpl
 	/// Span stuff
 	
 	template <typename T, size_t N = std::dynamic_extent>
-	[[nodiscard]] constexpr std::pair<std::span<T>, std::span<T>> split_at(std::span<T, N> span, size_t index)
+	[[nodiscard]] constexpr std::pair<span<T>, span<T>> split_at(span<T, N> spn, size_t index)
 	{
-		if (index >= span.size())
-			return { span, std::span<T>{} };
-		return { span.subspan(0, index), span.subspan(index) };
+		if (index >= spn.size())
+			return { spn, span<T>{} };
+		return { spn.subspan(0, index), spn.subspan(index) };
 	}
 
 	template <typename T, size_t N = std::dynamic_extent>
-	[[nodiscard]] constexpr std::array<std::span<T>, 3> split_at(std::span<T, N> span, size_t index, size_t size)
+	[[nodiscard]] constexpr std::array<span<T>, 3> split_at(span<T, N> spn, size_t index, size_t size)
 	{
-		if (index >= span.size() || index + size >= span.size())
-			return { span, std::span<T>{}, std::span<T>{} };
-		return { span.subspan(0, index), span.subspan(index, size), span.subspan(index + size) };
+		if (index >= spn.size() || index + size >= spn.size())
+			return { spn, span<T>{}, span<T>{} };
+		return { spn.subspan(0, index), spn.subspan(index, size), spn.subspan(index + size) };
 	}
 	
 	template <typename T, size_t N = std::dynamic_extent>
-	[[nodiscard]] constexpr std::pair<T*, T*> as_range(std::span<T, N> span)
+	[[nodiscard]] constexpr std::pair<T*, T*> as_range(span<T, N> spn)
 	{
-		return { span.data(), span.data() + span.size() };
+		return { spn.data(), spn.data() + spn.size() };
 	}
 
-	/// Casts a span of objects of type FROM to a span of objects of type TO
+	/// Casts a spn of objects of type FROM to a spn of objects of type TO
 	/// Does not perform any checks, specifically, no alignment or size checks are performed.
 	template <typename TO, typename FROM, size_t N = std::dynamic_extent>
-	[[nodiscard]] auto span_cast(std::span<FROM, N> bytes) noexcept
+	[[nodiscard]] auto span_cast(span<FROM, N> bytes) noexcept
 	{
-		return std::span<TO>{ reinterpret_cast<TO*>(bytes.data()), (bytes.size() * sizeof(FROM)) / sizeof(TO) };
+		return span<TO>{ reinterpret_cast<TO*>(bytes.data()), (bytes.size() * sizeof(FROM)) / sizeof(TO) };
 	}
 
 	template <typename T1, size_t N1, typename T2, size_t N2>
-	[[nodiscard]] constexpr bool are_adjacent(std::span<T1, N1> s1, std::span<T2, N2> s2)
+	[[nodiscard]] constexpr bool are_adjacent(span<T1, N1> s1, span<T2, N2> s2)
 	{
 		return reinterpret_cast<char const*>(s1.data() + s1.size()) == reinterpret_cast<char const*>(s2.data())
 			|| reinterpret_cast<char const*>(s2.data() + s2.size()) == reinterpret_cast<char const*>(s1.data());
 	}
 
 	template <typename T1, size_t N1, typename T2, size_t N2>
-	[[nodiscard]] constexpr bool are_overlapping(std::span<T1, N1> s1, std::span<T2, N2> s2)
+	[[nodiscard]] constexpr bool are_overlapping(span<T1, N1> s1, span<T2, N2> s2)
 	{
 		return valid_address(s1, s2.data()) || valid_address(s2, s1.data());
 	}
 
 	template <typename T, size_t N1, typename U, size_t N2>
 	requires std::same_as<std::remove_cvref_t<T>, std::remove_cvref_t<U>>
-	[[nodiscard]] constexpr bool ends_with(std::span<T, N1> s1, std::span<U, N2> s2)
+	[[nodiscard]] constexpr bool ends_with(span<T, N1> s1, span<U, N2> s2)
 	{
 		if (s1.size() < s2.size()) return false;
 		return std::ranges::equal(s1.subspan(s1.size() - s2.size()), s2);
@@ -197,7 +197,7 @@ namespace ghassanpl
 
 	template <typename T, size_t N1, typename U, size_t N2>
 	requires std::same_as<std::remove_cvref_t<T>, std::remove_cvref_t<U>>
-	[[nodiscard]] constexpr bool starts_with(std::span<T, N1> s1, std::span<U, N2> s2)
+	[[nodiscard]] constexpr bool starts_with(span<T, N1> s1, span<U, N2> s2)
 	{
 		if (s1.size() < s2.size()) return false;
 		return std::ranges::equal(s1.subspan(0, s2.size()), s2);
