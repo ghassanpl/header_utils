@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp20.h" /// TODO: This could be made compliant with C++17, but I'm lazy (thanks, Copilot)
 #include <string>
 #include <string_view>
 #include <set>
@@ -22,17 +23,17 @@ namespace ghassanpl
 		explicit symbol_base(std::string_view val) : value{ symbol_provider::insert(val) } { }
 		symbol_base() noexcept = default;
 
-		hash_type get_hash() const noexcept { return symbol_provider::hash_for(value); }
-		std::string_view get_string() const noexcept { return symbol_provider::string_for(value); }
-		explicit operator std::string_view() const noexcept { return symbol_provider::string_for(value); }
+		[[nodiscard]] hash_type get_hash() const noexcept { return symbol_provider::hash_for(value); }
+		[[nodiscard]] std::string_view get_string() const noexcept { return symbol_provider::string_for(value); }
+		[[nodiscard]] explicit operator std::string_view() const noexcept { return symbol_provider::string_for(value); }
 
-		auto operator->() const noexcept requires std::is_pointer_v<internal_value_type> { return value; }
+		[[nodiscard]] auto operator->() const noexcept requires std::is_pointer_v<internal_value_type> { return value; }
 
-		bool operator==(symbol_base const& other) const noexcept { return value == other.value || symbol_provider::compare(value, other.value) == 0; }
-		auto operator<=>(symbol_base const& other) const noexcept { return symbol_provider::compare(value, other.value); }
+		[[nodiscard]] bool operator==(symbol_base const& other) const noexcept { return value == other.value || symbol_provider::compare(value, other.value) == 0; }
+		[[nodiscard]] auto operator<=>(symbol_base const& other) const noexcept { return symbol_provider::compare(value, other.value); }
 
-		friend bool operator==(std::string_view a, symbol_base const& b) noexcept { return a == b.get_string(); }
-		friend auto operator<=>(std::string_view a, symbol_base const& b) noexcept { return a <=> b.get_string(); }
+		[[nodiscard]] friend bool operator==(std::string_view a, symbol_base const& b) noexcept { return a == b.get_string(); }
+		[[nodiscard]] friend auto operator<=>(std::string_view a, symbol_base const& b) noexcept { return a <=> b.get_string(); }
 
 		friend std::ostream& operator<<(std::ostream& o, const symbol_base& ptr)
 		{
@@ -77,8 +78,8 @@ namespace ghassanpl
 
 		using internal_value_type = std::string const*;
 		using hash_type = size_t;
-		static internal_value_type empty_value() noexcept { return instance().m_empty_string; }
-		static internal_value_type insert(std::string_view val)
+		[[nodiscard]] static internal_value_type empty_value() noexcept { return instance().m_empty_string; }
+		[[nodiscard]] static internal_value_type insert(std::string_view val)
 		{
 			if (val.empty())
 				return empty_value();
@@ -89,10 +90,10 @@ namespace ghassanpl
 			else
 				return &*v;
 		}
-		static std::string_view string_for(internal_value_type val) noexcept { return val ? std::string_view{ *val } : std::string_view{}; }
-		static hash_type hash_for(internal_value_type val) noexcept { return std::hash<const void*>{}(val); }
+		[[nodiscard]] static std::string_view string_for(internal_value_type val) noexcept { return val ? std::string_view{ *val } : std::string_view{}; }
+		[[nodiscard]] static hash_type hash_for(internal_value_type val) noexcept { return std::hash<const void*>{}(val); }
 
-		static std::strong_ordering compare(internal_value_type a, internal_value_type b) noexcept { 
+		[[nodiscard]] static std::strong_ordering compare(internal_value_type a, internal_value_type b) noexcept {
 			return (a == b) ? std::strong_ordering::equal : (*a <=> *b);
 		}
 
@@ -105,11 +106,11 @@ namespace ghassanpl
 			m_empty_string = &*m_values.begin();
 		}
 
-		size_t size() const noexcept { return m_values.size(); }
-		size_t count() const noexcept { return size(); }
+		[[nodiscard]] size_t size() const noexcept { return m_values.size(); }
+		[[nodiscard]] size_t count() const noexcept { return size(); }
 
-		auto const& values() const noexcept { return m_values; }
-		auto empty_string() const noexcept { return m_empty_string; }
+		[[nodiscard]] auto const& values() const noexcept { return m_values; }
+		[[nodiscard]] auto empty_string() const noexcept { return m_empty_string; }
 
 	protected:
 

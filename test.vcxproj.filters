@@ -279,6 +279,9 @@
     <ClInclude Include="include\ghassanpl\filesystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\span.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -425,6 +428,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\filesystem_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\cpp_version_tests\cpp03_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\cpp_version_tests\cpp14_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\cpp_version_tests\cpp17_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\cpp_version_tests\cpp20_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

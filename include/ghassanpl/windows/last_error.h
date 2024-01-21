@@ -27,7 +27,7 @@ namespace ghassanpl
 #endif
 	}
 
-	last_windows_error_t get_last_windows_error()
+	[[nodiscard]] inline last_windows_error_t get_last_windows_error()
 	{
 		const auto le = win::GetLastError(); /// must get as soon as possible; maybe even should be moved into a defaulted argument, forcing it to be called at the callsite
 

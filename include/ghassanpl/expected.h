@@ -11,13 +11,9 @@ namespace ghassanpl
 {
 	using std::expected;
 	using std::unexpected;
-
-	/// Hacks to make expected work with MSVC
-	static_assert(std::is_swappable_v<std::string>);
-	static_assert(std::is_swappable_v<std::error_code>);
 }
 #elif __has_include(<tl/expected.hpp>)
-#include <tl/expected.hpp> /// TODO: Until MSVC fixes its expected impl
+#include <tl/expected.hpp>
 namespace ghassanpl
 {
 	using tl::expected;

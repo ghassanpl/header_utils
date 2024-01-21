@@ -8,7 +8,7 @@
 #include "string_ops.h"
 #include <format>
 #include <variant>
-#include <span>
+#include "span.h"
 
 namespace ghassanpl::eval
 {
@@ -32,15 +32,15 @@ namespace ghassanpl::eval
 		explicit(false) value(json const* j) noexcept : v(std::move(j)) {}
 		explicit(false) value(json* j) noexcept : v(std::move(j)) {}
 
-		bool is_lval() const noexcept { return v.index() == 1; }
-		bool is_rval() const noexcept { return v.index() == 0; }
-		bool is_ref() const noexcept { return v.index() == 2; }
+		[[nodiscard]] bool is_lval() const noexcept { return v.index() == 1; }
+		[[nodiscard]] bool is_rval() const noexcept { return v.index() == 0; }
+		[[nodiscard]] bool is_ref() const noexcept { return v.index() == 2; }
 
-		json& lval() { return *std::get<json*>(v); }
+		[[nodiscard]] json& lval() { return *std::get<json*>(v); }
 
 		void ref() && = delete;
 
-		json const& ref() const&
+		[[nodiscard]] json const& ref() const&
 		{
 			switch (v.index())
 			{
@@ -51,12 +51,12 @@ namespace ghassanpl::eval
 			return null_json;
 		}
 
-		json const& forward() const&
+		[[nodiscard]] json const& forward() const&
 		{
 			return ref();
 		}
 
-		json forward() &&
+		[[nodiscard]] json forward() &&
 		{
 			switch (v.index())
 			{
@@ -67,27 +67,27 @@ namespace ghassanpl::eval
 			return null_json;
 		}
 
-		explicit(false) operator json const& () const&
+		[[nodiscard]] explicit(false) operator json const& () const&
 		{
 			return ref();
 		}
 
-		json const& operator*() const&
+		[[nodiscard]] json const& operator*() const&
 		{
 			return ref();
 		}
 
-		explicit(false) operator json () &&
+		[[nodiscard]] explicit(false) operator json () &&
 		{
 			return static_cast<value&&>(*this).forward();
 		}
 
-		json operator*() &&
+		[[nodiscard]] json operator*() &&
 		{
 			return static_cast<value&&>(*this).forward();
 		}
 
-		json const* operator->() const& noexcept { return &ref(); }
+		[[nodiscard]] json const* operator->() const& noexcept { return &ref(); }
 	};
 
 	/// NOTE: Decade syntax is slower to execute but more natural
@@ -110,17 +110,24 @@ namespace ghassanpl::eval
 		std::map<std::string, eval_func, std::less<>> prefix_macros; /// eval('.test') -> eval(prefix_macros['.']('.test'))
 		std::function<bool(json const&)> truthiness_function;
 
-		self_type* get_root_env() const noexcept { return parent_env ? parent_env->get_root_env() : this; }
+		[[nodiscard]] self_type* get_root_env() const noexcept { return parent_env ? parent_env->get_root_env() : this; }
 
-		auto find_in_user_storage(this auto&& self, std::string_view name)
+		[[nodiscard]] auto find_in_user_storage(std::string_view name)
+		{
+			return find_in_user_storage(*this, name);
+		}
+
+	private:
+		static auto find_in_user_storage(auto& self, std::string_view name)
 		{
 			if (auto it = self.user_storage.find(name); it != self.user_storage.end())
 				return std::pair{ &self, it };
 			else
-				return self.parent_env ? self.parent_env->find_in_user_storage(name) : std::pair<decltype(&self), decltype(it)>{};
+				return self.parent_env ? find_in_user_storage(*self.parent_env, name) : std::pair<decltype(&self), decltype(it)>{};
 		}
+	public:
 
-		value user_var(std::string_view name)
+		[[nodiscard]] value user_var(std::string_view name)
 		{
 			auto var = find_in_user_storage(name);
 			if (var.first)
@@ -133,7 +140,7 @@ namespace ghassanpl::eval
 			auto* storage = &user_storage;
 			if (!force_local)
 			{
-				auto [owning_store, it] = this->find_in_user_storage(name);
+				auto [owning_store, it] = find_in_user_storage(name);
 				if (owning_store)
 					storage = &owning_store->user_storage;
 			}
@@ -143,7 +150,7 @@ namespace ghassanpl::eval
 			return it->second = val.forward();
 		}
 
-		eval_func const* find_unknown_func_eval() const noexcept
+		[[nodiscard]] eval_func const* find_unknown_func_eval() const noexcept
 		{
 			if (unknown_func_eval)
 				return &unknown_func_eval;
@@ -152,7 +159,7 @@ namespace ghassanpl::eval
 			return nullptr;
 		}
 
-		eval_func const* find_func(std::string_view name) const
+		[[nodiscard]] eval_func const* find_func(std::string_view name) const
 		{
 			if (auto it = funcs.find(name); it != funcs.end())
 				return &it->second;
@@ -332,7 +339,7 @@ namespace ghassanpl::eval
 			}
 		}
 
-		inline bool is_true(json const& val)
+		[[nodiscard]] inline bool is_true(json const& val)
 		{
 			switch (val.type())
 			{
@@ -342,7 +349,7 @@ namespace ghassanpl::eval
 			}
 		}
 
-		inline bool is_true(value const& val)
+		[[nodiscard]] inline bool is_true(value const& val)
 		{
 			return is_true(*val);
 		}

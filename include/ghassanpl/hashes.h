@@ -4,7 +4,9 @@
 
 #pragma once
 
+#ifdef __cpp_consteval
 #include "source_location.h"
+#endif
 #include "bytes.h"
 #include "bits.h"
 #include <array>
@@ -84,12 +86,14 @@ namespace ghassanpl
 		return ~crc;
 	}
 
+#ifdef __cpp_consteval
 	/// Calculates a CRC32 of a source_location (constexpr, so can be used at compile time)
 	/// \ingroup Hashes
 	[[nodiscard]] constexpr auto crc32(const source_location& k)
 	{
 		return crc32(std::string_view{ k.file_name() }) ^ k.line() ^ k.column();
 	}
+#endif
 
 	static constexpr inline uint64_t crc64_table[256] = {
 		0x0000000000000000, 0x42F0E1EBA9EA3693, 0x85E1C3D753D46D26, 0xC711223CFA3E5BB5, 0x493366450E42ECDF, 0x0BC387AEA7A8DA4C, 0xCCD2A5925D9681F9, 0x8E224479F47CB76A, 
@@ -147,6 +151,7 @@ namespace ghassanpl
 		return ~crc;
 	}
 
+#ifdef __cpp_consteval
 	/// Calculates a CRC64 of a source_location (constexpr, so can be used at compile time)
 	/// \ingroup Hashes
 	[[nodiscard]] constexpr auto crc64(const source_location& k)
@@ -158,6 +163,7 @@ namespace ghassanpl
 	{
 		constexpr uint64_t operator()(source_location const& l) const { return crc64(l); }
 	};
+#endif
 
 	/// TODO: Add support for non-64bit hashes to all the functions below, especially since
 	/// std::hash operates on size_t

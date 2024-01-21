@@ -5,11 +5,10 @@
 #pragma once
 
 #include <cstddef>
-#include <span>
 #include <string_view>
 #include <array>
 #include <bit>
-#include <span>
+#include "span.h"
 
 namespace ghassanpl
 {
@@ -24,7 +23,7 @@ namespace ghassanpl
 	/// Converts a span of trivial values to a span of \c bytelike s
 	template <bytelike TO, typename FROM, size_t N = std::dynamic_extent>
 	requires std::is_trivially_copyable_v<FROM>
-	std::span<TO> as_bytelikes(std::span<FROM, N> bytes) noexcept
+	[[nodiscard]] std::span<TO> as_bytelikes(std::span<FROM, N> bytes) noexcept
 	{
 		return { reinterpret_cast<TO*>(bytes.data()), bytes.size() * sizeof(FROM) };
 	}
@@ -32,35 +31,35 @@ namespace ghassanpl
 	/// Returns a span of \c bytelike s that represents the internal object representation of the argument
 	template <bytelike TO, typename T>
 	requires std::is_trivially_copyable_v<T>
-	std::span<TO const> as_bytelikes(T const& pod) noexcept
+	[[nodiscard]] std::span<TO const> as_bytelikes(T const& pod) noexcept
 	{
 		return { reinterpret_cast<TO const*>(std::addressof(pod)), sizeof(pod) };
 	}
 	
-	template <bytelike FROM> constexpr auto to_u8(FROM byte) noexcept { return std::bit_cast<uint8_t>(byte); }
-	template <bytelike FROM> constexpr auto to_char(FROM byte) noexcept { return std::bit_cast<char>(byte); }
-	template <bytelike FROM> constexpr auto to_byte(FROM byte) noexcept { return std::bit_cast<std::byte>(byte); }
-	template <bytelike FROM> constexpr auto to_uchar(FROM byte) noexcept { return std::bit_cast<unsigned char>(byte); }
-	template <bytelike FROM> constexpr auto to_char8(FROM byte) noexcept { return std::bit_cast<char8_t>(byte); }
+	template <bytelike FROM> [[nodiscard]] constexpr auto to_u8(FROM byte) noexcept { return std::bit_cast<uint8_t>(byte); }
+	template <bytelike FROM> [[nodiscard]] constexpr auto to_char(FROM byte) noexcept { return std::bit_cast<char>(byte); }
+	template <bytelike FROM> [[nodiscard]] constexpr auto to_byte(FROM byte) noexcept { return std::bit_cast<std::byte>(byte); }
+	template <bytelike FROM> [[nodiscard]] constexpr auto to_uchar(FROM byte) noexcept { return std::bit_cast<unsigned char>(byte); }
+	template <bytelike FROM> [[nodiscard]] constexpr auto to_char8(FROM byte) noexcept { return std::bit_cast<char8_t>(byte); }
 
 	template<typename S, typename D>
 	using copy_const_t = std::conditional_t<std::is_const_v<S>, std::add_const_t<D>, std::remove_const_t<D>>;
 
-	template <bytelike FROM, size_t N = std::dynamic_extent> auto as_chars(std::span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, char>>(bytes); }
-	template <bytelike FROM, size_t N = std::dynamic_extent> auto as_bytes(std::span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, std::byte>>(bytes); }
-	template <bytelike FROM, size_t N = std::dynamic_extent> auto as_uchars(std::span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, unsigned char>>(bytes); }
-	template <bytelike FROM, size_t N = std::dynamic_extent> auto as_u8s(std::span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, uint8_t>>(bytes); }
-	template <bytelike FROM, size_t N = std::dynamic_extent> auto as_char8s(std::span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, char8_t>>(bytes); }
+	template <bytelike FROM, size_t N = std::dynamic_extent> [[nodiscard]] auto as_chars(std::span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, char>>(bytes); }
+	template <bytelike FROM, size_t N = std::dynamic_extent> [[nodiscard]] auto as_bytes(std::span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, std::byte>>(bytes); }
+	template <bytelike FROM, size_t N = std::dynamic_extent> [[nodiscard]] auto as_uchars(std::span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, unsigned char>>(bytes); }
+	template <bytelike FROM, size_t N = std::dynamic_extent> [[nodiscard]] auto as_u8s(std::span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, uint8_t>>(bytes); }
+	template <bytelike FROM, size_t N = std::dynamic_extent> [[nodiscard]] auto as_char8s(std::span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, char8_t>>(bytes); }
 
-	template <typename T> requires std::is_trivial_v<T> auto as_chars(T const& data) noexcept { return as_bytelikes<char>(data); }
-	template <typename T> requires std::is_trivial_v<T> auto as_bytes(T const& data) noexcept { return as_bytelikes<std::byte>(data); }
-	template <typename T> requires std::is_trivial_v<T> auto as_uchars(T const& data) noexcept { return as_bytelikes<unsigned char>(data); }
-	template <typename T> requires std::is_trivial_v<T> auto as_u8s(T const& data) noexcept { return as_bytelikes<uint8_t>(data); }
-	template <typename T> requires std::is_trivial_v<T> auto as_char8s(T const& data) noexcept { return as_bytelikes<char8_t>(data); }
+	template <typename T> requires std::is_trivial_v<T> [[nodiscard]] auto as_chars(T const& data) noexcept { return as_bytelikes<char>(data); }
+	template <typename T> requires std::is_trivial_v<T> [[nodiscard]] auto as_bytes(T const& data) noexcept { return as_bytelikes<std::byte>(data); }
+	template <typename T> requires std::is_trivial_v<T> [[nodiscard]] auto as_uchars(T const& data) noexcept { return as_bytelikes<unsigned char>(data); }
+	template <typename T> requires std::is_trivial_v<T> [[nodiscard]] auto as_u8s(T const& data) noexcept { return as_bytelikes<uint8_t>(data); }
+	template <typename T> requires std::is_trivial_v<T> [[nodiscard]] auto as_char8s(T const& data) noexcept { return as_bytelikes<char8_t>(data); }
 
 
 	template <bytelike B, size_t N = std::dynamic_extent>
-	bool nth_bit(std::span<B const, N> range, size_t n) noexcept
+	[[nodiscard]] bool nth_bit(std::span<B const, N> range, size_t n) noexcept
 	{
 		if (n >= u8range.size() * CHAR_BIT)
 			return false;
@@ -84,7 +83,7 @@ namespace ghassanpl
 
 	template <typename T>
 	requires std::is_trivially_copyable_v<T>
-	bool nth_bit(T const& pod, size_t n) noexcept
+	[[nodiscard]] bool nth_bit(T const& pod, size_t n) noexcept
 	{
 		return nth_bit(as_u8s(pod), n);
 	}
@@ -97,7 +96,7 @@ namespace ghassanpl
 	}
 
 	template <size_t N, bytelike B, size_t SN = std::dynamic_extent>
-	bool nth_bit(std::span<B const, SN> range) noexcept
+	[[nodiscard]] bool nth_bit(std::span<B const, SN> range) noexcept
 	{
 		if (N >= u8range.size() * CHAR_BIT)
 			return false;
@@ -121,7 +120,7 @@ namespace ghassanpl
 
 	template <size_t N, typename T>
 	requires std::is_trivially_copyable_v<T>
-	bool nth_bit(T const& pod) noexcept
+	[[nodiscard]] bool nth_bit(T const& pod) noexcept
 	{
 		return nth_bit<N>(as_u8s(pod));
 	}
@@ -136,7 +135,7 @@ namespace ghassanpl
 	/// A constexpr function that converts an integral value to its constituent bytelikes
 	/// TODO: This is NOT like a reinterpret_/bit_cast to u8s, because it's not endian-aware
 	template <bytelike B, std::integral T>
-	constexpr auto to_bytelike_array(T value)
+	[[nodiscard]] constexpr auto to_bytelike_array(T value)
 	{
 		value = std::bit_cast<std::make_unsigned_t<T>>(value);
 		std::array<B, sizeof(T)> result;
@@ -159,7 +158,7 @@ namespace ghassanpl
 
 	/// Splits the argument span into two spans, the first one being the prefix, the second one having its data pointer aligned to the given alignment.
 	template <size_t ALIGN, bytelike T, size_t N = std::dynamic_extent>
-	auto align_front_to(std::span<T, N> bytes) noexcept -> align_front_to_result<T>
+	[[nodiscard]] auto align_front_to(std::span<T, N> bytes) noexcept -> align_front_to_result<T>
 	{
 		static_assert(ALIGN >= 1, "Alignment must be greater or equal to 1");
 		if constexpr (ALIGN == 1)
@@ -188,7 +187,7 @@ namespace ghassanpl
 	/// Splits the argument span into two spans, the first one having its size aligned to the given alignment, the second one being the suffix.
 	/// Assumes/expects bytes.data() is aligned to the specified alignment.
 	template <size_t ALIGN, bytelike T, size_t N = std::dynamic_extent>
-	constexpr auto align_back_to(std::span<T, N> bytes) noexcept -> align_back_to_result<T>
+	[[nodiscard]] constexpr auto align_back_to(std::span<T, N> bytes) noexcept -> align_back_to_result<T>
 	{
 		static_assert(ALIGN >= 1, "Alignment must be greater or equal to 1");
 		if constexpr (ALIGN == 1)
@@ -218,7 +217,7 @@ namespace ghassanpl
 	/// Splits the argument span into three spans, the first one being the prefix, the second one having its data and size aligned to the given alignment, 
 	/// the third one being the suffix.
 	template <size_t ALIGN, bytelike T, size_t N = std::dynamic_extent>
-	auto align_to(std::span<T, N> bytes) noexcept -> align_to_result<T>
+	[[nodiscard]] auto align_to(std::span<T, N> bytes) noexcept -> align_to_result<T>
 	{
 		static_assert(ALIGN >= 1, "Alignment must be greater or equal to 1");
 		if constexpr (ALIGN == 1)
@@ -243,7 +242,7 @@ namespace ghassanpl
 	}
 
 	template <typename TO, bytelike B, size_t N = std::dynamic_extent>
-	auto aligned_span_cast(std::span<B, N> bytes) noexcept -> align_to_result<B, TO>
+	[[nodiscard]] auto aligned_span_cast(std::span<B, N> bytes) noexcept -> align_to_result<B, TO>
 	{
 		const auto [prefix, aligned, suffix] = align_to<std::max(alignof(TO), sizeof(TO))>(bytes);
 		const auto std::span<TO> aligned_cast{ 
@@ -254,7 +253,7 @@ namespace ghassanpl
 	}
 
 	template <typename TO, bytelike B, size_t N = std::dynamic_extent>
-	auto aligned_span_cast_and_construct(std::span<B, N> bytes) noexcept -> align_to_result<B, TO>
+	[[nodiscard]] auto aligned_span_cast_and_construct(std::span<B, N> bytes) noexcept -> align_to_result<B, TO>
 	{
 		const auto result = aligned_span_cast<TO>(bytes);
 		std::uninitialized_default_construct_n(result.aligned.data(), result.aligned.size());

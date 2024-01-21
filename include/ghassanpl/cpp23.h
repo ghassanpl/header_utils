@@ -17,6 +17,7 @@ namespace ghassanpl
 	template <class T, class... TYPES>
 	constexpr inline bool is_any_of_v = std::disjunction_v<std::is_same<T, TYPES>...>;
 
+#if defined(__cpp_concepts)
 	namespace detail
 	{
 		template <class _Ty>
@@ -30,6 +31,7 @@ namespace ghassanpl
 	concept dereferenceable = requires(T & t) {
 		{ *t } -> detail::can_reference;
 	};
+#endif
 
 #if defined(__cpp_lib_forward_like)
 	using std::forward_like;

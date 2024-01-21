@@ -209,6 +209,7 @@
     <ClInclude Include="include\ghassanpl\geometry\triangles.h" />
     <ClInclude Include="include\ghassanpl\hashes.h" />
     <ClInclude Include="include\ghassanpl\interpolation.h" />
+    <ClInclude Include="include\ghassanpl\span.h" />
     <ClInclude Include="include\ghassanpl\string_interpolate.h" />
     <ClInclude Include="include\ghassanpl\json_helpers.h" />
     <ClInclude Include="include\ghassanpl\mmap.h" />
@@ -270,6 +271,16 @@
     <ClCompile Include="tests\cpp98_tests.cpp">
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp14</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp14</LanguageStandard>
+    </ClCompile>
+    <ClCompile Include="tests\cpp_version_tests\cpp03_tests.cpp" />
+    <ClCompile Include="tests\cpp_version_tests\cpp14_tests.cpp">
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp14</LanguageStandard>
+    </ClCompile>
+    <ClCompile Include="tests\cpp_version_tests\cpp17_tests.cpp">
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ClCompile Include="tests\cpp_version_tests\cpp20_tests.cpp">
+      <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp20</LanguageStandard>
     </ClCompile>
     <ClCompile Include="tests\di_tests.cpp" />
     <ClCompile Include="tests\enum_flags_tests.cpp" />

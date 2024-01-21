@@ -6,7 +6,7 @@
 
 #include <ranges>
 #include <stdexcept>
-#include <span>
+#include "span.h"
 
 namespace ghassanpl
 {
@@ -34,14 +34,14 @@ namespace ghassanpl
 	concept range_predicate = requires (FUNC func, RANGE range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; };
 
 	/// Returns whether or not a given integer is a valid index to a random access `range`
-	constexpr bool valid_index(random_access_range auto& range, std::integral auto index)
+	[[nodiscard]] constexpr bool valid_index(random_access_range auto& range, std::integral auto index)
 	{
 		return index >= 0 && index < std::ranges::size(range);
 	}
 
 	/// Returns `index` converted to a valid index into a range of `range_size` as if using modulo arithmetic
 	/// \pre range_size > 0
-	constexpr auto modulo_index(size_t range_size, std::integral auto index)
+	[[nodiscard]] constexpr auto modulo_index(size_t range_size, std::integral auto index)
 	{
 		const auto cpp_modulo_sucks = (index % static_cast<decltype(index)>(range_size));
 		return (index < 0) ? (range_size + cpp_modulo_sucks) : cpp_modulo_sucks;
@@ -49,14 +49,14 @@ namespace ghassanpl
 
 	/// Returns an valid index into `range`, created from `index` as if `range` is circular
 	/// \pre range must not be empty
-	constexpr auto modulo_index(random_access_range auto& range, std::integral auto index)
+	[[nodiscard]] constexpr auto modulo_index(random_access_range auto& range, std::integral auto index)
 	{
 		const auto range_size = std::ranges::size(range);
 		return modulo_index(range_size, index);
 	}
 
 	/// Returns a reference to the value at `index` of `range`
-	constexpr decltype(auto) at(random_access_range auto& range, std::integral auto index)
+	[[nodiscard]] constexpr decltype(auto) at(random_access_range auto& range, std::integral auto index)
 	{
 		if (!valid_index(range, index))
 			throw std::invalid_argument("index");
@@ -64,7 +64,7 @@ namespace ghassanpl
 	}
 
 	/// Returns a pointer to the value at `index` of `range` if index is valid, else returns null
-	constexpr auto at_ptr(random_access_range auto& range, std::integral auto index)
+	[[nodiscard]] constexpr auto at_ptr(random_access_range auto& range, std::integral auto index)
 		-> decltype(std::to_address(std::ranges::begin(range) + index))
 	{
 		if (!valid_index(range, index))
@@ -74,14 +74,14 @@ namespace ghassanpl
 
 	/// Returns a reference to the value at \ref modulo_index of `range`
 	/// \pre range must not be empty
-	constexpr decltype(auto) modulo_at(random_access_range auto& range, std::integral auto index)
+	[[nodiscard]] constexpr decltype(auto) modulo_at(random_access_range auto& range, std::integral auto index)
 	{
 		return at(range, modulo_index(range, index)); /// TODO: make sure this is inlined properly 'cause we're quering size a couple of times, for example
 	}
 
 	/// Find a value in `range` and returns an index to it
 	template <random_access_range RANGE, typename T>
-	constexpr auto index_of(RANGE const& range, T&& value) -> std::iter_difference_t<range_iterator<RANGE>>
+	[[nodiscard]] constexpr auto index_of(RANGE const& range, T&& value) -> std::iter_difference_t<range_iterator<RANGE>>
 	requires requires (T value, RANGE range) { { *std::ranges::begin(range) == value } -> std::convertible_to<bool>; }
 	{
 		const auto it = std::ranges::find(range, std::forward<T>(value));
@@ -92,7 +92,7 @@ namespace ghassanpl
 
 	/// Return the element at `index` or `default_value` if not a valid index
 	template <random_access_range RANGE, typename T = range_value<RANGE>>
-	constexpr auto at_or_default(RANGE&& range, std::integral auto index, T&& default_value)
+	[[nodiscard]] constexpr auto at_or_default(RANGE&& range, std::integral auto index, T&& default_value)
 	{
 		if (!valid_index(range, index)) [[unlikely]] return std::forward<T>(default_value);
 		return at(range, index);
@@ -101,7 +101,7 @@ namespace ghassanpl
 	/// Find a value in `range` and returns an index to it
 	template <random_access_range RANGE, typename FUNC>
 	requires range_predicate<RANGE, FUNC>
-	constexpr auto find_index(RANGE const& range, FUNC&& func) -> std::iter_difference_t<range_iterator<RANGE>>
+	[[nodiscard]] constexpr auto find_index(RANGE const& range, FUNC&& func) -> std::iter_difference_t<range_iterator<RANGE>>
 	{
 		const auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
 		if (it == std::ranges::end(range))
@@ -112,7 +112,7 @@ namespace ghassanpl
 	/// Find a value in `range` and returns a pointer to it, or null if none found
 	template <std::ranges::range RANGE, typename FUNC>
 	requires range_predicate<RANGE, FUNC>
-	constexpr auto find_ptr(RANGE& range, FUNC&& func)
+	[[nodiscard]] constexpr auto find_ptr(RANGE& range, FUNC&& func)
 	{
 		const auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
 		return it == std::ranges::end(range) ? nullptr : std::to_address(it);
@@ -120,7 +120,7 @@ namespace ghassanpl
 
 	template <random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_value<RANGE>>
 	requires range_predicate<RANGE, FUNC>
-	auto find_if_or_default(RANGE& range, FUNC&& func, DEF_TYPE&& default_value = DEF_TYPE{})
+	[[nodiscard]] auto find_if_or_default(RANGE& range, FUNC&& func, DEF_TYPE&& default_value = DEF_TYPE{})
 	{
 		auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
 		if (it == std::ranges::end(range))
@@ -129,14 +129,14 @@ namespace ghassanpl
 	}
 
 	/// Turns an `iterator` to `range` to an index
-	constexpr auto to_index(random_access_iterator auto iterator, random_access_range auto const& range)
+	[[nodiscard]] constexpr auto to_index(random_access_iterator auto iterator, random_access_range auto const& range)
 	{
 		return std::ranges::distance(std::ranges::begin(range), iterator);
 	}
 
 	/// Returns whether or not `pointer` is a valid pointer to an element in the contiguous `range`
 	template <contiguous_range RANGE>
-	constexpr bool valid_address(RANGE&& range, range_value<RANGE>* pointer)
+	[[nodiscard]] constexpr bool valid_address(RANGE&& range, range_value<RANGE>* pointer)
 	{
 		if (std::ranges::empty(range)) return false;
 		return pointer >= std::to_address(std::ranges::begin(range)) && pointer < std::to_address(std::ranges::end(range));
@@ -145,7 +145,7 @@ namespace ghassanpl
 	/// Span stuff
 	
 	template <typename T, size_t N = std::dynamic_extent>
-	constexpr std::pair<std::span<T>, std::span<T>> split_at(std::span<T, N> span, size_t index)
+	[[nodiscard]] constexpr std::pair<std::span<T>, std::span<T>> split_at(std::span<T, N> span, size_t index)
 	{
 		if (index >= span.size())
 			return { span, std::span<T>{} };
@@ -153,7 +153,7 @@ namespace ghassanpl
 	}
 
 	template <typename T, size_t N = std::dynamic_extent>
-	constexpr std::array<std::span<T>, 3> split_at(std::span<T, N> span, size_t index, size_t size)
+	[[nodiscard]] constexpr std::array<std::span<T>, 3> split_at(std::span<T, N> span, size_t index, size_t size)
 	{
 		if (index >= span.size() || index + size >= span.size())
 			return { span, std::span<T>{}, std::span<T>{} };
@@ -161,7 +161,7 @@ namespace ghassanpl
 	}
 	
 	template <typename T, size_t N = std::dynamic_extent>
-	constexpr std::pair<T*, T*> as_range(std::span<T, N> span)
+	[[nodiscard]] constexpr std::pair<T*, T*> as_range(std::span<T, N> span)
 	{
 		return { span.data(), span.data() + span.size() };
 	}
@@ -169,27 +169,27 @@ namespace ghassanpl
 	/// Casts a span of objects of type FROM to a span of objects of type TO
 	/// Does not perform any checks, specifically, no alignment or size checks are performed.
 	template <typename TO, typename FROM, size_t N = std::dynamic_extent>
-	auto span_cast(std::span<FROM, N> bytes) noexcept
+	[[nodiscard]] auto span_cast(std::span<FROM, N> bytes) noexcept
 	{
 		return std::span<TO>{ reinterpret_cast<TO*>(bytes.data()), (bytes.size() * sizeof(FROM)) / sizeof(TO) };
 	}
 
 	template <typename T1, size_t N1, typename T2, size_t N2>
-	constexpr bool are_adjacent(std::span<T1, N1> s1, std::span<T2, N2> s2)
+	[[nodiscard]] constexpr bool are_adjacent(std::span<T1, N1> s1, std::span<T2, N2> s2)
 	{
 		return reinterpret_cast<char const*>(s1.data() + s1.size()) == reinterpret_cast<char const*>(s2.data())
 			|| reinterpret_cast<char const*>(s2.data() + s2.size()) == reinterpret_cast<char const*>(s1.data());
 	}
 
 	template <typename T1, size_t N1, typename T2, size_t N2>
-	constexpr bool are_overlapping(std::span<T1, N1> s1, std::span<T2, N2> s2)
+	[[nodiscard]] constexpr bool are_overlapping(std::span<T1, N1> s1, std::span<T2, N2> s2)
 	{
 		return valid_address(s1, s2.data()) || valid_address(s2, s1.data());
 	}
 
 	template <typename T, size_t N1, typename U, size_t N2>
 	requires std::same_as<std::remove_cvref_t<T>, std::remove_cvref_t<U>>
-	constexpr bool ends_with(std::span<T, N1> s1, std::span<U, N2> s2)
+	[[nodiscard]] constexpr bool ends_with(std::span<T, N1> s1, std::span<U, N2> s2)
 	{
 		if (s1.size() < s2.size()) return false;
 		return std::ranges::equal(s1.subspan(s1.size() - s2.size()), s2);
@@ -197,7 +197,7 @@ namespace ghassanpl
 
 	template <typename T, size_t N1, typename U, size_t N2>
 	requires std::same_as<std::remove_cvref_t<T>, std::remove_cvref_t<U>>
-	constexpr bool starts_with(std::span<T, N1> s1, std::span<U, N2> s2)
+	[[nodiscard]] constexpr bool starts_with(std::span<T, N1> s1, std::span<U, N2> s2)
 	{
 		if (s1.size() < s2.size()) return false;
 		return std::ranges::equal(s1.subspan(0, s2.size()), s2);
@@ -206,7 +206,7 @@ namespace ghassanpl
 	/// Arrays
 	
 	template <typename T, std::size_t... Ns>
-	constexpr auto join(std::array<T, Ns>... arrays)
+	[[nodiscard]] constexpr auto join(std::array<T, Ns>... arrays)
 	{
 		std::array<T, (Ns + ...)> result;
 		std::size_t index = 0;
@@ -216,7 +216,7 @@ namespace ghassanpl
 
 	template<typename T, size_t LL, typename... ARGS>
 	requires (std::same_as<std::remove_cvref_t<ARGS>, T> && ...)
-	constexpr auto join(std::array<T, LL> rhs, ARGS&&... args)
+	[[nodiscard]] constexpr auto join(std::array<T, LL> rhs, ARGS&&... args)
 	{
 		std::array<T, LL + sizeof...(ARGS)> ar;
 		auto current = std::move(rhs.begin(), rhs.end(), ar.begin());

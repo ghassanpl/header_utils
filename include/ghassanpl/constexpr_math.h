@@ -31,26 +31,26 @@ namespace ghassanpl::constexpr_math
 	using std::isnan;
 #else
 
-	constexpr bool isnan(std::integral auto f) noexcept { return false; }
-	constexpr bool isnan(float f) { 
+	[[nodiscard]] constexpr bool isnan(std::integral auto f) noexcept { return false; }
+	[[nodiscard]] constexpr bool isnan(float f) {
 		if (std::is_constant_evaluated())
 			return (std::bit_cast<uint32_t>(f) & 0x7FFFFFFFu) > 0x7F800000u;
 		else
 			return std::isnan(f);
 	}
-	constexpr bool isnan(double f) { 
+	[[nodiscard]] constexpr bool isnan(double f) {
 		if (std::is_constant_evaluated())
 			return (std::bit_cast<uint64_t>(f) & 0x7FFFFFFFFFFFFFFFull) > 0x7FF0000000000000ull;
 		else
 			return std::isnan(f);
 	}
-	constexpr bool isfinite(float f) {
+	[[nodiscard]] constexpr bool isfinite(float f) {
 		if (std::is_constant_evaluated())
 			return (std::bit_cast<uint32_t>(f) & 0x7F800000u) != 0x7F800000u;
 		else
 			return std::isfinite(f);
 	}
-	constexpr bool isfinite(double f) {
+	[[nodiscard]] constexpr bool isfinite(double f) {
 		if (std::is_constant_evaluated())
 			return (std::bit_cast<uint64_t>(f) & 0x7FF0000000000000ull) != 0x7FF0000000000000ull;
 		else
@@ -60,7 +60,7 @@ namespace ghassanpl::constexpr_math
 	/// Shamelessly stolen from https://gist.github.com/Redchards/7f1b357bf3e686b55362
 
 	template <std::floating_point T, typename RESULT = T>
-	constexpr RESULT floor(T num) noexcept
+	[[nodiscard]] constexpr RESULT floor(T num) noexcept
 	{
 		if (std::is_constant_evaluated())
 		{
@@ -80,7 +80,7 @@ namespace ghassanpl::constexpr_math
 
 	template <typename T>
 	requires std::is_signed_v<T>
-	constexpr bool signbit(T num) /// can throw
+	[[nodiscard]] constexpr bool signbit(T num) /// can throw
 	{
 		if (std::is_constant_evaluated())
 		{
@@ -109,13 +109,13 @@ namespace ghassanpl::constexpr_math
 
 	template <typename T>
 	requires (!std::is_signed_v<T>) /// Accepts both unsigned and non-builtin types
-	constexpr bool signbit(T val) noexcept
+	[[nodiscard]] constexpr bool signbit(T val) noexcept
 	{
 		return val < T{};
 	}
 
 	template <typename T>
-	constexpr int sign(T val)
+	[[nodiscard]] constexpr int sign(T val)
 	{
 		if (::ghassanpl::cem::signbit(val))
 			return -1;
@@ -128,7 +128,7 @@ namespace ghassanpl::constexpr_math
 	/// return num > 0 ? 1 : (num < 0 ? -1 : 0);
 
 	template <std::floating_point T, typename RESULT = T>
-	constexpr RESULT ceil(T num) noexcept
+	[[nodiscard]] constexpr RESULT ceil(T num) noexcept
 	{
 		if (std::is_constant_evaluated())
 		{
@@ -147,7 +147,7 @@ namespace ghassanpl::constexpr_math
 	}
 
 	template <std::floating_point T, typename RESULT = T>
-	constexpr RESULT trunc(T num) noexcept
+	[[nodiscard]] constexpr RESULT trunc(T num) noexcept
 	{
 		if (std::is_constant_evaluated())
 			return num < T{} ? -::ghassanpl::cem::floor<T, RESULT>(-num) : ::ghassanpl::cem::floor<T, RESULT>(num);
@@ -158,7 +158,7 @@ namespace ghassanpl::constexpr_math
 	/// TODO: round
 
 	template <arithmetic T>
-	constexpr auto abs(T num) /// can throw
+	[[nodiscard]] constexpr auto abs(T num) /// can throw
 	{
 		if (std::is_constant_evaluated())
 			return ::ghassanpl::cem::signbit(num) ? -num : num;
@@ -169,7 +169,7 @@ namespace ghassanpl::constexpr_math
 	}
 
 	template <arithmetic T, arithmetic U, arithmetic V>
-	constexpr auto fma(T a, U b, V c) noexcept
+	[[nodiscard]] constexpr auto fma(T a, U b, V c) noexcept
 	{
 		if (std::is_constant_evaluated())
 			return a * b + c;
@@ -185,7 +185,7 @@ namespace ghassanpl::constexpr_math
 	}
 
 	template <arithmetic T, arithmetic U>
-	constexpr auto fmod(T a, U b) noexcept
+	[[nodiscard]] constexpr auto fmod(T a, U b) noexcept
 	{
 		using CT = std::conditional_t<
 			std::floating_point<T> || std::floating_point<U>,
@@ -215,7 +215,7 @@ namespace ghassanpl::constexpr_math
 	#include "constexpr_math.inl"
 
 	template <arithmetic T>
-	constexpr auto sqrt(T value) noexcept
+	[[nodiscard]] constexpr auto sqrt(T value) noexcept
 	{
 		using CT = std::conditional_t<std::floating_point<T>, T, double>;
 		if (std::is_constant_evaluated())
@@ -228,7 +228,7 @@ namespace ghassanpl::constexpr_math
 	}
 
 	template <arithmetic T, arithmetic U>
-	constexpr auto pow(T base, U exponent) noexcept
+	[[nodiscard]] constexpr auto pow(T base, U exponent) noexcept
 	{
 		using CT = decltype(base * exponent);
 		if (std::is_constant_evaluated())
@@ -251,7 +251,7 @@ namespace ghassanpl::constexpr_math
 	}
 
 	template <std::integral T>
-	constexpr unsigned ilog2(T val) noexcept
+	[[nodiscard]] constexpr unsigned ilog2(T val) noexcept
 	{
 		unsigned result = 0;
 		if (val >= (1ULL << 32)) { result += 32; val >>= 32ULL; }

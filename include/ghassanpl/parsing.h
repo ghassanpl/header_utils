@@ -60,12 +60,12 @@ namespace ghassanpl::parsing
 
 	[[nodiscard]] inline std::string_view consume_c_identifier_with(std::string_view& str, std::string_view additional_chars)
 	{
-		if (str.empty() || !(ascii::isidentstart(str[0]) || contains(additional_chars, str[0])))
+		if (str.empty() || !(ascii::isidentstart(str[0]) || string_contains(additional_chars, str[0])))
 			return {};
 
 		const auto start = str.begin();
 		str.remove_prefix(1);
-		trim_while(str, [additional_chars](char c) { return ascii::isident(c) || contains(additional_chars, c); });
+		trim_while(str, [additional_chars](char c) { return ascii::isident(c) || string_contains(additional_chars, c); });
 		return make_sv(start, str.begin());
 	}
 

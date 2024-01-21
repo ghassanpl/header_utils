@@ -13,40 +13,40 @@
 namespace ghassanpl::random
 {
 	template <std::floating_point T = float, typename RANDOM = std::default_random_engine>
-	T radians(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] T radians(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static std::uniform_real_distribution<T> dist{ T{}, glm::two_pi<T>() };
 		return dist(rng);
 	}
 
 	template <std::floating_point T = float, typename RANDOM = std::default_random_engine>
-	T degrees(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] T degrees(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static std::uniform_real_distribution<T> dist{ T{}, T{360} };
 		return dist(rng);
 	}
 
 	template <std::floating_point T = float, typename RANDOM = std::default_random_engine>
-	glm::tvec2<T> unit_vector(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] glm::tvec2<T> unit_vector(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return glm::rotate(glm::tvec2<T>{ T{ 1 }, T{ 0 } }, radians<T>(rng));
 	}
 
 	template <typename T, typename RANDOM = std::default_random_engine>
-	glm::tvec2<T> point_in(trec2<T> const& rect, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] glm::tvec2<T> point_in(trec2<T> const& rect, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return { range(rect.p1.x, rect.p2.x, rng), range(rect.p1.y, rect.p2.y, rng) };
 	}
 
 	template <typename T, typename RANDOM = std::default_random_engine>
-	glm::tvec2<T> point_in(glm::tvec2<T> const& max, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] glm::tvec2<T> point_in(glm::tvec2<T> const& max, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return { range(T{}, max.x, rng), range(T{}, max.y, rng) };
 	}
 
 	/// TODO: This doesn't seem uniform
 	template <typename T, typename RANDOM = std::default_random_engine>
-	glm::tvec2<T> point_in(geometry::tellipse<T> const& el, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] glm::tvec2<T> point_in(geometry::tellipse<T> const& el, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		const auto phi = range(T{}, glm::two_pi<T>(), rng);
 		const auto p = glm::tvec2<T>{ cos(phi), sin(phi) } * glm::sqrt(percentage<T>(rng)) * el.radii * T(0.5);
@@ -54,7 +54,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename T, typename RANDOM = std::default_random_engine>
-	glm::tvec2<T> point_in(geometry::ttriangle<T> const& tr, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] glm::tvec2<T> point_in(geometry::ttriangle<T> const& tr, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		const auto r1 = glm::sqrt(percentage<T>(rng));
 		const auto r2 = percentage<T>(rng);
@@ -63,7 +63,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename T, typename RANDOM = std::default_random_engine>
-	glm::tvec2<T> point_in(geometry::immutable::tpolygon<T> const& poly, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] glm::tvec2<T> point_in(geometry::immutable::tpolygon<T> const& poly, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		if (poly.triangles().empty()) return {};
 
@@ -85,7 +85,7 @@ namespace ghassanpl::random
 
 	/// \brief Returns a random point on the edge of the shape.
 	template <typename T, geometry::shape<T> S, typename RANDOM = std::default_random_engine>
-	glm::tvec2<T> point_on(S const& shape, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] glm::tvec2<T> point_on(S const& shape, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return s.edge_point_alpha(percentage(rng));
 	}
@@ -118,7 +118,7 @@ namespace ghassanpl::random
 	*/
 
 	template <typename RANDOM = std::default_random_engine>
-	glm::ivec2 neighbor(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] glm::ivec2 neighbor(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static std::uniform_int_distribution<typename RANDOM::result_type> dist{ 0, 3 };
 		switch (dist(rng))
@@ -132,7 +132,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine>
-	glm::ivec2 diagonal_neighbor(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] glm::ivec2 diagonal_neighbor(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static std::uniform_int_distribution<typename RANDOM::result_type> dist{ 0, 3 };
 		switch (dist(rng))
@@ -146,7 +146,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine>
-	glm::ivec2 surrounding(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] glm::ivec2 surrounding(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static std::uniform_int_distribution<typename RANDOM::result_type> dist{ 0, 7 };
 		switch (dist(rng))
@@ -167,7 +167,7 @@ namespace ghassanpl::random
 	
 	/// \brief Returns the nth quasi-random vector in the [0, 1]^2 space.
 	template <std::floating_point T = float>
-	constexpr glm::tvec2<T> halton_sequence_2d(size_t index, size_t base_x = 2, size_t base_y = 3)
+	[[nodiscard]] constexpr glm::tvec2<T> halton_sequence_2d(size_t index, size_t base_x = 2, size_t base_y = 3)
 	{
 		return { halton_sequence<T>(index, base_x), halton_sequence<T>(index, base_y) };
 	}

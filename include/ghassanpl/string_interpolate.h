@@ -11,7 +11,7 @@
 namespace ghassanpl
 {
 	template <typename FUNC>
-	std::string interpolate_simple(std::string_view str, FUNC&& func)
+	[[nodiscard]] std::string interpolate_simple(std::string_view str, FUNC&& func)
 	{
 		static_assert(std::invocable<FUNC, std::string_view> && std::constructible_from<std::string, std::invoke_result_t<FUNC, std::string_view>>, "function must take a stringable and return a string");
 		std::string result;
@@ -31,7 +31,7 @@ namespace ghassanpl
 	}
 
 	template <bool SYNTAX>
-	std::string interpolate_eval(std::string_view str, eval::environment<SYNTAX>& env)
+	[[nodiscard]] std::string interpolate_eval(std::string_view str, eval::environment<SYNTAX>& env)
 	{
 		std::string result;
 		while (!str.empty())

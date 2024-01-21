@@ -544,7 +544,7 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] constexpr bool is_ascii(char32_t cp) noexcept { return cp <= 127; }
 
 	/// A pre-C++23 version of `str.contains(c)`
-	[[nodiscard]] inline bool contains(std::string_view str, char c)
+	[[nodiscard]] inline bool string_contains(std::string_view str, char c)
 	{
 #if __cpp_lib_string_contains
 		return str.contains(c);

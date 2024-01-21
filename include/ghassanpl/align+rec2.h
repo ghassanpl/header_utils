@@ -9,7 +9,7 @@
 namespace ghassanpl
 {
 	template <typename T>
-	constexpr trec2<T> aligned(trec2<T> const& smaller, trec2<T> const& larger, align alignment)
+	[[nodiscard]] constexpr trec2<T> aligned(trec2<T> const& smaller, trec2<T> const& larger, align alignment)
 	{
 		return trec2<T>::from_size(
 			larger.position() + glm::tvec2<T>{ 
@@ -21,7 +21,7 @@ namespace ghassanpl
 	}
 
 	template <typename T>
-	constexpr trec2<T> aligned(glm::tvec2<T> inner_size, trec2<T> const& larger, align alignment)
+	[[nodiscard]] constexpr trec2<T> aligned(glm::tvec2<T> inner_size, trec2<T> const& larger, align alignment)
 	{
 		return trec2<T>::from_size(
 			larger.position() + glm::tvec2<T>{ 

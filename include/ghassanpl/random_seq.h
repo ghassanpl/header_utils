@@ -5,16 +5,16 @@
 #pragma once
 
 #include "random.h"
-#include "hashes.h"
+//#include "hashes.h"
 #include "noise.h"
 
 namespace ghassanpl::noise
 {
-	using ghassanpl::integer::splitmix64;
+	//using ghassanpl::integer::splitmix64;
 
 	/// Value Noise
 
-	uint64_t SquirrelNoise3(uint64_t seed, uint64_t position)
+	[[nodiscard]] constexpr uint64_t SquirrelNoise3(uint64_t seed, uint64_t position)
 	{
 		const uint64_t BIT_NOISE1 = 0xB5297A4DB5297A4D;
 		const uint64_t BIT_NOISE2 = 0x68E31DA468E31DA4;
@@ -54,19 +54,19 @@ namespace ghassanpl::noise
 		return mangledBits;
 	}
 
-	constexpr uint32_t Get2dNoiseUint(int32_t indexX, int32_t indexY, uint32_t seed)
+	[[nodiscard]] constexpr uint32_t Get2dNoiseUint(int32_t indexX, int32_t indexY, uint32_t seed)
 	{
 		constexpr int PRIME_NUMBER = 198491317; // Large prime number with non-boring bits
 		return SquirrelNoise5(indexX + (PRIME_NUMBER * indexY), seed);
 	}
 
-	constexpr double Get1dNoiseZeroToOne(int32_t index, uint32_t seed)
+	[[nodiscard]] constexpr double Get1dNoiseZeroToOne(int32_t index, uint32_t seed)
 	{
 		constexpr double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
 		return ONE_OVER_MAX_UINT * (double)SquirrelNoise5(index, seed);
 	}
 
-	constexpr double Get2dNoiseZeroToOne(int32_t indexX, int32_t indexY, uint32_t seed)
+	[[nodiscard]] constexpr double Get2dNoiseZeroToOne(int32_t indexX, int32_t indexY, uint32_t seed)
 	{
 		constexpr double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
 		return ONE_OVER_MAX_UINT * (double)Get2dNoiseUint(indexX, indexY, seed);

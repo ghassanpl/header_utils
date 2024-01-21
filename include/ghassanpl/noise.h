@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include <concepts>
+#include "min-cpp-version/cpp17.h"
 #include <cstdint>
 
 /// Shamelessly stolen from https://github.com/SRombauts/SimplexNoise/
@@ -16,8 +16,8 @@ namespace ghassanpl::noise
 
 	namespace detail
 	{
-		template <std::floating_point F>
-		constexpr int32_t fastfloor(F fp)
+		template <typename F>
+		constexpr int32_t fastfloor(F fp) noexcept
 		{
 			const auto i = static_cast<int32_t>(fp);
 			return (fp < i) ? (i - 1) : i;
@@ -39,13 +39,13 @@ namespace ghassanpl::noise
 			138, 236, 205, 93, 222, 114, 67, 29, 24, 72, 243, 141, 128, 195, 78, 66, 215, 61, 156, 180
 		};
 
-		constexpr uint8_t hash(int32_t i)
+		constexpr uint8_t hash(int32_t i) noexcept
 		{
 			return perm[static_cast<uint8_t>(i)];
 		}
 
-		template <std::floating_point F>
-		constexpr F grad(int32_t hash, F x)
+		template <typename F>
+		constexpr F grad(int32_t hash, F x) noexcept
 		{
 			const int32_t h = hash & 0x0F;  // Convert low 4 bits of hash code
 			F grad = F(1.0) + (h & 7);    // Gradient value 1.0, 2.0, ..., 8.0
@@ -53,8 +53,8 @@ namespace ghassanpl::noise
 			return (grad * x);              // Multiply the gradient with the distance
 		}
 
-		template <std::floating_point F>
-		constexpr F grad(int32_t hash, F x, F y)
+		template <typename F>
+		constexpr F grad(int32_t hash, F x, F y) noexcept
 		{
 			const int32_t h = hash & 0x3F;  // Convert low 3 bits of hash code
 			const F u = h < 4 ? x : y;  // into 8 simple gradient directions,
@@ -62,8 +62,8 @@ namespace ghassanpl::noise
 			return ((h & 1) ? -u : u) + ((h & 2) ? F(-2.0) * v : F(2.0) * v); // and compute the dot product with (x,y).
 		}
 
-		template <std::floating_point F>
-		constexpr F grad(int32_t hash, F x, F y, F z)
+		template <typename F>
+		constexpr F grad(int32_t hash, F x, F y, F z) noexcept
 		{
 			const int h = hash & 15;     // Convert low 4 bits of hash code into 12 simple
 			const F u = h < 8 ? x : y; // gradient directions, and compute dot product.
@@ -72,9 +72,11 @@ namespace ghassanpl::noise
 		}
 	}
 
-	template <std::floating_point F>
-	constexpr F simplex_noise(F x)
+	template <typename F>
+	[[nodiscard]] constexpr F simplex_noise(F x) noexcept
 	{
+		static_assert(std::is_floating_point_v<F>, "simplex_noise only works with floating point arguments");
+
 		int32_t i0 = detail::fastfloor(x);
 		int32_t i1 = i0 + 1;
 
@@ -94,9 +96,11 @@ namespace ghassanpl::noise
 		return F(0.395) * (n0 + n1);
 	}
 
-	template <std::floating_point F>
-	constexpr F simplex_noise(F x, F y)
+	template <typename F>
+	[[nodiscard]] constexpr F simplex_noise(F x, F y) noexcept
 	{
+		static_assert(std::is_floating_point_v<F>, "simplex_noise only works with floating point arguments");
+
 		static constexpr F F2 = F(0.366025403);  // F2 = (sqrt(3) - 1) / 2
 		static constexpr F G2 = F(0.211324865);  // G2 = (3 - sqrt(3)) / 6   = F2 / (1 + 2 * K)
 
@@ -159,15 +163,17 @@ namespace ghassanpl::noise
 		return F(45.23065) * (n0 + n1 + n2);
 	}
 
-	template <std::floating_point F>
-	constexpr F fractal_simplex_noise(size_t octaves, F x, F frequency = F(1.0), F amplitude = F(1.0), F lacunarity = F(2.0), F persistence = F(0.5))
+	template <typename F>
+	[[nodiscard]] constexpr F fractal_simplex_noise(size_t octaves, F x, F frequency = F(1.0), F amplitude = F(1.0), F lacunarity = F(2.0), F persistence = F(0.5)) noexcept
 	{
+		static_assert(std::is_floating_point_v<F>, "fractal_simplex_noise only works with floating point arguments");
+
 		F output = 0;
 		F denom = 0;
 
 		for (size_t i = 0; i < octaves; i++)
 		{
-			output += (amplitude * Noise1D(x * frequency));
+			output += (amplitude * simplex_noise(x * frequency));
 			denom += amplitude;
 
 			frequency *= lacunarity;
@@ -177,15 +183,17 @@ namespace ghassanpl::noise
 		return (output / denom);
 	}
 
-	template <std::floating_point F>
-	constexpr F fractal_simplex_noise(size_t octaves, F x, F y, F frequency = F(1.0), F amplitude = F(1.0), F lacunarity = F(2.0), F persistence = F(0.5))
+	template <typename F>
+	[[nodiscard]] constexpr F fractal_simplex_noise(size_t octaves, F x, F y, F frequency = F(1.0), F amplitude = F(1.0), F lacunarity = F(2.0), F persistence = F(0.5)) noexcept
 	{
+		static_assert(std::is_floating_point_v<F>, "fractal_simplex_noise only works with floating point arguments");
+
 		F output = 0;
 		F denom = 0;
 
 		for (size_t i = 0; i < octaves; i++)
 		{
-			output += (amplitude * Noise2D(x * frequency, y * frequency));
+			output += (amplitude * simplex_noise(x * frequency, y * frequency));
 			denom += amplitude;
 
 			frequency *= lacunarity;

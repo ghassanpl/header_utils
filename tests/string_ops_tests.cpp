@@ -194,11 +194,11 @@ TYPED_TEST(CharTestFixture, ascii_works_with_all_char_types)
 
 TEST(string_ops_test, contains_works)
 {
-	EXPECT_TRUE(contains("hello", 'e'));
-	EXPECT_FALSE(contains("hello", 'w'));
-	EXPECT_FALSE(contains("", 'w'));
-	EXPECT_FALSE(contains("", '\0'));
-	EXPECT_FALSE(contains("DAYUM", '\0'));
+	EXPECT_TRUE(string_contains("hello", 'e'));
+	EXPECT_FALSE(string_contains("hello", 'w'));
+	EXPECT_FALSE(string_contains("", 'w'));
+	EXPECT_FALSE(string_contains("", '\0'));
+	EXPECT_FALSE(string_contains("DAYUM", '\0'));
 }
 
 TEST(string_ops_test, make_sv_works)

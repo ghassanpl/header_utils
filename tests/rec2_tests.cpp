@@ -14,7 +14,7 @@ static_assert(area_shape<trec2<float>, float>);
 static_assert(area_shape<trec2<double>, double>);
 static_assert(area_shape<trec2<int>, int>);
 
-#ifndef __clang__
+#ifdef __cpp_explicit_this_parameter
 TEST(rec2, values_func_forwards_value_category)
 {
 	irec2 a{ 1, 2, 3, 4 };

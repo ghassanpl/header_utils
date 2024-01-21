@@ -4,11 +4,11 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp17.h"
 #include <functional>
 #include <optional>
 #include <utility>
 #include <map>
-#include <ranges>
 
 // Shamelessly stolen from https://github.com/klmr/multifunction
 namespace ghassanpl
@@ -97,7 +97,7 @@ namespace ghassanpl
 		}
 
 		/// Returns a view over all the added invocables
-		auto listeners() const { return std::ranges::views::values(m_listeners); }
+		auto const& listeners() const { return m_listeners; }
 
 	private:
 
@@ -133,7 +133,7 @@ namespace ghassanpl
 	/// Returns a function that calls `func` when invoked, but only the first time
 	/// \ingroup Functional
 	template <typename... ARGS>
-	auto make_single_time_function(std::function<void(ARGS...)> func)
+	[[nodiscard]] auto make_single_time_function(std::function<void(ARGS...)> func)
 	{
 		return [func = std::move(func)]<typename... CALL_ARGS>(CALL_ARGS&&... args) mutable {
 			if (func) std::exchange(func, {})(std::forward<CALL_ARGS>(args)...);
@@ -143,14 +143,14 @@ namespace ghassanpl
 	/// Returns a function that calls `func` when invoked, but only the first time
 	/// \ingroup Functional
 	template <typename FUNC>
-	auto make_single_time_function(FUNC&& func)
+	[[nodiscard]] auto make_single_time_function(FUNC&& func)
 	{
 		return make_single_time_function(std::function{ std::forward<FUNC>(func) });
 	}
 
 	///
 	template <typename T, typename FUNC>
-	auto transform(std::optional<T> const& value, FUNC&& func) -> decltype(std::optional{ func(value.value()) })
+	[[nodiscard]] auto transform(std::optional<T> const& value, FUNC&& func) -> decltype(std::optional{ func(value.value()) })
 	{
 		return value ? std::optional{ func(value.value()) } : std::nullopt;
 	}

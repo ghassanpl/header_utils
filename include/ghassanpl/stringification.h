@@ -9,12 +9,12 @@
 namespace ghassanpl
 {
 	template <std::same_as<char> T>
-	std::string to_string(T c) { return std::string{c}; }
+	[[nodiscard]] std::string to_string(T c) { return std::string{c}; }
 	template <typename T>
 	requires (!std::same_as<T, char> && std::integral<T>)
-	std::string to_string(T val) { return std::to_string(val); }
+	[[nodiscard]] std::string to_string(T val) { return std::to_string(val); }
 	template <std::floating_point T>
-	std::string to_string(T val)
+	[[nodiscard]] std::string to_string(T val)
 	{
 		const auto len = static_cast<size_t>(::snprintf(nullptr, 0, "%g", val));
 		std::string str(len, '\0');
@@ -23,7 +23,7 @@ namespace ghassanpl
 	}
 	template <typename T>
 	requires std::constructible_from<std::string_view, T>
-	std::string to_string(T&& val) { return std::string{std::string_view{std::forward<T>(val)}}; }
+	[[nodiscard]] std::string to_string(T&& val) { return std::string{std::string_view{std::forward<T>(val)}}; }
 	inline std::string to_string(nullptr_t) { return "null"; }
 }
 
@@ -103,7 +103,7 @@ namespace ghassanpl
 
 	template <typename T, template<bool> typename STRINGIFIER = string_stringifier>
 	requires requires (STRINGIFIER<true> str, T val) { stringify(str, val); }
-	std::string to_string(T&& val)
+	[[nodiscard]] std::string to_string(T&& val)
 	{
 		std::string result;
 		STRINGIFIER<true> str{result};
@@ -123,7 +123,7 @@ namespace ghassanpl
 
 	template <typename T, template<bool> typename STRINGIFIER = string_stringifier>
 	requires requires (STRINGIFIER<false> str, T val) { stringify(str, val); }
-	T from_string(std::string_view val)
+	[[nodiscard]] T from_string(std::string_view val)
 	{
 		T result{};
 		STRINGIFIER<false> str{val};

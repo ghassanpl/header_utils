@@ -4,10 +4,10 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp17.h"
 #include <random>
-#include <concepts>
 #include <numeric>
-#include <span>
+#include "span.h"
 
 namespace ghassanpl::random
 {
@@ -17,28 +17,28 @@ namespace ghassanpl::random
 	thread_local inline std::default_random_engine default_random_engine;
 	
 	template <typename INTEGER = uint64_t, typename RANDOM = std::default_random_engine>
-	constexpr INTEGER integer(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] constexpr INTEGER integer(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static std::uniform_int_distribution<INTEGER> dist;
 		return dist(rng);
 	}
 
 	template <typename REAL = double, typename RANDOM = std::default_random_engine>
-	REAL percentage(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] REAL percentage(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static std::uniform_real_distribution<REAL> dist;
 		return dist(rng);
 	}
 
 	template <typename REAL = double, typename RANDOM = std::default_random_engine>
-	REAL normal(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] REAL normal(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static std::normal_distribution<REAL> dist;
 		return dist(rng);
 	}
 
 	template <typename RANDOM = std::default_random_engine>
-	uint64_t dice(uint64_t n_sided, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] uint64_t dice(uint64_t n_sided, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		if (n_sided < 2) return 0;
 		std::uniform_int_distribution<uint64_t> dist{ 0, n_sided - 1 };
@@ -46,7 +46,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine>
-	uint64_t dice(uint64_t n_dice, uint64_t n_sided, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] uint64_t dice(uint64_t n_dice, uint64_t n_sided, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		if (n_sided < 2) return 0;
 		std::uniform_int_distribution<uint64_t> dist{ 0, n_sided - 1 };
@@ -57,17 +57,18 @@ namespace ghassanpl::random
 	}
 	
 	template <uint64_t N_SIDED, typename RANDOM = std::default_random_engine>
-	requires (N_SIDED >= 2)
-	uint64_t dice(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] uint64_t dice(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
+		static_assert(N_SIDED >= 2, "you cannot roll a 0 or 1-sided die");
 		static std::uniform_int_distribution<uint64_t> dist{ 0, N_SIDED - 1 };
 		return dist(rng) + 1;
 	}
 
 	template <uint64_t N_DICE, uint64_t N_SIDED, typename RANDOM = std::default_random_engine>
-	requires (N_DICE >= 1 && N_SIDED >= 2)
-	uint64_t dice(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] uint64_t dice(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
+		static_assert(N_DICE >= 1 , "you cannot roll less than one die");
+		static_assert(N_SIDED >= 2, "you cannot roll a 0 or 1-sided die");
 		static std::uniform_int_distribution<uint64_t> dist{ 0, N_SIDED - 1 };
 		uint64_t sum = 0;
 		for (uint64_t i = 0; i < N_DICE; ++i)
@@ -76,7 +77,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine>
-	bool coin(RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] bool coin(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		std::uniform_int_distribution<uint64_t> dist{ 0, 1 };
 		return dist(rng) == 0;
@@ -84,38 +85,39 @@ namespace ghassanpl::random
 	 
 	namespace operators
 	{
-		inline int operator""_d2(unsigned long long int n) { return (int)dice(n, 2, default_random_engine); }
-		inline int operator""_d4(unsigned long long int n) { return (int)dice(n, 4, default_random_engine); }
-		inline int operator""_d6(unsigned long long int n) { return (int)dice(n, 6, default_random_engine); }
-		inline int operator""_d8(unsigned long long int n) { return (int)dice(n, 8, default_random_engine); }
-		inline int operator""_d10(unsigned long long int n) { return (int)dice(n, 10, default_random_engine); }
-		inline int operator""_d12(unsigned long long int n) { return (int)dice(n, 12, default_random_engine); }
-		inline int operator""_d20(unsigned long long int n) { return (int)dice(n, 20, default_random_engine); }
-		inline int operator""_d100(unsigned long long int n) { return (int)dice(n, 100, default_random_engine); }
+		[[nodiscard]] inline int operator""_d2(unsigned long long int n) { return (int)dice(n, 2, default_random_engine); }
+		[[nodiscard]] inline int operator""_d4(unsigned long long int n) { return (int)dice(n, 4, default_random_engine); }
+		[[nodiscard]] inline int operator""_d6(unsigned long long int n) { return (int)dice(n, 6, default_random_engine); }
+		[[nodiscard]] inline int operator""_d8(unsigned long long int n) { return (int)dice(n, 8, default_random_engine); }
+		[[nodiscard]] inline int operator""_d10(unsigned long long int n) { return (int)dice(n, 10, default_random_engine); }
+		[[nodiscard]] inline int operator""_d12(unsigned long long int n) { return (int)dice(n, 12, default_random_engine); }
+		[[nodiscard]] inline int operator""_d20(unsigned long long int n) { return (int)dice(n, 20, default_random_engine); }
+		[[nodiscard]] inline int operator""_d100(unsigned long long int n) { return (int)dice(n, 100, default_random_engine); }
 	}
 
 	template <class T, class... TYPES>
 	constexpr inline bool is_any_of_v = std::disjunction_v<std::is_same<T, TYPES>...>;
 
 	template <typename RANDOM = std::default_random_engine, typename T>
-	requires is_any_of_v<T, short, int, long, long long, unsigned short, unsigned int, unsigned long, unsigned long long>
-	T in_integer_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] T in_integer_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
+		static_assert(is_any_of_v<T, short, int, long, long long, unsigned short, unsigned int, unsigned long, unsigned long long>, "in_integer_range only works on real integer types");
 		if (from >= to) return T{};
 		std::uniform_int_distribution<T> dist{ from, to };
 		return dist(rng);
 	}
 
-	template <typename RANDOM = std::default_random_engine, std::floating_point T>
-	T in_real_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	template <typename RANDOM = std::default_random_engine, typename T>
+	[[nodiscard]] T in_real_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
+		static_assert(std::is_floating_point_v<T>, "in_real_range only works on floating point types");
 		if (from >= to) return T{};
 		std::uniform_real_distribution<T> dist{ from, to };
 		return dist(rng);
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
-	auto in_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto in_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		if (from >= to) return T{};
 
@@ -145,9 +147,11 @@ namespace ghassanpl::random
 
 	/// TODO: Should we move the below to random_seq?
 	
-	template <std::floating_point T = float>
-	constexpr T halton_sequence(size_t index, size_t base = 2)
+	template <typename T = float>
+	[[nodiscard]] constexpr T halton_sequence(size_t index, size_t base = 2)
 	{
+		static_assert(std::is_floating_point_v<T>, "halton_sequence only works on floating point types");
+
 		auto result = T(0);
 		auto fraction = T(1);
 		while (index > 0)
@@ -160,20 +164,20 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine>
-	bool with_probability(double probability, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] bool with_probability(double probability, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return percentage(rng) < std::clamp(probability, 0.0, 1.0);
 	}
 
 	template <typename RANDOM = std::default_random_engine>
-	bool with_probability(double probability, double& result, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] bool with_probability(double probability, double& result, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		auto res = result = percentage(rng);
 		return res < std::clamp(probability, 0.0, 1.0);
 	}
 
 	template <typename RANDOM = std::default_random_engine>
-	bool one_in(size_t n, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] bool one_in(size_t n, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		if (n == 0) return false;
 		return with_probability(1.0 / double(n), rng);
@@ -188,8 +192,8 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
-	requires std::ranges::sized_range<T>
-	auto iterator(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	GHPL_REQUIRES(std::ranges::sized_range<T>)
+		[[nodiscard]] auto iterator(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::size;
 		using std::begin;
@@ -197,8 +201,8 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
-	requires std::ranges::sized_range<T>
-	auto iterator_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	GHPL_REQUIRES(std::ranges::sized_range<T>)
+	[[nodiscard]] auto iterator_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::size;
 		using std::begin;
@@ -218,19 +222,19 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
-	auto index(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto index(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return std::distance(begin(cont), iterator(cont, rng));
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
-	auto index_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto index_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return std::distance(begin(cont), iterator_if(cont, std::forward<PRED>(pred), rng));
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
-	auto* element(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto* element(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::end;
 		auto result = iterator(cont, rng);
@@ -238,7 +242,7 @@ namespace ghassanpl::random
 	}
 	
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
-	auto* element_if(T& cont, PRED&& predicate, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto* element_if(T& cont, PRED&& predicate, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::end;
 		auto result = iterator_if(cont, std::forward<PRED>(predicate), rng);
@@ -246,7 +250,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename... T>
-	auto one_of(T&&... values)
+	[[nodiscard]] auto one_of(T&&... values)
 	{
 		/// TODO: Forward except last, if last matches rng concept, use last as rng, else use default_random_engine
 		static_assert(sizeof...(values) > 0, "at least one value must be provided");
@@ -255,7 +259,7 @@ namespace ghassanpl::random
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
-	auto one_of(std::initializer_list<T> values, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto one_of(std::initializer_list<T> values, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		if (values.size() == 0) throw std::invalid_argument("values");
 		return *element(values, rng);
@@ -267,7 +271,7 @@ namespace ghassanpl::random
 	
 
 	template <typename RANDOM = std::default_random_engine, typename T>
-	auto make_bag_randomizer(T& container, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto make_bag_randomizer(T& container, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using Iterator = decltype(std::end(container));
 		struct Randomizer
@@ -293,9 +297,10 @@ namespace ghassanpl::random
 	/// When probability calculations are known ahead of time or expensive
 	/// \complexity O(N) space, O(N+logN) time
 	/// TODO: Check if works with known-sized spans
-	template <std::convertible_to<double> T, typename RANDOM>
-	size_t option_with_probability(std::span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	template <typename T, typename RANDOM>
+	[[nodiscard]] size_t option_with_probability(span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
+		static_assert(std::is_convertible_v<T, double>, "option probabilities must be convertible to double");
 		/// Well, <random> is pretty dope it seems
 		std::discrete_distribution<size_t> dist(option_probabilities.begin(), option_probabilities.end());
 		return dist(rng);
@@ -305,7 +310,7 @@ namespace ghassanpl::random
 	/// \pre prob_func will never return < 0.0
 	/// \complexity O(1) space, O(2N) time
 	template <typename RANGE, typename FUNC, typename RANDOM>
-	auto iterator_with_probability(RANGE&& range, FUNC&& prob_func, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto iterator_with_probability(RANGE&& range, FUNC&& prob_func, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static_assert(std::ranges::forward_range<RANGE>, "range must be forward range");
 		static_assert(std::is_invocable_v<FUNC, std::ranges::range_reference_t<RANGE>>);

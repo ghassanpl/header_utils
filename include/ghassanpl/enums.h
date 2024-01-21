@@ -4,8 +4,9 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp17.h"
+
 #include <magic_enum.hpp>
-#include <concepts>
 #include <array>
 
 namespace ghassanpl
@@ -18,22 +19,22 @@ namespace ghassanpl
 	/// Same as `std::array` except it takes an enum type instead of the size, and uses `magic_enum` to determine the array size; 
 	/// also allows for indexing with the enum type.
 	template <typename VALUE_TYPE, typename ENUM_TYPE>
-	requires std::is_enum_v<ENUM_TYPE>
+	GHPL_REQUIRES(std::is_enum_v<ENUM_TYPE>)
 	struct enum_array : public std::array<VALUE_TYPE, magic_enum::enum_count<ENUM_TYPE>()>
 	{
 		using array_type = std::array<VALUE_TYPE, magic_enum::enum_count<ENUM_TYPE>()>;
 
-		using value_type = array_type::value_type;
-		using size_type = array_type::size_type;
-		using difference_type = array_type::difference_type;
-		using pointer = array_type::pointer;
-		using const_pointer = array_type::const_pointer;
-		using reference = array_type::reference;
-		using const_reference = array_type::const_reference;
-		using iterator = array_type::iterator;
-		using const_iterator = array_type::const_iterator;
-		using reverse_iterator = array_type::reverse_iterator;
-		using const_reverse_iterator = array_type::const_reverse_iterator;
+		using value_type = VALUE_TYPE;
+		using size_type = typename array_type::size_type;
+		using difference_type = typename array_type::difference_type;
+		using pointer = typename array_type::pointer;
+		using const_pointer = typename array_type::const_pointer;
+		using reference = typename array_type::reference;
+		using const_reference = typename array_type::const_reference;
+		using iterator = typename array_type::iterator;
+		using const_iterator = typename array_type::const_iterator;
+		using reverse_iterator = typename array_type::reverse_iterator;
+		using const_reverse_iterator = typename array_type::const_reverse_iterator;
 
 		using enum_type = ENUM_TYPE;
 

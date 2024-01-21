@@ -4,16 +4,13 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp20.h"
 #include <tuple>
 #include <variant>
 #include <optional>
 #include <any>
 
 #include "cpp23.h"
-
-#if !defined(__cpp_concepts)
-#error "This library requires concepts"
-#endif
 
 /// Manipulators
 /// All of these are pretty much stolen from Daisy Hollman (https://twitter.com/the_whole_daisy), her twitter is fantastic
@@ -27,7 +24,7 @@ namespace ghassanpl
 	using last_type_of = std::tuple_element_t<(sizeof...(Ts) - 1), std::tuple<Ts...>>;
 
 	template <size_t I, typename T, typename... Ts>
-	auto nth_value_of(T&& t, Ts&&... args)
+	[[nodiscard]] auto nth_value_of(T&& t, Ts&&... args)
 	{
 		if constexpr (I == 0)
 			return std::forward<T>(t);
@@ -39,14 +36,14 @@ namespace ghassanpl
 	}
 
 	template <typename... Ts>
-	auto first_value_of(Ts&&... args)
+	[[nodiscard]] auto first_value_of(Ts&&... args)
 	{
 		using return_type = typename first_type_of<Ts...>::type;
 		return std::forward<return_type>(nth_value_of<0>((std::forward<Ts>(args))...));
 	}
 
 	template <typename... Ts>
-	auto last_value_of(Ts&&... args)
+	[[nodiscard]] auto last_value_of(Ts&&... args)
 	{
 		using return_type = typename last_type_of<Ts...>::type;
 		return std::forward<return_type>(nth_value_of<sizeof...(Ts) - 1>((std::forward<Ts>(args))...));
@@ -103,54 +100,54 @@ namespace ghassanpl
 
 	/// Shamelessly stolen from hsutter's cppfront
 	template< typename C, typename X >
-	auto is(X const&) -> bool {
+	[[nodiscard]] auto is(X const&) -> bool {
 		return false;
 	}
 
 	template< typename C, typename X >
 	requires std::is_same_v<C, X>
-	auto is(X const&) -> bool {
+	[[nodiscard]] auto is(X const&) -> bool {
 		return true;
 	}
 
 	template< typename C, typename X >
 	requires (std::is_base_of_v<C, X> && !std::is_same_v<C, X>)
-	auto is(X const&) -> bool {
+	[[nodiscard]] auto is(X const&) -> bool {
 		return true;
 	}
 
 	template< typename C, typename X >
 	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
-	auto is(X const& x) -> bool {
+	[[nodiscard]] auto is(X const& x) -> bool {
 		return dynamic_cast<C const*>(&x) != nullptr;
 	}
 
 	template< typename C, typename X >
 	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
-	auto is(X const* x) -> bool {
+	[[nodiscard]] auto is(X const* x) -> bool {
 		return dynamic_cast<C const*>(x) != nullptr;
 	}
 
 	template< typename C, typename X >
 	requires dereferenceable<X> && std::is_default_constructible_v<X> && std::is_same_v<C, void>
-	auto is(X const& x) -> bool
+	[[nodiscard]] auto is(X const& x) -> bool
 	{
 		return x == X();
 	}
 
 	template< typename C >
-	auto as(...) -> auto {
+	[[nodiscard]] auto as(...) -> auto {
 		return nullptr;
 	}
 
 	template< typename C, typename X >
 	requires std::is_same_v<C, X>
-	auto as(X const& x) -> auto&& {
+	[[nodiscard]] auto as(X const& x) -> auto&& {
 		return x;
 	}
 
 	template< typename C, typename X >
-	auto as(X const& x) -> auto
+	[[nodiscard]] auto as(X const& x) -> auto
 	requires (!std::is_same_v<C, X> && std::constructible_from<C, X const&>)
 	{
 		return C{ x };
@@ -158,31 +155,31 @@ namespace ghassanpl
 
 	template< typename C, typename X >
 	requires std::is_base_of_v<C, X>
-	auto as(X&& x) -> C&& {
+	[[nodiscard]] auto as(X&& x) -> C&& {
 		return std::forward<X>(x);
 	}
 
 	template< typename C, typename X >
 	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
-	auto as(X& x) -> C& {
+	[[nodiscard]] auto as(X& x) -> C& {
 		return dynamic_cast<C&>(x);
 	}
 
 	template< typename C, typename X >
 	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
-	auto as(X const& x) -> C const& {
+	[[nodiscard]] auto as(X const& x) -> C const& {
 		return dynamic_cast<C const&>(x);
 	}
 
 	template< typename C, typename X >
 	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
-	auto as(X* x) -> C* {
+	[[nodiscard]] auto as(X* x) -> C* {
 		return dynamic_cast<C*>(x);
 	}
 
 	template< typename C, typename X >
 	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
-	auto as(X const* x) -> C const* {
+	[[nodiscard]] auto as(X const* x) -> C const* {
 		return dynamic_cast<C const*>(x);
 	}
 
@@ -231,7 +228,7 @@ namespace ghassanpl
 	//
 
 	template<typename T, typename... Ts>
-	auto is(std::variant<Ts...> const& x)
+	[[nodiscard]] auto is(std::variant<Ts...> const& x)
 	{
 		if constexpr (std::is_same_v<T, void>)
 		{
@@ -243,7 +240,7 @@ namespace ghassanpl
 	}
 
 	template<typename T, typename... Ts>
-	auto as(std::variant<Ts...> const& x)
+	[[nodiscard]] auto as(std::variant<Ts...> const& x)
 	{
 		return std::get<T>(x);
 	}
@@ -253,21 +250,21 @@ namespace ghassanpl
 	//
 	template<typename T, typename X>
 	requires (std::is_same_v<X, std::any> && !std::is_same_v<T, std::any> && !std::is_same_v<T, void>)
-	constexpr auto is(X const& x) -> bool
+	[[nodiscard]] constexpr auto is(X const& x) -> bool
 	{
 		return x.type() == typeid(T);
 	}
 
 	template<typename T, typename X>
 	requires (std::is_same_v<X, std::any> && std::is_same_v<T, void>)
-	constexpr auto is(X const& x) -> bool
+	[[nodiscard]] constexpr auto is(X const& x) -> bool
 	{
 		return !x.has_value();
 	}
 
 	template<typename T, typename X>
 	requires (!std::is_reference_v<T> && std::is_same_v<X, std::any> && !std::is_same_v<T, std::any>)
-	constexpr auto as(X const& x) -> T
+	[[nodiscard]] constexpr auto as(X const& x) -> T
 	{
 		return std::any_cast<T>(x);
 	}
@@ -278,21 +275,21 @@ namespace ghassanpl
 	//
 	template<typename T, typename X>
 	requires std::is_same_v<X, std::optional<T>>
-	constexpr auto is(X const& x) -> bool
+	[[nodiscard]] constexpr auto is(X const& x) -> bool
 	{
 		return x.has_value();
 	}
 
 	template<typename T, typename U>
 	requires std::is_same_v<T, void>
-	constexpr auto is(std::optional<U> const& x) -> bool
+	[[nodiscard]] constexpr auto is(std::optional<U> const& x) -> bool
 	{
 		return !x.has_value();
 	}
 
 	template<typename T, typename X>
 	requires std::is_same_v<X, std::optional<T>>
-	constexpr auto as(X const& x) -> auto&&
+	[[nodiscard]] constexpr auto as(X const& x) -> auto&&
 	{
 		return x.value();
 	}

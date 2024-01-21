@@ -12,7 +12,7 @@ namespace ghassanpl
 {
     using std::source_location;
 }
-#else
+#elif defined(__cpp_consteval)
 namespace ghassanpl
 {
 	struct source_location
@@ -55,6 +55,8 @@ namespace ghassanpl
         const char* _Function = "";
     };
 }
+#else
+#error "source_location is not supported"
 #endif
 
 namespace ghassanpl

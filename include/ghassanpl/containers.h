@@ -105,7 +105,7 @@ namespace ghassanpl
 
 	/// Finds the value associated with `key` in the `map` and retuns a pointer to it, or nullptr if none found
 	template <typename KEY, typename MAP>
-	auto map_find(MAP& map, KEY&& key)
+	[[nodiscard]] auto map_find(MAP& map, KEY&& key)
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		return (it != map.end()) ? &it->second : nullptr;
@@ -113,7 +113,7 @@ namespace ghassanpl
 	
 	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
 	template <typename DEF, typename KEY, typename MAP>
-	auto map_at_or_default(MAP&& map, KEY&& key, DEF&& def)
+	[[nodiscard]] auto map_at_or_default(MAP&& map, KEY&& key, DEF&& def)
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
@@ -123,7 +123,7 @@ namespace ghassanpl
 
 	/// Basically map.at() but works with heterogenous key types
 	template <typename KEY, typename MAP>
-	decltype(auto) map_at(MAP&& map, KEY&& key)
+	[[nodiscard]] decltype(auto) map_at(MAP&& map, KEY&& key)
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
@@ -143,7 +143,7 @@ namespace ghassanpl
 
 	/// Finds the first `value` of a map element, and returns a pointer to its key, or nullptr if none found
 	template <typename MAP, typename VAL>
-	auto map_find_value(MAP& map, VAL const* value)
+	[[nodiscard]] auto map_find_value(MAP& map, VAL const* value)
 	{
 		for (auto& [k, v] : map)
 		{
@@ -157,12 +157,12 @@ namespace ghassanpl
 	/// Same as \c map_find()
 	/// \see map_find()
 	template <typename K, typename V, typename C, typename VAL>
-	auto at_ptr(std::map<K, V, C> const& map, VAL&& value) { return map_find(map, std::forward<VAL>(value)); }
+	[[nodiscard]] auto at_ptr(std::map<K, V, C> const& map, VAL&& value) { return map_find(map, std::forward<VAL>(value)); }
 	
 	/// Same as \c map_find()
 	/// \see map_find()
 	template <typename K, typename V, typename C, typename VAL>
-	auto at_ptr(std::map<K, V, C>& map, VAL&& value) { return map_find(map, std::forward<VAL>(value)); }
+	[[nodiscard]] auto at_ptr(std::map<K, V, C>& map, VAL&& value) { return map_find(map, std::forward<VAL>(value)); }
 
 	/// ordered container movement
 	/*

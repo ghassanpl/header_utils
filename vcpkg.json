@@ -6,6 +6,7 @@
     "gtest",
     "magic-enum",
     "nlohmann-json",
-    "tl-expected"
+    "tl-expected",
+    "ms-gsl"
   ]
 }

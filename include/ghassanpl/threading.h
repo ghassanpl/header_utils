@@ -8,6 +8,7 @@
 
 namespace ghassanpl
 {
+#if __cplusplus >= 202002L
 	template <typename T>
 	concept mutex_type = requires(T t)
 	{
@@ -15,6 +16,9 @@ namespace ghassanpl
 		{ t.try_lock() } -> std::convertible_to<bool>;
 		{ t.unlock() };
 	};
+#else
+#define mutex_type typename
+#endif
 
 	template <mutex_type MUTEX_TYPE, typename FUNC, typename... ARGS>
 	auto under_protection(MUTEX_TYPE& m, FUNC&& func, ARGS&&... args)
@@ -27,7 +31,7 @@ namespace ghassanpl
 	}
 
 	template <mutex_type MUTEX_TYPE, typename T>
-	auto protected_copy(MUTEX_TYPE& m, T&& t)
+	[[nodiscard]] auto protected_copy(MUTEX_TYPE& m, T&& t)
 	{
 		std::lock_guard guard{ m };
 		return std::forward<T>(t);

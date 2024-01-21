@@ -93,7 +93,7 @@ namespace ghassanpl
 
 	/// Returns an integer with the N/2 most significant bits of the given N-bit integer
 	template <bit_integral T>
-	constexpr auto most_significant_half(T v) noexcept
+	[[nodiscard]] constexpr auto most_significant_half(T v) noexcept
 	{
 		constexpr auto bit_count = ghassanpl::bit_count<T>;
 		constexpr auto bit_count_half = bit_count / 2;
@@ -102,7 +102,7 @@ namespace ghassanpl
 
 	/// Returns an integer with the N/2 least significant bits of the given N-bit integer
 	template <bit_integral T>
-	constexpr auto least_significant_half(T v) noexcept
+	[[nodiscard]] constexpr auto least_significant_half(T v) noexcept
 	{
 		constexpr auto bit_count = ghassanpl::bit_count<T>;
 		constexpr auto bit_count_half = bit_count / 2;
@@ -114,19 +114,19 @@ namespace ghassanpl
 
 	/// Returns `val` in its big-endian representation
 	template <bit_integral B>
-	constexpr B to_big_endian(B val) noexcept { if constexpr (std::endian::native == std::endian::big) return val; else return byteswap(val); }
+	[[nodiscard]] constexpr B to_big_endian(B val) noexcept { if constexpr (std::endian::native == std::endian::big) return val; else return byteswap(val); }
 
 	/// Returns `val` in its big-endian representation
 	template <bit_integral B>
-	constexpr B to_little_endian(B val) noexcept { if constexpr (std::endian::native == std::endian::little) return val; else return byteswap(val); }
+	[[nodiscard]] constexpr B to_little_endian(B val) noexcept { if constexpr (std::endian::native == std::endian::little) return val; else return byteswap(val); }
 
 	/// Returns `val` in its `ENDIANNESS` representation
 	template <std::endian ENDIANNESS, bit_integral B>
-	constexpr B to_endian(B val) noexcept { if constexpr (std::endian::native == ENDIANNESS) return val; else return byteswap(val); }
+	[[nodiscard]] constexpr B to_endian(B val) noexcept { if constexpr (std::endian::native == ENDIANNESS) return val; else return byteswap(val); }
 
 	/// Returns `val` in its `endianness` representation
 	template <bit_integral B>
-	constexpr B to_endian(B val, std::endian endianness) noexcept { if (std::endian::native == endianness) return val; else return byteswap(val); }
+	[[nodiscard]] constexpr B to_endian(B val, std::endian endianness) noexcept { if (std::endian::native == endianness) return val; else return byteswap(val); }
 
 	/// @}
 

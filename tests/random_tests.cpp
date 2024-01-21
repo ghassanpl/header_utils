@@ -2,6 +2,7 @@
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "tests_common.h"
 #include <gtest/gtest.h>
 
 #include "../include/ghassanpl/random.h"
@@ -12,7 +13,7 @@ using namespace ghassanpl;
 
 TEST(random, basics)
 {
-	random::integer();
+	ignore = random::integer();
 
 	for (int i = 0; i < 100; ++i)
 	{
@@ -45,19 +46,19 @@ TEST(random, basics)
 		EXPECT_LE(rr, 10.6) << i;
 	}
 
-	random::in_range('a', 'z');
+	ignore = random::in_range('a', 'z');
 
-	random::normal();
+	ignore = random::normal();
 
-	random::coin();
+	ignore = random::coin();
 
-	random::halton_sequence(15);
+	ignore = random::halton_sequence(15);
 
-	random::with_probability(0.5);
+	ignore = random::with_probability(0.5);
 	double res = 0;
-	random::with_probability(0.3, res);
+	ignore = random::with_probability(0.3, res);
 
-	random::one_in(5);
+	ignore = random::one_in(5);
 
 	std::vector<int> woo{ 5,1,6,3,34,234,234,23 };
 	for (int i = 0; i < 100; ++i)
@@ -93,7 +94,7 @@ TEST(random, basics)
 			EXPECT_EQ(((*ee) % 2), 1);
 		}
 
-		random::one_of(1, 2, 3, 4, 5, 6, 7);
+		ignore = random::one_of(1, 2, 3, 4, 5, 6, 7);
 		auto il = { 1, 2, 3, 4, 5, 6, 7 };
 		auto v = random::one_of(il);
 		EXPECT_GE(v, 1);

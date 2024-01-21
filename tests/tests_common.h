@@ -31,3 +31,5 @@ inline constexpr UnMovable unmovable{};
 
 inline std::string to_string(UnCopyable const& cp) { return "UnCopyable"; }
 inline std::string to_string(UnMovable const& cp) { return "UnMovable"; }
+
+using std::ignore;

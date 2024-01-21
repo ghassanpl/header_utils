@@ -47,13 +47,13 @@ namespace ghassanpl
 	namespace colors
 	{
 #define DEF_COLOR(name, r, g, b) \
-	constexpr color_t get_##name(float alpha) { return color_t{ float(r), float(g), float(b), alpha }; } \
+	[[nodiscard]] constexpr color_t get_##name(float alpha) { return color_t{ float(r), float(g), float(b), alpha }; } \
 	constexpr inline color_t name = get_##name(1.0f); 
 #define DEF_COLORS(name, r, g, b) \
 	DEF_COLOR(name, r, g, b) \
-	constexpr color_t get_dark_##name(float alpha) { return color_t{ float(r) * 0.5f, float(g) * 0.5f, float(b) * 0.5f, alpha }; } \
+	[[nodiscard]] constexpr color_t get_dark_##name(float alpha) { return color_t{ float(r) * 0.5f, float(g) * 0.5f, float(b) * 0.5f, alpha }; } \
 	constexpr inline color_t dark_##name = get_dark_##name(1.0f); \
-	constexpr color_t get_light_##name(float alpha) { return color_t{ r + float(1.0f-r) * 0.5f, g + float(1.0f-g) * 0.5f, b + float(1.0f-b) * 0.5f, alpha }; } \
+	[[nodiscard]] constexpr color_t get_light_##name(float alpha) { return color_t{ r + float(1.0f-r) * 0.5f, g + float(1.0f-g) * 0.5f, b + float(1.0f-b) * 0.5f, alpha }; } \
 	constexpr inline color_t light_##name = get_light_##name(1.0f);
 
 		DEF_COLORS(red, 1, 0, 0)
@@ -77,19 +77,19 @@ namespace ghassanpl
 	}
 
 	/// Returns the color multiplied by its own alpha
-	constexpr color_t premultiplied(color_t const& color)
+	[[nodiscard]] constexpr color_t premultiplied(color_t const& color)
 	{
 		return { color.x * color.w, color.y * color.w, color.z * color.w, color.w };
 	}
 
 	/// Returns a color with all elements clamped between 0 and 1
-	constexpr color_t saturated(color_t const& color)
+	[[nodiscard]] constexpr color_t saturated(color_t const& color)
 	{
 		return glm::clamp(color_t(color.x, color.y, color.z, color.w), color_t{ 0,0,0,0 }, color_t{ 1,1,1,1 });
 	}
 
 	/// Returns a color lightened by a coefficient
-	constexpr color_t lighten(color_t const& color, float coef)
+	[[nodiscard]] constexpr color_t lighten(color_t const& color, float coef)
 	{
 		const auto rgb_max = glm::max(color.x, glm::max(color.y, color.z));
 		const auto lighter = color * (1.0f / rgb_max);
@@ -100,7 +100,7 @@ namespace ghassanpl
 	/// Returns a color with its contrast changed
 	/// \note `contrast` here is between 0.0 and 1.0
 	/// \sa contrast2
-	constexpr color_t contrast(color_t const& color, float contrast)
+	[[nodiscard]] constexpr color_t contrast(color_t const& color, float contrast)
 	{
 		const auto t = (1.0f - contrast) * 0.5f;
 		return color_t(color.x*contrast + t, color.y*contrast + t, color.z*contrast + t, color.w);
@@ -110,7 +110,7 @@ namespace ghassanpl
 	/// This uses a differen algorithm and `contrast` value than \ref contrast.
 	/// \note `contrast` here is between -1.0 and 1.0
 	/// \sa contrast
-	constexpr color_t contrast2(color_t const& color, float contrast)
+	[[nodiscard]] constexpr color_t contrast2(color_t const& color, float contrast)
 	{
 		constexpr double m = 1.0156862745098039215686274509804;
 		const auto t = (m * (contrast + 1.0f)) / (m - contrast);
@@ -118,32 +118,32 @@ namespace ghassanpl
 	}
 
 	/// Returns a gamma corrected color
-	constexpr color_t gamma_correct(color_t const& color, const float gamma)
+	[[nodiscard]] constexpr color_t gamma_correct(color_t const& color, const float gamma)
 	{
 		const auto gamma_correct = 1.0f / gamma;
 		return { cem::pow(color.x, gamma_correct), cem::pow(color.y, gamma_correct), cem::pow(color.z, gamma_correct), color.w };
 	}
 
 	/// Returns an inverted color, i.e. with (1.0-x) on all of its elements, excluding its alpha
-	constexpr color_t inverted(color_t const& color)
+	[[nodiscard]] constexpr color_t inverted(color_t const& color)
 	{
 		return color_t(1.0f - color.x, 1.0f - color.y, 1.0f - color.z, color.w);
 	}
 
 	/// Returns a color that's a good contrasting color for the original
-	constexpr color_t contrasting(color_t const& color)
+	[[nodiscard]] constexpr color_t contrasting(color_t const& color)
 	{
 		return color_t(cem::fmod(color.x + 0.5f, 1.0f), cem::fmod(color.y + 0.5f, 1.0f), cem::fmod(color.z + 0.5f, 1.0f), color.w);
 	}
 	
 	/// Get brightness of color
-	constexpr float luminance(color_t const& color)
+	[[nodiscard]] constexpr float luminance(color_t const& color)
 	{		
 		return color.x * 0.3f + color.y * 0.59f + color.z * 0.11f;
 	}
 
 	/// Returns a color sapped of `desaturation` percent (0-1) of its saturation.
-	constexpr color_t desaturated(color_t const& color, float desaturation)
+	[[nodiscard]] constexpr color_t desaturated(color_t const& color, float desaturation)
 	{
 		const auto l = luminance(color);
 		return glm::mix(color, color_t{l, l, l, color.w}, desaturation);
@@ -162,54 +162,54 @@ namespace ghassanpl
 	}
 
 	/// Gets a color from an RGB 8bpp integer, with R being most significant
-	constexpr color_t from_u32_rgb(uint32_t rgb) { return color_t(detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), 1.0f); }
+	[[nodiscard]] constexpr color_t from_u32_rgb(uint32_t rgb) { return color_t(detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), 1.0f); }
 	/// Gets a color from an BGR 8bpp integer, with R being least significant
-	constexpr color_t from_u32_bgr(uint32_t rgb) { return color_t(detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), 1.0f); }
+	[[nodiscard]] constexpr color_t from_u32_bgr(uint32_t rgb) { return color_t(detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), 1.0f); }
 	/// Gets a color from an RGBA 8bpp integer, with R being most significant
-	constexpr color_t from_u32_rgba(uint32_t rgb) { return color_t(detail::b2f(rgb >> 24), detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb)); }
+	[[nodiscard]] constexpr color_t from_u32_rgba(uint32_t rgb) { return color_t(detail::b2f(rgb >> 24), detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb)); }
 	/// Gets a color from an BGRA 8bpp integer, with A being least significant, and B being most significant
-	constexpr color_t from_u32_bgra(uint32_t rgb) { return color_t(detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24), detail::b2f(rgb)); }
+	[[nodiscard]] constexpr color_t from_u32_bgra(uint32_t rgb) { return color_t(detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24), detail::b2f(rgb)); }
 	/// Gets a color from an ARGB 8bpp integer, with A being most significant, and B being least significant
-	constexpr color_t from_u32_argb(uint32_t rgb) { return color_t(detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), detail::b2f(rgb >> 24)); }
+	[[nodiscard]] constexpr color_t from_u32_argb(uint32_t rgb) { return color_t(detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), detail::b2f(rgb >> 24)); }
 	/// Gets a color from an ABGR 8bpp integer, with A being most significant, and R being least significant
-	constexpr color_t from_u32_abgr(uint32_t rgb) { return color_t(detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24)); }
+	[[nodiscard]] constexpr color_t from_u32_abgr(uint32_t rgb) { return color_t(detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24)); }
 
 	/// Creates an 8bpp ARGB integer from a color
-	constexpr uint32_t to_u32_argb(color_t const& rgba) { return detail::f2u4(rgba.w, rgba.x, rgba.y, rgba.z); }
+	[[nodiscard]] constexpr uint32_t to_u32_argb(color_t const& rgba) { return detail::f2u4(rgba.w, rgba.x, rgba.y, rgba.z); }
 	/// Creates an 8bpp ABGR integer from a color
-	constexpr uint32_t to_u32_abgr(color_t const& rgba) { return detail::f2u4(rgba.w, rgba.z, rgba.y, rgba.x); }
+	[[nodiscard]] constexpr uint32_t to_u32_abgr(color_t const& rgba) { return detail::f2u4(rgba.w, rgba.z, rgba.y, rgba.x); }
 	/// Creates an 8bpp RGBA integer from a color
-	constexpr uint32_t to_u32_rgba(color_t const& rgba) { return detail::f2u4(rgba.x, rgba.y, rgba.z, rgba.w); }
+	[[nodiscard]] constexpr uint32_t to_u32_rgba(color_t const& rgba) { return detail::f2u4(rgba.x, rgba.y, rgba.z, rgba.w); }
 	/// Creates an 8bpp BGRA integer from a color
-	constexpr uint32_t to_u32_bgra(color_t const& rgba) { return detail::f2u4(rgba.z, rgba.y, rgba.x, rgba.w); }
+	[[nodiscard]] constexpr uint32_t to_u32_bgra(color_t const& rgba) { return detail::f2u4(rgba.z, rgba.y, rgba.x, rgba.w); }
 	/// Creates a 32 bitbpp RGB integer from a color, with the most significant 8 bits set to 0
-	constexpr uint32_t to_u32_rgb(color_t const& rgba) { return detail::f2u4(rgba.x, rgba.y, rgba.z); }
+	[[nodiscard]] constexpr uint32_t to_u32_rgb(color_t const& rgba) { return detail::f2u4(rgba.x, rgba.y, rgba.z); }
 	/// Creates a 32 bitbpp BGR integer from a color, with the most significant 8 bits set to 0
-	constexpr uint32_t to_u32_bgr(color_t const& rgba) { return detail::f2u4(rgba.z, rgba.y, rgba.x); }
+	[[nodiscard]] constexpr uint32_t to_u32_bgr(color_t const& rgba) { return detail::f2u4(rgba.z, rgba.y, rgba.x); }
 
 	template <std::same_as<color_rgba_u32_t> TO>
-	constexpr TO named_cast(color_rgba_t const& from)
+	[[nodiscard]] constexpr TO named_cast(color_rgba_t const& from)
 	{
 		return TO{ to_u32_rgba(from) };
 	}
 
 	template <std::same_as<color_abgr_u32_t> TO>
-	constexpr TO named_cast(color_rgba_t const& from)
+	[[nodiscard]] constexpr TO named_cast(color_rgba_t const& from)
 	{
 		return TO{ to_u32_abgr(from) };
 	}
 
 	template <typename TO, typename FROM>
-	TO color_cast(FROM const& from)
+	[[nodiscard]] TO color_cast(FROM const& from)
 	{
 		return named_cast<TO>(from);
 	}
 
 	/// Returns the color as a `glm::vec4` of `uint8_t`s
-	constexpr glm::tvec4<uint8_t> to_u8(color_t const& rgba) { return { detail::f2b(rgba.x), detail::f2b(rgba.y), detail::f2b(rgba.z), detail::f2b(rgba.w) }; }
+	[[nodiscard]] constexpr glm::tvec4<uint8_t> to_u8(color_t const& rgba) { return { detail::f2b(rgba.x), detail::f2b(rgba.y), detail::f2b(rgba.z), detail::f2b(rgba.w) }; }
 
 	/// Converts a HSVA color to RGBA space
-	constexpr color_t to_rgb(color_hsva_t const& hsva)
+	[[nodiscard]] constexpr color_t to_rgb(color_hsva_t const& hsva)
 	{
 		const auto hue = hsva->r;
 		const auto saturation = hsva->g;
@@ -234,7 +234,7 @@ namespace ghassanpl
 	}
 
 	/// Converts an RGBA color to HSVA space
-	constexpr color_hsva_t to_hsv(color_t const& rgba)
+	[[nodiscard]] constexpr color_hsva_t to_hsv(color_t const& rgba)
 	{
 		const auto min = detail::min(rgba.x, rgba.y, rgba.z);
 		const auto max = detail::max(rgba.x, rgba.y, rgba.z);
@@ -261,7 +261,7 @@ namespace ghassanpl
 	}
 
 	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
-	constexpr color_rgba_t from_html(const char* str, size_t n)
+	[[nodiscard]] constexpr color_rgba_t from_html(const char* str, size_t n)
 	{
 		if (n == 0)
 			throw n;
@@ -298,13 +298,13 @@ namespace ghassanpl
 	}
 
 	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
-	consteval color_rgba_t operator ""_rgb(const char* str, size_t n)
+	[[nodiscard]] consteval color_rgba_t operator ""_rgb(const char* str, size_t n)
 	{
 		return from_html(str, n);
 	}
 
 	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
-	constexpr color_rgba_t from_html(std::string_view html)
+	[[nodiscard]] constexpr color_rgba_t from_html(std::string_view html)
 	{
 		return from_html(html.data(), html.size());
 	}

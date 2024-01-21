@@ -4,13 +4,10 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp20.h"
 #include <concepts>
 #include "source_location.h"
 #include "hashes.h"
-
-#if !defined(__cpp_concepts)
-#error "This library requires concepts"
-#endif
 
 #ifdef __INTELLISENSE__
 #define EQ_SOURCE_LOCATION = source_location{}

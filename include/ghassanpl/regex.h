@@ -13,7 +13,7 @@ namespace ghassanpl::regex
 	using svmatch = std::match_results<std::string_view::const_iterator>;
 
 	template<class BidirIt, class UnaryFunction>
-	std::string regex_replace(BidirIt&& first, BidirIt&& last, const std::regex& re, UnaryFunction&& f)
+	[[nodiscard]] std::string regex_replace(BidirIt&& first, BidirIt&& last, const std::regex& re, UnaryFunction&& f)
 	{
 		std::string s;
 
@@ -47,7 +47,7 @@ namespace ghassanpl::regex
 	}
 
 	template<class UnaryFunction>
-	std::string regex_replace(std::string_view s, const std::regex& re, UnaryFunction&& f)
+	[[nodiscard]] std::string regex_replace(std::string_view s, const std::regex& re, UnaryFunction&& f)
 	{
 		return regex_replace(s.cbegin(), s.cend(), re, std::forward<UnaryFunction>(f));
 	}
@@ -67,7 +67,7 @@ namespace ghassanpl::regex
 		regex_split(s.begin(), s.end(), re, std::forward<UnaryFunction>(f));
 	}
 
-	inline std::vector<std::string> regex_split(std::string_view s, const std::regex& re)
+	[[nodiscard]] inline std::vector<std::string> regex_split(std::string_view s, const std::regex& re)
 	{
 		std::vector<std::string> result;
 		regex_split(s.begin(), s.end(), re, [&result](auto&& m) { result.push_back(m.str()); });

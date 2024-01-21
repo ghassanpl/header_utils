@@ -78,12 +78,12 @@ namespace ghassanpl::geometry::squares
 	constexpr rec2 world_rect_for_tile(glm::ivec2 pos, glm::vec2 tile_size) { return rec2::from_size(tile_pos_to_world_pos(pos, tile_size), tile_size); }
 	constexpr rec2 world_rect_for_tile(glm::ivec2 pos, float tile_size) { return rec2::from_size(tile_pos_to_world_pos(pos, tile_size), { tile_size, tile_size }); }
 
-	glm::ivec2 world_pos_to_tile_pos(glm::vec2 world_pos, glm::vec2 tile_size) { return glm::ivec2(glm::floor(world_pos / tile_size)); }
-	glm::ivec2 world_pos_to_tile_pos(glm::vec2 world_pos, float tile_size) { return glm::ivec2(glm::floor(world_pos / tile_size)); }
-	irec2 world_rect_to_tile_rect(rec2 const& world_rect, glm::vec2 tile_size) { return irec2{ glm::floor(world_rect.p1 / tile_size), glm::ceil(world_rect.p2 / tile_size) }; }
-	irec2 world_rect_to_tile_rect(rec2 const& world_rect, float tile_size) { return irec2{ glm::floor(world_rect.p1 / tile_size), glm::ceil(world_rect.p2 / tile_size) }; }
+	inline glm::ivec2 world_pos_to_tile_pos(glm::vec2 world_pos, glm::vec2 tile_size) { return glm::ivec2(glm::floor(world_pos / tile_size)); }
+	inline glm::ivec2 world_pos_to_tile_pos(glm::vec2 world_pos, float tile_size) { return glm::ivec2(glm::floor(world_pos / tile_size)); }
+	inline irec2 world_rect_to_tile_rect(rec2 const& world_rect, glm::vec2 tile_size) { return irec2{ glm::floor(world_rect.p1 / tile_size), glm::ceil(world_rect.p2 / tile_size) }; }
+	inline irec2 world_rect_to_tile_rect(rec2 const& world_rect, float tile_size) { return irec2{ glm::floor(world_rect.p1 / tile_size), glm::ceil(world_rect.p2 / tile_size) }; }
 
-	glm::vec2 snap_world_pos_to_tile_grid(glm::vec2 world_pos, glm::vec2 tile_size) { 
+	inline glm::vec2 snap_world_pos_to_tile_grid(glm::vec2 world_pos, glm::vec2 tile_size) { 
 		return glm::floor((world_pos + (tile_size * 0.5f)) / tile_size) * tile_size;
 	}
 

@@ -4,9 +4,10 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp17.h"
 #include <glm/common.hpp>
 #include <glm/vec2.hpp>
-#include <span>
+#include "span.h"
 #include <functional>
 
 #define GHPL_HAS_REC2
@@ -31,14 +32,14 @@ namespace ghassanpl
 
 		constexpr trec2() noexcept = default;
 		constexpr trec2(tvec a, tvec b) noexcept : p1(a), p2(b) { }
-		explicit constexpr trec2(std::span<tvec const> points) noexcept
+		explicit constexpr trec2(span<tvec const> points) noexcept
 		{
 			*this = trec2::exclusive();
 			for (auto& p : points)
 				include(p);
 		}
 
-		template <std::same_as<tvec>... ARGS>
+		template <GHPL_TYPENAME(std::same_as<tvec>)... ARGS>
 		explicit constexpr trec2(bounding_box_for_t, ARGS&&... args) noexcept
 		{
 			*this = trec2::exclusive();
@@ -57,8 +58,8 @@ namespace ghassanpl
 		constexpr trec2& operator=(const trec2&) noexcept = default;
 		constexpr trec2& operator=(trec2&&) noexcept = default;
 
-		static constexpr trec2 from_points(std::span<tvec const> points) noexcept { return trec2{points}; }
-		template <std::same_as<tvec>... ARGS>
+		static constexpr trec2 from_points(span<tvec const> points) noexcept { return trec2{points}; }
+		template <GHPL_TYPENAME(std::same_as<tvec>)... ARGS>
 		static constexpr trec2 from_points(ARGS&&... args) noexcept { return trec2(bounding_box_for, std::forward<ARGS>(args)...); }
 		static constexpr trec2 from_size(tvec s) noexcept { return { tvec{}, s }; };
 		static constexpr trec2 from_size(tvec p, tvec s) noexcept { return { p, p + s }; };
@@ -103,7 +104,9 @@ namespace ghassanpl
 		constexpr trec2 operator*(tvec op) const noexcept { return { p1 * op, p2 * op }; }
 		constexpr trec2 operator/(tvec op) const noexcept { return { p1 / op, p2 / op }; }
 
-		constexpr auto operator<=>(trec2 const& other) const noexcept = default;
+		constexpr auto operator==(trec2 const& other) const noexcept { return p1 == other.p1 && p2 == other.p2; }
+		/// TODO: Write this manually (what does it even mean to compare two rectangles?)
+		//constexpr auto operator<=>(trec2 const& other) const noexcept = default;
 
 		constexpr tvec operator[](size_t i) const noexcept
 		{
@@ -117,9 +120,9 @@ namespace ghassanpl
 			return {}; /// unreachable
 		}
 
+#ifdef __cpp_explicit_this_parameter
 		template <typename U> struct values_t { U left; U top; U right; U bottom; };
 		template <typename U> values_t(U&& left, U&& top, U&& right, U&& bottom) -> values_t<U>;
-#ifndef __clang__
 		template <typename SELF>
 		constexpr auto values(this SELF&& self) noexcept
 		{

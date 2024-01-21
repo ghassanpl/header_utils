@@ -8,8 +8,60 @@
 #include <string>
 #include <system_error>
 #include <cstdint>
-#include <span>
+#include "span.h"
 #include <filesystem>
+
+/// TODO: https://www.remi-coulom.fr/joedb/checkpoints.html
+/*
+struct incremental_position_checkpoint
+{
+private:
+	mmap_sink& mapping;
+	struct checkpoint_struct
+	{
+		size_t position[4];
+	};
+	checkpoint_struct* mapped_checkpoint;
+	bool last_version_2 = false;
+public:
+	incremental_position_checkpoint(mmap_sink& in_file, size_at loc)
+		: mapping(in_file),
+		, mapped_checkpoint(mapping.data() + loc)
+	{
+		assert(mapping.size() <= loc + sizeof(checkpoint_struct));
+	}
+
+	void reset(size_t to_position = 0)
+	{
+		mapped_checkpoint = {0,0,0,0};
+		mapping.flush();
+		last_version_2 = false;
+	}
+	
+	void checkpoint(size_t position)
+	{
+		mapped_checkpoint.position[last_version_2 * 2] = position;
+		mapping.flush();
+		mapped_checkpoint.position[last_version_2 * 2 + 1] = position;
+		mapping.flush();
+		last_version_2 = !last_version_2;
+	}
+
+	size_t position() const
+	{
+		const auto copy = *mapped_checkpoint;
+		const auto healthy[2] = { copy.position[0] == copy.position[1], copy.position[2] == copy.position[3] };
+		if (healthy[0] && healthy[1])
+			return std::max(copy.position[0], copy.position[2]);
+		else if (healthy[0])
+			return position[0];
+		else if (healthy[1])
+			return position[2];
+		else
+			throw "no valid position";
+	}
+};
+*/
 
 namespace ghassanpl
 {
@@ -54,14 +106,14 @@ namespace ghassanpl
 		{
 		}
 
-		handle_type file_handle() const noexcept { return file_handle_; }
-		handle_type mapping_handle() const noexcept { return file_mapping_handle_ == invalid_handle ? file_handle_ : file_mapping_handle_; }
+		[[nodiscard]] handle_type file_handle() const noexcept { return file_handle_; }
+		[[nodiscard]] handle_type mapping_handle() const noexcept { return file_mapping_handle_ == invalid_handle ? file_handle_ : file_mapping_handle_; }
 
-		bool is_open() const noexcept { return file_handle_ != invalid_handle; }
+		[[nodiscard]] bool is_open() const noexcept { return file_handle_ != invalid_handle; }
 
-		bool empty() const noexcept { return length() == 0; }
+		[[nodiscard]] bool empty() const noexcept { return length() == 0; }
 
-		bool is_mapped() const noexcept
+		[[nodiscard]] bool is_mapped() const noexcept
 		{
 #ifdef _WIN32
 			return file_mapping_handle_ != invalid_handle;
@@ -71,45 +123,45 @@ namespace ghassanpl
 		}
 
 		template <typename T = VALUE_TYPE>
-		std::span<T const> to_span() const noexcept { return { reinterpret_cast<T const*>(data()), size() }; }
+		[[nodiscard]] std::span<T const> to_span() const noexcept { return { reinterpret_cast<T const*>(data()), size() }; }
 
-		size_type size() const noexcept { return length(); }
-		size_type length() const noexcept { return length_; }
-		size_type mapped_length() const noexcept { return mapped_length_; }
+		[[nodiscard]] size_type size() const noexcept { return length(); }
+		[[nodiscard]] size_type length() const noexcept { return length_; }
+		[[nodiscard]] size_type mapped_length() const noexcept { return mapped_length_; }
 
-		size_type mapping_offset() const noexcept
+		[[nodiscard]] size_type mapping_offset() const noexcept
 		{
 			return mapped_length_ - length_;
 		}
 
-		const_pointer data() const noexcept { return data_; }
+		[[nodiscard]] const_pointer data() const noexcept { return data_; }
 
-		const_iterator begin() const noexcept { return data(); }
-		const_iterator cbegin() const noexcept { return data(); }
+		[[nodiscard]] const_iterator begin() const noexcept { return data(); }
+		[[nodiscard]] const_iterator cbegin() const noexcept { return data(); }
 
-		const_iterator end() const noexcept { return data() + length(); }
-		const_iterator cend() const noexcept { return data() + length(); }
+		[[nodiscard]] const_iterator end() const noexcept { return data() + length(); }
+		[[nodiscard]] const_iterator cend() const noexcept { return data() + length(); }
 
-		const_reverse_iterator rbegin() const noexcept
+		[[nodiscard]] const_reverse_iterator rbegin() const noexcept
 		{
 			return const_reverse_iterator(end());
 		}
 
-		const_reverse_iterator crbegin() const noexcept
+		[[nodiscard]] const_reverse_iterator crbegin() const noexcept
 		{
 			return const_reverse_iterator(end());
 		}
 
-		const_reverse_iterator rend() const noexcept
+		[[nodiscard]] const_reverse_iterator rend() const noexcept
 		{
 			return const_reverse_iterator(begin());
 		}
-		const_reverse_iterator crend() const noexcept
+		[[nodiscard]] const_reverse_iterator crend() const noexcept
 		{
 			return const_reverse_iterator(begin());
 		}
 
-		const_reference operator[](const size_type i) const noexcept { return data_[i]; }
+		[[nodiscard]] const_reference operator[](const size_type i) const noexcept { return data_[i]; }
 
 		void swap(basic_mmap_base& other) noexcept
 		{
@@ -163,13 +215,13 @@ namespace ghassanpl
 		{
 			std::error_code error;
 			map(path, offset, length, error);
-			if (error) { throw std::system_error{error}; }
+			if (error) { throw std::system_error{ error }; }
 		}
 		basic_mmap(const handle_type handle, const size_type offset = 0, const size_type length = map_entire_file)
 		{
 			std::error_code error;
 			map(handle, offset, length, error);
-			if (error) { throw std::system_error{error}; }
+			if (error) { throw std::system_error{ error }; }
 		}
 
 		basic_mmap(const basic_mmap&) = delete;
@@ -273,7 +325,7 @@ namespace ghassanpl
 		using typename basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>::mmap_context;
 
 		template <typename VALUE_TYPE_>
-		friend mmap_source<VALUE_TYPE_> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE_>::size_type offset, typename mmap_source<VALUE_TYPE_>::size_type length, std::error_code& error) noexcept;
+		[[nodiscard]] friend mmap_source<VALUE_TYPE_> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE_>::size_type offset, typename mmap_source<VALUE_TYPE_>::size_type length, std::error_code& error) noexcept;
 
 	protected:
 
@@ -305,24 +357,24 @@ namespace ghassanpl
 		using typename basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::reverse_iterator;
 
 		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::operator[];
-		reference operator[](const size_type i) const noexcept { return this->data_[i]; }
+		[[nodiscard]] reference operator[](const size_type i) const noexcept { return this->data_[i]; }
 
 		//void unmap();
 
 		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::data;
-		pointer data() noexcept { return this->data_; }
+		[[nodiscard]] pointer data() noexcept { return this->data_; }
 
 		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::begin;
-		iterator begin() noexcept { return this->data(); }
+		[[nodiscard]] iterator begin() noexcept { return this->data(); }
 
 		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::end;
-		iterator end() noexcept { return this->data() + this->length(); }
+		[[nodiscard]] iterator end() noexcept { return this->data() + this->length(); }
 
 		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::rbegin;
-		reverse_iterator rbegin() noexcept { return reverse_iterator(this->end()); }
+		[[nodiscard]] reverse_iterator rbegin() noexcept { return reverse_iterator(this->end()); }
 
 		using basic_mmap<mmap_sink<VALUE_TYPE>, VALUE_TYPE>::rend;
-		reverse_iterator rend() noexcept { return reverse_iterator(this->begin()); }
+		[[nodiscard]] reverse_iterator rend() noexcept { return reverse_iterator(this->begin()); }
 
 		void sync(std::error_code& error) noexcept;
 
@@ -347,7 +399,7 @@ namespace ghassanpl
 	};
 
 	template <typename VALUE_TYPE>
-	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length, std::error_code& error) noexcept
+	[[nodiscard]] mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length, std::error_code& error) noexcept
 	{
 		mmap_source<VALUE_TYPE> mmap;
 		mmap.map(path, offset, length, error);
@@ -355,25 +407,25 @@ namespace ghassanpl
 	}
 
 	template <typename VALUE_TYPE>
-	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, std::error_code& error) noexcept
+	[[nodiscard]] mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, std::error_code& error) noexcept
 	{
 		return make_mmap_source<VALUE_TYPE>(path, 0, map_entire_file, error);
 	}
 
 	template <typename VALUE_TYPE>
-	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length)
+	[[nodiscard]] mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length)
 	{
 		return mmap_source<VALUE_TYPE>{ path, offset, length };
 	}
 
 	template <typename VALUE_TYPE>
-	inline mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path)
+	[[nodiscard]] mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path)
 	{
 		return make_mmap_source<VALUE_TYPE>(path, 0, map_entire_file);
 	}
 
 	template <typename VALUE_TYPE>
-	inline mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, typename mmap_sink<VALUE_TYPE>::size_type offset, typename mmap_sink<VALUE_TYPE>::size_type length, std::error_code& error) noexcept
+	[[nodiscard]] mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, typename mmap_sink<VALUE_TYPE>::size_type offset, typename mmap_sink<VALUE_TYPE>::size_type length, std::error_code& error) noexcept
 	{
 		mmap_sink<VALUE_TYPE> mmap;
 		mmap.map(path, offset, length, error);
@@ -381,19 +433,19 @@ namespace ghassanpl
 	}
 
 	template <typename VALUE_TYPE>
-	inline mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, std::error_code& error) noexcept
+	[[nodiscard]] mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, std::error_code& error) noexcept
 	{
 		return make_mmap_sink<VALUE_TYPE>(path, 0, map_entire_file, error);
 	}
 
 	template <typename VALUE_TYPE>
-	inline mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, typename mmap_sink<VALUE_TYPE>::size_type offset, typename mmap_sink<VALUE_TYPE>::size_type length)
+	[[nodiscard]] mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, typename mmap_sink<VALUE_TYPE>::size_type offset, typename mmap_sink<VALUE_TYPE>::size_type length)
 	{
 		return mmap_sink<VALUE_TYPE>{ path, offset, length };
 	}
 
 	template <typename VALUE_TYPE>
-	inline mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path)
+	[[nodiscard]] mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path)
 	{
 		return make_mmap_sink<VALUE_TYPE>(path, 0, map_entire_file);
 	}
