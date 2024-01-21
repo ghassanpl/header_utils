@@ -7,17 +7,22 @@
 #include "parsing.h"
 #include "mmap.h"
 #include "json_helpers.h"
+#include "expected.h"
 #include <ostream>
 
 /// TODO: https://dev.stenway.com/SML/Examples.html
 
 namespace ghassanpl::formats::wilson
 {
-	auto parse(std::string_view wilson_str) -> nlohmann::json;
-	auto parse_object(std::string_view wilson_str, char closing_char = '}') -> nlohmann::json;
-	auto parse_array(std::string_view wilson_str) -> nlohmann::json;
+	struct wilson_parsing_error { const char* where; std::string message; };
+
+	using wilson = nlohmann::json;
+
+	auto parse(std::string_view wilson_str) -> wilson;
+	auto parse_object(std::string_view wilson_str, char closing_char = '}') -> wilson;
+	auto parse_array(std::string_view wilson_str) -> wilson;
 	/// Parses: a word as a string value or bool/null value; a "string literal" as a string value
-	auto parse_word_or_string(std::string_view wilson_str) -> nlohmann::json;
+	auto parse_word_or_string(std::string_view wilson_str) -> wilson;
 	/// Parses a word or a string literal a string value
 	auto parse_string_value(std::string_view wilson_str) -> std::string;
 	/// Parses a string literal as a string value
@@ -25,37 +30,37 @@ namespace ghassanpl::formats::wilson
 
 	auto consume_string_literal(std::string_view& _str) -> std::string;
 	auto consume_string_value(std::string_view& str) -> std::string;
-	auto consume_word_or_string(std::string_view& str) -> nlohmann::json;
-	auto consume_object(std::string_view& wilson_str, char closing_char = '}') -> nlohmann::json;
-	auto consume_array(std::string_view& wilson_str, char closing_char = ']') -> nlohmann::json;
-	auto consume_value(std::string_view& wilson_str) -> nlohmann::json;
+	auto consume_word_or_string(std::string_view& str) -> wilson;
+	auto consume_object(std::string_view& wilson_str, char closing_char = '}') -> wilson;
+	auto consume_array(std::string_view& wilson_str, char closing_char = ']') -> wilson;
+	auto consume_value(std::string_view& wilson_str) -> wilson;
 
 	template <typename OUTFUNC>
-	void output(OUTFUNC&& out, nlohmann::json const& value);
+	void output(OUTFUNC&& out, wilson const& value);
 
-	inline void output_to_stream(std::ostream& strm, nlohmann::json const& value)
+	inline void output_to_stream(std::ostream& strm, wilson const& value)
 	{
 		output([&](std::string_view val) { strm.write(val.data(), val.size()); }, value);
 	}
 
-	std::string to_string(nlohmann::json const& value);
+	std::string to_string(wilson const& value);
 
-	nlohmann::json load_file(std::filesystem::path const& from, std::error_code& ec);
-	nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json const& or_json = json::empty_json);
+	wilson load_file(std::filesystem::path const& from, std::error_code& ec);
+	wilson try_load_file(std::filesystem::path const& from, wilson const& or_json = json::empty_json);
 }
 
 namespace ghassanpl::formats::wilson
 {
-	inline nlohmann::json consume_array(std::string_view& str, char closing_char)
+	inline wilson consume_array(std::string_view& str, char closing_char)
 	{
-		auto obj = nlohmann::json::array();
+		auto obj = wilson::array();
 		do
 		{
 			string_ops::trim_whitespace_left(str);
 			if (string_ops::consume(str, closing_char))
 				return obj;
 
-			obj.push_back(wilson::consume_value(str));
+			obj.push_back(formats::wilson::consume_value(str));
 
 			string_ops::trim_whitespace_left(str);
 
@@ -91,7 +96,7 @@ namespace ghassanpl::formats::wilson
 	}
 
 	/// Consumes: a word, returning a string/bool/null value; or a "string literal", returning a string value
-	inline nlohmann::json consume_word_or_string(std::string_view& str)
+	inline wilson consume_word_or_string(std::string_view& str)
 	{
 		if (string_ops::ascii::isalpha(str[0]))
 		{
@@ -110,9 +115,9 @@ namespace ghassanpl::formats::wilson
 		}
 	}
 
-	inline nlohmann::json consume_object(std::string_view& str, char closing_char)
+	inline wilson consume_object(std::string_view& str, char closing_char)
 	{
-		auto obj = nlohmann::json::object();
+		auto obj = wilson::object();
 
 		do
 		{
@@ -140,7 +145,7 @@ namespace ghassanpl::formats::wilson
 
 				string_ops::trim_whitespace_left(str);
 
-				auto val = wilson::consume_value(str);
+				auto val = formats::wilson::consume_value(str);
 				obj[std::move(key)] = std::move(val);
 			}
 
@@ -153,7 +158,7 @@ namespace ghassanpl::formats::wilson
 		return obj;
 	}
 
-	inline nlohmann::json consume_value(std::string_view& str)
+	inline wilson consume_value(std::string_view& str)
 	{
 		string_ops::trim_whitespace_left(str);
 		if (str.empty()) return {};
@@ -181,35 +186,35 @@ namespace ghassanpl::formats::wilson
 		return std::string(1, string_ops::consume(str)); /// eat at least 1 character so we don't fall into an infinite loop
 	}
 
-	inline auto parse(std::string_view wilson_str) -> nlohmann::json
+	inline auto parse(std::string_view wilson_str) -> wilson
 	{
 		const auto start = wilson_str.data(); /// TODO: on exception, get current wilson_str.data() and figure out line position, etc. to throw a proper exception
-		return wilson::consume_value(wilson_str);
+		return formats::wilson::consume_value(wilson_str);
 	}
 
-	inline auto parse_object(std::string_view wilson_str, char closing_char) -> nlohmann::json
+	inline auto parse_object(std::string_view wilson_str, char closing_char) -> wilson
 	{
-		return wilson::consume_object(wilson_str, closing_char);
+		return formats::wilson::consume_object(wilson_str, closing_char);
 	}
 
-	inline auto parse_array(std::string_view wilson_str) -> nlohmann::json
+	inline auto parse_array(std::string_view wilson_str) -> wilson
 	{
-		return wilson::consume_array(wilson_str);
+		return formats::wilson::consume_array(wilson_str);
 	}
 
-	inline auto parse_word_or_string(std::string_view wilson_str) -> nlohmann::json
+	inline auto parse_word_or_string(std::string_view wilson_str) -> wilson
 	{
-		return wilson::consume_word_or_string(wilson_str);
+		return formats::wilson::consume_word_or_string(wilson_str);
 	}
 
 	inline auto parse_string_value(std::string_view wilson_str) -> std::string
 	{
-		return wilson::consume_string_value(wilson_str);
+		return formats::wilson::consume_string_value(wilson_str);
 	}
 
 	inline auto parse_string_literal(std::string_view wilson_str) -> std::string
 	{
-		return wilson::consume_string_literal(wilson_str);
+		return formats::wilson::consume_string_literal(wilson_str);
 	}
 
 	namespace detail
@@ -252,7 +257,7 @@ namespace ghassanpl::formats::wilson
 	}
 
 	template <typename OUTFUNC>
-	void output(OUTFUNC&& out, nlohmann::json const& value)
+	void output(OUTFUNC&& out, wilson const& value)
 	{
 		switch (value.type())
 		{
@@ -260,34 +265,34 @@ namespace ghassanpl::formats::wilson
 		case null: out("null"); return;
 		case object:
 			out("{ ");
-			for (auto& [k, v] : value.get_ref<nlohmann::json::object_t const&>())
+			for (auto& [k, v] : value.get_ref<wilson::object_t const&>())
 			{
-				wilson::detail::output_string(out, k);
+				formats::wilson::detail::output_string(out, k);
 				out(": ");
-				wilson::output(out, v);
+				formats::wilson::output(out, v);
 				out(", ");
 			}
 			out(" }");
 			return;
 		case array:
 			out("[ ");
-			for (auto& obj : value.get_ref<nlohmann::json::array_t const&>())
+			for (auto& obj : value.get_ref<wilson::array_t const&>())
 			{
-				wilson::output(out, obj);
+				formats::wilson::output(out, obj);
 				out(", ");
 			}
 			out(" ]");
 			return;
-		case string: wilson::detail::output_string(out, value.get_ref<nlohmann::json::string_t const&>()); return;
-		case boolean: out(value.get_ref<nlohmann::json::boolean_t const&>() ? "true" : "false"); return;
-		case number_integer: wilson::detail::output_value(out, value.get_ref<nlohmann::json::number_integer_t const&>()); return;
-		case number_unsigned: wilson::detail::output_value(out, value.get_ref<nlohmann::json::number_unsigned_t const&>()); return;
-		case number_float: wilson::detail::output_value(out, value.get_ref<nlohmann::json::number_float_t const&>()); return;
+		case string: formats::wilson::detail::output_string(out, value.get_ref<wilson::string_t const&>()); return;
+		case boolean: out(value.get_ref<wilson::boolean_t const&>() ? "true" : "false"); return;
+		case number_integer: formats::wilson::detail::output_value(out, value.get_ref<wilson::number_integer_t const&>()); return;
+		case number_unsigned: formats::wilson::detail::output_value(out, value.get_ref<wilson::number_unsigned_t const&>()); return;
+		case number_float: formats::wilson::detail::output_value(out, value.get_ref<wilson::number_float_t const&>()); return;
 		case binary:
 			out("[ ");
-			for (auto byte : value.get_ref<nlohmann::json::binary_t const&>())
+			for (auto byte : value.get_ref<wilson::binary_t const&>())
 			{
-				wilson::detail::output_value(out, byte);
+				formats::wilson::detail::output_value(out, byte);
 				out(", ");
 			}
 			out(" ]");
@@ -296,23 +301,23 @@ namespace ghassanpl::formats::wilson
 		}
 	}
 
-	inline std::string to_string(nlohmann::json const& value)
+	inline std::string to_string(wilson const& value)
 	{
 		std::string result;
-		wilson::output(op::append_to(result), value);
+		formats::wilson::output(op::append_to(result), value);
 		return result;
 	}
 
-	inline nlohmann::json load_file(std::filesystem::path const& from, std::error_code& ec)
+	inline wilson load_file(std::filesystem::path const& from, std::error_code& ec)
 	{
 		const auto source = ghassanpl::make_mmap_source<char>(from, ec);
-		return ec ? nlohmann::json{} : wilson::parse(std::string_view{ source.begin(), source.end() });
+		return ec ? wilson{} : formats::wilson::parse(std::string_view{ source.begin(), source.end() });
 	}
 
-	inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json const& or_json)
+	inline wilson try_load_file(std::filesystem::path const& from, wilson const& or_json)
 	{
 		std::error_code ec;
 		const auto source = ghassanpl::make_mmap_source<char>(from, ec);
-		return ec ? or_json : wilson::parse(std::string_view{ source.begin(), source.end() });
+		return ec ? or_json : formats::wilson::parse(std::string_view{ source.begin(), source.end() });
 	}
 }
