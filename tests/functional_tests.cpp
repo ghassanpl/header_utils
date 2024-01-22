@@ -104,13 +104,13 @@ TEST(make_single_time_function, works)
 TEST(optional_transform, works)
 {
 	std::optional<int> i = 50;
-	auto res = transform(i, [](int i) { return std::to_string(i); });
+	auto res = transformed(i, [](int i) { return std::to_string(i); });
 	EXPECT_EQ(res, "50");
-	auto ores = transform(i, [](int i) { return std::optional{ std::to_string(i) }; });
+	auto ores = transformed(i, [](int i) { return std::optional{ std::to_string(i) }; });
 	EXPECT_TRUE(ores.has_value());
 	EXPECT_EQ(ores.value(), "50");
 	std::optional<int> j = std::nullopt;
-	auto nres = transform(j, [](int i) { return std::to_string(i); });
+	auto nres = transformed(j, [](int i) { return std::to_string(i); });
 	EXPECT_FALSE(nres.has_value());
 
 	auto res2 = i.transform([](int i) { return std::to_string(i); });
