@@ -18,6 +18,7 @@ TEST(multicast_function, works)
 	bool called_a{}, called_b{}, called_c{};
 	auto handle_a = delegate += [&](int a) { called_a = true; called++; return a; };
 	auto handle_b = delegate += [&](int a) { called_b = true; called++; return a * 2; };
+	(void)handle_b;
 
 	auto result = delegate(10);
 
@@ -42,6 +43,7 @@ TEST(multicast_function, works)
 	called = 0, called_a = false, called_b = false, called_c = false;
 
 	auto handle_c = delegate += [&](int a) { called_c = true; called++; return a * 3; };
+	(void)handle_c;
 
 	result = delegate(50);
 

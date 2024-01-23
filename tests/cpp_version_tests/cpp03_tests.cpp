@@ -1,4 +1,3 @@
-#pragma once
 
 #include "../../include/ghassanpl/min-cpp-version/cpp03.h"
 

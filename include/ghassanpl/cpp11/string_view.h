@@ -471,7 +471,7 @@ inline std::string trimmed_whitespace(std::string str) noexcept { return trimmed
 inline std::string trimmed_until(std::string str, char chr) noexcept { str.erase(str.begin(), std::find(str.begin(), str.end(), chr)); return str; }
 inline std::string trimmed(std::string str, char chr) noexcept { str.erase(str.begin(), std::find_if_not(str.begin(), str.end(), [chr](char c) { return c == chr; })); return str; }
 template <typename FUNC>
-inline string_view trimmed_while(string_view str, FUNC&& func) noexcept { return ::ghassanpl::string_ops::string_view(std::find_if_not(str.begin(), str.end(), std::forward<FUNC>(func)), str.end()); }
+inline string_view trimmed_while(string_view str, FUNC&& func) noexcept { return string_view(std::find_if_not(str.begin(), str.end(), std::forward<FUNC>(func)), str.end()); }
 
 inline void trim_whitespace_right(string_view& str) noexcept { str = string_view(str.begin(), std::find_if_not(str.rbegin(), str.rend(), ascii::isspace).base()); }
 inline void trim_whitespace_left(string_view& str) noexcept { str = string_view(std::find_if_not(str.begin(), str.end(), ascii::isspace), str.end()); }
@@ -923,7 +923,7 @@ inline unsigned long long consume_usigned_long_long(string_view& str, int base =
 template <typename T>
 bool consume_num(string_view& str, T& out_val, int base = 10) noexcept
 {
-	const auto res = detail::integer_from_chars(str.data(), str.data_end(), value, base);
+	const auto res = detail::integer_from_chars(str.data(), str.data_end(), out_val, base);
 	return !res.failed;
 }
 /// @}

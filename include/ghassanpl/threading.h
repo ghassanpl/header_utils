@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp17.h"
 #include <mutex>
 
 namespace ghassanpl
@@ -23,8 +24,8 @@ namespace ghassanpl
 	template <mutex_type MUTEX_TYPE, typename FUNC, typename... ARGS>
 	auto under_protection(MUTEX_TYPE& m, FUNC&& func, ARGS&&... args)
 	{
-		std::lock_guard guard{ m };
-		if constexpr (std::invocable<FUNC, MUTEX_TYPE&, ARGS...>)
+		std::lock_guard<MUTEX_TYPE> guard{ m };
+		if constexpr (std::is_invocable_v<FUNC, MUTEX_TYPE&, ARGS...>)
 			return func(m, std::forward<ARGS>(args)...);
 		else
 			return func(std::forward<ARGS>(args)...);

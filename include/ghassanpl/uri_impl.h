@@ -345,8 +345,8 @@ namespace ghassanpl
 			}
 
 			virtual std::string normalize_port(std::string_view element) const noexcept override { if (string_ops::trimmed(element, '0') == default_port()) return {}; return std::string{ element }; }
-			virtual std::string normalize_path(std::string_view element) const noexcept { if (element.empty()) return "/"; return std::string{ element }; }
-			virtual std::string normalize_host(std::string_view element) const noexcept { return string_ops::ascii::tolower(element); }
+			virtual std::string normalize_path(std::string_view element) const noexcept override { if (element.empty()) return "/"; return std::string{ element }; }
+			virtual std::string normalize_host(std::string_view element) const noexcept override { return string_ops::ascii::tolower(element); }
 		};
 
 		struct http_scheme : http_schemes

@@ -101,13 +101,13 @@ namespace ghassanpl
 
 	private:
 
-		template <typename R>
+		template <typename RET>
 		struct call_helper
 		{
 			template <typename... CALL_ARGS>
-			static std::vector<R> call(std::map<handle, std::function<R(ARGS...)>> const& listeners, CALL_ARGS&&... args)
+			static std::vector<RET> call(std::map<handle, std::function<RET(ARGS...)>> const& listeners, CALL_ARGS&&... args)
 			{
-				std::vector<R> ret;
+				std::vector<RET> ret;
 				ret.reserve(listeners.size());
 				for (auto& [handle, listener] : listeners)
 					ret.push_back(listener(std::forward<CALL_ARGS>(args)...));

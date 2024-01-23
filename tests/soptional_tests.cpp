@@ -10,6 +10,7 @@ TEST(soptional_test, basics_work)
 {
 	ghassanpl::sentinel_optional<int> opt;
 	ghassanpl::sentinel_optional<int> opt2 = 4;
+	(void)opt2;
 	EXPECT_FALSE(opt.has_value());
 	opt = 5;
 	EXPECT_TRUE(opt.has_value());

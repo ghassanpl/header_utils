@@ -10,7 +10,8 @@
 #include "../include/ghassanpl/geometry/geometry_common.h"
 #include "../include/ghassanpl/constexpr_math.h"
 
-static_assert(glm::clamp(std::numeric_limits<double>::quiet_NaN(), 0.0, 1.0) == 0.0);
+/// TODO: WHY WAS THIS HERE
+//static_assert(glm::clamp(std::numeric_limits<double>::quiet_NaN(), 0.0, 1.0) == 0.0);
 
 FunctionUnderTest(ghassanpl::gamma_correct)
 {

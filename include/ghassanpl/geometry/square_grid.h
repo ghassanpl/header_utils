@@ -6,6 +6,7 @@
 
 #include "squares.h"
 #include <vector>
+#include <stdexcept>
 
 namespace ghassanpl::geometry::squares
 {
@@ -178,24 +179,25 @@ namespace ghassanpl::geometry::squares
 			}
 		}
 
+		/// TODO: deduce thos
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
-		auto for_each_tile_in_rect(this auto&& self, irec2 const& tile_rect, FUNC&& func)
+		auto for_each_tile_in_rect(irec2 const& tile_rect, FUNC&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
-			using return_type = decltype(self.template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
+			using return_type = decltype(this->template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
 			irec2 rect = tile_rect;
 			if constexpr (ONLY_VALID)
-				rect = tile_rect.clipped_to(self.bounds());
+				rect = tile_rect.clipped_to(this->bounds());
 
 			for (int y = rect.top(); y < rect.bottom(); y++)
 				for (int x = rect.left(); x < rect.right(); x++)
 				{
 					if constexpr (std::is_void_v<return_type>)
-						self.template apply<ONLY_VALID>({ x, y }, func);
+						this->template apply<ONLY_VALID>({ x, y }, func);
 					else
 					{
-						if (auto ret = self.template apply<ONLY_VALID>({ x, y }, func))
+						if (auto ret = this->template apply<ONLY_VALID>({ x, y }, func))
 							return ret;
 					}
 				}
@@ -263,10 +265,10 @@ namespace ghassanpl::geometry::squares
 		}
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
-		auto for_each_tile(this auto&& self, FUNC&& func)
+		auto for_each_tile(FUNC&& func)
 		{
-			irec2 rect = { 0, 0, self.mWidth, self.mHeight };
-			return self.template for_each_tile_in_rect<FLAGS>(rect, std::forward<FUNC>(func));
+			irec2 rect = { 0, 0, this->mWidth, this->mHeight };
+			return this->template for_each_tile_in_rect<FLAGS>(rect, std::forward<FUNC>(func));
 		}
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
@@ -347,20 +349,20 @@ namespace ghassanpl::geometry::squares
 		/// Modifiers
 
 		template <bool ONLY_VALID = true, typename FUNC>
-		auto apply(this auto&& self, glm::ivec2 to, FUNC&& func)
+		auto apply(glm::ivec2 to, FUNC&& func)
 		{
 			//if constexpr (ONLY_VALID) if (!is_valid(to)) return return_type{};
-			using self_type = std::remove_reference_t<decltype(self)>;
+			using self_type = std::remove_reference_t<decltype(*this)>;
 			using tile_data_type = std::conditional_t<std::is_const_v<self_type>, std::add_const_t<typename self_type::tile_data_type>, typename self_type::tile_data_type>;
 			using invocable_type = std::remove_cvref_t<FUNC>;
 			if constexpr (std::invocable<invocable_type, glm::ivec2, tile_data_type&>)
-				return (ONLY_VALID && self.is_valid(to)) ? func(to, *self.at(to)) : decltype(func(to, *self.at(to))){};
+				return (ONLY_VALID && this->is_valid(to)) ? func(to, *this->at(to)) : decltype(func(to, *this->at(to))){};
 			else if constexpr (std::invocable<invocable_type, tile_data_type&, glm::ivec2>)
-				return (ONLY_VALID && self.is_valid(to)) ? func(*self.at(to), to) : decltype(func(*self.at(to), to)){};
+				return (ONLY_VALID && this->is_valid(to)) ? func(*this->at(to), to) : decltype(func(*this->at(to), to)){};
 			else if constexpr (std::invocable<invocable_type, tile_data_type&>)
-				return (ONLY_VALID && self.is_valid(to)) ? func(*self.at(to)) : decltype(func(*self.at(to))){};
+				return (ONLY_VALID && this->is_valid(to)) ? func(*this->at(to)) : decltype(func(*this->at(to))){};
 			else
-				return (ONLY_VALID && self.is_valid(to)) ? func(to) : decltype(func(to)){};
+				return (ONLY_VALID && this->is_valid(to)) ? func(to) : decltype(func(to)){};
 		}
 
 		void flip_row(int row)

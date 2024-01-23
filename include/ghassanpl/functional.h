@@ -8,6 +8,9 @@
 #include <functional>
 #include <optional>
 #include <type_traits>
+#if defined(__cpp_lib_bit_cast)
+#include <bit>
+#endif
 
 namespace ghassanpl
 {
@@ -43,8 +46,14 @@ namespace ghassanpl
 		return value ? std::optional{ func(std::move(value).value()) } : std::nullopt;
 	}
 
+	///
 	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<std::optional<T>>&& value) { return value ? flatten(std::move(value).value()) : std::nullopt; }
 	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<T>&& value) { return value; }
+	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<std::optional<T>> const& value) { return value ? flatten(value.value()) : std::nullopt; }
+	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<T> const& value) { return value; }
+
+	///
+	template <class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 
 	namespace pred
 	{
@@ -104,7 +113,7 @@ namespace ghassanpl
 		template <typename T> [[nodiscard]] constexpr auto insert_to(T& to) noexcept { return [&to](auto&& val) { to.insert(std::forward<decltype(val)>(val)); }; }
 		
 		template <typename T, GHPL_TYPENAME(std::output_iterator<T>) IT>
-		[[nodiscard]] constexpr auto output_to(IT&& to) { return [to = std::forward<IT>(to)](auto&& val) { *to++ = std::forward<decltype(val)>(val); } }
+		[[nodiscard]] constexpr auto output_to(IT&& to) { return [to = std::forward<IT>(to)](auto&& val) { *to++ = std::forward<decltype(val)>(val); }; }
 
 		template <typename T> [[nodiscard]] constexpr auto assign_to(T& to) noexcept { return [&to](auto&& val) { to = std::forward<decltype(val)>(val); }; }
 		template <typename T> [[nodiscard]] constexpr auto add_to(T& to) noexcept { return [&to](auto&& val) { to += std::forward<decltype(val)>(val); }; }

@@ -67,32 +67,21 @@ namespace ghassanpl
 		static constexpr trec2 from_center_and_size(tvec p, tvec s) noexcept { return { p - s / T(2), p + s / T(2) }; };
 		static constexpr trec2 from_center_and_size(T x, T y, T w, T h) noexcept { return { x - w / T(2), y - h / T(2), x + w / T(2), y + h / T(2) }; };
 
-		static constexpr trec2 const& invalid() noexcept { static constexpr trec2 invalid = { T{1}, T{1}, T{-1}, T{-1} }; return invalid; };
-		static constexpr trec2 const& exclusive() noexcept
+		static constexpr trec2 invalid() noexcept { return { T{1}, T{1}, T{-1}, T{-1} }; };
+		static constexpr trec2 exclusive() noexcept
 		{
 			if constexpr (std::numeric_limits<T>::has_infinity)
-			{
-				static constexpr trec2 exclusive = { std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::infinity() };
-				return exclusive;
-			}
+				return { std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::infinity() };
 			else
-			{
-				static constexpr trec2 exclusive = { std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest(), std::numeric_limits<T>::lowest() };
-				return exclusive;
-			}
+				return { std::numeric_limits<T>::max(), std::numeric_limits<T>::max(), std::numeric_limits<T>::lowest(), std::numeric_limits<T>::lowest() };
 		}
-		static constexpr trec2 const& inclusive() noexcept
+
+		static constexpr trec2 inclusive() noexcept
 		{
 			if constexpr (std::numeric_limits<T>::has_infinity)
-			{
-				static constexpr trec2 inclusive = { -std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity() };
-				return inclusive;
-			}
+				return { -std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity(), std::numeric_limits<T>::infinity() };
 			else
-			{
-				static constexpr trec2 inclusive = { std::numeric_limits<T>::lowest(), std::numeric_limits<T>::lowest(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max() };
-				return inclusive;
-			}
+				return { std::numeric_limits<T>::lowest(), std::numeric_limits<T>::lowest(), std::numeric_limits<T>::max(), std::numeric_limits<T>::max() };
 		}
 
 		constexpr trec2 operator+(tvec op) const noexcept { return { p1 + op, p2 + op }; }

@@ -101,8 +101,8 @@ namespace ghassanpl::noise
 	{
 		static_assert(std::is_floating_point_v<F>, "simplex_noise only works with floating point arguments");
 
-		static constexpr F F2 = F(0.366025403);  // F2 = (sqrt(3) - 1) / 2
-		static constexpr F G2 = F(0.211324865);  // G2 = (3 - sqrt(3)) / 6   = F2 / (1 + 2 * K)
+		constexpr F F2 = F(0.366025403);  // F2 = (sqrt(3) - 1) / 2
+		constexpr F G2 = F(0.211324865);  // G2 = (3 - sqrt(3)) / 6   = F2 / (1 + 2 * K)
 
 		const F s = (x + y) * F2;
 		const F xs = x + s;
@@ -116,8 +116,8 @@ namespace ghassanpl::noise
 		const F x0 = x - X0;
 		const F y0 = y - Y0;
 
-		int32_t i1;
-		int32_t j1;
+		int32_t i1 = 0;
+		int32_t j1 =0;
 		if (x0 > y0) {
 			i1 = 1;
 			j1 = 0;

@@ -12,6 +12,8 @@
 #include <numeric>
 #include <ranges>
 
+using namespace ghassanpl;
+
 using integer_types = ::testing::Types<
   short int, unsigned short int, int, unsigned int, long int, unsigned long int, long long int, unsigned long long int,
   signed char, unsigned char, char, wchar_t, char16_t, char32_t, char8_t>;
@@ -31,8 +33,8 @@ TYPED_TEST(bits_test, bit_reference_works)
 
 	static_assert(sizeof(bit_reference<TypeParam>) > sizeof(bit_reference<TypeParam, 2>));
 
-	bit_reference bit_2_of_value{ value, 2 };
-	bit_reference bit_2_of_value_s{ value, detail::bit_num<2> };
+	bit_reference<TypeParam> bit_2_of_value{ value, 2 };
+	bit_reference<TypeParam> bit_2_of_value_s{ value, detail::bit_num<2> };
 
 	bit_2_of_value = true;
 	EXPECT_EQ(value, 14);

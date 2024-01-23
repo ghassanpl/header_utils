@@ -48,7 +48,7 @@
 //#include "../../include/ghassanpl/string_ops.h" /// concepts
 //#include "../../include/ghassanpl/symbol.h" /// string_view
 //#include "../../include/ghassanpl/templates.h" /// variant, optional, any
-#include "../../include/ghassanpl/threading.h"
+//#include "../../include/ghassanpl/threading.h"
 //#include "../../include/ghassanpl/unicode.h" /// charconv, optional, ranges, concepts
 //#include "../../include/ghassanpl/wilson.h" /// charconv, optional, ranges, concepts
 //#include "../../include/ghassanpl/with_sl.h" /// source_location

@@ -7,12 +7,18 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tests", "test.vcxproj", "{D
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		ClangDbg|x64 = ClangDbg|x64
+		ClangDbg|x86 = ClangDbg|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB591C38-774E-4770-956F-157F7CB17D70}.ClangDbg|x64.ActiveCfg = ClangDbg|x64
+		{DB591C38-774E-4770-956F-157F7CB17D70}.ClangDbg|x64.Build.0 = ClangDbg|x64
+		{DB591C38-774E-4770-956F-157F7CB17D70}.ClangDbg|x86.ActiveCfg = ClangDbg|Win32
+		{DB591C38-774E-4770-956F-157F7CB17D70}.ClangDbg|x86.Build.0 = ClangDbg|Win32
 		{DB591C38-774E-4770-956F-157F7CB17D70}.Debug|x64.ActiveCfg = Debug|x64
 		{DB591C38-774E-4770-956F-157F7CB17D70}.Debug|x64.Build.0 = Debug|x64
 		{DB591C38-774E-4770-956F-157F7CB17D70}.Debug|x86.ActiveCfg = Debug|Win32

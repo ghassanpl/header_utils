@@ -23,7 +23,7 @@ namespace ghassanpl
 			PFD_TYPE_RGBA_ = 0,
 			PFD_TYPE_COLORINDEX_ = 1,
 		};
-		static_assert(sizeof(PFDPixelType) == sizeof(BYTE) && alignof(PFDPixelType) == alignof(BYTE));
+		static_assert(sizeof(PFDPixelType) == sizeof(BYTE) && alignof(PFDPixelType) == alignof(BYTE), "PDFPixelType does not match BYTE");
 
 		enum PFDLayerType : BYTE
 		{
@@ -31,7 +31,7 @@ namespace ghassanpl
 			PFD_OVERLAY_PLANE_ = 1,
 			PFD_UNDERLAY_PLANE_ = BYTE(-1),
 		};
-		static_assert(sizeof(PFD_UNDERLAY_PLANE_) == sizeof(BYTE) && alignof(PFDLayerType) == alignof(BYTE));
+		static_assert(sizeof(PFD_UNDERLAY_PLANE_) == sizeof(BYTE) && alignof(PFDLayerType) == alignof(BYTE), "PDFLayerType does not match BYTE");
 
 		enum PFDFlags : DWORD
 		{

@@ -599,14 +599,14 @@ namespace ghassanpl::string_ops
 	}
 
 	/// Erases all characters in `str` outside of the range `[start, start + count]`. Always safe.
-	[[nodiscard]] inline void erase_outside_n(std::string& str, size_t start, size_t count) noexcept {
+	inline void erase_outside_n(std::string& str, size_t start, size_t count) noexcept {
 		str.erase(std::min(start + count, str.size()));
 		str.erase(0, std::min(start, str.size()));
 	}
 
 	/// Erases all characters in `str` outside of the range `[from, to]`. Always safe.
 	/// If from > to, acts as if calling `erase_outside_from_to(str, to, from)`
-	[[nodiscard]] inline void erase_outside_from_to(std::string& str, size_t from, size_t to) noexcept {
+	inline void erase_outside_from_to(std::string& str, size_t from, size_t to) noexcept {
 		const auto from_ = std::min(from, to);
 		const auto to_ = std::max(from, to);
 		erase_outside_n(str, from_, to_ - from_);

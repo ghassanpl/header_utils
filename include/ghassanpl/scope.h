@@ -6,6 +6,7 @@
 
 #include "min-cpp-version/cpp17.h"
 #include <type_traits>
+#include <utility>
 
 namespace ghassanpl
 {

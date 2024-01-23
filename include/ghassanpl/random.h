@@ -19,7 +19,7 @@ namespace ghassanpl::random
 	template <typename INTEGER = uint64_t, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] constexpr INTEGER integer(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		static std::uniform_int_distribution<INTEGER> dist;
+		std::uniform_int_distribution<INTEGER> dist;
 		return dist(rng);
 	}
 
@@ -130,7 +130,12 @@ namespace ghassanpl::random
 			return in_real_range(from, to, rng);
 		else if constexpr (is_any_of_v<T, short, int, long, long long, unsigned short, unsigned int, unsigned long, unsigned long long>)
 			return in_integer_range(from, to, rng);
-		else if constexpr (is_any_of_v<T, unsigned char, signed char, char, wchar_t, char8_t, char16_t, char32_t>)
+		else if constexpr (
+			is_any_of_v<T, unsigned char, signed char, char, wchar_t, char16_t, char32_t>
+#ifdef __cpp_char8_t
+			|| std::is_same_v<T, char8_t>
+#endif
+			)
 		{
 			/// Unfortunately `uniform_int_distribution` and, as a result, `integer_range` is defined only on the non-char integral types,
 			/// which means we have to cast
@@ -238,7 +243,7 @@ namespace ghassanpl::random
 	{
 		using std::end;
 		auto result = iterator(cont, rng);
-		return (result != end(cont)) ? std::to_address(result) : nullptr;
+		return (result != end(cont)) ? std::addressof(*result) : nullptr;
 	}
 	
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
@@ -246,7 +251,7 @@ namespace ghassanpl::random
 	{
 		using std::end;
 		auto result = iterator_if(cont, std::forward<PRED>(predicate), rng);
-		return (result != end(cont)) ? std::to_address(result) : nullptr;
+		return (result != end(cont)) ? std::addressof(*result) : nullptr;
 	}
 
 	template <typename... T>
@@ -284,7 +289,7 @@ namespace ghassanpl::random
 				mCurrent = mIterators.end();
 			}
 			auto Next() { if (mCurrent == mIterators.end()) { Shuffle(); } return *mCurrent++; }
-			void Shuffle() { std::ranges::shuffle(mIterators, mRNG); mCurrent = mIterators.begin(); }
+			void Shuffle() { std::shuffle(mIterators.begin(), mIterators.end(), mRNG); mCurrent = mIterators.begin(); }
 		private:
 			RANDOM& mRNG;
 			std::vector<Iterator> mIterators;
@@ -312,14 +317,19 @@ namespace ghassanpl::random
 	template <typename RANGE, typename FUNC, typename RANDOM>
 	[[nodiscard]] auto iterator_with_probability(RANGE&& range, FUNC&& prob_func, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
+#ifdef __cpp_lib_ranges
 		static_assert(std::ranges::forward_range<RANGE>, "range must be forward range");
 		static_assert(std::is_invocable_v<FUNC, std::ranges::range_reference_t<RANGE>>);
 		static_assert(std::convertible_to<std::invoke_result_t<FUNC, std::ranges::range_reference_t<RANGE>>, double>);
+#endif
 
-		const auto sum = std::accumulate(std::ranges::begin(range), std::ranges::end(range), 0.0, [&](auto acc, auto&& item) { return acc + (double)prob_func(item); });
+		const auto start = std::begin(range);
+		const auto end = std::end(range);
+
+		const auto sum = std::accumulate(start, end, 0.0, [&](auto acc, auto&& item) { return acc + (double)prob_func(item); });
 		auto target = in_real_range(0.0, sum, rng);
 
-		for (auto it = std::ranges::begin(range); it != std::ranges::end(range); ++it)
+		for (auto it = start; it != end; ++it)
 		{
 			const auto weight = (double)prob_func(*it);
 			if (target < weight)
@@ -327,7 +337,7 @@ namespace ghassanpl::random
 			target = target - weight;
 		}
 
-		return std::ranges::end(range);
+		return end;
 	}
 
 }

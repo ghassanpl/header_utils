@@ -87,7 +87,7 @@ namespace ghassanpl::random
 	template <typename T, geometry::shape<T> S, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] glm::tvec2<T> point_on(S const& shape, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		return s.edge_point_alpha(percentage(rng));
+		return shape.edge_point_alpha(percentage(rng));
 	}
 
 	/// TODO: in(circle), in(poly)?, on(rect), on(circle), on(arc)

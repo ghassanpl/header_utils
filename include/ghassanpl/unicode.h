@@ -6,6 +6,7 @@
 
 #include "string_ops.h"
 #include "bytes.h"
+#include "ranges.h"
 #include "cpp23.h"
 
 namespace ghassanpl::string_ops
@@ -202,7 +203,6 @@ namespace ghassanpl::string_ops
 	{
 		if (std::empty(str))
 			return 0;
-		using in_char_type = std::ranges::range_value_t<std::remove_cvref_t<T>>;
 		if constexpr (stringable8<T>)
 			return consume_utf8(str);
 		else if constexpr (stringable16<T>)

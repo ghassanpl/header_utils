@@ -100,8 +100,9 @@ namespace detail
 		/* take care of Inf and NaN */
 		if ((ix0 & 0x7ff00000) == 0x7ff00000)
 		{
-			return x * x + x; /* sqrt(NaN)=NaN, sqrt(+inf)=+inf
-						 sqrt(-inf)=sNaN */
+			if (x == std::numeric_limits<double>::infinity())
+				return x;
+			return std::numeric_limits<double>::quiet_NaN(); /* sqrt(NaN)=NaN, sqrt(+inf)=+inf sqrt(-inf)=sNaN */
 		}
 		/* take care of zero */
 		if (ix0 <= 0)
@@ -266,7 +267,7 @@ namespace detail
 		/* y!=zero: result is NaN if either arg is NaN */
 		if (ix > 0x7ff00000 || ((ix == 0x7ff00000) && (lx != 0)) ||
 			iy > 0x7ff00000 || ((iy == 0x7ff00000) && (ly != 0)))
-			return nan_mix(x, y);
+			return std::numeric_limits<double>::quiet_NaN();
 
 		/* determine if y is an odd int when x < 0
 		 * yisint = 0	... y is not an integer

@@ -8,6 +8,7 @@
 #include <string_view>
 #include <array>
 #include <bit>
+#include <memory>
 #include "span.h"
 
 namespace ghassanpl

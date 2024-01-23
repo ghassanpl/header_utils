@@ -376,9 +376,9 @@ namespace ghassanpl::di
 			constexpr auto impl_factory = is_same_as_any_v<std::function<std::shared_ptr<IMPLEMENTATION>(Container&)>, ARGS...>;
 			static_assert(!(instance_given && (interface_factory || impl_factory)), "Cannot register type with both factory and instance");
 			if constexpr (instance_given || interface_factory || impl_factory) /// if user gave instance or factory, don't register the factory
-				GetInterfaceContainer<INTERFACE>().RegisterImplementationType<IMPLEMENTATION>(std::forward<ARGS>(args)...);
+				GetInterfaceContainer<INTERFACE>().template RegisterImplementationType<IMPLEMENTATION>(std::forward<ARGS>(args)...);
 			else
-				GetInterfaceContainer<INTERFACE>().RegisterImplementationType<IMPLEMENTATION>(detail::ConstructorDescriptorForClass<IMPLEMENTATION>::CreateFactory(), std::forward<ARGS>(args)...);
+				GetInterfaceContainer<INTERFACE>().template RegisterImplementationType<IMPLEMENTATION>(detail::ConstructorDescriptorForClass<IMPLEMENTATION>::CreateFactory(), std::forward<ARGS>(args)...);
 		}
 	}
 
@@ -430,7 +430,7 @@ namespace ghassanpl::di
 	template<typename INTERFACE, typename IMPLEMENTATION>
 	Container::ImplementationContainer<INTERFACE>* Container::GetImplementationContainer()
 	{
-		return GetInterfaceContainer<INTERFACE>().GetImplementationContainer<IMPLEMENTATION>();
+		return GetInterfaceContainer<INTERFACE>().template GetImplementationContainer<IMPLEMENTATION>();
 	}
 
 	template<typename INSTANCE>

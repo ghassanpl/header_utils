@@ -88,4 +88,6 @@ namespace ghassanpl
 		std::optional<T> m_value;
 	};
 
+#define or_return(exp) if (decltype(auto) _return_val = (exp); !_return_val.has_value()) return _return_val
+#define or_break(exp) if (decltype(auto) _return_val = (exp); !_return_val.has_value()) break
 }

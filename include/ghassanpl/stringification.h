@@ -38,10 +38,13 @@ namespace ghassanpl
 	{
 		std::string& result;
 
+		template <typename T>
+		std::string str(T&& val) const;
+
 		template <typename... ARGS>
-		bool operator()(ARGS&&... args)
+		bool operator()(ARGS&&... args) const
 		{
-			((result += ghassanpl::to_string(args)), ...);
+			((result += this->str(args)), ...);
 			return true;
 		}
 	};
@@ -130,6 +133,14 @@ namespace ghassanpl
 		if (!stringify(str, result))
 			return {};
 		return result;
+	}
+
+	template<bool TO_STRING>
+	template<typename T>
+	inline std::string string_stringifier<TO_STRING>::str(T&& val) const
+	{
+		using ghassanpl::to_string;
+		return to_string(std::forward<T>(val));
 	}
 }
 

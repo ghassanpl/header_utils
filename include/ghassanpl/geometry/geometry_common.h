@@ -74,32 +74,32 @@ namespace ghassanpl::geometry
 	template <typename T>
 	constexpr glm::tvec2<T> length(glm::tvec2<T> const& a) noexcept
 	{
-		return cem::sqrt(ghassanpl::dot(a, a));
+		return cem::sqrt(geometry::dot(a, a));
 	}
 
 	template <typename T>
 	constexpr std::pair<glm::tvec2<T>, T> dir_and_length(glm::tvec2<T> const& a) noexcept
 	{
-		const auto len = length(a);
+		const auto len = geometry::length(a);
 		if (len >= std::numeric_limits<T>::epsilon())
-			return { a / invlen, len };
+			return { a / len, len };
 		return { {}, len };
 	}
 
 	template <typename T>
 	constexpr glm::tvec2<T> with_length(glm::tvec2<T> const& a, T length) noexcept
 	{
-		const auto dl = dir_and_length(a);
+		const auto dl = geometry::dir_and_length(a);
 		return dl.first * length;
 	}
 
 	template <typename T>
 	constexpr glm::tvec2<T> clamp_length(glm::tvec2<T> const& a, T min, T max) noexcept
 	{
-		const auto lsq = ghassanpl::dot(a, a);
+		const auto lsq = geometry::dot(a, a);
 		const auto sqmin = min * min;
 		const auto sqmax = max * max;
-		if (v < sqmin || sqmax < v)
+		if (lsq < sqmin || sqmax < lsq)
 		{
 			const auto clamped = glm::clamp(lsq, min * min, max * max);
 			return with_length(a, cem::sqrt(lsq));
@@ -110,9 +110,9 @@ namespace ghassanpl::geometry
 	template <typename T>
 	constexpr glm::tvec2<T> max_length(glm::tvec2<T> const& a, T max) noexcept
 	{
-		const auto lsq = ghassanpl::dot(a, a);
+		const auto lsq = geometry::dot(a, a);
 		const auto sqmax = max * max;
-		if (sqmax < v)
+		if (sqmax < lsq)
 		{
 			const auto clamped = glm::min(lsq, max * max);
 			return with_length(a, cem::sqrt(lsq));
@@ -127,19 +127,19 @@ namespace ghassanpl::geometry::normals
 	template <typename T, size_t N>
 	static constexpr bool are_similar(glm::vec<N, T> const& a, glm::vec<N, T> const& b) {
 		constexpr auto min = precision_limits<T>::min_dot_product_of_parallel_normals;
-		return glm::dot(a, b) >= min;
+		return geometry::dot(a, b) >= min;
 	}
 
 	template <typename T, size_t N>
 	static constexpr bool are_parallel(glm::vec<N, T> const& a, glm::vec<N, T> const& b) {
 		constexpr auto min = precision_limits<T>::min_dot_product_of_parallel_normals;
-		return glm::abs(glm::dot(a, b)) >= min;
+		return glm::abs(geometry::dot(a, b)) >= min;
 	}
 
 	template <typename T, size_t N>
 	static constexpr bool are_perpendicular(glm::vec<N, T> const& a, glm::vec<N, T> const& b) {
 		constexpr auto max = precision_limits<T>::max_dot_product_of_perpendicular_normals;
-		return glm::abs(glm::dot(a, b)) <= max;
+		return glm::abs(geometry::dot(a, b)) <= max;
 	}
 }
 

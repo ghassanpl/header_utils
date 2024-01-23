@@ -27,3 +27,10 @@ namespace ghassanpl
 #else
 #error "No span implementation found"
 #endif
+
+namespace ghassanpl
+{
+	namespace xf {
+		template <typename T> [[nodiscard]] constexpr auto as_span() noexcept { return [](auto const& val) { return ghassanpl::span{ val }; }; }
+	}
+}

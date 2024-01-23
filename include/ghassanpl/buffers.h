@@ -5,6 +5,7 @@
 #pragma once
 
 #include "bytes.h"
+#include "expected.h"
 
 namespace ghassanpl
 {
@@ -208,6 +209,7 @@ namespace ghassanpl
 		return buffer_append_range(buffer, as_bytelikes<buffer_element_type<BUFFER>, POD>(pod));
 	}
 
+	/*
 	/// TODO: Make this work - currently needs `string_ops`
 	template <typename BUFFER, typename CALLBACK>
 	requires std::invocable<CALLBACK, size_t, std::string_view, BUFFER&>
@@ -247,6 +249,49 @@ namespace ghassanpl
 			}
 		}
 	}
+	*/
 
 	///@}
+	
+	enum class buffer_compression_error_type
+	{
+		unknown_error,
+		invalid_options,
+		//no_input,
+		//no_more_space_in_output_buffer,
+	};
+
+	struct buffer_compression_error
+	{
+		buffer_compression_error_type type{};
+		std::string description;
+	};
+
+	template <typename T>
+	using buffer_compression_result = expected<T, buffer_compression_error>;
+	
+	template <typename COMPRESSOR>
+	buffer_compression_result<void> compressor_restart(COMPRESSOR& comp) = delete;
+	template <typename COMPRESSOR, typename BUFFER>
+	buffer_compression_result<void> compressor_compress_fragment(COMPRESSOR& comp, bytelike_range auto&& input_range, BUFFER& output_buffer) = delete;
+	template <typename COMPRESSOR, typename BUFFER>
+	buffer_compression_result<void> compressor_finalize(COMPRESSOR& comp, BUFFER& output_buffer) = delete;
+
+	/*
+	template <typename T>
+	concept compressor = requires (T & comp, std::span<char const> in_range, std::string out_range) {
+		{ compressor_restart(comp) } -> std::convertible_to<buffer_compression_result<void>>;
+		{ compressor_compress_fragment(comp, in_range, out_range) } -> std::convertible_to<buffer_compression_result<void>>;
+		{ compressor_finalize(comp, out_range) }	-> std::convertible_to<buffer_compression_result<void>>;
+	};
+	*/
+	
+	template <typename BUFFER, bytelike_range RANGE, typename COMPRESSOR>
+	buffer_compression_result<void> buffer_append_compressed(BUFFER& buffer, RANGE&& input_range, COMPRESSOR& comp)
+	{
+		//static_assert(compressor<COMPRESSOR>, "comp must be a compressor");
+		return compressor_restart(comp)
+			.and_then([&] { return compressor_compress_fragment(comp, input_range, buffer); })
+			.and_then([&] { return compressor_finalize(comp, buffer); });
+	}
 }

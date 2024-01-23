@@ -6,6 +6,7 @@
 
 #include <ranges>
 #include <stdexcept>
+#include <algorithm>
 #include "span.h"
 
 namespace ghassanpl

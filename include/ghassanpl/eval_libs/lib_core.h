@@ -196,6 +196,24 @@ namespace ghassanpl::eval
 			return left;
 		}
 
+		/*
+		auto perform_op()
+		{
+			if (lhs_type == value_t::number_integer && rhs_type == value_t::number_float)
+				return static_cast<number_float_t>(lhs.m_data.m_value.number_integer) op rhs.m_data.m_value.number_float;
+			else if (lhs_type == value_t::number_float && rhs_type == value_t::number_integer)
+				return lhs.m_data.m_value.number_float op static_cast<number_float_t>(rhs.m_data.m_value.number_integer);
+			else if (lhs_type == value_t::number_unsigned && rhs_type == value_t::number_float)
+				return static_cast<number_float_t>(lhs.m_data.m_value.number_unsigned) op rhs.m_data.m_value.number_float;
+			else if (lhs_type == value_t::number_float && rhs_type == value_t::number_unsigned)
+				return lhs.m_data.m_value.number_float op static_cast<number_float_t>(rhs.m_data.m_value.number_unsigned);
+			else if (lhs_type == value_t::number_unsigned && rhs_type == value_t::number_integer)
+				return static_cast<number_integer_t>(lhs.m_data.m_value.number_unsigned) op rhs.m_data.m_value.number_integer;
+			else if (lhs_type == value_t::number_integer && rhs_type == value_t::number_unsigned)
+				return lhs.m_data.m_value.number_integer op static_cast<number_integer_t>(rhs.m_data.m_value.number_unsigned);
+		}
+		*/
+
 		static inline value op_plus(env_type& e, std::vector<value> args) { e.eval_args(args, 2);   return *args[1] + *args[2]; }
 		static inline value op_minus(env_type& e, std::vector<value> args) { e.eval_args(args, 2);  return *args[1] - *args[2]; }
 		static inline value op_mul(env_type& e, std::vector<value> args) { e.eval_args(args, 2);	return *args[1] * *args[2]; }
@@ -222,7 +240,7 @@ namespace ghassanpl::eval
 				else if constexpr (std::is_same_v<std::remove_cvref_t<decltype(val)>, nlohmann::json::binary_t>)
 					return std::vformat(fmt, std::make_format_args(arg->dump()));
 				else if constexpr (std::is_same_v<std::remove_cvref_t<decltype(val)>, nullptr_t>)
-					return "null"s;
+					return std::string{ "null" };
 				else
 					return std::vformat(fmt, std::make_format_args(val));
 			});
@@ -263,7 +281,7 @@ namespace ghassanpl::eval
 		}
 
 		static inline json prefix_macro_get(env_type const&, std::vector<value> args) {
-			return json{ "get", string_view{args[0]}.substr(1) };
+			return json{ "get", std::string_view{args[0]}.substr(1) };
 		};
 
 		static inline void set_macro_prefix_get(env_type& e, std::string const& prefix = ".", std::string const& prefix_eval_func_name = "dot", std::string const& get_func_name = "get")
