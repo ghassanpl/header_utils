@@ -252,9 +252,6 @@
     <ClInclude Include="include\ghassanpl\soptional.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\ghassanpl\cpp20.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ghassanpl\scope.h">
       <Filter>Header Files</Filter>
     </ClInclude>

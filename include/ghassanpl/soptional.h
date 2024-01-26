@@ -5,7 +5,7 @@
 #pragma once
 
 #include <optional>
-#include "cpp20.h"
+#include "min-cpp-version/cpp17.h"
 
 namespace ghassanpl
 {

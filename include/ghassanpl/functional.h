@@ -46,6 +46,12 @@ namespace ghassanpl
 		return value ? std::optional{ func(std::move(value).value()) } : std::nullopt;
 	}
 
+	template <typename T>
+	std::optional<T> to_optional(T* value) noexcept { return value ? *value : std::nullopt; }
+
+	template <typename T>
+	std::optional<T> move_to_optional(T* value) noexcept { return value ? std::move(*value) : std::nullopt; }
+
 	///
 	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<std::optional<T>>&& value) { return value ? flatten(std::move(value).value()) : std::nullopt; }
 	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<T>&& value) { return value; }
@@ -55,6 +61,9 @@ namespace ghassanpl
 	///
 	template <class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 
+	/// TODO: Boost::phoenix::arg_names is a better version of this
+
+	/// Appropriate for predicate-taking functions like std::all_of
 	namespace pred
 	{
 		template <typename T> [[nodiscard]] constexpr auto equal_to(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other == val; }; }
@@ -63,6 +72,14 @@ namespace ghassanpl
 		template <typename T> [[nodiscard]] constexpr auto less_than_or_equal_to(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other <= val; }; }
 		template <typename T> [[nodiscard]] constexpr auto greater_than(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other > val; }; }
 		template <typename T> [[nodiscard]] constexpr auto greater_than_or_equal_to(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other >= val; }; }
+		
+		template <typename T> [[nodiscard]] constexpr auto eq(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other == val; }; }
+		template <typename T> [[nodiscard]] constexpr auto ne(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other != val; }; }
+		template <typename T> [[nodiscard]] constexpr auto lt(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other < val; }; }
+		template <typename T> [[nodiscard]] constexpr auto le(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other <= val; }; }
+		template <typename T> [[nodiscard]] constexpr auto gt(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other > val; }; }
+		template <typename T> [[nodiscard]] constexpr auto ge(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other >= val; }; }
+		
 		                      [[nodiscard]] constexpr auto is_null() noexcept { return [](auto&& other) { return other == nullptr; }; }
 		                      [[nodiscard]] constexpr auto is_not_null() noexcept { return [](auto&& other) { return other != nullptr; }; }
 		                      [[nodiscard]] constexpr auto is_empty() noexcept { return [](auto&& other) { return std::empty(other); }; }
@@ -70,10 +87,6 @@ namespace ghassanpl
 		                      [[nodiscard]] constexpr auto is_true() noexcept { return [](auto&& other) { return !!other; }; }
 		                      [[nodiscard]] constexpr auto is_false() noexcept { return [](auto&& other) { return !other; }; }
 		template <typename T> [[nodiscard]] constexpr auto is_in(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return std::find(std::begin(val), std::end(val), other) != std::end(val); }; }
-
-		template <typename FUNC> [[nodiscard]] constexpr auto negated(FUNC&& func) {
-			return [func = std::forward<FUNC>(func)](auto&&... args) { return func(std::forward<decltype(args)>(args)...); };
-		}
 
 		template <typename... FUNCS>
 		[[nodiscard]] constexpr auto when_any(FUNCS&&... funcs) {
@@ -101,8 +114,19 @@ namespace ghassanpl
 				}, funcs);
 			};
 		}
+
+
+		/// TODO: Need to differentiate between { !func } and [](val) -> !val
+		/*
+		template <typename FUNC>
+		[[nodiscard]] constexpr auto negated(FUNC&& func)
+		{
+			return [func = std::forward<FUNC>(func)](auto&&... args) { return !func(std::forward<decltype(args)>(args)...); };
+		}
+		*/
 	}
 
+	/// Appropriate for functions like std::for_each that don't have semantics by themselves
 	namespace op
 	{
 		template <typename T> [[nodiscard]] constexpr auto push_back_to(T& to) noexcept { return [&to](auto&& val) { to.push_back(std::forward<decltype(val)>(val)); }; }
@@ -207,6 +231,7 @@ namespace ghassanpl
 
 	}
 
+	/// Appropriate for not-in-place transformation functions 
 	namespace xf
 	{
 		template <typename T> [[nodiscard]] constexpr auto cast_to() noexcept { return [](auto&& val) { return (T)std::forward<decltype(val)>(val); }; }
@@ -215,13 +240,45 @@ namespace ghassanpl
 		template <typename T> [[nodiscard]] constexpr auto bit_cast_to() noexcept { return [](auto&& val) { return std::bit_cast<T>(std::forward<decltype(val)>(val)); }; }
 #endif
 		template <typename T> [[nodiscard]] constexpr auto constructed_as() noexcept { return [](auto&& val) { return T{ std::forward<decltype(val)>(val) }; }; }
-		template <typename T> [[nodiscard]] constexpr auto called() noexcept { return [](auto&& val) { return val(); }; }
+		                      [[nodiscard]] constexpr auto called() noexcept { return [](auto&& val) { return std::forward<decltype(val)>(val)(); }; }
+
+		template <typename T> [[nodiscard]] constexpr auto added_to(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) + other; }; }
+		template <typename T> [[nodiscard]] constexpr auto subtracted_from(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return other - std::forward<decltype(val)>(val); }; }
+		template <typename T> [[nodiscard]] constexpr auto decremented_by(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) - other; }; }
+		template <typename T> [[nodiscard]] constexpr auto divided_by(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) / other; }; }
+		template <typename T> [[nodiscard]] constexpr auto overed_by(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return other / std::forward<decltype(val)>(val); }; }
+		template <typename T> [[nodiscard]] constexpr auto modulo_by(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) % other; }; }
+		template <typename T> [[nodiscard]] constexpr auto multiplied_by(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) * other; }; }
+		                      [[nodiscard]] constexpr auto complemented() noexcept { return [](auto&& val) { return -std::forward<decltype(val)>(val); }; }
+		
+		                      [[nodiscard]] constexpr auto negated() noexcept { return [](auto&& val) { return !std::forward<decltype(val)>(val); }; }
+		
+		                      [[nodiscard]] constexpr auto bit_inverted() noexcept { return [](auto&& val) { return ~std::forward<decltype(val)>(val); }; }
+		template <typename T> [[nodiscard]] constexpr auto bit_anded_with(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) & other; }; }
+		template <typename T> [[nodiscard]] constexpr auto bit_ored_with(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) | other; }; }
+		template <typename T> [[nodiscard]] constexpr auto bit_xored_with(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) ^ other; }; }
+		template <typename T> [[nodiscard]] constexpr auto shifted_left_by(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) << other; }; }
+		template <typename T> [[nodiscard]] constexpr auto shifted_right_by(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) >> other; }; }
+		
+		template <typename T> [[nodiscard]] constexpr auto field(T&& field_ptr) noexcept { 
+			return [field_ptr = std::forward<T>(field_ptr)](auto&& val) { 
+				using arg_type = remove_cvref_t<decltype(val)>;
+				if constexpr (std::is_pointer_v<arg_type>)
+					return (std::forward<decltype(val)>(val)->*field_ptr);
+				else
+					return (std::forward<decltype(val)>(val).*field_ptr);
+			}; 
+		}
+		
+#ifdef __cpp_impl_three_way_comparison
+		template <typename T> [[nodiscard]] constexpr auto compared_with(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) <=> other; }; }
+#endif
+
 	}
 
 	/// Macro that allows us to pass std:: functions to algorithms as if they were function pointers,
 	/// because you can't take the address of an std:: function for some stupid reason
 #define std_call(func) ([](auto&&... vals) { return std::func(std::forward<decltype(vals)>(vals)...); })
-
 	/// Returns a new `T` transformed by `func`
 	template <typename T, typename FUNC>
 	constexpr T resulting(FUNC&& func)
@@ -247,14 +304,15 @@ namespace ghassanpl
 	}
 
 	/// Returns a new object transformed by `func`. The first argument to `func` determines what the object's type is.
-	template <typename FUNC, typename ARG_TYPE = typename decltype(detail::detect_first_arg(std::function{ std::declval<FUNC>() }))::type >
-	GHPL_REQUIRES((!std::is_void_v<ARG_TYPE>&& requires { std::function{ std::declval<FUNC>() }; }))
+	template <typename FUNC>
+	GHPL_REQUIRES((!std::is_void_v<typename decltype(detail::detect_first_arg(std::function{ std::declval<FUNC>() }))::type>&& requires { std::function{ std::declval<FUNC>() }; }))
 	constexpr auto resulting(FUNC&& func)
 	{
 		/// Because std::function can deduce function signature, but that magic is not available to us mortals via the stdlib:
 		/// https://en.cppreference.com/w/cpp/utility/functional/function/deduction_guides
-		static_assert(!std::is_void_v<ARG_TYPE>, "function must take a single l-value reference argument");
-		std::remove_reference_t<ARG_TYPE> result{};
+		using arg_type = typename decltype(detail::detect_first_arg(std::function{ std::declval<FUNC>() }))::type;
+		static_assert(!std::is_void_v<arg_type>, "function must take a single l-value reference argument");
+		std::remove_reference_t<arg_type> result{};
 		func(result);
 		return result;
 	}

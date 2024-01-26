@@ -34,7 +34,7 @@ namespace ghassanpl::formats
 		/// Will not throw any errors by itself.
 		/// 
 		/// \param buffer Either a `string_view` or an `istream`
-		/// \param row_callback Called for each row, must take arguments convertible to (`size_t row_num`, `std::vector<std::string> row_cells`)
+		/// \param row_callback Called for each row, must take arguments convertible to (`intptr row_num`, `std::vector<std::string> row_cells`)
 		// TODO: Extend this to accept any char type
 		// TODO: Perhaps it would be best if we didn't allocate the row vector each time (we're moving it away currently)
 		//	      but reuse its storage (and the storage of its members)
@@ -45,11 +45,14 @@ namespace ghassanpl::formats
 			using ghassanpl::formats::detail::get_char;
 			using ghassanpl::formats::detail::get_invalid_char;
 
+			intptr_t line = 0;
+			std::vector<std::string> row;
+
+			static_assert(std::invocable<ROW_CALLBACK, decltype(line), decltype(row)>, "must take arguments convertible to (`intptr row_num`, `std::vector<std::string> row_cells`)");
+
 			static constexpr auto invalid_value = get_invalid_char(std::type_identity<std::remove_cvref_t<decltype(buffer)>>{});
 			bool in_quote = false;
-			intptr_t line = 0;
-
-			std::vector<std::string> row;
+			
 			std::string current_cell;
 			int cp = 0;
 			while ((cp = get_char(buffer)) != invalid_value)

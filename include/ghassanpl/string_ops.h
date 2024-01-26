@@ -555,7 +555,7 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] constexpr bool is_ascii(char32_t cp) noexcept { return cp <= 127; }
 
 	/// A pre-C++23 version of `str.contains(c)`
-	[[nodiscard]] inline bool string_contains(std::string_view str, char c)
+	[[nodiscard]] constexpr bool string_contains(std::string_view str, char c)
 	{
 #if __cpp_lib_string_contains
 		return str.contains(c);
@@ -563,6 +563,8 @@ namespace ghassanpl::string_ops
 		return str.find(c) != std::string_view::npos;
 #endif
 	}
+
+	[[nodiscard]] constexpr auto data_end(std::string_view str) noexcept { return str.data() + str.size(); }
 
 	/// Gets a substring of `str` starting at `start` and containing `count` characters. The result will always be valid, clamped to the bounds of `str` (or empty).
 	/// \param count the (maximum) number of characters to get

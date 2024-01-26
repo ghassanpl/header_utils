@@ -6,6 +6,9 @@
 
 #include <gtest/gtest.h>
 
+/// TODO: Check if it works with std::string, etc
+/// Maybe add overloads for std::string, etc
+
 TEST(soptional_test, basics_work)
 {
 	ghassanpl::sentinel_optional<int> opt;

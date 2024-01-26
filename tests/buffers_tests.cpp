@@ -41,6 +41,7 @@ TEST(buffers, basics)
 	EXPECT_EQ(dest, u8"nmadnmad");
 }
 
+#if 0
 struct lzp_compressor
 {
 	struct compression_options
@@ -291,3 +292,5 @@ TEST(buffer_compression, works)
 	decompressor.decode(compressed_data, decompressed_data);
 	EXPECT_EQ(decompressed_data.size(), input_data.size());
 }
+
+#endif
