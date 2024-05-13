@@ -109,6 +109,12 @@ namespace ghassanpl
 		return static_cast<sintN_t<std::is_signed_v<T>, bit_count_half>>(v & bit_mask_v<0, bit_count_half>);
 	}
 
+	template <bit_integral T>
+	[[nodiscard]] constexpr auto split_bits(T v) noexcept
+	{
+		return std::make_pair(most_significant_half(v), least_significant_half(v));
+	}
+
 	/// \name Endianness
 	/// @{
 

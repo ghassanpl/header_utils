@@ -91,7 +91,7 @@ namespace ghassanpl
 	}
 
 	template <typename VALUE_TYPE>
-	inline void mmap_sink<VALUE_TYPE>::sync(std::error_code& error) noexcept
+	void mmap_sink<VALUE_TYPE>::sync(std::error_code& error) noexcept
 	{
 		error.clear();
 		if (!this->is_open())
@@ -122,7 +122,7 @@ namespace ghassanpl
 	}
 
 	template <typename VALUE_TYPE>
-	inline file_handle_type mmap_sink<VALUE_TYPE>::open_file(const std::filesystem::path& path, std::error_code& error) noexcept
+	file_handle_type mmap_sink<VALUE_TYPE>::open_file(const std::filesystem::path& path, std::error_code& error) noexcept
 	{
 		if (path.empty())
 		{

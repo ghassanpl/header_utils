@@ -9,10 +9,12 @@
 namespace ghassanpl::geometry::squares
 {
 	/// TODO: Should probably define the terms somewhere (surrounding, neighbor, adjacent, tile, world, etc)
+	/// 
+	/// https://www.redblobgames.com/grids/parts/
 	
-	constexpr bool is_surrounding(glm::ivec2 a, glm::ivec2 b) { return glm::abs(a.x - b.x) < 2 && glm::abs(a.y - b.y) < 2; }
-	constexpr bool is_neighbor(glm::ivec2 a, glm::ivec2 b) { return is_surrounding(a, b) && glm::abs(a.y - b.y) != glm::abs(a.x - b.x); }
-	constexpr bool is_diagonal_neighbor(glm::ivec2 a, glm::ivec2 b) { return is_surrounding(a, b) && glm::abs(a.y - b.y) == glm::abs(a.x - b.x); }
+	constexpr bool is_surrounding(glm::ivec2 a, glm::ivec2 b) { const auto d = glm::abs(a - b); return d.x < 2 && d.y < 2 && d.x + d.y > 0; }
+	constexpr bool is_neighbor(glm::ivec2 a, glm::ivec2 b) { const auto d = glm::abs(a - b); return d.x < 2 && d.y < 2 && d.x != d.y; }
+	constexpr bool is_diagonal_neighbor(glm::ivec2 a, glm::ivec2 b) { return !is_neighbor(a, b); }
 
 	template <typename T>
 	concept metric = false;
@@ -45,7 +47,7 @@ namespace ghassanpl::geometry::squares
 		static constexpr auto distance(glm::tvec2<T> a, glm::tvec2<T> b)
 		{
 			const auto d = glm::abs(b - a);
-			return max(d.x, d.y);
+			return glm::max(d.x, d.y);
 		}
 
 		template <std::integral T>
@@ -61,16 +63,27 @@ namespace ghassanpl::geometry::squares
 	};
 	using surrounding_metric = chebyshev_metric;
 
+	/// TODO: Is there a reason this needs to be integral only?
 	template <std::integral T>
 	constexpr auto manhattan_distance(glm::tvec2<T> a, glm::tvec2<T> b)
 	{
 		return manhattan_metric::distance(a, b);
+	}
+	template <std::integral T>
+	constexpr auto neighbor_distance(glm::tvec2<T> a, glm::tvec2<T> b)
+	{
+		return neighbor_metric::distance(a, b);
 	}
 
 	template <std::integral T>
 	constexpr auto chebyshev_distance(glm::tvec2<T> a, glm::tvec2<T> b)
 	{
 		return chebyshev_metric::distance(a, b);
+	}
+	template <std::integral T>
+	constexpr auto surrounding_distance(glm::tvec2<T> a, glm::tvec2<T> b)
+	{
+		return surrounding_metric::distance(a, b);
 	}
 
 	constexpr glm::vec2 tile_pos_to_world_pos(glm::ivec2 tile_pos, glm::vec2 tile_size) { return glm::vec2(tile_pos) * tile_size; }

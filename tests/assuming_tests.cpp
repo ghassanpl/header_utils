@@ -152,7 +152,8 @@ TEST_F(assuming_test, AssumingNotEqual_works)
 
 TEST_F(assuming_test, AssumingNotReachable_works)
 {
-	EXPECT_ASSUMPTION_FAILED(AssumingNotReachable);
+	/// TODO: The below will not work because AssumingNotReachable calls std::unreachable
+	//EXPECT_ASSUMPTION_FAILED(AssumingNotReachable);
 }
 
 TEST_F(assuming_test, AssumingNotRecursive_works)
@@ -247,6 +248,17 @@ TEST_F(assuming_test, assumings_dont_copy_unnecessarily)
 	EXPECT_ASSUMPTION_SUCCEEDED(AssumingEqual, a, UnCopyable{});
 	UnMovable b;
 	EXPECT_ASSUMPTION_SUCCEEDED(AssumingEqual, b, UnMovable{});
+}
+
+extern "C" struct unknown {};
+TEST(assuming_tests, AdditionalDataToString_works)
+{
+	EXPECT_EQ(detail::AdditionalDataToString("{}", "hello"), "hello");
+	EXPECT_EQ(detail::AdditionalDataToString("{}", 5), "5");
+	EXPECT_EQ(detail::AdditionalDataToString("{}", 5.5), "5.5");
+	EXPECT_EQ(detail::AdditionalDataToString("{}", test_enum::asadf), "asadf");
+	EXPECT_EQ(detail::AdditionalDataToString("{}", (int*)0), "0x0");
+	EXPECT_TRUE(detail::AdditionalDataToString("{}", unknown{}).contains("unknown"));
 }
 
 /// TODO: Make sure everything works when ASSUMING_DEBUG is not defined

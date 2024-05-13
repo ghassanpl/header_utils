@@ -214,11 +214,13 @@ namespace ghassanpl::eval
 		}
 		*/
 
+		/*
 		static inline value op_plus(env_type& e, std::vector<value> args) { e.eval_args(args, 2);   return *args[1] + *args[2]; }
 		static inline value op_minus(env_type& e, std::vector<value> args) { e.eval_args(args, 2);  return *args[1] - *args[2]; }
 		static inline value op_mul(env_type& e, std::vector<value> args) { e.eval_args(args, 2);	return *args[1] * *args[2]; }
 		static inline value op_div(env_type& e, std::vector<value> args) { e.eval_args(args, 2);	return *args[1] / *args[2]; }
 		static inline value op_mod(env_type& e, std::vector<value> args) { e.eval_args(args, 2);	return *args[1] % *args[2]; }
+		*/
 
 		static inline value type_of(env_type& e, std::vector<value> args) {
 			const auto val = e.eval_arg(args, 1);
@@ -234,11 +236,20 @@ namespace ghassanpl::eval
 		{
 			return ghassanpl::formats::json::visit(arg.ref(), [&](auto const& val) {
 				if constexpr (std::is_same_v<std::remove_cvref_t<decltype(val)>, nlohmann::json::array_t>)
-					return std::vformat(fmt, std::make_format_args(arg->dump()));
+				{
+					auto dump = arg->dump();
+					return std::vformat(fmt, std::make_format_args(dump));
+				}
 				else if constexpr (std::is_same_v<std::remove_cvref_t<decltype(val)>, nlohmann::json::object_t>)
-					return std::vformat(fmt, std::make_format_args(arg->dump()));
+				{
+					auto dump = arg->dump();
+					return std::vformat(fmt, std::make_format_args(dump));
+				}
 				else if constexpr (std::is_same_v<std::remove_cvref_t<decltype(val)>, nlohmann::json::binary_t>)
-					return std::vformat(fmt, std::make_format_args(arg->dump()));
+				{
+					auto dump = arg->dump();
+					return std::vformat(fmt, std::make_format_args(dump));
+				}
 				else if constexpr (std::is_same_v<std::remove_cvref_t<decltype(val)>, nullptr_t>)
 					return std::string{ "null" };
 				else
@@ -339,7 +350,7 @@ namespace ghassanpl::eval
 				e.funcs[":and:"] = op_and;
 				e.funcs[":or:"] = op_or;
 				e.funcs[":or*:"] = op_or;
-				e.funcs[":+:"] = op_plus;
+				//e.funcs[":+:"] = op_plus;
 				e.funcs["type-of:"] = type_of;
 				e.funcs["typeof:"] = type_of;
 				e.funcs["size-of:"] = size_of;

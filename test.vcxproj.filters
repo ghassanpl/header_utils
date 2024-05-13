@@ -282,6 +282,24 @@
     <ClInclude Include="include\ghassanpl\multicast.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\circle.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\intersection.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\capsule.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\quad.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\point_cloud.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\geometry\hexes.h">
+      <Filter>Header Files\geometry</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -443,6 +461,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\expected_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\unique_handle_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

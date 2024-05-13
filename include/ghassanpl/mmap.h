@@ -452,3 +452,7 @@ namespace ghassanpl
 
 	/// @}
 }
+
+#ifdef GHASSANPL_MMAP_IMPL
+#include "mmap_impl.h"
+#endif

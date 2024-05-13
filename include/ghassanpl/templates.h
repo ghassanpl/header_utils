@@ -294,6 +294,15 @@ namespace ghassanpl
 		return x.value();
 	}
 
+	//-------------------------------------------------------------------------------------------------------------
+	//  unique_type
+	//
+	// usage:
+	// unique_type a;
+	// unique_type b;
+	// static_assert(typeid(a) != typeid(b));
+	template <auto = [] {}>
+	struct unique_type {};
 }
 
 namespace ghassanpl
@@ -397,6 +406,8 @@ namespace ghassanpl
 			else if constexpr (std::is_invocable_v<FUNC, size_t, VALUE>)
 				func(INDEX, std::forward<VALUE>(value));
 			else if constexpr (std::is_invocable_v<FUNC, VALUE>)
+				func(std::forward<VALUE>(value));
+			else if constexpr (std::is_invocable_v<FUNC, size_t, std::type_identity<VALUE>>)
 				func(std::forward<VALUE>(value));
 			else
 				func(INDEX);

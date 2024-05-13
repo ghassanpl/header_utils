@@ -9,6 +9,7 @@
 #include <array>
 #include <bit>
 #include <memory>
+#include <stdexcept>
 #include "span.h"
 
 namespace ghassanpl
@@ -28,6 +29,20 @@ namespace ghassanpl
 	{
 		return { reinterpret_cast<TO*>(bytes.data()), bytes.size() * sizeof(FROM) };
 	}
+
+	/// Returns an object whose internal representation is initialized from the argument
+	template <typename TO, bytelike FROM>
+	requires std::is_trivially_copyable_v<TO>
+	[[nodiscard]] TO from_bytelikes(span<FROM const> from)
+	{
+		/// TODO: Use `expected` result instead of exceptions?
+		if (from.size() < sizeof(TO))
+			throw std::invalid_argument("from span must be at least the size of the object");
+		TO result;
+		std::memcpy(std::addressof(result), from.data(), sizeof(TO));
+		return result;
+	}
+
 
 	/// Returns a span of \c bytelike s that represents the internal object representation of the argument
 	template <bytelike TO, typename T>

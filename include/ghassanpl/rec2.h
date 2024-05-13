@@ -9,6 +9,7 @@
 #include <glm/vec2.hpp>
 #include "span.h"
 #include <functional>
+#include <optional>
 
 #define GHPL_HAS_REC2
 
@@ -66,6 +67,8 @@ namespace ghassanpl
 		static constexpr trec2 from_size(T x, T y, T w, T h) noexcept { return { x, y, x + w, y + h }; };
 		static constexpr trec2 from_center_and_size(tvec p, tvec s) noexcept { return { p - s / T(2), p + s / T(2) }; };
 		static constexpr trec2 from_center_and_size(T x, T y, T w, T h) noexcept { return { x - w / T(2), y - h / T(2), x + w / T(2), y + h / T(2) }; };
+		static constexpr trec2 from_center_and_half_size(tvec p, tvec s) noexcept { return { p - s, p + s }; };
+		static constexpr trec2 from_center_and_half_size(T x, T y, T w, T h) noexcept { return { x - w, y - h, x + w, y + h }; };
 
 		static constexpr trec2 invalid() noexcept { return { T{1}, T{1}, T{-1}, T{-1} }; };
 		static constexpr trec2 exclusive() noexcept
@@ -171,6 +174,7 @@ namespace ghassanpl
 		constexpr tvec right_bottom() const noexcept { return p2; }
 		constexpr tvec half_size() const noexcept { return (p2 - p1) / T{ 2 }; }
 		constexpr tvec center() const noexcept { return p1 + half_size(); }
+		constexpr tvec centroid() const noexcept { return center(); }
 		constexpr trec2& set_center(tvec pos) noexcept { const auto hw = half_size(); p1 = pos - hw; p2 = pos + hw; return *this; }
 		constexpr trec2 at_center(tvec pos) const noexcept { auto copy = *this; copy.set_center(pos); return copy; }
 
@@ -273,6 +277,11 @@ namespace ghassanpl
 				return glm::mix(this->left_bottom(), this->left_top(), (d - (w + h + w)) / h);
 		}
 
+		constexpr glm::vec2 point_alpha(glm::vec2 alpha) const
+		{
+			return glm::vec2{ this->p1 } + alpha * glm::vec2{ this->size() };
+		}
+
 		constexpr glm::vec2 edge_point(double edge_pos) const
 		{
 			const auto w = width();
@@ -293,14 +302,66 @@ namespace ghassanpl
 			return *this;
 		}
 
-		constexpr glm::vec2 projected(glm::vec2 pt) const
+		constexpr glm::vec2 closest_point_to(glm::vec2 pt) const
 		{
 			const auto d = (pt - p1) / size();
 			const auto c = glm::clamp(d, glm::vec2{ 0 }, glm::vec2{ 1 });
 			return p1 + c * size();
 		}
 
-		/// TODO: Distance from point to this
+		template <typename FUNC>
+		GHPL_REQUIRES(std::is_invocable_v<FUNC, tvec>&& std::is_integral_v<T>)
+		constexpr void for_each_pixel(FUNC&& func) const
+		{
+			for (T y = p1.y; y < p2.y; ++y)
+				for (T x = p1.x; x < p2.x; ++x)
+					func(tvec{ x, y });
+		}
+
+		template <typename FUNC>
+		constexpr void for_each_edge(FUNC&& func) const
+		{
+			func(left_top(), right_top());
+			func(right_top(), right_bottom());
+			func(right_bottom(), left_bottom());
+			func(left_bottom(), left_top());
+		}
+
+		template <typename FUNC>
+		constexpr void for_each_vertex(FUNC&& func) const
+		{
+			func(left_top());
+			func(right_top());
+			func(right_bottom());
+			func(left_bottom());
+		}
+
+		constexpr size_t vertex_count() const noexcept { return 4; }
+		constexpr size_t edge_count() const noexcept { return 4; }
+
+		auto edge(size_t index) const -> std::optional<std::pair<glm::tvec2<T>, glm::tvec2<T>>>
+		{
+			switch (index)
+			{
+			case 0: return std::make_pair(left_top(), right_top());
+			case 1: return std::make_pair(right_top(), right_bottom());
+			case 2: return std::make_pair(right_bottom(), left_bottom());
+			case 3: return std::make_pair(left_bottom(), left_top());
+			}
+			return std::nullopt;
+		}
+
+		auto vertex(size_t index) const -> std::optional<tvec>
+		{
+			switch (index)
+			{
+			case 0: return left_top();
+			case 1: return right_top();
+			case 2: return right_bottom();
+			case 3: return left_bottom();
+			}
+			return std::nullopt;
+		}
 	};
 
 

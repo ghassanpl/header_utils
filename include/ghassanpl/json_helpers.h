@@ -14,6 +14,7 @@
 namespace ghassanpl::formats
 {
 	
+	/*
 	namespace text
 	{
 		/// \defgroup Text Text
@@ -34,8 +35,10 @@ namespace ghassanpl::formats
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			if (ec == std::errc::file_too_large) /// zero-sized file
+				return {};
 			if (ec)
-				throw std::runtime_error(format("file '{}' not found", from.string()));
+				throw std::runtime_error(format("file '{}' could not be loaded: {}", from.string(), ec.message()));
 			return std::string{ source.begin(), source.end() };
 		}
 
@@ -87,8 +90,10 @@ namespace ghassanpl::formats
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			if (ec == std::errc::file_too_large) /// zero-sized file
+				return {};
 			if (ec)
-				throw std::runtime_error(format("file '{}' not found", from.string()));
+				throw std::runtime_error(format("file '{}' could not be loaded: {}", from.string(), ec.message()));
 
 			return resulting([&](std::vector<std::string>& result) {
 				ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', op::emplace_back_to(result));
@@ -101,19 +106,19 @@ namespace ghassanpl::formats
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			if (ec == std::errc::file_too_large) /// zero-sized file
+				return;
 			if (ec)
-				throw std::runtime_error(format("file '{}' not found", from.string()));
+				throw std::runtime_error(format("file '{}' could not be loaded: {}", from.string(), ec.message()));
 
-
-			return resulting([&](std::vector<std::string>& result) {
-				ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', callback);
-			});
+			ghassanpl::string_ops::split({ source.begin(), source.end() }, '\n', callback);
 		}
 
-		inline std::vector<std::string> try_load_file(std::filesystem::path const& from)
+		inline expected<std::vector<std::string>, std::error_code> try_load_file(std::filesystem::path const& from)
 		{
 			std::error_code ec;
-			return load_file(from, ec);
+			auto result = load_file(from, ec);
+			return ec ? unexpected(ec) : expected<std::vector<std::string>, std::error_code>{ std::move(result) };
 		}
 
 		template <std::ranges::range T>
@@ -142,6 +147,7 @@ namespace ghassanpl::formats
 		}
 		/// @}
 	}
+	*/
 
 	namespace json
 	{
@@ -153,29 +159,30 @@ namespace ghassanpl::formats
 		inline const nlohmann::json empty_json_array = nlohmann::json::array();
 		inline const nlohmann::json empty_json_object = nlohmann::json::object();
 
-		inline nlohmann::json load_file(std::filesystem::path const& from, std::error_code& ec)
+		/// Smaller name for \c nlohmann::json::value_t
+		using jtype = nlohmann::json::value_t;
+
+		inline expected<nlohmann::json, std::error_code> load_file(std::filesystem::path const& from)
 		{
+			std::error_code ec{};
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
-			return ec ? nlohmann::json{} : nlohmann::json::parse(source);
+			if (ec != std::error_code{})
+				return unexpected(ec);
+			return nlohmann::json::parse(source);
 		}
 
-		inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json const& or_json = empty_json)
+		inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json or_json)
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
-			return ec ? or_json : nlohmann::json::parse(source);
+			return ec ? move(or_json) : nlohmann::json::parse(source);
 		}
 
-		inline nlohmann::json load_file(std::filesystem::path const& from)
+		inline nlohmann::json try_load_file(std::filesystem::path const& from)
 		{
-			try
-			{
-				return nlohmann::json::parse(ghassanpl::make_mmap_source<char>(from));
-			}
-			catch (...)
-			{
-				std::throw_with_nested(std::runtime_error{ format("while trying to load json file {}", from.string()) });
-			}
+			std::error_code ec;
+			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			return ec ? empty_json : nlohmann::json::parse(source);
 		}
 
 		inline void save_file(std::filesystem::path const& to, nlohmann::json const& j, bool pretty = true)
@@ -185,8 +192,146 @@ namespace ghassanpl::formats
 			s.dump(j, pretty, false, 1);
 		}
 
-		/// Smaller name for \c nlohmann::json::value_t
-		using jtype = nlohmann::json::value_t;
+		constexpr const char* type_name(nlohmann::json::value_t type) noexcept
+		{
+			switch (type)
+			{
+				using enum nlohmann::detail::value_t;
+			case null:
+				return "null";
+			case object:
+				return "object";
+			case array:
+				return "array";
+			case string:
+				return "string";
+			case boolean:
+				return "boolean";
+			case binary:
+				return "binary";
+			case discarded:
+				return "discarded";
+			default:
+				return "number";
+			}
+		}
+
+		/// Calls `func` with the actual value inside `j`; similar to `std::visit`
+		template <typename VISIT_FUNC>
+		auto visit(nlohmann::json const& j, VISIT_FUNC&& func)
+		{
+			switch (j.type())
+			{
+				using enum nlohmann::detail::value_t;
+			case object: return func(j.get_ref<nlohmann::json::object_t const&>());
+			case array: return func(j.get_ref<nlohmann::json::array_t const&>());
+			case string: return func(j.get_ref<nlohmann::json::string_t const&>());
+			case boolean: return func(j.get_ref<nlohmann::json::boolean_t const&>());
+			case number_integer: return func(j.get_ref<nlohmann::json::number_integer_t const&>());
+			case number_unsigned: return func(j.get_ref<nlohmann::json::number_unsigned_t const&>());
+			case number_float: return func(j.get_ref<nlohmann::json::number_float_t const&>());
+			case binary: return func(j.get_ref<nlohmann::json::binary_t const&>());
+			default:
+				return func(nullptr);
+			}
+		}
+
+		/// @}
+	}
+
+	namespace ubjson
+	{
+		/// \defgroup UBJSON UBJSON
+		/// \ingroup Formats
+		/// @{
+
+		inline expected<nlohmann::json, std::error_code> load_file(std::filesystem::path const& from)
+		{
+			std::error_code ec{};
+			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			if (ec != std::error_code{})
+				return unexpected(ec);
+			return nlohmann::json::from_ubjson(source);
+		}
+
+		inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json or_json)
+		{
+			std::error_code ec;
+			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			return ec ? move(or_json) : nlohmann::json::from_ubjson(source);
+		}
+
+		inline nlohmann::json try_load_file(std::filesystem::path const& from)
+		{
+			std::error_code ec;
+			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			return ec ? json::empty_json : nlohmann::json::from_ubjson(source);
+		}
+
+		inline expected<void, std::error_code> save_file(std::filesystem::path const& to, nlohmann::json const& j, bool pretty = true)
+		{
+			std::ofstream out;
+			std::ios_base::iostate exceptionMask = out.exceptions() | std::ios::failbit;
+			out.exceptions(exceptionMask);
+			try
+			{
+				out.open(to, std::ios::binary);
+			}
+			catch (std::ios_base::failure& e)
+			{
+				return unexpected(e.code());
+			}
+			nlohmann::json::to_ubjson(j, nlohmann::detail::output_adapter<char, std::string>(out), true, true);
+			return {};
+		}
+
+		/// @}
+	}
+
+
+	namespace cbor
+	{
+		/// \defgroup CBOR CBOR
+		/// \ingroup Formats
+		/// @{
+
+		inline expected<nlohmann::json, std::error_code> load_file(std::filesystem::path const& from)
+		{
+			std::error_code ec{};
+			auto source = ghassanpl::make_mmap_source<uint8_t>(from, ec);
+			if (ec != std::error_code{})
+				return unexpected(ec);
+			return nlohmann::json::from_cbor(source);
+		}
+
+		inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json or_json)
+		{
+			std::error_code ec;
+			auto source = ghassanpl::make_mmap_source<uint8_t>(from, ec);
+			return ec ? move(or_json) : nlohmann::json::from_cbor(source);
+		}
+
+		inline nlohmann::json try_load_file(std::filesystem::path const& from)
+		{
+			std::error_code ec;
+			auto source = ghassanpl::make_mmap_source<uint8_t>(from, ec);
+			return ec ? json::empty_json : nlohmann::json::from_cbor(source);
+		}
+
+		inline void save_file(std::filesystem::path const& to, nlohmann::json const& j, bool pretty = true)
+		{
+			std::ofstream out{ to, std::ios::binary };
+			nlohmann::json::to_cbor(j, nlohmann::detail::output_adapter<char, std::string>(out));
+		}
+
+		/// @}
+	}
+	/*
+	namespace json
+	{
+		/// \defgroup JSON JSON
+		/// \ingroup Formats
+		/// @{
 
 		/// Gets the item in the json object `g` with the key `key`, or an empty json object if none found.
 		/// \param type the value must also be of this type
@@ -293,49 +438,6 @@ namespace ghassanpl::formats
 			return false;
 		}
 
-		/// Calls `func` with the actual value inside `j`; similar to `std::visit`
-		template <typename VISIT_FUNC>
-		auto visit(nlohmann::json const& j, VISIT_FUNC&& func)
-		{
-			switch (j.type())
-			{
-			using enum nlohmann::detail::value_t;
-			case object: return func(j.get_ref<nlohmann::json::object_t const&>());
-			case array: return func(j.get_ref<nlohmann::json::array_t const&>());
-			case string: return func(j.get_ref<nlohmann::json::string_t const&>());
-			case boolean: return func(j.get_ref<nlohmann::json::boolean_t const&>());
-			case number_integer: return func(j.get_ref<nlohmann::json::number_integer_t const&>());
-			case number_unsigned: return func(j.get_ref<nlohmann::json::number_unsigned_t const&>());
-			case number_float: return func(j.get_ref<nlohmann::json::number_float_t const&>());
-			case binary: return func(j.get_ref<nlohmann::json::binary_t const&>());
-			default:
-				return func(nullptr);
-			}
-		}
-
-		constexpr const char* type_name(nlohmann::json::value_t type) noexcept
-		{
-			switch (type)
-			{
-				using enum nlohmann::detail::value_t;
-			case null:
-				return "null";
-			case object:
-				return "object";
-			case array:
-				return "array";
-			case string:
-				return "string";
-			case boolean:
-				return "boolean";
-			case binary:
-				return "binary";
-			case discarded:
-				return "discarded";
-			default:
-				return "number";
-			}
-		}
 		/// @}
 	}
 
@@ -399,5 +501,5 @@ namespace ghassanpl::formats
 		}
 		/// @}
 	}
-
+	*/
 }

@@ -6,7 +6,7 @@
 
 #include <system_error>
 #include <optional>
-#define GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS 1939 
+#define GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS 1941 
 #if __has_include(<expected>) && (_MSC_VER > GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS)
 #include <expected>
 namespace ghassanpl

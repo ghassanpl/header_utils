@@ -171,7 +171,7 @@ namespace ghassanpl::eval
 		template <typename... ARGS>
 		json report_error(std::string_view fmt, ARGS&&... args)
 		{
-			auto errstr = std::vformat(fmt, std::make_format_args(std::forward<ARGS>(args)...));
+			auto errstr = std::vformat(fmt, std::make_format_args(args...));
 			if (error_handler)
 			{
 				error_handler(errstr);

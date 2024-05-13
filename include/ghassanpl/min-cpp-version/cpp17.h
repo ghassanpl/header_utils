@@ -28,4 +28,7 @@ namespace ghassanpl
     template <class T>
     struct remove_cvref { using type = remove_cvref_t<T>; };
 #endif
+
+    template <typename FROM, typename TO>
+	using copy_const = std::conditional_t<std::is_const_v<FROM>, std::add_const_t<TO>, TO>;
 }

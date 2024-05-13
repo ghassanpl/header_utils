@@ -4,10 +4,9 @@
 
 #pragma once
 
-#include "geometry_common.h"
-#include "../rec2.h"
+#include "direction.h"
 
-namespace ghassanpl::geometry
+namespace ghassanpl::geometry::hexes
 {
-	static_assert(polygon_shape<float, rec2>);
+	/// https://www.redblobgames.com/grids/hexagons/
 }

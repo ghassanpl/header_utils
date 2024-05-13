@@ -107,9 +107,34 @@ namespace ghassanpl::string_ops
 	/// \pre `str` must be valid UTF-8
 	constexpr char32_t consume_utf8(string_view8 auto& str);
 
+	/// Consumes (see \c consume()) the last UTF-8 codepoint in `str`.
+	/// \pre `str` must be valid UTF-8
+	constexpr char32_t consume_utf8_at_end(string_view8 auto& str);
+
+	/// Decodes the first UTF-8 codepoint in `str`.
+	/// \pre `str` must be valid UTF-8
+	constexpr char32_t peek_utf8(string_view8 auto str);
+
+	/// Decodes the last UTF-8 codepoint in `str`.
+	/// \pre `str` must be valid UTF-8
+	constexpr char32_t peek_utf8_at_end(string_view8 auto str);
+
+	/// Count the number of octets in the last UTF-8 character in the string
+	/// \pre `str` must be valid UTF-8
+	[[nodiscard]] constexpr size_t codepoint_utf8_count_from_end(stringable8 auto str);
+
 	/// Returns the number of codepoints in the given UTF-8 string `str`
 	/// \pre `str` must be valid UTF-8
 	[[nodiscard]] constexpr size_t count_utf8_codepoints(stringable8 auto str);
+
+	/// Returns the size in octets of the first UTF-8 codepoint in `str`
+	/// \pre `str` must be valid UTF-8
+	[[nodiscard]] constexpr size_t first_utf8_codepoint_size(stringable8 auto str);
+
+	/// Removes the last UTF-8 codepoint from `str`.
+	/// \pre `str` must be valid UTF-8
+	/// \returns the removed codepoint
+	constexpr char32_t pop_utf8(string8 auto& str);
 
 	/// Appends octets to `buffer` by encoding `cp` into UTF-8
 	constexpr size_t append_utf8(string8 auto& buffer, char32_t cp);
@@ -452,6 +477,22 @@ namespace ghassanpl::string_ops
 		return lut[std::countl_zero(std::bit_cast<uint32_t>(cp))];
 	}
 
+	[[nodiscard]] constexpr size_t codepoint_utf8_count_from_end(stringable8 auto str)
+	{
+		auto sv = make_sv(str);
+		if (sv.empty())
+			return 0;
+		size_t result = 0;
+		uint8_t o;
+		do
+		{
+			o = std::bit_cast<uint8_t>(sv.back());
+			sv.remove_suffix(1);
+			result++;
+		} while ((o & 0xC0) == 0x80);
+		return result;
+	}
+
 	inline text_decode_result decode_codepoint(bytelike_range auto _str, text_encoding encoding)
 	{
 		auto sv = make_sv(_str);
@@ -481,16 +522,19 @@ namespace ghassanpl::string_ops
 				if ((sv[3] & 0xC0) != 0x80)
 					return { text_decode_result::invalid, first, 1 };
 				value = (value << 6) | (sv[3] & 0x3f);
+				[[fallthrough]];
 			case 3:
 				if ((sv[2] & 0xC0) != 0x80)
 					return { text_decode_result::invalid, first, 1 };
 				value = (value << 6) | (sv[2] & 0x3f);
+				[[fallthrough]];
 			case 2:
 				if ((sv[1] & 0xC0) != 0x80)
 					return { text_decode_result::invalid, first, 1 };
 				value = (value << 6) | (sv[1] & 0x3f);
 				return { text_decode_result::valid, value, length };
 			}
+			unreachable();
 		}
 		case text_encoding_type::utf16:
 		{
@@ -705,8 +749,47 @@ namespace ghassanpl::string_ops
 		return cp;
 	}
 
-	[[nodiscard]] constexpr size_t count_utf8_codepoints(stringable8 auto str)
+#ifndef __clang__
+	[[gsl::suppress(type.1, es.79)]]
+#else
+	[[gsl::suppress("type.1", "es.79")]]
+#endif
+	[[nodiscard]] constexpr char32_t peek_utf8(string_view8 auto str)
 	{
+		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
+		using unsigned_char_type = std::make_unsigned_t<char_type>;
+
+		if (str.empty()) return 0;
+		auto it = std::to_address(str.begin());
+		char32_t cp = static_cast<unsigned_char_type>(*it);
+
+		int length = 0;
+		if (cp < 0x80) length = 1;
+		else if ((cp >> 5) == 0x6)  length = 2;
+		else if ((cp >> 4) == 0xe)  length = 3;
+		else if ((cp >> 3) == 0x1e) length = 4;
+		else return 0;
+
+		switch (length) {
+		case 2:
+			++it; cp = ((cp << 6) & 0x7ff) + (static_cast<unsigned_char_type>(*it) & 0x3f);
+			break;
+		case 3:
+			++it; cp = ((cp << 12) & 0xffff) + ((static_cast<unsigned_char_type>(*it) << 6) & 0xfff);
+			++it; cp += static_cast<unsigned_char_type>(*it) & 0x3f;
+			break;
+		case 4:
+			++it; cp = ((cp << 18) & 0x1fffff) + ((static_cast<unsigned_char_type>(*it) << 12) & 0x3ffff);
+			++it; cp += (static_cast<unsigned_char_type>(*it) << 6) & 0xfff;
+			++it; cp += static_cast<unsigned_char_type>(*it) & 0x3f;
+			break;
+		}
+		return cp;
+	}
+
+	[[nodiscard]] constexpr size_t count_utf8_codepoints(stringable8 auto _str)
+	{
+		auto str = make_sv(_str);
 		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
 		using unsigned_char_type = std::make_unsigned_t<char_type>;
 
@@ -729,6 +812,57 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
+	[[nodiscard]] constexpr size_t first_utf8_codepoint_size(stringable8 auto _str)
+	{
+		auto str = make_sv(_str);
+		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
+		using unsigned_char_type = std::make_unsigned_t<char_type>;
+
+		auto it = std::to_address(str.begin());
+		const auto end = std::to_address(str.end());
+
+		size_t result = 0;
+		if (it < end)
+		{
+			char32_t cp = static_cast<unsigned_char_type>(*it);
+
+			if ((cp >> 5) == 0x6) return 2;
+			else if ((cp >> 4) == 0xe) return 3;
+			else if ((cp >> 3) == 0x1e) return 4;
+			return 1;
+		}
+		return 0;
+	}
+
+
+	constexpr char32_t pop_utf8(string8 auto& str)
+	{
+		char32_t result = 0;
+		auto size = codepoint_utf8_count_from_end(str);
+		if (size > 0)
+			result = peek_utf8(make_sv(str).substr(str.size() - size));
+		str.resize(str.size() - size);
+		return result;
+	}
+
+	constexpr char32_t consume_utf8_at_end(string_view8 auto& str)
+	{
+		char32_t result = 0;
+		auto size = codepoint_utf8_count_from_end(str);
+		if (size > 0)
+			result = peek_utf8(str.substr(str.size() - size));
+		str.remove_suffix(size);
+		return result;
+	}
+
+	constexpr char32_t peek_utf8_at_end(string_view8 auto str)
+	{
+		char32_t result = 0;
+		auto size = codepoint_utf8_count_from_end(str);
+		if (size > 0)
+			result = peek_utf8(str.substr(str.size() - size));
+		return result;
+	}
 
 	#ifndef __clang__
 	[[gsl::suppress(type.1)]]
@@ -786,7 +920,7 @@ namespace ghassanpl::string_ops
 	constexpr void transcode_codepage_to_utf8(string8 auto& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
 	{
 		using dest_char = typename std::decay_t<decltype(dest)>::value_type;
-		for (uint8_t cp : source)
+		for (uint8_t cp : make_sv(source))
 		{
 			if (cp < 0x80)
 				dest += static_cast<dest_char>(cp);
@@ -799,7 +933,7 @@ namespace ghassanpl::string_ops
 	constexpr void transcode_codepage_to_unicode(T& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
 	{
 		using dest_char = typename std::decay_t<decltype(dest)>::value_type;
-		for (uint8_t cp : source)
+		for (uint8_t cp : make_sv(source))
 		{
 			if (cp < 0x80)
 				dest += static_cast<dest_char>(cp);

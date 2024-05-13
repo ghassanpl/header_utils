@@ -313,23 +313,23 @@ namespace ghassanpl
 	template <typename T, typename HASHER = std::hash<std::remove_cvref_t<T>>>
 	constexpr void hash64_combine_to(uint64_t& seed, T&& v, HASHER&& hasher = HASHER{})
 	{
-		static_assert(std::same_as<decltype(hasher(v)), uint64_t>, "hasher() must return a uint64_t");
+		auto result = hasher(v);
+		static_assert(std::is_same_v<decltype(result), uint64_t>, "hasher() must return a uint64_t");
 		fold_in_hash64(seed, hasher(v));
 	}
 
 	template <template<typename> typename HASHER = std::hash, typename FIRST, typename... T>
 	[[nodiscard]] constexpr uint64_t hash64(FIRST&& first, T&&... values)
 	{
-		using hasher_type = HASHER<std::remove_cvref_t<FIRST>>;
-		auto hasher = hasher_type{};
+		auto hasher = HASHER<FIRST>{};
 		
 		static_assert(
-			std::same_as<decltype(hasher(std::declval<FIRST>())), uint64_t> &&
-			(std::same_as<decltype(hasher(std::declval<T>())), uint64_t> && ... && true),
+			std::same_as<decltype(std::declval<HASHER<std::remove_cvref_t<FIRST>>>()(std::declval<FIRST>())), uint64_t> &&
+			(std::same_as<decltype(std::declval<HASHER<std::remove_cvref_t<T>>>()(std::declval<T>())), uint64_t> && ... && true),
 			"hasher() must return a uint64_t for each type");
 
-		uint64_t result = (std::forward<FIRST>(first));
-		(ghassanpl::hash64_combine_to(result, std::forward<T>(values), hasher), ...);
+		uint64_t result = hasher(std::forward<FIRST>(first));
+		(ghassanpl::hash64_combine_to(result, std::forward<T>(values), HASHER<std::remove_cvref_t<T>>{}), ...);
 		return result;
 	}
 

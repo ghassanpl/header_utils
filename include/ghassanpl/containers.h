@@ -7,6 +7,7 @@
 #include <vector>
 #include <map>
 #include "ranges.h"
+#include "cpp23.h"
 
 namespace ghassanpl
 {
@@ -73,8 +74,28 @@ namespace ghassanpl
 		if (it == std::ranges::end(vector))
 			return {};
 
-		auto&& result = std::exchange(*it, vector.back());
+		auto&& result = std::exchange(*it, std::move(vector.back()));
 		vector.pop_back();
+		return result;
+	}
+
+
+	/// Finds and erases a value in vector, not preserving item order (swapping last item to erased)
+	template <typename T, typename PRED>
+	constexpr std::vector<T> erase_swap_if(std::vector<T>& vector, PRED&& pred)
+	{
+		std::vector<T> result;
+		size_t i = 0;
+		while (i < vector.size())
+		{
+			if (pred(vector[i]))
+			{
+				result.push_back(std::exchange(vector[i], std::move(vector.back())));
+				vector.pop_back();
+			}
+			else
+				++i;
+		}
 		return result;
 	}
 
@@ -86,7 +107,7 @@ namespace ghassanpl
 		if (it == std::ranges::end(vector))
 			return {};
 
-		auto&& result = std::exchange(*it, vector.back());
+		auto result = std::exchange(*it, std::move(vector.back()));
 		vector.pop_back();
 		return result;
 	}
@@ -98,7 +119,7 @@ namespace ghassanpl
 		if (!valid_index(vector, index))
 			return {};
 
-		auto&& result = std::exchange(vector[index], vector.back());
+		auto&& result = std::exchange(vector[index], std::move(vector.back()));
 		vector.pop_back();
 		return result;
 	}
@@ -117,8 +138,18 @@ namespace ghassanpl
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
-			return forward_like<MAP>(it->second);
+			return ghassanpl::forward_like<MAP>(it->second);
 		return decltype(it->second){ std::forward<DEF>(def) };
+	}
+
+	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
+	template <typename KEY, typename MAP>
+	[[nodiscard]] auto map_at_or_default(MAP&& map, KEY&& key)
+	{
+		auto it = map.find(std::forward<KEY>(key));
+		if (it != map.end())
+			return ghassanpl::forward_like<MAP>(it->second);
+		return decltype(it->second){};
 	}
 
 	/// Basically map.at() but works with heterogenous key types
@@ -127,7 +158,7 @@ namespace ghassanpl
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
-			return forward_like<MAP>(it->second);
+			return ghassanpl::forward_like<MAP>(it->second);
 		throw std::out_of_range("invalid map key");
 	}
 

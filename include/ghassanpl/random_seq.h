@@ -72,3 +72,95 @@ namespace ghassanpl::noise
 		return ONE_OVER_MAX_UINT * (double)Get2dNoiseUint(indexX, indexY, seed);
 	}
 }
+
+namespace ghassanpl::random
+{
+
+	inline uint64_t xorshift64(uint64_t& state) noexcept
+	{
+		uint64_t x = state;
+		x ^= x >> 12;
+		x ^= x << 25;
+		x ^= x >> 27;
+		state = x;
+		return x * 0x2545F4914F6CDD1D;
+	}
+
+	inline uint64_t numrep_hash(uint64_t index)
+	{
+		uint64_t v = index * 3935559000370003845LL + 2691343689449507681LL;
+		v ^= v >> 21; v ^= v << 37; v ^= v >> 4;
+		v *= 4768777513237032717LL;
+		v ^= v << 20; v ^= v >> 41; v ^= v << 5;
+		return v;
+	}
+
+	/*
+	inline std::pair<uint32_t, uint32_t> philox2x32_R(unsigned int R, std::pair<uint32_t, uint32_t> sequence_index, uint32_t sequence_key)
+	{
+		static constexpr auto _philox2x32round = [](std::pair<uint32_t, uint32_t> sequence_index, uint32_t sequence_key) -> std::pair<uint32_t, uint32_t> {
+			uint64_t product = (((uint64_t)0xd256d193)) * sequence_index.first;
+			uint32_t hi = (uint32_t)(product >> 32);
+			uint32_t lo = (uint32_t)product;
+			return { hi ^ sequence_key ^ sequence_index.second, lo };
+		};
+		sequence_index = _philox2x32round(sequence_index, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		sequence_index = _philox2x32round(sequence_index, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		sequence_index = _philox2x32round(sequence_index, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		sequence_index = _philox2x32round(sequence_index, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		sequence_index = _philox2x32round(sequence_index, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		sequence_index = _philox2x32round(sequence_index, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		sequence_index = _philox2x32round(sequence_index, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		sequence_index = _philox2x32round(sequence_index, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		sequence_index = _philox2x32round(sequence_index, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		sequence_index = _philox2x32round(sequence_index, sequence_key);
+		return sequence_index;
+	}
+	*/
+
+	inline uint64_t philox64(uint64_t sequence_index, uint32_t sequence_key)
+	{
+		static constexpr auto _philox2x32round = [](std::pair<uint32_t, uint32_t> ctr, uint32_t key) -> std::pair<uint32_t, uint32_t> {
+			uint64_t product = (((uint64_t)0xd256d193)) * ctr.first;
+			uint32_t hi = (uint32_t)(product >> 32);
+			uint32_t lo = (uint32_t)product;
+			return { hi ^ key ^ ctr.second, lo };
+		};
+		auto ctrPair = std::pair<uint32_t, uint32_t>{ (uint32_t)sequence_index, (uint32_t)(sequence_index >> 32) };
+		ctrPair = _philox2x32round(ctrPair, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		ctrPair = _philox2x32round(ctrPair, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		ctrPair = _philox2x32round(ctrPair, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		ctrPair = _philox2x32round(ctrPair, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		ctrPair = _philox2x32round(ctrPair, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		ctrPair = _philox2x32round(ctrPair, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		ctrPair = _philox2x32round(ctrPair, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		ctrPair = _philox2x32round(ctrPair, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		ctrPair = _philox2x32round(ctrPair, sequence_key); sequence_key += ((uint32_t)0x9E3779B9);
+		ctrPair = _philox2x32round(ctrPair, sequence_key);
+		return uint64_t(ctrPair.first) | (uint64_t(ctrPair.second) << 32ULL);
+	}
+
+	struct philox64_engine
+	{
+		using result_type = uint64_t;
+
+		result_type operator()() noexcept { return philox64(m_index + n++, m_key); }
+		philox64_engine(uint64_t index = 0, uint32_t key = 0) noexcept : m_index(index), m_key(key), n(0) { }
+
+		static constexpr result_type min() { return 0; }
+		static constexpr result_type max() { return ~((result_type)0); }
+
+		uint64_t index() const noexcept { return m_index; }
+		uint32_t key() const noexcept { return m_key; }
+		void reset(uint64_t index, uint32_t key) noexcept
+		{
+			m_index = index;
+			m_key = key;
+			n = 0;
+		}
+	private:
+		uint64_t m_index;
+		uint32_t m_key;
+		uint64_t n;
+	};
+}

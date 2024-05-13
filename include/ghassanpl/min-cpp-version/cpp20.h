@@ -5,3 +5,8 @@
 #error "This file requires compiler and library support for the ISO C++ 2020 standard."
 #endif
 
+namespace ghassanpl
+{
+	template <class>
+	inline constexpr bool always_false = false;
+}

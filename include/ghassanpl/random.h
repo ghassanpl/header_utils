@@ -14,6 +14,40 @@ namespace ghassanpl::random
 	/// TODO: Tests
 	/// check out https://github.com/effolkronium/random/
 	
+	/// Shamelessly stolen from 'Numeric Recipes: The Art of Scientific Computing' Third Edition, by  William H. Press et. al, Cambridge University Press, 2007 (ISBN  978-0521880688),
+	struct good_random_engine
+	{
+		uint64_t u, v, w;
+		good_random_engine(uint64_t j) noexcept {
+			seed(j);
+		}
+
+		void seed(uint64_t j) noexcept
+		{
+			v = 4101842887655102017LL;
+			w = 1;
+			u = j ^ v; (void)this->operator()();
+			v = u; (void)this->operator()();
+			w = v; (void)this->operator()();
+		}
+
+		[[nodiscard]] static constexpr uint64_t max() noexcept { return UINT64_MAX; }
+		[[nodiscard]] static constexpr uint64_t min() noexcept { return 0; }
+
+		[[nodiscard]] uint64_t operator()() noexcept
+		{
+			u = u * 2862933555777941757LL + 7046029254386353087LL;
+			v ^= v >> 17; v ^= v << 31; v ^= v >> 8;
+			w = 4294957665U * (w & 0xffffffff) + (w >> 32);
+			uint64_t x = u ^ (u << 21); x ^= x >> 35; x ^= x << 4;
+			return (x + v) ^ w;
+		}
+	};
+
+#if GHPL_CPP20
+	static_assert(std::uniform_random_bit_generator<good_random_engine>);
+#endif
+	
 	thread_local inline std::default_random_engine default_random_engine;
 	
 	template <typename INTEGER = uint64_t, typename RANDOM = std::default_random_engine>
@@ -29,6 +63,18 @@ namespace ghassanpl::random
 		static std::uniform_real_distribution<REAL> dist;
 		return dist(rng);
 	}
+	
+	/*
+	template <typename REAL = double, typename T, typename RANDOM = std::default_random_engine>
+	[[nodiscard]] auto between(T const& a, T const& b, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	{
+		using std::lerp;
+		if constexpr (std::is_integral_v<T>)
+			return lerp(a, b, ::ghassanpl::random::percentage<REAL>(rng));
+		else
+			return lerp(a, b, ::ghassanpl::random::percentage<REAL>(rng));
+	}
+	*/
 
 	template <typename REAL = double, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] REAL normal(RANDOM& rng = ::ghassanpl::random::default_random_engine)
@@ -119,17 +165,23 @@ namespace ghassanpl::random
 	template <typename RANDOM = std::default_random_engine, typename T>
 	[[nodiscard]] auto in_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		if (from >= to) return T{};
-
 		if constexpr (std::is_enum_v<T>)
 		{
+			if (from >= to) return T{};
+
 			std::uniform_int_distribution<std::underlying_type_t<T>> dist(from, to);
 			return (T)dist(rng);
 		}
 		else if constexpr (std::is_floating_point_v<T>)
+		{
+			if (from >= to) return T{};
 			return in_real_range(from, to, rng);
+		}
 		else if constexpr (is_any_of_v<T, short, int, long, long long, unsigned short, unsigned int, unsigned long, unsigned long long>)
+		{
+			if (from >= to) return T{};
 			return in_integer_range(from, to, rng);
+		}
 		else if constexpr (
 			is_any_of_v<T, unsigned char, signed char, char, wchar_t, char16_t, char32_t>
 #ifdef __cpp_char8_t
@@ -137,16 +189,19 @@ namespace ghassanpl::random
 #endif
 			)
 		{
+			if (from >= to) return T{};
 			/// Unfortunately `uniform_int_distribution` and, as a result, `integer_range` is defined only on the non-char integral types,
 			/// which means we have to cast
 			using signed_as_T = std::conditional_t<std::is_signed_v<T>, int64_t, uint64_t>; /// 64bits because char32_t can TECHNICALLY be 64-bit
 			return static_cast<T>(in_integer_range(static_cast<signed_as_T>(from), static_cast<signed_as_T>(to), rng));
 		}
-		else
+		else if constexpr (requires{ lerp(from, to, ::ghassanpl::random::percentage<float>(rng)); })
 		{
-			const auto i = to - from;
-			const auto r = ::ghassanpl::random::in_range(decltype(i){}, i);
-			return from + r;
+			return lerp(from, to, ::ghassanpl::random::percentage<float>(rng));
+		}
+		else if constexpr (requires{ lerp(from, to, ::ghassanpl::random::percentage<double>(rng)); })
+		{
+			return lerp(from, to, ::ghassanpl::random::percentage<double>(rng));
 		}
 	}
 

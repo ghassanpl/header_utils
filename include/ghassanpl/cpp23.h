@@ -10,9 +10,31 @@
 #if defined(__cpp_lib_forward_like)
 #include <utility>
 #endif
+#include <memory>
+
+#include "min-cpp-version/cpp20.h"
 
 namespace ghassanpl
 {
+	template<class T, class U>
+	constexpr std::unique_ptr<T> dynamic_pointer_cast(std::unique_ptr<U>&& r) noexcept
+	{
+		if (auto p = dynamic_cast<T*>(r.get()))
+			return (void)r.release(), std::unique_ptr<T>(p);
+		else
+			return nullptr;
+	}
+
+	template<class T, class D, class U>
+	constexpr std::unique_ptr<T, D> dynamic_pointer_cast(std::unique_ptr<U, D>&& r) noexcept
+	{
+		if (auto p = dynamic_cast<std::unique_ptr<T, D>::pointer>(r.get()))
+			return (void)r.release(), std::unique_ptr<T, D>(p, std::forward<D>(r.get_deleter()));
+		else if constexpr (!std::is_pointer_v<D> && std::is_default_constructible_v<D>)
+			return nullptr;
+		else if constexpr (std::is_copy_constructible_v<D>)
+			return std::unique_ptr<T, D>(nullptr, r.get_deleter());
+	}
 
 	template <class T, class... TYPES>
 	constexpr inline bool is_any_of_v = std::disjunction_v<std::is_same<T, TYPES>...>;
@@ -37,7 +59,7 @@ namespace ghassanpl
 	using std::forward_like;
 #else
 	template <class Ty, class Uty>
-	[[nodiscard]] [[msvc::intrinsic]] constexpr auto&& forward_like(Uty&& Ux) noexcept
+	[[nodiscard]] constexpr auto&& forward_like(Uty&& Ux) noexcept
 	{
 		static_assert(detail::can_reference<Ty>, "forward_like's first template argument must be a referenceable type.");
 
@@ -63,8 +85,6 @@ namespace ghassanpl
 #endif
 
 #if __cpp_lib_byteswap < 202110L
-	template <class>
-	inline constexpr bool always_false = false;
 
 	[[nodiscard]] constexpr unsigned short byteswap_ushort(const unsigned short val) noexcept {
 		return static_cast<unsigned short>((val << 8) | (val >> 8));
@@ -96,5 +116,14 @@ namespace ghassanpl
 	}
 #else
 	using std::byteswap;
+#endif
+	
+#if defined(__cpp_lib_unreachable)
+	using std::unreachable;
+#else
+	[[noreturn]] inline void unreachable() noexcept
+	{
+		__assume(false);
+	}
 #endif
 }

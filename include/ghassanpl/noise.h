@@ -184,7 +184,7 @@ namespace ghassanpl::noise
 	}
 
 	template <typename F>
-	[[nodiscard]] constexpr F fractal_simplex_noise(size_t octaves, F x, F y, F frequency = F(1.0), F amplitude = F(1.0), F lacunarity = F(2.0), F persistence = F(0.5)) noexcept
+	[[nodiscard]] constexpr F fractal_simplex_noise_2d(size_t octaves, F x, F y, F frequency = F(1.0), F amplitude = F(1.0), F lacunarity = F(2.0), F persistence = F(0.5)) noexcept
 	{
 		static_assert(std::is_floating_point_v<F>, "fractal_simplex_noise only works with floating point arguments");
 

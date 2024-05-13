@@ -44,7 +44,7 @@
 
 /// \hideinitializer
 #ifndef ASSUMING_INCLUDE_MAGIC_ENUM
-#if __has_include(<magic_enum.hpp>)
+#if __has_include(<magic_enum_format.hpp>)
 #define ASSUMING_INCLUDE_MAGIC_ENUM 1
 #else
 #define ASSUMING_INCLUDE_MAGIC_ENUM 0
@@ -58,26 +58,31 @@
 #endif
 
 #if ASSUMING_INCLUDE_MAGIC_ENUM
-#include <magic_enum.hpp>
+#include <magic_enum_format.hpp>
+#endif
+
+#if defined(__cpp_lib_unreachable) && __cpp_lib_unreachable >= 202202L
+/// \private
+#define GHPL_UNREACHABLE() std::unreachable()
+#else
+#if (defined(__clang__) || defined(__GNUC__)) && !defined(_MSV_VER)
+#define GHPL_UNREACHABLE() (__builtin_unreachable())
+#else
+#define GHPL_UNREACHABLE() GHPL_ASSUME(false)
+#endif
 #endif
 
 #ifdef __has_cpp_attribute
 #if __has_cpp_attribute(assume)
 /// \private
-#define GHPL_CPP23_ASSUME(...) [[assume(__VA_ARGS__)]];
+#define GHPL_ASSUME(...) [[assume(__VA_ARGS__)]]; (::std::ignore = (__VA_ARGS__))
 #endif
 #endif
-#ifndef GHPL_CPP23_ASSUME
-#define GHPL_CPP23_ASSUME(...)
-#endif
-
-#if !ASSUMING_DEBUG
-#ifdef _MSC_VER
-#define ASSUMING_ASSUME(cond) GHPL_CPP23_ASSUME(cond) (__assume(cond), (::std::ignore = (cond)))
-#elif defined(__GNUC__)
-#define ASSUMING_ASSUME(cond) GHPL_CPP23_ASSUME(cond) ((cond) ? static_cast<void>(0) : __builtin_unreachable())
+#ifndef GHPL_ASSUME
+#if (defined(__clang__) || defined(__GNUC__)) && !defined(_MSV_VER)
+#define GHPL_ASSUME(...) ((__VA_ARGS__) ? static_cast<void>(0) : GHPL_UNREACHABLE())
 #else
-#define ASSUMING_ASSUME(cond) GHPL_CPP23_ASSUME(cond) static_cast<void>((cond) ? 0 : 0)
+#define GHPL_ASSUME(...) (__assume(__VA_ARGS__), (::std::ignore = (__VA_ARGS__)))
 #endif
 #endif
 
@@ -88,7 +93,7 @@
 	::ghassanpl::ReportAssumptionFailure(#exp " will evalute to true", { { #exp, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 
 /// Assumes the point in code is not reachable.
-#define AssumingNotReachable(...) { ::ghassanpl::ReportAssumptionFailure("execution will never reach this point", {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
+#define AssumingNotReachable(...) { ::ghassanpl::ReportAssumptionFailure("execution will never reach this point", {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); GHPL_UNREACHABLE(); }
 
 /// Assumes the point in code is not reached via a recursive function call.
 #define AssumingNotRecursive(...) \
@@ -205,29 +210,29 @@
 	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); }
 #else
 
-#define Assuming(exp, ...) ASSUMING_ASSUME(!!(exp))
-#define AssumingNotReachable(...) ASSUMING_ASSUME(false)
+#define Assuming(exp, ...) GHPL_ASSUME(!!(exp))
+#define AssumingNotReachable(...) GHPL_ASSUME(false)
 
 // NOTE: TODO: The three macros below have a significant codegen overhead, should we even try their assumptions? I don't think the compiler can infer any useful information from them...
 #define AssumingNotRecursive(...) \
 	static int _assuming_recursion_counter##__LINE__ = 0; \
-	ASSUMING_ASSUME(_assuming_recursion_counter##__LINE__ == 0); \
+	GHPL_ASSUME(_assuming_recursion_counter##__LINE__ == 0); \
 	const ::ghassanpl::detail::RecursionScopeMarker _assuming_scope_marker##__LINE__( _assuming_recursion_counter##__LINE__ )
 #define AssumingSingleThread(...) { \
 		static std::thread::id _assuming_thread_id = std::this_thread::get_id(); \
 		auto _assuming_current_thread_id = std::this_thread::get_id(); \
-		ASSUMING_ASSUME(_assuming_thread_id == _assuming_current_thread_id); \
+		GHPL_ASSUME(_assuming_thread_id == _assuming_current_thread_id); \
 	}
 #define AssumingOnThread(thread_to_check, ...) { \
 		auto _assuming_thread_id = (thread_to_check); \
 		auto _assuming_current_thread_id = std::this_thread::get_id(); \
-		ASSUMING_ASSUME(_assuming_thread_id == _assuming_current_thread_id); \
+		GHPL_ASSUME(_assuming_thread_id == _assuming_current_thread_id); \
 	}
 
 
-#define AssumingNull(exp, ...) ASSUMING_ASSUME(!((exp) != nullptr))
-#define AssumingNotNull(exp, ...) ASSUMING_ASSUME(!((exp) == nullptr))
-#define AssumingBinOp(a, b, op, text, ...) ASSUMING_ASSUME(((a) op (b)))
+#define AssumingNull(exp, ...) GHPL_ASSUME(!((exp) != nullptr))
+#define AssumingNotNull(exp, ...) GHPL_ASSUME(!((exp) == nullptr))
+#define AssumingBinOp(a, b, op, text, ...) GHPL_ASSUME(((a) op (b)))
 #define AssumingEqual(a, b, ...) AssumingBinOp(a, b, ==, "be equal to", __VA_ARGS__)
 #define AssumingZero(a, ...) AssumingBinOp(a, 0, ==, "be equal to", __VA_ARGS__)
 #define AssumingNotEqual(a, b, ...) AssumingBinOp(a, b, !=, "not be equal to", __VA_ARGS__)
@@ -235,16 +240,16 @@
 #define AssumingLess(a, b, ...) AssumingBinOp(a, b, <, "be less than", __VA_ARGS__)
 #define AssumingGreaterEqual(a, b, ...) AssumingBinOp(a, b, >=, "be greater or equal to", __VA_ARGS__)
 #define AssumingLessEqual(a, b, ...) AssumingBinOp(a, b, <=, "be less or equal to", __VA_ARGS__)
-#define AssumingEmpty(exp, ...) { using std::empty; ASSUMING_ASSUME(empty(exp)); }
-#define AssumingNotEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(!empty(exp)); }
-#define AssumingNullOrEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(::ghassanpl::detail::IsNullOrEmpty(exp));  }
-#define AssumingNotNullOrEmpty(exp, ...) { using std::empty; using std::size; ASSUMING_ASSUME(!::ghassanpl::detail::IsNullOrEmpty(exp)); }
-#define AssumingValidIndex(_index, _container, ...) { using std::size; auto&& _assuming_index = (_index); ASSUMING_ASSUME(((_assuming_index) >= 0 && size_t(_assuming_index) < size(_container))); }
-#define AssumingValidIterator(_iterator, _container, ...) { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); ASSUMING_ASSUME(!(_assuming_iterator == _assuming_end)); }
-#define AssumingBetween(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); ASSUMING_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v < _assuming_b_v); }
-#define AssumingBetweenInclusive(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); ASSUMING_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v); }
+#define AssumingEmpty(exp, ...) { using std::empty; GHPL_ASSUME(empty(exp)); }
+#define AssumingNotEmpty(exp, ...) { using std::empty; using std::size; GHPL_ASSUME(!empty(exp)); }
+#define AssumingNullOrEmpty(exp, ...) { using std::empty; using std::size; GHPL_ASSUME(::ghassanpl::detail::IsNullOrEmpty(exp));  }
+#define AssumingNotNullOrEmpty(exp, ...) { using std::empty; using std::size; GHPL_ASSUME(!::ghassanpl::detail::IsNullOrEmpty(exp)); }
+#define AssumingValidIndex(_index, _container, ...) { using std::size; auto&& _assuming_index = (_index); GHPL_ASSUME(((_assuming_index) >= 0 && size_t(_assuming_index) < size(_container))); }
+#define AssumingValidIterator(_iterator, _container, ...) { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); GHPL_ASSUME(!(_assuming_iterator == _assuming_end)); }
+#define AssumingBetween(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v < _assuming_b_v); }
+#define AssumingBetweenInclusive(v, a, b, ...) { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v); }
 
-#define AssumingContainsBits(a, b, ...) { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); ASSUMING_ASSUME(!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)); }
+#define AssumingContainsBits(a, b, ...) { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)); }
 
 
 #endif
@@ -266,7 +271,7 @@ namespace ghassanpl
 		*/
 
 		template <typename T>
-		concept formattable = requires { { std::formatter<T>{} }; };
+		concept formattable = requires { { std::formatter<T>{} }; }; /// TODO: Use std::formattable
 
 		template <typename T>
 		concept streamable = requires (T val, std::stringstream & ss) { { ss << val }; };
@@ -275,11 +280,6 @@ namespace ghassanpl
 		decltype(auto) GetFormattable(T&& val)
 		{
 			using simple_type = std::remove_cvref_t<T>;
-#if ASSUMING_INCLUDE_MAGIC_ENUM
-			if constexpr (std::is_enum_v<simple_type>)
-				return magic_enum::enum_name(val);
-			else
-#endif
 			if constexpr (std::is_constructible_v<std::string_view, simple_type>)
 				return std::forward<T>(val);
 			else if constexpr (std::is_pointer_v<simple_type>)
@@ -297,11 +297,15 @@ namespace ghassanpl
 		}
 
 		inline std::string AdditionalDataToString() { return {}; }
-		template <typename T, typename... ARGS>
-		std::string AdditionalDataToString(T&& fmt, ARGS&&... args) {
-			return std::vformat(std::forward<T>(fmt), std::make_format_args(GetFormattable(std::forward<ARGS>(args))...));
-		}
 
+		template <typename T, typename... ARGS>
+		std::string AdditionalDataToString(T&& fmt, ARGS&&... args)
+		{
+			auto formattable = std::tuple{ GetFormattable(std::forward<ARGS>(args))... };
+			auto format_args = std::apply([](auto&... args) { return std::make_format_args(args...); }, formattable);
+			return std::vformat(std::forward<T>(fmt), std::move(format_args));
+		}
+		
 		/// Shamelessly stolen from UE :)
 		struct RecursionScopeMarker
 		{

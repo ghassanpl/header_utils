@@ -262,4 +262,10 @@ namespace ghassanpl::constexpr_math
 		if (val >= (1ULL << 1)) result += 1;
 		return result;
 	}
+	
+	[[nodiscard]] constexpr inline double unlerp(const double a, const double b, const double t) noexcept
+	{
+		/// TODO: Follow std::lerp and add checks for NaN and Inf
+		return (t - a) / (b - a);
+	}
 }

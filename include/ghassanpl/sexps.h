@@ -88,6 +88,7 @@ namespace ghassanpl::formats::sexpressions
 		return result;
 	}
 
+	/// TODO: '[e1; e2; e3]' -> '[[e1] [e2] [e3]]'
 	inline auto consume_list(std::string_view& sexp_str, std::array<char, 2> braces) -> nlohmann::json
 	{
 		nlohmann::json result = nlohmann::json::array();

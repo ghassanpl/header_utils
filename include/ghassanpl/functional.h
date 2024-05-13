@@ -61,6 +61,11 @@ namespace ghassanpl
 	///
 	template <class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 
+	///
+	#define GHPL_OVERLOAD(...) [&](auto &&... args) -> decltype(auto) { \
+		return __VA_ARGS__(std::forward<decltype(args)>(args)...); \
+	}
+
 	/// TODO: Boost::phoenix::arg_names is a better version of this
 
 	/// Appropriate for predicate-taking functions like std::all_of

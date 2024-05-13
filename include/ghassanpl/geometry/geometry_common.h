@@ -13,9 +13,8 @@
 
 #include <glm/geometric.hpp>
 #include <glm/trigonometric.hpp>
-#include <glm/ext/vector_float2.hpp>
-#include <glm/ext/vector_float4.hpp>
-#include <glm/gtx/norm.hpp>
+#include <glm/fwd.hpp>
+//#include <glm/gtx/norm.hpp>
 
 namespace glm
 {
@@ -171,10 +170,18 @@ namespace ghassanpl::geometry
 
 	namespace angles
 	{
+		/// TODO: https://www.redblobgames.com/coordinates/axes-and-angles/#angles
+		
 		template <std::floating_point T>
-		constexpr basic_degrees_t<T> ensure_positive(basic_degrees_t<T> degrees) noexcept { return basic_degrees_t<T>{ cem::fmod(degrees.value, T(360)) }; }
+		constexpr basic_degrees_t<T> ensure_positive(basic_degrees_t<T> degrees) noexcept { 
+			const auto deg = cem::fmod(degrees.get(), T(360));
+			return basic_degrees_t<T>{ (deg < T(0)) ? deg + T(360) : deg };
+		}
 		template <std::floating_point T>
-		constexpr basic_radians_t<T> ensure_positive(basic_radians_t<T> degrees) noexcept { return basic_radians_t<T>{ cem::fmod(degrees.value, glm::radians(T(360))) }; }
+		constexpr basic_radians_t<T> ensure_positive(basic_radians_t<T> radians) noexcept {
+			const auto rad = cem::fmod(radians.get(), glm::radians(T(360)));
+			return basic_radians_t<T>{ (rad < T(0)) ? rad + glm::radians(T(360)) : rad };
+		}
 
 		inline constexpr auto full_circle = degrees{ 360.0f };
 		inline constexpr auto half_circle = degrees{ 360.0f / 2.0f };
@@ -196,7 +203,9 @@ namespace ghassanpl::geometry
 	}
 }
 
+#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/polar_coordinates.hpp>
+#undef GLM_ENABLE_EXPERIMENTAL
 
 namespace ghassanpl::geometry /* ::polar */
 {
@@ -245,13 +254,22 @@ namespace ghassanpl::geometry
 		}
 
 		template <typename U>
-		glm::tvec2<U> projected(glm::tvec2<U> const& point)
+		glm::tvec2<U> closest_point_to(glm::tvec2<U> const& point)
 		{
 			const auto d = glm::distance(point);
 			return point - glm::tvec2<T>{ a, b } * d;
 		}
+
+		/// TODO: should we create enum { positive, negative, zero/on_line }?
+		int side(glm::tvec2<T> const& point)
+		{
+			const auto d = a * point.x + b * point.y + c;
+			return d > 0 ? 1 : d < 0 ? -1 : 0;
+		}
 	};
 
+
+	/// TODO: Move these to the body as static methods?
 	template <typename T>
 	basic_line_t<T> line_crossing_points(glm::tvec2<T> const& p1, glm::tvec2<T> const& p2)
 	{
@@ -266,6 +284,28 @@ namespace ghassanpl::geometry
 
 }
 
+/// Projections
+namespace ghassanpl::geometry
+{
+	/// For interval<T> projected_on_axis(glm::tvec2<T> axis) const;
+	
+	template <typename T>
+	struct interval
+	{
+		T min{};
+		T max{};
+
+		bool overlaps(interval const& other) const { return min <= other.max && other.min <= max; }
+		T overlap(interval const& other) const { return (std::abs(other.min - max) < std::abs(other.max - min)) ? other.min - max : other.max - min; }
+	};
+
+	template <typename T>
+	interval<T> projected_on_axis(glm::tvec2<T> axis, glm::tvec2<T> const& point)
+	{
+		const auto len = glm::dot(axis, point);
+		return { len, len };
+	}
+}
 /*
 template <typename T>
 struct std::formatter<glm::tvec2<T>> : std::formatter<std::string>

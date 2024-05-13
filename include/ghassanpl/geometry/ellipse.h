@@ -6,6 +6,7 @@
 
 #include "geometry_common.h"
 #include "shape_concepts.h"
+#include <glm/ext/scalar_constants.hpp>
 
 namespace ghassanpl::geometry
 {
@@ -15,12 +16,7 @@ namespace ghassanpl::geometry
 		glm::tvec2<T> center;
 		glm::tvec2<T> radii;
 
-		static tellipse inside_rect(trec2<T> const& rec) noexcept
-		{
-			return { rec.center(), rec.half_size() };
-		}
-
-		static tellipse outside_rect(trec2<T> const& rec) noexcept;
+		auto const& centroid() const { return center; }
 
 		bool contains(glm::tvec2<T> pt) const
 		{
@@ -47,7 +43,7 @@ namespace ghassanpl::geometry
 		glm::tvec2<T> edge_point(T t) const { return edge_point_alpha(t / edge_length()); }
 		trec2<T> bounding_box() const { return trec2<T>{center - radii, center + radii}; }
 		
-		glm::tvec2<T> projected(glm::tvec2<T> pt) const
+		glm::tvec2<T> closest_point_to(glm::tvec2<T> pt) const
 		{
 			/// https://math.stackexchange.com/questions/475436/2d-point-projection-on-an-ellipse
 			throw "unimplemented";
@@ -56,5 +52,5 @@ namespace ghassanpl::geometry
 
 	using ellipse = tellipse<float>;
 
-	static_assert(area_shape<ellipse, float>);
+	static_assert(area_shape<float, ellipse>);
 }

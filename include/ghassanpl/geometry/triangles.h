@@ -21,11 +21,11 @@ namespace ghassanpl::geometry
 		tvec c{};
 
 		template <typename FUNC>
-		void for_each_edge(FUNC&& func)
+		void for_each_edge(FUNC&& func) const
 		{
-			func(tsegment<T>{a, b});
-			func(tsegment<T>{b, c});
-			func(tsegment<T>{c, a});
+			func(a, b);
+			func(b, c);
+			func(c, a);
 		}
 
 		trec2<T> bounding_box() const
@@ -42,7 +42,7 @@ namespace ghassanpl::geometry
 
 		glm::tvec2<T> edge_point_alpha(T t) const;
 		glm::tvec2<T> edge_point(T t) const;
-		glm::tvec2<T> projected(glm::tvec2<T> pt) const;
+		glm::tvec2<T> closest_point_to(glm::tvec2<T> pt) const;
 
 		static auto sign(tvec const& p1, tvec const& p2, tvec const& p3) noexcept
 		{
@@ -73,10 +73,90 @@ namespace ghassanpl::geometry
 			const auto s = (A + B + C) * T(0.5);
 			return std::sqrt(s * (s - A) * (s - B) * (s - C));
 		}
+
+		auto centroid() const
+		{
+			return (a + b + c) / T(3);
+		}
+
+		glm::tvec3<T> barycentric_coords_of(glm::tvec2<T> pt) const
+		{
+			const auto v0 = b - a;
+			const auto v1 = c - a;
+			const auto v2 = pt - a;
+			const auto d00 = glm::dot(v0, v0);
+			const auto d01 = glm::dot(v0, v1);
+			const auto d11 = glm::dot(v1, v1);
+			const auto d20 = glm::dot(v2, v0);
+			const auto d21 = glm::dot(v2, v1);
+			const auto denom = d00 * d11 - d01 * d01;
+			const auto v = (d11 * d20 - d01 * d21) / denom;
+			const auto w = (d00 * d21 - d01 * d20) / denom;
+			const auto u = 1 - v - w;
+			return { u, v, w };
+		}
+
+		glm::tvec2<T> euclidean_coords_of(glm::tvec3<T> barycentric) const
+		{
+			return a * barycentric.x + b * barycentric.y + c * barycentric.z;
+		}
+
+		/*
+		tcircle<T> circumcircle()
+		{
+			Doub a0, a1, c0, c1, det, asq, csq, ctr0, ctr1, rad2;
+			a0 = a.x[0] - b.x[0]; a1 = a.x[1] - b.x[1];
+			c0 = c.x[0] - b.x[0]; c1 = c.x[1] - b.x[1];
+			det = a0 * c1 - c0 * a1;
+			if (det == 0.0) throw("no circle thru colinear points");
+			det = 0.5 / det;
+			asq = a0 * a0 + a1 * a1;
+			csq = c0 * c0 + c1 * c1;
+			ctr0 = det * (asq * c1 - csq * a1);
+			ctr1 = det * (csq * a0 - asq * c0);
+			rad2 = ctr0 * ctr0 + ctr1 * ctr1;
+			return { {ctr0 + b.x[0], ctr1 + b.x[1]}, sqrt(rad2));
+		}
+		*/
+
+		template <typename FUNC>
+		void for_each_vertex(FUNC&& func) const
+		{
+			func(a);
+			func(b);
+			func(c);
+		}
+		
+		size_t vertex_count() const { return 3; }
+		
+		size_t edge_count() const { return 3; }
+		
+		auto edge(size_t index) const -> std::optional<std::pair<glm::tvec2<T>, glm::tvec2<T>>>
+		{
+			switch (index)
+			{
+			case 0: return std::make_pair(a, b);
+			case 1: return std::make_pair(b, c);
+			case 2: return std::make_pair(c, a);
+			}
+			return std::nullopt;
+		}
+		
+		auto vertex(size_t index) const -> std::optional<tvec>
+		{
+			switch (index)
+			{
+			case 0: return a;
+			case 1: return b;
+			case 2: return c;
+			}
+			return std::nullopt;
+		}
 	};
 
 	using triangle = ttriangle<float>;
-	static_assert(area_shape<triangle, float>);
+	static_assert(area_shape<float, triangle>);
+	static_assert(polygon_shape<float, triangle>);
 
 	template <std::integral IDX = size_t>
 	struct tindexed_triangle

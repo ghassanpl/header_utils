@@ -18,13 +18,18 @@ namespace ghassanpl::geometry
 		tvec start{};
 		tvec end{};
 
-		tvec vec() const noexcept { return end - start; }
+		constexpr tsegment() noexcept = default;
+		constexpr tsegment(tvec const& start, tvec const& end) noexcept : start(start), end(end) {}
+		constexpr tsegment(std::pair<tvec, tvec> const& p) noexcept : start(p.first), end(p.second) {}
+
+		constexpr tvec vec() const noexcept { return end - start; }
 		tvec dir() const noexcept { return glm::normalize(vec()); }
 		auto length() const noexcept { return glm::distance(start, end); }
-		auto center() const noexcept { return (start + end) / T(2); }
+		constexpr auto center() const noexcept { return (start + end) / T(2); }
 
-		static tsegment from_offset(tvec const& start, tvec const& offset) noexcept { return { start, start + offset }; }
-		static tsegment from_dir(tvec const& start, tvec const& dir, T len) noexcept { return { start, start + dir * len }; }
+		static constexpr tsegment from_offset(tvec const& start, tvec const& offset) noexcept { return { start, start + offset }; }
+		static constexpr tsegment from_dir(tvec const& start, tvec const& dir, T len) noexcept { return { start, start + dir * len }; }
+		static constexpr tsegment from_pair(std::pair<tvec, tvec> const& p) noexcept { return { p.first, p.second }; }
 
 		basic_line_t<T> line() const noexcept { return line_crossing_points(start, end); }
 
@@ -79,7 +84,7 @@ namespace ghassanpl::geometry
 		tvec edge_point_alpha(T t) const { return glm::mix(start, end, t); }
 		tvec edge_point(T t) const { return glm::mix(start, end, t / edge_length()); }
 		trec2<T> bounding_box() const { return trec2<T>::from_points({ &start, &start + 2 }); }
-		tvec projected(tvec pt) const
+		tvec closest_point_to(tvec pt) const
 		{
 			const auto dir = this->vec();
 			const auto d1 = glm::dot(pt - start, dir);
@@ -90,9 +95,51 @@ namespace ghassanpl::geometry
 				return end;
 			return start + dir * (d1 / d2);
 		}
+
+		interval<T> projected_on_axis(tvec const& axis) const
+		{
+			const auto p0 = glm::dot(axis, start);
+			const auto p1 = glm::dot(axis, end);
+			return { std::min(p0, p1), std::max(p0, p1) };
+		}
+
+		/// Polygon shape interface
+
+		template <typename FUNC>
+		void for_each_edge(FUNC&& func) const
+		{
+			func(start, end);
+		}
+
+		template <typename FUNC>
+		void for_each_vertex(FUNC&& func) const
+		{
+			func(start);
+			func(end);
+		}
+		
+		size_t vertex_count() const { return 2; }
+		
+		size_t edge_count() const { return 1; }
+		
+		auto edge(size_t index) const -> std::optional<std::pair<glm::tvec2<T>, glm::tvec2<T>>>
+		{
+			if (index == 0)
+				return std::make_pair(start, end);
+			return std::nullopt;
+		}
+		
+		auto vertex(size_t index) const -> std::optional<tvec>
+		{
+			if (index == 0)
+				return start;
+			if (index == 1)
+				return end;
+			return std::nullopt;
+		}
 	};
 
 	using segment = tsegment<float>;
 
-	static_assert(shape<segment, float>);
+	static_assert(polygon_shape<float, segment>);
 }

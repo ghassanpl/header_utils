@@ -42,6 +42,11 @@ TEST(buffers, basics)
 }
 
 #if 0
+
+/// https://hugi.scene.org/online/coding/hugi%2012%20-%20colzp.htm
+/// https://github.com/lmcilroy/lzp/blob/master/lzp.c
+/// https://cs.stackexchange.com/questions/134277/what-is-the-simplest-algorithm-to-compress-a-string/152057#152057?newreg=5c5487df3eb541609f29964a48017bd1
+
 struct lzp_compressor
 {
 	struct compression_options

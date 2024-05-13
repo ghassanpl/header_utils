@@ -7,7 +7,8 @@
 #include <charconv>
 #include <string_view>
 #include <glm/common.hpp>
-#include <glm/ext/vector_float4.hpp>
+#include <glm/fwd.hpp>
+//#include <glm/ext/vector_float4.hpp>
 #include "named.h"
 #include "constexpr_math.h"
 
@@ -82,6 +83,12 @@ namespace ghassanpl
 		return { color.x * color.w, color.y * color.w, color.z * color.w, color.w };
 	}
 
+	///
+	[[nodiscard]] constexpr color_t with_alpha(color_t const& color, float a)
+	{
+		return color_t{ color.r, color.g, color.b, a };
+	}
+
 	/// Returns a color with all elements clamped between 0 and 1
 	[[nodiscard]] constexpr color_t saturated(color_t const& color)
 	{
@@ -133,7 +140,9 @@ namespace ghassanpl
 	/// Returns a color that's a good contrasting color for the original
 	[[nodiscard]] constexpr color_t contrasting(color_t const& color)
 	{
-		return color_t(cem::fmod(color.x + 0.5f, 1.0f), cem::fmod(color.y + 0.5f, 1.0f), cem::fmod(color.z + 0.5f, 1.0f), color.w);
+		const float gamma = 2.2f;
+		const float L = 0.2126f * cem::pow(color.r, gamma) + 0.7152f * cem::pow(color.g, gamma) + 0.0722f * cem::pow(color.b, gamma);
+		return (L > cem::pow(0.5f, gamma)) ? colors::black : colors::white;
 	}
 	
 	/// Get brightness of color
@@ -174,6 +183,11 @@ namespace ghassanpl
 	/// Gets a color from an ABGR 8bpp integer, with A being most significant, and R being least significant
 	[[nodiscard]] constexpr color_t from_u32_abgr(uint32_t rgb) { return color_t(detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24)); }
 
+	///
+	[[nodiscard]] constexpr color_t from_u8_rgb(uint8_t r, uint8_t g, uint8_t b) { return color_t(detail::b2f(r), detail::b2f(g), detail::b2f(b), 1.0f); }
+	///
+	[[nodiscard]] constexpr color_t from_u8_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) { return color_t(detail::b2f(r), detail::b2f(g), detail::b2f(b), detail::b2f(a)); }
+
 	/// Creates an 8bpp ARGB integer from a color
 	[[nodiscard]] constexpr uint32_t to_u32_argb(color_t const& rgba) { return detail::f2u4(rgba.w, rgba.x, rgba.y, rgba.z); }
 	/// Creates an 8bpp ABGR integer from a color
@@ -200,7 +214,7 @@ namespace ghassanpl
 	}
 
 	template <typename TO, typename FROM>
-	[[nodiscard]] TO color_cast(FROM const& from)
+	[[nodiscard]] constexpr TO color_cast(FROM const& from)
 	{
 		return named_cast<TO>(from);
 	}

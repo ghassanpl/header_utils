@@ -10,6 +10,7 @@
 #include <charconv>
 #include <optional>
 #include <ranges>
+#include <array>
 #include <numeric>
 
 #if !defined(__cpp_concepts)
@@ -266,7 +267,7 @@ namespace ghassanpl::string_ops
 	/// Checks if `smaller_string` is a true subset of `big_string` (true subset meaning they view over overlapping memory subregions)
 	[[nodiscard]] constexpr bool is_inside(std::string_view big_string, std::string_view smaller_string)
 	{
-		return big_string.data() - smaller_string.data() >= 0 && (smaller_string.data() + smaller_string.size()) - (big_string.data() + big_string.size()) >= 0;
+		return smaller_string.data() - big_string.data() >= 0 && (smaller_string.data() + smaller_string.size()) - (big_string.data() + big_string.size()) < 0;
 	}
 
 	namespace ascii
@@ -1575,14 +1576,14 @@ namespace ghassanpl::string_ops
 	template <bool SINGLE>
 	struct split_range
 	{
-		split_range(std::string_view source, char split_on) : mSource(source), mSplit(split_on) {}
+		split_range(std::string_view source, std::string_view split_on) : mSource(source), mSplit(split_on) {}
 
 		struct split_range_iterator
 		{
 			const char* RangeStart;
 			const char* RangeEnd;
 			const char* SourceEnd;
-			char SplitChar;
+			std::string_view SplitChars;
 
 			bool operator!=(const split_range_iterator& other) const { return RangeStart != other.SourceEnd; }
 			split_range_iterator& operator++(int) {
@@ -1594,22 +1595,22 @@ namespace ghassanpl::string_ops
 			split_range_iterator operator++() {
 				auto rs = RangeEnd;
 				auto se = SourceEnd;
-				auto sc = SplitChar;
+				auto sc = SplitChars;
 
 				if (SINGLE)
 				{
-					if (rs < se && *rs == sc)
+					if (rs < se && sc.contains(*rs))
 						++rs;
 				}
 				else
 				{
-					while (rs < se && *rs == sc)
+					while (rs < se && sc.contains(*rs))
 						++rs;
 				}
 
 				RangeStart = rs;
 
-				while (rs < se && *rs != sc)
+				while (rs < se && !sc.contains(*rs))
 					++rs;
 
 				RangeEnd = rs;
@@ -1632,19 +1633,20 @@ namespace ghassanpl::string_ops
 
 		/// Returns the source string we're splitting
 		auto source() const { return mSource; }
-		/// Returns the character we're splitting on
+		/// Returns the characters we're splitting on
 		auto split_on() const { return mSplit; }
 
 	private:
 
 		std::string_view mSource;
-		char mSplit;
+		std::string_view mSplit;
 	};
 
 	// static_assert(std::ranges::range<split_range<true>>);
 
 	/// Performs a basic word-wrapping split of `_source`, as if it was constrained to `max_width`.
-	/// Splits will be performed implicitly on ' ' (or character boundaries if no other choice), and explictly on '\\n' characters
+	/// Splits will be performed implicitly on any of the ASCII characters in `split_chars` (or character boundaries if no other choice), 
+	/// and explictly on '\\n' characters.
 	/// \tparam T the type for the width values
 	/// \param width_getter must be invocable as `width_getter(string_view) -> T` and should return the width of the given string
 	///		calculating it however it deems appropriate
@@ -1652,24 +1654,24 @@ namespace ghassanpl::string_ops
 	/// \todo example
 	template <typename RESULT_TYPE = std::string_view, typename T, typename FUNC>
 	requires std::is_arithmetic_v<T>&& std::is_invocable_r_v<T, FUNC, std::string_view>
-	std::vector<RESULT_TYPE> word_wrap(std::string_view _source, T max_width, FUNC width_getter)
+	std::vector<RESULT_TYPE> word_wrap(std::string_view _source, T max_width, FUNC width_getter, std::string_view split_chars = " ")
 	{
 		std::vector<RESULT_TYPE> result;
 
-		auto space_left = max_width;
 		auto space_width = width_getter(" ");
 
-		for (auto line : split_range<true>(_source, '\n'))
+		for (auto line : split_range<true>(_source, "\n"))
 		{
+			auto space_left = max_width;
 			auto line_start = line.first;
 
-			for (auto r : split_range<false>({ line.first, size_t(line.second - line.first) }, ' '))
+			for (auto r : split_range<false>({ line.first, size_t(line.second - line.first) }, split_chars))
 			{
 				const auto word_width = width_getter({ r.first, size_t(r.second - r.first) });
-				const auto width = word_width + space_width;
+				const auto width = word_width + width_getter(std::string{ *r.second });
 				if (width > space_left)
 				{
-					result.push_back(RESULT_TYPE{ line_start, size_t(r.first - line_start) - 1 });
+					result.push_back(RESULT_TYPE{ line_start, size_t(r.first - line_start) });
 					space_left = max_width - word_width;
 					line_start = r.first;
 				}
@@ -1694,6 +1696,16 @@ namespace ghassanpl::string_ops
 	std::vector<RESULT_TYPE> word_wrap(std::string_view _source, T max_width, T letter_width)
 	{
 		return ::ghassanpl::string_ops::word_wrap<RESULT_TYPE>(_source, max_width, [letter_width](std::string_view str) { return T(str.size() * letter_width); });
+	}
+
+	auto repeat_string(stringable auto str, size_t num)
+	{
+		const auto sv = make_sv(str);
+		std::basic_string<typename decltype(sv)::value_type> result;
+		result.reserve(num * sv.size());
+		for (size_t i = 0; i < num; ++i)
+			result.append(sv);
+		return result;
 	}
 
 	inline size_t levenshtein_distance(std::string_view s1, std::string_view s2)
@@ -1756,14 +1768,18 @@ namespace ghassanpl::string_ops
 	/// \name sto* replacements
 	/// Functions equivalent to `std::stoi`, `std::stod`, etc that take `std::string_view` as its first argument
 	/// @{
-	[[nodiscard]] inline int stoi(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<int>(str, idx, base); }
-	[[nodiscard]] inline long stol(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<long>(str, idx, base); }
-	[[nodiscard]] inline long long stoll(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<long long>(str, idx, base); }
-	[[nodiscard]] inline unsigned long stoul(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<unsigned long>(str, idx, base); }
-	[[nodiscard]] inline unsigned long long stoull(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<unsigned long long>(str, idx, base); }
-	[[nodiscard]] inline float stof(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return detail::string_to_number<float>(str, idx, format); }
-	[[nodiscard]] inline double stod(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return detail::string_to_number<double>(str, idx, format); }
-	[[nodiscard]] inline long double stold(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return detail::string_to_number<long double>(str, idx, format); }
+	[[nodiscard]] inline auto stob(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<uint8_t>(str, idx, base); }
+	[[nodiscard]] inline auto stoc(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<char>(str, idx, base); }
+	[[nodiscard]] inline auto stouc(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<unsigned char>(str, idx, base); }
+
+	[[nodiscard]] inline auto stoi(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<int>(str, idx, base); }
+	[[nodiscard]] inline auto stol(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<long>(str, idx, base); }
+	[[nodiscard]] inline auto stoll(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<long long>(str, idx, base); }
+	[[nodiscard]] inline auto stoul(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<unsigned long>(str, idx, base); }
+	[[nodiscard]] inline auto stoull(std::string_view str, size_t* idx = nullptr, int base = 10) { return detail::string_to_number<unsigned long long>(str, idx, base); }
+	[[nodiscard]] inline auto stof(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return detail::string_to_number<float>(str, idx, format); }
+	[[nodiscard]] inline auto stod(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return detail::string_to_number<double>(str, idx, format); }
+	[[nodiscard]] inline auto stold(std::string_view str, size_t* idx = nullptr, std::chars_format format = std::chars_format::general) { return detail::string_to_number<long double>(str, idx, format); }
 	/// @}
 
 	/// If `str` contains an integral number (and nothing else), returns that number, else an error-carrying `from_chars_result`.
@@ -1834,11 +1850,11 @@ namespace ghassanpl::string_ops
 /// \showinitializer
 #define GHPL_FORMAT_ARGS std::string_view ghpl_fmt, GHPL_ARGS&&... ghpl_args
 /// \showinitializer
-#define GHPL_FORMAT_FORWARD ghpl_fmt, std::forward<GHPL_ARGS>(ghpl_args)...
+#define GHPL_FORMAT_FORWARD ghpl_fmt, ghpl_args...
 /// \showinitializer
-#define GHPL_FORMAT_CALL std::vformat(ghpl_fmt, std::make_format_args(std::forward<GHPL_ARGS>(ghpl_args)...))
+#define GHPL_FORMAT_CALL std::vformat(ghpl_fmt, std::make_format_args(ghpl_args...))
 /// \showinitializer
-#define GHPL_PRINT_CALL std::vprint_unicode(ghpl_fmt, std::make_format_args(std::forward<GHPL_ARGS>(ghpl_args)...))
+#define GHPL_PRINT_CALL std::vprint_unicode(ghpl_fmt, std::make_format_args(ghpl_args...))
 
 	/// @}
 }

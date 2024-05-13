@@ -65,7 +65,11 @@ namespace ghassanpl
 		constexpr enum_flags& operator=(enum_flags&&) noexcept = default;
 
 		constexpr enum_flags(enum_type base_value) noexcept : bits(flag_bits<VALUE_TYPE>(base_value)) {}
-		constexpr explicit enum_flags(value_type value) noexcept : bits(value) {}
+		template<typename U = VALUE_TYPE>
+		constexpr explicit enum_flags(value_type value, typename std::enable_if<!std::is_same_v<U, enum_type>>::type* = 0) noexcept
+			: bits(value) 
+		{
+		}
 
 		/// Constructs the value with all the given flags set
 		template <typename... ARGS>
@@ -112,22 +116,34 @@ namespace ghassanpl
 
 		/// Returns the value of the `n`th set bit in the set
 		[[nodiscard]]
-		constexpr ENUM nth_set(size_t n) const noexcept {
+		constexpr enum_type nth_set(size_t n) const noexcept {
 			auto b = bits;
 			while (n--) { b ^= (VALUE_TYPE{ 1 } << std::countr_zero(b)); }
-			return static_cast<ENUM>(std::countr_zero(b));
+			return static_cast<enum_type>(std::countr_zero(b));
 		}
 
 		/// Returns the lowest numerical value in the set. Returns an unspecified value if no values are in the set.
 		[[nodiscard]]
-		constexpr ENUM first_set() const noexcept { return static_cast<ENUM>(std::countr_zero(bits)); }
+		constexpr enum_type first_set() const noexcept { return static_cast<enum_type>(std::countr_zero(bits)); }
+
+		/// Returns the highest numerical value in the set, or enum_type(-1) if no values are in the set.
+		[[nodiscard]]
+		constexpr enum_type last_set() const noexcept { return static_cast<enum_type>((sizeof(value_type) * CHAR_BIT - std::countl_zero(bits)) - 1); }
 
 		/// Returns whether or not *any* of the given flags are set
-		template <typename T, typename... ARGS>
+		template <typename... ARGS>
 		[[nodiscard]]
-		constexpr bool contains_any_of(T arg, ARGS... args) const noexcept
+		constexpr bool contains_any_of(enum_type arg, ARGS... args) const noexcept
 		{
 			return this->is_set(arg) || (this->is_set(args) || ...);
+		}
+
+		/// Returns whether or not *any* of the given flags are set
+		template <typename... ARGS>
+		[[nodiscard]]
+		constexpr bool contains_none_of(enum_type arg, ARGS... args) const noexcept
+		{
+			return !(this->is_set(arg) || (this->is_set(args) || ...));
 		}
 
 		/// Returns whether or not *any* of the given flags are set
@@ -162,7 +178,7 @@ namespace ghassanpl
 		constexpr enum_type to_enum_type() const noexcept { return (enum_type)bits; }
 
 		/// Sets the given flags
-		template <std::convertible_to<ENUM>... ARGS>
+		template <std::convertible_to<enum_type>... ARGS>
 		constexpr self_type& set(ARGS... args) noexcept { bits |= flag_bits<VALUE_TYPE>(args...); return *this; }
 		/// Sets the flags in the `other`
 		constexpr self_type& set(self_type other) noexcept { bits |= other.bits; return *this; }
@@ -170,7 +186,7 @@ namespace ghassanpl
 		/// TODO: `insert()` as an alias for `set()`
 
 		/// Unsets the given flags
-		template <std::convertible_to<ENUM>... ARGS>
+		template <std::convertible_to<enum_type>... ARGS>
 		constexpr self_type& unset(ARGS... args) noexcept { bits &= ~ flag_bits<VALUE_TYPE>(args...); return *this; }
 		/// Unsets the flags in the `other` set
 		constexpr self_type& unset(self_type other) noexcept { bits &= ~other.bits; return *this; }
@@ -178,13 +194,13 @@ namespace ghassanpl
 		/// TODO: `erase()` as an alias for `unset()`
 		
 		/// Toggles the given flags
-		template <std::convertible_to<ENUM>... ARGS>
+		template <std::convertible_to<enum_type>... ARGS>
 		constexpr self_type& toggle(ARGS... args) noexcept { bits ^= flag_bits<VALUE_TYPE>(args...); return *this; }
 		/// Toggles the flags in the `other` set
 		constexpr self_type& toggle(self_type other) noexcept { bits ^= other.bits; return *this; }
 
 		/// Sets the given flags to `val`
-		template <std::convertible_to<ENUM>... ARGS>
+		template <std::convertible_to<enum_type>... ARGS>
 		constexpr self_type& set_to(bool val, ARGS... args) noexcept
 		{
 			if (val) bits |= flag_bits<VALUE_TYPE>(args...); else bits &= ~flag_bits<VALUE_TYPE>(args...);
@@ -220,9 +236,9 @@ namespace ghassanpl
 		[[nodiscard]]
 		constexpr self_type without(self_type flags) const noexcept { return self_type::from_bits(bits & ~flags.bits); }
 
-		template <std::convertible_to<ENUM>... ARGS>
+		template <std::convertible_to<enum_type>... ARGS>
 		[[nodiscard]] constexpr self_type except_for(ARGS... args) const noexcept { return self_type::from_bits(bits & ~flag_bits<VALUE_TYPE>(args...)); }
-		template <std::convertible_to<ENUM>... ARGS>
+		template <std::convertible_to<enum_type>... ARGS>
 		[[nodiscard]] constexpr self_type without(ARGS... args) const noexcept { return self_type::from_bits(bits & ~flag_bits<VALUE_TYPE>(args...)); }
 
 		constexpr self_type& operator+=(enum_type flag) noexcept { bits |= flag_bits<VALUE_TYPE>(flag); return *this; }
@@ -303,20 +319,20 @@ namespace ghassanpl
 				return return_type{};
 		}
 
-		using flag_changes = enum_flag_changes<ENUM, VALUE_TYPE>;
+		using flag_changes = enum_flag_changes<enum_type, value_type>;
 
 		constexpr void apply(flag_changes changes) noexcept 
 		{
-			const auto bits_to_xor = changes.bits[0].bits & changes.bits[1].bits;
+			const auto bits_to_xor = changes.bits_to_set.bits & changes.bits_to_unset.bits;
 			bits ^= bits_to_xor; /// toggle only bits set in both sets
 
 			/// remove bits that are in both sets from both sets
-			changes.bits[0].bits &= ~bits_to_xor;
-			changes.bits[1].bits &= ~bits_to_xor;
+			changes.bits_to_set.bits &= ~bits_to_xor;
+			changes.bits_to_unset.bits &= ~bits_to_xor;
 
 			/// only bits left are bits in one or zero sets
-			bits &= ~changes.bits[1].bits;
-			bits |= changes.bits[0].bits;
+			bits &= ~changes.bits_to_unset.bits;
+			bits |= changes.bits_to_set.bits;
 		}
 
 		constexpr self_type operator+(flag_changes changes) const noexcept
@@ -364,17 +380,20 @@ namespace ghassanpl
 
 		static constexpr self_type no_changes() noexcept { return self_type{}; }
 
-		template <std::convertible_to<ENUM>... ARGS>
-		static constexpr self_type to_set(ARGS... args) noexcept { return self_type{ flag_bits<VALUE_TYPE>(args...), 0 }; }
-		static constexpr self_type to_set(flags_type other) noexcept { return self_type{ other, 0 }; }
-		template <std::convertible_to<ENUM>... ARGS>
-		static constexpr self_type to_unset(ARGS... args) noexcept { return self_type{ 0, flag_bits<VALUE_TYPE>(args...) }; }
-		static constexpr self_type to_unset(flags_type other) noexcept { return self_type{ 0, other }; }
-		template <std::convertible_to<ENUM>... ARGS>
-		static constexpr self_type to_toggle(ARGS... args) noexcept { return self_type{ flag_bits<VALUE_TYPE>(args...), flag_bits<VALUE_TYPE>(args...) }; }
-		static constexpr self_type to_toggle(flags_type other) noexcept { return self_type{  other, other }; }
+		template <std::convertible_to<enum_type>... ARGS>
+		static constexpr self_type to_set(ARGS... args) noexcept { return self_type{ flags_type{args...}, flags_type{} }; }
+		static constexpr self_type to_set(flags_type other) noexcept { return self_type{ other, flags_type{} }; }
+		static constexpr self_type to_set_all() noexcept { return self_type{ flags_type::all(), flags_type{}}; }
+		template <std::convertible_to<enum_type>... ARGS>
+		static constexpr self_type to_unset(ARGS... args) noexcept { return self_type{ flags_type{}, flags_type{args...} }; }
+		static constexpr self_type to_unset(flags_type other) noexcept { return self_type{ flags_type{}, other }; }
+		static constexpr self_type to_unset_all() noexcept { return self_type{ flags_type{}, flags_type::all() }; }
+		template <std::convertible_to<enum_type>... ARGS>
+		static constexpr self_type to_toggle(ARGS... args) noexcept { return self_type{ flags_type{args...}, flags_type{args...} }; }
+		static constexpr self_type to_toggle(flags_type other) noexcept { return self_type{ other, other }; }
+		static constexpr self_type to_toggle_all() noexcept { return self_type{ flags_type::all(), flags_type::all() }; }
 
-		template <std::convertible_to<ENUM>... ARGS>
+		template <std::convertible_to<enum_type>... ARGS>
 		constexpr self_type& set_change_of(enum_flag_change change, ARGS... args) noexcept
 		{
 			switch (change)
@@ -391,35 +410,37 @@ namespace ghassanpl
 
 		constexpr enum_flag_change change_of(enum_type flag) const noexcept
 		{
-			return static_cast<enum_flag_change>(bits[0].is_set(flag) * 1 + bits[1].is_set(flag) * 2);
+			return static_cast<enum_flag_change>(bits_to_set.is_set(flag) * 1 + bits_to_unset.is_set(flag) * 2);
 		}
 
-		template <std::convertible_to<ENUM>... ARGS>
-		constexpr self_type& set(ARGS... args) noexcept { bits[0].set(args...); bits[1].unset(args...); return *this; }
-		constexpr self_type& set(flags_type other) noexcept { bits[0].set(other); bits[1].unset(other); return *this; }
+		template <std::convertible_to<enum_type>... ARGS>
+		constexpr self_type& set(ARGS... args) noexcept { bits_to_set.set(args...); bits_to_unset.unset(args...); return *this; }
+		constexpr self_type& set(flags_type other) noexcept { bits_to_set.set(other); bits_to_unset.unset(other); return *this; }
 
-		template <std::convertible_to<ENUM>... ARGS>
-		constexpr self_type& unset(ARGS... args) noexcept { bits[0].unset(args...); bits[1].set(args...); return *this; }
-		constexpr self_type& unset(flags_type other) noexcept { bits[0].unset(other); bits[1].set(other); return *this; }
+		template <std::convertible_to<enum_type>... ARGS>
+		constexpr self_type& unset(ARGS... args) noexcept { bits_to_set.unset(args...); bits_to_unset.set(args...); return *this; }
+		constexpr self_type& unset(flags_type other) noexcept { bits_to_set.unset(other); bits_to_unset.set(other); return *this; }
 
-		template <std::convertible_to<ENUM>... ARGS>
-		constexpr self_type& toggle(ARGS... args) noexcept { bits[0].set(args...); bits[1].set(args...); return *this; }
-		constexpr self_type& toggle(flags_type other) noexcept { bits[0].set(other); bits[1].set(other); return *this; }
+		template <std::convertible_to<enum_type>... ARGS>
+		constexpr self_type& toggle(ARGS... args) noexcept { bits_to_set.set(args...); bits_to_unset.set(args...); return *this; }
+		constexpr self_type& toggle(flags_type other) noexcept { bits_to_set.set(other); bits_to_unset.set(other); return *this; }
 
-		template <std::convertible_to<ENUM>... ARGS>
-		constexpr self_type& dont_change(ARGS... args) noexcept { bits[0].unset(args...); bits[1].unset(args...); return *this; }
-		constexpr self_type& dont_change(flags_type other) noexcept { bits[0].unset(other); bits[1].unset(other); return *this; }
+		template <std::convertible_to<enum_type>... ARGS>
+		constexpr self_type& dont_change(ARGS... args) noexcept { bits_to_set.unset(args...); bits_to_unset.unset(args...); return *this; }
+		constexpr self_type& dont_change(flags_type other) noexcept { bits_to_set.unset(other); bits_to_unset.unset(other); return *this; }
 
-		constexpr self_type& dont_change_any() noexcept { bits[0].clear(); bits[1].clear(); return *this; }
+		constexpr self_type& dont_change_any() noexcept { bits_to_set.clear(); bits_to_unset.clear(); return *this; }
 
 		constexpr auto operator<=>(self_type const& other) const noexcept = default;
 
-		flags_type bits[2]{ {}, {} };
+		flags_type bits_to_set{};
+		flags_type bits_to_unset{};
 
 	private:
 
-		constexpr enum_flag_changes(flags_type b0, flags_type b1) noexcept
-			: bits(b0, b1)
+		constexpr enum_flag_changes(flags_type to_set, flags_type to_unset) noexcept
+			: bits_to_set(to_set)
+			, bits_to_unset(to_unset)
 		{
 		}
 

@@ -9,7 +9,12 @@
 #include "../include/ghassanpl/random_geom.h"
 #include "../include/ghassanpl/random_seq.h"
 
+#include <ranges>
+#include <print>
+
 using namespace ghassanpl;
+
+static_assert(std::uniform_random_bit_generator<random::philox64_engine>);
 
 TEST(random, basics)
 {
@@ -100,4 +105,28 @@ TEST(random, basics)
 		EXPECT_GE(v, 1);
 		EXPECT_LE(v, 7);
 	}
+}
+TEST(random_seq, philox64_gives_reasonable_results)
+{
+	//auto results = std::ranges::to<std::vector>(std::views::iota(0, 16) | std::views::transform([](auto i) { return random::philox64(i, 0xCAFEBEEB); }));
+	//auto results2 = std::ranges::to<std::vector>(std::views::iota(0, 16) | std::views::transform([](auto i) { return random::philox64(i, 0xCAFEBEEB); }));
+	//auto results3 = std::ranges::to<std::vector>(std::views::iota(0, 16) | std::views::transform([](auto i) { return random::philox64(i, 0xCAFEBEEC); }));
+	//auto results4 = std::ranges::to<std::vector>(std::views::iota(1, 17) | std::views::transform([](auto i) { return random::philox64(i, 0xCAFEBEEB); }));
+	//EXPECT_EQ(results, results2);
+	//EXPECT_NE(results, results3);
+	//EXPECT_NE(results, results4);
+}
+
+TEST(random_seq, philox64_engine_gives_reasonable_results)
+{
+	//random::philox64_engine engine{ 0, 0 };
+	//std::uniform_real_distribution<double> dist(0.0, 100.0);
+	//
+	//auto results = std::ranges::to<std::vector>(std::views::iota(0, 16) | std::views::transform( [&](auto i) { return dist(engine); }));
+	//engine.reset(0, 0);
+	//auto results2 = std::ranges::to<std::vector>(std::views::iota(0, 16) | std::views::transform([&](auto i) { return dist(engine); }));
+	//engine.reset(10, 20);
+	//auto results3 = std::ranges::to<std::vector>(std::views::iota(0, 16) | std::views::transform([&](auto i) { return dist(engine); }));
+	//EXPECT_EQ(results, results2);
+	//EXPECT_NE(results, results3);
 }

@@ -18,8 +18,8 @@ namespace ghassanpl
 	template <bit_integral INTEGER_TYPE>
 	struct bit_view
 	{
-		// TODO: Should this have extent, like span<> ?
-		// TODO: Should this store a bitcount and bitstart, so we can have views over non-integral bit counts?
+		/// TODO: Should this have extent, like span<> ?
+		/// TODO: Should this store a bitcount and bitstart, so we can have views over non-integral bit counts?
 		
 		using integer_type = INTEGER_TYPE;
 		using element_type = bit_reference<integer_type>;

@@ -265,11 +265,17 @@
     <ClInclude Include="include\ghassanpl\formats.h" />
     <ClInclude Include="include\ghassanpl\functional.h" />
     <ClInclude Include="include\ghassanpl\geometry\arcs.h" />
+    <ClInclude Include="include\ghassanpl\geometry\capsule.h" />
+    <ClInclude Include="include\ghassanpl\geometry\circle.h" />
     <ClInclude Include="include\ghassanpl\geometry\direction.h" />
     <ClInclude Include="include\ghassanpl\geometry\ellipse.h" />
     <ClInclude Include="include\ghassanpl\geometry\geometry_common.h" />
+    <ClInclude Include="include\ghassanpl\geometry\hexes.h" />
+    <ClInclude Include="include\ghassanpl\geometry\intersection.h" />
     <ClInclude Include="include\ghassanpl\geometry\points.h" />
+    <ClInclude Include="include\ghassanpl\geometry\point_cloud.h" />
     <ClInclude Include="include\ghassanpl\geometry\polygon.h" />
+    <ClInclude Include="include\ghassanpl\geometry\quad.h" />
     <ClInclude Include="include\ghassanpl\geometry\ray.h" />
     <ClInclude Include="include\ghassanpl\geometry\rectangles.h" />
     <ClInclude Include="include\ghassanpl\geometry\segment.h" />
@@ -397,6 +403,7 @@
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
     </ClCompile>
     <ClCompile Include="tests\threading_tests.cpp" />
+    <ClCompile Include="tests\unique_handle_tests.cpp" />
     <ClCompile Include="tests\uri_tests.cpp" />
     <ClCompile Include="tests\windows_tests.cpp" />
   </ItemGroup>

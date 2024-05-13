@@ -3,6 +3,8 @@
 #include "../include/ghassanpl/geometry/ellipse.h"
 #include "../include/ghassanpl/geometry/polygon.h"
 #include "../include/ghassanpl/geometry/segment.h"
+#include "../include/ghassanpl/geometry/circle.h"
+#include "../include/ghassanpl/geometry/capsule.h"
 
 #include "../include/ghassanpl/geometry/points.h"
 #include "../include/ghassanpl/geometry/rectangles.h"
@@ -39,6 +41,15 @@ TEST(geometry_common, degrees_and_radians_work)
 	EXPECT_EQ((360.0f), degrees(radians_t{ glm::pi<float>() * 2.0f }).value);
 	EXPECT_EQ(0, degrees(radians_t{}).value);
 	*/
+
+	EXPECT_EQ(ensure_positive(degrees{ -90.0f }), degrees{ 270.0f });
+	EXPECT_EQ(ensure_positive(radians{ -glm::radians(90.0f) }), radians{ glm::radians(270.0f) });
+}
+
+TEST(polygon, can_be_created_from_polyshapes)
+{
+	static_assert(polygon_shape<float, rec2>);
+	polygon r = polygon::from_shape(rec2{10, 20, 30, 40});
 }
 
 using namespace ghassanpl::geometry::squares;

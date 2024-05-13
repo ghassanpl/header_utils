@@ -10,9 +10,9 @@
 using namespace ghassanpl;
 using namespace ghassanpl::geometry;
 
-static_assert(area_shape<trec2<float>, float>);
-static_assert(area_shape<trec2<double>, double>);
-static_assert(area_shape<trec2<int>, int>);
+static_assert(area_shape<float, trec2<float>>);
+static_assert(area_shape<double, trec2<double>>);
+static_assert(area_shape<int, trec2<int>>);
 
 #ifdef __cpp_explicit_this_parameter
 TEST(rec2, values_func_forwards_value_category)

@@ -89,11 +89,14 @@ namespace ghassanpl::formats::wilson
 	inline expected<std::string, wilson_parsing_error> consume_string_value(std::string_view& str)
 	{
 		string_ops::trim_whitespace_left(str);
-		const auto first = str[0];
-		if (first == '\'' || first == '"')
-			return consume_string_literal(str);
-		else if (string_ops::ascii::isidentstart(first))
-			return std::string{ string_ops::consume_while(str, &string_ops::ascii::isident) };
+		if (!str.empty())
+		{
+			const auto first = str[0];
+			if (first == '\'' || first == '"')
+				return consume_string_literal(str);
+			else if (string_ops::ascii::isidentstart(first))
+				return std::string{ string_ops::consume_while(str, &string_ops::ascii::isident) };
+		}
 
 		return unexpected(wilson_parsing_error{ str.data(), "expected quote character or identifier" });
 	}

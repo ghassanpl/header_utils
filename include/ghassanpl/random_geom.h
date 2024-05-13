@@ -9,13 +9,17 @@
 #include "geometry/ellipse.h"
 #include "geometry/polygon.h"
 #include "geometry/shape_concepts.h"
+#include <glm/ext/scalar_constants.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/rotate_vector.hpp>
+#undef GLM_ENABLE_EXPERIMENTAL
 
 namespace ghassanpl::random
 {
 	template <std::floating_point T = float, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] T radians(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		static std::uniform_real_distribution<T> dist{ T{}, glm::two_pi<T>() };
+		static std::uniform_real_distribution<T> dist{ T{}, glm::pi<T>() * 2 };
 		return dist(rng);
 	}
 
@@ -35,20 +39,20 @@ namespace ghassanpl::random
 	template <typename T, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] glm::tvec2<T> point_in(trec2<T> const& rect, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		return { range(rect.p1.x, rect.p2.x, rng), range(rect.p1.y, rect.p2.y, rng) };
+		return { in_range(rect.p1.x, rect.p2.x, rng), in_range(rect.p1.y, rect.p2.y, rng) };
 	}
 
 	template <typename T, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] glm::tvec2<T> point_in(glm::tvec2<T> const& max, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		return { range(T{}, max.x, rng), range(T{}, max.y, rng) };
+		return { in_range(T{}, max.x, rng), in_range(T{}, max.y, rng) };
 	}
 
 	/// TODO: This doesn't seem uniform
 	template <typename T, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] glm::tvec2<T> point_in(geometry::tellipse<T> const& el, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		const auto phi = range(T{}, glm::two_pi<T>(), rng);
+		const auto phi = between(T{}, glm::two_pi<T>(), rng);
 		const auto p = glm::tvec2<T>{ cos(phi), sin(phi) } * glm::sqrt(percentage<T>(rng)) * el.radii * T(0.5);
 		return p + el.center;
 	}
@@ -67,7 +71,7 @@ namespace ghassanpl::random
 	{
 		if (poly.triangles().empty()) return {};
 
-		auto r = range(T{}, poly.calculate_area());
+		auto r = between(T{}, poly.calculate_area());
 		size_t i = 0;
 		while (r > 0.0)
 		{

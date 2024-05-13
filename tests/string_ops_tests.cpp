@@ -387,7 +387,7 @@ TEST(string_ops_test, consume_bom_and_detect_encoding)
 	{
 		static_assert(sizeof(char16_t) == 2);
 
-		const char16_t bom = std::byteswap(char16_t(0xFEFF));
+		constexpr char16_t bom = std::byteswap(char16_t(0xFEFF));
 		std::string hello;
 		hello += std::string{ reinterpret_cast<char const*>(&bom), sizeof(bom) };
 		hello += '\0';
@@ -407,7 +407,7 @@ TEST(string_ops_test, consume_bom_and_detect_encoding)
 	{
 		static_assert(sizeof(char32_t) == 4);
 
-		const char32_t bom = std::byteswap(char32_t(0xFEFF));
+		constexpr char32_t bom = std::byteswap(char32_t(0xFEFF));
 		std::string hello;
 		hello += std::string{ reinterpret_cast<char const*>(&bom), sizeof(bom) };
 		hello += '\0';

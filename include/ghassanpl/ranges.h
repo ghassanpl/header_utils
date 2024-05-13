@@ -8,6 +8,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include "span.h"
+#include "min-cpp-version/cpp20.h"
 
 namespace ghassanpl
 {
@@ -45,7 +46,7 @@ namespace ghassanpl
 	[[nodiscard]] constexpr auto modulo_index(size_t range_size, std::integral auto index)
 	{
 		const auto cpp_modulo_sucks = (index % static_cast<decltype(index)>(range_size));
-		return (index < 0) ? (range_size + cpp_modulo_sucks) : cpp_modulo_sucks;
+		return ((index < 0) ? (range_size + cpp_modulo_sucks) : cpp_modulo_sucks) % static_cast<decltype(index)>(range_size);
 	}
 
 	/// Returns an valid index into `range`, created from `index` as if `range` is circular
@@ -389,11 +390,11 @@ namespace ghassanpl
 		{
 			const auto transform = [](auto&& _Elem) {
 				return ghassanpl::to<std::ranges::range_value_t<CONTAINER>>(std::forward<decltype(_Elem)>(_Elem));
-			};
+				};
 			return ghassanpl::to<CONTAINER>(std::ranges::views::transform(range, transform), std::forward<TYPES>(args)...);
 		}
 		else
-			static_assert(always_false<CONTAINER>, "the program is ill-formed per N4910 [range.utility.conv.to]/1.3");
+			static_assert(::ghassanpl::always_false<CONTAINER>, "the program is ill-formed per N4910 [range.utility.conv.to]/1.3");
 	}
 
 	/// to<container>();

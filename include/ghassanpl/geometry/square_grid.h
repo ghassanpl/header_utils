@@ -42,7 +42,7 @@ namespace ghassanpl::geometry::squares
 		explicit grid(glm::ivec2 size) : grid(size.x, size.y) {}
 
 		void reset(int w, int h, TILE_DATA const& default_tile) requires RESIZABLE { Reset(w, h, default_tile); }
-
+		void reset(int w, int h, std::vector<TILE_DATA> tiles) requires RESIZABLE { Reset(w, h, tiles); }
 		void reset(int w, int h) requires RESIZABLE { Reset(w, h); }
 
 		void reset(glm::ivec2 size) requires RESIZABLE { Reset(size.x, size.y); }
@@ -55,6 +55,11 @@ namespace ghassanpl::geometry::squares
 
 		[[nodiscard]] TILE_DATA& operator[](int i) { return mTiles[i]; }
 		[[nodiscard]] TILE_DATA const& operator[](int i) const { return mTiles[i]; }
+
+#if defined(__cpp_multidimensional_subscript)
+		[[nodiscard]] TILE_DATA& operator[](int x, int y) { return mTiles[index(x, y)]; }
+		[[nodiscard]] TILE_DATA const& operator[](int x, int y) const { return mTiles[index(x, y)]; }
+#endif
 		
 		[[nodiscard]] TILE_DATA& operator[](glm::ivec2 v) { return mTiles[index(v)]; }
 		[[nodiscard]] TILE_DATA const& operator[](glm::ivec2 v) const { return mTiles[index(v)]; }
@@ -111,7 +116,7 @@ namespace ghassanpl::geometry::squares
 		/// TODO: set_* functions that mirror for_each_*, e.g. set_rect(rect, tile);
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::with_self, iteration_flags::only_valid }, typename FUNC >
-		auto for_each_neighbor(glm::ivec2 of, FUNC&& func) const
+		auto for_each_neighbor(glm::ivec2 of, FUNC&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
@@ -154,7 +159,7 @@ namespace ghassanpl::geometry::squares
 		}
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::with_self, iteration_flags::only_valid }, typename FUNC >
-		auto for_each_selected_neighbor(glm::ivec2 of, direction_set neighbor_set, FUNC&& func) const
+		auto for_each_selected_neighbor(glm::ivec2 of, direction_set neighbor_set, FUNC&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
@@ -202,11 +207,11 @@ namespace ghassanpl::geometry::squares
 					}
 				}
 
-			return return_type{};
+			return default_value<return_type>();
 		}
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC >
-		auto for_each_tile_in_perimeter(irec2 const& tile_rect, FUNC&& func) const
+		auto for_each_tile_in_perimeter(irec2 const& tile_rect, FUNC&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
@@ -246,7 +251,7 @@ namespace ghassanpl::geometry::squares
 		}
 
 		template<enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename TILE_SET, typename FUNC >
-		auto for_each_tile_in_set(TILE_SET&& tiles, FUNC&& func) const
+		auto for_each_tile_in_set(TILE_SET&& tiles, FUNC&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
 			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
@@ -264,21 +269,21 @@ namespace ghassanpl::geometry::squares
 			}
 		}
 
-		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
+		template <typename FUNC>
 		auto for_each_tile(FUNC&& func)
 		{
 			irec2 rect = { 0, 0, this->mWidth, this->mHeight };
-			return this->template for_each_tile_in_rect<FLAGS>(rect, std::forward<FUNC>(func));
+			return this->template for_each_tile_in_rect<enum_flags<iteration_flags>{}>(rect, std::forward<FUNC>(func));
 		}
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
-		auto for_each_tile_in_polygon(std::span<glm::vec2 const> poly_points, glm::vec2 tile_size, FUNC&& func) const;
+		auto for_each_tile_in_polygon(std::span<glm::vec2 const> poly_points, glm::vec2 tile_size, FUNC&& func);
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
-		auto for_each_tile_in_row(int row, FUNC&& func) const;
+		auto for_each_tile_in_row(int row, FUNC&& func);
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename FUNC>
-		auto for_each_tile_in_column(int column, FUNC&& func) const;
+		auto for_each_tile_in_column(int column, FUNC&& func);
 
 		/// Function: line_cast
 		/// Return: Whether the line between `start` and `end` is free of blocing tiles, as determined by `blocks_func`
@@ -356,13 +361,13 @@ namespace ghassanpl::geometry::squares
 			using tile_data_type = std::conditional_t<std::is_const_v<self_type>, std::add_const_t<typename self_type::tile_data_type>, typename self_type::tile_data_type>;
 			using invocable_type = std::remove_cvref_t<FUNC>;
 			if constexpr (std::invocable<invocable_type, glm::ivec2, tile_data_type&>)
-				return (ONLY_VALID && this->is_valid(to)) ? func(to, *this->at(to)) : decltype(func(to, *this->at(to))){};
+				return (!ONLY_VALID || this->is_valid(to)) ? func(to, *this->at(to)) : default_value<decltype(func(to, *this->at(to)))>();
 			else if constexpr (std::invocable<invocable_type, tile_data_type&, glm::ivec2>)
-				return (ONLY_VALID && this->is_valid(to)) ? func(*this->at(to), to) : decltype(func(*this->at(to), to)){};
+				return (!ONLY_VALID || this->is_valid(to)) ? func(*this->at(to), to) : default_value<decltype(func(*this->at(to), to))>();
 			else if constexpr (std::invocable<invocable_type, tile_data_type&>)
-				return (ONLY_VALID && this->is_valid(to)) ? func(*this->at(to)) : decltype(func(*this->at(to))){};
+				return (!ONLY_VALID || this->is_valid(to)) ? func(*this->at(to)) : default_value<decltype(func(*this->at(to)))>();
 			else
-				return (ONLY_VALID && this->is_valid(to)) ? func(to) : decltype(func(to)){};
+				return (!ONLY_VALID || this->is_valid(to)) ? func(to) : default_value<decltype(func(to))>();
 		}
 
 		void flip_row(int row)
@@ -426,6 +431,19 @@ namespace ghassanpl::geometry::squares
 			ResizeX(new_size.x, new_element);
 		}
 
+		void resize(glm::uvec2 new_size) requires RESIZABLE
+		{
+			const TILE_DATA new_element{};
+			resize(new_size, new_element);
+		}
+
+		void resize(int w, int h) requires RESIZABLE
+		{
+			if (w < 0) throw std::invalid_argument{ "width cannot be negative" };
+			if (h < 0) throw std::invalid_argument{ "height cannot be negative" };
+			resize({ w, h });
+		}
+
 		void clear() { for (auto& tile : mTiles) tile = {}; }
 		void clear(TILE_DATA const& to) { for (auto& tile : mTiles) tile = to; }
 
@@ -468,6 +486,18 @@ namespace ghassanpl::geometry::squares
 			mWidth = w;
 			mHeight = h;
 			mTiles.resize(w * h);
+		}
+		
+		void Reset(int w, int h, std::vector<TILE_DATA> tiles)
+		{
+			if (w < 0) throw std::invalid_argument{ "width cannot be negative" };
+			if (h < 0) throw std::invalid_argument{ "height cannot be negative" };
+			if (size_t(w * h) > tiles.size()) throw std::invalid_argument{ "not enough tiles in vector" };
+
+			tiles.resize(w * h);
+			mTiles = std::move(tiles);
+			mWidth = w;
+			mHeight = h;
 		}
 
 		void ResizeY(int new_y, const TILE_DATA& new_element)

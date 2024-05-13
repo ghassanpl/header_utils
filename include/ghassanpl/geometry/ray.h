@@ -30,7 +30,7 @@ namespace ghassanpl::geometry
 		segment& translate(tvec const& offs) noexcept { return this->operator+=(offs); }
 
 		tvec edge_point_alpha(T t) const { return start + dir * t; }
-		tvec projected(tvec const& pt) const
+		tvec closest_point_to(tvec const& pt) const
 		{
 			const auto a = projected_alpha(pt);
 			if (a < T(0)) return start;

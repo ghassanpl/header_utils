@@ -53,12 +53,15 @@ namespace ghassanpl::geometry::squares
 	template <typename TILE_DATA, bool RESIZABLE, change_tile_callback<TILE_DATA> FLOOD_FUNC, query_tile_callback<TILE_DATA> SHOULD_FLOOD_FUNC>
 	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, FLOOD_FUNC&& flood, SHOULD_FLOOD_FUNC&& should_flood)
 	{
-		std::queue<glm::ivec2> queue;
 		if (!grid.is_valid(start)) return;
 		if (!should_flood(start, *grid.at(start))) return;
 
+		flood(start, *grid.at(start));
+		if (should_flood(start, *grid.at(start))) return; /// Checks for degenerate case where we're flooding with the same thing that was at origin
+
 		/// TODO: We could probably use grid.apply<> to call `should_flood`
 		 
+		std::queue<glm::ivec2> queue;
 		queue.push(start);
 		while (!queue.empty())
 		{
@@ -68,34 +71,64 @@ namespace ghassanpl::geometry::squares
 			auto l = n, r = glm::ivec2{ n.x + 1, n.y };
 
 			while (grid.is_valid(l) && should_flood(l, *grid.at(l)))
+			{
+				flood(l, *grid.at(l));
 				l.x--;
+			}
 			l.x++;
 
 			while (grid.is_valid(r) && should_flood(r, *grid.at(r)))
+			{
+				flood(r, *grid.at(r));
 				r.x++;
+			}
 			r.x--;
 
-			for (int x = l.x; x <= r.x; x++)
+			if (n.y - 1 >= 0)
 			{
-				glm::ivec2 pos{ x, n.y };
-				flood(pos, *grid.at(pos));
-
-				glm::ivec2 up = { pos.x, pos.y - 1 }, down = { pos.x, pos.y + 1 };
-
-				if (grid.is_valid(up) && should_flood(up, *grid.at(up)))
-					queue.push(up);
-
-				if (grid.is_valid(down) && should_flood(down, *grid.at(down)))
-					queue.push(down);
+				bool span_added = false;
+				for (int x = l.x; x <= r.x; x++)
+				{
+					glm::ivec2 up = { x, n.y - 1 };
+					if (should_flood(up, *grid.at(up)))
+					{
+						if (!span_added)
+						{
+							span_added = true;
+							queue.push(up);
+						}
+					}
+					else
+						span_added = false;
+				}
+			}
+			if (n.y + 1 < grid.height())
+			{
+				bool span_added = false;
+				for (int x = l.x; x <= r.x; x++)
+				{
+					glm::ivec2 down = { x, n.y + 1 };
+					if (should_flood(down, *grid.at(down)))
+					{
+						if (!span_added)
+						{
+							span_added = true;
+							queue.push(down);
+						}
+					}
+					else
+						span_added = false;
+				}
 			}
 		}
+		//*/
 	}
 
 	template <typename TILE_DATA, bool RESIZABLE, change_tile_callback<TILE_DATA> FLOOD_FUNC>
 	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, FLOOD_FUNC&& flood)
 	{
 		const auto data_at_start = grid.at(start);
-		flood_at(grid, start, std::forward<FLOOD_FUNC>(flood), [&](glm::ivec2 at, TILE_DATA const& data) { return data == data_at_start; });
+		flood_at(grid, start, std::forward<FLOOD_FUNC>(flood), [data_at_start](glm::ivec2 at, TILE_DATA const& data) { return data == *data_at_start; });
 	}
 
 

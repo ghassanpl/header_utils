@@ -26,4 +26,9 @@ namespace ghassanpl::geometry
 
 		return true;
 	}
+
+	template <std::floating_point T>
+	using tvec_span = std::span<glm::tvec2<T>>;
+
+	using vec_span = tvec_span<float>;
 }
