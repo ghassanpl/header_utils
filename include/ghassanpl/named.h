@@ -310,7 +310,7 @@ namespace ghassanpl
 	}
 
 #define ghassanpl_named_string_literal(named_name, suffix) \
-	inline named_name operator ""suffix(const char* str, std::size_t len) { \
+	inline named_name operator "" suffix(const char* str, std::size_t len) { \
 		return named_name{named_name::base_type{str,len}}; \
 	}
 

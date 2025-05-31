@@ -347,6 +347,10 @@ namespace ghassanpl::di
 			return result;
 		}
 
+		virtual bool HasAnyImplementations() const override {
+			return !mImplementations.empty();
+		}
+
 	private:
 
 		std::map<std::type_index, ImplementationContainer<INTERFACE>> mImplementations;
@@ -358,7 +362,7 @@ namespace ghassanpl::di
 	bool Container::HasAnyImplementationsOf() const
 	{
 		if (auto it = mContainers.find(typeid(INTERFACE)); it != mContainers.end())
-			return !it->second->mImplementations.empty();
+			return it->second->HasAnyImplementations();
 		return false;
 	}
 

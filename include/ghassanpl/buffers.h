@@ -58,7 +58,7 @@ namespace ghassanpl
 		}
 		else
 		{
-			static_assert(!always_false<T, T>, "buffer cannot be appended with this value type - buffer_append might need to be specialized");
+			static_assert(!always_false<T>, "buffer cannot be appended with this value type - buffer_append might need to be specialized");
 			return false;
 		}
 	}

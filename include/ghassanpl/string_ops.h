@@ -1642,18 +1642,18 @@ namespace ghassanpl::string_ops
 
 				if (SINGLE)
 				{
-					if (rs < se && sc.contains(*rs))
+					if (rs < se && contains(sc, *rs))
 						++rs;
 				}
 				else
 				{
-					while (rs < se && sc.contains(*rs))
+					while (rs < se && contains(sc, *rs))
 						++rs;
 				}
 
 				RangeStart = rs;
 
-				while (rs < se && !sc.contains(*rs))
+				while (rs < se && !contains(sc, *rs))
 					++rs;
 
 				RangeEnd = rs;

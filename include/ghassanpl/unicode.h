@@ -287,8 +287,8 @@ namespace ghassanpl::string_ops
 	template <typename FUNC>
 	void encode_flag(std::string_view ascii_country_code, FUNC&& encoding_func)
 	{
-		static constexpr char32_t flag_introducer_tag = '\u1F3F4';
-		static constexpr char32_t flag_end_tag = '\uE007F';
+		static constexpr char32_t flag_introducer_tag = U'\U0001F3F4';
+		static constexpr char32_t flag_end_tag = U'\U000E007F';
 
 		encoding_func(flag_introducer_tag);
 		for (auto& cp : ascii_country_code)
