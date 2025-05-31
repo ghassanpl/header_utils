@@ -16,7 +16,7 @@ namespace ghassanpl::geometry
 		tsegment<T> axis;
 		T radius{};
 
-		auto const& centroid() const { return axis.center(); }
+		auto centroid() const { return axis.center(); }
 
 		bool contains(glm::tvec2<T> pt) const
 		{

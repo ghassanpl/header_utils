@@ -175,7 +175,7 @@ namespace ghassanpl::formats
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
-			return ec ? move(or_json) : nlohmann::json::parse(source);
+			return ec ? std::move(or_json) : nlohmann::json::parse(source);
 		}
 
 		inline nlohmann::json try_load_file(std::filesystem::path const& from)
@@ -258,7 +258,7 @@ namespace ghassanpl::formats
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
-			return ec ? move(or_json) : nlohmann::json::from_ubjson(source);
+			return ec ? std::move(or_json) : nlohmann::json::from_ubjson(source);
 		}
 
 		inline nlohmann::json try_load_file(std::filesystem::path const& from)
@@ -308,7 +308,7 @@ namespace ghassanpl::formats
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<uint8_t>(from, ec);
-			return ec ? move(or_json) : nlohmann::json::from_cbor(source);
+			return ec ? std::move(or_json) : nlohmann::json::from_cbor(source);
 		}
 
 		inline nlohmann::json try_load_file(std::filesystem::path const& from)

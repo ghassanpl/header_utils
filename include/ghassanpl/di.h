@@ -92,6 +92,7 @@ namespace ghassanpl::di
 			virtual ~BaseInterfaceContainer() noexcept = default;
 			explicit BaseInterfaceContainer(Lifetime default_lifetime) : DefaultLifetime(default_lifetime) {}
 			Lifetime DefaultLifetime = Lifetime::Default;
+			virtual bool HasAnyImplementations() const = 0;
 		};
 
 		template <typename INTERFACE>

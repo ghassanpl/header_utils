@@ -52,7 +52,21 @@
 #endif
 
 #include <format>
-#include "source_location.h"
+#if __has_include(<debugging>)
+#include <debugging>
+#define ASSUMING_BREAKPOINT std::breakpoint
+#else
+#ifndef __has_builtin         // Optional of course.
+#define __has_builtin(x) 0  // Compatibility with non-clang compilers.
+#endif
+#if __has_builtin(__builtin_debugtrap)
+#define ASSUMING_BREAKPOINT   __builtin_debugtrap
+#elif (defined(__clang__) || defined(__GNUC__)) && !defined(_MSC_VER)
+#define ASSUMING_BREAKPOINT   __builtin_trap
+#elif defined(_MSC_VER)
+#define ASSUMING_BREAKPOINT  __debugbreak
+#endif
+#endif
 
 #if ASSUMING_DEBUG
 #include <sstream>
@@ -75,7 +89,7 @@
 /// \private
 #define GHPL_UNREACHABLE() std::unreachable()
 #else
-#if (defined(__clang__) || defined(__GNUC__)) && !defined(_MSV_VER)
+#if (defined(__clang__) || defined(__GNUC__)) && !defined(_MSC_VER)
 #define GHPL_UNREACHABLE() (__builtin_unreachable())
 #else
 #define GHPL_UNREACHABLE() GHPL_ASSUME(false)
@@ -89,7 +103,7 @@
 #endif
 #endif
 #ifndef GHPL_ASSUME
-#if (defined(__clang__) || defined(__GNUC__)) && !defined(_MSV_VER)
+#if (defined(__clang__) || defined(__GNUC__)) && !defined(_MSC_VER)
 #define GHPL_ASSUME(...) ((__VA_ARGS__) ? static_cast<void>(0) : GHPL_UNREACHABLE())
 #else
 #define GHPL_ASSUME(...) (__assume(__VA_ARGS__), (::std::ignore = (__VA_ARGS__)))
@@ -98,18 +112,29 @@
 
 #if ASSUMING_DEBUG || defined(DOXYGEN)
 
+#define ASSUMING_HANDLE_HANDLER_RESULT(result) do { \
+	switch (result) \
+	{ \
+		case ::ghassanpl::AssumptionHandlerResult::Continue: break; \
+		case ::ghassanpl::AssumptionHandlerResult::Break: ASSUMING_BREAKPOINT(); break; \
+		case ::ghassanpl::AssumptionHandlerResult::Terminate: std::terminate(); break; \
+	} \
+	} while (false)
+
+#define ASSUMING_REPORT(...) ASSUMING_HANDLE_HANDLER_RESULT(::ghassanpl::ReportAssumptionFailure(__VA_ARGS__))
+
 /// The basic Assuming macro. Assumes the term is true. Expression result must be convertible to bool.
 #define Assuming(exp, ...) do { if (auto&& _assuming_exp_v = (exp); !_assuming_exp_v) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#exp " will evalute to true", { { #exp, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
+	ASSUMING_REPORT(#exp " will evalute to true", { { #exp, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the point in code is not reachable.
-#define AssumingNotReachable(...) do { ::ghassanpl::ReportAssumptionFailure("execution will never reach this point", {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); GHPL_UNREACHABLE(); } while (false)
+#define AssumingNotReachable(...) do { ASSUMING_REPORT("execution will never reach this point", {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); GHPL_UNREACHABLE(); } while (false)
 
 /// Assumes the point in code is not reached via a recursive function call.
 #define AssumingNotRecursive(...) \
 	static int _assuming_recursion_counter##__LINE__ = 0; \
 	if (_assuming_recursion_counter##__LINE__ != 0)  \
-		::ghassanpl::ReportAssumptionFailure("enclosing block will not be entered recursively", {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
+		ASSUMING_REPORT("enclosing block will not be entered recursively", {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
 	const ::ghassanpl::detail::RecursionScopeMarker _assuming_scope_marker##__LINE__( _assuming_recursion_counter##__LINE__ )
 
 /// Assumes the point in code executes in exactly one thread, the same thread over the lifetime of the program.
@@ -117,7 +142,7 @@
 		static std::thread::id _assuming_thread_id = std::this_thread::get_id(); \
 		auto _assuming_current_thread_id = std::this_thread::get_id(); \
 		if (_assuming_thread_id != _assuming_current_thread_id)\
-			::ghassanpl::ReportAssumptionFailure("this code will be executed in one thread only", { {"required_thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_thread_id))}, {"thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id))} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
+			ASSUMING_REPORT("this code will be executed in one thread only", { {"required_thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_thread_id))}, {"thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id))} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
 	} while (false)
 
 /// Assumes the point in code executes on the specified thread
@@ -125,7 +150,7 @@
 		auto _assuming_thread_id = (thread_to_check); \
 		auto _assuming_current_thread_id = std::this_thread::get_id(); \
 		if (_assuming_thread_id != _assuming_current_thread_id)\
-			::ghassanpl::ReportAssumptionFailure("this code will be executed in one thread only", { {"required_thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_thread_id))}, { "thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id))} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
+			ASSUMING_REPORT("this code will be executed in one thread only", { {"required_thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_thread_id))}, { "thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id))} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
 	} while (false)
 
 /// Assumes the point in code DOES NOT execute on the specified thread
@@ -133,20 +158,20 @@
 		auto _assuming_thread_id = (thread_to_check); \
 		auto _assuming_current_thread_id = std::this_thread::get_id(); \
 		if (_assuming_thread_id == _assuming_current_thread_id)\
-			::ghassanpl::ReportAssumptionFailure("this code will not be executed in specific thread", { {"forbidden_thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_thread_id))}, { "thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id))} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
+			ASSUMING_REPORT("this code will not be executed in specific thread", { {"forbidden_thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_thread_id))}, { "thread_id", std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_current_thread_id))} }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
 	} while (false)
 
 /// Assumes the term is not (convertible to) a null pointer.
 #define AssumingNull(exp, ...) do { if (auto _assuming_exp_v = (const void*)std::to_address(exp); _assuming_exp_v != nullptr) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#exp " will be null", { { #exp, std::format("{}", _assuming_exp_v) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
+	ASSUMING_REPORT(#exp " will be null", { { #exp, std::format("{}", _assuming_exp_v) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the term is (convertible to) a null pointer.
 #define AssumingNotNull(exp, ...) do { if (auto _assuming_exp_v = (const void*)std::to_address(exp); _assuming_exp_v == nullptr) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#exp " will not be null", { { #exp, std::format("{}", _assuming_exp_v) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
+	ASSUMING_REPORT(#exp " will not be null", { { #exp, std::format("{}", _assuming_exp_v) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the two expressions `a` and `b` are true with regards to the relation `op` (describen in `text`). This is an internal macro used by others.
 #define AssumingBinOp(a, b, op, text, ...) do { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!(_assuming_a_v op _assuming_b_v)) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#a " will " text " " #b, { \
+	ASSUMING_REPORT(#a " will " text " " #b, { \
 		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_a_v)) }, \
 		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
 	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
@@ -166,7 +191,7 @@
 
 /// Assumes the first term contains the bits in the second term.
 #define AssumingContainsBits(a, b, ...) do { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#a " will contain flags " #b, { \
+	ASSUMING_REPORT(#a " will contain flags " #b, { \
 		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_a_v)) }, \
 		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
 	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
@@ -176,24 +201,24 @@
 
 /// Assumes the term evaluates to an empty container (tested via `empty(container)`)
 #define AssumingEmpty(exp, ...) do { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); !empty(_assuming_exp_v)) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#exp " will be empty", { { "size of " #exp, std::format("{}", size(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
+	ASSUMING_REPORT(#exp " will be empty", { { "size of " #exp, std::format("{}", size(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the term evaluates to an non-empty container (tested via `empty(container)`)
 #define AssumingNotEmpty(exp, ...) do { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); empty(_assuming_exp_v)) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#exp " will not be empty", { { "size of " #exp, std::format("{}", size(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
+	ASSUMING_REPORT(#exp " will not be empty", { { "size of " #exp, std::format("{}", size(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the term evaluates to either a null value or an empty string
 #define AssumingNullOrEmpty(exp, ...) do { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); !::ghassanpl::detail::IsNullOrEmpty(_assuming_exp_v)) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#exp " will be null or empty", { { #exp, _assuming_exp_v ? std::format("'{}'", _assuming_exp_v) : "(null)" } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
+	ASSUMING_REPORT(#exp " will be null or empty", { { #exp, _assuming_exp_v ? std::format("'{}'", _assuming_exp_v) : "(null)" } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the term does not evaluate to neither a null value nor an empty string
 #define AssumingNotNullOrEmpty(exp, ...) do { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); ::ghassanpl::detail::IsNullOrEmpty(_assuming_exp_v)) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#exp " will not be null or empty", { { #exp, _assuming_exp_v ? std::format("'{}'", _assuming_exp_v) : "(null)" } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
+	ASSUMING_REPORT(#exp " will not be null or empty", { { #exp, _assuming_exp_v ? std::format("'{}'", _assuming_exp_v) : "(null)" } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the `_index` term evaluates to a valid index to the `_container` term. This is checked via `size(_container)`
 #define AssumingValidIndex(_index, _container, ...) do { using std::size; auto&& _assuming_index = (_index); auto&& _assuming_container = (_container); const auto _assuming_container_size = size(_assuming_container); \
 	if (!(_assuming_index >= 0 && size_t(_assuming_index) < _assuming_container_size)) [[unlikely]] { \
-		::ghassanpl::ReportAssumptionFailure(#_index " will be a valid index to " #_container, { \
+		ASSUMING_REPORT(#_index " will be a valid index to " #_container, { \
 			{ #_index, std::format("{}", _assuming_index) }, \
 			{  "size of " #_container, std::format("{}", _assuming_container_size) }, \
 		}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
@@ -201,11 +226,11 @@
 /// Assumes the `_index` term evaluates to a valid iterator to the `_container` term. This is checked via `end(_container)`
 #define AssumingValidIterator(_iterator, _container, ...) do { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); \
 	if (_assuming_iterator == _assuming_end) [[unlikely]] { \
-		::ghassanpl::ReportAssumptionFailure(#_iterator " will be a valid iterator to " #_container, {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
+		ASSUMING_REPORT(#_iterator " will be a valid iterator to " #_container, {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
 
 /// Assumes the `v` term evaluates to a value between `a` and `b` exclusive.
 #define AssumingBetween(v, a, b, ...) do { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!(_assuming_v_v >= _assuming_a_v && _assuming_v_v < _assuming_b_v)) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#v " will be between " #a " and " #b, { \
+	ASSUMING_REPORT(#v " will be between " #a " and " #b, { \
 		{ #v, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_v_v)) }, \
 		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_a_v)) }, \
 		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
@@ -213,7 +238,7 @@
 
 /// Assumes the `v` term evaluates to a value between `a` and `b` inclusive.
 #define AssumingBetweenInclusive(v, a, b, ...) do { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); if (!(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v)) [[unlikely]] \
-	::ghassanpl::ReportAssumptionFailure(#v " will be between " #a " and " #b " (inclusive)", { \
+	ASSUMING_REPORT(#v " will be between " #a " and " #b " (inclusive)", { \
 		{ #v, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_v_v)) }, \
 		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_a_v)) }, \
 		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
@@ -328,11 +353,18 @@ namespace ghassanpl
 #endif
 	}
 
-	inline void DefaultReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
+	enum class AssumptionHandlerResult
+	{
+		Break,    ///< Break into debugger after reporting the assumption failure
+		Terminate, ///< Terminate the program after reporting the assumption failure
+		Continue, ///< Continue execution after reporting the assumption failure
+	};
+
+	inline auto DefaultReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
 #if ASSUMING_USE_STACKTRACE
 		, std::stacktrace stacktrace
 #endif //  ASSUMING_USE_STACKTRACE
-	)
+	) -> AssumptionHandlerResult
 	{
 		throw std::make_tuple(
 			std::move(expectation),
@@ -351,18 +383,18 @@ namespace ghassanpl
 	/// \param values The values of the expressions the assumption macro checked
 	/// \param data Any additional arguments you gave to the macro, std-formatted.
 	/// \param loc
-	inline void (*AssumptionFailureHandler)(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
+	inline auto (*AssumptionFailureHandler)(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
 #if ASSUMING_USE_STACKTRACE
 		, std::stacktrace stacktrace
 #endif //  ASSUMING_USE_STACKTRACE
-	) = nullptr;
+	) -> AssumptionHandlerResult = nullptr;
 
 	/// TODO: AssumptionFailureHandler should return bool, and based on that we should brek into debugger or not.
 
 #if defined(ASSUMING_REPORT_NORETURN) && ASSUMING_REPORT_NORETURN
 	[[noreturn]]
 #endif
-	inline void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
+	inline auto ReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
 #if __INTELLISENSE__
 		= {}
 #else
@@ -371,17 +403,17 @@ namespace ghassanpl
 #if ASSUMING_USE_STACKTRACE
 		, std::stacktrace stacktrace = std::stacktrace::current()
 #endif //  ASSUMING_USE_STACKTRACE
-	)
+	) -> AssumptionHandlerResult
 	{
 		if (AssumptionFailureHandler)
-			AssumptionFailureHandler(std::move(expectation), std::move(values), std::move(data), std::move(loc)
+			return AssumptionFailureHandler(std::move(expectation), std::move(values), std::move(data), std::move(loc)
 #if ASSUMING_USE_STACKTRACE
 				, std::move(stacktrace)
 #endif //  ASSUMING_USE_STACKTRACE
 		);
 		else
 		{
-			DefaultReportAssumptionFailure(std::move(expectation), std::move(values), std::move(data), std::move(loc)
+			return DefaultReportAssumptionFailure(std::move(expectation), std::move(values), std::move(data), std::move(loc)
 #if ASSUMING_USE_STACKTRACE
 				, std::move(stacktrace)
 #endif //  ASSUMING_USE_STACKTRACE

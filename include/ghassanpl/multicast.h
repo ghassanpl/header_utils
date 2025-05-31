@@ -87,7 +87,7 @@ namespace ghassanpl
 		template <typename... CALL_ARGS>
 		auto operator()(CALL_ARGS&&... args) const
 		{
-			return call_helper<R>::template call(m_listeners, std::forward<CALL_ARGS>(args)...);
+			return call_helper<R>::call(m_listeners, std::forward<CALL_ARGS>(args)...);
 		}
 
 		/// Removes all the invocables from this objects

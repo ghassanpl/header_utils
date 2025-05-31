@@ -292,7 +292,7 @@ namespace ghassanpl::eval
 		}
 
 		static inline json prefix_macro_get(env_type const&, std::vector<value> args) {
-			return json{ "get", std::string_view{args[0]}.substr(1) };
+			return json{ "get", std::string_view{args[0].ref()}.substr(1)};
 		};
 
 		static inline void set_macro_prefix_get(env_type& e, std::string const& prefix = ".", std::string const& prefix_eval_func_name = "dot", std::string const& get_func_name = "get")

@@ -40,7 +40,7 @@ struct assuming_test : public ::testing::Test
 		return std::forward<T>(v);
 	}
 
-	void ReportAssumptionFailure(std::string_view expectation, std::initializer_list<name_value_pair> values, std::string data, source_location where)
+	AssumptionHandlerResult ReportAssumptionFailure(std::string_view expectation, std::initializer_list<name_value_pair> values, std::string data, source_location where)
 	{
 		assumption_failed = true;
 		last_where = where;
@@ -48,6 +48,7 @@ struct assuming_test : public ::testing::Test
 		//fmt::print("Failed assumption that {}\n", expectation);
 		last_values = { values.begin(), values.end() };
 		last_data = std::move(data);
+		return AssumptionHandlerResult::Continue;
 	}
 
 	template <typename T, typename U>
@@ -66,7 +67,7 @@ struct assuming_test : public ::testing::Test
 #endif
 			)
 		{
-			current_test->ReportAssumptionFailure(expectation, std::move(values), std::move(data), where);
+			return current_test->ReportAssumptionFailure(expectation, std::move(values), std::move(data), where);
 		};
 	}
 

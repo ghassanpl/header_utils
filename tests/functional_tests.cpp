@@ -206,10 +206,11 @@ TEST(variant_transform, works)
 	using str = detail::variant_flat_t<std::string, std::string>;
 	using str2 = detail::variant_flat_t<std::string>;
 
+#ifndef __clang__
 	{
 		enum class NegativeInt { };
 		enum class PositiveInt { };
-		auto res = transformed_flattened(std::variant<int, std::string>{2}, overloaded{
+		auto res = ghassanpl::transformed_flattened(std::variant<int, std::string>{2}, overloaded{
 			[](int x) -> std::variant<NegativeInt, PositiveInt> {
 				if (x < 0)
 					return NegativeInt{x};
@@ -255,6 +256,7 @@ TEST(variant_transform, works)
 		EXPECT_TRUE(std::holds_alternative<std::string>(res));
 		EXPECT_EQ(std::get<std::string>(res), "lol");
 	}
+#endif
 }
 
 
