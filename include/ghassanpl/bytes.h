@@ -47,9 +47,12 @@ namespace ghassanpl
 	/// Returns a span of \c bytelike s that represents the internal object representation of the argument
 	template <bytelike TO, typename T>
 	requires std::is_trivially_copyable_v<T>
-	[[nodiscard]] span<TO const> as_bytelikes(T const& pod) noexcept
+	[[nodiscard]] auto as_bytelikes(T& pod) noexcept
 	{
-		return { reinterpret_cast<TO const*>(std::addressof(pod)), sizeof(pod) };
+		if constexpr (std::is_const_v<T>)
+			return std::span{ reinterpret_cast<TO const*>(std::addressof(pod)), sizeof(pod) };
+		else
+			return std::span{ reinterpret_cast<TO*>(std::addressof(pod)), sizeof(pod) };
 	}
 	
 	template <bytelike FROM> [[nodiscard]] constexpr auto to_u8(FROM byte) noexcept { return std::bit_cast<uint8_t>(byte); }
@@ -61,11 +64,16 @@ namespace ghassanpl
 	template<typename S, typename D>
 	using copy_const_t = std::conditional_t<std::is_const_v<S>, std::add_const_t<D>, std::remove_const_t<D>>;
 
-	template <bytelike FROM, size_t N = std::dynamic_extent> [[nodiscard]] auto as_chars(span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, char>>(bytes); }
-	template <bytelike FROM, size_t N = std::dynamic_extent> [[nodiscard]] auto as_bytes(span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, std::byte>>(bytes); }
-	template <bytelike FROM, size_t N = std::dynamic_extent> [[nodiscard]] auto as_uchars(span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, unsigned char>>(bytes); }
-	template <bytelike FROM, size_t N = std::dynamic_extent> [[nodiscard]] auto as_u8s(span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, uint8_t>>(bytes); }
-	template <bytelike FROM, size_t N = std::dynamic_extent> [[nodiscard]] auto as_char8s(span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, char8_t>>(bytes); }
+	template <bytelike FROM, size_t N = std::dynamic_extent> 
+	[[nodiscard]] auto as_chars(span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, char>>(bytes); }
+	template <bytelike FROM, size_t N = std::dynamic_extent> 
+	[[nodiscard]] auto as_bytes(span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, std::byte>>(bytes); }
+	template <bytelike FROM, size_t N = std::dynamic_extent> 
+	[[nodiscard]] auto as_uchars(span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, unsigned char>>(bytes); }
+	template <bytelike FROM, size_t N = std::dynamic_extent> 
+	[[nodiscard]] auto as_u8s(span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, uint8_t>>(bytes); }
+	template <bytelike FROM, size_t N = std::dynamic_extent> 
+	[[nodiscard]] auto as_char8s(span<FROM, N> bytes) noexcept { return as_bytelikes<copy_const_t<FROM, char8_t>>(bytes); }
 
 	template <typename T> requires std::is_trivial_v<T> [[nodiscard]] auto as_chars(T const& data) noexcept { return as_bytelikes<char>(data); }
 	template <typename T> requires std::is_trivial_v<T> [[nodiscard]] auto as_bytes(T const& data) noexcept { return as_bytelikes<std::byte>(data); }

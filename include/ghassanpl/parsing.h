@@ -10,9 +10,46 @@
 
 namespace ghassanpl::parsing
 {
+
+	[[nodiscard]] size_t find_line_number(std::string_view of_string, std::string_view in_document) noexcept;
+	[[nodiscard]] std::pair<size_t, size_t> find_line_and_column(std::string_view of_string, std::string_view in_document) noexcept;
+
+	[[nodiscard]] std::string_view consume_c_identifier(std::string_view& str);
+	[[nodiscard]] std::string_view consume_c_identifier_with(std::string_view& str, std::string_view additional_chars);
+
+#if __cpp_lib_to_chars
+	[[nodiscard]] std::pair<std::string_view, double> consume_c_float(std::string_view& str);
+	[[nodiscard]] std::pair<std::string_view, int64_t> consume_c_integer(std::string_view& str, int base);
+	[[nodiscard]] std::pair<std::string_view, uint64_t> consume_c_unsigned(std::string_view& str, int base );
+#endif
+	template <char DELIMITER>
+	[[nodiscard]] std::pair<std::string_view, std::string> consume_c_string(std::string_view& strv);
+
+
+	bool try_eat(std::string_view& str, std::string_view what);
+	bool try_eat(std::string_view& str, char what);
+	void eat(std::string_view& str, std::string_view what);
+	void eat(std::string_view& str, char what);
+	std::string_view try_eat_identifier(std::string_view& str);
+	std::string_view eat_identifier(std::string_view& str);
+	std::string_view try_eat_identifier_with(std::string_view& str, std::string_view additional_chars);
+	std::string_view eat_identifier_with(std::string_view& str, std::string_view additional_chars);
+	std::string_view eat_whitespace(std::string_view& str);
+	bool try_eat_line_comment(std::string_view& str, std::string_view comment_start);
+	bool try_eat_unsigned(std::string_view& str, uint64_t& result, int base);
+	std::optional<uint64_t> try_eat_unsigned(std::string_view& str, int base);
+	bool try_eat_integer(std::string_view& str, int64_t& result, int base);
+	std::optional<int64_t> try_eat_integer(std::string_view& str, int base);
+	uint64_t eat_unsigned(std::string_view& str, int base);
+	int64_t eat_integer(std::string_view& str, int base);
+	char32_t try_eat_utf8_codepoint(std::string_view& str);
+	char32_t eat_utf8_codepoint(std::string_view& str);
+
+	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////// ///
+
 	using namespace string_ops;
 
-
+	/// TODO: Use expecteds for results of these functions
 
 	[[nodiscard]] inline size_t find_line_number(std::string_view of_string, std::string_view in_document) noexcept
 	{
@@ -119,6 +156,40 @@ namespace ghassanpl::parsing
 		return result;
 	}
 
+	[[deprecated("WARNING: This function is incomplete")]]
+	[[nodiscard]] inline std::tuple<std::string_view, std::variant<double, uint64_t, int64_t>> consume_c_number(std::string_view& str)
+	{
+		if (str.empty())
+			return {};
+
+		if (auto first_char = str[0]; first_char == '-')
+		{
+			/// We need to parse then complement the integer
+			/// TODO: this
+			return {};
+		}
+		else if (consume(str, "0x"))
+			return consume_c_unsigned(str, 16);
+		else if (consume(str, "0b"))
+			return consume_c_unsigned(str, 1);
+		else if (consume(str, "0"))
+			return consume_c_unsigned(str, 8);
+		else if (ascii::isdigit(first_char))
+		{
+			if (auto result = consume_c_float(str); !result.first.empty())
+				return result;
+		
+			if (auto result = consume_c_unsigned(str); !result.first.empty())
+				return result;
+		
+			if (auto result = consume_c_integer(str); !result.first.empty())
+				return result;
+		}
+		return {};
+	}
+
+#endif
+
 	template <char DELIMITER = '\''>
 	[[nodiscard]] inline std::pair<std::string_view, std::string> consume_c_string(std::string_view& strv)
 	{
@@ -216,40 +287,6 @@ namespace ghassanpl::parsing
 		strv = view;
 		return result;
 	}
-
-	[[deprecated("WARNING: This function is incomplete")]]
-	[[nodiscard]] inline std::tuple<std::string_view, std::variant<double, uint64_t, int64_t>> consume_c_number(std::string_view& str)
-	{
-		if (str.empty())
-			return {};
-
-		if (auto first_char = str[0]; first_char == '-')
-		{
-			/// We need to parse then complement the integer
-			/// TODO: this
-			return {};
-		}
-		else if (consume(str, "0x"))
-			return consume_c_unsigned(str, 16);
-		else if (consume(str, "0b"))
-			return consume_c_unsigned(str, 1);
-		else if (consume(str, "0"))
-			return consume_c_unsigned(str, 8);
-		else if (ascii::isdigit(first_char))
-		{
-			if (auto result = consume_c_float(str); !result.first.empty())
-				return result;
-		
-			if (auto result = consume_c_unsigned(str); !result.first.empty())
-				return result;
-		
-			if (auto result = consume_c_integer(str); !result.first.empty())
-				return result;
-		}
-		return {};
-	}
-
-#endif
 
 	struct parse_error : std::runtime_error
 	{
@@ -404,18 +441,18 @@ namespace ghassanpl::parsing
 		template <GHPL_FORMAT_TEMPLATE>
 		[[nodiscard]] inline parsing::parse_error parse_error(token_it const& it, GHPL_FORMAT_ARGS) { return parsing::parse_error(it->range, GHPL_FORMAT_FORWARD); }
 
-		struct expression
+		struct term
 		{
-			virtual ~expression() noexcept = default;
+			virtual ~term() noexcept = default;
 			token_range source_range;
 
-			expression(token_it it) : source_range(it, std::next(it)) {}
-			expression(token_range range) : source_range(range) {}
+			term(token_it it) : source_range(it, std::next(it)) {}
+			term(token_range range) : source_range(range) {}
 		};
 
-		struct function_call_expression : public expression
+		struct function_call_expression : public term
 		{
-			std::vector<std::unique_ptr<expression>> arguments;
+			std::vector<std::unique_ptr<term>> arguments;
 			std::string name;
 			static std::string make_name(std::span<token_it const> name_parts, bool infix)
 			{
@@ -429,35 +466,35 @@ namespace ghassanpl::parsing
 				}
 				return name;
 			}
-			function_call_expression(token_range range, std::span<token_it const> name_, std::vector<std::unique_ptr<expression>> arguments_, bool infix) 
-				: expression(range)
+			function_call_expression(token_range range, std::span<token_it const> name_, std::vector<std::unique_ptr<term>> arguments_, bool infix) 
+				: term(range)
 				, name(make_name(name_, infix))
 				, arguments(std::move(arguments_))
 			{
 			}
 		};
 
-		struct identifier_expression : public expression
+		struct identifier_expression : public term
 		{
 			std::string identifier;
 
-			identifier_expression(token_it it) : expression(it), identifier(it->range) {}
+			identifier_expression(token_it it) : term(it), identifier(it->range) {}
 		};
 
-		struct literal_expression : public expression
+		struct literal_expression : public term
 		{
 			token literal;
 
-			literal_expression(token_it it) : expression(it), literal(*it) {}
+			literal_expression(token_it it) : term(it), literal(*it) {}
 		};
 
-		inline std::unique_ptr<expression> parse_expression(token_range& tokens)
+		inline std::unique_ptr<term> parse_expression(token_range& tokens)
 		{
-			std::unique_ptr<expression> result;
+			std::unique_ptr<term> result;
 
 			auto start = tokens.begin();
 
-			std::vector<std::unique_ptr<expression>> constituents;
+			std::vector<std::unique_ptr<term>> constituents;
 			while (tokens && tokens.front().type >= token::word)
 			{
 				if (tokens.front().type == token::word)
@@ -492,7 +529,7 @@ namespace ghassanpl::parsing
 			const bool infix = (constitutent_count % 2) == 1;
 
 			std::vector<token_it> function_name;
-			std::vector<std::unique_ptr<expression>> arguments;
+			std::vector<std::unique_ptr<term>> arguments;
 			if (infix)
 				arguments.push_back(std::exchange(constituents[0], {}));
 			/// First, check that all function words are actually words
@@ -511,7 +548,7 @@ namespace ghassanpl::parsing
 			return std::make_unique<function_call_expression>(std::ranges::subrange(start, tokens.begin()), std::move(function_name), std::move(arguments), infix);
 		}
 
-		inline std::unique_ptr<expression> parse_expression(std::string_view& str)
+		inline std::unique_ptr<term> parse_expression(std::string_view& str)
 		{
 			const auto tokens = lex(str);
 			using tokenit = std::ranges::iterator_t<decltype(tokens)>;

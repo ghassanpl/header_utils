@@ -66,7 +66,8 @@ namespace ghassanpl
 
 		constexpr enum_flags(enum_type base_value) noexcept : bits(flag_bits<VALUE_TYPE>(base_value)) {}
 		template<typename U = VALUE_TYPE>
-		constexpr explicit enum_flags(value_type value, typename std::enable_if<!std::is_same_v<U, enum_type>>::type* = 0) noexcept
+		requires (!std::is_same_v<U, enum_type>)
+		constexpr explicit enum_flags(value_type value) noexcept
 			: bits(value) 
 		{
 		}
@@ -75,11 +76,16 @@ namespace ghassanpl
 		template <typename... ARGS>
 		constexpr enum_flags(enum_type base_value, ARGS... args) noexcept : bits(flag_bits<VALUE_TYPE>(base_value, args...)) {}
 
+		constexpr enum_flags(std::initializer_list<enum_type> values) noexcept {
+			for (auto val : values) { bits |= flag_bits<VALUE_TYPE>(val); }
+		}
+
 		/// Creates the \ref enum_flags set from the given underlying bits
-		[[nodiscard]]
-		constexpr static self_type from_bits(value_type val) noexcept {
+		template <integral_or_enum BITS_TYPE>
+		requires std::convertible_to<decltype(detail::to_underlying_type(BITS_TYPE{})), VALUE_TYPE>
+		[[nodiscard]] constexpr static self_type from_bits(BITS_TYPE val) noexcept {
 			self_type ret;
-			ret.bits = val;
+			ret.bits = static_cast<VALUE_TYPE>(detail::to_underlying_type(val));
 			return ret;
 		}
 
@@ -91,8 +97,12 @@ namespace ghassanpl
 
 		/// Returns a value with all bits set, up to and including the `last`
 		[[nodiscard]]
-		constexpr static self_type all(enum_type last) noexcept { return self_type::from_bits(flag_bits<VALUE_TYPE>(last) | (flag_bits<VALUE_TYPE>(last) - 1)); }
-		
+		constexpr static self_type all(enum_type last) noexcept { return self_type::from_bits(flag_bits<VALUE_TYPE>(last) & ~(flag_bits<VALUE_TYPE>(last + 1) - 1)); }
+
+		/// Returns a value with bits starting with `first`, up to and including `last`, set
+		[[nodiscard]]
+		constexpr static self_type all_between(enum_type first, enum_type last) noexcept { return all(last) - self_type::from_bits(~(flag_bits<VALUE_TYPE>(first) - 1)); }
+
 		/// Returns a value with none of the bits set
 		[[nodiscard]]
 		constexpr static self_type none() noexcept { return {}; }
@@ -115,6 +125,7 @@ namespace ghassanpl
 		constexpr int count() const noexcept { return std::popcount(bits); }
 
 		/// Returns the value of the `n`th set bit in the set
+		/// Preconditions: `n` must be less than the number of bits set (`n < count()`)
 		[[nodiscard]]
 		constexpr enum_type nth_set(size_t n) const noexcept {
 			auto b = bits;
@@ -231,6 +242,8 @@ namespace ghassanpl
 		constexpr self_type operator+(self_type flags) const noexcept { return self_type::from_bits(bits | flags.bits); }
 		[[nodiscard]]
 		constexpr self_type operator-(self_type flags) const noexcept { return self_type::from_bits(bits & ~flags.bits); }
+		[[nodiscard]]
+		constexpr self_type operator-() const noexcept { return self_type::from_bits(~bits); }
 		[[nodiscard]]
 		constexpr self_type except_for(self_type flags) const noexcept { return self_type::from_bits(bits & ~flags.bits); }
 		[[nodiscard]]
@@ -412,6 +425,26 @@ namespace ghassanpl
 		{
 			return static_cast<enum_flag_change>(bits_to_set.is_set(flag) * 1 + bits_to_unset.is_set(flag) * 2);
 		}
+
+		constexpr flags_type flags_to_set() const noexcept { return bits_to_set - bits_to_unset; }
+		constexpr flags_type flags_to_unset() const noexcept { return bits_to_unset - bits_to_set; }
+		constexpr flags_type flags_to_toggle() const noexcept { return bits_to_unset.but_only(bits_to_set); }
+		constexpr flags_type flags_to_not_change() const noexcept { return -(bits_to_set + bits_to_unset); }
+
+		constexpr flags_type flags_to(enum_flag_change change) const noexcept
+		{
+			switch (change)
+			{
+			case enum_flag_change::set: return flags_to_set();
+			case enum_flag_change::unset: return flags_to_unset();
+			case enum_flag_change::toggle: return flags_to_toggle();
+			case enum_flag_change::no_change: return flags_to_not_change();
+			}
+#if defined(__cpp_lib_unreachable) && __cpp_lib_unreachable >= 202202L
+			std::unreachable();
+#endif
+		}
+
 
 		template <std::convertible_to<enum_type>... ARGS>
 		constexpr self_type& set(ARGS... args) noexcept { bits_to_set.set(args...); bits_to_unset.unset(args...); return *this; }

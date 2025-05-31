@@ -40,9 +40,9 @@ namespace ghassanpl::geometry
 			return glm::distance(a, b) + glm::distance(b, c) + glm::distance(c, a);
 		}
 
-		glm::tvec2<T> edge_point_alpha(T t) const;
-		glm::tvec2<T> edge_point(T t) const;
-		glm::tvec2<T> closest_point_to(glm::tvec2<T> pt) const;
+		tvec edge_point_alpha(T t) const;
+		tvec edge_point(T t) const;
+		tvec closest_point_to(tvec pt) const;
 
 		static auto sign(tvec const& p1, tvec const& p2, tvec const& p3) noexcept
 		{

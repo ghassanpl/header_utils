@@ -256,17 +256,17 @@ namespace ghassanpl
 
 	/// \brief A RAII class that changes the value of a variable and reverts it to the original value on destruction.
 	/// Not exception-safe (probably).
-	template <typename T, bool OPTIONAL = false>
+	template <typename T, bool IS_OPTIONAL = false>
 	struct scoped_value_change
 	{
-		template <typename U, bool OPT = OPTIONAL>
+		template <typename U, bool OPT = IS_OPTIONAL>
 		scoped_value_change(T& ref, U new_val, typename std::enable_if_t<!OPT>* = 0) noexcept(std::is_nothrow_move_constructible_v<T>)
 			: m_ref(std::addressof(ref))
 			, m_original_value(std::exchange(ref, new_val))
 		{
 		}
 
-		template <typename U, bool OPT = OPTIONAL>
+		template <typename U, bool OPT = IS_OPTIONAL>
 		scoped_value_change(T& ref, U new_val, typename std::enable_if_t<OPT>* = 0) noexcept(std::is_nothrow_move_constructible_v<T> && std::is_nothrow_copy_constructible_v<T>)
 			: m_ref(std::addressof(ref))
 			, m_original_value(*m_ref != new_val ? std::exchange(ref, new_val) : ref)
@@ -336,7 +336,7 @@ namespace ghassanpl
 				auto& ref = *m_ref;
 				m_ref = nullptr;
 
-				if constexpr (OPTIONAL)
+				if constexpr (IS_OPTIONAL)
 				{
 					if (ref == m_original_value)
 						return;
@@ -349,13 +349,13 @@ namespace ghassanpl
 		/// \brief Reverts the value to the original one.
 		/// \pre valid() == true
 		/// \post valid() == false
-		/// \return The current value, or the original value if the change is not needed (when OPTIONAL is true).
+		/// \return The current value, or the original value if the change is not needed (when IS_OPTIONAL is true).
 		T revert_and_return() noexcept(std::is_nothrow_move_assignable_v<T> && std::is_nothrow_move_constructible_v<T>)
 		{
 			auto& ref = *m_ref;
 			m_ref = nullptr;
 
-			if constexpr (OPTIONAL)
+			if constexpr (IS_OPTIONAL)
 			{
 				if (ref != m_original_value)
 					return std::move(m_original_value);

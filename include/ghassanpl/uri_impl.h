@@ -1,3 +1,4 @@
+#include "uri.h"
 /// \copyright This Source Code Form is subject to the terms of the Mozilla Public
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
@@ -185,7 +186,10 @@ namespace ghassanpl
 				{
 					do
 					{
-						if (flags.contain(uri_decompose_flags::split_path_elements)) elements.push_back(parse_segment(pv, flags));
+						if (flags.contain(uri_decompose_flags::split_path_elements)) 
+							elements.push_back(parse_segment(pv, flags));
+						else
+							std::ignore = parse_segment(pv, flags);
 					} while (consume(pv, '/'));
 
 					if (!pv.empty())
@@ -239,12 +243,23 @@ namespace ghassanpl
 		}
 	}
 
+	uri_expected<std::string_view> extract_scheme(uri_view uri) noexcept
+	{
+		using namespace detail;
+
+		const auto start = uri;
+		if (!consume(uri, ascii::isalpha))
+			return unexpected(uri_error_code::scheme_malformed);
+		trim_while(uri, isscheme);
+		return make_sv(start.begin(), uri.begin());
+	}
 
 	uri_expected<decomposed_uri> decompose_uri(uri_view uri, enum_flags<uri_decompose_flags> const flags)
 	{
 		try
 		{
 			decomposed_uri result{};
+			result.decompose_flags = flags;
 
 			result.scheme = detail::parse_scheme(uri, flags);
 
@@ -275,12 +290,22 @@ namespace ghassanpl
 				result.query = std::move(query);
 				result.query_elements = std::move(elements);
 			}
-
+			
 			if (string_ops::consume(uri, '#'))
 				result.fragment = detail::parse_fragment(uri, flags);
 
 			if (flags.contains_all_of(uri_decompose_flags::lowercase_when_appropriate, uri_decompose_flags::normalize_path))
 				result.canonical_form = true;
+			
+			if (flags.contain(uri_decompose_flags::query_known_scheme))
+			{
+				result.known_scheme = query_uri_scheme(result.scheme);
+				if (result.known_scheme)
+				{
+					return result.known_scheme->validate(result)
+						.transform([&]{ return std::move(result); });
+				}
+			}
 
 			return result;
 		}
@@ -339,7 +364,7 @@ namespace ghassanpl
 		{
 			virtual uri_error validate_user_info(std::string_view element) const noexcept override { return {}; }
 			virtual uri_error validate_path(std::string_view element) const noexcept override { 
-				if (!element.empty() || element.starts_with("/"))
+				if (!element.empty() && !element.starts_with("/"))
 					return unexpected(uri_error_code::path_malformed);
 				return {};
 			}

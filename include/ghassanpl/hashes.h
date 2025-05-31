@@ -315,11 +315,11 @@ namespace ghassanpl
 	{
 		auto result = hasher(v);
 		static_assert(std::is_same_v<decltype(result), uint64_t>, "hasher() must return a uint64_t");
-		fold_in_hash64(seed, hasher(v));
+		fold_in_hash64(seed, result);
 	}
 
 	template <template<typename> typename HASHER = std::hash, typename FIRST, typename... T>
-	[[nodiscard]] constexpr uint64_t hash64(FIRST&& first, T&&... values)
+	[[nodiscard]] constexpr uint64_t hash64(FIRST const& first, T&&... values)
 	{
 		auto hasher = HASHER<FIRST>{};
 		
@@ -328,7 +328,7 @@ namespace ghassanpl
 			(std::same_as<decltype(std::declval<HASHER<std::remove_cvref_t<T>>>()(std::declval<T>())), uint64_t> && ... && true),
 			"hasher() must return a uint64_t for each type");
 
-		uint64_t result = hasher(std::forward<FIRST>(first));
+		uint64_t result = hasher(first);
 		(ghassanpl::hash64_combine_to(result, std::forward<T>(values), HASHER<std::remove_cvref_t<T>>{}), ...);
 		return result;
 	}

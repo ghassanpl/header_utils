@@ -203,7 +203,9 @@ namespace ghassanpl::geometry
 	}
 }
 
+#ifndef GLM_ENABLE_EXPERIMENTAL
 #define GLM_ENABLE_EXPERIMENTAL
+#endif
 #include <glm/gtx/polar_coordinates.hpp>
 #undef GLM_ENABLE_EXPERIMENTAL
 

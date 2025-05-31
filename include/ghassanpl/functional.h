@@ -8,6 +8,7 @@
 #include <functional>
 #include <optional>
 #include <type_traits>
+#include <variant>
 #if defined(__cpp_lib_bit_cast)
 #include <bit>
 #endif
@@ -71,6 +72,8 @@ namespace ghassanpl
 	/// Appropriate for predicate-taking functions like std::all_of
 	namespace pred
 	{
+		                      [[nodiscard]] constexpr auto always_true() { return [](auto&& other) { return true; }; }
+
 		template <typename T> [[nodiscard]] constexpr auto equal_to(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other == val; }; }
 		template <typename T> [[nodiscard]] constexpr auto not_equal_to(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other != val; }; }
 		template <typename T> [[nodiscard]] constexpr auto less_than(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other < val; }; }
@@ -239,6 +242,9 @@ namespace ghassanpl
 	/// Appropriate for not-in-place transformation functions 
 	namespace xf
 	{
+		                      [[nodiscard]] constexpr auto identity() noexcept { return [](auto&& val) { return std::forward<decltype(val)>(val); }; }
+		                                    constexpr auto identity_l = [] (auto&& val) noexcept { return std::forward<decltype(val)>(val); };
+
 		template <typename T> [[nodiscard]] constexpr auto cast_to() noexcept { return [](auto&& val) { return (T)std::forward<decltype(val)>(val); }; }
 		template <typename T> [[nodiscard]] constexpr auto dynamic_cast_to() noexcept { return [](auto&& val) { return dynamic_cast<T>(std::forward<decltype(val)>(val)); }; }
 #if defined(__cpp_lib_bit_cast)
@@ -321,4 +327,147 @@ namespace ghassanpl
 		func(result);
 		return result;
 	}
-} // namespace util
+
+	/// Variant operations
+	
+	template <typename T, typename... ARGS>
+	[[nodiscard]] constexpr std::optional<T> optional_get(std::variant<ARGS...> const& var) noexcept
+	{
+		if (std::holds_alternative<T>(var))
+			return std::get<T>(var);
+		return std::nullopt;
+	}
+
+	/*
+	template <typename T, typename E, typename... ARGS>
+	[[nodiscard]] constexpr std::expected<T, E> get_or(std::variant<ARGS...> const& var, E&& error) noexcept
+	{
+		if (std::holds_alternative<T>(var))
+			return std::get<T>(var);
+		return std::unexpected(std::forward<E>(error));
+	}
+	*/
+
+	
+	namespace detail
+	{
+		template<class... T> struct mp_list {};
+
+		template <typename T, typename... TT>
+		constexpr bool mp_set_contains() { return (std::is_same_v<TT, T> || ...); }
+		template <typename T, typename... TT>
+		constexpr bool mp_set_contains(mp_list<TT...>) { return (std::is_same_v<TT, T> || ...); }
+		
+		template <typename...TT, typename T>
+		constexpr auto operator&(mp_list<TT...>, mp_list<T>) ->
+			std::conditional_t<(std::is_same_v<TT, T> || ...),
+				mp_list<TT...>,
+				mp_list<TT..., T>
+			>;
+		template <typename...TT, typename T>
+		constexpr auto operator+(mp_list<TT...>, mp_list<T>) -> mp_list<TT..., T>;
+
+		template <template <typename...> typename TMPL, typename... Ts>
+		constexpr auto mp_apply(mp_list<Ts...>) -> TMPL<Ts...>;
+
+		/*
+		template<class L> struct mp_make_unique_impl;
+		template<template<class...> class L, class... T>
+		struct mp_make_unique_impl<L<T...>> {
+			using type = decltype(mp_apply<L>((mp_list<>{} & ... & mp_list<T>{})));
+		};
+		template<class L> using mp_make_unique = typename mp_make_unique_impl<L>::type;
+		*/
+		template<template<class...> class L, class... T>
+		constexpr auto mp_make_unique(L<T...>) -> decltype(mp_apply<L>((mp_list<>{} & ... & mp_list<T>{})));
+	}
+
+	/// Returns a new variant transformed by `func`
+	template <typename FUNC, typename... Ts>
+	constexpr auto transformed(std::variant<Ts...> const& var, FUNC&& func)
+	{
+		using result_type = decltype(detail::mp_make_unique(std::variant<
+			decltype(func(std::declval<Ts>()))...
+		>{}));
+		return std::visit([&func](auto&& val) -> result_type { return result_type(func(std::forward<decltype(val)>(val))); }, var);
+	}
+
+
+	namespace detail
+	{
+
+		template <typename... Ts1, typename... Ts2>
+		constexpr auto cat_lists(mp_list<Ts1...>, mp_list<Ts2...>) -> mp_list<Ts1..., Ts2...>;
+
+		template <typename... Ts>
+		constexpr auto flatten(mp_list<std::variant<Ts...>>) -> decltype(flatten(mp_list<Ts...>{}));
+
+		template <typename T>
+		constexpr auto flatten(mp_list<T>) -> mp_list<T>;
+
+		template <typename T, typename T2, typename... Ts>
+		constexpr auto flatten(mp_list<T, T2, Ts...>)
+			-> decltype(cat_lists(cat_lists(flatten(mp_list<T>{}), flatten(mp_list<T2>{})), mp_list<Ts... >{}));
+
+		template <typename... Ts>
+		using flattened = decltype(flatten(mp_list<Ts...>{}));
+
+		template <template <typename...> typename TMPL, typename T1, typename T2, typename... Ts>
+		constexpr auto mp_apply_or_single(mp_list<T1, T2, Ts...>) -> TMPL<T1, T2, Ts...>;
+		template <template <typename...> typename TMPL, typename T>
+		constexpr auto mp_apply_or_single(mp_list<T>) -> T;
+
+		//template <typename T, typename Ts...> using first_only = T;
+		template <typename T, typename... Ts>
+		using variant_flat_t = decltype(mp_apply_or_single<std::variant>(detail::mp_make_unique(flattened<T, Ts...>{})));
+	}
+
+	template <typename... TYPES>
+	struct convertible_to_variant
+	{
+		std::variant<TYPES...> value;
+
+		convertible_to_variant() noexcept = delete;
+		convertible_to_variant(convertible_to_variant&&) noexcept = default;
+		convertible_to_variant& operator=(convertible_to_variant&&) noexcept = default;
+
+		convertible_to_variant(std::variant<TYPES...> val) noexcept : value(std::move(val)) {}
+		convertible_to_variant& operator=(std::variant<TYPES...> val) noexcept { std::swap(value, val); return *this; }
+
+		template <typename... OTHER_TYPES, 
+			typename = std::enable_if_t<!std::is_same_v<decltype(value), std::variant<OTHER_TYPES...>>>,
+			typename = std::enable_if_t<(detail::mp_set_contains<TYPES, OTHER_TYPES...>() && ...)>
+		>
+		operator std::variant<OTHER_TYPES...>() && noexcept
+		{
+			static_assert((detail::mp_set_contains<TYPES, OTHER_TYPES...>() && ...), "not every type in source variant is present in destination variant");
+			
+			return std::visit(overloaded{
+				[](TYPES&& val) -> std::variant<OTHER_TYPES...> { 
+					return std::variant<OTHER_TYPES...>(std::move(val)); 
+				}...
+			}, std::move(value));
+		}
+
+		operator std::variant<TYPES...>() && noexcept {
+			return std::move(value);
+		}
+	};
+
+	template <typename... TYPES>
+	convertible_to_variant(std::variant<TYPES...>) -> convertible_to_variant<TYPES...>;
+	template <typename T>
+	convertible_to_variant(T) -> convertible_to_variant<remove_cvref_t<T>>;
+
+#ifndef __clang__
+	/// Returns a new variant transformed by `func`, flattened
+	template <typename FUNC, typename... Ts>
+	constexpr auto transformed_flattened(std::variant<Ts...> const& var, FUNC&& func)
+	{
+		using result_type = decltype(detail::mp_make_unique(
+			detail::variant_flat_t<decltype(func(std::declval<Ts>()))...>{}
+		));
+		return std::visit([&func](auto&& val) -> result_type { return convertible_to_variant(func(std::forward<decltype(val)>(val))); }, var);
+	}
+#endif
+}

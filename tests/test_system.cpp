@@ -1,7 +1,7 @@
 #include "test_system.h"
 #include "../include/ghassanpl/string_ops.h"
 #include "../include/ghassanpl/stringification.h"
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 #include <fstream>
 #include <print>
 

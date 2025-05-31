@@ -283,6 +283,31 @@ namespace ghassanpl::string_ops
 	template <typename RESULT = std::string>
 	[[nodiscard]] constexpr auto transcode_codepage_to_unicode(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> RESULT;
 
+	/// \pre `ascii_country_code` can only contain isgraph characters
+	template <typename FUNC>
+	void encode_flag(std::string_view ascii_country_code, FUNC&& encoding_func)
+	{
+		static constexpr char32_t flag_introducer_tag = '\u1F3F4';
+		static constexpr char32_t flag_end_tag = '\uE007F';
+
+		encoding_func(flag_introducer_tag);
+		for (auto& cp : ascii_country_code)
+		{
+			const char32_t encoded = (uint8_t(cp) & 0x7F) + 0xE0000;
+			encoding_func(encoded);
+		}
+		encoding_func(flag_end_tag);
+	}
+
+	template <typename RESULT = std::string, typename FUNC>
+	[[nodiscard]] constexpr auto encode_flag(std::string_view ascii_country_code) -> RESULT
+	{
+		RESULT result{};
+		encode_flag(ascii_country_code, [&](char32_t cp) { append_codepoint(result, cp); });
+		return result;
+	}
+
+
 	/// @}
 
 	/// \internal

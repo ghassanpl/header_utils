@@ -168,6 +168,11 @@ namespace ghassanpl
 		return { spn.data(), spn.data() + spn.size() };
 	}
 
+	[[nodiscard]] constexpr auto as_span(std::ranges::range auto & range)
+	{
+		return std::span{ range };
+	}
+
 	/// Casts a spn of objects of type FROM to a spn of objects of type TO
 	/// Does not perform any checks, specifically, no alignment or size checks are performed.
 	template <typename TO, typename FROM, size_t N = std::dynamic_extent>

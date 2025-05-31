@@ -6,6 +6,7 @@
 
 #include "bytes.h"
 #include "expected.h"
+#include "min-cpp-version/cpp20.h"
 
 namespace ghassanpl
 {
@@ -57,7 +58,7 @@ namespace ghassanpl
 		}
 		else
 		{
-			static_assert(!std::same_as<T, T>, "buffer cannot be appended with this value type - buffer_append might need to be specialized");
+			static_assert(!always_false<T, T>, "buffer cannot be appended with this value type - buffer_append might need to be specialized");
 			return false;
 		}
 	}
@@ -89,24 +90,6 @@ namespace ghassanpl
 		if constexpr (std::ranges::sized_range<RANGE>)
 			buffer_reserve(buffer, std::ranges::size(range));
 
-		/*
-				if constexpr (requires { buffer.append(val); })
-		{
-			buffer.append(val);
-			return true;
-		}
-		else if constexpr (requires { buffer.push_back(val); })
-		{
-			buffer.push_back(val);
-			return true;
-		}
-		else if constexpr (requires { buffer.insert(buffer.end(), val); })
-		{
-			buffer.insert(buffer.end(), val);
-			return true;
-		}
-		else 
-		*/
 		if constexpr (requires { buffer.append(std::to_address(std::ranges::begin(range)), std::ranges::size(range)); } && std::ranges::sized_range<RANGE>) /// for strings etc
 		{
 			const auto size = std::ranges::size(range);
@@ -156,24 +139,41 @@ namespace ghassanpl
 	requires output_buffer<BUFFER, CHAR_TYPE>
 	size_t buffer_append_cstring(BUFFER& buffer, const CHAR_TYPE(&cstr)[N])
 	{
-		return buffer_append_range(buffer, cstr, cstr + (N - 1));
+		return buffer_append_range(buffer, std::span{ cstr, cstr + (N - 1) });
 	}
 
 	/// Appends UTF-8 codeunits that represent the Unicode code-point `cp` to the `buffer`. Assumes the codepoint is a valid Unicode codepoint that represents a character.
 	template <typename BUFFER, typename ELEMENT_TYPE = buffer_element_type<BUFFER>>
 	requires output_buffer<BUFFER, ELEMENT_TYPE>
+	size_t buffer_append_varint(BUFFER& buffer, std::integral auto oval)
+	{
+		auto val = std::bit_cast<std::make_unsigned_t<decltype(oval)>>(oval);
+		if constexpr (std::is_signed_v<decltype(val)>)
+			val = (oval < 0) ? ((std::bit_cast<std::make_unsigned_t<decltype(oval)>>(-oval) << 1) | 1) : (val << 1);
+		size_t result = 0;
+		while (val >= 128)
+		{
+			result += buffer_append(buffer, uint8_t(0x80 | (val & 0x7f)));
+			val >>= 7;
+		}
+		result += buffer_append(buffer, uint8_t(val));
+		return result;
+	}
+
+	template <typename BUFFER, typename ELEMENT_TYPE = buffer_element_type<BUFFER>>
+	requires output_buffer<BUFFER, ELEMENT_TYPE>
 	size_t buffer_append_utf8(BUFFER& buffer, char32_t cp)
 	{
 		size_t result = 0;
-		if (cp < 0x80)
+		if (cp < 0x80ULL)
 		{
 			result += buffer_append(buffer, static_cast<ELEMENT_TYPE>(cp));
 		}
-		else if (cp < 0x800) {
+		else if (cp < 0x800ULL) {
 			result += buffer_append(buffer, static_cast<ELEMENT_TYPE>((cp >> 6) | 0xc0));
 			result += buffer_append(buffer, static_cast<ELEMENT_TYPE>((cp & 0x3f) | 0x80));
 		}
-		else if (cp < 0x10000) {
+		else if (cp < 0x10000ULL) {
 			result += buffer_append(buffer, static_cast<ELEMENT_TYPE>((cp >> 12) | 0xe0));
 			result += buffer_append(buffer, static_cast<ELEMENT_TYPE>(((cp >> 6) & 0x3f) | 0x80));
 			result += buffer_append(buffer, static_cast<ELEMENT_TYPE>((cp & 0x3f) | 0x80));
@@ -184,6 +184,7 @@ namespace ghassanpl
 			result += buffer_append(buffer, static_cast<ELEMENT_TYPE>(((cp >> 6) & 0x3f) | 0x80));
 			result += buffer_append(buffer, static_cast<ELEMENT_TYPE>((cp & 0x3f) | 0x80));
 		}
+
 		return result;
 	}
 
@@ -206,7 +207,7 @@ namespace ghassanpl
 	requires std::is_trivially_copyable_v<POD> && bytelike<buffer_element_type<BUFFER>>
 	size_t buffer_append_pod(BUFFER& buffer, POD const& pod)
 	{
-		return buffer_append_range(buffer, as_bytelikes<buffer_element_type<BUFFER>, POD>(pod));
+		return buffer_append_range(buffer, ghassanpl::as_bytelikes<buffer_element_type<BUFFER>>(pod));
 	}
 
 	/*

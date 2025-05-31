@@ -5,12 +5,14 @@
 #ifndef __clang__
 
 #define ASSUMING_TESTS
+#define ASSUMING_INCLUDE_MAGIC_ENUM 1
 #define ASSUMING_DEBUG 1
 #include "../include/ghassanpl/assuming.h"
 #include "tests_common.h"
 
 #include <gtest/gtest.h>
 #include <format>
+#include <thread>
 
 struct assuming_test;
 assuming_test* current_test = nullptr;
@@ -58,7 +60,11 @@ struct assuming_test : public ::testing::Test
 	{
 		current_test = this;
 
-		AssumptionFailureHandler = [](std::string_view expectation, std::initializer_list<name_value_pair> values, std::string data, source_location where)
+		AssumptionFailureHandler = [](std::string_view expectation, std::initializer_list<name_value_pair> values, std::string data, source_location where
+#if ASSUMING_USE_STACKTRACE
+			, std::stacktrace stacktrace
+#endif
+			)
 		{
 			current_test->ReportAssumptionFailure(expectation, std::move(values), std::move(data), where);
 		};
@@ -81,7 +87,7 @@ struct assuming_test : public ::testing::Test
 	func_name (__VA_ARGS__ __VA_OPT__(,) "test({}, {})", 0, 5) ; auto current_location = source_location::current(); \
 	EXPECT_TRUE(assumption_failed) << #func_name; \
 	EXPECT_EQ(last_where.line(), current_location.line()); \
-	EXPECT_EQ(last_where.file_name(), current_location.file_name()); \
+	EXPECT_STREQ(last_where.file_name(), current_location.file_name()); \
 	EXPECT_STREQ(last_where.function_name(), current_location.function_name()); \
 	EXPECT_EQ("test(0, 5)", last_data); }
 #else

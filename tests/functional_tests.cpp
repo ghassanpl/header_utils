@@ -5,10 +5,11 @@
 #include "../include/ghassanpl/multicast.h"
 #include "../include/ghassanpl/functional.h"
 #include "tests_common.h"
-
+#include <print>
 #include <gtest/gtest.h>
 
 using namespace ghassanpl;
+using namespace std::string_literals;
 
 TEST(multicast_function, works)
 {
@@ -135,6 +136,127 @@ constexpr bool resulting_call_auto()
 {
 	return requires () { ghassanpl::resulting([](auto&, ARGS...) {}); };
 }
+
+
+TEST(variant_transform, works)
+{
+	{
+		std::variant<int, std::string> v = 50;
+		auto res = transformed(v, overloaded{
+			[](int i) { return std::to_string(i); },
+			[](std::string const& s) { return s; }
+		});
+		static_assert(std::is_same_v<decltype(res), std::variant<std::string>>);
+		EXPECT_EQ(res, std::variant<std::string>{ "50"s });
+	}
+	{
+		auto res = transformed(std::variant<int>{50}, overloaded{
+			[](int i) { return std::to_string(i); },
+			[](std::string const& s) { return s; },
+		});
+		static_assert(std::is_same_v<decltype(res), std::variant<std::string>>);
+		EXPECT_EQ(res, std::variant<std::string>{ "50"s });
+	}
+	{
+		auto res = transformed(std::variant<int, std::string>{50}, overloaded{
+			[](int i) { return std::to_string(i); },
+			[](std::string const& s) { return s; },
+			});
+		static_assert(std::is_same_v<decltype(res), std::variant<std::string>>);
+		EXPECT_EQ(res, std::variant<std::string>{ "50"s });
+	}
+	{
+		auto res = transformed(std::variant<int, std::string>{50}, overloaded{
+			[](int i) { return i; },
+			[](std::string const& s) { return s; },
+		});
+		static_assert(std::is_same_v<decltype(res), std::variant<int, std::string>>);
+		EXPECT_EQ(res, (std::variant<int, std::string>(50)));
+	}
+	{
+		auto res = transformed(std::variant<int>{50}, overloaded{
+			[](int i) { return i; },
+			[](std::string const& s) { return s; },
+			[](std::tuple<int, double> s) { return s; },
+		});
+		static_assert(std::is_same_v<decltype(res), std::variant<int>>);
+		EXPECT_EQ(res, std::variant<int>{ 50 });
+	}
+
+	std::variant<int> v1 = convertible_to_variant(std::variant<int>{ 50 });
+	EXPECT_EQ(v1, std::variant<int>{ 50 });
+	std::variant<int, std::string> v2 = convertible_to_variant(std::variant<int>{ 50 });
+	EXPECT_EQ(v2, (std::variant<int, std::string>{ 50 }));
+	std::variant<int, std::string> v3 = convertible_to_variant(std::variant<std::string, int>{ 50 });
+	EXPECT_EQ(v3, (std::variant<int, std::string>{ 50 }));
+
+	constexpr auto b1 = requires (std::variant<int> v1) {
+		{ convertible_to_variant(std::variant<int>{ 50 }) } -> std::convertible_to<decltype(v1)>;
+	};
+	constexpr auto b4 = requires (std::variant<int> v4) {
+		{ convertible_to_variant(std::variant<std::string, int>{ 50 }) } -> std::convertible_to<decltype(v4)>;
+	};
+	constexpr auto b5 = requires (std::variant<int> v5) {
+		{ convertible_to_variant(std::variant<std::string>{ "asd"s }) } -> std::convertible_to<decltype(v5)>;
+	};
+	EXPECT_TRUE(b1);
+	EXPECT_FALSE(b4);
+	EXPECT_FALSE(b5);
+
+	using str = detail::variant_flat_t<std::string, std::string>;
+	using str2 = detail::variant_flat_t<std::string>;
+
+	{
+		enum class NegativeInt { };
+		enum class PositiveInt { };
+		auto res = transformed_flattened(std::variant<int, std::string>{2}, overloaded{
+			[](int x) -> std::variant<NegativeInt, PositiveInt> {
+				if (x < 0)
+					return NegativeInt{x};
+				else
+					return PositiveInt{x};
+			},
+			xf::identity_l
+			});
+		static_assert(std::is_same_v<decltype(res), std::variant<NegativeInt, PositiveInt, std::string>>);
+		EXPECT_TRUE(std::holds_alternative<PositiveInt>(res));
+		EXPECT_EQ(std::get<PositiveInt>(res), PositiveInt{ 2 });
+	}
+
+	{
+		enum class NegativeInt { };
+		enum class PositiveInt { };
+		auto res = transformed_flattened(std::variant<int, std::string>{-2}, overloaded{
+			[](int x) -> std::variant<NegativeInt, PositiveInt> {
+				if (x < 0)
+					return NegativeInt{x};
+				else
+					return PositiveInt{x};
+			},
+			xf::identity_l
+		});
+		static_assert(std::is_same_v<decltype(res), std::variant<NegativeInt, PositiveInt, std::string>>);
+		EXPECT_TRUE(std::holds_alternative<NegativeInt>(res));
+		EXPECT_EQ(std::get<NegativeInt>(res), NegativeInt{ -2 });
+	}
+	{
+		enum class NegativeInt { };
+		enum class PositiveInt { };
+		auto res = transformed_flattened(std::variant<int, std::string>{"lol"s}, overloaded{
+			[](int x) -> std::variant<NegativeInt, PositiveInt> {
+				if (x < 0)
+					return NegativeInt{x};
+				else
+					return PositiveInt{x};
+			},
+			xf::identity_l
+		});
+		static_assert(std::is_same_v<decltype(res), std::variant<NegativeInt, PositiveInt, std::string>>);
+		EXPECT_TRUE(std::holds_alternative<std::string>(res));
+		EXPECT_EQ(std::get<std::string>(res), "lol");
+	}
+}
+
 
 TEST(op_functions, work)
 {

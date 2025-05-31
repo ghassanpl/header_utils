@@ -33,4 +33,27 @@ namespace ghassanpl
 	namespace xf {
 		template <typename T> [[nodiscard]] constexpr auto as_span() noexcept { return [](auto const& val) { return ghassanpl::span{ val }; }; }
 	}
+
+	template <typename T>
+	[[nodiscard]] span<T> consume_n(span<T>& s, size_t n)
+	{
+		auto result = s.subspan(0, n);
+		s = s.subspan(n);
+		return result;
+	}
+
+	template <typename T>
+	[[nodiscard]] decltype(auto) consume(span<T>& s)
+	{
+		if constexpr (std::is_const_v<T>) {
+			auto const& ref = s[0];
+			s = s.subspan(1);
+			return ref;
+		}
+		else {
+			auto val = std::move(s[0]);
+			s = s.subspan(1);
+			return val;
+		}
+	}
 }

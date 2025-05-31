@@ -6,8 +6,9 @@
 
 #include <system_error>
 #include <optional>
-#define GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS 1941 
-#if __has_include(<expected>) && (_MSC_VER > GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS)
+#include "min-cpp-version/cpp17.h"
+#define GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS 1942
+#if __has_include(<expected>) && (_MSC_VER > GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS) && defined(__cpp_lib_expected) && __cpp_lib_expected >= 202202L
 #include <expected>
 namespace ghassanpl
 {
@@ -29,6 +30,29 @@ namespace ghassanpl
 
 namespace ghassanpl
 {
+	namespace detail
+	{
+		template <typename T>
+		constexpr bool is_expected_f(type_identity<T>) { return false; }
+		template <typename E, typename V>
+		constexpr bool is_expected_f(type_identity<expected<V, E>> e) { return true; }
+
+		template <typename T>
+		constexpr auto expected_error_type(type_identity<T>) { return type_identity<void>{}; }
+		template <typename E, typename V>
+		constexpr auto expected_error_type(type_identity<expected<V, E>> e) { return type_identity<E>{}; }
+
+		template <typename T>
+		using error_type_t = typename decltype(expected_error_type(type_identity<T>{}))::type;
+		static_assert(std::is_same_v<error_type_t<expected<int, bool>>, bool>);
+	}
+
+	template <typename T>
+	constexpr bool is_expected = detail::is_expected_f(type_identity<remove_cvref_t<T>>{});
+	template <typename E, typename T>
+	constexpr bool is_expected_with_error = detail::is_expected_f(type_identity<T>{}) && std::is_same_v<detail::error_type_t<T>, E>;
+	static_assert(is_expected<expected<bool, int>>);
+	static_assert(is_expected_with_error<int, expected<bool, int>>);
 
 	/// Calls the given function with `args` and an `std::error_code` as the last argument
 	/// \returns an `expected` with the result of the function call if the `std::error_code` is `0`, otherwise an `unexpected` with the error code
@@ -88,6 +112,17 @@ namespace ghassanpl
 		std::optional<T> m_value;
 	};
 
-#define or_return(exp) if (decltype(auto) _return_val = (exp); !_return_val.has_value()) return _return_val
-#define or_break(exp) if (decltype(auto) _return_val = (exp); !_return_val.has_value()) break
+
+#define TOKEN_PASTE(x, y) x ## y
+#define TOKEN_PASTE2(x, y) TOKEN_PASTE(x, y)
+#define OR_RETURN_VAL TOKEN_PASTE2(_return_val_, __LINE__)
+#define or_return(exp) if (decltype(auto) OR_RETURN_VAL = (exp); !OR_RETURN_VAL.has_value()) return ::ghassanpl::unexpected(std::move(OR_RETURN_VAL).error())
+#define set_or_return(var, exp) do { if (decltype(auto) OR_RETURN_VAL = (exp); !OR_RETURN_VAL.has_value()) return ::ghassanpl::unexpected(std::move(OR_RETURN_VAL).error()); else var = std::move(OR_RETURN_VAL).value(); } while (0)
+#define let_or_return(var, exp) \
+	decltype(auto) OR_RETURN_VAL = (exp); \
+	if (!OR_RETURN_VAL)\
+		return ::ghassanpl::unexpected(std::move(OR_RETURN_VAL).error()); \
+	auto var = std::forward<decltype(OR_RETURN_VAL)>(OR_RETURN_VAL).value()
+#define do_or_return(exp, func) if (decltype(auto) OR_RETURN_VAL = (exp); !OR_RETURN_VAL.has_value()) return ::ghassanpl::unexpected(std::move(OR_RETURN_VAL).error()); else (func)(std::move(OR_RETURN_VAL).value());
+#define or_break(exp) if (decltype(auto) OR_RETURN_VAL = (exp); !OR_RETURN_VAL.has_value()) break
 }

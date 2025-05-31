@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "min-cpp-version/cpp17.h"
+#include "min-cpp-version/cpp20.h"
 #include <random>
 #include <numeric>
 #include "span.h"
@@ -141,10 +141,7 @@ namespace ghassanpl::random
 		[[nodiscard]] inline int operator""_d100(unsigned long long int n) { return (int)dice(n, 100, default_random_engine); }
 	}
 
-	template <class T, class... TYPES>
-	constexpr inline bool is_any_of_v = std::disjunction_v<std::is_same<T, TYPES>...>;
-
-	template <typename RANDOM = std::default_random_engine, typename T>
+	template <typename RANDOM = std::default_random_engine, std::integral T>
 	[[nodiscard]] T in_integer_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static_assert(is_any_of_v<T, short, int, long, long long, unsigned short, unsigned int, unsigned long, unsigned long long>, "in_integer_range only works on real integer types");
@@ -153,13 +150,25 @@ namespace ghassanpl::random
 		return dist(rng);
 	}
 
-	template <typename RANDOM = std::default_random_engine, typename T>
+	template <typename RANDOM = std::default_random_engine, std::integral T>
+	[[nodiscard]] T in_integer_range(T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	{
+		return in_integer_range(T{}, to, rng);
+	}
+
+	template <typename RANDOM = std::default_random_engine, std::floating_point T>
 	[[nodiscard]] T in_real_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		static_assert(std::is_floating_point_v<T>, "in_real_range only works on floating point types");
 		if (from >= to) return T{};
 		std::uniform_real_distribution<T> dist{ from, to };
 		return dist(rng);
+	}
+
+	template <typename RANDOM = std::default_random_engine, std::floating_point T>
+	[[nodiscard]] T in_real_range(T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	{
+		return in_real_range(T{}, to, rng);
 	}
 
 	template <typename RANDOM = std::default_random_engine, typename T>
@@ -202,6 +211,14 @@ namespace ghassanpl::random
 		else if constexpr (requires{ lerp(from, to, ::ghassanpl::random::percentage<double>(rng)); })
 		{
 			return lerp(from, to, ::ghassanpl::random::percentage<double>(rng));
+		}
+		else if constexpr (requires{ mix(from, to, ::ghassanpl::random::percentage<float>(rng)); })
+		{
+			return mix(from, to, ::ghassanpl::random::percentage<float>(rng));
+		}
+		else if constexpr (requires{ mix(from, to, ::ghassanpl::random::percentage<double>(rng)); })
+		{
+			return mix(from, to, ::ghassanpl::random::percentage<double>(rng));
 		}
 	}
 

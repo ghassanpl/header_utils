@@ -41,6 +41,17 @@ UnderTest(ghassanpl::string_ops::ascii)
 		}
 	}
 
+	for (auto& [std_version, my_version, name] : ascii_functions)
+	{
+		CheckingIfFunction("ghassanpl::ascii::{0} returns false for values outside of ASCII", name)
+		{
+			FunctionShouldForValuesInRange(256, 0x10001, ReturnFalse)
+			{
+				DoesReturnFalse.WhenEqual(my_version(Value), false);
+			}
+		}
+	}
+
 	/*
 	CheckingIfIt("is even for every value between 0 and 10")
 	{

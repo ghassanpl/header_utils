@@ -33,9 +33,9 @@
 #include "../../include/ghassanpl/noise.h"
 //#include "../../include/ghassanpl/parsing.h" /// charconv, optional, ranges, concepts
 #include "../../include/ghassanpl/platform.h"
-#include "../../include/ghassanpl/random.h"
+//#include "../../include/ghassanpl/random.h" /// requires
 //	#include "../../include/ghassanpl/random_geom.h" /// is_constant_evaluated
-	#include "../../include/ghassanpl/random_seq.h"
+//  #include "../../include/ghassanpl/random_seq.h"
 //#include "../../include/ghassanpl/ranges.h" /// ranges
 #include "../../include/ghassanpl/rec2.h"
 #include "../../include/ghassanpl/regex.h"
@@ -48,7 +48,7 @@
 //#include "../../include/ghassanpl/string_ops.h" /// concepts
 //#include "../../include/ghassanpl/symbol.h" /// concepts, <=>, could work in C++17 but I'm lazy, according to Copilot
 //#include "../../include/ghassanpl/templates.h" /// concepts
-#include "../../include/ghassanpl/threading.h"
+//#include "../../include/ghassanpl/threading.h" /// concepts
 //#include "../../include/ghassanpl/unicode.h" /// stringops
 //#include "../../include/ghassanpl/wilson.h" /// stringops
 //#include "../../include/ghassanpl/with_sl.h" /// source_location, concepts

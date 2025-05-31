@@ -25,6 +25,15 @@ namespace ghassanpl
 			return nullptr;
 	}
 
+	template<class T, class U>
+	constexpr std::unique_ptr<T> dynamic_steal_cast(std::unique_ptr<U>& r) noexcept
+	{
+		if (auto p = dynamic_cast<T*>(r.get()))
+			return (void)r.release(), std::unique_ptr<T>(p);
+		else
+			return nullptr;
+	}
+
 	template<class T, class D, class U>
 	constexpr std::unique_ptr<T, D> dynamic_pointer_cast(std::unique_ptr<U, D>&& r) noexcept
 	{
@@ -36,8 +45,17 @@ namespace ghassanpl
 			return std::unique_ptr<T, D>(nullptr, r.get_deleter());
 	}
 
-	template <class T, class... TYPES>
-	constexpr inline bool is_any_of_v = std::disjunction_v<std::is_same<T, TYPES>...>;
+	template<class T, class U>
+	constexpr std::unique_ptr<T> static_pointer_cast(std::unique_ptr<U>&& r) noexcept
+	{
+		return std::unique_ptr<T>(static_cast<T*>(r.release()));
+	}
+
+	template<class T, class D, class U>
+	constexpr std::unique_ptr<T, D> static_pointer_cast(std::unique_ptr<U, D>&& r) noexcept
+	{
+		return std::unique_ptr<T, D>(r.release(), std::forward<D>(r.get_deleter()));
+	}
 
 #if defined(__cpp_concepts)
 	namespace detail

@@ -28,6 +28,9 @@ namespace ghassanpl
 	using uri = std::string;
 	using uri_view = std::string_view;
 
+	/// Forward declare
+	struct known_uri_scheme;
+
 	enum class uri_error_code
 	{
 		no_error,
@@ -78,14 +81,28 @@ namespace ghassanpl
 		scheme_specific_element_malformed,
 	};
 
+	template <typename T>
+	using uri_expected = expected<T, uri_error_code>;
+	using uri_error = expected<void, uri_error_code>;
+
+	/// Flags that modify how a URI string is decomposed into \c ghassanpl::decomposed_uri
+	enum class uri_decompose_flags
+	{
+		split_query_elements,
+		split_path_elements,
+		use_well_known_port_numbers, ///< if a port is not specified in the uri, the result will guess the port based on the scheme
+		//convert_plus_to_space,
+		lowercase_when_appropriate,
+		normalize_path,
+		query_known_scheme,
+		validate_known_scheme,
+	};
+
 	/// Holds the constituents of a URI
 	struct decomposed_uri
 	{
-		decomposed_uri() noexcept = default;
-		decomposed_uri(decomposed_uri const&) noexcept = default;
-		decomposed_uri(decomposed_uri&&) noexcept = default;
-		decomposed_uri& operator=(decomposed_uri const&) noexcept = default;
-		decomposed_uri& operator=(decomposed_uri&&) noexcept = default;
+		/// TODO: Should the optional elements be std::optional<std::string> instead of relying on empty strings?
+		///	      Or we could have an enum_flags and accessors?
 
 		std::string scheme{};
 		std::string authority{};
@@ -100,30 +117,39 @@ namespace ghassanpl
 		std::vector<std::pair<std::string, std::string>> query_elements;
 		std::string fragment{};
 
+		known_uri_scheme const* known_scheme = nullptr;
+
+		enum_flags<uri_decompose_flags> decompose_flags = enum_flags<uri_decompose_flags>::all();
+
 		bool canonical_form = false;
 
 		bool empty() const noexcept { return scheme.empty(); }
 
+		/// URL Stuff
+		uri_expected<std::string> url_origin() const; /// https://datatracker.ietf.org/doc/html/rfc6454
+		uri_expected<std::string> url_site() const; /// https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site
+		uri_expected<std::pair<std::string, std::string>> url_user_info() const;
+		uri_expected<struct url_host> url_host() const;
+		uri_expected<struct url_blob> url_blob() const;
+
+		bool same_origin(decomposed_uri const& other) const noexcept;
+		bool same_site(decomposed_uri const& other) const noexcept;
+
 		bool operator==(decomposed_uri const& other) const noexcept;
 	};
 
-	template <typename T>
-	using uri_expected = expected<T, uri_error_code>;
-	using uri_error = expected<void, uri_error_code>;
+	uri_expected<std::string_view> extract_scheme(uri_view uri) noexcept;
+	uri_expected<std::string_view> extract_authority(uri_view uri) noexcept;
+	uri_expected<std::string_view> extract_path(uri_view uri) noexcept;
+	template <typename FUNC>
+	uri_expected<void> extract_path_elements(uri_view uri, FUNC&& func) noexcept;
+	uri_expected<std::string_view> extract_query(uri_view uri) noexcept;
+	uri_expected<std::string_view> extract_fragment(uri_view uri) noexcept;
+	template <typename FUNC>
+	uri_expected<void> extract_query_elements(uri_view uri, FUNC&& func) noexcept;
 
 	/// Removes data that should not be displayed to an untrusted user (user-info after the first ':', perhaps other things)
 	uri_expected<uri> make_uri_safe_for_display(uri_view uri);
-
-	/// Flags that modify how a URI string is decomposed into \c ghassanpl::decomposed_uri
-	enum class uri_decompose_flags
-	{
-		split_query_elements,
-		split_path_elements,
-		use_well_known_port_numbers, ///< if a port is not specified in the uri, the result will guess the port based on the scheme
-		//convert_plus_to_space,
-		lowercase_when_appropriate,
-		normalize_path,
-	};
 
 	/// <summary>
 	/// This function will decompose URI into its composite elements, which includes percent-decoding all the elements.
@@ -152,13 +178,18 @@ namespace ghassanpl
 		{
 			auto decomposed = decompose_uri(uri);
 			if (!decomposed) return decomposed.transform([](auto) {});
+			
+			return validate(decomposed.value());
+		}
 
-			if (decomposed.value().scheme != scheme()) return unexpected(uri_error_code::scheme_invalid);
-
-			return validate_authority(decomposed.value().authority)
-				.and_then([&] { return validate_path(decomposed.value().path); })
-				.and_then([&] { return validate_query(decomposed.value().query); })
-				.and_then([&] { return validate_fragment(decomposed.value().fragment); });
+		virtual uri_error validate(decomposed_uri const& decomposed) const noexcept
+		{
+			if (decomposed.scheme != scheme()) return unexpected(uri_error_code::scheme_invalid);
+			
+			return validate_authority(decomposed.authority)
+				.and_then([&] { return validate_path(decomposed.path); })
+				.and_then([&] { return validate_query(decomposed.query); })
+				.and_then([&] { return validate_fragment(decomposed.fragment); });
 		}
 
 		virtual std::string_view scheme() const noexcept = 0;

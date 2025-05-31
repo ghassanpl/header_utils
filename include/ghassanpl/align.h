@@ -10,29 +10,34 @@ namespace ghassanpl
 {
 	/// \defgroup Alignment Alignment
 	/// Types and functions for geometric alignments - relative positionings on a line
+	///
+	/// The `align` class stores alignment in 4 bits - the least significant bits contain the horizontal alignment,
+	/// and the next 2 bits contain the vertical alignment. You can then use the | operator to combine them, which
+	/// combines the bits.
 	
 	/// \ingroup Alignment
 	///@{
 
+
 	/// Represents an alignment on a horizontal line
-	enum class horizontal_align
+	enum class horizontal_align : int
 	{
-		left = 0, ///< Left
-		center = 1, ///< Center
-		centre = 1, ///< Same as `center`
-		right = 2, ///< Right
-		justify = 3, ///< Justify
+		left =    0b00, ///< Left
+		center =  0b01, ///< Center
+		centre =  0b01, ///< Same as `center`
+		right =   0b10, ///< Right
+		justify = 0b11, ///< Justify
 	};
 
 	/// Represents an alignment on a vertical line
-	enum class vertical_align
+	enum class vertical_align : int
 	{
-		top = 0, ///< Top
-		middle = 4, ///< Middle
-		center = 4, ///< Same as middle
-		centre = 4, ///< Same as middle
-		bottom = 8, ///< Bottom
-		justify = 12, ///< Justify
+		top =     0b0000, ///< Top
+		middle =  0b0100, ///< Middle
+		center =  0b0100, ///< Same as middle
+		centre =  0b0100, ///< Same as middle
+		bottom =  0b1000, ///< Bottom
+		justify = 0b1100, ///< Justify
 	};
 
 	enum class align;

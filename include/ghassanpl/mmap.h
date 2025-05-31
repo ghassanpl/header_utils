@@ -398,7 +398,7 @@ namespace ghassanpl
 		}
 	};
 
-	template <typename VALUE_TYPE>
+	template <typename VALUE_TYPE = char>
 	[[nodiscard]] mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length, std::error_code& error) noexcept
 	{
 		mmap_source<VALUE_TYPE> mmap;
@@ -406,19 +406,19 @@ namespace ghassanpl
 		return mmap;
 	}
 
-	template <typename VALUE_TYPE>
+	template <typename VALUE_TYPE = char>
 	[[nodiscard]] mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, std::error_code& error) noexcept
 	{
 		return make_mmap_source<VALUE_TYPE>(path, 0, map_entire_file, error);
 	}
 
-	template <typename VALUE_TYPE>
+	template <typename VALUE_TYPE = char>
 	[[nodiscard]] mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE>::size_type offset, typename mmap_source<VALUE_TYPE>::size_type length)
 	{
 		return mmap_source<VALUE_TYPE>{ path, offset, length };
 	}
 
-	template <typename VALUE_TYPE>
+	template <typename VALUE_TYPE = char>
 	[[nodiscard]] mmap_source<VALUE_TYPE> make_mmap_source(const std::filesystem::path& path)
 	{
 		return make_mmap_source<VALUE_TYPE>(path, 0, map_entire_file);

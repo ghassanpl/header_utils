@@ -8,5 +8,8 @@
 namespace ghassanpl
 {
 	template <class>
-	inline constexpr bool always_false = false;
+	concept always_false = false;
+
+	template <class T, class... TYPES>
+	concept is_any_of_v = (std::is_same_v<T, TYPES> || ...);
 }

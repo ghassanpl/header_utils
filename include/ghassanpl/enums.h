@@ -7,8 +7,8 @@
 #include "min-cpp-version/cpp17.h"
 
 /// TODO: Make magic_enum optional, and force the user to define the array count if not available.
-#include <magic_enum.hpp>
-#include <magic_enum_utility.hpp>
+#include <magic_enum/magic_enum.hpp>
+#include <magic_enum/magic_enum_utility.hpp>
 #include <array>
 
 namespace ghassanpl

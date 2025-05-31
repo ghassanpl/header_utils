@@ -5,6 +5,7 @@
 #pragma once
 
 #include "flag_bits_v.h"
+#include <bit>
 
 namespace ghassanpl
 {
@@ -19,7 +20,7 @@ namespace ghassanpl
 	namespace detail
 	{
 		template<typename T>
-		concept bit_integral = std::is_integral_v<T> && !std::is_same_v<std::decay_t<T>, bool>;
+		concept bit_integral = std::integral<T> && !std::same_as<std::decay_t<T>, bool>;
 
 		template<typename T>
 		concept valid_integral = bit_integral<T> || requires (T other, int t) {
@@ -33,6 +34,10 @@ namespace ghassanpl
 
 		template <typename RESULT_TYPE, typename... ENUM_TYPES>
 		concept valid_flag_bits_arguments = detail::valid_integral<RESULT_TYPE> && (integral_or_enum<ENUM_TYPES> && ...);
+
+		template <typename T>
+		requires std::is_integral_v<T>
+		[[nodiscard]] constexpr auto to_unsigned(T t) noexcept { return static_cast<std::make_unsigned_t<T>>(t); }
 	}
 
 	/// Takes a list of enum values that represent bit numbers (**not actual bit values**)
@@ -56,6 +61,16 @@ namespace ghassanpl
 	requires detail::valid_flag_bits_arguments<RESULT_TYPE, ARGS...>
 	{
 		return ((RESULT_TYPE{ 1 } << detail::to_underlying_type(args)) | ... | 0);
+	}
+
+	template <typename RESULT_TYPE = unsigned long long, typename BIT_TYPE>
+	requires integral_or_enum<BIT_TYPE>
+	constexpr RESULT_TYPE bit_to_flag(BIT_TYPE bit) noexcept
+	{
+		if constexpr (std::is_enum_v<BIT_TYPE>)
+			return std::countr_zero(detail::to_unsigned(detail::to_underlying_type(bit)));
+		else
+			return std::countr_zero(detail::to_unsigned(bit));
 	}
 
 	/// Checks if an integral value has the bit at number represented by `flag` set

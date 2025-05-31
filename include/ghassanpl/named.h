@@ -288,7 +288,7 @@ namespace ghassanpl
 	static_assert(std::is_trivially_copyable_v<named<int, "int">> == std::is_trivially_copyable_v<int>);
 
 	namespace detail {
-		template <typename U, detail::FixedString OTHER_PARAMETER, typename... OTHER_CAPABILITIES>
+		template <typename U, ::ghassanpl::detail::FixedString OTHER_PARAMETER, typename... OTHER_CAPABILITIES>
 		static constexpr bool is_named_impl(std::type_identity<named<U, OTHER_PARAMETER, OTHER_CAPABILITIES...>>) { return true; }
 		static constexpr bool is_named_impl(...) { return false; }
 	}
@@ -310,7 +310,7 @@ namespace ghassanpl
 	}
 
 #define ghassanpl_named_string_literal(named_name, suffix) \
-	inline named_name operator"" suffix(const char* str, std::size_t len) { \
+	inline named_name operator ""suffix(const char* str, std::size_t len) { \
 		return named_name{named_name::base_type{str,len}}; \
 	}
 

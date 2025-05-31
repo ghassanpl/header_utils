@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <numeric>
 #include <vector>
-#include <magic_enum.hpp>
+#include <magic_enum/magic_enum.hpp>
 
 template <typename RANGE1, typename RANGE2>
 auto cartesian_product(RANGE1&& r1, RANGE2&& r2)
@@ -60,7 +60,7 @@ TEST(alignment_test, basics_work)
 
 TEST(alignment_test, names_work)
 {
-#define E(t, a) EXPECT_EQ(#a, t##_names[int(t::a)])
+#define E(t, a) EXPECT_STREQ(#a, t##_names[int(t::a)])
   E(horizontal_align, left);
   E(horizontal_align, center);
   E(horizontal_align, right);

@@ -31,4 +31,12 @@ namespace ghassanpl
 			inner_size
 		);
 	}
+
+	/// TL   TO   TR
+	///    ------
+	/// LE | MI | RI
+	///    ------
+	/// BL   BO   BR
+	template <typename T>
+	[[nodiscard]] constexpr align relative_alignment(glm::tvec2<T> pt, trec2<T> const& rect);
 }

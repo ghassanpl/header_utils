@@ -96,7 +96,7 @@ namespace ghassanpl
 		constexpr trec2 operator*(tvec op) const noexcept { return { p1 * op, p2 * op }; }
 		constexpr trec2 operator/(tvec op) const noexcept { return { p1 / op, p2 / op }; }
 
-		constexpr auto operator==(trec2 const& other) const noexcept { return p1 == other.p1 && p2 == other.p2; }
+		constexpr bool operator==(trec2 const& other) const noexcept { return p1 == other.p1 && p2 == other.p2; }
 		/// TODO: Write this manually (what does it even mean to compare two rectangles?)
 		//constexpr auto operator<=>(trec2 const& other) const noexcept = default;
 
@@ -210,6 +210,10 @@ namespace ghassanpl
 		{
 			return intersection(other);
 		}
+		
+		constexpr trec2 constrained_to(trec2 const& other) const noexcept; /// translated by the minimum offset so that it fits inside other
+
+		/// TODO: CSS Background-size-style funcs: cover, contain
 
 		constexpr bool contains(glm::vec<2, T> const& other) const noexcept
 		{
@@ -255,6 +259,11 @@ namespace ghassanpl
 				left_width = this->width() + left_width;
 			return { trec2::from_size(this->p1, {left_width, this->height()}), trec2::from_size(this->p1 + tvec{left_width, 0}, {this->width() - left_width, this->height()})};
 		}
+
+		constexpr std::array<tvec, 4> split_on(tvec split_center) const noexcept;
+		constexpr std::array<tvec, 4> split_on(trec2 const& removed_portion) const noexcept;
+
+		constexpr trec2 lerp(trec2 const& other, float factor) const noexcept;
 
 		constexpr T calculate_area() const noexcept { return width() * height(); }
 

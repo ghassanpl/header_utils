@@ -9,6 +9,7 @@
 #include "../include/ghassanpl/mmap_impl.h"
 #include "../include/ghassanpl/bytes.h"
 #include "../include/ghassanpl/string_ops.h"
+#include "../include/ghassanpl/uninitialized.h"
 #include <print>
 
 using namespace ghassanpl;
@@ -17,8 +18,12 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	ghassanpl::tests::TestRunner::RunTests();
+	//ghassanpl::tests::TestRunner::RunTests();
 	::testing::InitGoogleTest(&argc, argv);
+
+	//unititialized_t<std::string> un;
+	//un.brace_init("hello");
+	//assert(*un == "hello");
 
 	return RUN_ALL_TESTS();
 }

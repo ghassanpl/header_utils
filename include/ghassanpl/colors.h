@@ -147,7 +147,7 @@ namespace ghassanpl
 	
 	/// Get brightness of color
 	[[nodiscard]] constexpr float luminance(color_t const& color)
-	{		
+	{
 		return color.x * 0.3f + color.y * 0.59f + color.z * 0.11f;
 	}
 

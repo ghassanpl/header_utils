@@ -19,13 +19,13 @@ namespace ghassanpl
 	/// Types and functions for retrieving and manipulating bits in integral values
 	/// @{
 
-	/// Whether or not a type is integral (but not a bool).
+	/// Whether a type is integral (but not a bool).
 	/// \ingroup Bits
 	/// \par Rationale
 	/// bool being integral is basically a remnant of the old days. Its size is implementation defined, and giving it any values except true (1) or false (0) is pretty much undefined behavior.
-	/// Therefore the rest of this code uses bit_integral to detect values for which manipulating bits is well defined (that actually represent and are meant to model integers).
+	/// Therefore, the rest of this code uses bit_integral to detect values for which manipulating bits is well defined (that actually represent and are meant to model integers).
 	template<typename T>
-	concept bit_integral = std::is_integral_v<T> && !std::is_same_v<std::decay_t<T>, bool>;
+	concept bit_integral = std::integral<T> && !std::same_as<std::decay_t<T>, bool>;
 
 	/// Equal to the number of bits in the type
 	/// \ingroup Bits
@@ -45,6 +45,35 @@ namespace ghassanpl
 
 	template <typename TO, typename FROM>
 	concept bit_castable = std::is_trivially_copyable_v<TO> && std::is_trivially_copyable_v<FROM> && sizeof(TO) == sizeof(FROM);
+
+	template <size_t BEGIN, size_t END, bit_integral T>
+	constexpr T extract_bits(T value) {
+		static_assert(END > BEGIN);
+		return T(value >> BEGIN) & T((T(1)<<(END-BEGIN))-1);
+	};
+
+	template <size_t... RANGES, bit_integral T>
+	constexpr auto split_bit_ranges(T value) {
+		static_assert((RANGES + ...) == bit_count<T>);
+		uint64_t bits = std::bit_cast<uint64_t>(value);
+		auto extract = [&]<size_t N>(std::integral_constant<size_t, N>) {
+			auto result = extract_bits<0, N>(bits);
+			bits >>= N;
+			return result;
+		};
+		return std::array {
+			extract(std::integral_constant<size_t, RANGES>{})...
+		};
+	};
+
+	template <size_t N, bit_integral T>
+	constexpr T n_most_significant(T value) { return (value >> T(bit_count<T> -N)) & T(bit_mask_v<0, N>); };
+
+	template <size_t N, bit_integral T>
+	constexpr T n_least_significant(T value) { return value & T(bit_mask_v<0, N>); };
+
+	template <size_t N, bit_integral T>
+	constexpr bool bit_at(T bits) { return ((bits >> N) & 1) == 1; }
 
 	namespace detail
 	{
@@ -91,6 +120,34 @@ namespace ghassanpl
 	template <bool SIGNED, size_t N>
 	using sintN_t = typename detail::sintN_t_t<SIGNED, N>::value;
 
+	template <bit_integral... BIT_TYPES>
+	constexpr auto cat_bits(BIT_TYPES... bits)
+	{
+		using sum_type = uintN_t<(bit_count<BIT_TYPES> + ...)>;
+		sum_type result = 0;
+		auto assign = [&]<typename T>(T value) {
+			result <<= bit_count<T>;
+			result |= value;
+		};
+		(assign(bits), ...);
+		return result;
+	}
+
+	template <size_t... BIT_COUNT, bit_integral... BIT_TYPES>
+	constexpr auto cat_bits_n(BIT_TYPES... values)
+	{
+		static_assert(requires { sizeof(uintN_t<(BIT_COUNT + ...)>); });
+		static_assert(sizeof...(BIT_COUNT) == sizeof...(BIT_TYPES), "The number of bit counts must be the same as the number of values");
+		using sum_type = uintN_t<(BIT_COUNT + ...)>;
+		sum_type result = 0;
+		auto assign = [&]<size_t N, typename T>(T value) {
+			result <<= N;
+			result |= n_least_significant<N>(value);
+		};
+		((assign.operator()<BIT_COUNT>(values)), ...);
+		return result;
+	}
+	
 	/// Returns an integer with the N/2 most significant bits of the given N-bit integer
 	template <bit_integral T>
 	[[nodiscard]] constexpr auto most_significant_half(T v) noexcept
@@ -122,9 +179,17 @@ namespace ghassanpl
 	template <bit_integral B>
 	[[nodiscard]] constexpr B to_big_endian(B val) noexcept { if constexpr (std::endian::native == std::endian::big) return val; else return byteswap(val); }
 
-	/// Returns `val` in its big-endian representation
+	/// Returns `val` in its little-endian representation
 	template <bit_integral B>
 	[[nodiscard]] constexpr B to_little_endian(B val) noexcept { if constexpr (std::endian::native == std::endian::little) return val; else return byteswap(val); }
+
+	/// Returns `val` (in big-endian representation) converted into native representation
+	template <bit_integral B>
+	[[nodiscard]] constexpr B from_big_endian(B val) noexcept { if constexpr (std::endian::native == std::endian::big) return val; else return byteswap(val); }
+
+	/// Returns `val` (in little-endian representation) converted into native representation
+	template <bit_integral B>
+	[[nodiscard]] constexpr B from_little_endian(B val) noexcept { if constexpr (std::endian::native == std::endian::little) return val; else return byteswap(val); }
 
 	/// Returns `val` in its `ENDIANNESS` representation
 	template <std::endian ENDIANNESS, bit_integral B>
@@ -133,6 +198,14 @@ namespace ghassanpl
 	/// Returns `val` in its `endianness` representation
 	template <bit_integral B>
 	[[nodiscard]] constexpr B to_endian(B val, std::endian endianness) noexcept { if (std::endian::native == endianness) return val; else return byteswap(val); }
+
+	/// Returns `val` (in `ENDIANNESS` representation) converted into native representation
+	template <std::endian ENDIANNESS, bit_integral B>
+	[[nodiscard]] constexpr B from_endian(B val) noexcept { if constexpr (std::endian::native == ENDIANNESS) return val; else return byteswap(val); }
+
+	/// Returns `val` (in `endianness` representation) converted into native representation
+	template <bit_integral B>
+	[[nodiscard]] constexpr B from_endian(B val, std::endian endianness) noexcept { if (std::endian::native == endianness) return val; else return byteswap(val); }
 
 	/// @}
 
@@ -177,14 +250,14 @@ namespace ghassanpl
 
 		constexpr bit_reference(VALUE_TYPE& ref, size_t bitnum) requires (!is_static)
 			: base_type(bitnum)
-			, m_value_ref(ref)
+			, m_value_ref(&ref)
 		{
 			if (bitnum >= value_bit_count)
 				throw std::invalid_argument("bit_num can't be greater than or equal to the number of bits in the value type");
 		}
 
 		constexpr bit_reference(VALUE_TYPE& ref, detail::bit_num_t<BIT_NUM> = {}) noexcept requires is_static
-			: m_value_ref(ref)
+			: m_value_ref(&ref)
 		{
 			static_assert(BIT_NUM < value_bit_count, "BIT_NUM template argument can't be greater than or equal to the number of bits in the value type");
 		}
@@ -192,15 +265,15 @@ namespace ghassanpl
 		constexpr bit_reference& operator=(bool val) noexcept requires (!is_const)
 		{
 			if (val)
-				m_value_ref |= this->m_bit_mask;
+				*m_value_ref |= this->m_bit_mask;
 			else
-				m_value_ref &= ~this->m_bit_mask;
+				*m_value_ref &= ~this->m_bit_mask;
 			return *this;
 		}
 
 		[[nodiscard]] explicit constexpr operator bool() const noexcept
 		{
-			return (m_value_ref & this->m_bit_mask) != 0;
+			return (*m_value_ref & this->m_bit_mask) != 0;
 		}
 
 		template <bit_integral OTHER_VALUE_TYPE, size_t OTHER_BIT_NUM>
@@ -216,7 +289,7 @@ namespace ghassanpl
 		}
 
 		/// Return the value of the referenced variable
-		[[nodiscard]] constexpr auto& integer_value() const noexcept { return m_value_ref; }
+		[[nodiscard]] constexpr auto& integer_value() const noexcept { return *m_value_ref; }
 
 		/// Returns the bit number of the referenced bit
 		[[nodiscard]] constexpr size_t bit_number() const noexcept
@@ -229,7 +302,7 @@ namespace ghassanpl
 
 	private:
 
-		VALUE_TYPE& m_value_ref;
+		VALUE_TYPE* m_value_ref;
 	};
 
 	/// \cond ignore

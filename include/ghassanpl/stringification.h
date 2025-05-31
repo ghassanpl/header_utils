@@ -24,7 +24,7 @@ namespace ghassanpl
 	template <typename T>
 	requires std::constructible_from<std::string_view, T>
 	[[nodiscard]] std::string to_string(T&& val) { return std::string{std::string_view{std::forward<T>(val)}}; }
-	inline std::string to_string(nullptr_t) { return "null"; }
+	[[nodiscard]] inline std::string to_string(nullptr_t) { return "null"; }
 }
 
 /// WIP WIP WIP WIP

@@ -50,13 +50,13 @@ namespace ghassanpl::geometry::squares
 	}
 
 
-	template <typename TILE_DATA, bool RESIZABLE, change_tile_callback<TILE_DATA> FLOOD_FUNC, query_tile_callback<TILE_DATA> SHOULD_FLOOD_FUNC>
-	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, FLOOD_FUNC&& flood, SHOULD_FLOOD_FUNC&& should_flood)
+	template <typename TILE_DATA, bool RESIZABLE, change_tile_callback<TILE_DATA> REPLACE_FUNC, query_tile_callback<TILE_DATA> SHOULD_FLOOD_FUNC>
+	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, REPLACE_FUNC&& replace, SHOULD_FLOOD_FUNC&& should_flood)
 	{
 		if (!grid.is_valid(start)) return;
 		if (!should_flood(start, *grid.at(start))) return;
 
-		flood(start, *grid.at(start));
+		replace(start, *grid.at(start));
 		if (should_flood(start, *grid.at(start))) return; /// Checks for degenerate case where we're flooding with the same thing that was at origin
 
 		/// TODO: We could probably use grid.apply<> to call `should_flood`
@@ -72,14 +72,14 @@ namespace ghassanpl::geometry::squares
 
 			while (grid.is_valid(l) && should_flood(l, *grid.at(l)))
 			{
-				flood(l, *grid.at(l));
+				replace(l, *grid.at(l));
 				l.x--;
 			}
 			l.x++;
 
 			while (grid.is_valid(r) && should_flood(r, *grid.at(r)))
 			{
-				flood(r, *grid.at(r));
+				replace(r, *grid.at(r));
 				r.x++;
 			}
 			r.x--;

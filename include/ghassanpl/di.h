@@ -15,6 +15,7 @@
 #include <functional>
 #include <string>
 #include <thread>
+#include "min-cpp-version/cpp20.h"
 
 /// \defgroup DI Dependency Injection
 /// Basic dependency injection framework
@@ -29,9 +30,6 @@
 /// Supports custom instance lifetimes (strong and weak singletons, per-thread singleton, multiple-instances), naming interfaces/instances, instance creation callbacks, and probably other stuff.
 namespace ghassanpl::di
 {
-	template <typename T, typename... OTHERS>
-	constexpr inline bool is_same_as_any_v = std::disjunction_v<std::is_same<std::decay_t<OTHERS>, std::decay_t<T>>...>;
-
 	enum class Lifetime
 	{
 		Default,

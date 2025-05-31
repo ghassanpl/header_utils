@@ -59,12 +59,14 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
+    <EnableASAN>true</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ClangDbg|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>ClangCL</PlatformToolset>
+    <EnableASAN>true</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -72,6 +74,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
+    <EnableASAN>true</EnableASAN>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -180,6 +183,8 @@
       <EnableModules>false</EnableModules>
       <BuildStlModules>false</BuildStlModules>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <TreatSpecificWarningsAsErrors>4716;%(TreatSpecificWarningsAsErrors)</TreatSpecificWarningsAsErrors>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -256,6 +261,7 @@
     <ClInclude Include="include\ghassanpl\di_impl.h" />
     <ClInclude Include="include\ghassanpl\enums.h" />
     <ClInclude Include="include\ghassanpl\enum_flags.h" />
+    <ClInclude Include="include\ghassanpl\error_context.h" />
     <ClInclude Include="include\ghassanpl\eval.h" />
     <ClInclude Include="include\ghassanpl\eval_libs\lib_core.h" />
     <ClInclude Include="include\ghassanpl\expected.h" />
@@ -287,6 +293,7 @@
     <ClInclude Include="include\ghassanpl\hashes.h" />
     <ClInclude Include="include\ghassanpl\interpolation.h" />
     <ClInclude Include="include\ghassanpl\multicast.h" />
+    <ClInclude Include="include\ghassanpl\path_reference.h" />
     <ClInclude Include="include\ghassanpl\span.h" />
     <ClInclude Include="include\ghassanpl\string_interpolate.h" />
     <ClInclude Include="include\ghassanpl\json_helpers.h" />
@@ -309,9 +316,12 @@
     <ClInclude Include="include\ghassanpl\stringification.h" />
     <ClInclude Include="include\ghassanpl\string_ops.h" />
     <ClInclude Include="include\ghassanpl\symbol.h" />
+    <ClInclude Include="include\ghassanpl\table.h" />
     <ClInclude Include="include\ghassanpl\templates.h" />
     <ClInclude Include="include\ghassanpl\threading.h" />
+    <ClInclude Include="include\ghassanpl\tweener.h" />
     <ClInclude Include="include\ghassanpl\unicode.h" />
+    <ClInclude Include="include\ghassanpl\uninitialized.h" />
     <ClInclude Include="include\ghassanpl\uri.h" />
     <ClInclude Include="include\ghassanpl\uri_impl.h" />
     <ClInclude Include="include\ghassanpl\wilson.h" />
@@ -378,6 +388,7 @@
     <ClCompile Include="tests\named_tests.cpp" />
     <ClCompile Include="tests\parsing_tests.cpp" />
     <ClCompile Include="tests\paths_tests.cpp" />
+    <ClCompile Include="tests\path_reference_tests.cpp" />
     <ClCompile Include="tests\random_tests.cpp" />
     <ClCompile Include="tests\ranges_tests.cpp" />
     <ClCompile Include="tests\regex_tests.cpp" />
@@ -392,6 +403,7 @@
     <ClCompile Include="tests\symbol_tests.cpp" />
     <ClCompile Include="tests\rec2_tests.cpp" />
     <ClCompile Include="tests\string_ops_tests.cpp" />
+    <ClCompile Include="tests\table_tests.cpp" />
     <ClCompile Include="tests\templates_tests.cpp" />
     <ClCompile Include="tests\test_system.cpp" />
     <ClCompile Include="tests\test_system_tests.cpp" />
@@ -403,6 +415,7 @@
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
     </ClCompile>
     <ClCompile Include="tests\threading_tests.cpp" />
+    <ClCompile Include="tests\tweener_tests.cpp" />
     <ClCompile Include="tests\unique_handle_tests.cpp" />
     <ClCompile Include="tests\uri_tests.cpp" />
     <ClCompile Include="tests\windows_tests.cpp" />

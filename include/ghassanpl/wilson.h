@@ -35,18 +35,34 @@ namespace ghassanpl::formats::wilson
 	auto consume_array(std::string_view& wilson_str, char closing_char = ']') -> expected<wilson, wilson_parsing_error>;
 	auto consume_value(std::string_view& wilson_str) -> expected<wilson, wilson_parsing_error>;
 
-	template <typename OUTFUNC>
-	void output(OUTFUNC&& out, wilson const& value);
-
-	inline void output_to_stream(std::ostream& strm, wilson const& value)
+	struct output_parameters
 	{
-		output([&](std::string_view val) { strm.write(val.data(), val.size()); }, value);
+		bool pretty = false;
+		/// bool output_commas = true;
+		std::string_view indent_str = "\t";
+	};
+
+	template <typename OUTFUNC>
+	void output(OUTFUNC&& out, wilson const& value, output_parameters const& parameters = {}, size_t indent = 0);
+
+	inline void output_to_stream(std::ostream& strm, wilson const& value, output_parameters const& parameters = {})
+	{
+		output([&](std::string_view val) { strm.write(val.data(), val.size()); }, value, parameters);
 	}
 
-	std::string to_string(wilson const& value);
+	std::string to_string(wilson const& value, output_parameters const& parameters = {});
 
 	expected<wilson, wilson_parsing_error> load_file(std::filesystem::path const& from);
 	wilson try_load_file(std::filesystem::path const& from, wilson or_json = json::empty_json);
+
+	/// TODO: Add ec version
+	inline void save_file(std::filesystem::path const& to, wilson const& j, output_parameters const& parameters = {})
+	{
+		std::ofstream out{ to };
+		if (!out)
+			throw std::runtime_error{ "could not open file for writing" };
+		formats::wilson::output_to_stream(out, j, parameters);
+	}
 }
 
 namespace ghassanpl::formats::wilson
@@ -251,10 +267,29 @@ namespace ghassanpl::formats::wilson
 					if (start != it)
 						func(string_ops::make_sv(start, it));
 
-					func("\\x");
-					auto&& [end, ec] = std::to_chars(std::begin(temp), std::end(temp), static_cast<uint8_t>(*it), 16);
-					func(string_ops::make_sv(std::begin(temp), end));
+					/// NOTE: This is just for reasonable printing, we could use \x for everything
+					/// TODO: Maybe make this optional?
+					switch (*it)
+					{
+					case 'n': func("\\n"); goto reset_start_to_next_char;
+					case '"': func("\\\""); goto reset_start_to_next_char;
+					case '\'': func("\\'"); goto reset_start_to_next_char;
+					case '\\': func("\\\\"); goto reset_start_to_next_char;
+					case 'b': func("\\b"); goto reset_start_to_next_char;
+					case 'r': func("\\r"); goto reset_start_to_next_char;
+					case 'f': func("\\f"); goto reset_start_to_next_char;
+					case 't': func("\\t"); goto reset_start_to_next_char;
+					case '0': func("\\0"); goto reset_start_to_next_char;
+					default: break;
+					}
 
+					{
+						func("\\x");
+						auto&& [end, ec] = std::to_chars(std::begin(temp), std::end(temp), static_cast<uint8_t>(*it), 16);
+						func(string_ops::make_sv(std::begin(temp), end));
+					}
+
+				reset_start_to_next_char:
 					start = std::next(it);
 				}
 			}
@@ -264,55 +299,84 @@ namespace ghassanpl::formats::wilson
 		}
 	}
 
-	template <typename OUTFUNC>
-	void output(OUTFUNC&& out, wilson const& value)
+	namespace detail
 	{
+		template <typename OUTFUNC>
+		void do_indent(OUTFUNC&& out, output_parameters const& parameters, size_t indent)
+		{
+			for (size_t i=0; i<indent; ++i)
+				out(parameters.indent_str);
+		}
+	}
+
+	template <typename OUTFUNC>
+	void output(OUTFUNC&& out, wilson const& value, output_parameters const& parameters, size_t indent)
+	{
+		const auto pretty = parameters.pretty;
 		switch (value.type())
 		{
 		using enum nlohmann::detail::value_t;
 		case null: out("null"); return;
 		case object:
-			out("{ ");
+			out(pretty ? "{\n" : "{ ");
 			for (auto& [k, v] : value.get_ref<wilson::object_t const&>())
 			{
+				if (pretty)
+					detail::do_indent(out, parameters, indent + 1);
 				formats::wilson::detail::output_string(out, k);
 				out(": ");
-				formats::wilson::output(out, v);
-				out(", ");
+				formats::wilson::output(out, v, parameters, indent + 1);
+				out(pretty ? ",\n" : ", ");
 			}
-			out(" }");
+			if (pretty)
+				detail::do_indent(out, parameters, indent);
+			out("}");
 			return;
 		case array:
-			out("[ ");
+			out(pretty ? "[\n" : "[ ");
 			for (auto& obj : value.get_ref<wilson::array_t const&>())
 			{
-				formats::wilson::output(out, obj);
-				out(", ");
+				if (pretty)
+					detail::do_indent(out, parameters, indent + 1);
+				formats::wilson::output(out, obj, parameters, indent + 1);
+				out(pretty ? ",\n" : ", ");
 			}
-			out(" ]");
+			if (pretty)
+				detail::do_indent(out, parameters, indent);
+			out("]");
 			return;
 		case string: formats::wilson::detail::output_string(out, value.get_ref<wilson::string_t const&>()); return;
 		case boolean: out(value.get_ref<wilson::boolean_t const&>() ? "true" : "false"); return;
 		case number_integer: formats::wilson::detail::output_value(out, value.get_ref<wilson::number_integer_t const&>()); return;
 		case number_unsigned: formats::wilson::detail::output_value(out, value.get_ref<wilson::number_unsigned_t const&>()); return;
 		case number_float: formats::wilson::detail::output_value(out, value.get_ref<wilson::number_float_t const&>()); return;
-		case binary:
-			out("[ ");
+		case binary: {
+			out(pretty ? "[\n" : "[ ");
+			size_t count = 0;
 			for (auto byte : value.get_ref<wilson::binary_t const&>())
 			{
+				if (pretty && (count % 16) == 0)
+					detail::do_indent(out, parameters, indent + 1);
 				formats::wilson::detail::output_value(out, byte);
-				out(", ");
+				++count;
+				out((pretty && (count % 16) == 0) ? ",\n" : ", ");
 			}
-			out(" ]");
+			if (pretty)
+			{
+				out("\n");
+				detail::do_indent(out, parameters, indent);
+			}
+			out("]");
 			return;
+		}
 		case discarded: return;
 		}
 	}
 
-	inline std::string to_string(wilson const& value)
+	inline std::string to_string(wilson const& value, output_parameters const& parameters)
 	{
 		std::string result;
-		formats::wilson::output(op::append_to(result), value);
+		formats::wilson::output(op::append_to(result), value, parameters);
 		return result;
 	}
 
@@ -329,4 +393,5 @@ namespace ghassanpl::formats::wilson
 	{
 		return formats::wilson::load_file(from).value_or(std::move(or_json));
 	}
+
 }

@@ -308,7 +308,7 @@ namespace ghassanpl::di
 				throw "already registered";
 
 			auto& impl = mImplementations[typeid(IMPLEMENTATION)];
-			if constexpr (is_same_as_any_v<DefaultImplementationStruct, ARGS...>)
+			if constexpr (is_any_of_v<DefaultImplementationStruct, ARGS...>)
 				mImplementationsInDeclarationOrder.insert(mImplementationsInDeclarationOrder.begin(), &impl);
 			else
 				mImplementationsInDeclarationOrder.push_back(&impl);
@@ -371,9 +371,9 @@ namespace ghassanpl::di
 		static_assert(!std::is_abstract_v<IMPLEMENTATION>, "Implementation cannot be abstract");
 		if constexpr (std::is_base_of_v<INTERFACE, IMPLEMENTATION> && !std::is_abstract_v<IMPLEMENTATION>)
 		{
-			constexpr auto instance_given = is_same_as_any_v<std::shared_ptr<IMPLEMENTATION>, ARGS...>;
-			constexpr auto interface_factory = is_same_as_any_v<std::function<std::shared_ptr<INTERFACE>(Container&)>, ARGS...>;
-			constexpr auto impl_factory = is_same_as_any_v<std::function<std::shared_ptr<IMPLEMENTATION>(Container&)>, ARGS...>;
+			constexpr auto instance_given = is_any_of_v<std::shared_ptr<IMPLEMENTATION>, ARGS...>;
+			constexpr auto interface_factory = is_any_of_v<std::function<std::shared_ptr<INTERFACE>(Container&)>, ARGS...>;
+			constexpr auto impl_factory = is_any_of_v<std::function<std::shared_ptr<IMPLEMENTATION>(Container&)>, ARGS...>;
 			static_assert(!(instance_given && (interface_factory || impl_factory)), "Cannot register type with both factory and instance");
 			if constexpr (instance_given || interface_factory || impl_factory) /// if user gave instance or factory, don't register the factory
 				GetInterfaceContainer<INTERFACE>().template RegisterImplementationType<IMPLEMENTATION>(std::forward<ARGS>(args)...);
