@@ -846,7 +846,6 @@ namespace ghassanpl::string_ops
 		auto it = std::to_address(str.begin());
 		const auto end = std::to_address(str.end());
 
-		size_t result = 0;
 		if (it < end)
 		{
 			char32_t cp = static_cast<unsigned_char_type>(*it);

@@ -144,7 +144,7 @@ namespace ghassanpl
 			result <<= N;
 			result |= n_least_significant<N>(value);
 		};
-		((assign.operator()<BIT_COUNT>(values)), ...);
+		((assign.template operator()<BIT_COUNT>(values)), ...);
 		return result;
 	}
 	
