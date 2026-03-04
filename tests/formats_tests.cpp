@@ -43,6 +43,52 @@ TEST(wilson, parses_undelimited_strings_correctly)
 	EXPECT_FALSE(formats::wilson::parse_word_or_string("0"));
 }
 
+TEST(wilson, parses_comments_correctly)
+{
+	auto str = R"(
+# comment 
+{ # comment
+	Required # comment 
+= # comment
+true # comment 
+,# comment 
+	int = # comment 
+ 1 # comment 
+,
+	float = # comment 
+5.5 # comment 
+,
+	string = # comment 
+'hello' # comment 
+;
+	arr = # comment 
+[ # comment 
+5 # comment 
+ 6 # comment 
+ 7 # comment 
+] # comment 
+,
+	arrpar = # comment 
+(# comment 
+# comment 
+5 # comment 
+; # comment 
+6; 7 # comment 
+) # comment 
+,
+	n = null
+	nested = # comment 
+{ # comment 
+		# comment 
+nested # comment 
+= # comment 
+{# comment 
+}# comment 
+	}# comment 
+})";
+	auto str_no_comms = "{ Required = true, int = 1, float = 5.5, string = 'hello'; arr = [5 6 7], arrpar = (5; 6; 7), n = null\n nested = { nested = {} } }";
+	EXPECT_EQ(formats::wilson::parse(str).value(), formats::wilson::parse(str_no_comms).value());
+}
 TEST(wilson, outputs_as_string_correctly)
 {
 	auto result = formats::wilson::parse("{ Required = true, int = 1, float = 5.5, string = 'hello'; arr = [5 6 7], arrpar = (5; 6; 7), n = null\n nested = { nested = {} } }").value();

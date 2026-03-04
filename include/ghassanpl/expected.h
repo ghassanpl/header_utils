@@ -76,7 +76,7 @@ namespace ghassanpl
 			return result;
 		}
 	}
-	
+
 	template <typename T>
 	struct undroppable final
 	{

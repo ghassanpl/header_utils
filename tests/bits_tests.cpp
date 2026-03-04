@@ -1,5 +1,76 @@
-#include <gtest/gtest.h>
+#include "tests_common.h"
 #include "../include/ghassanpl/bits.h"
+#include "../include/ghassanpl/bit_view.h"
+
+TYPED_TEST_SUITE(bits_test, integer_types);
+
+TYPED_TEST(bits_test, bit_reference_works)
+{
+    using namespace ghassanpl;
+
+    TypeParam value = 10;
+
+    static_assert(sizeof(bit_reference<TypeParam>) > sizeof(bit_reference<TypeParam, 2>));
+
+    bit_reference<TypeParam> bit_2_of_value{ value, 2 };
+    bit_reference<TypeParam> bit_2_of_value_s{ value, detail::bit_num<2> };
+
+    bit_2_of_value = true;
+    EXPECT_EQ(value, 14);
+    bit_2_of_value_s = false;
+    EXPECT_EQ(value, 10);
+
+    EXPECT_EQ(&bit_2_of_value.integer_value(), &value);
+    EXPECT_EQ(bit_2_of_value.bit_number(), 2);
+
+    if constexpr (std::is_signed_v<TypeParam>) {
+        bit_reference msb{ value, detail::bit_num<bit_count<TypeParam> -1> };
+        msb = true;
+        EXPECT_LT(value, 0);
+    }
+}
+
+TYPED_TEST(bits_test, bit_view_works)
+{
+    using namespace ghassanpl;
+
+    std::vector<int> ints{ 20,30,40 };
+    bit_view view{ ints };
+
+    auto bit_42_of_value = make_bit_reference(ints, 42);
+    auto bit_42_of_value_s = make_bit_reference<42>(ints);
+
+    EXPECT_TRUE(bit_42_of_value == bit_42_of_value_s);
+    bit_42_of_value = true;
+    EXPECT_TRUE(bit_42_of_value == bit_42_of_value_s);
+    bit_42_of_value_s = false;
+    EXPECT_TRUE(bit_42_of_value == bit_42_of_value_s);
+
+    std::vector<int> const const_ints{ 20,30,40 };
+    const bit_view const_view{ const_ints };
+
+    auto bit_42_of_const_value = make_bit_reference(const_ints, 42);
+    auto bit_42_of_const_value_s = make_bit_reference<42>(const_ints);
+
+    EXPECT_EQ(bit_42_of_const_value_s.bit_number(), 10);
+
+    std::string out;
+    std::ranges::transform(const_view, std::back_inserter(out), [](auto bit) { return bit ? '1' : '0'; });
+
+    EXPECT_EQ(out,
+        "00101000000000000000000000000000"
+        "01111000000000000000000000000000"
+        "00010100000000000000000000000000");
+}
+
+TYPED_TEST(bits_test, bit_view_works_for_empty_range)
+{
+    using namespace ghassanpl;
+
+    std::vector<TypeParam> const const_values{};
+    const bit_view const_view{ const_values };
+    EXPECT_THROW({ std::ignore = const_view.at(0); }, std::invalid_argument);
+}
 
 TEST(BitTest, BitIntegral) {
     bool a = 5;

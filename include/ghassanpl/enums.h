@@ -53,6 +53,7 @@ namespace ghassanpl
 
 	/// Same as `std::array` except it takes an enum type instead of the size, and uses `magic_enum` to determine the array size; 
 	/// also allows for indexing with the enum type.
+	/// NOTE: TODO: Already exists in <magic_enum/magic_enum_containers.hpp>, use that instead?
 	template <typename VALUE_TYPE, typename ENUM_TYPE>
 	GHPL_REQUIRES(std::is_enum_v<ENUM_TYPE>)
 	struct enum_array : public std::array<VALUE_TYPE, magic_enum::enum_count<ENUM_TYPE>()>

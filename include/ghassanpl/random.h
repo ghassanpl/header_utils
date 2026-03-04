@@ -60,7 +60,7 @@ namespace ghassanpl::random
 	template <typename REAL = double, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] REAL percentage(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		static std::uniform_real_distribution<REAL> dist;
+		std::uniform_real_distribution<REAL> dist;
 		return dist(rng);
 	}
 	

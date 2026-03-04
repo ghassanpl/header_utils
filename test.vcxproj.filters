@@ -40,6 +40,9 @@
     <Filter Include="Header Files\game-specific">
       <UniqueIdentifier>{c1ab5a6b-dacb-4d70-884b-7082a0d7b836}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\cpp17">
+      <UniqueIdentifier>{03b4bca7-f928-4ff6-8a2e-e6c5ae45af8a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tests\tests_common.h">
@@ -317,6 +320,9 @@
     </ClInclude>
     <ClInclude Include="include\ghassanpl\error_context.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\cpp17\enum_flags.h">
+      <Filter>Header Files\cpp17</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

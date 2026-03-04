@@ -23,7 +23,10 @@ namespace ghassanpl
 	}
 
 	/// \defgroup Buffers Buffers
-	/// Buffers and stuff
+	/// A `buffer` models a stream of byte-like elements that can be appended to. The default, primary behavior is to append a single byte-like element to the buffer. 
+	/// Most other behaviors can be 'emulated' by repeatedly appending elements, but you are always free to provide your own overloads of the buffer_* functions.
+	/// The default implementations will try to use methods/functions available in the standard library and its containers.
+	/// Most functions return either the success boolean, or the number of elements successfully appended (in case of appending ranges).
 	
 	/// \ingroup Buffers
 	///@{
@@ -142,7 +145,6 @@ namespace ghassanpl
 		return buffer_append_range(buffer, std::span{ cstr, cstr + (N - 1) });
 	}
 
-	/// Appends UTF-8 codeunits that represent the Unicode code-point `cp` to the `buffer`. Assumes the codepoint is a valid Unicode codepoint that represents a character.
 	template <typename BUFFER, typename ELEMENT_TYPE = buffer_element_type<BUFFER>>
 	requires output_buffer<BUFFER, ELEMENT_TYPE>
 	size_t buffer_append_varint(BUFFER& buffer, std::integral auto oval)
@@ -160,6 +162,7 @@ namespace ghassanpl
 		return result;
 	}
 
+	/// Appends UTF-8 codeunits that represent the Unicode code-point `cp` to the `buffer`. Assumes the codepoint is a valid Unicode codepoint that represents a character.
 	template <typename BUFFER, typename ELEMENT_TYPE = buffer_element_type<BUFFER>>
 	requires output_buffer<BUFFER, ELEMENT_TYPE>
 	size_t buffer_append_utf8(BUFFER& buffer, char32_t cp)
@@ -188,7 +191,7 @@ namespace ghassanpl
 		return result;
 	}
 
-	/// Appends UTF-8 codeunits that represent the UTF-32 range `str` to the `buffer`. Assumes all codepoints in `str` are valid.
+	/// Appends UTF-8 codeunits that represent the char32_t-based range `str` to the `buffer`. Assumes all codepoints in `str` are valid.
 	/// \sa buffer_append_utf8(BUFFER& buffer, char32_t cp)
 	template <typename BUFFER, typename STRING_TYPE, typename ELEMENT_TYPE = buffer_element_type<BUFFER>>
 	requires output_buffer<BUFFER, ELEMENT_TYPE> && std::ranges::range<STRING_TYPE> && std::same_as<std::ranges::range_value_t<STRING_TYPE>, char32_t>
@@ -200,7 +203,7 @@ namespace ghassanpl
 		return count;
 	}
 
-	/// Appends a POD values internal object representation to a buffer.
+	/// Appends a POD value's internal object representation to a buffer.
 	/// \note
 	/// If, for some reason, you want to append the pod as a certain type of bytelikes
 	template <typename BUFFER, typename POD>

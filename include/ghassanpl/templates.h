@@ -64,7 +64,7 @@ namespace ghassanpl
 
 	/// Function: for_each_in_tuple
 	template<typename... ARGS, typename FUNC>
-	constexpr void for_each_in_tuple(std::tuple<ARGS...> const& t, FUNC&& f);
+	constexpr auto for_each_in_tuple(std::tuple<ARGS...> const& t, FUNC&& f);
 
 	/// Function: transform_tuple
 	template<typename... ARGS, typename FUNC>
@@ -439,6 +439,12 @@ namespace ghassanpl
 		}
 
 		template<typename T, typename FUNC, size_t... Is>
+		constexpr bool do_for_each_in_tuple_cond(T&& t, FUNC const& f, std::index_sequence<Is...>)
+		{
+			return (call_r<Is>(std::get<Is>(t), f) && ...);
+		}
+
+		template<typename T, typename FUNC, size_t... Is>
 		constexpr auto do_transform_tuple(T&& t, FUNC const& f, std::index_sequence<Is...>)
 		{
 			return std::make_tuple(call_r<Is>(
@@ -460,15 +466,21 @@ namespace ghassanpl
 	}
 
 	template<typename... ARGS, typename FUNC>
-	constexpr void for_each_in_tuple(std::tuple<ARGS...> const& t, FUNC&& f)
+	constexpr auto for_each_in_tuple(std::tuple<ARGS...> const& t, FUNC&& f)
 	{
-		detail::do_for_each_in_tuple(t, std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>());
+		if constexpr (std::same_as<bool, decltype(detail::call_r<0>(std::get<0>(t), f))>)
+			return detail::do_for_each_in_tuple_cond(t, std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>());
+		else
+			detail::do_for_each_in_tuple(t, std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>());
 	}
 
 	template<typename... ARGS, typename FUNC>
-	constexpr void for_each_in_tuple(std::tuple<ARGS...>&& t, FUNC&& f)
+	constexpr auto for_each_in_tuple(std::tuple<ARGS...>&& t, FUNC&& f)
 	{
-		detail::do_for_each_in_tuple(std::move(t), std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>());
+		if constexpr (std::same_as<bool, decltype(detail::call_r<0>(std::get<0>(t), f))>)
+			return detail::do_for_each_in_tuple_cond(std::move(t), std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>());
+		else
+			detail::do_for_each_in_tuple(std::move(t), std::forward<FUNC>(f), std::make_index_sequence<sizeof...(ARGS)>());
 	}
 
 	template<typename... ARGS, typename FUNC>

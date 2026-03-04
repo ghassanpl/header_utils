@@ -226,6 +226,7 @@ namespace ghassanpl
 		{
 			return resource;
 		}
+		explicit operator R&() noexcept { return resource; }
 
 		auto operator*() const noexcept
 		GHPL_REQUIRES(std::is_pointer_v<R> && (!std::is_void_v<std::remove_pointer_t<R>>))
@@ -242,7 +243,7 @@ namespace ghassanpl
 		const D& get_deleter() const noexcept { return deleter; }
 
 	private:
-	
+
 		using R1 = std::conditional_t<std::is_reference_v<R>, std::reference_wrapper<std::remove_reference_t<R>>, R>;
 		R1 resource{};
 		D deleter{};

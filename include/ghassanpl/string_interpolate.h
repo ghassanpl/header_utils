@@ -10,21 +10,53 @@
 
 namespace ghassanpl
 {
-	template <typename FUNC>
+	template <char open = '[', char close = ']', typename FUNC>
 	[[nodiscard]] std::string interpolate_simple(std::string_view str, FUNC&& func)
 	{
 		static_assert(std::invocable<FUNC, std::string_view> && std::constructible_from<std::string, std::invoke_result_t<FUNC, std::string_view>>, "function must take a stringable and return a string");
 		std::string result;
 		while (!str.empty())
 		{
-			result += string_ops::consume_until_delim(str, '[');
+			result += string_ops::consume_until_delim_ex(str, open);
 			if (str.empty()) break;
-			if (string_ops::consume(str, '['))
-				result += '[';
+			if (string_ops::consume(str, open))
+				result += open;
 			else
 			{
-				auto key = string_ops::consume_until_delim(str, ']');
+				auto key = string_ops::consume_until_delim_ex(str, close);
 				result += func(key);
+			}
+		}
+		return result;
+	}
+
+	template <char open = '[', char close = ']', typename FUNC>
+	[[nodiscard]] std::string interpolate_recursive(std::string_view str, FUNC&& func)
+	{
+		static_assert(std::invocable<FUNC, std::string_view> && std::constructible_from<std::string, std::invoke_result_t<FUNC, std::string_view>>, "function must take a stringable and return a string");
+		std::string result;
+		while (!str.empty())
+		{
+			result += string_ops::consume_until_delim_ex(str, open);
+			if (str.empty()) break;
+			if (string_ops::consume(str, open))
+				result += open;
+			else
+			{
+				size_t opened = 0;
+				auto key = str;
+				while (!str.empty() && (str[0] != close || opened))
+				{
+					if (str[0] == close && opened)
+						opened--;
+					else if (str[0] == open)
+						opened++;
+					str.remove_prefix(1);
+				}
+				key = { key.data(), str.data() };
+				std::ignore = string_ops::consume(str, close);
+
+				result += func(interpolate_recursive<open, close>(key, func));
 			}
 		}
 		return result;

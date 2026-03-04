@@ -94,6 +94,9 @@ namespace ghassanpl
 	/// An unsigned integer type for the given PoT bit size. \hideinitializer
 	template <size_t N>
 	using uintN_t = typename detail::uintN_t_t<N>::value;
+	
+	template <typename T>
+	using uint_sizeof_t = uintN_t<sizeof(T) * CHAR_BIT>;
 
 	namespace detail
 	{
@@ -108,6 +111,9 @@ namespace ghassanpl
 	template <size_t N>
 	using intN_t = typename detail::intN_t_t<N>::value;
 
+	template <typename T>
+	using int_sizeof_t = intN_t<sizeof(T)* CHAR_BIT>;
+
 	namespace detail
 	{
 		template <bool SIGNED, size_t N>
@@ -120,6 +126,7 @@ namespace ghassanpl
 	template <bool SIGNED, size_t N>
 	using sintN_t = typename detail::sintN_t_t<SIGNED, N>::value;
 
+	/// Creates a new integral value by concatenating the given bit values
 	template <bit_integral... BIT_TYPES>
 	constexpr auto cat_bits(BIT_TYPES... bits)
 	{
@@ -133,6 +140,7 @@ namespace ghassanpl
 		return result;
 	}
 
+	/// Creates a new integral value by concatenating the given bit values, each truncated to the given bit count
 	template <size_t... BIT_COUNT, bit_integral... BIT_TYPES>
 	constexpr auto cat_bits_n(BIT_TYPES... values)
 	{
@@ -166,10 +174,61 @@ namespace ghassanpl
 		return static_cast<sintN_t<std::is_signed_v<T>, bit_count_half>>(v & bit_mask_v<0, bit_count_half>);
 	}
 
+	/// Returns a pair of integers with the N/2 most significant and least significant bits of the given N-bit integer
 	template <bit_integral T>
 	[[nodiscard]] constexpr auto split_bits(T v) noexcept
 	{
 		return std::make_pair(most_significant_half(v), least_significant_half(v));
+	}
+
+	/// Reverses the bits of x so that the least significant bit becomes the most significant.
+	template <std::unsigned_integral T>
+	constexpr T bit_reverse(T x) noexcept
+	{
+		T result = 0;
+		for (int i = 0; i < std::numeric_limits<T>::digits; ++i) {
+			result <<= 1;
+			result |= x & 1;
+			x >>= 1;
+		}
+		return result;
+	}
+
+	/// Repeats a pattern stored in the least significant length bits of x, as many times as fits into x.
+	template <std::unsigned_integral T>
+	constexpr T bit_repeat(T x, int length) noexcept(false)
+	{
+		T result = 0;
+		for (int i = 0; i < std::numeric_limits<T>::digits; ++i) {
+			result |= ((x >> (i % length)) & 1) << i;
+		}
+		return result;
+	}
+
+	/// For each one-bit in m, the corresponding bit in x is taken and packed contiguously into the result, starting with the least significant result bit.
+	template <std::unsigned_integral T>
+	constexpr T bit_compress(T x, T m) noexcept
+	{
+		T result = 0;
+		for (int i = 0, j = 0; i < std::numeric_limits<T>::digits; ++i) {
+			bool mask_bit = (m >> i) & 1;
+			result |= (mask_bit & (x >> i)) << j;
+			j += mask_bit;
+		}
+		return result;
+	}
+
+	/// For each one-bit in m, a bit from x, starting with the least significant bit is taken and shifted into the corresponding position of the m bit.
+	template <std::unsigned_integral T>
+	constexpr T bit_expand(T x, T m) noexcept
+	{
+		T result = 0;
+		for (int i = 0, j = 0; i < std::numeric_limits<T>::digits; ++i) {
+			bool mask_bit = (m >> i) & 1;
+			result |= (mask_bit & (x >> j)) << i;
+			j += mask_bit;
+		}
+		return result;
 	}
 
 	/// \name Endianness

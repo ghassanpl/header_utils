@@ -1,8 +1,9 @@
 #include "../../include/ghassanpl/min-cpp-version/cpp14.h"
 
-#include "../../include/ghassanpl/cpp98/enum_flags.h"
+//#include "../../include/ghassanpl/cpp98/enum_flags.h"
 #include "../../include/ghassanpl/cpp11/named.h"
 #include "../../include/ghassanpl/cpp11/string_view.h"
+#include "../../include/ghassanpl/cpp17/enum_flags.h"
 
 #include "../../include/ghassanpl/align.h"
 //#include "../../include/ghassanpl/assuming.h" /// std::format
@@ -73,3 +74,5 @@
 #include "../../include/ghassanpl/windows/gfx.h"
 #include "../../include/ghassanpl/windows/last_error.h"
 #include "../../include/ghassanpl/windows/wm.h"
+
+#include "../enum_flags_tests.cpp"

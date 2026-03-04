@@ -25,9 +25,9 @@ namespace ghassanpl
 	/// Converts a span of trivial values to a span of \c bytelike s
 	template <bytelike TO, typename FROM, size_t N = std::dynamic_extent>
 	requires std::is_trivially_copyable_v<FROM>
-	[[nodiscard]] span<TO> as_bytelikes(span<FROM, N> bytes) noexcept
+	[[nodiscard]] span<TO> as_bytelikes(span<FROM, N> elements) noexcept
 	{
-		return { reinterpret_cast<TO*>(bytes.data()), bytes.size() * sizeof(FROM) };
+		return { reinterpret_cast<TO*>(elements.data()), elements.size() * sizeof(FROM) };
 	}
 
 	/// Returns an object whose internal representation is initialized from the argument
@@ -41,6 +41,15 @@ namespace ghassanpl
 		TO result;
 		std::memcpy(std::addressof(result), from.data(), sizeof(TO));
 		return result;
+	}
+
+	/// Returns an object whose internal representation is initialized from the argument
+	template <typename TO, bytelike FROM>
+	requires std::is_trivially_copyable_v<TO>
+	[[nodiscard]] span<TO> span_from_bytelikes(span<FROM> from)
+	{
+		const auto size = from.size() / sizeof(TO);
+		return span<TO>{ reinterpret_cast<TO*>(from.data()), size };
 	}
 
 
@@ -159,9 +168,9 @@ namespace ghassanpl
 	/// A constexpr function that converts an integral value to its constituent bytelikes
 	/// TODO: This is NOT like a reinterpret_/bit_cast to u8s, because it's not endian-aware
 	template <bytelike B, std::integral T>
-	[[nodiscard]] constexpr auto to_bytelike_array(T value)
+	[[nodiscard]] constexpr auto to_bytelike_array(T value_)
 	{
-		value = std::bit_cast<std::make_unsigned_t<T>>(value);
+		auto value = std::bit_cast<std::make_unsigned_t<T>>(value_);
 		std::array<B, sizeof(T)> result;
 		for (size_t i = 0; i < sizeof(T); ++i)
 		{

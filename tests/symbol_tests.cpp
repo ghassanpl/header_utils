@@ -17,10 +17,10 @@ TEST(symbol_test, symbol_works_on_empty_strings)
 {
 	default_symbol_provider::instance().clear();
 
-	EXPECT_EQ(symbol{ {} }, symbol{});
+	EXPECT_EQ(symbol{ std::string_view{} }, symbol{});
 
-	EXPECT_EQ(symbol{ "" }, symbol{ {} });
-	EXPECT_EQ("", symbol{ {} });
+	EXPECT_EQ(symbol{ "" }, symbol{ std::string_view{} });
+	EXPECT_EQ("", symbol{ std::string_view{} });
 	EXPECT_EQ(symbol{ "" }, std::string_view{});
 
 	EXPECT_EQ(default_symbol_provider::instance().size(), 1);

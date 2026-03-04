@@ -21,6 +21,12 @@ TEST(fnv, works_at_compile_time)
 }
 */
 
+TEST(regression_msvc_ice, hash64_works)
+{
+	int world = 16;
+	hash64(std::string{ "hello" }, world);
+}
+
 TEST(constexpr_hashes, work_for_all_supported_types)
 {
 	constexpr auto ui8_hash = ce_hash64(uint8_t(14));

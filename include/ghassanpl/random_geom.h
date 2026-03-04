@@ -9,10 +9,9 @@
 #include "geometry/ellipse.h"
 #include "geometry/polygon.h"
 #include "geometry/shape_concepts.h"
+#define GLM_ENABLE_EXPERIMENTAL 1
 #include <glm/ext/scalar_constants.hpp>
-#define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/rotate_vector.hpp>
-#undef GLM_ENABLE_EXPERIMENTAL
 
 namespace ghassanpl::random
 {

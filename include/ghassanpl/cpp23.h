@@ -16,6 +16,20 @@
 
 namespace ghassanpl
 {
+
+	template <class T, class = void>
+	struct is_complete : std::false_type
+	{
+	};
+
+	template <class T>
+	struct is_complete<T, decltype(void(sizeof(T)))> : std::true_type
+	{
+	};
+
+	template <class T>
+	concept is_complete_v = is_complete<T>::value;
+
 	template<class T, class U>
 	constexpr std::unique_ptr<T> dynamic_pointer_cast(std::unique_ptr<U>&& r) noexcept
 	{

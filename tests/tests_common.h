@@ -33,3 +33,19 @@ inline std::string to_string(UnCopyable const& cp) { return "UnCopyable"; }
 inline std::string to_string(UnMovable const& cp) { return "UnMovable"; }
 
 using std::ignore;
+
+using integer_types = ::testing::Types <
+	short int, unsigned short int, int, unsigned int, long int, unsigned long int, long long int, unsigned long long int,
+	signed char, unsigned char, char, wchar_t, char16_t, char32_t
+#if __cplusplus > 201703L
+	, char8_t
+#endif
+> ;
+
+template <typename RESULT_TYPE>
+class bits_test : public ::testing::Test {
+public:
+
+	using result_type = RESULT_TYPE;
+
+};

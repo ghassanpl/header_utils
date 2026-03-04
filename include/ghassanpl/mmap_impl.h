@@ -13,12 +13,26 @@ namespace ghassanpl
 		typedef struct _SECURITY_ATTRIBUTES SECURITY_ATTRIBUTES, * PSECURITY_ATTRIBUTES, * LPSECURITY_ATTRIBUTES;
 	}
 
+	extern "C" typedef union _LARGE_INTEGER {
+		struct {
+			unsigned int LowPart;
+			long HighPart;
+		} DUMMYSTRUCTNAME;
+		struct {
+			unsigned int LowPart;
+			long HighPart;
+		} u;
+		long long QuadPart;
+	} LARGE_INTEGER;
+
 	extern "C" __declspec(dllimport) int __stdcall FlushViewOfFile(void const* lpBaseAddress, size_t dwNumberOfBytesToFlush);
 	extern "C" __declspec(dllimport) int __stdcall FlushFileBuffers(void* hFile);
 	extern "C" __declspec(dllimport) int __stdcall UnmapViewOfFile(void const* lpBaseAddress);
 	extern "C" __declspec(dllimport) int __stdcall CloseHandle(void* hObject);
 	extern "C" __declspec(dllimport) unsigned long __stdcall GetLastError();
 	extern "C" __declspec(dllimport) void* __stdcall CreateFileW(const wchar_t*, unsigned long, unsigned long, LPSECURITY_ATTRIBUTES, unsigned long, unsigned long, void*);
+	extern "C" __declspec(dllimport) long SetFilePointerEx(void* hFile, LARGE_INTEGER liDistanceToMove, LARGE_INTEGER* lpNewFilePointer, unsigned long dwMoveMethod);
+	extern "C" __declspec(dllimport) long SetEndOfFile(void* hFile);
 
 	extern "C" struct SYSTEM_INFO {
 		union {
@@ -87,6 +101,35 @@ namespace ghassanpl
 		inline unsigned long int64_low(int64_t n) noexcept
 		{
 			return n & 0xffffffff;
+		}
+	}
+
+	namespace detail
+	{
+		inline bool create_file(std::filesystem::path const& path, size_t size, std::error_code& error) noexcept
+		{
+#ifdef _WIN32
+			auto file = CreateFileW(path.c_str(), (0x40000000L), 0x00000001 | 0x00000002, 0, 4, 0x00000080, 0);
+			if (file == nullptr)
+			{
+				error = last_error();
+				return false;
+			}
+			if (SetFilePointerEx(file, LARGE_INTEGER{.QuadPart = int64_t(size)}, nullptr, 0) == 0)
+			{
+				error = last_error();
+				CloseHandle(file);
+				return false;
+			}
+			if (SetEndOfFile(file) == 0)
+			{
+				error = last_error();
+				CloseHandle(file);
+				return false;
+			}
+			CloseHandle(file);
+			return true;
+#endif
 		}
 	}
 

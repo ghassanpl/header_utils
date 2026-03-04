@@ -117,11 +117,14 @@ namespace ghassanpl::constexpr_math
 	template <typename T>
 	[[nodiscard]] constexpr int sign(T val)
 	{
+		return (T{} < val) - (val < T{});
+		/*
 		if (::ghassanpl::cem::signbit(val))
 			return -1;
 		else if (val == T{})
 			return 0;
 		return 1;
+		*/
 	}
 
 	/// TODO: sign

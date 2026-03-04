@@ -324,12 +324,19 @@ namespace ghassanpl
 		auto hasher = HASHER<FIRST>{};
 		
 		static_assert(
-			std::same_as<decltype(std::declval<HASHER<std::remove_cvref_t<FIRST>>>()(std::declval<FIRST>())), uint64_t> &&
-			(std::same_as<decltype(std::declval<HASHER<std::remove_cvref_t<T>>>()(std::declval<T>())), uint64_t> && ... && true),
+			std::is_same_v<decltype(std::declval<HASHER<std::remove_cvref_t<FIRST>>>()(std::declval<FIRST>())), uint64_t> &&
+			(std::is_same_v<decltype(std::declval<HASHER<std::remove_cvref_t<T>>>()(std::declval<T>())), uint64_t> && ... && true),
 			"hasher() must return a uint64_t for each type");
 
 		uint64_t result = hasher(first);
+#if !defined(MSVC_BUG_11047635) /// https://developercommunity.visualstudio.com/t/Internal-Compiler-Error-in-latest-versio/11047635?
+		auto func = [&result]<typename U>(U&& value) {
+			ghassanpl::hash64_combine_to(result, std::forward<U>(value), HASHER<std::remove_cvref_t<U>>{});
+		};
+		(func(std::forward<T>(values)), ...);
+#else
 		(ghassanpl::hash64_combine_to(result, std::forward<T>(values), HASHER<std::remove_cvref_t<T>>{}), ...);
+#endif
 		return result;
 	}
 

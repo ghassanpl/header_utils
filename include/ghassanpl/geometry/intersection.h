@@ -51,7 +51,7 @@ namespace ghassanpl::geometry
 	struct tshape_intersection
 	{
 		enum shape_relation relation {};
-		glm::tvec3<T> points[2] {};
+		glm::tvec3<T> points_and_depths[2] {}; /// x,y - point, z - depth
 		glm::tvec2<T> normal {};
 	};
 

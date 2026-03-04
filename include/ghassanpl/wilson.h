@@ -67,12 +67,23 @@ namespace ghassanpl::formats::wilson
 
 namespace ghassanpl::formats::wilson
 {
+
+	inline void consume_whitespace(std::string_view& str)
+	{
+		string_ops::trim_whitespace_left(str);
+		while (str.starts_with('#'))
+		{
+			std::ignore = string_ops::consume_until_delim(str, '\n');
+			string_ops::trim_whitespace_left(str);
+		}
+	}
+
 	inline expected<wilson, wilson_parsing_error> consume_array(std::string_view& str, char closing_char)
 	{
 		auto obj = wilson::array();
 		do
 		{
-			string_ops::trim_whitespace_left(str);
+			consume_whitespace(str);
 			if (string_ops::consume(str, closing_char))
 				return obj;
 
@@ -81,7 +92,7 @@ namespace ghassanpl::formats::wilson
 				return element;
 			obj.push_back(std::move(element.value()));
 
-			string_ops::trim_whitespace_left(str);
+			consume_whitespace(str);
 
 			if (!str.empty() && (str[0] == ',' || str[0] == ';'))
 				str.remove_prefix(1);
@@ -104,7 +115,8 @@ namespace ghassanpl::formats::wilson
 	/// Consumes a word or a string literal returning a string value
 	inline expected<std::string, wilson_parsing_error> consume_string_value(std::string_view& str)
 	{
-		string_ops::trim_whitespace_left(str);
+		consume_whitespace(str);
+		
 		if (!str.empty())
 		{
 			const auto first = str[0];
@@ -140,7 +152,8 @@ namespace ghassanpl::formats::wilson
 
 		do
 		{
-			string_ops::trim_whitespace_left(str);
+			consume_whitespace(str);
+
 			if (string_ops::consume(str, closing_char))
 				return obj;
 
@@ -148,7 +161,7 @@ namespace ghassanpl::formats::wilson
 			if (!key)
 				return key;
 
-			string_ops::trim_whitespace_left(str);
+			consume_whitespace(str);
 
 			if (str.empty() || string_ops::consume(str, closing_char))
 			{
@@ -165,7 +178,7 @@ namespace ghassanpl::formats::wilson
 				if (str[0] == '=' || str[0] == ':')
 					str.remove_prefix(1);
 
-				string_ops::trim_whitespace_left(str);
+				consume_whitespace(str);
 
 				auto val = formats::wilson::consume_value(str);
 				if (!val)
@@ -173,7 +186,7 @@ namespace ghassanpl::formats::wilson
 				obj[std::move(key.value())] = std::move(val.value());
 			}
 
-			string_ops::trim_whitespace_left(str);
+			consume_whitespace(str);
 
 			if (!str.empty() && (str[0] == ',' || str[0] == ';'))
 				str.remove_prefix(1);
@@ -184,8 +197,9 @@ namespace ghassanpl::formats::wilson
 
 	inline expected<wilson, wilson_parsing_error> consume_value(std::string_view& str)
 	{
-		string_ops::trim_whitespace_left(str);
-		if (str.empty()) return unexpected(wilson_parsing_error{str.data(), "expected value"});
+		consume_whitespace(str);
+		if (str.empty())
+			return unexpected(wilson_parsing_error{str.data(), "expected value"});
 
 		const auto first = str[0];
 		if (string_ops::consume(str, '{'))

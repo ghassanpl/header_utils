@@ -20,12 +20,26 @@ namespace ghassanpl
 
 		internal_value_type value = symbol_provider::empty_value();
 
-		explicit symbol_base(std::string_view val) : value{ symbol_provider::insert(val) } { }
+		template <typename T>
+		requires std::constructible_from<std::string_view, T> && (!std::same_as<std::remove_cvref_t<T>, symbol_base>)
+		symbol_base(T&& val) : value{ symbol_provider::insert(std::forward<T>(val)) } { }
+
+		template <typename T>
+		requires std::constructible_from<std::string_view, T> && (!std::same_as<std::remove_cvref_t<T>, symbol_base>)
+		symbol_base& operator=(T&& val) noexcept { value = symbol_provider::insert(std::forward<T>(val)); return *this; }
+
 		symbol_base() noexcept = default;
+
+		symbol_base(symbol_base const& other) noexcept = default;
+		symbol_base(symbol_base&& other) noexcept = default;
+		symbol_base& operator=(symbol_base const& other) noexcept = default;
+		symbol_base& operator=(symbol_base&& other) noexcept = default;
 
 		[[nodiscard]] hash_type get_hash() const noexcept { return symbol_provider::hash_for(value); }
 		[[nodiscard]] std::string_view get_string() const noexcept { return symbol_provider::string_for(value); }
 		[[nodiscard]] explicit operator std::string_view() const noexcept { return symbol_provider::string_for(value); }
+		[[nodiscard]] explicit operator std::string() const noexcept { return std::string{ get_string() }; }
+		[[nodiscard]] auto to_string() const noexcept { return std::string{ get_string() }; }
 
 		[[nodiscard]] auto operator->() const noexcept requires std::is_pointer_v<internal_value_type> { return value; }
 
@@ -35,6 +49,10 @@ namespace ghassanpl
 		[[nodiscard]] friend bool operator==(std::string_view a, symbol_base const& b) noexcept { return a == b.get_string(); }
 		[[nodiscard]] friend auto operator<=>(std::string_view a, symbol_base const& b) noexcept { return a <=> b.get_string(); }
 
+		//[[nodiscard]] auto begin() const noexcept { return get_string().begin(); }
+		//[[nodiscard]] auto end() const noexcept { return get_string().end(); }
+		[[nodiscard]] bool empty() const noexcept { return value == symbol_provider::empty_value(); }
+		[[nodiscard]] size_t size() const noexcept { return get_string().size(); }
 		friend std::ostream& operator<<(std::ostream& o, const symbol_base& ptr)
 		{
 			o << ptr.get_string();

@@ -10,7 +10,7 @@
 namespace ghassanpl
 {
 
-	template <typename T, T SENTINEL = T{}>
+	template <typename T, auto SENTINEL = T{}>
 	struct sentinel_optional
 	{
 		constexpr sentinel_optional() noexcept {}

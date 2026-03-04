@@ -156,6 +156,7 @@ namespace ghassanpl
 
 		}
 
+		constexpr T& operator*() & noexcept { return value; }
 		constexpr T const& operator*() const & noexcept { return value; }
 		constexpr T operator*() && noexcept { return std::move(value); }
 
@@ -207,6 +208,18 @@ namespace ghassanpl
 		requires has_trait<displacement> || has_trait<addable>
 		{
 			return self_type{ this->value + val.value };
+		}
+		
+		constexpr auto operator-() const
+		requires has_trait<displacement>
+		{
+			return self_type{ -this->value };
+		}
+
+		constexpr auto operator+() const
+		requires has_trait<displacement>
+		{
+			return self_type{ +this->value };
 		}
 
 		constexpr auto& operator+=(self_type const& val) /// TODO: these should be forwarding references
@@ -266,6 +279,13 @@ namespace ghassanpl
 		requires has_trait<displacement> && std::constructible_from<T, decltype(std::declval<T>() * std::declval<U>())>
 		{
 			return self_type{ this->value * std::forward<U>(val) };
+		}
+
+		template <typename U>
+		friend constexpr auto operator*(U&& val, named self)
+		requires has_trait<displacement> && std::constructible_from<T, decltype(std::declval<T>() * std::declval<U>())>
+		{
+			return self_type{ std::forward<U>(val) * self.value};
 		}
 
 		template <typename U>

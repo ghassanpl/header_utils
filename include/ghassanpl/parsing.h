@@ -40,8 +40,11 @@ namespace ghassanpl::parsing
 	std::optional<uint64_t> try_eat_unsigned(std::string_view& str, int base);
 	bool try_eat_integer(std::string_view& str, int64_t& result, int base);
 	std::optional<int64_t> try_eat_integer(std::string_view& str, int base);
+	bool try_eat_float(std::string_view& str, double& result);
+	std::optional<double> try_eat_float(std::string_view& str);
 	uint64_t eat_unsigned(std::string_view& str, int base);
 	int64_t eat_integer(std::string_view& str, int base);
+	double eat_float(std::string_view& str);
 	char32_t try_eat_utf8_codepoint(std::string_view& str);
 	char32_t eat_utf8_codepoint(std::string_view& str);
 
@@ -405,6 +408,22 @@ namespace ghassanpl::parsing
 		return std::nullopt;
 	}
 
+	inline bool try_eat_float(std::string_view& str, double& result)
+	{
+		string_ops::trim_whitespace_left(str);
+		auto [parsed, value] = consume_c_float(str);
+		if (parsed.empty()) return false;
+		result = value;
+		return true;
+	}
+
+	inline std::optional<double> try_eat_float(std::string_view& str)
+	{
+		if (double result = 0; try_eat_float(str, result))
+			return result;
+		return std::nullopt;
+	}
+
 	inline uint64_t eat_unsigned(std::string_view& str, int base = 10)
 	{
 		uint64_t result{};
@@ -418,6 +437,14 @@ namespace ghassanpl::parsing
 		int64_t result{};
 		if (!try_eat_integer(str, result, base))
 			throw parse_error(str, "expected integer of base {}", base);
+		return result;
+	}
+
+	inline double eat_float(std::string_view& str)
+	{
+		double result{};
+		if (!try_eat_float(str, result))
+			throw parse_error(str, "expected floating-point number");
 		return result;
 	}
 

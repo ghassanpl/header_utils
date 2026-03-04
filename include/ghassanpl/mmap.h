@@ -75,6 +75,10 @@ namespace ghassanpl
 
 	const inline file_handle_type invalid_handle = (file_handle_type)-1;
 
+	namespace detail
+	{
+		bool create_file(std::filesystem::path const& path, size_t size, std::error_code& error) noexcept;
+	}
 
 	template <typename VALUE_TYPE>
 	//requires std::is_integral_v<VALUE_TYPE>
@@ -427,6 +431,9 @@ namespace ghassanpl
 	template <typename VALUE_TYPE>
 	[[nodiscard]] mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, typename mmap_sink<VALUE_TYPE>::size_type offset, typename mmap_sink<VALUE_TYPE>::size_type length, std::error_code& error) noexcept
 	{
+		if (!detail::create_file(path, offset + length, error))
+			return mmap_sink<VALUE_TYPE>{};
+
 		mmap_sink<VALUE_TYPE> mmap;
 		mmap.map(path, offset, length, error);
 		return mmap;
@@ -441,6 +448,10 @@ namespace ghassanpl
 	template <typename VALUE_TYPE>
 	[[nodiscard]] mmap_sink<VALUE_TYPE> make_mmap_sink(const std::filesystem::path& path, typename mmap_sink<VALUE_TYPE>::size_type offset, typename mmap_sink<VALUE_TYPE>::size_type length)
 	{
+		std::error_code error;
+		if (!detail::create_file(path, offset + length, error))
+			return mmap_sink<VALUE_TYPE>{};
+
 		return mmap_sink<VALUE_TYPE>{ path, offset, length };
 	}
 

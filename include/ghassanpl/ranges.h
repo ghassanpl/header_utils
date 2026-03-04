@@ -402,7 +402,6 @@ namespace ghassanpl
 			static_assert(::ghassanpl::always_false<CONTAINER>, "the program is ill-formed per N4910 [range.utility.conv.to]/1.3");
 	}
 
-	/// to<container>();
 	template <template <class...> class CONTAINER, std::ranges::input_range RANGE, class... TYPES, class _Deduced = std::remove_pointer_t<decltype(detail::to_helper<CONTAINER, RANGE, TYPES...>())>>
 	[[nodiscard]] constexpr _Deduced to(RANGE&& _Range, TYPES&&... ARGS)
 	{
@@ -410,6 +409,10 @@ namespace ghassanpl
 	}
 
 	///@}
+#else
+
+	using std::ranges::to;
+
 #endif
 
 	/*

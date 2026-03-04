@@ -295,6 +295,7 @@ TEST(string_ops_test, split_functions_are_correct)
 
 TEST(string_ops_test, join_functions_are_correct)
 {
+	EXPECT_EQ("hello world", join(std::vector<std::string_view>{"hello"sv, "world"sv}, " "));
 }
 
 TEST(string_ops_test, transcode)

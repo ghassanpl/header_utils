@@ -735,11 +735,7 @@ namespace ghassanpl::string_ops
 		return encoding16;
 	}
 
-#ifndef __clang__
-	[[gsl::suppress(type.1, es.79)]]
-#else
 	[[gsl::suppress("type.1", "es.79")]]
-#endif
 	[[nodiscard]] constexpr char32_t consume_utf8(string_view8 auto& str)
 	{
 		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
@@ -774,11 +770,7 @@ namespace ghassanpl::string_ops
 		return cp;
 	}
 
-#ifndef __clang__
-	[[gsl::suppress(type.1, es.79)]]
-#else
 	[[gsl::suppress("type.1", "es.79")]]
-#endif
 	[[nodiscard]] constexpr char32_t peek_utf8(string_view8 auto str)
 	{
 		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
@@ -888,11 +880,7 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
-	#ifndef __clang__
-	[[gsl::suppress(type.1)]]
-#else
 	[[gsl::suppress("type.1")]]
-#endif
 	constexpr size_t append_utf8(string8 auto& buffer, char32_t cp)
 	{
 		using char_type = typename std::remove_cvref_t<decltype(buffer)>::value_type;
@@ -982,11 +970,7 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
-#ifndef __clang__
-	[[gsl::suppress(type.1, es.79)]]
-#else
 	[[gsl::suppress("type.1", "es.79")]]
-#endif
 	[[nodiscard]] constexpr char32_t consume_utf16(string_view16 auto& str)
 	{
 		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
@@ -1015,11 +999,7 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
-#ifndef __clang__
-	[[gsl::suppress(type.1)]]
-#else
 	[[gsl::suppress("type.1")]]
-#endif
 	constexpr size_t append_utf16(string16 auto& buffer, char32_t cp)
 	{
 		using char_type = typename std::remove_cvref_t<decltype(buffer)>::value_type;
@@ -1041,11 +1021,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <string8 T>
-#ifndef __clang__
-	[[gsl::suppress(type.1)]]
-#else
 	[[gsl::suppress("type.1")]]
-#endif
 	[[nodiscard]] constexpr T to_utf8(char32_t cp)
 	{
 		using char_type = typename T::value_type;
@@ -1099,11 +1075,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <string16 T>
-#ifndef __clang__
-	[[gsl::suppress(type.1)]]
-#else
 	[[gsl::suppress("type.1")]]
-#endif
 	[[nodiscard]] constexpr T to_utf16(char32_t cp)
 	{
 		using char_type = T::value_type;

@@ -559,7 +559,7 @@ namespace ghassanpl::string_ops
 		}
 
 		/// A version of the `sv` suffix that returns a special type allowing for case-insensitive comparisons (e.g. `if (str == "hello"_i)`)
-		[[nodiscard]] consteval detail::string_view_case_insensitive operator"" _i(const char* str, size_t size) noexcept { return detail::string_view_case_insensitive{ std::string_view{str, str + size} }; }
+		[[nodiscard]] consteval detail::string_view_case_insensitive operator""_i(const char* str, size_t size) noexcept { return detail::string_view_case_insensitive{ std::string_view{str, str + size} }; }
 
 		/// @}
 
@@ -889,7 +889,7 @@ namespace ghassanpl::string_ops
 		return make_sv(start, str.begin());
 	}
 
-	/// Consumes characters from the beginning of `str` until one is equal to `c`, **inclusive**.
+	/// Consumes characters from the beginning of `str` until one is equal to `c`, consuming `c` and including it as part of the result.
 	/// \returns the consumed prefix as a string_view
 	[[nodiscard]] inline std::string_view consume_until_delim(std::string_view& str, char c)
 	{
@@ -900,6 +900,18 @@ namespace ghassanpl::string_ops
 			str.remove_prefix(1);
 		std::ignore = consume(str, c);
 		return make_sv(start, str.begin());
+	}
+
+	/// Consumes characters from the beginning of `str` until one is equal to `c`, consuming `c` but not including it as part of the result.
+	/// \returns the consumed prefix as a string_view
+	[[nodiscard]] inline std::string_view consume_until_delim_ex(std::string_view& str, char c)
+	{
+		const auto start = str.begin();
+		while (!str.empty() && str[0] != c)
+			str.remove_prefix(1);
+		auto result = make_sv(start, str.begin());
+		std::ignore = consume(str, c);
+		return result;
 	}
 
 	/// Consumes at most `n` characters from the beginning of `str`.
@@ -1460,7 +1472,7 @@ namespace ghassanpl::string_ops
 	{
 		return ::ghassanpl::string_ops::quoted(std::string{ subject }, std::forward<DELIMITER>(delimiter), std::forward<ESCAPE>(escape));
 	}
-
+	
 	template <typename ESCAPE_FUNC>
 	requires std::is_invocable_v<ESCAPE_FUNC, std::string_view>&& std::is_constructible_v<std::string_view, std::invoke_result_t<ESCAPE_FUNC, std::string_view>>
 	inline void escape(std::string& subject, std::string_view chars_to_escape, ESCAPE_FUNC&& escape_func)
@@ -1472,6 +1484,22 @@ namespace ghassanpl::string_ops
 		while ((pos = subject.find_first_of(chars_to_escape, pos)) != std::string::npos)
 		{
 			auto escape_str = escape_func(subject.substr(pos, 1));
+			subject.replace(pos, 1, escape_str);
+			pos += escape_str.size();
+		}
+	}
+
+	template <typename ESCAPE_FUNC>
+	requires std::is_invocable_v<ESCAPE_FUNC, char> && std::is_constructible_v<std::string_view, std::invoke_result_t<ESCAPE_FUNC, char>>
+	inline void escape(std::string& subject, std::string_view chars_to_escape, ESCAPE_FUNC&& escape_func)
+	{
+		if (chars_to_escape.empty())
+			return;
+
+		size_t pos = 0;
+		while ((pos = subject.find_first_of(chars_to_escape, pos)) != std::string::npos)
+		{
+			auto escape_str = escape_func(subject[pos]);
 			subject.replace(pos, 1, escape_str);
 			pos += escape_str.size();
 		}
@@ -1600,12 +1628,12 @@ namespace ghassanpl::string_ops
 #else
 	/// A version of `std::from_chars` that takes a `std::string_view` as the first argument
 	template <std::integral T>
-	[[nodiscard]] inline auto from_chars(std::string_view str, T& value, const int base = 10) noexcept {
+	[[nodiscard]] constexpr auto from_chars(std::string_view str, T& value, const int base = 10) noexcept {
 		return std::from_chars(str.data(), str.data() + str.size(), value, base);
 	}
 	/// A version of `std::from_chars` that takes a `std::string_view` as the first argument
 	template <std::floating_point T>
-	[[nodiscard]] inline auto from_chars(std::string_view str, T& value, const std::chars_format chars_format = std::chars_format::general) noexcept {
+	[[nodiscard]] constexpr auto from_chars(std::string_view str, T& value, const std::chars_format chars_format = std::chars_format::general) noexcept {
 		return std::from_chars(str.data(), str.data() + str.size(), value, chars_format);
 	}
 #endif

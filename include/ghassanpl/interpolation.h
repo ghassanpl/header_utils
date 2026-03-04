@@ -15,6 +15,9 @@
 ///	- splines
 ///	- easing functions 
 /// - approach
+/// - blink/square wave
+/// - triangle wave
+/// - sawtooth
 
 namespace ghassanpl
 {

@@ -268,7 +268,7 @@ namespace ghassanpl::formats
 			return ec ? json::empty_json : nlohmann::json::from_ubjson(source);
 		}
 
-		inline expected<void, std::error_code> save_file(std::filesystem::path const& to, nlohmann::json const& j, bool pretty = true)
+		inline expected<void, std::error_code> save_file(std::filesystem::path const& to, nlohmann::json const& j)
 		{
 			std::ofstream out;
 			std::ios_base::iostate exceptionMask = out.exceptions() | std::ios::failbit;
@@ -318,7 +318,7 @@ namespace ghassanpl::formats
 			return ec ? json::empty_json : nlohmann::json::from_cbor(source);
 		}
 
-		inline void save_file(std::filesystem::path const& to, nlohmann::json const& j, bool pretty = true)
+		inline void save_file(std::filesystem::path const& to, nlohmann::json const& j)
 		{
 			std::ofstream out{ to, std::ios::binary };
 			nlohmann::json::to_cbor(j, nlohmann::detail::output_adapter<char, std::string>(out));

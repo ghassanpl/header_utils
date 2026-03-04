@@ -117,7 +117,7 @@
 	{ \
 		case ::ghassanpl::AssumptionHandlerResult::Continue: break; \
 		case ::ghassanpl::AssumptionHandlerResult::Break: ASSUMING_BREAKPOINT(); break; \
-		case ::ghassanpl::AssumptionHandlerResult::Terminate: std::terminate(); break; \
+		case ::ghassanpl::AssumptionHandlerResult::Terminate: std::abort(); break; \
 	} \
 	} while (false)
 
@@ -223,6 +223,13 @@
 			{  "size of " #_container, std::format("{}", _assuming_container_size) }, \
 		}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
 
+/// Assumes the `_key` term evaluates to a valid index to the `_container` term. This is checked via `.contains()`
+#define AssumingContains(_key, _container, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
+	if (!(_assuming_container.contains(_assuming_key))) [[unlikely]] { \
+		ASSUMING_REPORT(#_key " will be a valid key to " #_container, { \
+			{ #_key, std::format("{}", _assuming_key) }, \
+		}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
+
 /// Assumes the `_index` term evaluates to a valid iterator to the `_container` term. This is checked via `end(_container)`
 #define AssumingValidIterator(_iterator, _container, ...) do { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); \
 	if (_assuming_iterator == _assuming_end) [[unlikely]] { \
@@ -285,6 +292,9 @@
 #define AssumingBetweenInclusive(v, a, b, ...) do { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v); } while (false)
 
 #define AssumingContainsBits(a, b, ...) do { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)); } while (false)
+
+#define AssumingContains(_key, _container, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
+	GHPL_ASSUME(_assuming_container.contains(_assuming_key)); } while (false)
 
 
 #endif
