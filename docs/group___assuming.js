@@ -6,6 +6,7 @@ var group___assuming =
     [ "AssumingBetween", "group___assuming.html#gaae12deb0193258e9debce0707f066280", null ],
     [ "AssumingBetweenInclusive", "group___assuming.html#gaa83e5157929343e3bcc17c075b004956", null ],
     [ "AssumingBinOp", "group___assuming.html#ga4c0d57ca6ee3ea3f7b0c2cf711ad673a", null ],
+    [ "AssumingContains", "group___assuming.html#ga4ef41f412f0c918f240367d16213c3c1", null ],
     [ "AssumingContainsBits", "group___assuming.html#ga863f91ab7a228a9b923978ad0cb28073", null ],
     [ "AssumingEmpty", "group___assuming.html#ga5a5683af4e757e29a82eecf8691a0463", null ],
     [ "AssumingEqual", "group___assuming.html#ga823b7651241c2c24b78f0b1f7a4f9123", null ],
@@ -27,5 +28,5 @@ var group___assuming =
     [ "AssumingValidIndex", "group___assuming.html#ga4ab076fb853ecd9649018a317ffc4d8d", null ],
     [ "AssumingValidIterator", "group___assuming.html#gab69ef973b6e5447cd919a3817e0e9638", null ],
     [ "AssumingZero", "group___assuming.html#gae4de7ca77b434bc22a814bc06f675281", null ],
-    [ "ghassanpl::AssumptionFailureHandler", "group___assuming.html#gaa5fc5b7b2d9ff7eca18f0f1e38f613e5", null ]
+    [ "ghassanpl::AssumptionFailureHandler", "group___assuming.html#gac8103791bc87e3a83056eb36db42b41d", null ]
 ];

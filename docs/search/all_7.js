@@ -6,8 +6,9 @@ var searchData=
   ['hash64_5frange_3',['hash64_range',['../group___hashes.html#gad309fb81967d86cb78a3c9acf969d6cf',1,'ghassanpl::hash64_range(uint64_t &amp;seed, It first, It last, HASHER const &amp;hasher={})'],['../group___hashes.html#gaeb2a33e18b58a0126d504024a1420185',1,'ghassanpl::hash64_range(It first, It last, HASHER &amp;&amp;hasher={})'],['../group___hashes.html#gab7f3f666d0e5aed44729a6fed8e61655',1,'ghassanpl::hash64_range(T range, HASHER &amp;&amp;hasher={})']]],
   ['hashes_4',['Hashes',['../group___hashes.html',1,'']]],
   ['hex_5fdigit_5fchars_5',['hex_digit_chars',['../group___a_s_c_i_i.html#ga37679a010c6ef26c8b60d05783fcfe62',1,'ghassanpl::string_ops::ascii']]],
-  ['horizontal_5falign_6',['horizontal_align',['../group___alignment.html#gade23c4cb9d255822eae1b0c52403dedb',1,'ghassanpl']]],
-  ['horizontal_5faligns_5fin_5forder_7',['horizontal_aligns_in_order',['../group___alignment.html#gac09af7248313fea45b9f43f064c113d7',1,'ghassanpl']]],
-  ['horizontal_5ffrom_8',['horizontal_from',['../group___alignment.html#ga4c2cbd1082bbc9ed414efc1e2693e51b',1,'ghassanpl']]],
-  ['huge_9',['huge',['../namespacedetail.html#a8e7db71fc8eb3a156a7dc04f4d2f11a3',1,'detail']]]
+  ['horizontal_6',['horizontal',['../group___direction.html#ga0a2071013a3a1adac2d058219182869b',1,'ghassanpl::geometry']]],
+  ['horizontal_5falign_7',['horizontal_align',['../group___alignment.html#ga93fc1bd0f731fa127d4254a34a994ff7',1,'ghassanpl']]],
+  ['horizontal_5faligns_5fin_5forder_8',['horizontal_aligns_in_order',['../group___alignment.html#gac09af7248313fea45b9f43f064c113d7',1,'ghassanpl']]],
+  ['horizontal_5ffrom_9',['horizontal_from',['../group___alignment.html#ga49b13b17cd200dbae6302cab0221f1dd',1,'ghassanpl']]],
+  ['huge_10',['huge',['../namespacedetail.html#a8e7db71fc8eb3a156a7dc04f4d2f11a3',1,'detail']]]
 ];

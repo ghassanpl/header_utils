@@ -1,13 +1,18 @@
 var searchData=
 [
   ['registertype_0',['RegisterType',['../structghassanpl_1_1di_1_1_container.html#ad414006ffcca833f2a2bb9b5353632c7',1,'ghassanpl::di::Container']]],
-  ['release_1',['release',['../structghassanpl_1_1counted__scope__guard.html#aef31a2bcab51dee99a5b40abf8238c0c',1,'ghassanpl::counted_scope_guard::release()'],['../structghassanpl_1_1scoped__value__change.html#a686144e5331534d7abd4f166dd24f678',1,'ghassanpl::scoped_value_change::release() noexcept']]],
-  ['release_5fand_5freturn_2',['release_and_return',['../structghassanpl_1_1scoped__value__change.html#a609035ccd1f13daa6d96e0448a6542e4',1,'ghassanpl::scoped_value_change']]],
-  ['remove_3',['remove',['../classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#a79cdb933de9afdd55557cc6c5de7caaa',1,'ghassanpl::mutlticast_function&lt; R(ARGS...)&gt;']]],
-  ['request_4',['request',['../structghassanpl_1_1counted__scope__guard.html#ad37433b2664d322d606045911ffd758c',1,'ghassanpl::counted_scope_guard']]],
-  ['resolve_5',['Resolve',['../structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2',1,'ghassanpl::di::Container']]],
-  ['revert_6',['revert',['../structghassanpl_1_1scoped__value__change.html#a29adb7a40e01299974dd0f82bad75138',1,'ghassanpl::scoped_value_change']]],
-  ['revert_5fand_5freturn_7',['revert_and_return',['../structghassanpl_1_1scoped__value__change.html#ad9244f918dcfc2c005f878c5375753fe',1,'ghassanpl::scoped_value_change']]],
-  ['rotated_5fclockwise_8',['rotated_clockwise',['../group___alignment.html#ga4ba691d540c27a7ed7e5edb8a0320d20',1,'ghassanpl']]],
-  ['rotated_5fcounter_5fclockwise_9',['rotated_counter_clockwise',['../group___alignment.html#ga2c77d12671d4a3818f90070a0355a3d7',1,'ghassanpl']]]
+  ['relative_5falignment_1',['relative_alignment',['../namespaceghassanpl.html#ae59d19bc9869225166953457ea83919f',1,'ghassanpl']]],
+  ['release_2',['release',['../structghassanpl_1_1counted__scope__guard.html#aef31a2bcab51dee99a5b40abf8238c0c',1,'ghassanpl::counted_scope_guard::release()'],['../structghassanpl_1_1scoped__value__change.html#a9a45ed34c583d676df68145172aa54e3',1,'ghassanpl::scoped_value_change::release() noexcept']]],
+  ['release_5fand_5freturn_3',['release_and_return',['../structghassanpl_1_1scoped__value__change.html#ac2b784f42bc2b2822f801246cd5ad633',1,'ghassanpl::scoped_value_change']]],
+  ['remove_4',['remove',['../classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#a79cdb933de9afdd55557cc6c5de7caaa',1,'ghassanpl::mutlticast_function&lt; R(ARGS...)&gt;']]],
+  ['remove_5fprefix_5',['remove_prefix',['../group___string_ops.html#ga76d8889f7eeda21b7df4662a63335dd9',1,'ghassanpl::string_ops']]],
+  ['remove_5fsuffix_6',['remove_suffix',['../group___string_ops.html#ga8c1e8577f2aae2a047d81c19267b3706',1,'ghassanpl::string_ops']]],
+  ['reportassumptionfailure_7',['ReportAssumptionFailure',['../namespaceghassanpl.html#a50d103bbcd57bbe91c03bfe1ef658f88',1,'ghassanpl']]],
+  ['request_8',['request',['../structghassanpl_1_1counted__scope__guard.html#ad37433b2664d322d606045911ffd758c',1,'ghassanpl::counted_scope_guard']]],
+  ['resolve_9',['Resolve',['../structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2',1,'ghassanpl::di::Container']]],
+  ['resulting_10',['resulting',['../namespaceghassanpl.html#a1bf2ee53b8c8310c8e9c45a30b7facc1',1,'ghassanpl']]],
+  ['revert_11',['revert',['../structghassanpl_1_1scoped__value__change.html#a056ac6ec565299ec98b23f8ef4298ab2',1,'ghassanpl::scoped_value_change']]],
+  ['revert_5fand_5freturn_12',['revert_and_return',['../structghassanpl_1_1scoped__value__change.html#a2f369959395383cab1802d1b9a1b9f5a',1,'ghassanpl::scoped_value_change']]],
+  ['rotated_5fclockwise_13',['rotated_clockwise',['../group___alignment.html#gac1baca062f426bb518875ff47a26e9e4',1,'ghassanpl']]],
+  ['rotated_5fcounter_5fclockwise_14',['rotated_counter_clockwise',['../group___alignment.html#ga37e503c880c8aebf3103b37d40a4648f',1,'ghassanpl']]]
 ];

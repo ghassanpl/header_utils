@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['uintn_5ft_0',['uintN_t',['../group___bits.html#ga7eba5e8d145591a2385634ffcc6be6ea',1,'ghassanpl']]],
-  ['uri_1',['uri',['../group___u_r_i.html#gaa0e236b258c0190e1d443c6fbfbec4c0',1,'ghassanpl']]]
+  ['uintn_5ft_0',['uintN_t',['../group___bits.html#ga517c295a9a8325a01efe54c96f7cb53e',1,'ghassanpl']]],
+  ['uri_1',['uri',['../group___u_r_i.html#gac48aa55b764c827525564327649355d8',1,'ghassanpl']]]
 ];

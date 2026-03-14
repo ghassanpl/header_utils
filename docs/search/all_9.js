@@ -4,6 +4,6 @@ var searchData=
   ['join_5fand_1',['join_and',['../group___string_ops.html#ga97e67fd1c4d103883ffc115a0147c01e',1,'ghassanpl::string_ops::join_and(T &amp;&amp;source, DELIM const &amp;delim, LAST_DELIM &amp;&amp;last_delim)'],['../group___string_ops.html#ga51a48c8a22eddd9aecd4c346cc0b84c3',1,'ghassanpl::string_ops::join_and(T &amp;&amp;source, DELIM const &amp;delim, LAST_DELIM &amp;&amp;last_delim, FUNC &amp;&amp;transform_func)']]],
   ['join_5fmultiple_2',['join_multiple',['../group___string_ops.html#gabdfd7d009d2f5255deb6fc6ffd66d916',1,'ghassanpl::string_ops']]],
   ['json_3',['JSON',['../group___j_s_o_n.html',1,'']]],
-  ['jtype_4',['jtype',['../group___j_s_o_n.html#ga08f904d2d12f3d200b30d8600311b75f',1,'ghassanpl::formats::json']]],
-  ['justify_5',['justify',['../group___alignment.html#ggade23c4cb9d255822eae1b0c52403dedba9e7ace81eb5d8c8e66d15edcaf439d42',1,'ghassanpl::justify'],['../namespaceghassanpl.html#ga93c615403286c16bdf1f3952f9a2fdb8a9e7ace81eb5d8c8e66d15edcaf439d42',1,'ghassanpl::justify']]]
+  ['jtype_4',['jtype',['../group___j_s_o_n.html#gacee04e0b2dbc3cdbf87df1ada0422ffc',1,'ghassanpl::formats::json']]],
+  ['justify_5',['justify',['../group___alignment.html#gga93fc1bd0f731fa127d4254a34a994ff7a9e7ace81eb5d8c8e66d15edcaf439d42',1,'ghassanpl::justify'],['../group___alignment.html#gga5b80fb8da6ed141592122d3c9d9e0d51a9e7ace81eb5d8c8e66d15edcaf439d42',1,'ghassanpl::justify']]]
 ];

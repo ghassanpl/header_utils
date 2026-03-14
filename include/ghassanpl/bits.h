@@ -15,6 +15,9 @@
 
 namespace ghassanpl
 {
+	/// \defgroup Bits Bits
+	/// Utilities to manipulate bits in integral values
+	
 	/// \addtogroup Bits
 	/// Types and functions for retrieving and manipulating bits in integral values
 	/// @{

@@ -2,8 +2,14 @@ var concepts =
 [
     [ "ghassanpl", "namespaceghassanpl.html", [
       [ "geometry", "namespaceghassanpl_1_1geometry.html", [
+        [ "squares", "namespaceghassanpl_1_1geometry_1_1squares.html", [
+          [ "metric", "conceptghassanpl_1_1geometry_1_1squares_1_1metric.html", null ]
+        ] ],
         [ "shape", "conceptghassanpl_1_1geometry_1_1shape.html", null ],
-        [ "area_shape", "conceptghassanpl_1_1geometry_1_1area__shape.html", null ]
+        [ "area_shape", "conceptghassanpl_1_1geometry_1_1area__shape.html", null ],
+        [ "polygon_shape", "conceptghassanpl_1_1geometry_1_1polygon__shape.html", null ],
+        [ "polygon_area_shape", "conceptghassanpl_1_1geometry_1_1polygon__area__shape.html", null ],
+        [ "indexable_polygonlike", "conceptghassanpl_1_1geometry_1_1indexable__polygonlike.html", null ]
       ] ],
       [ "string_ops", "namespaceghassanpl_1_1string__ops.html", [
         [ "string_or_char", "conceptghassanpl_1_1string__ops_1_1string__or__char.html", null ],
@@ -23,6 +29,7 @@ var concepts =
         [ "stringable_base_type", "conceptghassanpl_1_1string__ops_1_1stringable__base__type.html", null ]
       ] ],
       [ "bit_integral", "conceptghassanpl_1_1bit__integral.html", null ],
+      [ "bit_castable", "conceptghassanpl_1_1bit__castable.html", null ],
       [ "output_buffer", "conceptghassanpl_1_1output__buffer.html", null ],
       [ "bytelike", "conceptghassanpl_1_1bytelike.html", null ],
       [ "range_predicate", "conceptghassanpl_1_1range__predicate.html", null ]

@@ -8,6 +8,11 @@
 
 namespace ghassanpl::geometry
 {
+	/// \defgroup Points Points
+	/// \ingroup Geometry
+	/// @{
+
+	/// Checks if the points in `range` are colinear
 	template <std::ranges::range RANGE, typename T = std::ranges::range_value_t<RANGE>>
 	constexpr bool are_colinear(RANGE const& range, T tolerance = precision_limits<T>::point_on_line_max_distance)
 	{
@@ -31,4 +36,6 @@ namespace ghassanpl::geometry
 	using tvec_span = std::span<glm::tvec2<T>>;
 
 	using vec_span = tvec_span<float>;
+
+	/// @}
 }

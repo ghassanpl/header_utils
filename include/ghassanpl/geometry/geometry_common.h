@@ -16,6 +16,9 @@
 #include <glm/fwd.hpp>
 //#include <glm/gtx/norm.hpp>
 
+/// \defgroup Geometry Geometry
+/// Structures and functions that deal with **2D** geometry. Uses the `glm` library as a basis.
+
 namespace glm
 {
 	template <typename STRINGIFIER>
@@ -27,6 +30,12 @@ namespace glm
 	auto stringify(STRINGIFIER& str, glm::vec2& b) { return str('[', b.x, ',', b.y, ']'); }
 	template <typename STRINGIFIER>
 	auto stringify(STRINGIFIER& str, glm::vec2 const& b) { return str('[', b.x, ',', b.y, ']'); }
+}
+
+namespace ghassanpl
+{
+	template <typename T, template <typename U, glm::qualifier Q = glm::defaultp> typename GLM_TYPE>
+	concept is_specialization_of = std::invocable<decltype([]<typename V>(GLM_TYPE<V> const&) {}), T>;
 }
 
 namespace ghassanpl::geometry
@@ -122,29 +131,41 @@ namespace ghassanpl::geometry
 
 namespace ghassanpl::geometry::normals
 {
+	/// \defgroup Normals Normals
+	/// Functions useful for work with normal vectors.
+	/// \ingroup Geometry
+	/// @{
+	
 	/// Whether these vectors are (mostly) parallel and point in the same direction
 	template <typename T, size_t N>
 	static constexpr bool are_similar(glm::vec<N, T> const& a, glm::vec<N, T> const& b) {
-		constexpr auto min = precision_limits<T>::min_dot_product_of_parallel_normals;
+		constexpr auto min = precision_limits<T>::min_dot_product_of_parallel_normals; /// TODO: Move these into defaulted parameters?
 		return geometry::dot(a, b) >= min;
 	}
 
+	/// Whether these vectors are (mostly) parallel
 	template <typename T, size_t N>
 	static constexpr bool are_parallel(glm::vec<N, T> const& a, glm::vec<N, T> const& b) {
 		constexpr auto min = precision_limits<T>::min_dot_product_of_parallel_normals;
 		return glm::abs(geometry::dot(a, b)) >= min;
 	}
 
+	/// Whether these vectors are (mostly) perpendicular
 	template <typename T, size_t N>
 	static constexpr bool are_perpendicular(glm::vec<N, T> const& a, glm::vec<N, T> const& b) {
 		constexpr auto max = precision_limits<T>::max_dot_product_of_perpendicular_normals;
 		return glm::abs(geometry::dot(a, b)) <= max;
 	}
+
+	/// @}
 }
 
-/// Angles
 namespace ghassanpl::geometry
 {
+	/// \defgroup Angles Angles
+	/// \ingroup Geometry
+	/// @{
+	
 	template <std::floating_point T> using basic_radians_t = named<T, "radians", traits::displacement>;
 	template <std::floating_point T> using basic_degrees_t = named<T, "degrees", traits::displacement>;
 	
@@ -168,15 +189,18 @@ namespace ghassanpl::geometry
 		return basic_radians_t<T>{ glm::radians(degrees.value) };
 	}
 
+
 	namespace angles
 	{
-		/// TODO: https://www.redblobgames.com/coordinates/axes-and-angles/#angles
+		/// \ingroup Angles
+		/// @{
 		
 		template <std::floating_point T>
 		constexpr basic_degrees_t<T> ensure_positive(basic_degrees_t<T> degrees) noexcept { 
 			const auto deg = cem::fmod(degrees.get(), T(360));
 			return basic_degrees_t<T>{ (deg < T(0)) ? deg + T(360) : deg };
 		}
+
 		template <std::floating_point T>
 		constexpr basic_radians_t<T> ensure_positive(basic_radians_t<T> radians) noexcept {
 			const auto rad = cem::fmod(radians.get(), glm::radians(T(360)));
@@ -200,7 +224,11 @@ namespace ghassanpl::geometry
 				ensure_positive(degrees{(nth_slice + 1) * (360.0f / slice_count)} + starting_at)
 			};
 		}
+
+		/// @}
 	}
+
+	/// @}
 }
 
 #ifndef GLM_ENABLE_EXPERIMENTAL
@@ -216,9 +244,9 @@ namespace ghassanpl::geometry /* ::polar */
 
 	using polar2d = basic_polar2d_t<float>;
 
-	template <typename T> inline auto rho(basic_polar2d_t<T> const& polar) { return polar.value.x; }
-	template <typename T> inline auto phi(basic_polar2d_t<T> const& polar) { return polar.value.y; }
-	template <typename T> inline auto theta(basic_polar2d_t<T> const& polar) { return polar.value.y; }
+	template <typename T> inline basic_radians_t<T> rho(basic_polar2d_t<T> const& polar) { return basic_radians_t<T>{ polar.value.x }; }
+	template <typename T> inline basic_radians_t<T> phi(basic_polar2d_t<T> const& polar) { return basic_radians_t<T>{ polar.value.y }; }
+	template <typename T> inline basic_radians_t<T> theta(basic_polar2d_t<T> const& polar) { return basic_radians_t<T>{ polar.value.y }; }
 
 	template <typename T>
 	basic_polar2d_t<T> polar(glm::tvec2<T> const& euclidean)
@@ -229,17 +257,26 @@ namespace ghassanpl::geometry /* ::polar */
 	}
 
 	template <typename T>
+	basic_polar2d_t<T> polar_rho_phi(basic_radians_t<T> rho, basic_radians_t<T> phi)
+	{
+		return basic_polar2d_t<T>{ *rho, *phi };
+	}
+
+	template <typename T>
 	glm::tvec2<T> euclidean(basic_polar2d_t<T> const& polar)
 	{
-		const auto r = rho(polar);
-		const auto t = theta(polar);
+		const auto r = *rho(polar);
+		const auto t = *theta(polar);
 		return glm::tvec2<T>{ r * glm::cos(t), r * glm::sin(t) };
 	}
 }
 
-/// Lines
 namespace ghassanpl::geometry
 {
+	/// \defgroup Lines Lines
+	/// \ingroup Geometry
+	/// @{
+	
 	/// TODO: This all needs to be tested
 
 	template <typename T>
@@ -248,6 +285,9 @@ namespace ghassanpl::geometry
 		T a{};
 		T b{};
 		T c{};
+
+		using value_type = T;
+		using vec2 = glm::tvec2<T>;
 
 		template <typename U>
 		U distance(glm::tvec2<U> const& point)
@@ -262,8 +302,8 @@ namespace ghassanpl::geometry
 			return point - glm::tvec2<T>{ a, b } * d;
 		}
 
-		/// TODO: should we create enum { positive, negative, zero/on_line }?
-		int side(glm::tvec2<T> const& point)
+		/// TODO: should we create enum { positive/above, negative/below, zero/on_line/colinear/coplanar }?
+		int side(vec2 const& point)
 		{
 			const auto d = a * point.x + b * point.y + c;
 			return d > 0 ? 1 : d < 0 ? -1 : 0;
@@ -284,13 +324,17 @@ namespace ghassanpl::geometry
 		return basic_line_t<T>{ dir.y, -dir.x, 0 };
 	}
 
+	/// @}
+
 }
 
-/// Projections
 namespace ghassanpl::geometry
 {
+	/// \defgroup Projections Projections
+	/// \ingroup Geometry
+	/// @{
+
 	/// For interval<T> projected_on_axis(glm::tvec2<T> axis) const;
-	
 	template <typename T>
 	struct interval
 	{
@@ -307,6 +351,8 @@ namespace ghassanpl::geometry
 		const auto len = glm::dot(axis, point);
 		return { len, len };
 	}
+
+	/// @}
 }
 /*
 template <typename T>

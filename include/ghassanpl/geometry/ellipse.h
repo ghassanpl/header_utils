@@ -10,6 +10,10 @@
 
 namespace ghassanpl::geometry
 {
+	/// \ingroup Geometry
+	/// @{
+
+	/// Represents a 2D, axis-aligned ellipse `area_shape`
 	template <std::floating_point T>
 	struct tellipse
 	{
@@ -51,6 +55,8 @@ namespace ghassanpl::geometry
 	};
 
 	using ellipse = tellipse<float>;
+
+	/// @}
 
 	static_assert(area_shape<float, ellipse>);
 }

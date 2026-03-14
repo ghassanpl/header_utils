@@ -9,6 +9,13 @@
 
 namespace ghassanpl::geometry::squares
 {
+	/// \ingroup Grid
+	/// @{
+
+	/// Applies a cellular automata generation function on (a region of) the grid.
+	/// Note that since cellular automata operations are done on an immutable grid, this function creates a copy of the entire grid
+	/// as the next generation, modifies it, and then swaps it with the current generation grid. Any iterators to the current (old) grid
+	/// will therefore be invalidated and its data destroyed.
 	template <typename TILE_DATA, bool RESIZABLE, typename FUNC>
 	void apply_cellular_automata(grid<TILE_DATA, RESIZABLE>& current_iteration, irec2 const& rect, FUNC&& func)
 	{
@@ -43,24 +50,30 @@ namespace ghassanpl::geometry::squares
 		}
 	}
 
+	/// \copydoc apply_cellular_automata
 	template <typename TILE_DATA, bool RESIZABLE, typename FUNC>
 	void apply_cellular_automata(grid<TILE_DATA, RESIZABLE>& current_iteration, FUNC&& func)
 	{
 		apply_cellular_automata(current_iteration, current_iteration.bounds(), std::forward<FUNC>(func));
 	}
 
+	/// TODO: This
+	template <typename TILE_DATA, bool RESIZABLE, typename FUNC>
+	void apply_cellular_automata(grid<TILE_DATA, RESIZABLE> const& current_iteration, grid<TILE_DATA, RESIZABLE>& new_iteration, irec2 const& rect, FUNC&& func);
 
+	/// Performs a flood-fill algorithm on `grid`
+	/// \param start where to start flooding; `should_flood(start)` should be `true` before `replace(start)`, and `false` afterwards
+	/// \param replace will be called on each tile that needs to be flooded, to change it; after `replace(pos)`, `should_flood(pos)` should always be false
+	/// \param should_flood queries whether the given tile should be flooded
 	template <typename TILE_DATA, bool RESIZABLE, change_tile_callback<TILE_DATA> REPLACE_FUNC, query_tile_callback<TILE_DATA> SHOULD_FLOOD_FUNC>
 	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, REPLACE_FUNC&& replace, SHOULD_FLOOD_FUNC&& should_flood)
 	{
 		if (!grid.is_valid(start)) return;
-		if (!should_flood(start, *grid.at(start))) return;
+		if (!grid.apply(start, should_flood)) return;
 
-		replace(start, *grid.at(start));
-		if (should_flood(start, *grid.at(start))) return; /// Checks for degenerate case where we're flooding with the same thing that was at origin
+		grid.apply(start, replace);
+		if (grid.apply(start, should_flood)) return; /// Checks for degenerate case where we're flooding with the same thing that was at origin
 
-		/// TODO: We could probably use grid.apply<> to call `should_flood`
-		 
 		std::queue<glm::ivec2> queue;
 		queue.push(start);
 		while (!queue.empty())
@@ -70,16 +83,16 @@ namespace ghassanpl::geometry::squares
 
 			auto l = n, r = glm::ivec2{ n.x + 1, n.y };
 
-			while (grid.is_valid(l) && should_flood(l, *grid.at(l)))
+			while (grid.is_valid(l) && grid.apply(l, should_flood))
 			{
-				replace(l, *grid.at(l));
+				grid.apply(l, replace);
 				l.x--;
 			}
 			l.x++;
 
-			while (grid.is_valid(r) && should_flood(r, *grid.at(r)))
+			while (grid.is_valid(r) && grid.apply(r, should_flood))
 			{
-				replace(r, *grid.at(r));
+				grid.apply(r, replace);
 				r.x++;
 			}
 			r.x--;
@@ -90,7 +103,7 @@ namespace ghassanpl::geometry::squares
 				for (int x = l.x; x <= r.x; x++)
 				{
 					glm::ivec2 up = { x, n.y - 1 };
-					if (should_flood(up, *grid.at(up)))
+					if (grid.apply(up, should_flood))
 					{
 						if (!span_added)
 						{
@@ -108,7 +121,7 @@ namespace ghassanpl::geometry::squares
 				for (int x = l.x; x <= r.x; x++)
 				{
 					glm::ivec2 down = { x, n.y + 1 };
-					if (should_flood(down, *grid.at(down)))
+					if (grid.apply(down, should_flood))
 					{
 						if (!span_added)
 						{
@@ -124,24 +137,39 @@ namespace ghassanpl::geometry::squares
 		//*/
 	}
 
-	template <typename TILE_DATA, bool RESIZABLE, change_tile_callback<TILE_DATA> FLOOD_FUNC>
-	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, FLOOD_FUNC&& flood)
+	/// Performs a flood-fill algorithm on `grid`.
+	/// Whether a tile should be flooded will depend on if it compares equal to a **copy** of the tile at `start`
+	/// \param start where to start flooding
+	/// \param should_flood queries whether the given tile should be flooded
+	template <typename TILE_DATA, bool RESIZABLE, change_tile_callback<TILE_DATA> REPLACE_FUNC>
+	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, REPLACE_FUNC&& replace)
 	{
+		static_assert(std::equality_comparable<TILE_DATA>, "To use this flood fill algorithm, tile data in this grid must be comparable using operator==");
 		const auto data_at_start = grid.at(start);
-		flood_at(grid, start, std::forward<FLOOD_FUNC>(flood), [data_at_start](glm::ivec2 at, TILE_DATA const& data) { return data == *data_at_start; });
+		flood_at(grid, start, std::forward<REPLACE_FUNC>(replace), [data_at_start](glm::ivec2 at, TILE_DATA const& data) { return data == *data_at_start; });
 	}
 
-
+	/// Performs a flood-fill algorithm on `grid`.
+	/// \param start where to start flooding; `should_flood(start)` should be `true` before `grid.at(start) = replace_with`, and `false` afterwards
+	/// \param replace_with the tile data to set on each square that should be flooded
+	/// \param should_flood queries whether the given tile should be flooded
 	template <typename TILE_DATA, bool RESIZABLE, query_tile_callback<TILE_DATA> SHOULD_FLOOD_FUNC>
 	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, TILE_DATA const& replace_with, SHOULD_FLOOD_FUNC&& should_flood)
 	{
+		static_assert(std::is_copy_assignable_v<TILE_DATA>, "To use this flood fill algorithm, tile data in this grid must be copy-assignable");
 		flood_at(grid, start, [&](glm::ivec2 at, TILE_DATA& data) { data = replace_with; }, std::forward<SHOULD_FLOOD_FUNC>(should_flood));
 	}
 
+	/// Performs a flood-fill algorithm on `grid`.
+	/// Whether a tile should be flooded will depend on if it compares equal to a **copy** of the tile at `start`
+	/// \param start where to start flooding
+	/// \param replace_with the tile data to set on each square that should be flooded
 	template <typename TILE_DATA, bool RESIZABLE>
 	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, TILE_DATA const& replace_with)
 	{
+		static_assert(std::is_copy_assignable_v<TILE_DATA>, "To use this flood fill algorithm, tile data in this grid must be copy-assignable");
 		flood_at(grid, start, [&](glm::ivec2 at, TILE_DATA& data) { data = replace_with; });
 	}
 
+	/// @}
 }

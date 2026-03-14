@@ -1,10 +1,8 @@
 var group___hashes =
 [
     [ "ghassanpl::crc32", "group___hashes.html#ga27a9c9cbfb214d40aca1c461d51d76f0", null ],
-    [ "ghassanpl::crc32", "group___hashes.html#gab3fa58a81d05725137e820edb9b57900", null ],
     [ "ghassanpl::crc32", "group___hashes.html#gaf559378f05624ae0996944830c41bff9", null ],
     [ "ghassanpl::crc64", "group___hashes.html#ga9656f460b372051539fd8df108d85f29", null ],
-    [ "ghassanpl::crc64", "group___hashes.html#ga4dfdbe00234881bd248f0ab1e8fd80c9", null ],
     [ "ghassanpl::crc64", "group___hashes.html#ga2d2ddcf061f773bafad7f9a10c64767a", null ],
     [ "ghassanpl::fnv64", "group___hashes.html#gab2275a78b23399267a860926c46d5d1f", null ],
     [ "ghassanpl::fnv64", "group___hashes.html#ga0e168d1a17e11e72dd1d66775f073139", null ],

@@ -12,6 +12,11 @@
 
 namespace ghassanpl::geometry
 {
+	/// \defgroup Polygon Polygon
+	/// Polygons and polygon triangulation; NOTE: Triangulation features are not currently implemented.
+	/// \ingroup Geometry
+	/// @{
+	
 	/*
 	enum class polygon_class
 	{
@@ -20,7 +25,9 @@ namespace ghassanpl::geometry
 		complex,
 	};
 	*/
-	struct polygon_classification {
+	
+	struct polygon_classification
+	{
 		bool simple = false;
 		bool convex = false;
 		winding_order winding{};
@@ -30,6 +37,7 @@ namespace ghassanpl::geometry
 		constexpr bool is_concave() const noexcept { return simple && !convex; }
 	};
 
+	/// Represents a 2D polygon `polygon_shape`
 	template <std::floating_point T>
 	struct tpolygon
 	{
@@ -246,6 +254,7 @@ namespace ghassanpl::geometry
 		}
 
 		/// Assumes a simple polygon
+		/// 
 		/// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
 		bool contains(tvec test) const
 		{
@@ -287,6 +296,8 @@ namespace ghassanpl::geometry
 	static_assert(polygon_shape<float, polygon>);
 	static_assert(std::ranges::random_access_range<polygon>);
 
+	/// The results of a triangulation of an external `tpolygon<T>`. 
+	/// \sa triangulated_polygon
 	template <std::floating_point T, std::integral IDX = size_t>
 	struct polygon_triangulation
 	{
@@ -319,6 +330,8 @@ namespace ghassanpl::geometry
 
 	static_assert(area_shape<float, polygon_triangulation<float>>);
 
+	/// Contains both a `tpolygon<T>` as well as its triangulation. 
+	/// \sa polygon_triangulation
 	template <std::floating_point T, std::integral IDX = size_t>
 	struct triangulated_polygon
 	{
@@ -342,20 +355,20 @@ namespace ghassanpl::geometry
 
 	static_assert(area_shape<float, triangulated_polygon<float>>);
 
-	template <typename POLY>
-	auto calculate_indexed_triangle_area(POLY const& poly, indexed_triangle const& triangle)
+	template <indexable_polygonlike POLY, typename IDX_TYPE = size_t>
+	auto calculate_indexed_triangle_area(POLY const& poly, tindexed_triangle<IDX_TYPE> const& triangle)
 	{
 		const auto a = poly[triangle.indices[0]];
 		const auto b = poly[triangle.indices[1]];
 		const auto c = poly[triangle.indices[2]];
-		using T = typename POLY::value_type;
+		using T = decltype(a)::value_type;
 		return geometry::ttriangle<T>{a, b, c}.calculate_area();
 	}
 
 	template <typename TR>
 	auto calculate_total_area(TR const& trpoly)
 	{
-		using T = decltype(trpoly.poly)::value_type;
+		using T = decltype(trpoly.poly[0])::value_type;
 		T result{};
 		for (auto& tr : trpoly.triangles)
 			result += calculate_indexed_triangle_area(trpoly.poly, tr);
@@ -483,6 +496,7 @@ namespace ghassanpl::geometry
 
 	namespace immutable
 	{
+		/// An immutable version of `tpolygon` that performs and caches its triangulation lazily upon request.
 		template <std::floating_point T>
 		struct tpolygon
 		{
@@ -597,8 +611,9 @@ namespace ghassanpl::geometry
 		static_assert(area_shape<float, polygon>);
 	}
 
-	/// Polyline
-
+	/// TODO: Polyline
 	template <std::floating_point T>
 	struct tpolyline;
+
+	/// @}
 }

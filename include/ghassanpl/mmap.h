@@ -318,6 +318,7 @@ namespace ghassanpl
 	};
 
 	/// \defgroup mmap mmap
+	/// Classes for platform-independent memory mapping of filesystem files.
 	/// @{
 	
 	/// A read-only memory view over a file.

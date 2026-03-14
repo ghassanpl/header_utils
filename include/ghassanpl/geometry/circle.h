@@ -10,6 +10,10 @@
 
 namespace ghassanpl::geometry
 {
+	/// \ingroup Geometry
+	/// @{
+	
+	/// Represents a 2D circle `area_shape`
 	template <std::floating_point T>
 	struct tcircle
 	{
@@ -55,7 +59,10 @@ namespace ghassanpl::geometry
 		}
 	};
 
+	/// A circle with `float` cordinates
 	using circle = tcircle<float>;
+
+	/// @}
 
 	static_assert(area_shape<float, circle>);
 }

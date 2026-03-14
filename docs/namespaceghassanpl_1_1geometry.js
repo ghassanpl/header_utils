@@ -1,11 +1,33 @@
 var namespaceghassanpl_1_1geometry =
 [
-    [ "squares", "namespaceghassanpl_1_1geometry_1_1squares.html", [
-      [ "is_surrounding", "namespaceghassanpl_1_1geometry_1_1squares.html#a6240512830a6037c6b42765af3f226a4", null ]
-    ] ],
-    [ "basic_line_t", "structghassanpl_1_1geometry_1_1basic__line__t.html", null ],
-    [ "tpolyline", "namespaceghassanpl_1_1geometry.html#structghassanpl_1_1geometry_1_1tpolyline", null ],
+    [ "hexes", "namespaceghassanpl_1_1geometry_1_1hexes.html", null ],
+    [ "squares", "namespaceghassanpl_1_1geometry_1_1squares.html", "namespaceghassanpl_1_1geometry_1_1squares" ],
+    [ "tcapsule", "structghassanpl_1_1geometry_1_1tcapsule.html", null ],
+    [ "tcircle", "structghassanpl_1_1geometry_1_1tcircle.html", null ],
+    [ "tellipse", "structghassanpl_1_1geometry_1_1tellipse.html", null ],
+    [ "basic_line_t", "structghassanpl_1_1geometry_1_1basic__line__t.html", "structghassanpl_1_1geometry_1_1basic__line__t" ],
+    [ "interval", "structghassanpl_1_1geometry_1_1interval.html", null ],
+    [ "tshape_intersection", "namespaceghassanpl_1_1geometry.html#structghassanpl_1_1geometry_1_1tshape__intersection", "namespaceghassanpl_1_1geometry_structghassanpl_1_1geometry_1_1tshape__intersection_dup" ],
+    [ "delaunay_triangulation", "structghassanpl_1_1geometry_1_1delaunay__triangulation.html", "structghassanpl_1_1geometry_1_1delaunay__triangulation" ],
+    [ "tpolygon", "structghassanpl_1_1geometry_1_1tpolygon.html", "structghassanpl_1_1geometry_1_1tpolygon" ],
+    [ "polygon_triangulation", "structghassanpl_1_1geometry_1_1polygon__triangulation.html", "structghassanpl_1_1geometry_1_1polygon__triangulation" ],
+    [ "triangulated_polygon", "structghassanpl_1_1geometry_1_1triangulated__polygon.html", "structghassanpl_1_1geometry_1_1triangulated__polygon" ],
+    [ "tpolyline", "group___polygon.html#structghassanpl_1_1geometry_1_1tpolyline", null ],
+    [ "tray", "structghassanpl_1_1geometry_1_1tray.html", null ],
+    [ "tsegment", "structghassanpl_1_1geometry_1_1tsegment.html", "structghassanpl_1_1geometry_1_1tsegment" ],
+    [ "tindexed_triangle", "structghassanpl_1_1geometry_1_1tindexed__triangle.html", "structghassanpl_1_1geometry_1_1tindexed__triangle" ],
+    [ "trec2", "structghassanpl_1_1geometry_1_1trec2.html", "structghassanpl_1_1geometry_1_1trec2" ],
     [ "shape", "conceptghassanpl_1_1geometry_1_1shape.html", null ],
     [ "area_shape", "conceptghassanpl_1_1geometry_1_1area__shape.html", null ],
-    [ "direction_set", "namespaceghassanpl_1_1geometry.html#af83f7bf85a921774beddc19866e9cf7e", null ]
+    [ "polygon_shape", "conceptghassanpl_1_1geometry_1_1polygon__shape.html", null ],
+    [ "polygon_area_shape", "conceptghassanpl_1_1geometry_1_1polygon__area__shape.html", null ],
+    [ "indexable_polygonlike", "conceptghassanpl_1_1geometry_1_1indexable__polygonlike.html", null ],
+    [ "circle", "namespaceghassanpl_1_1geometry.html#a135b2a6a8ad4f6b13e135b2a57c8d6ae", null ],
+    [ "are_colinear", "group___points.html#ga37d6bcf50cb3e0d006518ba63718d691", null ],
+    [ "distance", "namespaceghassanpl_1_1geometry.html#a818484628c37a146870723a566ff708c", null ],
+    [ "horizontal", "group___direction.html#ga0a2071013a3a1adac2d058219182869b", null ],
+    [ "intersects", "namespaceghassanpl_1_1geometry.html#afc7f7bd6bd0ba554c4a967c1583247cf", null ],
+    [ "line_crossing_points", "group___lines.html#ga4d428198e18d13f22d34625243c13dbf", null ],
+    [ "to_cardinal_set", "group___direction.html#ga09ec36111098af3cc2be64a5aa2886b6", null ],
+    [ "vertical", "group___direction.html#gac393817bea9682b34ede7117bec0fe76", null ]
 ];

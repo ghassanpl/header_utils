@@ -9,17 +9,21 @@
 namespace ghassanpl::geometry
 {
 
+	/// \ingroup Geometry
+	/// Represents a 2D ray
 	template <std::floating_point T>
 	struct tray
 	{
+		/// \internal TODO: Could this technically meet `shape`? Sure, the edge length and bbox are infinite, but that's technically still defined; but I don't think edge_point_alpha is...
+
 		using tvec = glm::tvec2<T>;
 		using value_type = T;
 		using segment = tsegment<T>;
 
 		tvec start{};
-		tvec dir{}; /// TODO: this should not be public, as it doesn't enforce the length to be 1
+		tvec dir{}; ///< \internal TODO: this should not be public, as it doesn't enforce the length to be 1
 
-		basic_line_t<T> line() const noexcept;
+		basic_line_t<T> line() const noexcept { return line_from_dir(dir); }
 
 		tray from_dir(tvec const& start, tvec const& dir) noexcept { return { start, glm::normalize(dir) }; }
 		tray from_points(tvec const& start, tvec const& second) noexcept { return from_dir(start, second - start); }
@@ -29,7 +33,10 @@ namespace ghassanpl::geometry
 		segment& operator-=(tvec const& offs) noexcept { start -= offs; return *this; }
 		segment& translate(tvec const& offs) noexcept { return this->operator+=(offs); }
 
-		tvec edge_point_alpha(T t) const { return start + dir * t; }
+		T edge_length() const noexcept { return std::numeric_limits<T>::infinity(); }
+
+		tvec edge_point(T t) const { return start + dir * t; }
+		trec2<T> bounding_box() const { return trec2<T>::from_points(edge_point(T{}), edge_point(edge_length())); }
 		tvec closest_point_to(tvec const& pt) const
 		{
 			const auto a = projected_alpha(pt);

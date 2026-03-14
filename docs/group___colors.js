@@ -1,11 +1,11 @@
 var group___colors =
 [
     [ "ghassanpl::colors", "namespaceghassanpl_1_1colors.html", null ],
-    [ "ghassanpl::color_abgr_u32_t", "group___colors.html#ga18250fa0b3fa91baf8f9aab7ff847c7e", null ],
-    [ "ghassanpl::color_hsva_t", "group___colors.html#gaf87e189a1a3e95c9d619a14f5ec6b03b", null ],
-    [ "ghassanpl::color_rgba_t", "group___colors.html#ga72f54ee837994b9599b6411792c7cd84", null ],
-    [ "ghassanpl::color_rgba_u32_t", "group___colors.html#ga803c17af533306efe6944ba28ae07017", null ],
-    [ "ghassanpl::color_t", "group___colors.html#ga2135250e4bfc4091c3456ec5e303884c", null ],
+    [ "ghassanpl::color_abgr_u32_t", "group___colors.html#ga32c9d74c4d942263548e9b96b9ac7d37", null ],
+    [ "ghassanpl::color_hsva_t", "group___colors.html#gad26353c0018706f099c638dacc0614fe", null ],
+    [ "ghassanpl::color_rgba_t", "group___colors.html#gac0ef2cd124d96ca2ceefdd905e4fcd31", null ],
+    [ "ghassanpl::color_rgba_u32_t", "group___colors.html#ga71627c3c16f091e1a10ec55ac7c61965", null ],
+    [ "ghassanpl::color_t", "group___colors.html#gac3ffacdbc51059e642673ba6968ec9d9", null ],
     [ "ghassanpl::color_space", "group___colors.html#ga2bd76b8baeed4f6153cd3d087e83b8f4", null ],
     [ "ghassanpl::contrast", "group___colors.html#ga7b770114a3975680d67ff5a5789d0be1", null ],
     [ "ghassanpl::contrast2", "group___colors.html#ga8412b721aff95aa0b8524e7e9bea4f08", null ],

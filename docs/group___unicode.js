@@ -1,8 +1,14 @@
 var group___unicode =
 [
-    [ "ghassanpl::string_ops::text_encoding", "group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding", null ],
-    [ "ghassanpl::string_ops::utf8_view< R >", "structghassanpl_1_1string__ops_1_1utf8__view.html", null ],
-    [ "ghassanpl::string_ops::text_encoding_type", "group___unicode.html#ga05990bf332d1e3aeefa175160e9dd0ea", null ],
+    [ "ghassanpl::string_ops::text_encoding", "structghassanpl_1_1string__ops_1_1text__encoding.html", null ],
+    [ "ghassanpl::string_ops::utf8_view&lt; R &gt;", "structghassanpl_1_1string__ops_1_1utf8__view.html", null ],
+    [ "ghassanpl::string_ops::text_encoding_type", "group___unicode.html#ga05990bf332d1e3aeefa175160e9dd0ea", [
+      [ "ghassanpl::string_ops::text_encoding_type::utf1", "group___unicode.html#gga05990bf332d1e3aeefa175160e9dd0eaa17297c52cf245a63c51891e67bc1397f", null ],
+      [ "ghassanpl::string_ops::text_encoding_type::utf_ebcdic", "group___unicode.html#gga05990bf332d1e3aeefa175160e9dd0eaa7f7e45a4832742639ea95f171c85cbca", null ],
+      [ "ghassanpl::string_ops::text_encoding_type::scsu", "group___unicode.html#gga05990bf332d1e3aeefa175160e9dd0eaaed5f91480124966fba7051889ac61393", null ],
+      [ "ghassanpl::string_ops::text_encoding_type::bocu1", "group___unicode.html#gga05990bf332d1e3aeefa175160e9dd0eaaf8cb1ab8bca22200f15bb9b9fe491b39", null ],
+      [ "ghassanpl::string_ops::text_encoding_type::gb18030", "group___unicode.html#gga05990bf332d1e3aeefa175160e9dd0eaadf5406096b7ec5329d3a13468430e56a", null ]
+    ] ],
     [ "ghassanpl::string_ops::unicode_plane", "group___unicode.html#ga007c8637e05a857a043fb9f64ff34470", [
       [ "ghassanpl::string_ops::unicode_plane::invalid", "group___unicode.html#gga007c8637e05a857a043fb9f64ff34470afedb2d84cafe20862cb4399751a8a7e3", null ]
     ] ],
@@ -11,6 +17,7 @@ var group___unicode =
     [ "ghassanpl::string_ops::append_utf32", "group___unicode.html#ga4bac563db6cd37343f722794f5391532", null ],
     [ "ghassanpl::string_ops::append_utf8", "group___unicode.html#ga6d920b2c90ab2d2df9dc19f9dd14e106", null ],
     [ "ghassanpl::string_ops::codepoint_utf8_count", "group___unicode.html#gaad67659b9308e2629cd17598cb8ce3e6", null ],
+    [ "ghassanpl::string_ops::codepoint_utf8_count_from_end", "group___unicode.html#ga25c76a964900a708ab3c18918e364700", null ],
     [ "ghassanpl::string_ops::consume_bom", "group___unicode.html#gae9f7b0c577c591a294c0d3687f7961e6", null ],
     [ "ghassanpl::string_ops::consume_bom", "group___unicode.html#ga7020fd6d0c8ea08ff3bf9b682331242c", null ],
     [ "ghassanpl::string_ops::consume_bom", "group___unicode.html#ga07f76e59b03c73f24eb37bd08cd6696e", null ],
@@ -19,14 +26,20 @@ var group___unicode =
     [ "ghassanpl::string_ops::consume_utf16", "group___unicode.html#ga81083535d71b90ee2aee200a3d372784", null ],
     [ "ghassanpl::string_ops::consume_utf32", "group___unicode.html#ga0281323488c3f378f3c27a170b0d29e1", null ],
     [ "ghassanpl::string_ops::consume_utf8", "group___unicode.html#gaabb8707b3bf08b1bd916097122af10a1", null ],
+    [ "ghassanpl::string_ops::consume_utf8_at_end", "group___unicode.html#ga873ed3d2954f7a86310747a48b5e15a0", null ],
     [ "ghassanpl::string_ops::count_utf8_codepoints", "group___unicode.html#ga56a176ef0258918dd7735278818a0a15", null ],
     [ "ghassanpl::string_ops::decode_codepoint", "group___unicode.html#gace991b45b9450fc8bece3f81630aa7ff", null ],
     [ "ghassanpl::string_ops::detect_encoding", "group___unicode.html#gab6c4e64793bbc00da550e8350a5eb1b9", null ],
+    [ "ghassanpl::string_ops::encode_flag", "group___unicode.html#gad246c6de66f0b3bfb6e734595af6f1db", null ],
+    [ "ghassanpl::string_ops::first_utf8_codepoint_size", "group___unicode.html#gaee36a598ffbfd512377f5c0b2836ed76", null ],
     [ "ghassanpl::string_ops::is_high_surrogate", "group___unicode.html#gaadf6779c103593d59cfce286ff88f478", null ],
     [ "ghassanpl::string_ops::is_low_surrogate", "group___unicode.html#gae7e4635e6f2f2d686f371f2405e51403", null ],
     [ "ghassanpl::string_ops::is_surrogate", "group___unicode.html#ga83d57b46b8e1f4ea956bee4f2e757fbd", null ],
     [ "ghassanpl::string_ops::is_unicode", "group___unicode.html#ga6464275acc31e963653bcf8974bff260", null ],
     [ "ghassanpl::string_ops::is_unicode_character", "group___unicode.html#ga435b274b58154448f23240e03d6a01b8", null ],
+    [ "ghassanpl::string_ops::peek_utf8", "group___unicode.html#ga31197f82f83c4d6145459edf47d2884c", null ],
+    [ "ghassanpl::string_ops::peek_utf8_at_end", "group___unicode.html#gabf8de523bf1750a72cbdc2d87144fd84", null ],
+    [ "ghassanpl::string_ops::pop_utf8", "group___unicode.html#gaf9210e7551957fe0481268a4390a36ab", null ],
     [ "ghassanpl::string_ops::surrogate_pair_to_codepoint", "group___unicode.html#ga4d593a64af4e46f3710c95d30d88ce76", null ],
     [ "ghassanpl::string_ops::to_string", "group___unicode.html#ga570f84f9b126f2153403148c3e65500a", null ],
     [ "ghassanpl::string_ops::to_utf16", "group___unicode.html#ga81ec61b363c30f534e1b9c42f100bf0f", null ],

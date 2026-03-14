@@ -8,7 +8,8 @@
 
 namespace ghassanpl::geometry
 {
-
+	/// \ingroup Geometry
+	/// Represents a 2D segment (technically a `polygon_shape`).
 	template <std::floating_point T>
 	struct tsegment
 	{

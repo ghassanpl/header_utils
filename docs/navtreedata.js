@@ -26,7 +26,7 @@ var NAVTREE =
 [
   [ "header_utils", "index.html", [
     [ "Todo List", "todo.html", null ],
-    [ "Modules", "modules.html", "modules" ],
+    [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -57,10 +57,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "align_09rec2_8h_source.html",
-"group___containers.html#ga3f6bd01990fe9ed469c02e8f860fb31f",
-"namespaceghassanpl.html#ae799337db5a077ed406d44f2cddc33ee",
-"structghassanpl_1_1eval_1_1environment.html"
+"group___colors.html#ga32c9d74c4d942263548e9b96b9ac7d37",
+"group___unicode.html#gae9f7b0c577c591a294c0d3687f7961e6",
+"structghassanpl_1_1decomposed__uri.html#ace080558a52e723877f74169909e1b6c",
+"structghassanpl_1_1scoped__value__change.html#a4ffd79fd4f472c2427510353e6975271"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';
+var LISTOFALLMEMBERS = 'List of all members';

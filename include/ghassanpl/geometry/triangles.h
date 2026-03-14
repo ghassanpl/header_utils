@@ -9,6 +9,9 @@
 
 namespace ghassanpl::geometry
 {
+	/// \defgroup Triangles Triangles
+	/// \ingroup Geometry
+	/// @{
 
 	template <std::floating_point T>
 	struct ttriangle
@@ -158,10 +161,13 @@ namespace ghassanpl::geometry
 	static_assert(area_shape<float, triangle>);
 	static_assert(polygon_shape<float, triangle>);
 
-	template <std::integral IDX = size_t>
+	/// Stores three indices to a `indexable_polygonlike` that together form a triangle
+	template <std::integral IDX_TYPE = size_t>
 	struct tindexed_triangle
 	{
-		std::array<IDX, 3> indices{};
+		/// TODO: These functions could probably be relaxed to take an `indexable_polygonlike` instead of a true range
+
+		std::array<IDX_TYPE, 3> indices{};
 
 		template <std::ranges::random_access_range T>
 		auto a(T&& range) const -> std::ranges::range_value_t<T>
@@ -184,4 +190,6 @@ namespace ghassanpl::geometry
 	};
 
 	using indexed_triangle = tindexed_triangle<size_t>;
+
+	/// @}
 }

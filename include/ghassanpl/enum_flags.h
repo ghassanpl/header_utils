@@ -20,8 +20,12 @@ namespace ghassanpl
 	constexpr inline struct all_flags_t {} all_flags;
 	constexpr inline struct no_flags_t {} no_flags;
 	
-	/// A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset)
+	/// \defgroup EnumFlags Enum Flags
 	/// \ingroup Flags
+	/// Contains `enum_flags`, a value struct that represents a set of bits mapped to an enum (implemented as a bitset)
+	
+	/// A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset)
+	/// \ingroup EnumFlags
 	/// 
 	/// \par Example
 	/// \code{.cpp}

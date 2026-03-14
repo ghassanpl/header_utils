@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['whitespace_5fchars_0',['whitespace_chars',['../group___a_s_c_i_i.html#ga890d58fe01750f1c182057b3c7d20509',1,'ghassanpl::string_ops::ascii']]]
+  ['vertical_5faligns_5fin_5forder_0',['vertical_aligns_in_order',['../group___alignment.html#ga20b8dd791fae1b933ff5ce57c7e37a82',1,'ghassanpl']]]
 ];

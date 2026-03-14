@@ -1,8 +1,11 @@
 var searchData=
 [
-  ['scope_5fcounter_0',['scope_counter',['../structghassanpl_1_1scope__counter.html',1,'ghassanpl']]],
-  ['scope_5fguard_1',['scope_guard',['../structghassanpl_1_1scope__guard.html',1,'ghassanpl']]],
-  ['scoped_5fvalue_5fchange_2',['scoped_value_change',['../structghassanpl_1_1scoped__value__change.html',1,'ghassanpl']]],
-  ['split_5frange_3',['split_range',['../structghassanpl_1_1string__ops_1_1split__range.html',1,'ghassanpl::string_ops']]],
-  ['string_5fstringifier_4',['string_stringifier',['../structghassanpl_1_1string__stringifier.html',1,'ghassanpl']]]
+  ['manhattan_5fmetric_0',['manhattan_metric',['../structghassanpl_1_1geometry_1_1squares_1_1manhattan__metric.html',1,'ghassanpl::geometry::squares']]],
+  ['mmap_5fsink_1',['mmap_sink',['../structghassanpl_1_1mmap__sink.html',1,'ghassanpl']]],
+  ['mmap_5fsource_2',['mmap_source',['../structghassanpl_1_1mmap__source.html',1,'ghassanpl']]],
+  ['mmap_5fsource_3c_20char_20_3e_3',['mmap_source&lt; char &gt;',['../structghassanpl_1_1mmap__source.html',1,'ghassanpl']]],
+  ['mmap_5fsource_3c_20char8_5ft_20_3e_4',['mmap_source&lt; char8_t &gt;',['../structghassanpl_1_1mmap__source.html',1,'ghassanpl']]],
+  ['mmap_5fsource_3c_20std_3a_3abyte_20_3e_5',['mmap_source&lt; std::byte &gt;',['../structghassanpl_1_1mmap__source.html',1,'ghassanpl']]],
+  ['mmap_5fsource_3c_20std_3a_3auint8_5ft_20_3e_6',['mmap_source&lt; std::uint8_t &gt;',['../structghassanpl_1_1mmap__source.html',1,'ghassanpl']]],
+  ['mutlticast_5ffunction_3c_20r_28args_2e_2e_2e_29_3e_7',['mutlticast_function&lt; R(ARGS...)&gt;',['../classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html',1,'ghassanpl']]]
 ];

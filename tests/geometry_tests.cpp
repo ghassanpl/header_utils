@@ -52,6 +52,14 @@ TEST(polygon, can_be_created_from_polyshapes)
 	polygon r = polygon::from_shape(rec2{10, 20, 30, 40});
 }
 
+TEST(polygon, free_functions_work_on_ranges_of_vectors)
+{
+	const std::vector<glm::vec2> poly{ {0,0}, {0,10}, {10,10}, {10, 0} };
+	const indexed_triangle t{ {0,1,2} };
+	const auto result = calculate_indexed_triangle_area(poly, t);
+	EXPECT_EQ(result, 50);
+}
+
 using namespace ghassanpl::geometry::squares;
 TEST(squares, tile_world_grid_functions_work)
 {
@@ -78,11 +86,39 @@ TEST(squares, tile_world_grid_functions_work)
 	}
 }
 
+TEST(grid, works)
+{
+	struct tile
+	{
+		int smth = 5;
+	};
+
+	grid<tile> gr;
+	EXPECT_EQ(gr.width(), 0);
+	EXPECT_EQ(gr.height(), 0);
+
+	gr.reset(10, 20);
+	EXPECT_EQ(gr.width(), 10);
+	EXPECT_EQ(gr.height(), 20);
+
+	gr.for_each_tile([](glm::ivec2 pos, tile& t) { t.smth = pos.x*pos.y; });
+	for (int x=0; x< gr.width(); ++x)
+	{
+		for (int y = 0; y < gr.height(); ++y)
+		{
+			EXPECT_EQ(gr.at_index(gr.index(x, y))->smth, x*y) << x << y;
+		}
+	}
+
+	const auto unblocked = gr.line_cast({ 0,0 }, { 5,5 }, [](glm::ivec2 pos) { return pos != glm::ivec2{1, 1}; }, false);
+	EXPECT_FALSE(unblocked);
+}
+
 TEST(polar, works)
 {
 	using namespace glm;
 	{
-		auto p = euclidean(polar(vec2{10, 20}));
+		auto p = euclidean(polar(vec2{10.0f, 20.0f}));
 		EXPECT_NEAR(p.x, 10, 0.00001);
 		EXPECT_NEAR(p.y, 20, 0.00001);
 	}

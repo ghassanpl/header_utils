@@ -10,6 +10,8 @@
 
 namespace ghassanpl::geometry
 {
+	/// Represents a 2D capsule `area_shape`
+	/// \ingroup Geometry
 	template <std::floating_point T>
 	struct tcapsule
 	{

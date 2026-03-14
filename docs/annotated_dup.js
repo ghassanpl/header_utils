@@ -8,35 +8,61 @@ var annotated_dup =
         [ "environment", "structghassanpl_1_1eval_1_1environment.html", "structghassanpl_1_1eval_1_1environment" ]
       ] ],
       [ "geometry", "namespaceghassanpl_1_1geometry.html", [
-        [ "basic_line_t", "structghassanpl_1_1geometry_1_1basic__line__t.html", null ],
-        [ "tpolyline", "namespaceghassanpl_1_1geometry.html#structghassanpl_1_1geometry_1_1tpolyline", null ]
+        [ "immutable", null, [
+          [ "tpolygon", "structghassanpl_1_1geometry_1_1immutable_1_1tpolygon.html", "structghassanpl_1_1geometry_1_1immutable_1_1tpolygon" ]
+        ] ],
+        [ "squares", "namespaceghassanpl_1_1geometry_1_1squares.html", [
+          [ "grid", "structghassanpl_1_1geometry_1_1squares_1_1grid.html", "structghassanpl_1_1geometry_1_1squares_1_1grid" ],
+          [ "manhattan_metric", "structghassanpl_1_1geometry_1_1squares_1_1manhattan__metric.html", null ],
+          [ "chebyshev_metric", "structghassanpl_1_1geometry_1_1squares_1_1chebyshev__metric.html", null ],
+          [ "tile_space", "structghassanpl_1_1geometry_1_1squares_1_1tile__space.html", null ]
+        ] ],
+        [ "tcapsule", "structghassanpl_1_1geometry_1_1tcapsule.html", null ],
+        [ "tcircle", "structghassanpl_1_1geometry_1_1tcircle.html", null ],
+        [ "tellipse", "structghassanpl_1_1geometry_1_1tellipse.html", null ],
+        [ "basic_line_t", "structghassanpl_1_1geometry_1_1basic__line__t.html", "structghassanpl_1_1geometry_1_1basic__line__t" ],
+        [ "interval", "structghassanpl_1_1geometry_1_1interval.html", null ],
+        [ "tshape_intersection", "namespaceghassanpl_1_1geometry.html#structghassanpl_1_1geometry_1_1tshape__intersection", "namespaceghassanpl_1_1geometry_structghassanpl_1_1geometry_1_1tshape__intersection_dup" ],
+        [ "delaunay_triangulation", "structghassanpl_1_1geometry_1_1delaunay__triangulation.html", "structghassanpl_1_1geometry_1_1delaunay__triangulation" ],
+        [ "tpolygon", "structghassanpl_1_1geometry_1_1tpolygon.html", "structghassanpl_1_1geometry_1_1tpolygon" ],
+        [ "polygon_triangulation", "structghassanpl_1_1geometry_1_1polygon__triangulation.html", "structghassanpl_1_1geometry_1_1polygon__triangulation" ],
+        [ "triangulated_polygon", "structghassanpl_1_1geometry_1_1triangulated__polygon.html", "structghassanpl_1_1geometry_1_1triangulated__polygon" ],
+        [ "tpolyline", "group___polygon.html#structghassanpl_1_1geometry_1_1tpolyline", null ],
+        [ "tray", "structghassanpl_1_1geometry_1_1tray.html", null ],
+        [ "tsegment", "structghassanpl_1_1geometry_1_1tsegment.html", "structghassanpl_1_1geometry_1_1tsegment" ],
+        [ "tindexed_triangle", "structghassanpl_1_1geometry_1_1tindexed__triangle.html", "structghassanpl_1_1geometry_1_1tindexed__triangle" ],
+        [ "trec2", "structghassanpl_1_1geometry_1_1trec2.html", "structghassanpl_1_1geometry_1_1trec2" ]
+      ] ],
+      [ "traits", null, [
+        [ "location", "structghassanpl_1_1traits_1_1location.html", null ],
+        [ "displacement", "structghassanpl_1_1traits_1_1displacement.html", null ]
+      ] ],
+      [ "random", "namespaceghassanpl_1_1random.html", [
+        [ "good_random_engine", "structghassanpl_1_1random_1_1good__random__engine.html", null ]
       ] ],
       [ "string_ops", "namespaceghassanpl_1_1string__ops.html", [
         [ "split_range", "structghassanpl_1_1string__ops_1_1split__range.html", "structghassanpl_1_1string__ops_1_1split__range" ],
-        [ "text_decode_result", "structghassanpl_1_1string__ops_1_1text__decode__result.html", "structghassanpl_1_1string__ops_1_1text__decode__result" ],
-        [ "text_encoding", "group___unicode.html#structghassanpl_1_1string__ops_1_1text__encoding", null ],
-        [ "utf8_view", "structghassanpl_1_1string__ops_1_1utf8__view.html", null ]
+        [ "text_encoding", "structghassanpl_1_1string__ops_1_1text__encoding.html", null ],
+        [ "utf8_view", "structghassanpl_1_1string__ops_1_1utf8__view.html", null ],
+        [ "text_decode_result", "structghassanpl_1_1string__ops_1_1text__decode__result.html", "structghassanpl_1_1string__ops_1_1text__decode__result" ]
       ] ],
-      [ "traits", null, [
-        [ "displacement", "structghassanpl_1_1traits_1_1displacement.html", null ],
-        [ "location", "structghassanpl_1_1traits_1_1location.html", null ]
-      ] ],
-      [ "bit_reference", "structghassanpl_1_1bit__reference.html", "structghassanpl_1_1bit__reference" ],
       [ "bit_view", "structghassanpl_1_1bit__view.html", "structghassanpl_1_1bit__view" ],
-      [ "counted_scope_guard", "structghassanpl_1_1counted__scope__guard.html", "structghassanpl_1_1counted__scope__guard" ],
-      [ "decomposed_uri", "structghassanpl_1_1decomposed__uri.html", "structghassanpl_1_1decomposed__uri" ],
-      [ "enum_array", "structghassanpl_1_1enum__array.html", null ],
+      [ "bit_reference", "structghassanpl_1_1bit__reference.html", "structghassanpl_1_1bit__reference" ],
       [ "enum_flags", "structghassanpl_1_1enum__flags.html", "structghassanpl_1_1enum__flags" ],
-      [ "get_index", "namespaceghassanpl.html#structghassanpl_1_1get__index", null ],
-      [ "mmap_sink", "structghassanpl_1_1mmap__sink.html", null ],
       [ "mmap_source", "structghassanpl_1_1mmap__source.html", null ],
-      [ "mutlticast_function< R(ARGS...)>", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4" ],
-      [ "scope_counter", "structghassanpl_1_1scope__counter.html", null ],
+      [ "mmap_sink", "structghassanpl_1_1mmap__sink.html", null ],
+      [ "mutlticast_function&lt; R(ARGS...)&gt;", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4" ],
+      [ "caching_path_reference", "structghassanpl_1_1caching__path__reference.html", "structghassanpl_1_1caching__path__reference" ],
       [ "scope_guard", "structghassanpl_1_1scope__guard.html", null ],
-      [ "scoped_value_change", "structghassanpl_1_1scoped__value__change.html", "structghassanpl_1_1scoped__value__change" ],
-      [ "string_stringifier", "structghassanpl_1_1string__stringifier.html", null ],
+      [ "counted_scope_guard", "structghassanpl_1_1counted__scope__guard.html", "structghassanpl_1_1counted__scope__guard" ],
       [ "unique_resource", "structghassanpl_1_1unique__resource.html", null ],
+      [ "scoped_value_change", "structghassanpl_1_1scoped__value__change.html", "structghassanpl_1_1scoped__value__change" ],
+      [ "scope_counter", "structghassanpl_1_1scope__counter.html", null ],
+      [ "string_stringifier", "structghassanpl_1_1string__stringifier.html", null ],
+      [ "get_index", "namespaceghassanpl.html#structghassanpl_1_1get__index", null ],
+      [ "decomposed_uri", "structghassanpl_1_1decomposed__uri.html", "structghassanpl_1_1decomposed__uri" ],
       [ "with_sl", "structghassanpl_1_1with__sl.html", null ],
-      [ "with_slh", "structghassanpl_1_1with__slh.html", null ]
+      [ "with_slh", "structghassanpl_1_1with__slh.html", null ],
+      [ "trec2", "structghassanpl_1_1trec2.html", "structghassanpl_1_1trec2" ]
     ] ]
 ];

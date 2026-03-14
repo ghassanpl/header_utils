@@ -10,6 +10,12 @@
 
 namespace ghassanpl::geometry
 {
+	/// \defgroup Direction Direction
+	/// Contains the `direction` type, which represents one of the eight cardinal compass directions
+	/// 
+	/// \ingroup Geometry
+	/// @{
+
 	enum class direction
 	{
 		none = -1,
@@ -34,9 +40,7 @@ namespace ghassanpl::geometry
 	};
 
 	static constexpr auto direction_count = 8;
-
-	/// TODO: names, compass name
-
+	
 	using direction_set = enum_flags<direction, uint8_t>;
 
 	namespace detail
@@ -82,13 +86,17 @@ namespace ghassanpl::geometry
 	constexpr bool is_cardinal(direction dir) { return (int(dir) & 1) == 0; }
 	constexpr bool is_diagonal(direction dir) { return (int(dir) & 1) != 0; }
 
+	/// Turns a diagonal direction into a set of cardinals (e.g. `to_cardinal_set(north_west)` -> `direction_set{north, west}`)
 	constexpr direction_set to_cardinal_set(direction dir)
 	{
 		if (is_cardinal(dir)) return { dir };
 		return { next_cardinal(dir), prev_cardinal(dir) };
 	}
 
+	/// Returns the horizontal offset (-1, 0, or 1) of `dir`
 	constexpr int horizontal(direction dir) { return detail::direction_value[(int)dir]; }
+	
+	/// Returns the vertical offset (-1, 0, or 1) of `dir`
 	constexpr int vertical(direction dir) { return detail::direction_value[int(dir + 6)]; }
 
 	constexpr degrees to_angle(direction val)
@@ -151,4 +159,5 @@ namespace ghassanpl::geometry
 		return (direction)vec_value[glm::sign(vec.x) + glm::sign(vec.y) * 3 + 4];
 	}
 
+	/// @}
 }
