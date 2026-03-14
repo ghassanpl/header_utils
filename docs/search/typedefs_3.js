@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['integer_5ftype_0',['integer_type',['../structghassanpl_1_1bit__view.html#a9b97ba3d617c96f1c788e9937b34879e',1,'ghassanpl::bit_view']]],
-  ['intn_5ft_1',['intN_t',['../group___bits.html#ga54f40d4f554acb614ac263295a01cc0c',1,'ghassanpl']]]
+  ['enum_5ftype_0',['enum_type',['../structghassanpl_1_1enum__flags.html#a4cb29178de0804d5f0d8ca82d2b12e35',1,'ghassanpl::enum_flags::enum_type'],['../structghassanpl_1_1enum__flag__changes.html#a17cc046b22a4488518ee8c64b46313df',1,'ghassanpl::enum_flag_changes::enum_type']]]
 ];

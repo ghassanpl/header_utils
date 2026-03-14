@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"group___string_ops.html#gae4090063b47fbf51bb74e50dec614022":[1,17,76],
 "group___string_ops.html#gae7f6646b20c6ba45ddf2f5dabc08faba":[1,17,75],
 "group___string_ops.html#gaeb6c4dda7cd12e6196129b8fd2d9b835":[1,17,19],
 "group___string_ops.html#gaecb93cbb9bc1ca687065fe6b7db271a0":[1,17,89],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "quad_8h_source.html":[5,0,0,0,1,11],
 "random_8h_source.html":[5,0,0,0,43],
 "random__geom_8h_source.html":[5,0,0,0,44],
-"random__seq_8h_source.html":[5,0,0,0,45],
-"ranges_8h_source.html":[5,0,0,0,46]
+"random__seq_8h_source.html":[5,0,0,0,45]
 };

@@ -92,7 +92,7 @@ $(function(){initNavTree('structghassanpl_1_1named.html','','structghassanpl_1_1
 </div><!--header-->
 <div class="contents">
 
-<p>Used to create a strong typedef around <span class="tt">T</span>.  
+<p>Used to create a strong typedef of <span class="tt">T</span>.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="named_8h_source.html">named.h</a>&gt;</code></p>
@@ -100,13 +100,17 @@ $(function(){initNavTree('structghassanpl_1_1named.html','','structghassanpl_1_1
 <tr class="heading"><td colspan="2"><h2 id="header-pub-types" class="groupheader"><a id="pub-types" name="pub-types"></a>
 Public Types</h2></td></tr>
 <tr class="memitem:a48498b413f72fcd21a5463a52c86ac75" id="r_a48498b413f72fcd21a5463a52c86ac75"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#a48498b413f72fcd21a5463a52c86ac75">base_type</a></td></tr>
+<tr class="memdesc:a48498b413f72fcd21a5463a52c86ac75"><td class="mdescLeft">&#160;</td><td class="mdescRight">The internally stored type.  <br /></td></tr>
 <tr class="memitem:abc1d3a800c6cc29340c5352897104e81" id="r_abc1d3a800c6cc29340c5352897104e81"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#abc1d3a800c6cc29340c5352897104e81">self_type</a></td></tr>
 <tr class="memitem:a452b65c5ee19a3339c0e0221d41c02d9" id="r_a452b65c5ee19a3339c0e0221d41c02d9"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#a452b65c5ee19a3339c0e0221d41c02d9">displacement_type</a></td></tr>
+<tr class="memdesc:a452b65c5ee19a3339c0e0221d41c02d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this type is marked as a location of a displacement type, this will be the type; if not, this will be <span class="tt">void</span>.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a3f9f87991edee88d8bb9954cd81da2bf" id="r_a3f9f87991edee88d8bb9954cd81da2bf"><td class="memTemplParams" colspan="2">template&lt;typename... ARGS&gt; </td></tr>
 <tr class="memitem:a3f9f87991edee88d8bb9954cd81da2bf template"><td class="memItemLeft">constexpr&#160;</td><td class="memItemRight"><a class="el" href="#a3f9f87991edee88d8bb9954cd81da2bf">named</a> (ARGS &amp;&amp;... args) noexcept(std::is_nothrow_constructible_v&lt; T, ARGS... &gt;)</td></tr>
+<tr class="memitem:a1bf67716940c361dab4f442a89e4e36f" id="r_a1bf67716940c361dab4f442a89e4e36f"><td class="memTemplParams" colspan="2">template&lt;typename U&gt; </td></tr>
+<tr class="memitem:a1bf67716940c361dab4f442a89e4e36f template"><td class="memItemLeft">constexpr&#160;</td><td class="memItemRight"><a class="el" href="#a1bf67716940c361dab4f442a89e4e36f">named</a> (U &amp;&amp;arg) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt;)</td></tr>
 <tr class="memitem:a1bf67716940c361dab4f442a89e4e36f" id="r_a1bf67716940c361dab4f442a89e4e36f"><td class="memTemplParams" colspan="2">template&lt;typename U&gt; </td></tr>
 <tr class="memitem:a1bf67716940c361dab4f442a89e4e36f template"><td class="memItemLeft">constexpr&#160;</td><td class="memItemRight"><a class="el" href="#a1bf67716940c361dab4f442a89e4e36f">named</a> (U &amp;&amp;arg) noexcept(std::is_nothrow_move_constructible_v&lt; T &gt;)</td></tr>
 <tr class="memitem:a1bf67716940c361dab4f442a89e4e36f" id="r_a1bf67716940c361dab4f442a89e4e36f"><td class="memTemplParams" colspan="2">template&lt;typename U&gt; </td></tr>
@@ -188,18 +192,20 @@ requires has_trait&lt;displacement&gt; &amp;&amp; std::constructible_from&lt;T, 
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt;<br />
-struct ghassanpl::named&lt; T, PARAMETER, TRAITS &gt;</div><p>Used to create a strong typedef around <span class="tt">T</span>. </p>
+struct ghassanpl::named&lt; T, PARAMETER, TRAITS &gt;</div><p>Used to create a strong typedef of <span class="tt">T</span>. </p>
+<p>By default, it needs to be <b>explicitly</b> constructed from its base type, and is <b>not</b> implicitly convertible to its base type. Most other operations need to be explicitly enabled via the <span class="tt">TRAITS</span> template parameter pack.</p>
 <p>Usage: </p><div class="fragment"><div class="line"><span class="keyword">using </span>length = named&lt;double, <span class="stringliteral">&quot;length&quot;</span>, <a class="code hl_struct" href="structghassanpl_1_1traits_1_1displacement.html">traits::displacement</a>&gt;;</div>
 <div class="line"><span class="keyword">using </span>position = named&lt;double, <span class="stringliteral">&quot;position&quot;</span>, <a class="code hl_struct" href="structghassanpl_1_1traits_1_1location.html">traits::location</a>, <a class="code hl_struct" href="structghassanpl_1_1traits_1_1is__location__of.html">traits::is_location_of&lt;length&gt;</a>&gt;;</div>
 <div class="line">length n = length{10} + length{20};         <span class="comment">// OK, lengths are addable</span></div>
 <div class="line">position n2 = position{100} + length{10};   <span class="comment">// OK, you can add a position to a length, resulting in a new position</span></div>
 <div class="line"><span class="keyword">auto</span> nope = position{100} + position{200};  <span class="comment">// Will not compile; doesn&#39;t make sense to sum positions</span></div>
 <div class="line">length yes = position{200} - position{100}; <span class="comment">// OK; subtracting positions will return in a length</span></div>
-<div class="ttc" id="astructghassanpl_1_1traits_1_1displacement_html"><div class="ttname"><a href="structghassanpl_1_1traits_1_1displacement.html">ghassanpl::traits::displacement</a></div><div class="ttdoc">This trait implies the named type is an linear type, that is, a type that has the addition operator d...</div><div class="ttdef"><b>Definition</b> <a href="named_8h_source.html#l00056">named.h:56</a></div></div>
-<div class="ttc" id="astructghassanpl_1_1traits_1_1is__location__of_html"><div class="ttname"><a href="structghassanpl_1_1traits_1_1is__location__of.html">ghassanpl::traits::is_location_of</a></div><div class="ttdoc">Used in conjuction with traits::location, specifies which displacement type this is a location of.</div><div class="ttdef"><b>Definition</b> <a href="named_8h_source.html#l00078">named.h:78</a></div></div>
-<div class="ttc" id="astructghassanpl_1_1traits_1_1location_html"><div class="ttname"><a href="structghassanpl_1_1traits_1_1location.html">ghassanpl::traits::location</a></div><div class="ttdoc">This trait implies the named type is an affine type, that is, a type that does not have the addition ...</div><div class="ttdef"><b>Definition</b> <a href="named_8h_source.html#l00051">named.h:51</a></div></div>
-</div><!-- fragment --> 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00119">119</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<div class="ttc" id="astructghassanpl_1_1traits_1_1displacement_html"><div class="ttname"><a href="structghassanpl_1_1traits_1_1displacement.html">ghassanpl::traits::displacement</a></div><div class="ttdoc">This trait implies the named type is an linear type, that is, a type that has the addition operator d...</div><div class="ttdef"><b>Definition</b> <a href="named_8h_source.html#l00062">named.h:62</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1traits_1_1is__location__of_html"><div class="ttname"><a href="structghassanpl_1_1traits_1_1is__location__of.html">ghassanpl::traits::is_location_of</a></div><div class="ttdoc">Used in conjuction with traits::location, specifies which displacement type this is a location of.</div><div class="ttdef"><b>Definition</b> <a href="named_8h_source.html#l00084">named.h:84</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1traits_1_1location_html"><div class="ttname"><a href="structghassanpl_1_1traits_1_1location.html">ghassanpl::traits::location</a></div><div class="ttdoc">This trait implies the named type is an affine type, that is, a type that does not have the addition ...</div><div class="ttdef"><b>Definition</b> <a href="named_8h_source.html#l00057">named.h:57</a></div></div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>Using this class involves a trade-off between creating a new type in a declarative style (specifying a base type for storage, and any operations you want this new type to have) and just writing a new struct by hand with all its necessary operators. </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00132">132</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 </div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
 <a id="a48498b413f72fcd21a5463a52c86ac75" name="a48498b413f72fcd21a5463a52c86ac75"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a48498b413f72fcd21a5463a52c86ac75">&#9670;&#160;</a></span>base_type</h2>
@@ -215,7 +221,9 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00129">129</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p>The internally stored type. </p>
+
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00143">143</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -233,7 +241,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00126">126</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00139">139</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -251,7 +259,9 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00165">165</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p>If this type is marked as a location of a displacement type, this will be the type; if not, this will be <span class="tt">void</span>. </p>
+
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00211">211</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -269,7 +279,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00125">125</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00138">138</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -287,7 +297,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00130">130</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00145">145</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -305,13 +315,13 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00124">124</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00137">137</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
 <a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a3f9f87991edee88d8bb9954cd81da2bf" name="a3f9f87991edee88d8bb9954cd81da2bf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f9f87991edee88d8bb9954cd81da2bf">&#9670;&#160;</a></span>named() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f9f87991edee88d8bb9954cd81da2bf">&#9670;&#160;</a></span>named() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -337,12 +347,12 @@ template&lt;typename... ARGS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00171">171</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00217">217</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
 <a id="a1bf67716940c361dab4f442a89e4e36f" name="a1bf67716940c361dab4f442a89e4e36f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1bf67716940c361dab4f442a89e4e36f">&#9670;&#160;</a></span>named() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bf67716940c361dab4f442a89e4e36f">&#9670;&#160;</a></span>named() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -368,12 +378,12 @@ template&lt;typename U&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00175">175</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00221">221</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
 <a id="a1bf67716940c361dab4f442a89e4e36f" name="a1bf67716940c361dab4f442a89e4e36f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1bf67716940c361dab4f442a89e4e36f">&#9670;&#160;</a></span>named() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bf67716940c361dab4f442a89e4e36f">&#9670;&#160;</a></span>named() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -399,12 +409,43 @@ template&lt;typename U&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00182">182</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00228">228</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+
+</div>
+</div>
+<a id="a1bf67716940c361dab4f442a89e4e36f" name="a1bf67716940c361dab4f442a89e4e36f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1bf67716940c361dab4f442a89e4e36f">&#9670;&#160;</a></span>named() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </div>
+<div class="memtemplate">
+template&lt;typename U&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structghassanpl_1_1named.html">ghassanpl::named</a>&lt; T, PARAMETER, TRAITS &gt;::named </td>
+          <td>(</td>
+          <td class="paramtype">U &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>arg</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00235">235</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
 <a id="ac01e3b28cb7b929e2f2759112a4ea716" name="ac01e3b28cb7b929e2f2759112a4ea716"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac01e3b28cb7b929e2f2759112a4ea716">&#9670;&#160;</a></span>named() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac01e3b28cb7b929e2f2759112a4ea716">&#9670;&#160;</a></span>named() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -430,7 +471,7 @@ template&lt;typename U&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00195">195</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00248">248</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -462,7 +503,7 @@ template&lt;typename U&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00213">213</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00266">266</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -491,7 +532,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00215">215</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00268">268</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -520,7 +561,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00210">210</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00263">263</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -549,7 +590,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00208">208</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00261">261</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -578,7 +619,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00209">209</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00262">262</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -594,7 +635,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structghassanpl_1_1named.html">ghassanpl::named</a>&lt; T, PARAMETER, TRAITS &gt;::operator base_type </td>
+          <td class="memname"><a class="el" href="structghassanpl_1_1named.html">ghassanpl::named</a>&lt; T, PARAMETER, TRAITS &gt;::operator <a class="el" href="#a48498b413f72fcd21a5463a52c86ac75">base_type</a> </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -607,7 +648,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00232">232</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00285">285</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -636,7 +677,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00231">231</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00284">284</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -667,7 +708,7 @@ template&lt;typename U, detail::FixedString OTHER_PARAMETER, typename... OTHER_C
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00219">219</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00272">272</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -698,7 +739,7 @@ template&lt;typename U&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00226">226</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00279">279</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -727,7 +768,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00203">203</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00256">256</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -756,7 +797,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00201">201</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00254">254</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -785,7 +826,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00202">202</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00255">255</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -817,7 +858,7 @@ requires has_trait&lt;displacement&gt; &amp;&amp; std::constructible_from&lt;T, 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00312">312</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00365">365</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -846,7 +887,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00261">261</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00314">314</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -880,7 +921,7 @@ requires (has_trait&lt;location&gt;) &amp;&amp; (traits::applies_to&lt;DISPLACEM
 
 <p>If we're a location, we can be added to a displacement. </p>
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00301">301</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00354">354</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -914,7 +955,7 @@ requires (has_trait&lt;displacement&gt;) &amp;&amp; (traits::applies_to&lt;LOCAT
 
 <p>If we're a displacement, we can be added to a location. </p>
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00289">289</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00342">342</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -943,7 +984,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00249">249</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00302">302</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -972,7 +1013,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00242">242</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00295">295</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1001,7 +1042,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00267">267</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00320">320</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1030,7 +1071,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00255">255</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00308">308</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1059,7 +1100,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00281">281</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00334">334</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1088,7 +1129,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00206">206</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00259">259</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1117,7 +1158,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00205">205</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00258">258</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1146,7 +1187,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00332">332</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00385">385</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1178,7 +1219,7 @@ requires has_trait&lt;displacement&gt; &amp;&amp; std::constructible_from&lt;T, 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00326">326</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00379">379</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1209,7 +1250,7 @@ template&lt;typename U&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00237">237</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00290">290</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1240,7 +1281,7 @@ template&lt;typename U&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00239">239</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00292">292</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1277,7 +1318,7 @@ requires has_trait&lt;displacement&gt; &amp;&amp; std::constructible_from&lt;T, 
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00319">319</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00372">372</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1310,7 +1351,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00275">275</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00328">328</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1339,7 +1380,7 @@ template&lt;typename TRAIT, typename... OTHER&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00163">163</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00208">208</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1365,7 +1406,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00131">131</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00146">146</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -1383,7 +1424,7 @@ template&lt;typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00167">167</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00213">213</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>

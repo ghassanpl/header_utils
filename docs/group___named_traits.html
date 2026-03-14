@@ -92,7 +92,7 @@ $(function(){initNavTree('group___named_traits.html','',''); });
 </div><!--header-->
 <div class="contents">
 
-<p>Contains traits for the <span class="tt"><a class="el" href="structghassanpl_1_1named.html" title="Used to create a strong typedef around T.">named</a></span> template.  
+<p>Contains traits for the <span class="tt"><a class="el" href="structghassanpl_1_1named.html" title="Used to create a strong typedef of T.">named</a></span> template.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -102,7 +102,7 @@ Classes</h2></td></tr>
 <tr class="memitem:ghassanpl_3A_3Atraits_3A_3Asubtractable" id="r_ghassanpl_3A_3Atraits_3A_3Asubtractable"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1traits_1_1subtractable.html">ghassanpl::traits::subtractable</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies that the named type can be subtractable from itself.  <a href="structghassanpl_1_1traits_1_1subtractable.html#details">More...</a><br /></td></tr>
 <tr class="memitem:ghassanpl_3A_3Atraits_3A_3Aincrementable" id="r_ghassanpl_3A_3Atraits_3A_3Aincrementable"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1traits_1_1incrementable.html">ghassanpl::traits::incrementable</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes the <span class="tt"><a class="el" href="structghassanpl_1_1named.html" title="Used to create a strong typedef around T.">named</a></span> incrementable.  <a href="structghassanpl_1_1traits_1_1incrementable.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Makes the <span class="tt"><a class="el" href="structghassanpl_1_1named.html" title="Used to create a strong typedef of T.">named</a></span> incrementable.  <a href="structghassanpl_1_1traits_1_1incrementable.html#details">More...</a><br /></td></tr>
 <tr class="memitem:ghassanpl_3A_3Atraits_3A_3Alocation" id="r_ghassanpl_3A_3Atraits_3A_3Alocation"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1traits_1_1location.html">ghassanpl::traits::location</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This trait implies the named type is an affine type, that is, a type that does not have the addition operator defined on itself.  <a href="structghassanpl_1_1traits_1_1location.html#details">More...</a><br /></td></tr>
 <tr class="memitem:ghassanpl_3A_3Atraits_3A_3Adisplacement" id="r_ghassanpl_3A_3Atraits_3A_3Adisplacement"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1traits_1_1displacement.html">ghassanpl::traits::displacement</a></td></tr>
@@ -117,10 +117,46 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used in conjuction with <span class="tt"><a class="el" href="structghassanpl_1_1traits_1_1displacement.html" title="This trait implies the named type is an linear type, that is, a type that has the addition operator d...">traits::displacement</a></span>, specifies which location type this is a displacement of.  <a href="structghassanpl_1_1traits_1_1is__displacement__of.html#details">More...</a><br /></td></tr>
 <tr class="memitem:ghassanpl_3A_3Atraits_3A_3Ais_5Flocation_5Fof_3C_20DISPLACEMENT_5FNAMED_5FTYPE_20_3E" id="r_ghassanpl_3A_3Atraits_3A_3Ais_5Flocation_5Fof_3C_20DISPLACEMENT_5FNAMED_5FTYPE_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1traits_1_1is__location__of.html">ghassanpl::traits::is_location_of&lt; DISPLACEMENT_NAMED_TYPE &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used in conjuction with <span class="tt"><a class="el" href="structghassanpl_1_1traits_1_1location.html" title="This trait implies the named type is an affine type, that is, a type that does not have the addition ...">traits::location</a></span>, specifies which displacement type this is a location of.  <a href="structghassanpl_1_1traits_1_1is__location__of.html#details">More...</a><br /></td></tr>
+<tr class="memitem:ghassanpl_3A_3Atraits_3A_3Aconstructible_5Fusing_3C_20FROM_2C_20CONVERTOR_20_3E_5Fstructghassanpl_5F1_5F1traits_5F1_5F1constructible_5F_5Fusing" id="r_ghassanpl_3A_3Atraits_3A_3Aconstructible_5Fusing_3C_20FROM_2C_20CONVERTOR_20_3E_5Fstructghassanpl_5F1_5F1traits_5F1_5F1constructible_5F_5Fusing"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="#structghassanpl_1_1traits_1_1constructible__using">ghassanpl::traits::constructible_using&lt; FROM, CONVERTOR &gt;</a></td></tr>
+<tr class="memdesc:structghassanpl_1_1traits_1_1constructible__using"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alternative to <span class="tt">named_cast</span>, as a trait.  <a href="#structghassanpl_1_1traits_1_1constructible__using">More...</a><br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Contains traits for the <span class="tt"><a class="el" href="structghassanpl_1_1named.html" title="Used to create a strong typedef around T.">named</a></span> template. </p>
-</div></div><!-- contents -->
+<div class="textblock"><p>Contains traits for the <span class="tt"><a class="el" href="structghassanpl_1_1named.html" title="Used to create a strong typedef of T.">named</a></span> template. </p>
+</div><hr/><h2 id="header-inline_5Fclasses" class="groupheader">Class Documentation</h2>
+<a name="structghassanpl_1_1traits_1_1constructible__using" id="structghassanpl_1_1traits_1_1constructible__using"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structghassanpl_1_1traits_1_1constructible__using">&#9670;&#160;</a></span>ghassanpl::traits::constructible_using</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct ghassanpl::traits::constructible_using</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename FROM, typename CONVERTOR&gt;<br />
+struct ghassanpl::traits::constructible_using&lt; FROM, CONVERTOR &gt;</div><p>Alternative to <span class="tt">named_cast</span>, as a trait. </p>
+
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00092">92</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+</div><table class="fieldtable">
+<tr><th colspan="3">Class Members</th></tr>
+<tr><td class="fieldtype">
+<a id="ad2645f198a46df5f5f528873b02be2aa" name="ad2645f198a46df5f5f528873b02be2aa"></a>typedef CONVERTOR</td>
+<td class="fieldname">
+convertor</td>
+<td class="fielddoc">
+</td></tr>
+<tr><td class="fieldtype">
+<a id="ae13985795723edc7c5d8d864a17af977" name="ae13985795723edc7c5d8d864a17af977"></a>typedef FROM</td>
+<td class="fieldname">
+from</td>
+<td class="fielddoc">
+</td></tr>
+</table>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

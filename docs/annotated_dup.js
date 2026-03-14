@@ -43,7 +43,8 @@ var annotated_dup =
         [ "implicitly_constructible", "structghassanpl_1_1traits_1_1implicitly__constructible.html", null ],
         [ "implicitly_constructible_from", "structghassanpl_1_1traits_1_1implicitly__constructible__from.html", null ],
         [ "is_displacement_of", "structghassanpl_1_1traits_1_1is__displacement__of.html", null ],
-        [ "is_location_of", "structghassanpl_1_1traits_1_1is__location__of.html", null ]
+        [ "is_location_of", "structghassanpl_1_1traits_1_1is__location__of.html", null ],
+        [ "constructible_using", "group___named_traits.html#structghassanpl_1_1traits_1_1constructible__using", null ]
       ] ],
       [ "random", "namespaceghassanpl_1_1random.html", [
         [ "good_random_engine", "structghassanpl_1_1random_1_1good__random__engine.html", null ]

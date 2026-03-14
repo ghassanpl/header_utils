@@ -74,3 +74,16 @@ TEST(named, named_location_and_displacement_traits_work)
 	displacement + location;
 	//h + d;
 }
+
+
+TEST(named, constructible_using)
+{
+	using kilometers = named<double, "kilometers">;
+	using km_to_ly = decltype([](kilometers km) { return *km / 1000.0; });
+	using light_years = named<double, "light_years", traits::constructible_using<kilometers, km_to_ly>>;
+
+	kilometers km{ 10000.0 };
+	light_years ly = km;
+
+	EXPECT_EQ(*ly, 10.0);
+}

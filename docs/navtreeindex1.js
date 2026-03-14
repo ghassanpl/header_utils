@@ -141,6 +141,7 @@ var NAVTREEINDEX1 =
 "group___named.html#ga7890a0cfc68aa76d1e259821f2dd2156":[1,15,2],
 "group___named.html#ga7ce697df54fb7a6141dbaae6189dfda8":[1,15,3],
 "group___named_traits.html":[1,15,0],
+"group___named_traits.html#structghassanpl_1_1traits_1_1constructible__using":[1,15,0,10],
 "group___normals.html":[1,12,1],
 "group___normals.html#ga4023a655ff1d33df11e6df76245daef7":[1,12,1,1],
 "group___normals.html#ga49248d9b6e26a3bbf11916f3fc33c8d1":[1,12,1,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "group___string_ops.html#gae0a029303a4e6b4c3cc35547ab2724de":[1,17,29],
 "group___string_ops.html#gae2a6389cffb17ace749a7f77db54002d":[1,17,38],
 "group___string_ops.html#gae2c46c704c51346bcfb9cbfc072b0e93":[1,17,73],
-"group___string_ops.html#gae31edea14cbef9cc64280311b6e08c6c":[1,17,81],
-"group___string_ops.html#gae4090063b47fbf51bb74e50dec614022":[1,17,76]
+"group___string_ops.html#gae31edea14cbef9cc64280311b6e08c6c":[1,17,81]
 };

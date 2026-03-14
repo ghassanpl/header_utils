@@ -12,7 +12,8 @@ var searchData=
   ['digit_5fto_5fnumber_9',['digit_to_number',['../group___a_s_c_i_i.html#ga9039e2389bf058ef0ea0a338b9e4aad5',1,'ghassanpl::string_ops::ascii']]],
   ['direction_10',['Direction',['../group___direction.html',1,'']]],
   ['displacement_11',['displacement',['../structghassanpl_1_1traits_1_1displacement.html',1,'ghassanpl::traits']]],
-  ['distance_12',['distance',['../namespaceghassanpl_1_1geometry.html#a818484628c37a146870723a566ff708c',1,'ghassanpl::geometry']]],
-  ['dp_5fl_13',['dp_l',['../namespacedetail.html#ac7f7fa581495aad7be09ac3b4064d5c0',1,'detail']]],
-  ['dynamic_5fbit_5fnumber_14',['dynamic_bit_number',['../group___bits.html#ga416aead7a174796db2a332a71d962d05',1,'ghassanpl']]]
+  ['displacement_5ftype_12',['displacement_type',['../structghassanpl_1_1named.html#a452b65c5ee19a3339c0e0221d41c02d9',1,'ghassanpl::named']]],
+  ['distance_13',['distance',['../namespaceghassanpl_1_1geometry.html#a818484628c37a146870723a566ff708c',1,'ghassanpl::geometry']]],
+  ['dp_5fl_14',['dp_l',['../namespacedetail.html#ac7f7fa581495aad7be09ac3b4064d5c0',1,'detail']]],
+  ['dynamic_5fbit_5fnumber_15',['dynamic_bit_number',['../group___bits.html#ga416aead7a174796db2a332a71d962d05',1,'ghassanpl']]]
 ];

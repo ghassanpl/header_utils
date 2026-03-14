@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"ranges_8h_source.html":[5,0,0,0,46],
 "ray_8h_source.html":[5,0,0,0,1,12],
 "rec2_8h_source.html":[5,0,0,0,47],
 "rectangles_8h_source.html":[5,0,0,0,1,13],
@@ -137,8 +138,10 @@ var NAVTREEINDEX3 =
 "structghassanpl_1_1mmap__sink.html":[1,14,1],
 "structghassanpl_1_1mmap__source.html":[1,14,0],
 "structghassanpl_1_1named.html":[1,15,1],
-"structghassanpl_1_1named.html#a48a6f0d78f9ad55ea1f44391e8150089":[1,15,1,1],
-"structghassanpl_1_1named.html#a6466058c9e73c514484cf5323bc24c5f":[1,15,1,0],
+"structghassanpl_1_1named.html#a452b65c5ee19a3339c0e0221d41c02d9":[1,15,1,1],
+"structghassanpl_1_1named.html#a48498b413f72fcd21a5463a52c86ac75":[1,15,1,0],
+"structghassanpl_1_1named.html#a48a6f0d78f9ad55ea1f44391e8150089":[1,15,1,3],
+"structghassanpl_1_1named.html#a6466058c9e73c514484cf5323bc24c5f":[1,15,1,2],
 "structghassanpl_1_1overloaded.html":[1,11,3],
 "structghassanpl_1_1random_1_1good__random__engine.html":[2,0,1,14,0],
 "structghassanpl_1_1random_1_1good__random__engine.html":[4,0,0,4,0],

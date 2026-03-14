@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['value_5ftype_0',['value_type',['../structghassanpl_1_1enum__flags.html#a94f5360054e570011e481948d555809f',1,'ghassanpl::enum_flags::value_type'],['../structghassanpl_1_1enum__flag__changes.html#a16ec151af711cc23a499e91497a8e73d',1,'ghassanpl::enum_flag_changes::value_type']]]
+  ['uintn_5ft_0',['uintN_t',['../group___bits.html#ga517c295a9a8325a01efe54c96f7cb53e',1,'ghassanpl']]],
+  ['uri_1',['uri',['../group___u_r_i.html#gac48aa55b764c827525564327649355d8',1,'ghassanpl']]]
 ];

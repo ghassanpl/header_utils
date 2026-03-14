@@ -26,6 +26,12 @@ namespace ghassanpl
 	/// @{
 	namespace traits
 	{
+		// TODO: not_equality_comparable
+		// TODO: not_orderable
+		// TODO: multipliable, multipliable_by_scalar<T>
+		// TODO: divisible, divisible_by_scalar<T>
+		// TODO: We should probably get rid of the <trait>::applies_to var, because we can explicitly test its requirements in `named`
+
 		/// Specifies that the named type can be addable to itself
 		struct addable { 
 			template <typename SELF_TYPE, typename OTHERS_SELF_TYPE = SELF_TYPE>
@@ -81,11 +87,13 @@ namespace ghassanpl
 			static constexpr bool applies_to = std::same_as<typename std::remove_cvref_t<DISPLACEMENT_NAMED_TYPE>::base_type, typename SELF_TYPE::base_type>;
 		};
 
-		// TODO: not_equality_comparable
-		// TODO: not_orderable
-		// TODO: multipliable, multipliable_by_scalar<T>
-		// TODO: divisible, divisible_by_scalar<T>
-		// TODO: constructible_using<FROM, CONVERSION_FUNCTOR>
+		/// Alternative to `named_cast`, as a trait
+		template <typename FROM, typename CONVERTOR>
+		struct constructible_using
+		{
+			using from = FROM;
+			using convertor = CONVERTOR;
+		};
 
 		template <typename DISPLACEMENT_TYPE, typename LOCATION_TYPE>
 		concept named_is_displacement_of =
@@ -100,12 +108,13 @@ namespace ghassanpl
 
 	/// \defgroup Named Named-Type Pattern
 	/// Defines a 'strong typedef' template which is used extensively to create strongly-typed wrappers around other types.
-	/// By default, it needs to be **explicitly** constructed from its base type, and is **not** implicitly convertible to its base type.
-	/// Most other operations need to be explicitly enabled via the `TRAITS` template parameter pack.
 	/// 
 	/// @{
 
-	/// Used to create a strong typedef around `T`.
+	/// Used to create a strong typedef of `T`.
+	/// By default, it needs to be **explicitly** constructed from its base type, and is **not** implicitly convertible to its base type.
+	/// Most other operations need to be explicitly enabled via the `TRAITS` template parameter pack.
+	/// 
 	/// Usage:
 	/// ```c++
 	/// using length = named<double, "length", traits::displacement>;
@@ -115,6 +124,10 @@ namespace ghassanpl
 	/// auto nope = position{100} + position{200};  // Will not compile; doesn't make sense to sum positions
 	/// length yes = position{200} - position{100}; // OK; subtracting positions will return in a length
 	/// ```
+	/// 
+	/// \note Using this class involves a trade-off between creating a new type in a declarative style (specifying a base type for storage, and any operations
+	/// you want this new type to have) and just writing a new struct by hand with all its necessary operators.
+	/// 
 	template <typename T, detail::FixedString PARAMETER, typename... TRAITS>
 	struct named
 	{
@@ -126,42 +139,75 @@ namespace ghassanpl
 		using displacement = traits::displacement;
 		/// @}
 		
+		/// The internally stored type.
 		using base_type = T;
+
 		using self_type = named<T, PARAMETER, TRAITS...>;
 		static constexpr detail::FixedString name = PARAMETER;
 
 	private:
-		template <typename U>
-		static constexpr auto find_displacement_type_impl(traits::is_location_of<U>)
+
+		template <typename... TYPES>
+		struct type_pack {};
+
+		template <template <typename...> typename TRAIT_TYPE, typename... REST>
+		static constexpr auto find_trait_type_impl(TRAIT_TYPE<REST...>)
 		{
-			return std::type_identity<std::remove_cvref_t<U>>{};
+			return std::type_identity<std::remove_cvref_t<TRAIT_TYPE<REST...>>>{};
 		}
-		static constexpr auto find_displacement_type_impl(...)
+		template <template <typename...> typename TRAIT_TYPE, typename... REST>
+		static constexpr auto find_trait_type_impl(...)
 		{
 			return std::type_identity<void>{};
 		}
 
-		template <typename FIRST_TRAIT, typename... REST>
-		static constexpr auto find_displacement_type_traits(FIRST_TRAIT trait, REST... traits)
+		template <template <typename...> typename TRAIT_TYPE, typename GIVEN_PACK, typename... REST>
+		static constexpr auto find_trait_type_impl(GIVEN_PACK, TRAIT_TYPE<REST...>)
 		{
-			using type_candidate = std::remove_cvref_t<typename decltype(find_displacement_type_impl(trait))::type>;
+			return []<typename U, typename... GIVEN_TYPES>(type_pack<GIVEN_TYPES...>, U) {
+				return [] <typename... SOME>(TRAIT_TYPE<GIVEN_TYPES..., SOME...>) {
+					return find_trait_type_impl(TRAIT_TYPE<GIVEN_TYPES..., SOME...>{});
+				}(U{});
+			}(GIVEN_PACK{}, TRAIT_TYPE<REST...>{});
+		}
+
+		template <template <typename...> typename TRAIT_TYPE, typename GIVEN_PACK, typename FIRST_TRAIT, typename... REST>
+		static constexpr auto find_trait_type_traits(FIRST_TRAIT trait, REST... traits)
+		{
+			using type_candidate = std::remove_cvref_t<typename decltype(find_trait_type_impl<TRAIT_TYPE>(GIVEN_PACK{}, trait))::type > ;
 			if constexpr (std::is_same_v<type_candidate, void>)
-				return find_displacement_type_traits(traits...);
+				return find_trait_type_traits<TRAIT_TYPE, GIVEN_PACK>(traits...);
 			else
 				return std::type_identity<type_candidate>{};
 		}
 
-		static constexpr auto find_displacement_type_traits() { return std::type_identity<void>{}; }
+		template <template <typename...> typename TRAIT_TYPE, typename... GIVEN>
+		static constexpr auto find_trait_type_traits() { return std::type_identity<void>{}; }
+
+		template <template <typename...> typename TRAIT_TYPE, typename... GIVEN>
+		static constexpr auto find_trait_type()
+		{
+			return find_trait_type_traits<TRAIT_TYPE, type_pack<GIVEN...>>(TRAITS{}...);
+		}
+
+		template <template <typename...> typename TRAIT_TYPE, typename... GIVEN>
+		using concrete_trait_type_of = typename decltype(find_trait_type<TRAIT_TYPE, GIVEN...>())::type;
 
 		static constexpr auto find_displacement_type()
 		{
-			return find_displacement_type_traits(TRAITS{}...);
+			using trait = concrete_trait_type_of<traits::is_location_of>;
+			if constexpr (std::is_same_v<trait, void>)
+				return std::type_identity<void>{};
+			else
+				return std::type_identity<typename trait::displacement_type>{};
 		}
+
 	public:
 
 		template <typename TRAIT, typename... OTHER>
 		static constexpr bool has_trait = (std::is_same_v<TRAIT, TRAITS> || ...) && TRAIT::template applies_to<self_type, OTHER...>;
 
+		/// If this type is marked as a location of a displacement type, this will be the type; if not, this will be `void`.
 		using displacement_type = typename decltype(find_displacement_type())::type;
 
 		T value{};
@@ -181,6 +227,13 @@ namespace ghassanpl
 		requires has_trait<traits::implicitly_constructible_from<U>>
 		constexpr named(U&& arg) noexcept(std::is_nothrow_move_constructible_v<T>)
 			: value((T)std::forward<U>(arg))
+		{
+		}
+
+		template <typename U>
+		requires (!std::is_same_v<concrete_trait_type_of<traits::constructible_using, std::remove_cvref_t<U>>, void>)
+		constexpr named(U&& arg) noexcept(std::is_nothrow_move_constructible_v<T>)
+			: value(typename concrete_trait_type_of<traits::constructible_using, std::remove_cvref_t<U>>::convertor{}(arg))
 		{
 		}
 

@@ -9,5 +9,6 @@ var group___named_traits =
     [ "ghassanpl::traits::implicitly_constructible", "structghassanpl_1_1traits_1_1implicitly__constructible.html", null ],
     [ "ghassanpl::traits::implicitly_constructible_from&lt; T &gt;", "structghassanpl_1_1traits_1_1implicitly__constructible__from.html", null ],
     [ "ghassanpl::traits::is_displacement_of&lt; LOCATION_NAMED_TYPE &gt;", "structghassanpl_1_1traits_1_1is__displacement__of.html", null ],
-    [ "ghassanpl::traits::is_location_of&lt; DISPLACEMENT_NAMED_TYPE &gt;", "structghassanpl_1_1traits_1_1is__location__of.html", null ]
+    [ "ghassanpl::traits::is_location_of&lt; DISPLACEMENT_NAMED_TYPE &gt;", "structghassanpl_1_1traits_1_1is__location__of.html", null ],
+    [ "ghassanpl::traits::constructible_using&lt; FROM, CONVERTOR &gt;", "group___named_traits.html#structghassanpl_1_1traits_1_1constructible__using", null ]
 ];
