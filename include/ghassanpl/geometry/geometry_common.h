@@ -30,6 +30,20 @@ namespace glm
 	auto stringify(STRINGIFIER& str, glm::vec2& b) { return str('[', b.x, ',', b.y, ']'); }
 	template <typename STRINGIFIER>
 	auto stringify(STRINGIFIER& str, glm::vec2 const& b) { return str('[', b.x, ',', b.y, ']'); }
+
+	template <std::signed_integral T>
+	constexpr auto to_signed(glm::tvec2<T> v) noexcept { return v; }
+	template <std::unsigned_integral T>
+	constexpr auto to_signed(glm::tvec2<T> v) noexcept { return glm::tvec2<std::make_signed_t<T>>(v); }
+
+	template <std::unsigned_integral T>
+	constexpr auto to_unsigned(glm::tvec2<T> v) noexcept { return v; }
+	template <std::signed_integral T>
+	constexpr auto to_unsigned(glm::tvec2<T> v) noexcept { return glm::tvec2<std::make_unsigned_t<T>>(v); }
+
+	/// This is a safe alternative to glm::abs(a - b) if a and b are unsigned types
+	template <std::integral T, std::integral U>
+	constexpr auto abs_distance(glm::tvec2<T> a, glm::tvec2<U> b) noexcept { return glm::abs(to_signed(a) - to_signed(b)); }
 }
 
 namespace ghassanpl

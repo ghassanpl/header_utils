@@ -37,11 +37,11 @@ namespace ghassanpl::geometry::squares
 	/// \internal https://www.redblobgames.com/grids/parts/
 
 	template <std::integral T>
-	constexpr bool is_surrounding(glm::tvec2<T> a, glm::tvec2<T> b) { const auto d = glm::abs(a - b); return d.x < 2 && d.y < 2 && d.x + d.y > 0; }
+	constexpr bool is_surrounding(glm::tvec2<T> a, glm::tvec2<T> b) { const auto d = glm::abs_distance(a, b); return d.x < 2 && d.y < 2 && d.x + d.y > 0; }
 	template <std::integral T>
-	constexpr bool is_neighbor(glm::tvec2<T> a, glm::tvec2<T> b) { const auto d = glm::abs(a - b); return d.x < 2 && d.y < 2 && d.x != d.y; }
+	constexpr bool is_neighbor(glm::tvec2<T> a, glm::tvec2<T> b) { const auto d = glm::abs_distance(a, b); return d.x < 2 && d.y < 2 && d.x != d.y; }
 	template <std::integral T>
-	constexpr bool is_diagonal_neighbor(glm::tvec2<T> a, glm::tvec2<T> b) { const auto d = glm::abs(a - b); return d.x < 2 && d.y < 2 && d.x == d.y; }
+	constexpr bool is_diagonal_neighbor(glm::tvec2<T> a, glm::tvec2<T> b) { const auto d = glm::abs_distance(a, b); return d.x < 2 && d.y < 2 && d.x == d.y; }
 
 	/// Any type that meets the criteria of a `metric` - specifying the adjacency/distances between squares
 	template <typename METRIC, typename T>
@@ -68,7 +68,7 @@ namespace ghassanpl::geometry::squares
 		template <std::integral T>
 		static constexpr auto distance(glm::tvec2<T> a, glm::tvec2<T> b)
 		{
-			const auto d = glm::abs(b - a);
+			const auto d = glm::abs_distance(a, b);
 			return d.x + d.y;
 		}
 	};
@@ -91,7 +91,7 @@ namespace ghassanpl::geometry::squares
 		template <std::integral T>
 		static constexpr auto distance(glm::tvec2<T> a, glm::tvec2<T> b)
 		{
-			const auto d = glm::abs(b - a);
+			const auto d = glm::abs_distance(a, b);
 			return glm::max(d.x, d.y);
 		}
 	};
@@ -120,17 +120,32 @@ namespace ghassanpl::geometry::squares
 		return surrounding_metric::distance(a, b);
 	}
 
-	constexpr glm::vec2 tile_pos_to_world_pos(glm::ivec2 tile_pos, glm::vec2 tile_size) { return glm::vec2(tile_pos) * tile_size; }
-	constexpr glm::vec2 tile_pos_to_world_pos(glm::ivec2 tile_pos, float tile_size) { return glm::vec2(tile_pos) * tile_size; }
-	constexpr rec2 world_rect_for_tile(glm::ivec2 pos, glm::vec2 tile_size) { return rec2::from_size(tile_pos_to_world_pos(pos, tile_size), tile_size); }
-	constexpr rec2 world_rect_for_tile(glm::ivec2 pos, float tile_size) { return rec2::from_size(tile_pos_to_world_pos(pos, tile_size), { tile_size, tile_size }); }
+	template <std::integral I, std::floating_point F>
+	constexpr glm::tvec2<F> tile_pos_to_world_pos(glm::tvec2<I> tile_pos, glm::tvec2<F> tile_size) { return glm::tvec2<F>(tile_pos) * tile_size; }
 
-	inline glm::ivec2 world_pos_to_tile_pos(glm::vec2 world_pos, glm::vec2 tile_size) { return glm::ivec2(glm::floor(world_pos / tile_size)); }
-	inline glm::ivec2 world_pos_to_tile_pos(glm::vec2 world_pos, float tile_size) { return glm::ivec2(glm::floor(world_pos / tile_size)); }
-	inline irec2 world_rect_to_tile_rect(rec2 const& world_rect, glm::vec2 tile_size) { return irec2{ glm::floor(world_rect.p1 / tile_size), glm::ceil(world_rect.p2 / tile_size) }; }
-	inline irec2 world_rect_to_tile_rect(rec2 const& world_rect, float tile_size) { return irec2{ glm::floor(world_rect.p1 / tile_size), glm::ceil(world_rect.p2 / tile_size) }; }
+	template <std::integral I, std::floating_point F>
+	constexpr glm::tvec2<F> tile_pos_to_world_pos(glm::tvec2<I> tile_pos, F tile_size) { return glm::tvec2<F>(tile_pos) * tile_size; }
+	
+	template <std::integral I, std::floating_point F>
+	constexpr trec2<F> world_rect_for_tile(glm::tvec2<I> pos, glm::tvec2<F> tile_size) { return trec2<F>::from_size(tile_pos_to_world_pos(pos, tile_size), tile_size); }
+	
+	template <std::integral I, std::floating_point F>
+	constexpr trec2<F> world_rect_for_tile(glm::tvec2<I> pos, F tile_size) { return trec2<F>::from_size(tile_pos_to_world_pos(pos, tile_size), { tile_size, tile_size }); }
 
-	inline glm::vec2 snap_world_pos_to_tile_grid(glm::vec2 world_pos, glm::vec2 tile_size) { 
+	template <std::integral I = int, std::floating_point F>
+	inline glm::tvec2<I> world_pos_to_tile_pos(glm::tvec2<F> world_pos, glm::tvec2<F> tile_size) { return glm::tvec2<I>(glm::floor(world_pos / tile_size)); }
+
+	template <std::integral I = int, std::floating_point F>
+	inline glm::tvec2<I> world_pos_to_tile_pos(glm::tvec2<F> world_pos, F tile_size) { return glm::tvec2<I>(glm::floor(world_pos / tile_size)); }
+	
+	template <std::integral I = int, std::floating_point F>
+	inline trec2<I> world_rect_to_tile_rect(trec2<F> const& world_rect, glm::tvec2<F> tile_size) { return trec2<I>{ glm::floor(world_rect.p1 / tile_size), glm::ceil(world_rect.p2 / tile_size) }; }
+
+	template <std::integral I = int, std::floating_point F>
+	inline trec2<I> world_rect_to_tile_rect(trec2<F> const& world_rect, F tile_size) { return trec2<I>{ glm::floor(world_rect.p1 / tile_size), glm::ceil(world_rect.p2 / tile_size) }; }
+
+	template <std::floating_point F>
+	inline glm::tvec2<F> snap_world_pos_to_tile_grid(glm::tvec2<F> world_pos, glm::tvec2<F> tile_size) {
 		return glm::floor((world_pos + (tile_size * 0.5f)) / tile_size) * tile_size;
 	}
 

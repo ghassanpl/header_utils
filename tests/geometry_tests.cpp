@@ -13,6 +13,8 @@
 //#include "../include/ghassanpl/geometry/grid_algorithms.h"
 //#include "../include/ghassanpl/geometry/block_navigation_grid.h"
 
+#include "tests_common.h"
+
 #include <gtest/gtest.h>
 #include <set>
 #include <glm/gtc/constants.hpp>
@@ -61,6 +63,25 @@ TEST(polygon, free_functions_work_on_ranges_of_vectors)
 }
 
 using namespace ghassanpl::geometry::squares;
+
+template <typename RESULT_TYPE>
+class squares_typed : public ::testing::Test {
+public:
+	using result_type = RESULT_TYPE;
+};
+
+TYPED_TEST_SUITE(squares_typed, integer_types);
+
+TYPED_TEST(squares_typed, metric_distances_work_for_all_types)
+{
+	using vec = glm::tvec2<TypeParam>;
+
+	EXPECT_EQ(manhattan_distance(vec{ 0,0 }, vec{ 0,1 }), 1);
+	EXPECT_EQ(manhattan_distance(vec{ 0,1 }, vec{ 0,0 }), 1);
+	EXPECT_EQ(chebyshev_distance(vec{ 0,0 }, vec{ 0,1 }), 1);
+	EXPECT_EQ(chebyshev_distance(vec{ 0,1 }, vec{ 0,0 }), 1);
+}
+
 TEST(squares, tile_world_grid_functions_work)
 {
 	using glm::vec2;
