@@ -14,7 +14,6 @@ namespace ghassanpl { namespace cem = ghassanpl::constexpr_math; }
 
 namespace ghassanpl::constexpr_math
 {
-
 	template <typename T>
 	concept arithmetic = std::is_arithmetic_v<T>;
 
@@ -31,6 +30,10 @@ namespace ghassanpl::constexpr_math
 	using std::isnan;
 #else
 
+	/// \defgroup cem Constexpr Math
+	/// A re-implementation of some of the `<cmath>` functions but constexpr
+	/// @{
+
 	[[nodiscard]] constexpr bool isnan(std::integral auto f) noexcept { return false; }
 	[[nodiscard]] constexpr bool isnan(float f) {
 		if (std::is_constant_evaluated())
@@ -44,6 +47,7 @@ namespace ghassanpl::constexpr_math
 		else
 			return std::isnan(f);
 	}
+	[[nodiscard]] constexpr bool isfinite(std::integral auto f) noexcept { return true; }
 	[[nodiscard]] constexpr bool isfinite(float f) {
 		if (std::is_constant_evaluated())
 			return (std::bit_cast<uint32_t>(f) & 0x7F800000u) != 0x7F800000u;
@@ -57,7 +61,7 @@ namespace ghassanpl::constexpr_math
 			return std::isfinite(f);
 	}
 
-	/// Shamelessly stolen from https://gist.github.com/Redchards/7f1b357bf3e686b55362
+	/// \internal Shamelessly stolen from https://gist.github.com/Redchards/7f1b357bf3e686b55362
 
 	template <std::floating_point T, typename RESULT = T>
 	[[nodiscard]] constexpr RESULT floor(T num) noexcept
@@ -80,7 +84,7 @@ namespace ghassanpl::constexpr_math
 
 	template <typename T>
 	requires std::is_signed_v<T>
-	[[nodiscard]] constexpr bool signbit(T num) /// can throw
+	[[nodiscard]] constexpr bool signbit(T num)
 	{
 		if (std::is_constant_evaluated())
 		{
@@ -127,9 +131,6 @@ namespace ghassanpl::constexpr_math
 		*/
 	}
 
-	/// TODO: sign
-	/// return num > 0 ? 1 : (num < 0 ? -1 : 0);
-
 	template <std::floating_point T, typename RESULT = T>
 	[[nodiscard]] constexpr RESULT ceil(T num) noexcept
 	{
@@ -158,10 +159,10 @@ namespace ghassanpl::constexpr_math
 			return std::trunc(num);
 	}
 
-	/// TODO: round
+	// TODO: round
 
 	template <arithmetic T>
-	[[nodiscard]] constexpr auto abs(T num) /// can throw
+	[[nodiscard]] constexpr auto abs(T num)
 	{
 		if (std::is_constant_evaluated())
 			return ::ghassanpl::cem::signbit(num) ? -num : num;
@@ -271,4 +272,6 @@ namespace ghassanpl::constexpr_math
 		/// TODO: Follow std::lerp and add checks for NaN and Inf
 		return (t - a) / (b - a);
 	}
+
+	/// @}
 }

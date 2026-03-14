@@ -30,10 +30,13 @@ var searchData=
   ['buffer_5fappend_5fpod_27',['buffer_append_pod',['../group___buffers.html#ga2db2927e5bc9fc29142fd49290f8b9e9',1,'ghassanpl']]],
   ['buffer_5fappend_5frange_28',['buffer_append_range',['../group___buffers.html#ga98a71863373b0994ee1dd466d0651fae',1,'ghassanpl']]],
   ['buffer_5fappend_5futf8_29',['buffer_append_utf8',['../group___buffers.html#gaf37342fd3d026c62c1ad2bc7a7aabe6e',1,'ghassanpl::buffer_append_utf8(BUFFER &amp;buffer, char32_t cp)'],['../group___buffers.html#ga7961ef52970b98b40094824db14b3b10',1,'ghassanpl::buffer_append_utf8(BUFFER &amp;buffer, STRING_TYPE &amp;&amp;str)']]],
-  ['buffer_5felement_5ftype_30',['buffer_element_type',['../group___buffers.html#ga8eef7f47bf7de1df550f0ae9257150bb',1,'ghassanpl']]],
-  ['buffer_5freserve_31',['buffer_reserve',['../group___buffers.html#ga72a5968a3dfe2af1336ba8b84bb62c3b',1,'ghassanpl']]],
-  ['buffers_32',['Buffers',['../group___buffers.html',1,'']]],
-  ['but_5fonly_33',['but_only',['../structghassanpl_1_1enum__flags.html#adc226fa304a5b2dd9bd4147976c033c9',1,'ghassanpl::enum_flags::but_only(self_type flags) const noexcept'],['../structghassanpl_1_1enum__flags.html#ae2a3755f3cb726287443ed514f9d5eae',1,'ghassanpl::enum_flags::but_only(self_type flags) const EF_NOEXCEPT'],['../structghassanpl_1_1enum__flags.html#adc226fa304a5b2dd9bd4147976c033c9',1,'ghassanpl::enum_flags::but_only(self_type flags) const noexcept']]],
-  ['byte_5fcount_34',['byte_count',['../structghassanpl_1_1string__ops_1_1text__decode__result.html#a366d3aeb8a54790f1f3a12b0af8c3260',1,'ghassanpl::string_ops::text_decode_result']]],
-  ['bytelike_35',['bytelike',['../conceptghassanpl_1_1bytelike.html',1,'ghassanpl']]]
+  ['buffer_5fappend_5fvarint_30',['buffer_append_varint',['../group___buffers.html#ga84602d960df2646461a12ccc0d5348a8',1,'ghassanpl']]],
+  ['buffer_5felement_5ftype_31',['buffer_element_type',['../group___buffers.html#ga8eef7f47bf7de1df550f0ae9257150bb',1,'ghassanpl']]],
+  ['buffer_5freserve_32',['buffer_reserve',['../group___buffers.html#ga72a5968a3dfe2af1336ba8b84bb62c3b',1,'ghassanpl']]],
+  ['buffers_33',['Buffers',['../group___buffers.html',1,'']]],
+  ['but_5fonly_34',['but_only',['../structghassanpl_1_1enum__flags.html#adc226fa304a5b2dd9bd4147976c033c9',1,'ghassanpl::enum_flags']]],
+  ['byte_5fcount_35',['byte_count',['../structghassanpl_1_1string__ops_1_1text__decode__result.html#a366d3aeb8a54790f1f3a12b0af8c3260',1,'ghassanpl::string_ops::text_decode_result']]],
+  ['bytelike_36',['bytelike',['../conceptghassanpl_1_1bytelike.html',1,'ghassanpl']]],
+  ['bytelike_5frange_37',['bytelike_range',['../conceptghassanpl_1_1bytelike__range.html',1,'ghassanpl']]],
+  ['bytes_38',['Bytes',['../group___bytes.html',1,'']]]
 ];

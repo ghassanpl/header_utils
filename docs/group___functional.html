@@ -92,13 +92,30 @@ $(function(){initNavTree('group___functional.html','',''); });
 </div><!--header-->
 <div class="contents">
 
-<p>Additional useful delegates (like <span class="tt">std::function&lt;&gt;</span>)  
+<p>Useful functions and types for functional-style programming.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:ghassanpl_3A_3Apred" id="r_ghassanpl_3A_3Apred"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1pred.html">ghassanpl::pred</a></td></tr>
+<tr class="memdesc:namespaceghassanpl_1_1pred"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains functions that return predicates; appropriate for functions like <span class="tt">std::all_of</span>. <br /></td></tr>
+<tr class="memitem:ghassanpl_3A_3Aop" id="r_ghassanpl_3A_3Aop"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1op.html">ghassanpl::op</a></td></tr>
+<tr class="memdesc:namespaceghassanpl_1_1op"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains functions that return functors that perform an operation without output; appropriate for functions like <span class="tt">std::for_each</span>. <br /></td></tr>
+<tr class="memitem:ghassanpl_3A_3Axf" id="r_ghassanpl_3A_3Axf"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1xf.html">ghassanpl::xf</a></td></tr>
+<tr class="memdesc:namespaceghassanpl_1_1xf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains functions that return functors which transform and return their inputs somehow; appropriate for not-in-place transformation functions (e.g. <span class="tt">std::transform</span>). <br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
+<tr class="memitem:ghassanpl_3A_3Aoverloaded_3C_20Ts_20_3E" id="r_ghassanpl_3A_3Aoverloaded_3C_20Ts_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1overloaded.html">ghassanpl::overloaded&lt; Ts &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can be used to create an object with an overload set of <span class="tt">operator()</span> if constructed from multiple lambdas.  <a href="structghassanpl_1_1overloaded.html#details">More...</a><br /></td></tr>
 <tr class="memitem:ghassanpl_3A_3Amutlticast_5Ffunction_3C_20R_28ARGS_2E_2E_2E_29_3E" id="r_ghassanpl_3A_3Amutlticast_5Ffunction_3C_20R_28ARGS_2E_2E_2E_29_3E"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html">ghassanpl::mutlticast_function&lt; R(ARGS...)&gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <span class="tt">std::function&lt;R(ARGS...)&gt;</span> but can reference multiple invocables, and call them all at once.  <a href="classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga044e88ff9bb8d2d58a16f61c0cb4d5fb" id="r_ga044e88ff9bb8d2d58a16f61c0cb4d5fb"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ga044e88ff9bb8d2d58a16f61c0cb4d5fb">GHPL_OVERLOAD</a>(...)</td></tr>
+<tr class="memitem:gade7dc53439224145be611b3e510220b1" id="r_gade7dc53439224145be611b3e510220b1"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#gade7dc53439224145be611b3e510220b1">std_call</a>(func)</td></tr>
+<tr class="memdesc:gade7dc53439224145be611b3e510220b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Macro that allows us to pass std:: functions to algorithms as if they were function pointers, because you can't take the address of an std:: function for some stupid reason.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -108,10 +125,230 @@ Functions</h2></td></tr>
 <tr class="memitem:gaf4b91c5c9e05a5dee0c0a8548bcf4c85" id="r_gaf4b91c5c9e05a5dee0c0a8548bcf4c85"><td class="memTemplParams" colspan="2">template&lt;typename FUNC&gt; </td></tr>
 <tr class="memitem:gaf4b91c5c9e05a5dee0c0a8548bcf4c85 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#gaf4b91c5c9e05a5dee0c0a8548bcf4c85">ghassanpl::make_single_time_function</a> (FUNC &amp;&amp;func)</td></tr>
 <tr class="memdesc:gaf4b91c5c9e05a5dee0c0a8548bcf4c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a function that calls <span class="tt">func</span> when invoked, but only the first time.  <br /></td></tr>
+<tr class="memitem:gab3958af2be0ba12ca9e9512d990ae9ca" id="r_gab3958af2be0ba12ca9e9512d990ae9ca"><td class="memTemplParams" colspan="2">template&lt;typename T, typename FUNC&gt; </td></tr>
+<tr class="memitem:gab3958af2be0ba12ca9e9512d990ae9ca template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#gab3958af2be0ba12ca9e9512d990ae9ca">ghassanpl::transformed</a> (std::optional&lt; T &gt; const &amp;value, FUNC &amp;&amp;func) -&gt; decltype(std::optional{ func(value.value()) })</td></tr>
+<tr class="memdesc:gab3958af2be0ba12ca9e9512d990ae9ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre C++23 transform/fmap.  <br /></td></tr>
+<tr class="memitem:ga54509b26aada327a760c2d71b3f5eebb" id="r_ga54509b26aada327a760c2d71b3f5eebb"><td class="memTemplParams" colspan="2">template&lt;typename T, typename FUNC&gt; </td></tr>
+<tr class="memitem:ga54509b26aada327a760c2d71b3f5eebb template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga54509b26aada327a760c2d71b3f5eebb">ghassanpl::transformed</a> (std::optional&lt; T &gt; &amp;&amp;value, FUNC &amp;&amp;func) -&gt; decltype(std::optional{ func(value.value()) })</td></tr>
+<tr class="memdesc:ga54509b26aada327a760c2d71b3f5eebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre C++23 transform/fmap.  <br /></td></tr>
+<tr class="memitem:gabfdbe49e7349ce50a7a7a31f4908452b" id="r_gabfdbe49e7349ce50a7a7a31f4908452b"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gabfdbe49e7349ce50a7a7a31f4908452b template"><td class="memItemLeft">std::optional&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#gabfdbe49e7349ce50a7a7a31f4908452b">ghassanpl::to_optional</a> (T *value) noexcept</td></tr>
+<tr class="memitem:gab492cb9901596190c12c040cf7989dfe" id="r_gab492cb9901596190c12c040cf7989dfe"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gab492cb9901596190c12c040cf7989dfe template"><td class="memItemLeft">std::optional&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#gab492cb9901596190c12c040cf7989dfe">ghassanpl::move_to_optional</a> (T *value) noexcept</td></tr>
+<tr class="memitem:ga4e2c589c0b0fcd0bc4133aadabe16474" id="r_ga4e2c589c0b0fcd0bc4133aadabe16474"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga4e2c589c0b0fcd0bc4133aadabe16474 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga4e2c589c0b0fcd0bc4133aadabe16474">ghassanpl::flattened</a> (std::optional&lt; std::optional&lt; T &gt; &gt; &amp;&amp;value)</td></tr>
+<tr class="memitem:gaf67e5e45c4e8d814925bdd4aa771e8b5" id="r_gaf67e5e45c4e8d814925bdd4aa771e8b5"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gaf67e5e45c4e8d814925bdd4aa771e8b5 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#gaf67e5e45c4e8d814925bdd4aa771e8b5">ghassanpl::flattened</a> (std::optional&lt; T &gt; &amp;&amp;value)</td></tr>
+<tr class="memitem:gab1f2fe2be6c40de0d4d2a60dca7bd3cf" id="r_gab1f2fe2be6c40de0d4d2a60dca7bd3cf"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gab1f2fe2be6c40de0d4d2a60dca7bd3cf template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#gab1f2fe2be6c40de0d4d2a60dca7bd3cf">ghassanpl::flattened</a> (std::optional&lt; std::optional&lt; T &gt; &gt; const &amp;value)</td></tr>
+<tr class="memitem:ga8d12f5399ba8802e3e145668af20fffa" id="r_ga8d12f5399ba8802e3e145668af20fffa"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga8d12f5399ba8802e3e145668af20fffa template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga8d12f5399ba8802e3e145668af20fffa">ghassanpl::flattened</a> (std::optional&lt; T &gt; const &amp;value)</td></tr>
+<tr class="memitem:ga1bf2ee53b8c8310c8e9c45a30b7facc1" id="r_ga1bf2ee53b8c8310c8e9c45a30b7facc1"><td class="memTemplParams" colspan="2">template&lt;typename T, typename FUNC&gt; </td></tr>
+<tr class="memitem:ga1bf2ee53b8c8310c8e9c45a30b7facc1 template"><td class="memItemLeft">constexpr T&#160;</td><td class="memItemRight"><a class="el" href="#ga1bf2ee53b8c8310c8e9c45a30b7facc1">ghassanpl::resulting</a> (FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga1bf2ee53b8c8310c8e9c45a30b7facc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new <span class="tt">T</span> transformed by <span class="tt">func</span>.  <br /></td></tr>
+<tr class="memitem:ga1dbdf7eba8c91d86f60368b9230f134c" id="r_ga1dbdf7eba8c91d86f60368b9230f134c"><td class="memTemplParams" colspan="2">template&lt;typename FUNC&gt; </td></tr>
+<tr class="memitem:ga1dbdf7eba8c91d86f60368b9230f134c template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ga1dbdf7eba8c91d86f60368b9230f134c">ghassanpl::GHPL_REQUIRES</a> ((!std::is_void_v&lt; typename decltype(detail::detect_first_arg(std::function{ std::declval&lt; FUNC &gt;() }))::type &gt; &amp;&amp;requires { std::function{ std::declval&lt; FUNC &gt;() };})) const expr auto <a class="el" href="#ga1bf2ee53b8c8310c8e9c45a30b7facc1">resulting</a>(FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga1dbdf7eba8c91d86f60368b9230f134c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new object transformed by <span class="tt">func</span>. The first argument to <span class="tt">func</span> determines what the object's type is.  <br /></td></tr>
+<tr class="memitem:gafc86755da841da6811e55c8f6ff61853" id="r_gafc86755da841da6811e55c8f6ff61853"><td class="memTemplParams" colspan="2">template&lt;typename T, typename... ARGS&gt; </td></tr>
+<tr class="memitem:gafc86755da841da6811e55c8f6ff61853 template"><td class="memItemLeft">constexpr std::optional&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#gafc86755da841da6811e55c8f6ff61853">ghassanpl::optional_get</a> (std::variant&lt; ARGS... &gt; const &amp;var) noexcept</td></tr>
+<tr class="memdesc:gafc86755da841da6811e55c8f6ff61853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variant operations.  <br /></td></tr>
+<tr class="memitem:ga6b80a8c6ef24ecc5525bf179b3e86b93" id="r_ga6b80a8c6ef24ecc5525bf179b3e86b93"><td class="memTemplParams" colspan="2">template&lt;typename FUNC, typename... Ts&gt; </td></tr>
+<tr class="memitem:ga6b80a8c6ef24ecc5525bf179b3e86b93 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga6b80a8c6ef24ecc5525bf179b3e86b93">ghassanpl::transformed</a> (std::variant&lt; Ts... &gt; const &amp;var, FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga6b80a8c6ef24ecc5525bf179b3e86b93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new variant transformed by <span class="tt">func</span>.  <br /></td></tr>
+<tr class="memitem:gaca5b8e4f526048d9886cbae37e407d27" id="r_gaca5b8e4f526048d9886cbae37e407d27"><td class="memTemplParams" colspan="2"><a id="gaca5b8e4f526048d9886cbae37e407d27" name="gaca5b8e4f526048d9886cbae37e407d27"></a>
+template&lt;typename... TYPES&gt; </td></tr>
+<tr class="memitem:gaca5b8e4f526048d9886cbae37e407d27 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>ghassanpl::convertible_to_variant</b> (std::variant&lt; TYPES... &gt;) -&gt; convertible_to_variant&lt; TYPES... &gt;</td></tr>
+<tr class="memitem:ga3b63d417b5b9104464db001a5d9f1d49" id="r_ga3b63d417b5b9104464db001a5d9f1d49"><td class="memTemplParams" colspan="2"><a id="ga3b63d417b5b9104464db001a5d9f1d49" name="ga3b63d417b5b9104464db001a5d9f1d49"></a>
+template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga3b63d417b5b9104464db001a5d9f1d49 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>ghassanpl::convertible_to_variant</b> (T) -&gt; convertible_to_variant&lt; remove_cvref_t&lt; T &gt; &gt;</td></tr>
+<tr class="memitem:ga15ca4e1f6d497d72d03d4dbac1360699" id="r_ga15ca4e1f6d497d72d03d4dbac1360699"><td class="memTemplParams" colspan="2">template&lt;typename FUNC, typename... Ts&gt; </td></tr>
+<tr class="memitem:ga15ca4e1f6d497d72d03d4dbac1360699 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga15ca4e1f6d497d72d03d4dbac1360699">ghassanpl::transformed_flattened</a> (std::variant&lt; Ts... &gt; const &amp;var, FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga15ca4e1f6d497d72d03d4dbac1360699"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new variant transformed by <span class="tt">func</span>, flattened.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Additional useful delegates (like <span class="tt">std::function&lt;&gt;</span>) </p>
-</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<div class="textblock"><p>Useful functions and types for functional-style programming. </p>
+<p>Additional useful delegates (like <span class="tt">std::function&lt;&gt;</span>)</p>
+</div><a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
+<a id="ga044e88ff9bb8d2d58a16f61c0cb4d5fb" name="ga044e88ff9bb8d2d58a16f61c0cb4d5fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga044e88ff9bb8d2d58a16f61c0cb4d5fb">&#9670;&#160;</a></span>GHPL_OVERLOAD</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define GHPL_OVERLOAD</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00076">76</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="gade7dc53439224145be611b3e510220b1" name="gade7dc53439224145be611b3e510220b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gade7dc53439224145be611b3e510220b1">&#9670;&#160;</a></span>std_call</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define std_call</td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>func</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Macro that allows us to pass std:: functions to algorithms as if they were function pointers, because you can't take the address of an std:: function for some stupid reason. </p>
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00302">302</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="ga4e2c589c0b0fcd0bc4133aadabe16474" name="ga4e2c589c0b0fcd0bc4133aadabe16474"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4e2c589c0b0fcd0bc4133aadabe16474">&#9670;&#160;</a></span>flattened() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::flattened </td>
+          <td>(</td>
+          <td class="paramtype">std::optional&lt; std::optional&lt; T &gt; &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00059">59</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="gab1f2fe2be6c40de0d4d2a60dca7bd3cf" name="gab1f2fe2be6c40de0d4d2a60dca7bd3cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab1f2fe2be6c40de0d4d2a60dca7bd3cf">&#9670;&#160;</a></span>flattened() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::flattened </td>
+          <td>(</td>
+          <td class="paramtype">std::optional&lt; std::optional&lt; T &gt; &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00061">61</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="gaf67e5e45c4e8d814925bdd4aa771e8b5" name="gaf67e5e45c4e8d814925bdd4aa771e8b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf67e5e45c4e8d814925bdd4aa771e8b5">&#9670;&#160;</a></span>flattened() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::flattened </td>
+          <td>(</td>
+          <td class="paramtype">std::optional&lt; T &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00060">60</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="ga8d12f5399ba8802e3e145668af20fffa" name="ga8d12f5399ba8802e3e145668af20fffa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga8d12f5399ba8802e3e145668af20fffa">&#9670;&#160;</a></span>flattened() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::flattened </td>
+          <td>(</td>
+          <td class="paramtype">std::optional&lt; T &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00062">62</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="ga1dbdf7eba8c91d86f60368b9230f134c" name="ga1dbdf7eba8c91d86f60368b9230f134c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1dbdf7eba8c91d86f60368b9230f134c">&#9670;&#160;</a></span>GHPL_REQUIRES()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FUNC&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">ghassanpl::GHPL_REQUIRES </td>
+          <td>(</td>
+          <td class="paramtype">(!std::is_void_v&lt; typename decltype(detail::detect_first_arg(std::function{ std::declval&lt; FUNC &gt;() }))::type &gt; &amp;&amp;requires { std::function{ std::declval&lt; FUNC &gt;() };})</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const &amp;&amp;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a new object transformed by <span class="tt">func</span>. The first argument to <span class="tt">func</span> determines what the object's type is. </p>
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00330">330</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
 <a id="gaf4b91c5c9e05a5dee0c0a8548bcf4c85" name="gaf4b91c5c9e05a5dee0c0a8548bcf4c85"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf4b91c5c9e05a5dee0c0a8548bcf4c85">&#9670;&#160;</a></span>make_single_time_function() <span class="overload">[1/2]</span></h2>
 
@@ -139,7 +376,7 @@ template&lt;typename FUNC&gt; </div>
 
 <p>Returns a function that calls <span class="tt">func</span> when invoked, but only the first time. </p>
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00031">31</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00033">33</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -170,7 +407,268 @@ template&lt;typename... ARGS&gt; </div>
 
 <p>Returns a function that calls <span class="tt">func</span> when invoked, but only the first time. </p>
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00021">21</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00024">24</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="gab492cb9901596190c12c040cf7989dfe" name="gab492cb9901596190c12c040cf7989dfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab492cb9901596190c12c040cf7989dfe">&#9670;&#160;</a></span>move_to_optional()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; T &gt; ghassanpl::move_to_optional </td>
+          <td>(</td>
+          <td class="paramtype">T *</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00056">56</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="gafc86755da841da6811e55c8f6ff61853" name="gafc86755da841da6811e55c8f6ff61853"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafc86755da841da6811e55c8f6ff61853">&#9670;&#160;</a></span>optional_get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename... ARGS&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; T &gt; ghassanpl::optional_get </td>
+          <td>(</td>
+          <td class="paramtype">std::variant&lt; ARGS... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>var</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Variant operations. </p>
+<p>Returns an <span class="tt">std::optional&lt;T&gt;</span> with a copy of the value in the variant, if <span class="tt">T</span> is currently in the variant, or <span class="tt">nullopt</span> otherwise </p>
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00346">346</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="ga1bf2ee53b8c8310c8e9c45a30b7facc1" name="ga1bf2ee53b8c8310c8e9c45a30b7facc1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1bf2ee53b8c8310c8e9c45a30b7facc1">&#9670;&#160;</a></span>resulting()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename FUNC&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">T ghassanpl::resulting </td>
+          <td>(</td>
+          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a new <span class="tt">T</span> transformed by <span class="tt">func</span>. </p>
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00306">306</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="gabfdbe49e7349ce50a7a7a31f4908452b" name="gabfdbe49e7349ce50a7a7a31f4908452b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabfdbe49e7349ce50a7a7a31f4908452b">&#9670;&#160;</a></span>to_optional()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; T &gt; ghassanpl::to_optional </td>
+          <td>(</td>
+          <td class="paramtype">T *</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00053">53</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="ga54509b26aada327a760c2d71b3f5eebb" name="ga54509b26aada327a760c2d71b3f5eebb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga54509b26aada327a760c2d71b3f5eebb">&#9670;&#160;</a></span>transformed() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename FUNC&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::transformed </td>
+          <td>(</td>
+          <td class="paramtype">std::optional&lt; T &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;) -&gt; decltype(std::optional{ func(value.value()) })</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pre C++23 transform/fmap. </p>
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00047">47</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="gab3958af2be0ba12ca9e9512d990ae9ca" name="gab3958af2be0ba12ca9e9512d990ae9ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab3958af2be0ba12ca9e9512d990ae9ca">&#9670;&#160;</a></span>transformed() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T, typename FUNC&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::transformed </td>
+          <td>(</td>
+          <td class="paramtype">std::optional&lt; T &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;) -&gt; decltype(std::optional{ func(value.value()) })</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pre C++23 transform/fmap. </p>
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00040">40</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="ga6b80a8c6ef24ecc5525bf179b3e86b93" name="ga6b80a8c6ef24ecc5525bf179b3e86b93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6b80a8c6ef24ecc5525bf179b3e86b93">&#9670;&#160;</a></span>transformed() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FUNC, typename... Ts&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::transformed </td>
+          <td>(</td>
+          <td class="paramtype">std::variant&lt; Ts... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a new variant transformed by <span class="tt">func</span>. </p>
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00399">399</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+
+</div>
+</div>
+<a id="ga15ca4e1f6d497d72d03d4dbac1360699" name="ga15ca4e1f6d497d72d03d4dbac1360699"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga15ca4e1f6d497d72d03d4dbac1360699">&#9670;&#160;</a></span>transformed_flattened()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FUNC, typename... Ts&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto ghassanpl::transformed_flattened </td>
+          <td>(</td>
+          <td class="paramtype">std::variant&lt; Ts... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>var</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a new variant transformed by <span class="tt">func</span>, flattened. </p>
+
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00477">477</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>

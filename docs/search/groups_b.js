@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['mmap_0',['mmap',['../group__mmap.html',1,'']]]
+  ['math_0',['Constexpr Math',['../group__cem.html',1,'']]],
+  ['mmap_1',['mmap',['../group__mmap.html',1,'']]]
 ];

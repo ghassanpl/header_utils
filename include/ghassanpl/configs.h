@@ -14,7 +14,7 @@
 namespace ghassanpl::config
 {
 	/// \defgroup Configs Configs
-	/// A todo-namespace for cvars
+	/// UNIMPLEMENTED; A todo-namespace for cvars
 	/// @{
 
 	struct cvar_base_t;

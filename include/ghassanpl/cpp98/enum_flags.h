@@ -16,6 +16,8 @@
 #define EF_NODISCARD
 #endif
 
+/// This is a C++98-only version of <ghassanpl/enum_flags.h>
+
 namespace ghassanpl
 {
 	template <typename RESULT_TYPE, typename ENUM_TYPE>

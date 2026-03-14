@@ -10,5 +10,6 @@ var group___buffers =
     [ "ghassanpl::buffer_append_range", "group___buffers.html#ga98a71863373b0994ee1dd466d0651fae", null ],
     [ "ghassanpl::buffer_append_utf8", "group___buffers.html#gaf37342fd3d026c62c1ad2bc7a7aabe6e", null ],
     [ "ghassanpl::buffer_append_utf8", "group___buffers.html#ga7961ef52970b98b40094824db14b3b10", null ],
+    [ "ghassanpl::buffer_append_varint", "group___buffers.html#ga84602d960df2646461a12ccc0d5348a8", null ],
     [ "ghassanpl::buffer_reserve", "group___buffers.html#ga72a5968a3dfe2af1336ba8b84bb62c3b", null ]
 ];

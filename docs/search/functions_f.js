@@ -7,12 +7,11 @@ var searchData=
   ['remove_4',['remove',['../classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#a79cdb933de9afdd55557cc6c5de7caaa',1,'ghassanpl::mutlticast_function&lt; R(ARGS...)&gt;']]],
   ['remove_5fprefix_5',['remove_prefix',['../group___string_ops.html#ga76d8889f7eeda21b7df4662a63335dd9',1,'ghassanpl::string_ops']]],
   ['remove_5fsuffix_6',['remove_suffix',['../group___string_ops.html#ga8c1e8577f2aae2a047d81c19267b3706',1,'ghassanpl::string_ops']]],
-  ['reportassumptionfailure_7',['ReportAssumptionFailure',['../namespaceghassanpl.html#a50d103bbcd57bbe91c03bfe1ef658f88',1,'ghassanpl']]],
-  ['request_8',['request',['../structghassanpl_1_1counted__scope__guard.html#ad37433b2664d322d606045911ffd758c',1,'ghassanpl::counted_scope_guard']]],
-  ['resolve_9',['Resolve',['../structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2',1,'ghassanpl::di::Container']]],
-  ['resulting_10',['resulting',['../namespaceghassanpl.html#a1bf2ee53b8c8310c8e9c45a30b7facc1',1,'ghassanpl']]],
-  ['revert_11',['revert',['../structghassanpl_1_1scoped__value__change.html#a056ac6ec565299ec98b23f8ef4298ab2',1,'ghassanpl::scoped_value_change']]],
-  ['revert_5fand_5freturn_12',['revert_and_return',['../structghassanpl_1_1scoped__value__change.html#a2f369959395383cab1802d1b9a1b9f5a',1,'ghassanpl::scoped_value_change']]],
-  ['rotated_5fclockwise_13',['rotated_clockwise',['../group___alignment.html#gac1baca062f426bb518875ff47a26e9e4',1,'ghassanpl']]],
-  ['rotated_5fcounter_5fclockwise_14',['rotated_counter_clockwise',['../group___alignment.html#ga37e503c880c8aebf3103b37d40a4648f',1,'ghassanpl']]]
+  ['request_7',['request',['../structghassanpl_1_1counted__scope__guard.html#ad37433b2664d322d606045911ffd758c',1,'ghassanpl::counted_scope_guard']]],
+  ['resolve_8',['Resolve',['../structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2',1,'ghassanpl::di::Container']]],
+  ['resulting_9',['resulting',['../group___functional.html#ga1bf2ee53b8c8310c8e9c45a30b7facc1',1,'ghassanpl']]],
+  ['revert_10',['revert',['../structghassanpl_1_1scoped__value__change.html#a056ac6ec565299ec98b23f8ef4298ab2',1,'ghassanpl::scoped_value_change']]],
+  ['revert_5fand_5freturn_11',['revert_and_return',['../structghassanpl_1_1scoped__value__change.html#a2f369959395383cab1802d1b9a1b9f5a',1,'ghassanpl::scoped_value_change']]],
+  ['rotated_5fclockwise_12',['rotated_clockwise',['../group___alignment.html#gac1baca062f426bb518875ff47a26e9e4',1,'ghassanpl']]],
+  ['rotated_5fcounter_5fclockwise_13',['rotated_counter_clockwise',['../group___alignment.html#ga37e503c880c8aebf3103b37d40a4648f',1,'ghassanpl']]]
 ];

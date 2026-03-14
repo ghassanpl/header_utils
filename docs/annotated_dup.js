@@ -15,7 +15,7 @@ var annotated_dup =
           [ "grid", "structghassanpl_1_1geometry_1_1squares_1_1grid.html", "structghassanpl_1_1geometry_1_1squares_1_1grid" ],
           [ "manhattan_metric", "structghassanpl_1_1geometry_1_1squares_1_1manhattan__metric.html", null ],
           [ "chebyshev_metric", "structghassanpl_1_1geometry_1_1squares_1_1chebyshev__metric.html", null ],
-          [ "tile_space", "structghassanpl_1_1geometry_1_1squares_1_1tile__space.html", null ]
+          [ "ttile_space", "structghassanpl_1_1geometry_1_1squares_1_1ttile__space.html", null ]
         ] ],
         [ "tcapsule", "structghassanpl_1_1geometry_1_1tcapsule.html", null ],
         [ "tcircle", "structghassanpl_1_1geometry_1_1tcircle.html", null ],
@@ -34,8 +34,16 @@ var annotated_dup =
         [ "trec2", "structghassanpl_1_1geometry_1_1trec2.html", "structghassanpl_1_1geometry_1_1trec2" ]
       ] ],
       [ "traits", null, [
+        [ "addable", "structghassanpl_1_1traits_1_1addable.html", null ],
+        [ "subtractable", "structghassanpl_1_1traits_1_1subtractable.html", null ],
+        [ "incrementable", "structghassanpl_1_1traits_1_1incrementable.html", null ],
         [ "location", "structghassanpl_1_1traits_1_1location.html", null ],
-        [ "displacement", "structghassanpl_1_1traits_1_1displacement.html", null ]
+        [ "displacement", "structghassanpl_1_1traits_1_1displacement.html", null ],
+        [ "implicitly_convertible", "structghassanpl_1_1traits_1_1implicitly__convertible.html", null ],
+        [ "implicitly_constructible", "structghassanpl_1_1traits_1_1implicitly__constructible.html", null ],
+        [ "implicitly_constructible_from", "structghassanpl_1_1traits_1_1implicitly__constructible__from.html", null ],
+        [ "is_displacement_of", "structghassanpl_1_1traits_1_1is__displacement__of.html", null ],
+        [ "is_location_of", "structghassanpl_1_1traits_1_1is__location__of.html", null ]
       ] ],
       [ "random", "namespaceghassanpl_1_1random.html", [
         [ "good_random_engine", "structghassanpl_1_1random_1_1good__random__engine.html", null ]
@@ -48,10 +56,13 @@ var annotated_dup =
       ] ],
       [ "bit_view", "structghassanpl_1_1bit__view.html", "structghassanpl_1_1bit__view" ],
       [ "bit_reference", "structghassanpl_1_1bit__reference.html", "structghassanpl_1_1bit__reference" ],
+      [ "enum_flag_changes", "structghassanpl_1_1enum__flag__changes.html", "structghassanpl_1_1enum__flag__changes" ],
       [ "enum_flags", "structghassanpl_1_1enum__flags.html", "structghassanpl_1_1enum__flags" ],
+      [ "overloaded", "structghassanpl_1_1overloaded.html", null ],
       [ "mmap_source", "structghassanpl_1_1mmap__source.html", null ],
       [ "mmap_sink", "structghassanpl_1_1mmap__sink.html", null ],
       [ "mutlticast_function&lt; R(ARGS...)&gt;", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4" ],
+      [ "named", "structghassanpl_1_1named.html", "structghassanpl_1_1named" ],
       [ "caching_path_reference", "structghassanpl_1_1caching__path__reference.html", "structghassanpl_1_1caching__path__reference" ],
       [ "scope_guard", "structghassanpl_1_1scope__guard.html", null ],
       [ "counted_scope_guard", "structghassanpl_1_1counted__scope__guard.html", "structghassanpl_1_1counted__scope__guard" ],

@@ -92,9 +92,14 @@ $(function(){initNavTree('group___hashes.html','',''); });
 </div><!--header-->
 <div class="contents">
 
-<p>Hashing functions.  
+<p>Hashing functions, mostly constexpr when possible.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:ghassanpl_3A_3Ainteger" id="r_ghassanpl_3A_3Ainteger"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1integer.html">ghassanpl::integer</a></td></tr>
+<tr class="memdesc:namespaceghassanpl_1_1integer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hash functions that only work on integers. <br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:gaf559378f05624ae0996944830c41bff9" id="r_gaf559378f05624ae0996944830c41bff9"><td class="memTemplParams" colspan="2">template&lt;bytelike_range RANGE&gt; </td></tr>
@@ -111,26 +116,207 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga9656f460b372051539fd8df108d85f29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a CRC4 for a variadic number of bytelikes.  <br /></td></tr>
 <tr class="memitem:ga0e168d1a17e11e72dd1d66775f073139" id="r_ga0e168d1a17e11e72dd1d66775f073139"><td class="memTemplParams" colspan="2">template&lt;bytelike_range RANGE&gt; </td></tr>
 <tr class="memitem:ga0e168d1a17e11e72dd1d66775f073139 template"><td class="memItemLeft">constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#ga0e168d1a17e11e72dd1d66775f073139">ghassanpl::fnv64</a> (RANGE &amp;&amp;bytes)</td></tr>
-<tr class="memdesc:ga0e168d1a17e11e72dd1d66775f073139"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Add support for non-64bit hashes to all the functions below, especially since std::hash operates on size_t.  <br /></td></tr>
+<tr class="memdesc:ga0e168d1a17e11e72dd1d66775f073139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a FNV Hash for a range of bytes.  <br /></td></tr>
 <tr class="memitem:gab2275a78b23399267a860926c46d5d1f" id="r_gab2275a78b23399267a860926c46d5d1f"><td class="memTemplParams" colspan="2">template&lt;bytelike... BYTES&gt; </td></tr>
 <tr class="memitem:gab2275a78b23399267a860926c46d5d1f template"><td class="memItemLeft">constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#gab2275a78b23399267a860926c46d5d1f">ghassanpl::fnv64</a> (BYTES... bytes)</td></tr>
 <tr class="memdesc:gab2275a78b23399267a860926c46d5d1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a FNV Hash for a variadic number of bytes.  <br /></td></tr>
+<tr class="memitem:ga7fd636e17629a740d0687e9451788767" id="r_ga7fd636e17629a740d0687e9451788767"><td class="memItemLeft">constexpr void&#160;</td><td class="memItemRight"><a class="el" href="#ga7fd636e17629a740d0687e9451788767">ghassanpl::fold_in_hash64</a> (uint64_t &amp;hash1, uint64_t hash2) noexcept</td></tr>
+<tr class="memdesc:ga7fd636e17629a740d0687e9451788767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines an existing hash with a new hash value.  <br /></td></tr>
 <tr class="memitem:ga6f04675eaaa69c1d1a6edb6c51ba0af6" id="r_ga6f04675eaaa69c1d1a6edb6c51ba0af6"><td class="memTemplParams" colspan="2">template&lt;typename T, typename HASHER = std::hash&lt;std::remove_cvref_t&lt;T&gt;&gt;&gt; </td></tr>
 <tr class="memitem:ga6f04675eaaa69c1d1a6edb6c51ba0af6 template"><td class="memItemLeft">constexpr void&#160;</td><td class="memItemRight"><a class="el" href="#ga6f04675eaaa69c1d1a6edb6c51ba0af6">ghassanpl::hash64_combine_to</a> (uint64_t &amp;seed, T &amp;&amp;v, HASHER &amp;&amp;hasher=HASHER{})</td></tr>
-<tr class="memdesc:ga6f04675eaaa69c1d1a6edb6c51ba0af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: ce_hash64(array/span) TODO: ce_hash64(thread::id) ?  <br /></td></tr>
-<tr class="memitem:gad309fb81967d86cb78a3c9acf969d6cf" id="r_gad309fb81967d86cb78a3c9acf969d6cf"><td class="memTemplParams" colspan="2">template&lt;typename It, typename HASHER = std::hash&lt;std::iter_value_t&lt;It&gt;&gt;&gt; </td></tr>
-<tr class="memitem:gad309fb81967d86cb78a3c9acf969d6cf template"><td class="memItemLeft">constexpr void&#160;</td><td class="memItemRight"><a class="el" href="#gad309fb81967d86cb78a3c9acf969d6cf">ghassanpl::hash64_range</a> (uint64_t &amp;seed, It first, It last, HASHER const &amp;hasher={})</td></tr>
-<tr class="memdesc:gad309fb81967d86cb78a3c9acf969d6cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines an existing hash value (<span class="tt">seed</span>) with the hash of a range of values.  <br /></td></tr>
+<tr class="memdesc:ga6f04675eaaa69c1d1a6edb6c51ba0af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines an existing hash value (<span class="tt">seed</span>) with the hash of value <span class="tt">v</span>.  <br /></td></tr>
+<tr class="memitem:ga4f6d48794593e4b7dae05edcc1d22359" id="r_ga4f6d48794593e4b7dae05edcc1d22359"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename &gt; typename HASHER = std::hash, typename FIRST, typename... T&gt; </td></tr>
+<tr class="memitem:ga4f6d48794593e4b7dae05edcc1d22359 template"><td class="memItemLeft">constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#ga4f6d48794593e4b7dae05edcc1d22359">ghassanpl::hash64</a> (FIRST const &amp;first, T &amp;&amp;... values)</td></tr>
+<tr class="memdesc:ga4f6d48794593e4b7dae05edcc1d22359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a hash of multiple values.  <br /></td></tr>
+<tr class="memitem:ga6add81ba474f4cd478318dec3e0ea95f" id="r_ga6add81ba474f4cd478318dec3e0ea95f"><td class="memTemplParams" colspan="2">template&lt;typename It, typename HASHER = std::hash&lt;std::iter_value_t&lt;It&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ga6add81ba474f4cd478318dec3e0ea95f template"><td class="memItemLeft">constexpr void&#160;</td><td class="memItemRight"><a class="el" href="#ga6add81ba474f4cd478318dec3e0ea95f">ghassanpl::fold_in_hash64_range</a> (uint64_t &amp;seed, It first, It last, HASHER const &amp;hasher={})</td></tr>
+<tr class="memdesc:ga6add81ba474f4cd478318dec3e0ea95f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines an existing hash value (<span class="tt">seed</span>) with the hash of a range of values.  <br /></td></tr>
 <tr class="memitem:gaeb2a33e18b58a0126d504024a1420185" id="r_gaeb2a33e18b58a0126d504024a1420185"><td class="memTemplParams" colspan="2">template&lt;typename It, typename HASHER = std::hash&lt;std::iter_value_t&lt;It&gt;&gt;&gt; </td></tr>
 <tr class="memitem:gaeb2a33e18b58a0126d504024a1420185 template"><td class="memItemLeft">constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#gaeb2a33e18b58a0126d504024a1420185">ghassanpl::hash64_range</a> (It first, It last, HASHER &amp;&amp;hasher={})</td></tr>
 <tr class="memdesc:gaeb2a33e18b58a0126d504024a1420185"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hashes a range of values.  <br /></td></tr>
 <tr class="memitem:gab7f3f666d0e5aed44729a6fed8e61655" id="r_gab7f3f666d0e5aed44729a6fed8e61655"><td class="memTemplParams" colspan="2">template&lt;std::ranges::range T, typename HASHER = std::hash&lt;std::ranges::range_value_t&lt;T&gt;&gt;&gt; </td></tr>
 <tr class="memitem:gab7f3f666d0e5aed44729a6fed8e61655 template"><td class="memItemLeft">constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#gab7f3f666d0e5aed44729a6fed8e61655">ghassanpl::hash64_range</a> (T range, HASHER &amp;&amp;hasher={})</td></tr>
 <tr class="memdesc:gab7f3f666d0e5aed44729a6fed8e61655"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hashes a range of values.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ga9a9bc7a7a7acb52f1dc61e2bac7d9132" id="r_ga9a9bc7a7a7acb52f1dc61e2bac7d9132"><td class="memItemLeft">static constexpr uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#ga9a9bc7a7a7acb52f1dc61e2bac7d9132">ghassanpl::crc32_table</a> [256]</td></tr>
+<tr class="memitem:ga6d574ea3f39464e7e36e412d226166df" id="r_ga6d574ea3f39464e7e36e412d226166df"><td class="memItemLeft">static constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#ga6d574ea3f39464e7e36e412d226166df">ghassanpl::crc64_table</a> [256]</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-member-group" class="groupheader"><a id="member-group" name="member-group"></a>
+consteval Hash Functions</h2></td></tr>
+<tr class="memitem:gaad2cd32bacd7d7edbae98ea564501a6b" id="r_gaad2cd32bacd7d7edbae98ea564501a6b"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gaad2cd32bacd7d7edbae98ea564501a6b template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#gaad2cd32bacd7d7edbae98ea564501a6b">ghassanpl::ce_hash64</a> (T val) noexcept</td></tr>
+<tr class="memitem:gab7e50ec2bd9149a096d924a0f8b88b8e" id="r_gab7e50ec2bd9149a096d924a0f8b88b8e"><td class="memTemplParams" colspan="2">template&lt;bytelike T&gt; </td></tr>
+<tr class="memitem:gab7e50ec2bd9149a096d924a0f8b88b8e template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#gab7e50ec2bd9149a096d924a0f8b88b8e">ghassanpl::ce_hash64</a> (std::basic_string_view&lt; T &gt; const &amp;val) noexcept</td></tr>
+<tr class="memitem:ga24bb155cca017b97ee30d9c35582c7be" id="r_ga24bb155cca017b97ee30d9c35582c7be"><td class="memTemplParams" colspan="2">template&lt;typename FIRST, typename... T&gt; </td></tr>
+<tr class="memitem:ga24bb155cca017b97ee30d9c35582c7be template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#ga24bb155cca017b97ee30d9c35582c7be">ghassanpl::ce_hash64</a> (FIRST const &amp;first, T const &amp;... values)</td></tr>
+<tr class="memitem:ga760733edb7f8d49b7ec650d5d85ce1ff" id="r_ga760733edb7f8d49b7ec650d5d85ce1ff"><td class="memTemplParams" colspan="2">template&lt;typename TUPLE_TYPE, uint64_t... Is&gt; </td></tr>
+<tr class="memitem:ga760733edb7f8d49b7ec650d5d85ce1ff template"><td class="memItemLeft">consteval void&#160;</td><td class="memItemRight"><a class="el" href="#ga760733edb7f8d49b7ec650d5d85ce1ff">ghassanpl::ce_hash64_tuple_elements</a> (uint64_t &amp;hash, TUPLE_TYPE const &amp;t, std::index_sequence&lt; Is... &gt;)</td></tr>
+<tr class="memitem:ga99107c53ee828c233d69d7ea22a8bfc6" id="r_ga99107c53ee828c233d69d7ea22a8bfc6"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
+<tr class="memitem:ga99107c53ee828c233d69d7ea22a8bfc6 template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#ga99107c53ee828c233d69d7ea22a8bfc6">ghassanpl::ce_hash64</a> (std::tuple&lt; T... &gt; const &amp;tupl) noexcept</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Hashing functions. </p>
+<div class="textblock"><p>Hashing functions, mostly constexpr when possible. </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
+<a id="ga24bb155cca017b97ee30d9c35582c7be" name="ga24bb155cca017b97ee30d9c35582c7be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga24bb155cca017b97ee30d9c35582c7be">&#9670;&#160;</a></span>ce_hash64() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FIRST, typename... T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t ghassanpl::ce_hash64 </td>
+          <td>(</td>
+          <td class="paramtype">FIRST const &amp;</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T const &amp;...</td>          <td class="paramname"><span class="paramname"><em>values</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel consteval">consteval</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00349">349</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+
+</div>
+</div>
+<a id="gab7e50ec2bd9149a096d924a0f8b88b8e" name="gab7e50ec2bd9149a096d924a0f8b88b8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab7e50ec2bd9149a096d924a0f8b88b8e">&#9670;&#160;</a></span>ce_hash64() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;bytelike T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t ghassanpl::ce_hash64 </td>
+          <td>(</td>
+          <td class="paramtype">std::basic_string_view&lt; T &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>val</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel consteval">consteval</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00345">345</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+
+</div>
+</div>
+<a id="ga99107c53ee828c233d69d7ea22a8bfc6" name="ga99107c53ee828c233d69d7ea22a8bfc6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga99107c53ee828c233d69d7ea22a8bfc6">&#9670;&#160;</a></span>ce_hash64() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename... T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t ghassanpl::ce_hash64 </td>
+          <td>(</td>
+          <td class="paramtype">std::tuple&lt; T... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>tupl</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel consteval">consteval</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00363">363</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+
+</div>
+</div>
+<a id="gaad2cd32bacd7d7edbae98ea564501a6b" name="gaad2cd32bacd7d7edbae98ea564501a6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaad2cd32bacd7d7edbae98ea564501a6b">&#9670;&#160;</a></span>ce_hash64() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t ghassanpl::ce_hash64 </td>
+          <td>(</td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>val</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel consteval">consteval</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00332">332</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+
+</div>
+</div>
+<a id="ga760733edb7f8d49b7ec650d5d85ce1ff" name="ga760733edb7f8d49b7ec650d5d85ce1ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga760733edb7f8d49b7ec650d5d85ce1ff">&#9670;&#160;</a></span>ce_hash64_tuple_elements()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename TUPLE_TYPE, uint64_t... Is&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ghassanpl::ce_hash64_tuple_elements </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t &amp;</td>          <td class="paramname"><span class="paramname"><em>hash</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">TUPLE_TYPE const &amp;</td>          <td class="paramname"><span class="paramname"><em>t</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::index_sequence&lt; Is... &gt;</td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel consteval">consteval</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00357">357</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+
+</div>
+</div>
 <a id="ga27a9c9cbfb214d40aca1c461d51d76f0" name="ga27a9c9cbfb214d40aca1c461d51d76f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga27a9c9cbfb214d40aca1c461d51d76f0">&#9670;&#160;</a></span>crc32() <span class="overload">[1/2]</span></h2>
 
@@ -159,7 +345,7 @@ template&lt;bytelike... BYTES&gt; </div>
 <p>Calculates a CRC32 for a variadic number of bytelikes. </p>
 <p>constexpr! </p>
 
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00082">82</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00083">83</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
@@ -191,7 +377,7 @@ template&lt;bytelike_range RANGE&gt; </div>
 <p>Calculates a CRC32 for a range of bytelikes. </p>
 <p>constexpr! </p>
 
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00069">69</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00070">70</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
@@ -222,7 +408,7 @@ template&lt;bytelike... BYTES&gt; </div>
 
 <p>Calculates a CRC4 for a variadic number of bytelikes. </p>
 
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00147">147</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00146">146</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
@@ -284,7 +470,7 @@ template&lt;bytelike... BYTES&gt; </div>
 
 <p>Calculates a FNV Hash for a variadic number of bytes. </p>
 
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00185">185</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00181">181</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
@@ -313,10 +499,122 @@ template&lt;bytelike_range RANGE&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>TODO: Add support for non-64bit hashes to all the functions below, especially since std::hash operates on size_t. </p>
-<p>Calculates a FNV Hash for a range of bytes </p>
+<p>Calculates a FNV Hash for a range of bytes. </p>
 
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00174">174</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00171">171</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+
+</div>
+</div>
+<a id="ga7fd636e17629a740d0687e9451788767" name="ga7fd636e17629a740d0687e9451788767"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7fd636e17629a740d0687e9451788767">&#9670;&#160;</a></span>fold_in_hash64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ghassanpl::fold_in_hash64 </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t &amp;</td>          <td class="paramname"><span class="paramname"><em>hash1</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>hash2</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Combines an existing hash with a new hash value. </p>
+
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00251">251</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+
+</div>
+</div>
+<a id="ga6add81ba474f4cd478318dec3e0ea95f" name="ga6add81ba474f4cd478318dec3e0ea95f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6add81ba474f4cd478318dec3e0ea95f">&#9670;&#160;</a></span>fold_in_hash64_range()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename It, typename HASHER = std::hash&lt;std::iter_value_t&lt;It&gt;&gt;&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ghassanpl::fold_in_hash64_range </td>
+          <td>(</td>
+          <td class="paramtype">uint64_t &amp;</td>          <td class="paramname"><span class="paramname"><em>seed</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">It</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">It</td>          <td class="paramname"><span class="paramname"><em>last</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">HASHER const &amp;</td>          <td class="paramname"><span class="paramname"><em>hasher</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Combines an existing hash value (<span class="tt">seed</span>) with the hash of a range of values. </p>
+
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00297">297</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+
+</div>
+</div>
+<a id="ga4f6d48794593e4b7dae05edcc1d22359" name="ga4f6d48794593e4b7dae05edcc1d22359"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4f6d48794593e4b7dae05edcc1d22359">&#9670;&#160;</a></span>hash64()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;template&lt; typename &gt; typename HASHER = std::hash, typename FIRST, typename... T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t ghassanpl::hash64 </td>
+          <td>(</td>
+          <td class="paramtype">FIRST const &amp;</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">T &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>values</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Performs a hash of multiple values. </p>
+
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00274">274</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
@@ -354,15 +652,14 @@ template&lt;typename T, typename HASHER = std::hash&lt;std::remove_cvref_t&lt;T&
 </table>
 </div><div class="memdoc">
 
-<p>TODO: ce_hash64(array/span) TODO: ce_hash64(thread::id) ? </p>
-<p>TODO: ce_hash64(optional/variant) ? Combines an existing hash value (<span class="tt">seed</span>) with the hash of value <span class="tt">v</span> </p>
+<p>Combines an existing hash value (<span class="tt">seed</span>) with the hash of value <span class="tt">v</span>. </p>
 
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00314">314</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00265">265</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
 <a id="gaeb2a33e18b58a0126d504024a1420185" name="gaeb2a33e18b58a0126d504024a1420185"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaeb2a33e18b58a0126d504024a1420185">&#9670;&#160;</a></span>hash64_range() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gaeb2a33e18b58a0126d504024a1420185">&#9670;&#160;</a></span>hash64_range() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -397,12 +694,12 @@ template&lt;typename It, typename HASHER = std::hash&lt;std::iter_value_t&lt;It&
 
 <p>Hashes a range of values. </p>
 
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00356">356</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00306">306</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
 <a id="gab7f3f666d0e5aed44729a6fed8e61655" name="gab7f3f666d0e5aed44729a6fed8e61655"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gab7f3f666d0e5aed44729a6fed8e61655">&#9670;&#160;</a></span>hash64_range() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#gab7f3f666d0e5aed44729a6fed8e61655">&#9670;&#160;</a></span>hash64_range() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -432,52 +729,56 @@ template&lt;std::ranges::range T, typename HASHER = std::hash&lt;std::ranges::ra
 
 <p>Hashes a range of values. </p>
 
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00367">367</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00316">316</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
-<a id="gad309fb81967d86cb78a3c9acf969d6cf" name="gad309fb81967d86cb78a3c9acf969d6cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gad309fb81967d86cb78a3c9acf969d6cf">&#9670;&#160;</a></span>hash64_range() <span class="overload">[3/3]</span></h2>
+<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
+<a id="ga9a9bc7a7a7acb52f1dc61e2bac7d9132" name="ga9a9bc7a7a7acb52f1dc61e2bac7d9132"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9a9bc7a7a7acb52f1dc61e2bac7d9132">&#9670;&#160;</a></span>crc32_table</h2>
 
 <div class="memitem">
 <div class="memproto">
-<div class="memtemplate">
-template&lt;typename It, typename HASHER = std::hash&lt;std::iter_value_t&lt;It&gt;&gt;&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ghassanpl::hash64_range </td>
-          <td>(</td>
-          <td class="paramtype">uint64_t &amp;</td>          <td class="paramname"><span class="paramname"><em>seed</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">It</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">It</td>          <td class="paramname"><span class="paramname"><em>last</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">HASHER const &amp;</td>          <td class="paramname"><span class="paramname"><em>hasher</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
+          <td class="memname">uint32_t ghassanpl::crc32_table[256]</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Combines an existing hash value (<span class="tt">seed</span>) with the hash of a range of values. </p>
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00021">21</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00346">346</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
+</div>
+</div>
+<a id="ga6d574ea3f39464e7e36e412d226166df" name="ga6d574ea3f39464e7e36e412d226166df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6d574ea3f39464e7e36e412d226166df">&#9670;&#160;</a></span>crc64_table</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t ghassanpl::crc64_table[256]</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00099">99</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>

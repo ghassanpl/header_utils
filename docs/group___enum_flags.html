@@ -99,10 +99,49 @@ $(function(){initNavTree('group___enum_flags.html','',''); });
 Classes</h2></td></tr>
 <tr class="memitem:ghassanpl_3A_3Aenum_5Fflags_3C_20ENUM_2C_20VALUE_5FTYPE_20_3E" id="r_ghassanpl_3A_3Aenum_5Fflags_3C_20ENUM_2C_20VALUE_5FTYPE_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1enum__flags.html">ghassanpl::enum_flags&lt; ENUM, VALUE_TYPE &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset).  <a href="structghassanpl_1_1enum__flags.html#details">More...</a><br /></td></tr>
+<tr class="memitem:ghassanpl_3A_3Aenum_5Fflag_5Fchanges_3C_20ENUM_2C_20VALUE_5FTYPE_20_3E" id="r_ghassanpl_3A_3Aenum_5Fflag_5Fchanges_3C_20ENUM_2C_20VALUE_5FTYPE_20_3E"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1enum__flag__changes.html">ghassanpl::enum_flag_changes&lt; ENUM, VALUE_TYPE &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds a set of changes to be made to an <span class="tt"><a class="el" href="structghassanpl_1_1enum__flags.html" title="A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset).">enum_flags</a>&lt;ENUM, VALUE_TYPE&gt;</span> - conceptually holds a set of <span class="tt">std::pair&lt;ENUM, <a class="el" href="#gaf8a51289b1f8de76368a33eb174e7d43" title="A change to be done to an enum flag in an enum_flags set.">enum_flag_change</a>&gt;</span>.  <a href="structghassanpl_1_1enum__flag__changes.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:gaf8a51289b1f8de76368a33eb174e7d43" id="r_gaf8a51289b1f8de76368a33eb174e7d43"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#gaf8a51289b1f8de76368a33eb174e7d43">ghassanpl::enum_flag_change</a> : uint8_t { <b>no_change</b>
+, <b>set</b>
+, <b>unset</b>
+, <b>toggle</b>
+ }</td></tr>
+<tr class="memdesc:gaf8a51289b1f8de76368a33eb174e7d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">A change to be done to an enum flag in an <span class="tt"><a class="el" href="structghassanpl_1_1enum__flags.html" title="A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset).">enum_flags</a></span> set.  <a href="#gaf8a51289b1f8de76368a33eb174e7d43">More...</a><br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains <span class="tt"><a class="el" href="structghassanpl_1_1enum__flags.html" title="A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset).">enum_flags</a></span>, a value struct that represents a set of bits mapped to an enum (implemented as a bitset). </p>
-</div></div><!-- contents -->
+<p>There also exists a C++98-only and C++17-only version of this module. See the &lt;ghassanpl/cpp17/enum_flags.h&gt; and &lt;ghassanpl/cpp98/enum_flags.h&gt; files. </p>
+</div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
+<a id="gaf8a51289b1f8de76368a33eb174e7d43" name="gaf8a51289b1f8de76368a33eb174e7d43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf8a51289b1f8de76368a33eb174e7d43">&#9670;&#160;</a></span>enum_flag_change</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#gaf8a51289b1f8de76368a33eb174e7d43">ghassanpl::enum_flag_change</a> : uint8_t</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A change to be done to an enum flag in an <span class="tt"><a class="el" href="structghassanpl_1_1enum__flags.html" title="A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset).">enum_flags</a></span> set. </p>
+
+<p class="definition">Definition at line <a class="el" href="enum__flags_8h_source.html#l00384">384</a> of file <a class="el" href="enum__flags_8h_source.html">enum_flags.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

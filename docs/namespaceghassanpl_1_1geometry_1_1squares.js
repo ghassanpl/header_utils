@@ -3,7 +3,7 @@ var namespaceghassanpl_1_1geometry_1_1squares =
     [ "grid", "structghassanpl_1_1geometry_1_1squares_1_1grid.html", "structghassanpl_1_1geometry_1_1squares_1_1grid" ],
     [ "manhattan_metric", "structghassanpl_1_1geometry_1_1squares_1_1manhattan__metric.html", null ],
     [ "chebyshev_metric", "structghassanpl_1_1geometry_1_1squares_1_1chebyshev__metric.html", null ],
-    [ "tile_space", "structghassanpl_1_1geometry_1_1squares_1_1tile__space.html", null ],
+    [ "ttile_space", "structghassanpl_1_1geometry_1_1squares_1_1ttile__space.html", null ],
     [ "metric", "conceptghassanpl_1_1geometry_1_1squares_1_1metric.html", null ],
     [ "tile_pos", "group___squares.html#ga0f69a759e699742e8ffd47594ca63732", null ],
     [ "tile_rec", "group___squares.html#gaef68c489a9e7782a3fedb17cf0e074cd", null ],

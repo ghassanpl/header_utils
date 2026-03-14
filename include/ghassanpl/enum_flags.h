@@ -22,7 +22,8 @@ namespace ghassanpl
 	
 	/// \defgroup EnumFlags Enum Flags
 	/// \ingroup Flags
-	/// Contains `enum_flags`, a value struct that represents a set of bits mapped to an enum (implemented as a bitset)
+	/// Contains `enum_flags`, a value struct that represents a set of bits mapped to an enum (implemented as a bitset). There
+	/// also exists a C++98-only and C++17-only version of this module. See the <ghassanpl/cpp17/enum_flags.h> and <ghassanpl/cpp98/enum_flags.h> files.
 	
 	/// A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset)
 	/// \ingroup EnumFlags
@@ -50,6 +51,10 @@ namespace ghassanpl
 	/// 
 	/// \tparam ENUM the type containing the value flags the set will hold
 	/// \tparam VALUE_TYPE the underlying integral value that stores the bits representing the flags
+	/// \internal 
+	/// TODO: `insert()` as an alias for `set()`
+	/// TODO: `erase()` as an alias for `unset()`
+	/// \endinternal	
 	template <integral_or_enum ENUM, detail::valid_integral VALUE_TYPE = unsigned long long>
 	struct enum_flags
 	{
@@ -206,16 +211,12 @@ namespace ghassanpl
 		/// Sets the flags in the `other`
 		constexpr self_type& set(self_type other) noexcept { bits |= other.bits; return *this; }
 
-		/// TODO: `insert()` as an alias for `set()`
-
 		/// Unsets the given flags
 		template <std::convertible_to<enum_type>... ARGS>
 		constexpr self_type& unset(ARGS... args) noexcept { bits &= ~ flag_bits<VALUE_TYPE>(args...); return *this; }
 		/// Unsets the flags in the `other` set
 		constexpr self_type& unset(self_type other) noexcept { bits &= ~other.bits; return *this; }
 
-		/// TODO: `erase()` as an alias for `unset()`
-		
 		/// Toggles the given flags
 		template <std::convertible_to<enum_type>... ARGS>
 		constexpr self_type& toggle(ARGS... args) noexcept { bits ^= flag_bits<VALUE_TYPE>(args...); return *this; }
@@ -378,6 +379,8 @@ namespace ghassanpl
 	template <typename TYPE>
 	constexpr bool is_enum_flags_v = is_enum_flags<TYPE>::value;
 	
+	/// A change to be done to an enum flag in an `enum_flags` set
+	/// \ingroup EnumFlags
 	enum class enum_flag_change : uint8_t
 	{
 		no_change,
@@ -386,6 +389,8 @@ namespace ghassanpl
 		toggle,
 	};
 
+	/// Holds a set of changes to be made to an `enum_flags<ENUM, VALUE_TYPE>` - conceptually holds a set of `std::pair<ENUM, enum_flag_change>`
+	/// \ingroup EnumFlags
 	template <integral_or_enum ENUM, detail::valid_integral VALUE_TYPE>
 	struct enum_flag_changes
 	{

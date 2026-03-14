@@ -345,6 +345,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tests\align_tests.cpp" />
+    <ClCompile Include="tests\assuming_ndebug.cpp" />
     <ClCompile Include="tests\assuming_tests.cpp" />
     <ClCompile Include="tests\bits_tests.cpp" />
     <ClCompile Include="tests\buffers_tests.cpp" />

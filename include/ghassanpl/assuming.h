@@ -10,6 +10,7 @@
 #if !defined(__cpp_lib_format)
 #error "This library requires std::format"
 #endif
+
 #include "source_location.h"
 
 /// \defgroup Assuming Assuming
@@ -51,32 +52,48 @@
 #endif
 #endif
 
-#include <format>
+/// \hideinitializer
+#ifndef ASSUMING_BREAKPOINT
 #if __has_include(<debugging>)
 #include <debugging>
-#define ASSUMING_BREAKPOINT std::breakpoint
+#define ASSUMING_BREAKPOINT std::breakpoint()
 #else
 #ifndef __has_builtin         // Optional of course.
 #define __has_builtin(x) 0  // Compatibility with non-clang compilers.
 #endif
 #if __has_builtin(__builtin_debugtrap)
-#define ASSUMING_BREAKPOINT   __builtin_debugtrap
+#define ASSUMING_BREAKPOINT   __builtin_debugtrap()
 #elif (defined(__clang__) || defined(__GNUC__)) && !defined(_MSC_VER)
-#define ASSUMING_BREAKPOINT   __builtin_trap
+#define ASSUMING_BREAKPOINT   __builtin_trap()
 #elif defined(_MSC_VER)
-#define ASSUMING_BREAKPOINT  __debugbreak
+#define ASSUMING_BREAKPOINT  __debugbreak()
+#else
+#define ASSUMING_BREAKPOINT do { try { throw 0; } catch (...) {} } while (false)
+#endif
 #endif
 #endif
 
-#if ASSUMING_DEBUG
-#include <sstream>
-#endif
-
+/// \hideinitializer
 #ifndef ASSUMING_USE_STACKTRACE
 #if defined(__cpp_lib_stacktrace)
 #define ASSUMING_USE_STACKTRACE 1
+#else
+#define ASSUMING_USE_STACKTRACE 0
+#endif
+#endif
+
+/// @}
+
+#if ASSUMING_DEBUG
+#include <sstream>
+#include <format>
+#endif
+
+#if ASSUMING_USE_STACKTRACE
+#if defined(__cpp_lib_stacktrace)
 #include <stacktrace>
 #else
+#undef ASSUMING_USE_STACKTRACE
 #define ASSUMING_USE_STACKTRACE 0
 #endif
 #endif
@@ -116,12 +133,15 @@
 	switch (result) \
 	{ \
 		case ::ghassanpl::AssumptionHandlerResult::Continue: break; \
-		case ::ghassanpl::AssumptionHandlerResult::Break: ASSUMING_BREAKPOINT(); break; \
+		case ::ghassanpl::AssumptionHandlerResult::Break: ASSUMING_BREAKPOINT; break; \
 		case ::ghassanpl::AssumptionHandlerResult::Terminate: std::abort(); break; \
 	} \
 	} while (false)
 
 #define ASSUMING_REPORT(...) ASSUMING_HANDLE_HANDLER_RESULT(::ghassanpl::ReportAssumptionFailure(__VA_ARGS__))
+
+/// \ingroup Assuming
+///@{
 
 /// The basic Assuming macro. Assumes the term is true. Expression result must be convertible to bool.
 #define Assuming(exp, ...) do { if (auto&& _assuming_exp_v = (exp); !_assuming_exp_v) [[unlikely]] \
@@ -255,22 +275,12 @@
 #define Assuming(exp, ...) GHPL_ASSUME(!!(exp))
 #define AssumingNotReachable(...) GHPL_ASSUME(false)
 
-// NOTE: TODO: The three macros below have a significant codegen overhead, should we even try their assumptions? I don't think the compiler can infer any useful information from them...
-#define AssumingNotRecursive(...) \
-	static int _assuming_recursion_counter##__LINE__ = 0; \
-	GHPL_ASSUME(_assuming_recursion_counter##__LINE__ == 0); \
-	const ::ghassanpl::detail::RecursionScopeMarker _assuming_scope_marker##__LINE__( _assuming_recursion_counter##__LINE__ )
-#define AssumingSingleThread(...) do { \
-		static std::thread::id _assuming_thread_id = std::this_thread::get_id(); \
-		auto _assuming_current_thread_id = std::this_thread::get_id(); \
-		GHPL_ASSUME(_assuming_thread_id == _assuming_current_thread_id); \
+// NOTE: The three macros below have a significant codegen overhead, so we do not assume what they check. I don't think the compiler can infer any useful information from it anyway.
+#define AssumingNotRecursive(...) do {} while (false)
+#define AssumingSingleThread(...) do {} while (false)
+#define AssumingOnThread(thread_to_check, ...) do { \
+		std::ignore = (thread_to_check); \
 	} while (false)
-#define AssumingOnThread(thread_to_check, ...) { \
-		auto _assuming_thread_id = (thread_to_check); \
-		auto _assuming_current_thread_id = std::this_thread::get_id(); \
-		GHPL_ASSUME(_assuming_thread_id == _assuming_current_thread_id); \
-	} while (false)
-
 
 #define AssumingNull(exp, ...) GHPL_ASSUME(!((const void*)std::to_address(exp) != nullptr))
 #define AssumingNotNull(exp, ...) GHPL_ASSUME(!((const void*)std::to_address(exp) == nullptr))
@@ -291,7 +301,7 @@
 #define AssumingBetween(v, a, b, ...) do { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v < _assuming_b_v); } while (false)
 #define AssumingBetweenInclusive(v, a, b, ...) do { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v); } while (false)
 
-#define AssumingContainsBits(a, b, ...) do { auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)); } while (false)
+#define AssumingContainsBits(bits_to_find, bit_container, ...) do { auto&& _assuming_a_v = (bit_container); auto&& _assuming_b_v = (bits_to_find); GHPL_ASSUME(!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)); } while (false)
 
 #define AssumingContains(_key, _container, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
 	GHPL_ASSUME(_assuming_container.contains(_assuming_key)); } while (false)
@@ -363,6 +373,7 @@ namespace ghassanpl
 #endif
 	}
 
+	/// Return one of these values from the assumption failure handler \c AssumptionFailureHandler to trigger a specific behavior at the point of failure
 	enum class AssumptionHandlerResult
 	{
 		Break,    ///< Break into debugger after reporting the assumption failure
@@ -387,7 +398,8 @@ namespace ghassanpl
 		);
 	}
 
-	/// This function must be provided by your own code, as it is called by an assumption macro with a failing assumption.
+	/// This variable should be set to a handler function by your own code, as it is called by an assumption macro with a failing assumption; if you do not provide it, 
+	/// an exception with an unspecified type will be thrown.
 	/// \ingroup Assuming
 	/// \param expectation An explanation of which assumption failed
 	/// \param values The values of the expressions the assumption macro checked
@@ -399,7 +411,7 @@ namespace ghassanpl
 #endif //  ASSUMING_USE_STACKTRACE
 	) -> AssumptionHandlerResult = nullptr;
 
-	/// TODO: AssumptionFailureHandler should return bool, and based on that we should brek into debugger or not.
+	/// \private
 
 #if defined(ASSUMING_REPORT_NORETURN) && ASSUMING_REPORT_NORETURN
 	[[noreturn]]
@@ -436,9 +448,18 @@ namespace ghassanpl
 /// Primary namespace for everything in this library.
 
 /// \def ASSUMING_DEBUG
-/// You can define this macro project-wide to either 0 or 1 to disable or enable checking of assumptions. If this macro is not defined, its value is based on
+/// You can define this macro to either 0 or 1 to disable or enable checking of assumptions. If this macro is not defined, its value is based on
 /// the NDEBUG macro.
 
 /// \def ASSUMING_INCLUDE_MAGIC_ENUM
-/// You can define this macro project-wide to either 1 or 0 to include `<magic_enum.hpp>` or not, if you want prettier printing of enum names.
+/// You can define this macro to either 1 or 0 to include `<magic_enum.hpp>` or not, if you want prettier printing of enum names.
 /// If you don't define it, it will check for `<magic_enum.hpp>` and include it if it exists.
+
+/// \def ASSUMING_BREAKPOINT
+/// You can define this macro project-wide (or before including this header) if you want to specify the behavior of the `Break` option that can be requested
+/// by the assumption failure handler. If it's not defined, the default compiler breakpoint facility will be used; if no facility is available, 
+/// a caught `throw 0` can be detected by the compiler in "Break on all exceptions" mode while still being able to continue through the code.
+
+/// \def ASSUMING_USE_STACKTRACE
+/// You can define this macro to 1 or 0 to include `<stacktrace>` (if available) or not; if this functionality is available, an `std::stacktrace` will be given to
+/// the assumption failure handler.

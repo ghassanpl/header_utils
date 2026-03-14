@@ -319,7 +319,7 @@ Consume Functions</h2></td></tr>
 <tr class="memdesc:ga32b89799da871d90db4e31519d823673"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes any of the characters in 'chars' if it's the first char of <span class="tt">str</span>.  <br /></td></tr>
 <tr class="memitem:gaaac15d7156006449f86687ea787a0632" id="r_gaaac15d7156006449f86687ea787a0632"><td class="memTemplParams" colspan="2">template&lt;typename PRED&gt; </td></tr>
 <tr class="memitem:gaaac15d7156006449f86687ea787a0632 template"><td class="memItemLeft">char&#160;</td><td class="memItemRight"><a class="el" href="#gaaac15d7156006449f86687ea787a0632">ghassanpl::string_ops::consume</a> (std::string_view &amp;str, PRED &amp;&amp;<a class="el" href="namespaceghassanpl_1_1pred.html">pred</a>)</td></tr>
-<tr class="memdesc:gaaac15d7156006449f86687ea787a0632"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes a character from the beginning of <span class="tt">str</span> if it matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="TODO: Boost::phoenix::arg_names is a better version of this.">pred(str[0])</a></span>.  <br /></td></tr>
+<tr class="memdesc:gaaac15d7156006449f86687ea787a0632"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes a character from the beginning of <span class="tt">str</span> if it matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred(str[0])</a></span>.  <br /></td></tr>
 <tr class="memitem:ga1cc662e9cfe536f4452f7dff9c97e293" id="r_ga1cc662e9cfe536f4452f7dff9c97e293"><td class="memItemLeft">char&#160;</td><td class="memItemRight"><a class="el" href="#ga1cc662e9cfe536f4452f7dff9c97e293">ghassanpl::string_ops::consume_or</a> (std::string_view &amp;str, char or_else)</td></tr>
 <tr class="memdesc:ga1cc662e9cfe536f4452f7dff9c97e293"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes the first character from <span class="tt">str</span>, returning it, or <span class="tt">or_else</span> if string is empty.  <br /></td></tr>
 <tr class="memitem:gae0a029303a4e6b4c3cc35547ab2724de" id="r_gae0a029303a4e6b4c3cc35547ab2724de"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#gae0a029303a4e6b4c3cc35547ab2724de">ghassanpl::string_ops::consume_at_end</a> (std::string_view &amp;str, char val)</td></tr>
@@ -328,7 +328,7 @@ Consume Functions</h2></td></tr>
 <tr class="memdesc:ga3b4189da7b9ab1dd821ccf5f8bd7c879"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes the string <span class="tt">val</span> from the end <span class="tt">str</span>.  <br /></td></tr>
 <tr class="memitem:gacb102e86ce0c3d2d6659965221199055" id="r_gacb102e86ce0c3d2d6659965221199055"><td class="memTemplParams" colspan="2">template&lt;typename FUNC&gt; </td></tr>
 <tr class="memitem:gacb102e86ce0c3d2d6659965221199055 template"><td class="memItemLeft">std::string_view&#160;</td><td class="memItemRight"><a class="el" href="#gacb102e86ce0c3d2d6659965221199055">ghassanpl::string_ops::consume_while</a> (std::string_view &amp;str, FUNC &amp;&amp;<a class="el" href="namespaceghassanpl_1_1pred.html">pred</a>)</td></tr>
-<tr class="memdesc:gacb102e86ce0c3d2d6659965221199055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes characters from the beginning of <span class="tt">str</span> while they match <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="TODO: Boost::phoenix::arg_names is a better version of this.">pred(str[0])</a></span>.  <br /></td></tr>
+<tr class="memdesc:gacb102e86ce0c3d2d6659965221199055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes characters from the beginning of <span class="tt">str</span> while they match <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred(str[0])</a></span>.  <br /></td></tr>
 <tr class="memitem:ga82d99dbb305a7706e56dee3841ac8114" id="r_ga82d99dbb305a7706e56dee3841ac8114"><td class="memItemLeft">std::string_view&#160;</td><td class="memItemRight"><a class="el" href="#ga82d99dbb305a7706e56dee3841ac8114">ghassanpl::string_ops::consume_while</a> (std::string_view &amp;str, char c)</td></tr>
 <tr class="memdesc:ga82d99dbb305a7706e56dee3841ac8114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes characters from the beginning of <span class="tt">str</span> while they are equal to <span class="tt">c</span>.  <br /></td></tr>
 <tr class="memitem:ga65410d5775ced043e21b6bb5fe91b01c" id="r_ga65410d5775ced043e21b6bb5fe91b01c"><td class="memTemplParams" colspan="2">template&lt;typename... ARGS&gt; </td></tr>
@@ -336,7 +336,7 @@ Consume Functions</h2></td></tr>
 <tr class="memdesc:ga65410d5775ced043e21b6bb5fe91b01c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes a run of any of the characters in 'chars' at the beginning of str.  <br /></td></tr>
 <tr class="memitem:ga2841565612194f28f4e6f44681382ab6" id="r_ga2841565612194f28f4e6f44681382ab6"><td class="memTemplParams" colspan="2">template&lt;typename FUNC&gt; </td></tr>
 <tr class="memitem:ga2841565612194f28f4e6f44681382ab6 template"><td class="memItemLeft">std::string_view&#160;</td><td class="memItemRight"><a class="el" href="#ga2841565612194f28f4e6f44681382ab6">ghassanpl::string_ops::consume_until</a> (std::string_view &amp;str, FUNC &amp;&amp;<a class="el" href="namespaceghassanpl_1_1pred.html">pred</a>)</td></tr>
-<tr class="memdesc:ga2841565612194f28f4e6f44681382ab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes characters from the beginning of <span class="tt">str</span> until one matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="TODO: Boost::phoenix::arg_names is a better version of this.">pred(str[0])</a></span>, exclusive.  <br /></td></tr>
+<tr class="memdesc:ga2841565612194f28f4e6f44681382ab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes characters from the beginning of <span class="tt">str</span> until one matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred(str[0])</a></span>, exclusive.  <br /></td></tr>
 <tr class="memitem:ga6677793a340d1004f14288c1a7b363cc" id="r_ga6677793a340d1004f14288c1a7b363cc"><td class="memItemLeft">std::string_view&#160;</td><td class="memItemRight"><a class="el" href="#ga6677793a340d1004f14288c1a7b363cc">ghassanpl::string_ops::consume_until</a> (std::string_view &amp;str, char c)</td></tr>
 <tr class="memdesc:ga6677793a340d1004f14288c1a7b363cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes characters from the beginning of <span class="tt">str</span> until one is equal to <span class="tt">c</span>, exclusive.  <br /></td></tr>
 <tr class="memitem:gae2a6389cffb17ace749a7f77db54002d" id="r_gae2a6389cffb17ace749a7f77db54002d"><td class="memItemLeft">std::string_view&#160;</td><td class="memItemRight"><a class="el" href="#gae2a6389cffb17ace749a7f77db54002d">ghassanpl::string_ops::consume_until</a> (std::string_view &amp;str, std::string_view end)</td></tr>
@@ -352,7 +352,7 @@ Consume Functions</h2></td></tr>
 <tr class="memdesc:gaf221123eaa1aa4577b1b64dcadb38ae4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes at most <span class="tt">n</span> characters from the beginning of <span class="tt">str</span>.  <br /></td></tr>
 <tr class="memitem:ga8bc133b2b52b98e9fda7b4fc638d986a" id="r_ga8bc133b2b52b98e9fda7b4fc638d986a"><td class="memTemplParams" colspan="2">template&lt;typename FUNC&gt; </td></tr>
 <tr class="memitem:ga8bc133b2b52b98e9fda7b4fc638d986a template"><td class="memItemLeft">std::string_view&#160;</td><td class="memItemRight"><a class="el" href="#ga8bc133b2b52b98e9fda7b4fc638d986a">ghassanpl::string_ops::consume_n</a> (std::string_view &amp;str, size_t n, FUNC &amp;&amp;<a class="el" href="namespaceghassanpl_1_1pred.html">pred</a>)</td></tr>
-<tr class="memdesc:ga8bc133b2b52b98e9fda7b4fc638d986a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes at most <span class="tt">n</span> characters from the beginning of <span class="tt">str</span> that match <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="TODO: Boost::phoenix::arg_names is a better version of this.">pred(str[0])</a></span>.  <br /></td></tr>
+<tr class="memdesc:ga8bc133b2b52b98e9fda7b4fc638d986a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes at most <span class="tt">n</span> characters from the beginning of <span class="tt">str</span> that match <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred(str[0])</a></span>.  <br /></td></tr>
 <tr class="memitem:ga6392cfeb9f5262388b5dc361fbed7a00" id="r_ga6392cfeb9f5262388b5dc361fbed7a00"><td class="memTemplParams" colspan="2">template&lt;typename CALLBACK_TYPE&gt; </td></tr>
 <tr class="memitem:ga6392cfeb9f5262388b5dc361fbed7a00 template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ga6392cfeb9f5262388b5dc361fbed7a00">ghassanpl::string_ops::consume_delimited_list_non_empty</a> (std::string_view &amp;str, std::string_view delimiter, CALLBACK_TYPE callback)</td></tr>
 <tr class="memdesc:ga6392cfeb9f5262388b5dc361fbed7a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes a list of <span class="tt">delimiter</span>-delimited strings, calling <span class="tt">callback(str)</span> each time; whitespaces before and after items are trimmed.  <br /></td></tr>
@@ -871,7 +871,7 @@ template&lt;typename PRED&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Consumes a character from the beginning of <span class="tt">str</span> if it matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="TODO: Boost::phoenix::arg_names is a better version of this.">pred(str[0])</a></span>. </p>
+<p>Consumes a character from the beginning of <span class="tt">str</span> if it matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred(str[0])</a></span>. </p>
 <dl class="section return"><dt>Returns</dt><dd>the matched character, or \0 if no match </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00753">753</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
@@ -1205,7 +1205,7 @@ template&lt;typename FUNC&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Consumes at most <span class="tt">n</span> characters from the beginning of <span class="tt">str</span> that match <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="TODO: Boost::phoenix::arg_names is a better version of this.">pred(str[0])</a></span>. </p>
+<p>Consumes at most <span class="tt">n</span> characters from the beginning of <span class="tt">str</span> that match <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred(str[0])</a></span>. </p>
 <dl class="section return"><dt>Returns</dt><dd>the consumed prefix as a string_view </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00931">931</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
@@ -1308,7 +1308,7 @@ template&lt;typename FUNC&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Consumes characters from the beginning of <span class="tt">str</span> until one matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="TODO: Boost::phoenix::arg_names is a better version of this.">pred(str[0])</a></span>, exclusive. </p>
+<p>Consumes characters from the beginning of <span class="tt">str</span> until one matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred(str[0])</a></span>, exclusive. </p>
 <dl class="section return"><dt>Returns</dt><dd>the consumed prefix as a string_view </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00838">838</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>
@@ -1516,7 +1516,7 @@ template&lt;typename FUNC&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Consumes characters from the beginning of <span class="tt">str</span> while they match <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="TODO: Boost::phoenix::arg_names is a better version of this.">pred(str[0])</a></span>. </p>
+<p>Consumes characters from the beginning of <span class="tt">str</span> while they match <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred(str[0])</a></span>. </p>
 <dl class="section return"><dt>Returns</dt><dd>the consumed prefix as a string_view </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="string__ops_8h_source.html#l00805">805</a> of file <a class="el" href="string__ops_8h_source.html">string_ops.h</a>.</p>

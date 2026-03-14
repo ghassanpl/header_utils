@@ -88,11 +88,11 @@ $(function(){initNavTree('namespaceghassanpl_1_1op.html','',''); });
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">ghassanpl::op Namespace Reference</div></div>
+  <div class="headertitle"><div class="title">ghassanpl::op Namespace Reference<div class="ingroups"><a class="el" href="group___functional.html">Functional</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>Appropriate for functions like std::for_each that don't have semantics by themselves.  
+<p>Contains functions that return functors that perform an operation without output; appropriate for functions like <span class="tt">std::for_each</span>.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
@@ -136,16 +136,16 @@ Functions</h2></td></tr>
 <tr class="memdesc:aa63b37d4ff402e56868a0bafc5fffed0"><td class="mdescLeft">&#160;</td><td class="mdescRight">For funcs a, b, c, calls them as <span class="tt">return c(b(a(args...)));</span> or <span class="tt">return a(args...) |&gt; b |&gt; c;</span>.  <br /></td></tr>
 <tr class="memitem:a53997bd719834edc04088a3e11976fa3" id="r_a53997bd719834edc04088a3e11976fa3"><td class="memTemplParams" colspan="2">template&lt;typename THEN, typename IF&gt; </td></tr>
 <tr class="memitem:a53997bd719834edc04088a3e11976fa3 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a53997bd719834edc04088a3e11976fa3">call_when</a> (THEN &amp;&amp;<a class="el" href="namespaceghassanpl_1_1op.html">op</a>, IF &amp;&amp;predicate)</td></tr>
-<tr class="memdesc:a53997bd719834edc04088a3e11976fa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acts as <span class="tt">if (predicate(args...)) <a class="el" href="namespaceghassanpl_1_1op.html" title="Appropriate for functions like std::for_each that don&#39;t have semantics by themselves.">op(args...)</a>;</span>.  <br /></td></tr>
+<tr class="memdesc:a53997bd719834edc04088a3e11976fa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acts as <span class="tt">if (predicate(args...)) <a class="el" href="namespaceghassanpl_1_1op.html" title="Contains functions that return functors that perform an operation without output; appropriate for fun...">op(args...)</a>;</span>.  <br /></td></tr>
 <tr class="memitem:adca16dc2904de87a7fc8c876ea9a3b9d" id="r_adca16dc2904de87a7fc8c876ea9a3b9d"><td class="memTemplParams" colspan="2">template&lt;typename THEN, typename IF, typename ELSE_VAL&gt; </td></tr>
 <tr class="memitem:adca16dc2904de87a7fc8c876ea9a3b9d template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#adca16dc2904de87a7fc8c876ea9a3b9d">call_when</a> (THEN &amp;&amp;<a class="el" href="namespaceghassanpl_1_1op.html">op</a>, IF &amp;&amp;predicate, ELSE_VAL &amp;&amp;elseval)</td></tr>
-<tr class="memdesc:adca16dc2904de87a7fc8c876ea9a3b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acts as <span class="tt">if (predicate(args...)) <a class="el" href="namespaceghassanpl_1_1op.html" title="Appropriate for functions like std::for_each that don&#39;t have semantics by themselves.">op(args...)</a>;</span>.  <br /></td></tr>
+<tr class="memdesc:adca16dc2904de87a7fc8c876ea9a3b9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acts as <span class="tt">if (predicate(args...)) <a class="el" href="namespaceghassanpl_1_1op.html" title="Contains functions that return functors that perform an operation without output; appropriate for fun...">op(args...)</a>;</span>.  <br /></td></tr>
 <tr class="memitem:ab5ec9df503c1395fd2a5c632eab59408" id="r_ab5ec9df503c1395fd2a5c632eab59408"><td class="memTemplParams" colspan="2">template&lt;typename THEN, typename IF, typename ELSE&gt; </td></tr>
 <tr class="memitem:ab5ec9df503c1395fd2a5c632eab59408 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ab5ec9df503c1395fd2a5c632eab59408">call_when_else</a> (THEN &amp;&amp;<a class="el" href="namespaceghassanpl_1_1op.html">op</a>, IF &amp;&amp;predicate, ELSE &amp;&amp;elseop)</td></tr>
-<tr class="memdesc:ab5ec9df503c1395fd2a5c632eab59408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acts as <span class="tt">if (predicate(args...)) return <a class="el" href="namespaceghassanpl_1_1op.html" title="Appropriate for functions like std::for_each that don&#39;t have semantics by themselves.">op(args...)</a>; else return elseop(args...);</span>.  <br /></td></tr>
+<tr class="memdesc:ab5ec9df503c1395fd2a5c632eab59408"><td class="mdescLeft">&#160;</td><td class="mdescRight">Acts as <span class="tt">if (predicate(args...)) return <a class="el" href="namespaceghassanpl_1_1op.html" title="Contains functions that return functors that perform an operation without output; appropriate for fun...">op(args...)</a>; else return elseop(args...);</span>.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Appropriate for functions like std::for_each that don't have semantics by themselves. </p>
+<div class="textblock"><p>Contains functions that return functors that perform an operation without output; appropriate for functions like <span class="tt">std::for_each</span>. </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
 <a id="a1107b1af20c32d4f41950c1331dd57b7" name="a1107b1af20c32d4f41950c1331dd57b7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1107b1af20c32d4f41950c1331dd57b7">&#9670;&#160;</a></span>add_to()</h2>
@@ -172,7 +172,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00151">151</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00161">161</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -201,7 +201,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00144">144</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00154">154</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -230,7 +230,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00150">150</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00160">160</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -262,7 +262,7 @@ template&lt;typename... FUNCS&gt; </div>
 <p>For funcs a, b, c, calls them as <span class="tt">return (a(args...), b(args...), c(args...))</span>. </p>
 <dl class="section return"><dt>Returns</dt><dd>return value of last call forwarding FUNCS can throw </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00158">158</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00168">168</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -293,7 +293,7 @@ template&lt;typename F&gt; </div>
 
 <p>forwarding F can throw </p>
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00168">168</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00178">178</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -329,7 +329,7 @@ template&lt;typename F, typename ... Fs&gt; </div>
 <p>For funcs a, b, c, calls them as <span class="tt">return a(b(c(args...)))</span>. </p>
 <p>forwarding F or Fs can throw </p>
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00175">175</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00185">185</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -360,7 +360,7 @@ template&lt;typename F&gt; </div>
 
 <p>forwarding F can throw </p>
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00183">183</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00193">193</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -396,7 +396,7 @@ template&lt;typename F, typename ... Fs&gt; </div>
 <p>For funcs a, b, c, calls them as <span class="tt">return c(b(a(args...)));</span> or <span class="tt">return a(args...) |&gt; b |&gt; c;</span>. </p>
 <p>forwarding F or Fs can throw </p>
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00190">190</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00200">200</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -429,9 +429,9 @@ template&lt;typename THEN, typename IF&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Acts as <span class="tt">if (predicate(args...)) <a class="el" href="namespaceghassanpl_1_1op.html" title="Appropriate for functions like std::for_each that don&#39;t have semantics by themselves.">op(args...)</a>;</span>. </p>
+<p>Acts as <span class="tt">if (predicate(args...)) <a class="el" href="namespaceghassanpl_1_1op.html" title="Contains functions that return functors that perform an operation without output; appropriate for fun...">op(args...)</a>;</span>. </p>
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00199">199</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00209">209</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -469,9 +469,9 @@ template&lt;typename THEN, typename IF, typename ELSE_VAL&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Acts as <span class="tt">if (predicate(args...)) <a class="el" href="namespaceghassanpl_1_1op.html" title="Appropriate for functions like std::for_each that don&#39;t have semantics by themselves.">op(args...)</a>;</span>. </p>
+<p>Acts as <span class="tt">if (predicate(args...)) <a class="el" href="namespaceghassanpl_1_1op.html" title="Contains functions that return functors that perform an operation without output; appropriate for fun...">op(args...)</a>;</span>. </p>
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00209">209</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00219">219</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -509,9 +509,9 @@ template&lt;typename THEN, typename IF, typename ELSE&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Acts as <span class="tt">if (predicate(args...)) return <a class="el" href="namespaceghassanpl_1_1op.html" title="Appropriate for functions like std::for_each that don&#39;t have semantics by themselves.">op(args...)</a>; else return elseop(args...);</span>. </p>
+<p>Acts as <span class="tt">if (predicate(args...)) return <a class="el" href="namespaceghassanpl_1_1op.html" title="Contains functions that return functors that perform an operation without output; appropriate for fun...">op(args...)</a>; else return elseop(args...);</span>. </p>
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00225">225</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00235">235</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -540,7 +540,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00141">141</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00151">151</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -569,7 +569,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00143">143</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00153">153</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -598,7 +598,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00145">145</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00155">155</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -627,7 +627,7 @@ template&lt;typename T, GHPL_TYPENAME(std::output_iterator&lt; T &gt;) IT&gt; </
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00148">148</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00158">158</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -656,7 +656,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00140">140</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00150">150</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -685,7 +685,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00142">142</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00152">152</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -714,7 +714,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00153">153</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00163">163</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -743,7 +743,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00152">152</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00162">162</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>

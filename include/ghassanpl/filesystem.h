@@ -19,6 +19,14 @@ namespace ghassanpl::fs
 	using stdfs::file_type;
 	using stdfs::file_time_type;
 
+	/// \defgroup Filesystem Filesystem
+	/// Additional functionality that helps with features in `<filesystem>`
+	
+	/// \defgroup FSExpected Filesystem Expected
+	/// \ingroup Filesystem
+	/// The functions in this module mirror those in <filesystem>, except they return an `expected<result_type, error_code>` instead of throwing or taking an `error_code&`
+	/// @{
+
 	[[nodiscard]] inline auto absolute(const stdfs::path& path) -> expected<stdfs::path, std::error_code> { std::error_code ec{}; auto result = stdfs::absolute(path, ec); if (ec) return unexpected(ec); return result; }
 	[[nodiscard]] inline auto canonical(const stdfs::path& path) -> expected<stdfs::path, std::error_code> { std::error_code ec{}; auto result = stdfs::canonical(path, ec); if (ec) return unexpected(ec); return result; }
 	[[nodiscard]] inline auto weakly_canonical(const stdfs::path& path) -> expected<stdfs::path, std::error_code> { std::error_code ec{}; auto result = stdfs::weakly_canonical(path, ec); if (ec) return unexpected(ec); return result; }
@@ -78,8 +86,10 @@ namespace ghassanpl::fs
 	[[nodiscard]] inline auto is_socket(const stdfs::path& p) -> expected<bool, std::error_code> { std::error_code ec{}; auto result = stdfs::is_socket(p, ec); if (ec) return unexpected(ec); return result; }
 	[[nodiscard]] inline auto is_symlink(const stdfs::path& p) -> expected<bool, std::error_code> { std::error_code ec{}; auto result = stdfs::is_symlink(p, ec); if (ec) return unexpected(ec); return result; }
 
+	/// @}
 
 	/// As if `to /= p`
+	/// \ingroup Filesystem
 	inline void path_append(std::string& to, path const& p)
 	{
 #if 1

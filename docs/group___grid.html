@@ -216,7 +216,7 @@ template&lt;typename TILE_DATA, bool RESIZABLE, change_tile_callback&lt; TILE_DA
 <p>Whether a tile should be flooded will depend on if it compares equal to a <b>copy</b> of the tile at <span class="tt">start</span> </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">start</td><td>where to start flooding </td></tr>
-    <tr><td class="paramname">should_flood</td><td>queries whether the given tile should be flooded </td></tr>
+    <tr><td class="paramname">replace</td><td>will be called on each tile that needs to be flooded, to change it </td></tr>
   </table>
   </dd>
 </dl>
@@ -343,7 +343,7 @@ template&lt;typename TILE_DATA, bool RESIZABLE, query_tile_callback&lt; TILE_DAT
 <p>Performs a flood-fill algorithm on <span class="tt"><a class="el" href="structghassanpl_1_1geometry_1_1squares_1_1grid.html" title="A container for squares in a 2D square grid.">grid</a></span>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">start</td><td>where to start flooding; <span class="tt">should_flood(start)</span> should be <span class="tt">true</span> before <span class="tt">grid.at(start) = replace_with</span>, and <span class="tt">false</span> afterwards </td></tr>
+    <tr><td class="paramname">start</td><td>where to start flooding; <span class="tt">should_flood(start)</span> should be <span class="tt">true</span> before <span class="tt">*grid.at(start) = replace_with</span>, and <span class="tt">false</span> afterwards </td></tr>
     <tr><td class="paramname">replace_with</td><td>the tile data to set on each square that should be flooded </td></tr>
     <tr><td class="paramname">should_flood</td><td>queries whether the given tile should be flooded </td></tr>
   </table>

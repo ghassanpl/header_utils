@@ -9,7 +9,6 @@
 
 namespace ghassanpl
 {
-
 	namespace detail
 	{
 		template<size_t N>
@@ -21,37 +20,52 @@ namespace ghassanpl
 		};
 	}
 
+	/// \defgroup NamedTraits Traits
+	/// Contains traits for the `named` template
+	/// \ingroup Named
+	/// @{
 	namespace traits
 	{
+		/// Specifies that the named type can be addable to itself
 		struct addable { 
 			template <typename SELF_TYPE, typename OTHERS_SELF_TYPE = SELF_TYPE>
 			//static constexpr bool applies_to = requires (SELF_TYPE::base_type a, std::remove_cvref_t<OTHERS_SELF_TYPE>::base_type b) { { a + b } -> std::convertible_to<SELF_TYPE::base_type>; };
 			static constexpr bool applies_to = true;
 		};
+
+		/// Specifies that the named type can be subtractable from itself
 		struct subtractable { 
 			template <typename SELF_TYPE, typename OTHERS_SELF_TYPE = SELF_TYPE>
 			//static constexpr bool applies_to = requires (SELF_TYPE::base_type a, std::remove_cvref_t<OTHERS_SELF_TYPE>::base_type b) { { a - b } -> std::convertible_to<SELF_TYPE::base_type>; };
 			static constexpr bool applies_to = true;
 		};
 
+		/// Makes the `named` incrementable
 		struct incrementable {
 			template <typename SELF_TYPE>
 			static constexpr bool applies_to = true;
 		};
 
-		/// This trait implies the named type is an affine type, that is, a type that does not have the addition operator defined on itself
+		/// This trait implies the named type is an affine type, that is, a type that does not have the addition operator defined on itself.
 		/// Examples: date, position
 		struct location { template <typename SELF_TYPE> static constexpr bool applies_to = true; };
 		
 		/// This trait implies the named type is an linear type, that is, a type that has the addition operator defined on itself
-		/// Example: 
+		/// Implies `addable`
+		/// Example: length, offset
 		struct displacement { template <typename SELF_TYPE> static constexpr bool applies_to = true; };
 
+		/// Specifies that the named type can be implicitly convertible from its base type
 		struct implicitly_convertible { template <typename SELF_TYPE> static constexpr bool applies_to = true; };
+
+		/// Specifies that the named type can be implicitly constructible from its base type
 		struct implicitly_constructible { template <typename SELF_TYPE> static constexpr bool applies_to = true; };
+		
+		/// Specifies that the named type can be implicitly constructible from another type
 		template <typename T>
 		struct implicitly_constructible_from { using type = T; template <typename SELF_TYPE> static constexpr bool applies_to = true; };
 		
+		/// Used in conjuction with `traits::displacement`, specifies which location type this is a displacement of
 		template <typename LOCATION_NAMED_TYPE>
 		struct is_displacement_of {
 			using location_type = LOCATION_NAMED_TYPE;
@@ -59,12 +73,19 @@ namespace ghassanpl
 			static constexpr bool applies_to = std::same_as<typename std::remove_cvref_t<LOCATION_NAMED_TYPE>::base_type, typename SELF_TYPE::base_type>;
 		};
 
+		/// Used in conjuction with `traits::location`, specifies which displacement type this is a location of
 		template <typename DISPLACEMENT_NAMED_TYPE>
 		struct is_location_of {
 			using displacement_type = DISPLACEMENT_NAMED_TYPE;
 			template <typename SELF_TYPE>
 			static constexpr bool applies_to = std::same_as<typename std::remove_cvref_t<DISPLACEMENT_NAMED_TYPE>::base_type, typename SELF_TYPE::base_type>;
 		};
+
+		// TODO: not_equality_comparable
+		// TODO: not_orderable
+		// TODO: multipliable, multipliable_by_scalar<T>
+		// TODO: divisible, divisible_by_scalar<T>
+		// TODO: constructible_using<FROM, CONVERSION_FUNCTOR>
 
 		template <typename DISPLACEMENT_TYPE, typename LOCATION_TYPE>
 		concept named_is_displacement_of =
@@ -75,14 +96,35 @@ namespace ghassanpl
 		template <typename NAMED_TYPE, typename TRAIT_TYPE>
 		concept applies_to = std::remove_cvref_t<NAMED_TYPE>::template has_trait<std::remove_cvref_t<TRAIT_TYPE>>;
 	}
+	/// @}
 
+	/// \defgroup Named Named-Type Pattern
+	/// Defines a 'strong typedef' template which is used extensively to create strongly-typed wrappers around other types.
+	/// By default, it needs to be **explicitly** constructed from its base type, and is **not** implicitly convertible to its base type.
+	/// Most other operations need to be explicitly enabled via the `TRAITS` template parameter pack.
+	/// 
+	/// @{
+
+	/// Used to create a strong typedef around `T`.
+	/// Usage:
+	/// ```c++
+	/// using length = named<double, "length", traits::displacement>;
+	/// using position = named<double, "position", traits::location, traits::is_location_of<length>>;
+	/// length n = length{10} + length{20};         // OK, lengths are addable
+	/// position n2 = position{100} + length{10};   // OK, you can add a position to a length, resulting in a new position
+	/// auto nope = position{100} + position{200};  // Will not compile; doesn't make sense to sum positions
+	/// length yes = position{200} - position{100}; // OK; subtracting positions will return in a length
+	/// ```
 	template <typename T, detail::FixedString PARAMETER, typename... TRAITS>
 	struct named
 	{
+		/// \private
+		/// @{
 		using addable = traits::addable;
 		using subtractable = traits::subtractable;
 		using location = traits::location;
 		using displacement = traits::displacement;
+		/// @}
 		
 		using base_type = T;
 		using self_type = named<T, PARAMETER, TRAITS...>;
@@ -92,7 +134,7 @@ namespace ghassanpl
 		template <typename U>
 		static constexpr auto find_displacement_type_impl(traits::is_location_of<U>)
 		{
-			return std::type_identity<std::remove_cvref_t<T>>{};
+			return std::type_identity<std::remove_cvref_t<U>>{};
 		}
 		static constexpr auto find_displacement_type_impl(...)
 		{
@@ -204,7 +246,7 @@ namespace ghassanpl
 			return *this;
 		}
 
-		constexpr auto operator+(self_type const& val) const /// TODO: these should be forwarding references
+		constexpr auto operator+(self_type const& val) const // TODO: these should be forwarding references
 		requires has_trait<displacement> || has_trait<addable>
 		{
 			return self_type{ this->value + val.value };
@@ -222,20 +264,13 @@ namespace ghassanpl
 			return self_type{ +this->value };
 		}
 
-		constexpr auto& operator+=(self_type const& val) /// TODO: these should be forwarding references
+		constexpr auto& operator+=(self_type const& val) // TODO: these should be forwarding references
 		requires has_trait<displacement> || has_trait<addable>
 		{
 			this->value += val.value;
 			return *this;
 		}
 
-		/*
-		constexpr auto operator-(self_type const& val) const
-		requires (has_trait<displacement> || has_trait<subtractable>) && (!has_trait<location>)
-		{
-			return self_type{ this->value - val.value };
-		}
-		*/
 
 		friend constexpr auto operator-(self_type const& other, self_type const& self)
 		requires (has_trait<displacement> || has_trait<subtractable>) && (!has_trait<location>)
@@ -243,8 +278,7 @@ namespace ghassanpl
 			return self_type{ other.value - self.value };
 		}
 
-		/// TODO: Make this work for locations by usins super-duper TMP tricks to find the displacement_type for this location type
-		constexpr auto operator-(self_type val) const
+		constexpr auto operator-(self_type const& val) const
 		requires (has_trait<location>) && (!std::same_as<displacement_type, void>)
 		{
 			return displacement_type{ this->value - val.value };
@@ -305,6 +339,26 @@ namespace ghassanpl
 
 	};
 
+	/// Creates a user-defined string literal which will result in a given `named` type
+#define ghassanpl_named_string_literal(named_name, suffix) \
+	inline named_name operator "" suffix(const char* str, std::size_t len) { \
+		return named_name{named_name::base_type{str,len}}; \
+	}
+
+	/// Creates a user-defined integer literal which will result in a given `named` type
+#define ghassanpl_named_integer_literal(named_name, suffix) \
+	inline named_name operator "" suffix(unsigned long long int val) { \
+		return named_name{named_name::base_type(val)}; \
+	}
+
+	/// Creates a user-defined floating-point literal which will result in a given `named` type
+#define ghassanpl_named_float_literal(named_name, suffix) \
+	inline named_name operator "" suffix(long double val) { \
+		return named_name{named_name::base_type(val)}; \
+	}
+
+	/// @}
+
 	static_assert(std::is_trivially_copyable_v<named<int, "int">> == std::is_trivially_copyable_v<int>);
 
 	namespace detail {
@@ -328,13 +382,5 @@ namespace ghassanpl
 		using std::lerp;
 		return named<T, PARAMETER, TRAITS...>{ lerp(value_a.value, value_b.value, std::forward<ALPHA>(alpha)) };
 	}
-
-#define ghassanpl_named_string_literal(named_name, suffix) \
-	inline named_name operator "" suffix(const char* str, std::size_t len) { \
-		return named_name{named_name::base_type{str,len}}; \
-	}
-
-#define ghassanpl_named_string_literal_ce(named_name, suffix) \
-	constexpr ghassanpl_named_string_literal(named_name, suffix)
 
 }

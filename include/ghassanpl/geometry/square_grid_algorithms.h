@@ -140,17 +140,17 @@ namespace ghassanpl::geometry::squares
 	/// Performs a flood-fill algorithm on `grid`.
 	/// Whether a tile should be flooded will depend on if it compares equal to a **copy** of the tile at `start`
 	/// \param start where to start flooding
-	/// \param should_flood queries whether the given tile should be flooded
+	/// \param replace will be called on each tile that needs to be flooded, to change it
 	template <typename TILE_DATA, bool RESIZABLE, change_tile_callback<TILE_DATA> REPLACE_FUNC>
 	void flood_at(grid<TILE_DATA, RESIZABLE>& grid, glm::ivec2 start, REPLACE_FUNC&& replace)
 	{
 		static_assert(std::equality_comparable<TILE_DATA>, "To use this flood fill algorithm, tile data in this grid must be comparable using operator==");
-		const auto data_at_start = grid.at(start);
+		const auto* data_at_start = grid.at(start);
 		flood_at(grid, start, std::forward<REPLACE_FUNC>(replace), [data_at_start](glm::ivec2 at, TILE_DATA const& data) { return data == *data_at_start; });
 	}
 
 	/// Performs a flood-fill algorithm on `grid`.
-	/// \param start where to start flooding; `should_flood(start)` should be `true` before `grid.at(start) = replace_with`, and `false` afterwards
+	/// \param start where to start flooding; `should_flood(start)` should be `true` before `*grid.at(start) = replace_with`, and `false` afterwards
 	/// \param replace_with the tile data to set on each square that should be flooded
 	/// \param should_flood queries whether the given tile should be flooded
 	template <typename TILE_DATA, bool RESIZABLE, query_tile_callback<TILE_DATA> SHOULD_FLOOD_FUNC>

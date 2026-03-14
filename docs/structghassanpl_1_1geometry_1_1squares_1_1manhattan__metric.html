@@ -101,14 +101,14 @@ $(function(){initNavTree('structghassanpl_1_1geometry_1_1squares_1_1manhattan__m
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ab4716f65b362a594c397973a0d768603" id="r_ab4716f65b362a594c397973a0d768603"><td class="memTemplParams" colspan="2">template&lt;std::integral T&gt; </td></tr>
 <tr class="memitem:ab4716f65b362a594c397973a0d768603 template"><td class="memItemLeft">static constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ab4716f65b362a594c397973a0d768603">is_adjacent</a> (glm::tvec2&lt; T &gt; a, glm::tvec2&lt; T &gt; b)</td></tr>
-<tr class="memitem:abe792d519c3dacfb0755fe69fd2ce2e6" id="r_abe792d519c3dacfb0755fe69fd2ce2e6"><td class="memItemLeft">static constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#abe792d519c3dacfb0755fe69fd2ce2e6">is_valid_direction</a> (direction dir)</td></tr>
+<tr class="memitem:a9128da0819c01c7055622709ceb5f752" id="r_a9128da0819c01c7055622709ceb5f752"><td class="memItemLeft">static constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a9128da0819c01c7055622709ceb5f752">is_adjacent</a> (direction dir)</td></tr>
 <tr class="memitem:ad1753c03c1aa77503c06cb5bf527dff8" id="r_ad1753c03c1aa77503c06cb5bf527dff8"><td class="memTemplParams" colspan="2">template&lt;std::integral T&gt; </td></tr>
 <tr class="memitem:ad1753c03c1aa77503c06cb5bf527dff8 template"><td class="memItemLeft">static constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ad1753c03c1aa77503c06cb5bf527dff8">distance</a> (glm::tvec2&lt; T &gt; a, glm::tvec2&lt; T &gt; b)</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Metric in which only neighbors are adjacent. </p>
 
-<p class="definition">Definition at line <a class="el" href="squares_8h_source.html#l00055">55</a> of file <a class="el" href="squares_8h_source.html">squares.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="squares_8h_source.html#l00061">61</a> of file <a class="el" href="squares_8h_source.html">squares.h</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
 <a id="ad1753c03c1aa77503c06cb5bf527dff8" name="ad1753c03c1aa77503c06cb5bf527dff8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad1753c03c1aa77503c06cb5bf527dff8">&#9670;&#160;</a></span>distance()</h2>
@@ -139,12 +139,39 @@ template&lt;std::integral T&gt; </div>
 </table>
 </div><div class="memdoc">
 
+<p class="definition">Definition at line <a class="el" href="squares_8h_source.html#l00075">75</a> of file <a class="el" href="squares_8h_source.html">squares.h</a>.</p>
+
+</div>
+</div>
+<a id="a9128da0819c01c7055622709ceb5f752" name="a9128da0819c01c7055622709ceb5f752"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9128da0819c01c7055622709ceb5f752">&#9670;&#160;</a></span>is_adjacent() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto ghassanpl::geometry::squares::manhattan_metric::is_adjacent </td>
+          <td>(</td>
+          <td class="paramtype">direction</td>          <td class="paramname"><span class="paramname"><em>dir</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 <p class="definition">Definition at line <a class="el" href="squares_8h_source.html#l00069">69</a> of file <a class="el" href="squares_8h_source.html">squares.h</a>.</p>
 
 </div>
 </div>
 <a id="ab4716f65b362a594c397973a0d768603" name="ab4716f65b362a594c397973a0d768603"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4716f65b362a594c397973a0d768603">&#9670;&#160;</a></span>is_adjacent()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4716f65b362a594c397973a0d768603">&#9670;&#160;</a></span>is_adjacent() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -172,34 +199,7 @@ template&lt;std::integral T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="squares_8h_source.html#l00058">58</a> of file <a class="el" href="squares_8h_source.html">squares.h</a>.</p>
-
-</div>
-</div>
-<a id="abe792d519c3dacfb0755fe69fd2ce2e6" name="abe792d519c3dacfb0755fe69fd2ce2e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe792d519c3dacfb0755fe69fd2ce2e6">&#9670;&#160;</a></span>is_valid_direction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">constexpr auto ghassanpl::geometry::squares::manhattan_metric::is_valid_direction </td>
-          <td>(</td>
-          <td class="paramtype">direction</td>          <td class="paramname"><span class="paramname"><em>dir</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="squares_8h_source.html#l00063">63</a> of file <a class="el" href="squares_8h_source.html">squares.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="squares_8h_source.html#l00064">64</a> of file <a class="el" href="squares_8h_source.html">squares.h</a>.</p>
 
 </div>
 </div>

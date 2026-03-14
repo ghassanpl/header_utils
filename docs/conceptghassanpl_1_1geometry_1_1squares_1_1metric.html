@@ -99,15 +99,18 @@ $(function(){initNavTree('conceptghassanpl_1_1geometry_1_1squares_1_1metric.html
 <h2 id="header-conceptdef" class="groupheader">Concept definition</h2>
 <div class="fragment"><div class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> METRIC, <span class="keyword">typename</span> T&gt;</div>
 <div class="line"><span class="keyword">concept </span><a class="code hl_concept" href="conceptghassanpl_1_1geometry_1_1squares_1_1metric.html">metric</a> = std::integral&lt;T&gt; &amp;&amp; <span class="keyword">requires</span> (T t, glm::tvec2&lt;T&gt; vec) {</div>
-<div class="line">        { METRIC::is_adjacent(vec, vec) } -&gt; std::convertible_to&lt;bool&gt;;</div>
-<div class="line">        { METRIC::is_valid_direction(direction{}) } -&gt; std::convertible_to&lt;bool&gt;;</div>
-<div class="line">        { METRIC::distance(vec, vec) } -&gt; std::convertible_to&lt;T&gt;;</div>
+<div class="ttc" id="aconceptghassanpl_1_1geometry_1_1squares_1_1metric_html"><div class="ttname"><a href="conceptghassanpl_1_1geometry_1_1squares_1_1metric.html">ghassanpl::geometry::squares::metric</a></div><div class="ttdoc">Any type that meets the criteria of a metric - specifying the adjacency/distances between squares.</div><div class="ttdef"><b>Definition</b> <a href="squares_8h_source.html#l00049">squares.h:49</a></div></div>
+</div><!-- fragment --><div class="embeddoc" style="margin-left:2ch;"><p><span class="tt">is_adjacent(vec, vec)</span> should return whether two squares are adjacent </p>
+</div><div class="fragment"><div class="line">        { METRIC::is_adjacent(vec, vec) } -&gt; std::convertible_to&lt;bool&gt;;</div>
+</div><!-- fragment --><div class="embeddoc" style="margin-left:2ch;"><p><span class="tt">is_adjacent(direction)</span> should return whether a square in the direction of another square is adjacent </p>
+</div><div class="fragment"><div class="line">        { METRIC::is_adjacent(direction{}) } -&gt; std::convertible_to&lt;bool&gt;;</div>
+</div><!-- fragment --><div class="embeddoc" style="margin-left:2ch;"><p><span class="tt">distance(vec, vec)</span> should return a tile distance between two tile positions within this metric. Note that this is different than the concept of distances in a world (where tiles have sizes). The distance here can be thought of as the minimum number of 'hops' between adjacent squares to move from one position to another. </p>
+</div><div class="fragment"><div class="line">        { METRIC::distance(vec, vec) } -&gt; std::convertible_to&lt;T&gt;;</div>
 <div class="line">    }</div>
-<div class="ttc" id="aconceptghassanpl_1_1geometry_1_1squares_1_1metric_html"><div class="ttname"><a href="conceptghassanpl_1_1geometry_1_1squares_1_1metric.html">ghassanpl::geometry::squares::metric</a></div><div class="ttdoc">Any type that meets the criteria of a metric - specifying the adjacency/distances between squares.</div><div class="ttdef"><b>Definition</b> <a href="squares_8h_source.html#l00048">squares.h:48</a></div></div>
 </div><!-- fragment --><a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Any type that meets the criteria of a <span class="tt">metric</span> - specifying the adjacency/distances between squares. </p>
 
-<p class="definition">Definition at line <a class="el" href="squares_8h_source.html#l00048">48</a> of file <a class="el" href="squares_8h_source.html">squares.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="squares_8h_source.html#l00049">49</a> of file <a class="el" href="squares_8h_source.html">squares.h</a>.</p>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

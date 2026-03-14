@@ -185,9 +185,14 @@ namespace ghassanpl::geometry
 	
 	template <std::floating_point T> using basic_heading_t = named<T, "heading", traits::location, traits::is_location_of<basic_degrees_t<T>>>;
 
-	using degrees = basic_degrees_t<float>;
-	using radians = basic_radians_t<float>;
-	using heading = basic_heading_t<float>;
+	using degrees = basic_degrees_t<float>; ghassanpl_named_float_literal(degrees, _deg);
+	using radians = basic_radians_t<float>; ghassanpl_named_float_literal(degrees, _rad);
+	using heading = basic_heading_t<float>; ghassanpl_named_float_literal(degrees, _head);
+
+	template <std::floating_point T>
+	constexpr basic_degrees_t<T> to_degrees(basic_radians_t<T> r) { return degrees{ glm::degrees(*r) }; }
+	template <std::floating_point T>
+	constexpr basic_radians_t<T> to_radians(basic_degrees_t<T> r) { return degrees{ glm::radians(*r) }; }
 
 	template <typename TARGET, std::floating_point T>
 	requires std::same_as<TARGET, basic_degrees_t<T>>
@@ -202,7 +207,6 @@ namespace ghassanpl::geometry
 	{
 		return basic_radians_t<T>{ glm::radians(degrees.value) };
 	}
-
 
 	namespace angles
 	{

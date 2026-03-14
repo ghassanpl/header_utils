@@ -98,15 +98,13 @@ $(function(){initNavTree('group___assuming.html','',''); });
 <tr class="heading"><td colspan="2"><h2 id="header-define-members" class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
 <tr class="memitem:ga218eb441da34d0d145c8215bec946304" id="r_ga218eb441da34d0d145c8215bec946304"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ga218eb441da34d0d145c8215bec946304">ASSUMING_DEBUG</a></td></tr>
-<tr class="memdesc:ga218eb441da34d0d145c8215bec946304"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can define this macro project-wide to either 0 or 1 to disable or enable checking of assumptions.  <br /></td></tr>
+<tr class="memdesc:ga218eb441da34d0d145c8215bec946304"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can define this macro to either 0 or 1 to disable or enable checking of assumptions.  <br /></td></tr>
 <tr class="memitem:ga80dcba370ab17ab332b2f90182753c55" id="r_ga80dcba370ab17ab332b2f90182753c55"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ga80dcba370ab17ab332b2f90182753c55">ASSUMING_INCLUDE_MAGIC_ENUM</a></td></tr>
-<tr class="memdesc:ga80dcba370ab17ab332b2f90182753c55"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can define this macro project-wide to either 1 or 0 to include <span class="tt">&lt;magic_enum.hpp&gt;</span> or not, if you want prettier printing of enum names.  <br /></td></tr>
-<tr class="memitem:ga447121dcab4275b7839a56082b7a1ab8" id="r_ga447121dcab4275b7839a56082b7a1ab8"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ga447121dcab4275b7839a56082b7a1ab8">__has_builtin</a>(x)</td></tr>
+<tr class="memdesc:ga80dcba370ab17ab332b2f90182753c55"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can define this macro to either 1 or 0 to include <span class="tt">&lt;magic_enum.hpp&gt;</span> or not, if you want prettier printing of enum names.  <br /></td></tr>
+<tr class="memitem:ga04f71f7cbae992eb4a580f437e7cad3c" id="r_ga04f71f7cbae992eb4a580f437e7cad3c"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ga04f71f7cbae992eb4a580f437e7cad3c">ASSUMING_BREAKPOINT</a></td></tr>
+<tr class="memdesc:ga04f71f7cbae992eb4a580f437e7cad3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can define this macro project-wide (or before including this header) if you want to specify the behavior of the <span class="tt">Break</span> option that can be requested by the assumption failure handler.  <br /></td></tr>
 <tr class="memitem:gacf281ddabc99310b874ec4dedd0fbdc1" id="r_gacf281ddabc99310b874ec4dedd0fbdc1"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#gacf281ddabc99310b874ec4dedd0fbdc1">ASSUMING_USE_STACKTRACE</a></td></tr>
-<tr class="memitem:ga81bcc479253bfe5132e413612e823461" id="r_ga81bcc479253bfe5132e413612e823461"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ga81bcc479253bfe5132e413612e823461">GHPL_UNREACHABLE</a>()</td></tr>
-<tr class="memitem:ga9070b3d19613d4651f84b08564d745dc" id="r_ga9070b3d19613d4651f84b08564d745dc"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ga9070b3d19613d4651f84b08564d745dc">GHPL_ASSUME</a>(...)</td></tr>
-<tr class="memitem:ga225ed4c857be3533753729c42b688038" id="r_ga225ed4c857be3533753729c42b688038"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ga225ed4c857be3533753729c42b688038">ASSUMING_HANDLE_HANDLER_RESULT</a>(result)</td></tr>
-<tr class="memitem:ga429a105b33b29d571fa07f83aee10fcb" id="r_ga429a105b33b29d571fa07f83aee10fcb"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ga429a105b33b29d571fa07f83aee10fcb">ASSUMING_REPORT</a>(...)</td></tr>
+<tr class="memdesc:gacf281ddabc99310b874ec4dedd0fbdc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">You can define this macro to 1 or 0 to include <span class="tt">&lt;stacktrace&gt;</span> (if available) or not; if this functionality is available, an <span class="tt">std::stacktrace</span> will be given to the assumption failure handler.  <br /></td></tr>
 <tr class="memitem:gacb8c2dbffc103683379b80af5b13e490" id="r_gacb8c2dbffc103683379b80af5b13e490"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#gacb8c2dbffc103683379b80af5b13e490">Assuming</a>(exp, ...)</td></tr>
 <tr class="memdesc:gacb8c2dbffc103683379b80af5b13e490"><td class="mdescLeft">&#160;</td><td class="mdescRight">The basic Assuming macro. Assumes the term is true. Expression result must be convertible to bool.  <br /></td></tr>
 <tr class="memitem:ga61e53b2612cb6d55989b08882742ec36" id="r_ga61e53b2612cb6d55989b08882742ec36"><td class="memItemLeft">#define&#160;</td><td class="memItemRight"><a class="el" href="#ga61e53b2612cb6d55989b08882742ec36">AssumingNotReachable</a>(...)</td></tr>
@@ -163,7 +161,7 @@ Macros</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
 <tr class="memitem:gac8103791bc87e3a83056eb36db42b41d" id="r_gac8103791bc87e3a83056eb36db42b41d"><td class="memItemLeft">auto(*&#160;</td><td class="memItemRight"><a class="el" href="#gac8103791bc87e3a83056eb36db42b41d">ghassanpl::AssumptionFailureHandler</a> )(std::string_view expectation, std::initializer_list&lt; std::pair&lt; std::string_view, std::string &gt; &gt; values, std::string data, source_location loc) -&gt; <a class="el" href="namespaceghassanpl.html#ab5a0f4c7ffcd4f4e36aa90edf539e0c6">AssumptionHandlerResult</a>=nullptr</td></tr>
-<tr class="memdesc:gac8103791bc87e3a83056eb36db42b41d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function must be provided by your own code, as it is called by an assumption macro with a failing assumption.  <br /></td></tr>
+<tr class="memdesc:gac8103791bc87e3a83056eb36db42b41d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This variable should be set to a handler function by your own code, as it is called by an assumption macro with a failing assumption; if you do not provide it, an exception with an unspecified type will be thrown.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>An in-my-humble-opinion better version of the <span class="tt">assert</span> concept. </p>
@@ -184,25 +182,6 @@ Variables</h2></td></tr>
 <li>Slightly non-idiomatic naming conventions as well as some tiny assumptions about the user code-base. </li>
 </ul>
 </div><a name="doc-define-members" id="doc-define-members"></a><h2 id="header-doc-define-members" class="groupheader">Macro Definition Documentation</h2>
-<a id="ga447121dcab4275b7839a56082b7a1ab8" name="ga447121dcab4275b7839a56082b7a1ab8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga447121dcab4275b7839a56082b7a1ab8">&#9670;&#160;</a></span>__has_builtin</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define __has_builtin</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>x</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00060">60</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
-
-</div>
-</div>
 <a id="gacb8c2dbffc103683379b80af5b13e490" name="gacb8c2dbffc103683379b80af5b13e490"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gacb8c2dbffc103683379b80af5b13e490">&#9670;&#160;</a></span>Assuming</h2>
 
@@ -224,7 +203,26 @@ Variables</h2></td></tr>
 
 <p>The basic Assuming macro. Assumes the term is true. Expression result must be convertible to bool. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00127">127</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00147">147</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+
+</div>
+</div>
+<a id="ga04f71f7cbae992eb4a580f437e7cad3c" name="ga04f71f7cbae992eb4a580f437e7cad3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga04f71f7cbae992eb4a580f437e7cad3c">&#9670;&#160;</a></span>ASSUMING_BREAKPOINT</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ASSUMING_BREAKPOINT</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>You can define this macro project-wide (or before including this header) if you want to specify the behavior of the <span class="tt">Break</span> option that can be requested by the assumption failure handler. </p>
+<p>If it's not defined, the default compiler breakpoint facility will be used; if no facility is available, a caught <span class="tt">throw 0</span> can be detected by the compiler in "Break on all exceptions" mode while still being able to continue through the code. </p>
+
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00071">71</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -240,29 +238,10 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>You can define this macro project-wide to either 0 or 1 to disable or enable checking of assumptions. </p>
+<p>You can define this macro to either 0 or 1 to disable or enable checking of assumptions. </p>
 <p>If this macro is not defined, its value is based on the NDEBUG macro. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00041">41</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
-
-</div>
-</div>
-<a id="ga225ed4c857be3533753729c42b688038" name="ga225ed4c857be3533753729c42b688038"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga225ed4c857be3533753729c42b688038">&#9670;&#160;</a></span>ASSUMING_HANDLE_HANDLER_RESULT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ASSUMING_HANDLE_HANDLER_RESULT</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>result</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00115">115</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00042">42</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -278,29 +257,10 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>You can define this macro project-wide to either 1 or 0 to include <span class="tt">&lt;magic_enum.hpp&gt;</span> or not, if you want prettier printing of enum names. </p>
+<p>You can define this macro to either 1 or 0 to include <span class="tt">&lt;magic_enum.hpp&gt;</span> or not, if you want prettier printing of enum names. </p>
 <p>If you don't define it, it will check for <span class="tt">&lt;magic_enum.hpp&gt;</span> and include it if it exists. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00050">50</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
-
-</div>
-</div>
-<a id="ga429a105b33b29d571fa07f83aee10fcb" name="ga429a105b33b29d571fa07f83aee10fcb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga429a105b33b29d571fa07f83aee10fcb">&#9670;&#160;</a></span>ASSUMING_REPORT</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define ASSUMING_REPORT</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00124">124</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00051">51</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -316,7 +276,9 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00080">80</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p>You can define this macro to 1 or 0 to include <span class="tt">&lt;stacktrace&gt;</span> (if available) or not; if this functionality is available, an <span class="tt">std::stacktrace</span> will be given to the assumption failure handler. </p>
+
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00081">81</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -351,7 +313,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the <span class="tt">v</span> term evaluates to a value between <span class="tt">a</span> and <span class="tt">b</span> exclusive. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00239">239</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00259">259</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -386,7 +348,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the <span class="tt">v</span> term evaluates to a value between <span class="tt">a</span> and <span class="tt">b</span> inclusive. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00247">247</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00267">267</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -426,7 +388,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the two expressions <span class="tt">a</span> and <span class="tt">b</span> are true with regards to the relation <span class="tt">op</span> (describen in <span class="tt">text</span>). This is an internal macro used by others. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00173">173</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00193">193</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -456,7 +418,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the <span class="tt">_key</span> term evaluates to a valid index to the <span class="tt">_container</span> term. This is checked via <span class="tt">.contains()</span>. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00227">227</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00247">247</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -486,7 +448,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the first term contains the bits in the second term. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00193">193</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00213">213</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -511,7 +473,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the term evaluates to an empty container (tested via <span class="tt">empty(container)</span>). </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00203">203</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00223">223</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -541,7 +503,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the two expressions evaluate equal. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00180">180</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00200">200</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -571,7 +533,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the first term is greater than the second. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00184">184</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00204">204</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -601,7 +563,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the first term is greater than or equal to the second. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00188">188</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00208">208</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -631,7 +593,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the first term is less than the second. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00186">186</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00206">206</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -661,7 +623,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the first term is less than or equal to the second. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00190">190</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00210">210</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -686,7 +648,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the term evaluates to an non-empty container (tested via <span class="tt">empty(container)</span>). </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00207">207</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00227">227</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -716,7 +678,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the two expressions do not evaluate equal. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00182">182</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00202">202</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -741,7 +703,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the term is (convertible to) a null pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00169">169</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00189">189</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -766,7 +728,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the term does not evaluate to neither a null value nor an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00215">215</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00235">235</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -791,7 +753,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the point in code DOES NOT execute on the specified thread. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00157">157</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00177">177</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -812,7 +774,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the point in code is not reachable. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00131">131</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00151">151</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -833,7 +795,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the point in code is not reached via a recursive function call. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00134">134</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00154">154</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -858,7 +820,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the term is not (convertible to) a null pointer. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00165">165</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00185">185</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -883,7 +845,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the term evaluates to either a null value or an empty string. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00211">211</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00231">231</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -908,7 +870,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the point in code executes on the specified thread. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00149">149</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00169">169</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -929,7 +891,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the point in code executes in exactly one thread, the same thread over the lifetime of the program. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00141">141</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00161">161</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -959,7 +921,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the <span class="tt">_index</span> term evaluates to a valid index to the <span class="tt">_container</span> term. This is checked via <span class="tt">size(_container)</span>. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00219">219</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00239">239</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -989,7 +951,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the <span class="tt">_index</span> term evaluates to a valid iterator to the <span class="tt">_container</span> term. This is checked via <span class="tt">end(_container)</span>. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00234">234</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00254">254</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -1014,45 +976,7 @@ Variables</h2></td></tr>
 
 <p>Assumes the term evaluates to 0. </p>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00200">200</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
-
-</div>
-</div>
-<a id="ga9070b3d19613d4651f84b08564d745dc" name="ga9070b3d19613d4651f84b08564d745dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9070b3d19613d4651f84b08564d745dc">&#9670;&#160;</a></span>GHPL_ASSUME</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define GHPL_ASSUME</td>
-          <td>(</td>
-          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em></em></span>...</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00109">109</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
-
-</div>
-</div>
-<a id="ga81bcc479253bfe5132e413612e823461" name="ga81bcc479253bfe5132e413612e823461"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga81bcc479253bfe5132e413612e823461">&#9670;&#160;</a></span>GHPL_UNREACHABLE</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define GHPL_UNREACHABLE</td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00095">95</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00220">220</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -1094,7 +1018,7 @@ Variables</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>This function must be provided by your own code, as it is called by an assumption macro with a failing assumption. </p>
+<p>This variable should be set to a handler function by your own code, as it is called by an assumption macro with a failing assumption; if you do not provide it, an exception with an unspecified type will be thrown. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">expectation</td><td>An explanation of which assumption failed </td></tr>
@@ -1105,7 +1029,7 @@ Variables</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00396">396</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00408">408</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>

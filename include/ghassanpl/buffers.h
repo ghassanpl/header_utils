@@ -145,6 +145,7 @@ namespace ghassanpl
 		return buffer_append_range(buffer, std::span{ cstr, cstr + (N - 1) });
 	}
 
+	/// Appends a variable number of `uint8_t`s to the buffer that encode the value `oval` in a minimal amount of space.
 	template <typename BUFFER, typename ELEMENT_TYPE = buffer_element_type<BUFFER>>
 	requires output_buffer<BUFFER, ELEMENT_TYPE>
 	size_t buffer_append_varint(BUFFER& buffer, std::integral auto oval)

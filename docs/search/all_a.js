@@ -19,7 +19,8 @@ var searchData=
   ['list_16',['Todo List',['../todo.html',1,'']]],
   ['listeners_17',['listeners',['../classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#a721fe377c5269c82ce9a0bf27b363b19',1,'ghassanpl::mutlticast_function&lt; R(ARGS...)&gt;']]],
   ['load_18',['load',['../group___c_s_v.html#gaa3b6289aa14bfed0dadcf1b5eb0b6322',1,'ghassanpl::formats::csv']]],
-  ['location_19',['location',['../structghassanpl_1_1traits_1_1location.html',1,'ghassanpl::traits']]],
-  ['lowercase_5fchars_20',['lowercase_chars',['../group___a_s_c_i_i.html#ga4aab61f41de43417a717a703f1e0a706',1,'ghassanpl::string_ops::ascii']]],
-  ['luminance_21',['luminance',['../group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11',1,'ghassanpl']]]
+  ['load_5ffile_19',['load_file',['../group___wilson.html#ga71aa6ec3fb9dd6e146622402ddf67766',1,'ghassanpl::formats::wilson']]],
+  ['location_20',['location',['../structghassanpl_1_1traits_1_1location.html',1,'ghassanpl::traits']]],
+  ['lowercase_5fchars_21',['lowercase_chars',['../group___a_s_c_i_i.html#ga4aab61f41de43417a717a703f1e0a706',1,'ghassanpl::string_ops::ascii']]],
+  ['luminance_22',['luminance',['../group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11',1,'ghassanpl']]]
 ];

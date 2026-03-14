@@ -13,12 +13,13 @@ var searchData=
   ['ghassanpl_3a_3ageometry_10',['geometry',['../namespaceghassanpl_1_1geometry.html',1,'ghassanpl']]],
   ['ghassanpl_3a_3ageometry_3a_3ahexes_11',['hexes',['../namespaceghassanpl_1_1geometry_1_1hexes.html',1,'ghassanpl::geometry']]],
   ['ghassanpl_3a_3ageometry_3a_3asquares_12',['squares',['../namespaceghassanpl_1_1geometry_1_1squares.html',1,'ghassanpl::geometry']]],
-  ['ghassanpl_3a_3anoise_13',['noise',['../namespaceghassanpl_1_1noise.html',1,'ghassanpl']]],
-  ['ghassanpl_3a_3aop_14',['op',['../namespaceghassanpl_1_1op.html',1,'ghassanpl']]],
-  ['ghassanpl_3a_3aparsing_15',['parsing',['../namespaceghassanpl_1_1parsing.html',1,'ghassanpl']]],
-  ['ghassanpl_3a_3apred_16',['pred',['../namespaceghassanpl_1_1pred.html',1,'ghassanpl']]],
-  ['ghassanpl_3a_3arandom_17',['random',['../namespaceghassanpl_1_1random.html',1,'ghassanpl']]],
-  ['ghassanpl_3a_3aregex_18',['regex',['../namespaceghassanpl_1_1regex.html',1,'ghassanpl']]],
-  ['ghassanpl_3a_3astring_5fops_19',['string_ops',['../namespaceghassanpl_1_1string__ops.html',1,'ghassanpl']]],
-  ['ghassanpl_3a_3axf_20',['xf',['../namespaceghassanpl_1_1xf.html',1,'ghassanpl']]]
+  ['ghassanpl_3a_3ainteger_13',['integer',['../namespaceghassanpl_1_1integer.html',1,'ghassanpl']]],
+  ['ghassanpl_3a_3anoise_14',['noise',['../namespaceghassanpl_1_1noise.html',1,'ghassanpl']]],
+  ['ghassanpl_3a_3aop_15',['op',['../namespaceghassanpl_1_1op.html',1,'ghassanpl']]],
+  ['ghassanpl_3a_3aparsing_16',['parsing',['../namespaceghassanpl_1_1parsing.html',1,'ghassanpl']]],
+  ['ghassanpl_3a_3apred_17',['pred',['../namespaceghassanpl_1_1pred.html',1,'ghassanpl']]],
+  ['ghassanpl_3a_3arandom_18',['random',['../namespaceghassanpl_1_1random.html',1,'ghassanpl']]],
+  ['ghassanpl_3a_3aregex_19',['regex',['../namespaceghassanpl_1_1regex.html',1,'ghassanpl']]],
+  ['ghassanpl_3a_3astring_5fops_20',['string_ops',['../namespaceghassanpl_1_1string__ops.html',1,'ghassanpl']]],
+  ['ghassanpl_3a_3axf_21',['xf',['../namespaceghassanpl_1_1xf.html',1,'ghassanpl']]]
 ];

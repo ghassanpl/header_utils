@@ -16,6 +16,7 @@ namespace ghassanpl::geometry::squares
 	/// The distances between these positions are dependent on the metric chosen.
 	/// 
 	/// Definitions:
+	/// * `grid` - a bounded or unbounded integer coordinate space that bijects a position in the space to an object called a `square` or `tile`
 	/// * `tile` - another name for square
 	/// * `metric` - the means to calculate distances between two squares
 	/// * `adjacency` - in a specified metric, two squares are considered "adjacent" if the distance between their positions is 1
@@ -46,8 +47,13 @@ namespace ghassanpl::geometry::squares
 	/// Any type that meets the criteria of a `metric` - specifying the adjacency/distances between squares
 	template <typename METRIC, typename T>
 	concept metric = std::integral<T> && requires (T t, glm::tvec2<T> vec) {
+		/// `is_adjacent(vec, vec)` should return whether two squares are adjacent
 		{ METRIC::is_adjacent(vec, vec) } -> std::convertible_to<bool>;
-		{ METRIC::is_valid_direction(direction{}) } -> std::convertible_to<bool>;
+		/// `is_adjacent(direction)` should return whether a square in the direction of another square is adjacent
+		{ METRIC::is_adjacent(direction{}) } -> std::convertible_to<bool>;
+		/// `distance(vec, vec)` should return a tile distance between two tile positions within this metric. Note that
+		/// this is different than the concept of distances in a world (where tiles have sizes). The distance here can be
+		/// thought of as the minimum number of 'hops' between adjacent squares to move from one position to another.
 		{ METRIC::distance(vec, vec) } -> std::convertible_to<T>;
 	};
 
@@ -60,7 +66,7 @@ namespace ghassanpl::geometry::squares
 			return is_neighbor(a, b);
 		}
 
-		static constexpr auto is_valid_direction(direction dir)
+		static constexpr auto is_adjacent(direction dir)
 		{
 			return is_cardinal(dir);
 		}
@@ -83,7 +89,7 @@ namespace ghassanpl::geometry::squares
 			return is_surrounding(a, b);
 		}
 
-		static constexpr bool is_valid_direction(direction dir)
+		static constexpr bool is_adjacent(direction dir)
 		{
 			return is_valid(dir);
 		}
@@ -150,18 +156,46 @@ namespace ghassanpl::geometry::squares
 	}
 
 	/// Combines a metric and tile size into a single type
-	template <metric<float> METRIC = chebyshev_metric>
-	struct tile_space
+	template <std::integral I, std::floating_point F, metric<I> METRIC = chebyshev_metric>
+	struct ttile_space
 	{
-		glm::vec2 tile_size;
+		using metric = METRIC;
+		using vec2 = glm::tvec2<F>;
+		using ivec2 = glm::tvec2<I>;
+		using rec2 = trec2<F>;
+		using irec2 = trec2<I>;
 
-		constexpr glm::vec2 to_world_pos(glm::ivec2 tile_pos) const noexcept { return tile_pos_to_world_pos(tile_pos, tile_size); }
-		constexpr rec2 world_rect_for_tile(glm::ivec2 tile_pos) const noexcept { return ghassanpl::geometry::squares::world_rect_for_tile(tile_pos, tile_size); }
-		constexpr glm::ivec2 to_tile_pos(glm::vec2 world_pos) const noexcept { return world_pos_to_tile_pos(world_pos, tile_size); }
+		using tile_pos = named<vec2, "tile_pos", traits::location>;
+		using world_pos = named<ivec2, "world_pos", traits::location>;
+
+		using tile_rec = named<rec2, "tile_rec">;
+		using world_rec = named<irec2, "world_rec">;
+
+		vec2 tile_size{ F(1), F(1) };
+
+		constexpr vec2 to_world_pos(ivec2 tile_pos) const noexcept { return tile_pos_to_world_pos(tile_pos, tile_size); }
+		constexpr rec2 world_rect_for_tile(ivec2 tile_pos) const noexcept { return ghassanpl::geometry::squares::world_rect_for_tile(tile_pos, tile_size); }
+		constexpr ivec2 to_tile_pos(vec2 world_pos) const noexcept { return world_pos_to_tile_pos(world_pos, tile_size); }
 		constexpr irec2 to_tile_rect(rec2 const& world_rect) const noexcept { return world_rect_to_tile_rect(world_rect, tile_size); }
 		
-		inline glm::vec2 snap_to_grid(glm::vec2 world_pos) const { return snap_world_pos_to_tile_grid(world_pos, tile_size); }
+		inline vec2 snap_to_grid(vec2 world_pos) const { return snap_world_pos_to_tile_grid(world_pos, tile_size); }
+
+		constexpr world_pos to_world_pos(tile_pos tile_pos) const noexcept { return to_world_pos(*tile_pos); }
+		constexpr world_rec world_rect_for_tile(tile_pos tile_pos) const noexcept { return world_rect_for_tile(*tile_pos); }
+		constexpr tile_pos to_tile_pos(world_pos world_pos) const noexcept { return to_tile_pos(*world_pos); }
+		constexpr tile_rec to_tile_rect(world_rec const& world_rect) const noexcept { return to_tile_rect(*world_rect); }
+
+		inline world_pos snap_to_grid(world_pos world_pos) const { return snap_to_grid(*world_pos); }
+
+		static constexpr auto is_adjacent(ivec2 a, ivec2 b) { return metric::is_adjacent(a, b); }
+		static constexpr auto is_adjacent(tile_pos a, tile_pos b) { return is_adjacent(*a, *b); }
+		static constexpr auto is_adjacent(direction dir) { return metric::is_adjacent(dir); }
+		static constexpr auto tile_distance(ivec2 a, ivec2 b) { return metric::distance(a, b); }
+		static constexpr auto tile_distance(tile_pos a, tile_pos b) { return distance(*a, *b); }
 	};
+
+	using chebyshev_tile_space = ttile_space<int, float, chebyshev_metric>;
+	using manhattan_tile_space = ttile_space<int, float, manhattan_metric>;
 
 	/// Tile position with `int` values
 	using tile_pos = named<glm::ivec2, "tile_pos", traits::location>;

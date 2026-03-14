@@ -10,6 +10,30 @@
 
 using namespace ghassanpl;
 
+TEST(wilson_parsing, doc_comments_do_not_lie)
+{
+	static constexpr auto wilson_doc = R"(
+	{
+		# comment
+		array = ( 10 20 30 ) # another comment
+		"another array": [10; 20; 30]
+		key value # yes, this is a "key":"value" pair
+		true_key; # this will be a "true_key":true pair
+		also_true_key
+	}
+	)";
+	static constexpr auto json_doc = R"(
+	{
+		"array": [10, 20, 30],
+		"another array": [10, 20, 30],
+		"key": "value",
+		"true_key": true,
+		"also_true_key": true
+	}
+	)";
+	EXPECT_EQ(nlohmann::json::parse(json_doc), formats::wilson::parse(wilson_doc));
+}
+
 TEST(wilson_parsing, doesnt_crash_or_loop_on_invalid_values)
 {
 	auto results = { 

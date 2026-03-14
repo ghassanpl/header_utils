@@ -11,6 +11,12 @@
 
 namespace ghassanpl::formats::sexpressions
 {
+	/// \defgroup Sexps S-Expressions
+	/// Functions that allow for parsing of simple, Lisp-style s-expressions (specifically - lists and atoms).
+	/// Uses the `nlohmann::json` library to store parsed values.
+	/// \ingroup Formats
+	/// @{
+
 	/// Consumes `[list]` or `atom`; a ',' (comma character) is considered its own atom
 	auto consume_value(std::string_view& sexp_str, std::array<char, 2> braces = { '[', ']' }) -> nlohmann::json;
 
@@ -24,6 +30,8 @@ namespace ghassanpl::formats::sexpressions
 	inline auto parse_value(std::string_view sexp_str, std::array<char, 2> braces = { '[', ']' }) -> nlohmann::json { return consume_value(sexp_str, braces); }
 	inline auto parse_atom(std::string_view sexp_str, char end_brace = ']') -> nlohmann::json { return consume_atom(sexp_str, end_brace); }
 	inline auto parse_list(std::string_view sexp_str, std::array<char, 2> braces = { '[', ']' }) -> nlohmann::json { return consume_list(sexp_str, braces); }
+
+	/// @}
 }
 
 /// Implementation
@@ -53,7 +61,7 @@ namespace ghassanpl::formats::sexpressions
 		if (result == "false") return false;
 		if (result == "null") return nullptr;
 
-		/// Try paring as number
+		/// Try parsing as number
 		{
 			nlohmann::json::number_integer_t num_result;
 			const auto fcres = string_ops::from_chars(result, num_result);
@@ -88,7 +96,7 @@ namespace ghassanpl::formats::sexpressions
 		return result;
 	}
 
-	/// TODO: '[e1; e2; e3]' -> '[[e1] [e2] [e3]]'
+	// TODO: '[e1; e2; e3]' -> '[[e1] [e2] [e3]]' or '{e1; e2; e3}' -> '[[e1] [e2] [e3]]'
 	inline auto consume_list(std::string_view& sexp_str, std::array<char, 2> braces) -> nlohmann::json
 	{
 		nlohmann::json result = nlohmann::json::array();

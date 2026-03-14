@@ -1,8 +1,10 @@
 var group___assuming =
 [
     [ "Assuming", "group___assuming.html#gacb8c2dbffc103683379b80af5b13e490", null ],
+    [ "ASSUMING_BREAKPOINT", "group___assuming.html#ga04f71f7cbae992eb4a580f437e7cad3c", null ],
     [ "ASSUMING_DEBUG", "group___assuming.html#ga218eb441da34d0d145c8215bec946304", null ],
     [ "ASSUMING_INCLUDE_MAGIC_ENUM", "group___assuming.html#ga80dcba370ab17ab332b2f90182753c55", null ],
+    [ "ASSUMING_USE_STACKTRACE", "group___assuming.html#gacf281ddabc99310b874ec4dedd0fbdc1", null ],
     [ "AssumingBetween", "group___assuming.html#gaae12deb0193258e9debce0707f066280", null ],
     [ "AssumingBetweenInclusive", "group___assuming.html#gaa83e5157929343e3bcc17c075b004956", null ],
     [ "AssumingBinOp", "group___assuming.html#ga4c0d57ca6ee3ea3f7b0c2cf711ad673a", null ],

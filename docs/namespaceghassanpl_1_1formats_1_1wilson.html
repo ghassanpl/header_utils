@@ -91,9 +91,6 @@ $(function(){initNavTree('namespaceghassanpl_1_1formats_1_1wilson.html','',''); 
   <div class="headertitle"><div class="title">ghassanpl::formats::wilson Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>TODO: <a href="https://dev.stenway.com/SML/Examples.html">https://dev.stenway.com/SML/Examples.html</a>.  
-<a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -101,37 +98,44 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a12112ee2a64999951eb723004a590a4c" id="r_a12112ee2a64999951eb723004a590a4c"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a12112ee2a64999951eb723004a590a4c">parse</a> (std::string_view wilson_str) -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
-<tr class="memitem:aeaa37b4b646255de1dd09170c7cf1d7a" id="r_aeaa37b4b646255de1dd09170c7cf1d7a"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#aeaa37b4b646255de1dd09170c7cf1d7a">parse_object</a> (std::string_view wilson_str, char closing_char='}') -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
-<tr class="memitem:a5d85e5f4453775c9510819d3e04efba1" id="r_a5d85e5f4453775c9510819d3e04efba1"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a5d85e5f4453775c9510819d3e04efba1">parse_array</a> (std::string_view wilson_str) -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
-<tr class="memitem:ade2c6f43a3f0d8121e86d5922258f45b" id="r_ade2c6f43a3f0d8121e86d5922258f45b"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#ade2c6f43a3f0d8121e86d5922258f45b">parse_word_or_string</a> (std::string_view wilson_str) -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
-<tr class="memdesc:ade2c6f43a3f0d8121e86d5922258f45b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses: a word as a string value or bool/null value; a "string literal" as a string value.  <br /></td></tr>
-<tr class="memitem:a058dca2ad345a0f3ad26c4497b93dce0" id="r_a058dca2ad345a0f3ad26c4497b93dce0"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a058dca2ad345a0f3ad26c4497b93dce0">parse_string_value</a> (std::string_view wilson_str) -&gt; expected&lt; std::string, wilson_parsing_error &gt;</td></tr>
-<tr class="memdesc:a058dca2ad345a0f3ad26c4497b93dce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a word or a string literal a string value.  <br /></td></tr>
-<tr class="memitem:a9c2b360752740f10531ed5de8c58aca1" id="r_a9c2b360752740f10531ed5de8c58aca1"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a9c2b360752740f10531ed5de8c58aca1">parse_string_literal</a> (std::string_view wilson_str) -&gt; expected&lt; std::string, wilson_parsing_error &gt;</td></tr>
-<tr class="memdesc:a9c2b360752740f10531ed5de8c58aca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string literal as a string value.  <br /></td></tr>
-<tr class="memitem:af021367e6b3b7932bd33b03d518578fb" id="r_af021367e6b3b7932bd33b03d518578fb"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#af021367e6b3b7932bd33b03d518578fb">consume_string_literal</a> (std::string_view &amp;_str)</td></tr>
-<tr class="memdesc:af021367e6b3b7932bd33b03d518578fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes a string literal returning a string value.  <br /></td></tr>
-<tr class="memitem:a3b6eaef40d58875fdc25a77091f4f860" id="r_a3b6eaef40d58875fdc25a77091f4f860"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a3b6eaef40d58875fdc25a77091f4f860">consume_string_value</a> (std::string_view &amp;str)</td></tr>
-<tr class="memdesc:a3b6eaef40d58875fdc25a77091f4f860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes a word or a string literal returning a string value.  <br /></td></tr>
-<tr class="memitem:a506123cee3d707f5419d3c80920ab3b0" id="r_a506123cee3d707f5419d3c80920ab3b0"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a506123cee3d707f5419d3c80920ab3b0">consume_word_or_string</a> (std::string_view &amp;str)</td></tr>
-<tr class="memdesc:a506123cee3d707f5419d3c80920ab3b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes: a word, returning a string/bool/null value; or a "string literal", returning a string value.  <br /></td></tr>
-<tr class="memitem:a65386e0a2685041ce41efcb7a7b6956d" id="r_a65386e0a2685041ce41efcb7a7b6956d"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a65386e0a2685041ce41efcb7a7b6956d">consume_object</a> (std::string_view &amp;wilson_str, char closing_char='}') -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
-<tr class="memitem:a47c36f5e6a1412d86a0e7fd4b131a0b8" id="r_a47c36f5e6a1412d86a0e7fd4b131a0b8"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a47c36f5e6a1412d86a0e7fd4b131a0b8">consume_array</a> (std::string_view &amp;wilson_str, char closing_char=']') -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
-<tr class="memitem:ae8bc70294b4022236a9ac422b7d0d38d" id="r_ae8bc70294b4022236a9ac422b7d0d38d"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#ae8bc70294b4022236a9ac422b7d0d38d">consume_value</a> (std::string_view &amp;wilson_str) -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
-<tr class="memitem:a126c93e0480363880b49c39dcb9d02b2" id="r_a126c93e0480363880b49c39dcb9d02b2"><td class="memTemplParams" colspan="2">template&lt;typename OUTFUNC&gt; </td></tr>
-<tr class="memitem:a126c93e0480363880b49c39dcb9d02b2 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a126c93e0480363880b49c39dcb9d02b2">output</a> (OUTFUNC &amp;&amp;out, wilson const &amp;value, output_parameters const &amp;parameters={}, size_t indent=0)</td></tr>
-<tr class="memitem:aaf1a3d00201a54dd1c9da55071b15c0f" id="r_aaf1a3d00201a54dd1c9da55071b15c0f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aaf1a3d00201a54dd1c9da55071b15c0f">output_to_stream</a> (std::ostream &amp;strm, wilson const &amp;value, output_parameters const &amp;parameters={})</td></tr>
-<tr class="memitem:a80890dc715527a46b0baa921d702602a" id="r_a80890dc715527a46b0baa921d702602a"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a80890dc715527a46b0baa921d702602a">to_string</a> (wilson const &amp;value, output_parameters const &amp;parameters={})</td></tr>
-<tr class="memitem:a71aa6ec3fb9dd6e146622402ddf67766" id="r_a71aa6ec3fb9dd6e146622402ddf67766"><td class="memItemLeft">expected&lt; wilson, wilson_parsing_error &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a71aa6ec3fb9dd6e146622402ddf67766">load_file</a> (std::filesystem::path const &amp;from)</td></tr>
-<tr class="memitem:a431aea612e2cf69494058e32a422ff7e" id="r_a431aea612e2cf69494058e32a422ff7e"><td class="memItemLeft">wilson&#160;</td><td class="memItemRight"><a class="el" href="#a431aea612e2cf69494058e32a422ff7e">try_load_file</a> (std::filesystem::path const &amp;from, wilson or_json=json::empty_json)</td></tr>
-<tr class="memitem:a9ef426f64c31d276cd5d1ed4a80f9058" id="r_a9ef426f64c31d276cd5d1ed4a80f9058"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a9ef426f64c31d276cd5d1ed4a80f9058">save_file</a> (std::filesystem::path const &amp;<a class="el" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">to</a>, wilson const &amp;j, output_parameters const &amp;parameters={})</td></tr>
-<tr class="memdesc:a9ef426f64c31d276cd5d1ed4a80f9058"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Add ec version.  <br /></td></tr>
+<tr class="memitem:ga12112ee2a64999951eb723004a590a4c" id="r_ga12112ee2a64999951eb723004a590a4c"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga12112ee2a64999951eb723004a590a4c">parse</a> (std::string_view wilson_str) -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
+<tr class="memdesc:ga12112ee2a64999951eb723004a590a4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses any Wilson value.  <br /></td></tr>
+<tr class="memitem:gaeaa37b4b646255de1dd09170c7cf1d7a" id="r_gaeaa37b4b646255de1dd09170c7cf1d7a"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#gaeaa37b4b646255de1dd09170c7cf1d7a">parse_object</a> (std::string_view wilson_str, char closing_char='}') -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
+<tr class="memdesc:gaeaa37b4b646255de1dd09170c7cf1d7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a set of key-value pairs, until end of string or encountering the <span class="tt">closing_char</span>.  <br /></td></tr>
+<tr class="memitem:ga6d964ee18ff36c4d8b5f19a54b519093" id="r_ga6d964ee18ff36c4d8b5f19a54b519093"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga6d964ee18ff36c4d8b5f19a54b519093">parse_array</a> (std::string_view wilson_str, char closing_char=']') -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
+<tr class="memdesc:ga6d964ee18ff36c4d8b5f19a54b519093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses an array of Wilson values, until end of string or encountering the <span class="tt">closing_char</span>.  <br /></td></tr>
+<tr class="memitem:gade2c6f43a3f0d8121e86d5922258f45b" id="r_gade2c6f43a3f0d8121e86d5922258f45b"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#gade2c6f43a3f0d8121e86d5922258f45b">parse_word_or_string</a> (std::string_view wilson_str) -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
+<tr class="memdesc:gade2c6f43a3f0d8121e86d5922258f45b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses: a word as a string value or bool/null value; a "string literal" as a string value.  <br /></td></tr>
+<tr class="memitem:ga058dca2ad345a0f3ad26c4497b93dce0" id="r_ga058dca2ad345a0f3ad26c4497b93dce0"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga058dca2ad345a0f3ad26c4497b93dce0">parse_string_value</a> (std::string_view wilson_str) -&gt; expected&lt; std::string, wilson_parsing_error &gt;</td></tr>
+<tr class="memdesc:ga058dca2ad345a0f3ad26c4497b93dce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a word or a string literal a string value.  <br /></td></tr>
+<tr class="memitem:ga9c2b360752740f10531ed5de8c58aca1" id="r_ga9c2b360752740f10531ed5de8c58aca1"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga9c2b360752740f10531ed5de8c58aca1">parse_string_literal</a> (std::string_view wilson_str) -&gt; expected&lt; std::string, wilson_parsing_error &gt;</td></tr>
+<tr class="memdesc:ga9c2b360752740f10531ed5de8c58aca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parses a string literal as a string value.  <br /></td></tr>
+<tr class="memitem:gaf021367e6b3b7932bd33b03d518578fb" id="r_gaf021367e6b3b7932bd33b03d518578fb"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#gaf021367e6b3b7932bd33b03d518578fb">consume_string_literal</a> (std::string_view &amp;_str)</td></tr>
+<tr class="memdesc:gaf021367e6b3b7932bd33b03d518578fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes a string literal returning a string value.  <br /></td></tr>
+<tr class="memitem:ga3b6eaef40d58875fdc25a77091f4f860" id="r_ga3b6eaef40d58875fdc25a77091f4f860"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga3b6eaef40d58875fdc25a77091f4f860">consume_string_value</a> (std::string_view &amp;str)</td></tr>
+<tr class="memdesc:ga3b6eaef40d58875fdc25a77091f4f860"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes a word or a string literal returning a string value.  <br /></td></tr>
+<tr class="memitem:ga506123cee3d707f5419d3c80920ab3b0" id="r_ga506123cee3d707f5419d3c80920ab3b0"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga506123cee3d707f5419d3c80920ab3b0">consume_word_or_string</a> (std::string_view &amp;str)</td></tr>
+<tr class="memdesc:ga506123cee3d707f5419d3c80920ab3b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Consumes: a word, returning a string/bool/null value; or a "string literal", returning a string value.  <br /></td></tr>
+<tr class="memitem:ga65386e0a2685041ce41efcb7a7b6956d" id="r_ga65386e0a2685041ce41efcb7a7b6956d"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga65386e0a2685041ce41efcb7a7b6956d">consume_object</a> (std::string_view &amp;wilson_str, char closing_char='}') -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
+<tr class="memitem:ga47c36f5e6a1412d86a0e7fd4b131a0b8" id="r_ga47c36f5e6a1412d86a0e7fd4b131a0b8"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga47c36f5e6a1412d86a0e7fd4b131a0b8">consume_array</a> (std::string_view &amp;wilson_str, char closing_char=']') -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
+<tr class="memitem:gae8bc70294b4022236a9ac422b7d0d38d" id="r_gae8bc70294b4022236a9ac422b7d0d38d"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#gae8bc70294b4022236a9ac422b7d0d38d">consume_value</a> (std::string_view &amp;wilson_str) -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td></tr>
+<tr class="memitem:ga126c93e0480363880b49c39dcb9d02b2" id="r_ga126c93e0480363880b49c39dcb9d02b2"><td class="memTemplParams" colspan="2">template&lt;typename OUTFUNC&gt; </td></tr>
+<tr class="memitem:ga126c93e0480363880b49c39dcb9d02b2 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga126c93e0480363880b49c39dcb9d02b2">output</a> (OUTFUNC &amp;&amp;out, wilson const &amp;value, output_parameters const &amp;parameters={}, size_t indent=0)</td></tr>
+<tr class="memdesc:ga126c93e0480363880b49c39dcb9d02b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outputs <span class="tt">value</span> formatted as a string using the <span class="tt">out</span> function which should take a string_view to append to the output.  <br /></td></tr>
+<tr class="memitem:gaaf1a3d00201a54dd1c9da55071b15c0f" id="r_gaaf1a3d00201a54dd1c9da55071b15c0f"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#gaaf1a3d00201a54dd1c9da55071b15c0f">output_to_stream</a> (std::ostream &amp;strm, wilson const &amp;value, output_parameters const &amp;parameters={})</td></tr>
+<tr class="memdesc:gaaf1a3d00201a54dd1c9da55071b15c0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Outputs <span class="tt">value</span> formatted as a string to the <span class="tt">strm</span> output stream.  <br /></td></tr>
+<tr class="memitem:ga80890dc715527a46b0baa921d702602a" id="r_ga80890dc715527a46b0baa921d702602a"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga80890dc715527a46b0baa921d702602a">to_string</a> (wilson const &amp;value, output_parameters const &amp;parameters={})</td></tr>
+<tr class="memdesc:ga80890dc715527a46b0baa921d702602a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <span class="tt">value</span> formatted as a string.  <br /></td></tr>
+<tr class="memitem:ga71aa6ec3fb9dd6e146622402ddf67766" id="r_ga71aa6ec3fb9dd6e146622402ddf67766"><td class="memItemLeft">expected&lt; wilson, wilson_parsing_error &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga71aa6ec3fb9dd6e146622402ddf67766">load_file</a> (std::filesystem::path const &amp;from)</td></tr>
+<tr class="memdesc:ga71aa6ec3fb9dd6e146622402ddf67766"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a Wilson value from a file.  <br /></td></tr>
+<tr class="memitem:ga431aea612e2cf69494058e32a422ff7e" id="r_ga431aea612e2cf69494058e32a422ff7e"><td class="memItemLeft">wilson&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga431aea612e2cf69494058e32a422ff7e">try_load_file</a> (std::filesystem::path const &amp;from, wilson or_json=json::empty_json)</td></tr>
+<tr class="memdesc:ga431aea612e2cf69494058e32a422ff7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a Wilson value from a file, or returns <span class="tt">or_json</span> on failure.  <br /></td></tr>
+<tr class="memitem:ga9ef426f64c31d276cd5d1ed4a80f9058" id="r_ga9ef426f64c31d276cd5d1ed4a80f9058"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="group___wilson.html#ga9ef426f64c31d276cd5d1ed4a80f9058">save_file</a> (std::filesystem::path const &amp;<a class="el" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">to</a>, wilson const &amp;j, output_parameters const &amp;parameters={})</td></tr>
+<tr class="memdesc:ga9ef426f64c31d276cd5d1ed4a80f9058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Saves a Wilson value to a file formatted as a string.  <br /></td></tr>
 <tr class="memitem:ae7b753b628b0016e291be4d23e24b865" id="r_ae7b753b628b0016e291be4d23e24b865"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ae7b753b628b0016e291be4d23e24b865">consume_whitespace</a> (std::string_view &amp;str)</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>TODO: <a href="https://dev.stenway.com/SML/Examples.html">https://dev.stenway.com/SML/Examples.html</a>. </p>
-<dl class="section copyright"><dt>Copyright</dt><dd>This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at <a href="https://mozilla.org/MPL/2.0/">https://mozilla.org/MPL/2.0/</a>. </dd></dl>
+<div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at <a href="https://mozilla.org/MPL/2.0/">https://mozilla.org/MPL/2.0/</a>. </dd></dl>
 </div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
 <a id="a7b87452f1645185f84e42d6c18290101" name="a7b87452f1645185f84e42d6c18290101"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7b87452f1645185f84e42d6c18290101">&#9670;&#160;</a></span>wilson</h2>
@@ -150,153 +154,6 @@ Functions</h2></td></tr>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="a47c36f5e6a1412d86a0e7fd4b131a0b8" name="a47c36f5e6a1412d86a0e7fd4b131a0b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47c36f5e6a1412d86a0e7fd4b131a0b8">&#9670;&#160;</a></span>consume_array()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">expected&lt; wilson, wilson_parsing_error &gt; ghassanpl::formats::wilson::consume_array </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>wilson_str</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>closing_char</em></span><span class="paramdefsep"> = </span><span class="paramdefval">']'</span>&#160;) -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00081">81</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a65386e0a2685041ce41efcb7a7b6956d" name="a65386e0a2685041ce41efcb7a7b6956d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65386e0a2685041ce41efcb7a7b6956d">&#9670;&#160;</a></span>consume_object()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">expected&lt; wilson, wilson_parsing_error &gt; ghassanpl::formats::wilson::consume_object </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>wilson_str</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>closing_char</em></span><span class="paramdefsep"> = </span><span class="paramdefval">'}'</span>&#160;) -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00149">149</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="af021367e6b3b7932bd33b03d518578fb" name="af021367e6b3b7932bd33b03d518578fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af021367e6b3b7932bd33b03d518578fb">&#9670;&#160;</a></span>consume_string_literal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">expected&lt; std::string, wilson_parsing_error &gt; ghassanpl::formats::wilson::consume_string_literal </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>_str</em></span></td><td>)</td>
-          <td> -&gt; expected&lt; std::string, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Consumes a string literal returning a string value. </p>
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00105">105</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a3b6eaef40d58875fdc25a77091f4f860" name="a3b6eaef40d58875fdc25a77091f4f860"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b6eaef40d58875fdc25a77091f4f860">&#9670;&#160;</a></span>consume_string_value()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">expected&lt; std::string, wilson_parsing_error &gt; ghassanpl::formats::wilson::consume_string_value </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>str</em></span></td><td>)</td>
-          <td> -&gt; expected&lt; std::string, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Consumes a word or a string literal returning a string value. </p>
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00116">116</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="ae8bc70294b4022236a9ac422b7d0d38d" name="ae8bc70294b4022236a9ac422b7d0d38d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8bc70294b4022236a9ac422b7d0d38d">&#9670;&#160;</a></span>consume_value()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">expected&lt; wilson, wilson_parsing_error &gt; ghassanpl::formats::wilson::consume_value </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>wilson_str</em></span></td><td>)</td>
-          <td> -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00198">198</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
 <a id="ae7b753b628b0016e291be4d23e24b865" name="ae7b753b628b0016e291be4d23e24b865"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae7b753b628b0016e291be4d23e24b865">&#9670;&#160;</a></span>consume_whitespace()</h2>
 
@@ -320,406 +177,7 @@ Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00071">71</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a506123cee3d707f5419d3c80920ab3b0" name="a506123cee3d707f5419d3c80920ab3b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a506123cee3d707f5419d3c80920ab3b0">&#9670;&#160;</a></span>consume_word_or_string()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">expected&lt; wilson, wilson_parsing_error &gt; ghassanpl::formats::wilson::consume_word_or_string </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view &amp;</td>          <td class="paramname"><span class="paramname"><em>str</em></span></td><td>)</td>
-          <td> -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Consumes: a word, returning a string/bool/null value; or a "string literal", returning a string value. </p>
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00133">133</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a71aa6ec3fb9dd6e146622402ddf67766" name="a71aa6ec3fb9dd6e146622402ddf67766"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71aa6ec3fb9dd6e146622402ddf67766">&#9670;&#160;</a></span>load_file()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">expected&lt; wilson, wilson_parsing_error &gt; ghassanpl::formats::wilson::load_file </td>
-          <td>(</td>
-          <td class="paramtype">std::filesystem::path const &amp;</td>          <td class="paramname"><span class="paramname"><em>from</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00397">397</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a126c93e0480363880b49c39dcb9d02b2" name="a126c93e0480363880b49c39dcb9d02b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a126c93e0480363880b49c39dcb9d02b2">&#9670;&#160;</a></span>output()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename OUTFUNC&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void ghassanpl::formats::wilson::output </td>
-          <td>(</td>
-          <td class="paramtype">OUTFUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>out</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">wilson const &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">output_parameters const &amp;</td>          <td class="paramname"><span class="paramname"><em>parameters</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>indent</em></span><span class="paramdefsep"> = </span><span class="paramdefval">0</span>&#160;)</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00327">327</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="aaf1a3d00201a54dd1c9da55071b15c0f" name="aaf1a3d00201a54dd1c9da55071b15c0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf1a3d00201a54dd1c9da55071b15c0f">&#9670;&#160;</a></span>output_to_stream()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ghassanpl::formats::wilson::output_to_stream </td>
-          <td>(</td>
-          <td class="paramtype">std::ostream &amp;</td>          <td class="paramname"><span class="paramname"><em>strm</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">wilson const &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">output_parameters const &amp;</td>          <td class="paramname"><span class="paramname"><em>parameters</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00048">48</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a12112ee2a64999951eb723004a590a4c" name="a12112ee2a64999951eb723004a590a4c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12112ee2a64999951eb723004a590a4c">&#9670;&#160;</a></span>parse()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::formats::wilson::parse </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>wilson_str</em></span></td><td>)</td>
-          <td> -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00227">227</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a5d85e5f4453775c9510819d3e04efba1" name="a5d85e5f4453775c9510819d3e04efba1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d85e5f4453775c9510819d3e04efba1">&#9670;&#160;</a></span>parse_array()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::formats::wilson::parse_array </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>wilson_str</em></span></td><td>)</td>
-          <td> -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00238">238</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="aeaa37b4b646255de1dd09170c7cf1d7a" name="aeaa37b4b646255de1dd09170c7cf1d7a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeaa37b4b646255de1dd09170c7cf1d7a">&#9670;&#160;</a></span>parse_object()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::formats::wilson::parse_object </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>wilson_str</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">char</td>          <td class="paramname"><span class="paramname"><em>closing_char</em></span><span class="paramdefsep"> = </span><span class="paramdefval">'}'</span>&#160;) -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00233">233</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a9c2b360752740f10531ed5de8c58aca1" name="a9c2b360752740f10531ed5de8c58aca1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c2b360752740f10531ed5de8c58aca1">&#9670;&#160;</a></span>parse_string_literal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::formats::wilson::parse_string_literal </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>wilson_str</em></span></td><td>)</td>
-          <td> -&gt; expected&lt; std::string, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Parses a string literal as a string value. </p>
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00253">253</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a058dca2ad345a0f3ad26c4497b93dce0" name="a058dca2ad345a0f3ad26c4497b93dce0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a058dca2ad345a0f3ad26c4497b93dce0">&#9670;&#160;</a></span>parse_string_value()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::formats::wilson::parse_string_value </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>wilson_str</em></span></td><td>)</td>
-          <td> -&gt; expected&lt; std::string, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Parses a word or a string literal a string value. </p>
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00248">248</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="ade2c6f43a3f0d8121e86d5922258f45b" name="ade2c6f43a3f0d8121e86d5922258f45b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade2c6f43a3f0d8121e86d5922258f45b">&#9670;&#160;</a></span>parse_word_or_string()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::formats::wilson::parse_word_or_string </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>wilson_str</em></span></td><td>)</td>
-          <td> -&gt; expected&lt; wilson, wilson_parsing_error &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Parses: a word as a string value or bool/null value; a "string literal" as a string value. </p>
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00243">243</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a9ef426f64c31d276cd5d1ed4a80f9058" name="a9ef426f64c31d276cd5d1ed4a80f9058"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9ef426f64c31d276cd5d1ed4a80f9058">&#9670;&#160;</a></span>save_file()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ghassanpl::formats::wilson::save_file </td>
-          <td>(</td>
-          <td class="paramtype">std::filesystem::path const &amp;</td>          <td class="paramname"><span class="paramname"><em>to</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">wilson const &amp;</td>          <td class="paramname"><span class="paramname"><em>j</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">output_parameters const &amp;</td>          <td class="paramname"><span class="paramname"><em>parameters</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>TODO: Add ec version. </p>
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00059">59</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a80890dc715527a46b0baa921d702602a" name="a80890dc715527a46b0baa921d702602a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80890dc715527a46b0baa921d702602a">&#9670;&#160;</a></span>to_string()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string ghassanpl::formats::wilson::to_string </td>
-          <td>(</td>
-          <td class="paramtype">wilson const &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">output_parameters const &amp;</td>          <td class="paramname"><span class="paramname"><em>parameters</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00390">390</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
-
-</div>
-</div>
-<a id="a431aea612e2cf69494058e32a422ff7e" name="a431aea612e2cf69494058e32a422ff7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a431aea612e2cf69494058e32a422ff7e">&#9670;&#160;</a></span>try_load_file()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">wilson ghassanpl::formats::wilson::try_load_file </td>
-          <td>(</td>
-          <td class="paramtype">std::filesystem::path const &amp;</td>          <td class="paramname"><span class="paramname"><em>from</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">wilson</td>          <td class="paramname"><span class="paramname"><em>or_json</em></span><span class="paramdefsep"> = </span><span class="paramdefval">json::empty_json</span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00406">406</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="wilson_8h_source.html#l00135">135</a> of file <a class="el" href="wilson_8h_source.html">wilson.h</a>.</p>
 
 </div>
 </div>

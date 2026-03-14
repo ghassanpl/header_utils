@@ -6,6 +6,8 @@
 
 #include <iterator>
 
+/// This is a C++17-only version of <ghassanpl/enum_flags.h>
+
 /// TODO: std::bitset is constexpr since C++23, so we can internally use that as soon as support for C++23 is widespread enough
 ///		For example, we could have a version of enum_flags that takes an ENUM MIN_VALUE and an ENUM MAX_VALUE template parameters,
 ///		and uses those to create a std::bitset<MAX_VALUE - MIN_VALUE + 1> internally, and then use that to store the bits.

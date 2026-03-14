@@ -219,6 +219,7 @@ namespace ghassanpl::parsing
 				case '"': result.second += '"'; break;
 				case '\'': result.second += '\''; break;
 				case '\\': result.second += '\\'; break;
+				case '/': result.second += '/'; break;
 				case 'b': result.second += '\b'; break;
 				case 'r': result.second += '\r'; break;
 				case 'f': result.second += '\f'; break;

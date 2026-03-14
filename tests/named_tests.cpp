@@ -30,6 +30,8 @@ TEST(named, named_location_and_displacement_traits_work)
 	using vector = named<ivec2, "vector", traits::displacement>;
 	using point = named<ivec2, "point", traits::location, traits::is_location_of<vector>>;
 
+	static_assert(std::same_as<vector, point::displacement_type>);
+
 	static_assert(traits::applies_to<point, traits::location>);
 	static_assert(!traits::applies_to<point, traits::displacement>);
 	static_assert(traits::applies_to<vector, traits::displacement>);
@@ -45,7 +47,7 @@ TEST(named, named_location_and_displacement_traits_work)
 
 	static_assert(subtractable<vector>);
 	static_assert(!subtractable<point, point, point>);
-	/// TODO: static_assert(subtractable<point, point, vector>); /// FIX THIS or just drop the whole idea of named traits...
+	static_assert(subtractable<point, point, vector>);
 
 	//constexpr auto trait_ti = point::find_displacement_type_impl(traits::is_location_of<vector>{});
 	//using type = std::remove_cvref_t<typename decltype(trait_ti)::type>;

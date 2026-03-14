@@ -128,6 +128,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga7f58eb6226548175cceea9f8fc377b3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends characters in the <span class="tt">cstr</span> literal array to the <span class="tt">buffer</span>.  <br /></td></tr>
 <tr class="memitem:ga84602d960df2646461a12ccc0d5348a8" id="r_ga84602d960df2646461a12ccc0d5348a8"><td class="memTemplParams" colspan="2">template&lt;typename BUFFER, typename ELEMENT_TYPE = buffer_element_type&lt;BUFFER&gt;&gt; </td></tr>
 <tr class="memitem:ga84602d960df2646461a12ccc0d5348a8 template"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#ga84602d960df2646461a12ccc0d5348a8">ghassanpl::buffer_append_varint</a> (BUFFER &amp;buffer, std::integral auto oval)</td></tr>
+<tr class="memdesc:ga84602d960df2646461a12ccc0d5348a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a variable number of <span class="tt">uint8_t</span>s to the buffer that encode the value <span class="tt">oval</span> in a minimal amount of space.  <br /></td></tr>
 <tr class="memitem:gaf37342fd3d026c62c1ad2bc7a7aabe6e" id="r_gaf37342fd3d026c62c1ad2bc7a7aabe6e"><td class="memTemplParams" colspan="2">template&lt;typename BUFFER, typename ELEMENT_TYPE = buffer_element_type&lt;BUFFER&gt;&gt; </td></tr>
 <tr class="memitem:gaf37342fd3d026c62c1ad2bc7a7aabe6e template"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="#gaf37342fd3d026c62c1ad2bc7a7aabe6e">ghassanpl::buffer_append_utf8</a> (BUFFER &amp;buffer, char32_t cp)</td></tr>
 <tr class="memdesc:gaf37342fd3d026c62c1ad2bc7a7aabe6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends UTF-8 codeunits that represent the Unicode code-point <span class="tt">cp</span> to the <span class="tt">buffer</span>. Assumes the codepoint is a valid Unicode codepoint that represents a character.  <br /></td></tr>
@@ -300,7 +301,7 @@ template&lt;typename BUFFER, typename POD&gt; </div>
 <p>Appends a POD value's internal object representation to a buffer. </p>
 <dl class="section note"><dt>Note</dt><dd>If, for some reason, you want to append the pod as a certain type of bytelikes </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00211">211</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00212">212</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +355,7 @@ template&lt;typename BUFFER, typename ELEMENT_TYPE = buffer_element_type&lt;BUFF
 
 <p>Appends UTF-8 codeunits that represent the Unicode code-point <span class="tt">cp</span> to the <span class="tt">buffer</span>. Assumes the codepoint is a valid Unicode codepoint that represents a character. </p>
 
-<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00168">168</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00169">169</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
 
 </div>
 </div>
@@ -382,7 +383,7 @@ template&lt;typename BUFFER, typename STRING_TYPE, typename ELEMENT_TYPE = buffe
 <p>Appends UTF-8 codeunits that represent the char32_t-based range <span class="tt">str</span> to the <span class="tt">buffer</span>. </p>
 <p>Assumes all codepoints in <span class="tt">str</span> are valid. </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="#gaf37342fd3d026c62c1ad2bc7a7aabe6e" title="Appends UTF-8 codeunits that represent the Unicode code-point cp to the buffer. Assumes the codepoint...">buffer_append_utf8(BUFFER&amp; buffer, char32_t cp)</a> </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00198">198</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00199">199</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
 
 </div>
 </div>
@@ -407,7 +408,9 @@ template&lt;typename BUFFER, typename ELEMENT_TYPE = buffer_element_type&lt;BUFF
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00150">150</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
+<p>Appends a variable number of <span class="tt">uint8_t</span>s to the buffer that encode the value <span class="tt">oval</span> in a minimal amount of space. </p>
+
+<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00151">151</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
 
 </div>
 </div>

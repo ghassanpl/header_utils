@@ -106,12 +106,14 @@ Namespaces</h2></td></tr>
 <tr class="memitem:fs" id="r_fs"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1fs.html">fs</a></td></tr>
 <tr class="memitem:formats" id="r_formats"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1formats.html">formats</a></td></tr>
 <tr class="memitem:pred" id="r_pred"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1pred.html">pred</a></td></tr>
-<tr class="memdesc:namespaceghassanpl_1_1pred"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Boost::phoenix::arg_names is a better version of this. <br /></td></tr>
+<tr class="memdesc:namespaceghassanpl_1_1pred"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains functions that return predicates; appropriate for functions like <span class="tt">std::all_of</span>. <br /></td></tr>
 <tr class="memitem:op" id="r_op"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1op.html">op</a></td></tr>
-<tr class="memdesc:namespaceghassanpl_1_1op"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appropriate for functions like std::for_each that don't have semantics by themselves. <br /></td></tr>
+<tr class="memdesc:namespaceghassanpl_1_1op"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains functions that return functors that perform an operation without output; appropriate for functions like <span class="tt">std::for_each</span>. <br /></td></tr>
 <tr class="memitem:xf" id="r_xf"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1xf.html">xf</a></td></tr>
-<tr class="memdesc:namespaceghassanpl_1_1xf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appropriate for not-in-place transformation functions. <br /></td></tr>
+<tr class="memdesc:namespaceghassanpl_1_1xf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains functions that return functors which transform and return their inputs somehow; appropriate for not-in-place transformation functions (e.g. <span class="tt">std::transform</span>). <br /></td></tr>
 <tr class="memitem:geometry" id="r_geometry"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1geometry.html">geometry</a></td></tr>
+<tr class="memitem:integer" id="r_integer"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1integer.html">integer</a></td></tr>
+<tr class="memdesc:namespaceghassanpl_1_1integer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hash functions that only work on integers. <br /></td></tr>
 <tr class="memitem:noise" id="r_noise"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1noise.html">noise</a></td></tr>
 <tr class="memdesc:namespaceghassanpl_1_1noise"><td class="mdescLeft">&#160;</td><td class="mdescRight">Shamelessly stolen from <a href="https://github.com/SRombauts/SimplexNoise/">https://github.com/SRombauts/SimplexNoise/</a>. <br /></td></tr>
 <tr class="memitem:parsing" id="r_parsing"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceghassanpl_1_1parsing.html">parsing</a></td></tr>
@@ -125,14 +127,20 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A view over an integral value allowing for iteration and modification of its individual bits.  <a href="structghassanpl_1_1bit__view.html#details">More...</a><br /></td></tr>
 <tr class="memitem:bit_5Freference" id="r_bit_5Freference"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1bit__reference.html">bit_reference</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Models a reference to a specific bit in a variable. Can be a statically-defined bit number (BIT_NUM != dynamic_bit_number).  <a href="structghassanpl_1_1bit__reference.html#details">More...</a><br /></td></tr>
+<tr class="memitem:enum_5Fflag_5Fchanges" id="r_enum_5Fflag_5Fchanges"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1enum__flag__changes.html">enum_flag_changes</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds a set of changes to be made to an <span class="tt"><a class="el" href="structghassanpl_1_1enum__flags.html" title="A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset).">enum_flags</a>&lt;ENUM, VALUE_TYPE&gt;</span> - conceptually holds a set of <span class="tt">std::pair&lt;ENUM, <a class="el" href="group___enum_flags.html#gaf8a51289b1f8de76368a33eb174e7d43" title="A change to be done to an enum flag in an enum_flags set.">enum_flag_change</a>&gt;</span>.  <a href="structghassanpl_1_1enum__flag__changes.html#details">More...</a><br /></td></tr>
 <tr class="memitem:enum_5Fflags" id="r_enum_5Fflags"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1enum__flags.html">enum_flags</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset).  <a href="structghassanpl_1_1enum__flags.html#details">More...</a><br /></td></tr>
+<tr class="memitem:overloaded" id="r_overloaded"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1overloaded.html">overloaded</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Can be used to create an object with an overload set of <span class="tt">operator()</span> if constructed from multiple lambdas.  <a href="structghassanpl_1_1overloaded.html#details">More...</a><br /></td></tr>
 <tr class="memitem:mmap_5Fsource" id="r_mmap_5Fsource"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1mmap__source.html">mmap_source</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A read-only memory view over a file.  <a href="structghassanpl_1_1mmap__source.html#details">More...</a><br /></td></tr>
 <tr class="memitem:mmap_5Fsink" id="r_mmap_5Fsink"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1mmap__sink.html">mmap_sink</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A read-write view over a file.  <a href="structghassanpl_1_1mmap__sink.html#details">More...</a><br /></td></tr>
 <tr class="memitem:mutlticast_5Ffunction_3C_20R_28ARGS_2E_2E_2E_29_3E" id="r_mutlticast_5Ffunction_3C_20R_28ARGS_2E_2E_2E_29_3E"><td class="memItemLeft">class &#160;</td><td class="memItemRight"><a class="el" href="classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html">mutlticast_function&lt; R(ARGS...)&gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <span class="tt">std::function&lt;R(ARGS...)&gt;</span> but can reference multiple invocables, and call them all at once.  <a href="classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:named" id="r_named"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1named.html">named</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to create a strong typedef around <span class="tt">T</span>.  <a href="structghassanpl_1_1named.html#details">More...</a><br /></td></tr>
 <tr class="memitem:caching_5Fpath_5Freference" id="r_caching_5Fpath_5Freference"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1caching__path__reference.html">caching_path_reference</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Possible tags:  <a href="structghassanpl_1_1caching__path__reference.html#details">More...</a><br /></td></tr>
 <tr class="memitem:scope_5Fguard" id="r_scope_5Fguard"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1scope__guard.html">scope_guard</a></td></tr>
@@ -168,6 +176,8 @@ Concepts</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if an element value is appendable to a buffer. <br /></td></tr>
 <tr class="memitem:bytelike" id="r_bytelike"><td class="memItemLeft">concept &#160;</td><td class="memItemRight"><a class="el" href="conceptghassanpl_1_1bytelike.html">bytelike</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represents any trivially copyable type that is trivially castable to an internal object representation (so a char range). <br /></td></tr>
+<tr class="memitem:bytelike_5Frange" id="r_bytelike_5Frange"><td class="memItemLeft">concept &#160;</td><td class="memItemRight"><a class="el" href="conceptghassanpl_1_1bytelike__range.html">bytelike_range</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A range of bytelikes. <br /></td></tr>
 <tr class="memitem:range_5Fpredicate" id="r_range_5Fpredicate"><td class="memItemLeft">concept &#160;</td><td class="memItemRight"><a class="el" href="conceptghassanpl_1_1range__predicate.html">range_predicate</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concept to check if a function is a predicate on the range elements (i.e. returns boolable). <br /></td></tr>
 </table><table class="memberdecls">
@@ -298,6 +308,7 @@ Enumerations</h2></td></tr>
 , <a class="el" href="#ab5a0f4c7ffcd4f4e36aa90edf539e0c6a056fa3d840f48b7bfbbd68c19a4797b3">Terminate</a>
 , <a class="el" href="#ab5a0f4c7ffcd4f4e36aa90edf539e0c6aa0bfb8e59e6c13fc8d990781f77694fe">Continue</a>
  }</td></tr>
+<tr class="memdesc:ab5a0f4c7ffcd4f4e36aa90edf539e0c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return one of these values from the assumption failure handler <code>AssumptionFailureHandler</code> to trigger a specific behavior at the point of failure.  <a href="#ab5a0f4c7ffcd4f4e36aa90edf539e0c6">More...</a><br /></td></tr>
 <tr class="memitem:ab549e52a163776a8adce226c1a7e5cda" id="r_ab549e52a163776a8adce226c1a7e5cda"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><b>buffer_compression_error_type</b> { <b>unknown_error</b>
 , <b>invalid_options</b>
  }</td></tr>
@@ -307,30 +318,12 @@ Enumerations</h2></td></tr>
 , <b>rgbe</b>
  }</td></tr>
 <tr class="memdesc:ga2bd76b8baeed4f6153cd3d087e83b8f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implementation note: These functions use the .xyzw members instead of the .rgba members because accessing the latter is not constexpr.  <a href="group___colors.html#ga2bd76b8baeed4f6153cd3d087e83b8f4">More...</a><br /></td></tr>
-<tr class="memitem:af8a51289b1f8de76368a33eb174e7d43" id="r_af8a51289b1f8de76368a33eb174e7d43"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><b>enum_flag_change</b> : uint8_t { <br />
-&#160;&#160;<b>no_change</b>
+<tr class="memitem:gaf8a51289b1f8de76368a33eb174e7d43" id="r_gaf8a51289b1f8de76368a33eb174e7d43"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="group___enum_flags.html#gaf8a51289b1f8de76368a33eb174e7d43">enum_flag_change</a> : uint8_t { <b>no_change</b>
 , <b>set</b>
 , <b>unset</b>
 , <b>toggle</b>
-, <br />
-&#160;&#160;<b>no_change</b>
-, <b>set</b>
-, <b>unset</b>
-, <b>toggle</b>
-<br />
  }</td></tr>
-<tr class="memitem:af8a51289b1f8de76368a33eb174e7d43" id="r_af8a51289b1f8de76368a33eb174e7d43"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><b>enum_flag_change</b> : uint8_t { <br />
-&#160;&#160;<b>no_change</b>
-, <b>set</b>
-, <b>unset</b>
-, <b>toggle</b>
-, <br />
-&#160;&#160;<b>no_change</b>
-, <b>set</b>
-, <b>unset</b>
-, <b>toggle</b>
-<br />
- }</td></tr>
+<tr class="memdesc:gaf8a51289b1f8de76368a33eb174e7d43"><td class="mdescLeft">&#160;</td><td class="mdescRight">A change to be done to an enum flag in an <span class="tt"><a class="el" href="structghassanpl_1_1enum__flags.html" title="A (constexpr) value struct that represents a set of bits mapped to an enum (implemented as a bitset).">enum_flags</a></span> set.  <a href="group___enum_flags.html#gaf8a51289b1f8de76368a33eb174e7d43">More...</a><br /></td></tr>
 <tr class="memitem:a23fb6f4af7bedb254d87fad6338cafb9" id="r_a23fb6f4af7bedb254d87fad6338cafb9"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><b>tween_flags</b> </td></tr>
 <tr class="memitem:ga642fc0f92e3010276e80fa008ac5c9f9" id="r_ga642fc0f92e3010276e80fa008ac5c9f9"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><b>uri_error_code</b> { <br />
 &#160;&#160;<b>no_error</b>
@@ -455,8 +448,6 @@ Functions</h2></td></tr>
 <tr class="memitem:gad1d1834c011bedb6edfec791cde9370c" id="r_gad1d1834c011bedb6edfec791cde9370c"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:gad1d1834c011bedb6edfec791cde9370c template"><td class="memItemLeft">constexpr T&#160;</td><td class="memItemRight"><a class="el" href="group___alignment.html#gad1d1834c011bedb6edfec791cde9370c">aligned</a> (const T &amp;width, const T &amp;max_width, <a class="el" href="group___alignment.html#ga5b80fb8da6ed141592122d3c9d9e0d51">vertical_align</a> <a class="el" href="group___alignment.html#ga01bf04cf94bf7689c267eafb7d0a21bc">align</a>) noexcept</td></tr>
 <tr class="memitem:a04a3c9b018402ae7d8c13d7bedaed51f" id="r_a04a3c9b018402ae7d8c13d7bedaed51f"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a04a3c9b018402ae7d8c13d7bedaed51f">DefaultReportAssumptionFailure</a> (std::string_view expectation, std::initializer_list&lt; std::pair&lt; std::string_view, std::string &gt; &gt; values, std::string data, source_location loc) -&gt; <a class="el" href="#ab5a0f4c7ffcd4f4e36aa90edf539e0c6">AssumptionHandlerResult</a></td></tr>
-<tr class="memitem:a50d103bbcd57bbe91c03bfe1ef658f88" id="r_a50d103bbcd57bbe91c03bfe1ef658f88"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a50d103bbcd57bbe91c03bfe1ef658f88">ReportAssumptionFailure</a> (std::string_view expectation, std::initializer_list&lt; std::pair&lt; std::string_view, std::string &gt; &gt; values, std::string data, source_location loc=source_location::current()) -&gt; <a class="el" href="#ab5a0f4c7ffcd4f4e36aa90edf539e0c6">AssumptionHandlerResult</a></td></tr>
-<tr class="memdesc:a50d103bbcd57bbe91c03bfe1ef658f88"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: AssumptionFailureHandler should return bool, and based on that we should brek into debugger or not.  <br /></td></tr>
 <tr class="memitem:ga89efd38fd09613431a119db1fefbea37" id="r_ga89efd38fd09613431a119db1fefbea37"><td class="memTemplParams" colspan="2">
 template&lt;std::ranges::contiguous_range RANGE_TYPE&gt; </td></tr>
 <tr class="memitem:ga89efd38fd09613431a119db1fefbea37 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>bit_view</b> (RANGE_TYPE &amp;T) -&gt; bit_view&lt; std::ranges::range_value_t&lt; std::decay_t&lt; decltype(T)&gt; &gt; &gt;</td></tr>
@@ -529,6 +520,7 @@ template&lt;std::ranges::contiguous_range RANGE_TYPE&gt; </td></tr>
 <tr class="memdesc:ga7f58eb6226548175cceea9f8fc377b3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends characters in the <span class="tt">cstr</span> literal array to the <span class="tt">buffer</span>.  <br /></td></tr>
 <tr class="memitem:ga84602d960df2646461a12ccc0d5348a8" id="r_ga84602d960df2646461a12ccc0d5348a8"><td class="memTemplParams" colspan="2">template&lt;typename BUFFER, typename ELEMENT_TYPE = buffer_element_type&lt;BUFFER&gt;&gt; </td></tr>
 <tr class="memitem:ga84602d960df2646461a12ccc0d5348a8 template"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="group___buffers.html#ga84602d960df2646461a12ccc0d5348a8">buffer_append_varint</a> (BUFFER &amp;buffer, std::integral auto oval)</td></tr>
+<tr class="memdesc:ga84602d960df2646461a12ccc0d5348a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends a variable number of <span class="tt">uint8_t</span>s to the buffer that encode the value <span class="tt">oval</span> in a minimal amount of space.  <br /></td></tr>
 <tr class="memitem:gaf37342fd3d026c62c1ad2bc7a7aabe6e" id="r_gaf37342fd3d026c62c1ad2bc7a7aabe6e"><td class="memTemplParams" colspan="2">template&lt;typename BUFFER, typename ELEMENT_TYPE = buffer_element_type&lt;BUFFER&gt;&gt; </td></tr>
 <tr class="memitem:gaf37342fd3d026c62c1ad2bc7a7aabe6e template"><td class="memItemLeft">size_t&#160;</td><td class="memItemRight"><a class="el" href="group___buffers.html#gaf37342fd3d026c62c1ad2bc7a7aabe6e">buffer_append_utf8</a> (BUFFER &amp;buffer, char32_t cp)</td></tr>
 <tr class="memdesc:gaf37342fd3d026c62c1ad2bc7a7aabe6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Appends UTF-8 codeunits that represent the Unicode code-point <span class="tt">cp</span> to the <span class="tt">buffer</span>. Assumes the codepoint is a valid Unicode codepoint that represents a character.  <br /></td></tr>
@@ -549,82 +541,107 @@ template&lt;typename COMPRESSOR, typename BUFFER&gt; </td></tr>
 <tr class="memitem:afeb4af7774b1187b727c2aebb4814223 template"><td class="memItemLeft">buffer_compression_result&lt; void &gt;&#160;</td><td class="memItemRight"><b>compressor_finalize</b> (COMPRESSOR &amp;comp, BUFFER &amp;output_buffer)=delete</td></tr>
 <tr class="memitem:aad88cd58d00bdff453e2e0c25106ae23" id="r_aad88cd58d00bdff453e2e0c25106ae23"><td class="memTemplParams" colspan="2">template&lt;typename BUFFER, bytelike_range RANGE, typename COMPRESSOR&gt; </td></tr>
 <tr class="memitem:aad88cd58d00bdff453e2e0c25106ae23 template"><td class="memItemLeft">buffer_compression_result&lt; void &gt;&#160;</td><td class="memItemRight"><a class="el" href="#aad88cd58d00bdff453e2e0c25106ae23">buffer_append_compressed</a> (BUFFER &amp;buffer, RANGE &amp;&amp;input_range, COMPRESSOR &amp;comp)</td></tr>
-<tr class="memitem:a2f2554a01c8f233639067ae44c5455da" id="r_a2f2554a01c8f233639067ae44c5455da"><td class="memTemplParams" colspan="2">template&lt;bytelike TO, typename FROM, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:a2f2554a01c8f233639067ae44c5455da template"><td class="memItemLeft">span&lt; TO &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a2f2554a01c8f233639067ae44c5455da">as_bytelikes</a> (span&lt; FROM, N &gt; elements) noexcept</td></tr>
-<tr class="memdesc:a2f2554a01c8f233639067ae44c5455da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a span of trivial values to a span of <code>bytelike</code> s.  <br /></td></tr>
-<tr class="memitem:ad8879d66b6081ac33ad78e88800ee1a9" id="r_ad8879d66b6081ac33ad78e88800ee1a9"><td class="memTemplParams" colspan="2">template&lt;typename TO, bytelike FROM&gt; </td></tr>
-<tr class="memitem:ad8879d66b6081ac33ad78e88800ee1a9 template"><td class="memItemLeft">TO&#160;</td><td class="memItemRight"><a class="el" href="#ad8879d66b6081ac33ad78e88800ee1a9">from_bytelikes</a> (span&lt; FROM const &gt; from)</td></tr>
-<tr class="memdesc:ad8879d66b6081ac33ad78e88800ee1a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an object whose internal representation is initialized from the argument.  <br /></td></tr>
-<tr class="memitem:ad9c05b60a68f3164351cb7ee0659b39f" id="r_ad9c05b60a68f3164351cb7ee0659b39f"><td class="memTemplParams" colspan="2">template&lt;typename TO, bytelike FROM&gt; </td></tr>
-<tr class="memitem:ad9c05b60a68f3164351cb7ee0659b39f template"><td class="memItemLeft">span&lt; TO &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ad9c05b60a68f3164351cb7ee0659b39f">span_from_bytelikes</a> (span&lt; FROM &gt; from)</td></tr>
-<tr class="memdesc:ad9c05b60a68f3164351cb7ee0659b39f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an object whose internal representation is initialized from the argument.  <br /></td></tr>
-<tr class="memitem:a3eb5ccb64aaa4dcb9d7a57e8c63b1575" id="r_a3eb5ccb64aaa4dcb9d7a57e8c63b1575"><td class="memTemplParams" colspan="2">template&lt;bytelike TO, typename T&gt; </td></tr>
-<tr class="memitem:a3eb5ccb64aaa4dcb9d7a57e8c63b1575 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a3eb5ccb64aaa4dcb9d7a57e8c63b1575">as_bytelikes</a> (T &amp;pod) noexcept</td></tr>
-<tr class="memdesc:a3eb5ccb64aaa4dcb9d7a57e8c63b1575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <code>bytelike</code> s that represents the internal object representation of the argument.  <br /></td></tr>
-<tr class="memitem:a1baae095d480b5a29409dafd50f6d8fb" id="r_a1baae095d480b5a29409dafd50f6d8fb"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM&gt; </td></tr>
-<tr class="memitem:a1baae095d480b5a29409dafd50f6d8fb template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a1baae095d480b5a29409dafd50f6d8fb">to_u8</a> (FROM byte) noexcept</td></tr>
-<tr class="memitem:a70ba945f6f4693bad4779467f1abae54" id="r_a70ba945f6f4693bad4779467f1abae54"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM&gt; </td></tr>
-<tr class="memitem:a70ba945f6f4693bad4779467f1abae54 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a70ba945f6f4693bad4779467f1abae54">to_char</a> (FROM byte) noexcept</td></tr>
-<tr class="memitem:a945f8c7f2d179898e7eafda7e7235c28" id="r_a945f8c7f2d179898e7eafda7e7235c28"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM&gt; </td></tr>
-<tr class="memitem:a945f8c7f2d179898e7eafda7e7235c28 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a945f8c7f2d179898e7eafda7e7235c28">to_byte</a> (FROM byte) noexcept</td></tr>
-<tr class="memitem:af6241c4999e474d086f01b5a06d978b2" id="r_af6241c4999e474d086f01b5a06d978b2"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM&gt; </td></tr>
-<tr class="memitem:af6241c4999e474d086f01b5a06d978b2 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#af6241c4999e474d086f01b5a06d978b2">to_uchar</a> (FROM byte) noexcept</td></tr>
-<tr class="memitem:a5fab4952934556ae70cc9b7f95abfabe" id="r_a5fab4952934556ae70cc9b7f95abfabe"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM&gt; </td></tr>
-<tr class="memitem:a5fab4952934556ae70cc9b7f95abfabe template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a5fab4952934556ae70cc9b7f95abfabe">to_char8</a> (FROM byte) noexcept</td></tr>
-<tr class="memitem:a8d6e50f6f918c0fb303dab6c9927d92d" id="r_a8d6e50f6f918c0fb303dab6c9927d92d"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:a8d6e50f6f918c0fb303dab6c9927d92d template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a8d6e50f6f918c0fb303dab6c9927d92d">as_chars</a> (span&lt; FROM, N &gt; bytes) noexcept</td></tr>
-<tr class="memitem:ae2e5d59d4b69a42bf248fd10c3311981" id="r_ae2e5d59d4b69a42bf248fd10c3311981"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:ae2e5d59d4b69a42bf248fd10c3311981 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#ae2e5d59d4b69a42bf248fd10c3311981">as_bytes</a> (span&lt; FROM, N &gt; bytes) noexcept</td></tr>
-<tr class="memitem:ab79e83a46b1e38b252fc13c30ae8c0d7" id="r_ab79e83a46b1e38b252fc13c30ae8c0d7"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:ab79e83a46b1e38b252fc13c30ae8c0d7 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#ab79e83a46b1e38b252fc13c30ae8c0d7">as_uchars</a> (span&lt; FROM, N &gt; bytes) noexcept</td></tr>
-<tr class="memitem:a9c31de4d2cae5b7e5d50caf3da4919bd" id="r_a9c31de4d2cae5b7e5d50caf3da4919bd"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:a9c31de4d2cae5b7e5d50caf3da4919bd template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a9c31de4d2cae5b7e5d50caf3da4919bd">as_u8s</a> (span&lt; FROM, N &gt; bytes) noexcept</td></tr>
-<tr class="memitem:a245a1ada01456edfd616c2a4356a2e73" id="r_a245a1ada01456edfd616c2a4356a2e73"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:a245a1ada01456edfd616c2a4356a2e73 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a245a1ada01456edfd616c2a4356a2e73">as_char8s</a> (span&lt; FROM, N &gt; bytes) noexcept</td></tr>
-<tr class="memitem:ac30e06861e7349f51a537bd5366dddfb" id="r_ac30e06861e7349f51a537bd5366dddfb"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ac30e06861e7349f51a537bd5366dddfb template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#ac30e06861e7349f51a537bd5366dddfb">as_chars</a> (T const &amp;data) noexcept</td></tr>
-<tr class="memitem:aae280089b3246c27c3c27c8e02c14fc7" id="r_aae280089b3246c27c3c27c8e02c14fc7"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:aae280089b3246c27c3c27c8e02c14fc7 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#aae280089b3246c27c3c27c8e02c14fc7">as_bytes</a> (T const &amp;data) noexcept</td></tr>
-<tr class="memitem:a33716a6a0b110112a43ffb99a25cf530" id="r_a33716a6a0b110112a43ffb99a25cf530"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a33716a6a0b110112a43ffb99a25cf530 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a33716a6a0b110112a43ffb99a25cf530">as_uchars</a> (T const &amp;data) noexcept</td></tr>
-<tr class="memitem:a8d60dc3e578aaa1f8df4f1506ed36ad7" id="r_a8d60dc3e578aaa1f8df4f1506ed36ad7"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a8d60dc3e578aaa1f8df4f1506ed36ad7 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a8d60dc3e578aaa1f8df4f1506ed36ad7">as_u8s</a> (T const &amp;data) noexcept</td></tr>
-<tr class="memitem:ad0609dea8cb095442d5f0536daaa4843" id="r_ad0609dea8cb095442d5f0536daaa4843"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ad0609dea8cb095442d5f0536daaa4843 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#ad0609dea8cb095442d5f0536daaa4843">as_char8s</a> (T const &amp;data) noexcept</td></tr>
-<tr class="memitem:a138f802b0d44cd9d5a2aab5bbea3a253" id="r_a138f802b0d44cd9d5a2aab5bbea3a253"><td class="memTemplParams" colspan="2">template&lt;bytelike B, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:a138f802b0d44cd9d5a2aab5bbea3a253 template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a138f802b0d44cd9d5a2aab5bbea3a253">nth_bit</a> (span&lt; B const, N &gt; range, size_t n) noexcept</td></tr>
-<tr class="memitem:aa53277bb0bb612f23f338fdd46066ac4" id="r_aa53277bb0bb612f23f338fdd46066ac4"><td class="memTemplParams" colspan="2">template&lt;bytelike B, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:aa53277bb0bb612f23f338fdd46066ac4 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa53277bb0bb612f23f338fdd46066ac4">set_nth_bit</a> (span&lt; B, N &gt; range, size_t n, bool value) noexcept</td></tr>
-<tr class="memitem:a9f30b8252650d50344f8bf6819402ab6" id="r_a9f30b8252650d50344f8bf6819402ab6"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a9f30b8252650d50344f8bf6819402ab6 template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a9f30b8252650d50344f8bf6819402ab6">nth_bit</a> (T const &amp;pod, size_t n) noexcept</td></tr>
-<tr class="memitem:a5875a163dec286000df769e029668488" id="r_a5875a163dec286000df769e029668488"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a5875a163dec286000df769e029668488 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a5875a163dec286000df769e029668488">set_nth_bit</a> (T &amp;pod, size_t n, bool value) noexcept</td></tr>
-<tr class="memitem:a04fefdc75fc3cda96aad31483925c5a3" id="r_a04fefdc75fc3cda96aad31483925c5a3"><td class="memTemplParams" colspan="2">template&lt;size_t N, bytelike B, size_t SN = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:a04fefdc75fc3cda96aad31483925c5a3 template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a04fefdc75fc3cda96aad31483925c5a3">nth_bit</a> (span&lt; B const, SN &gt; range) noexcept</td></tr>
-<tr class="memitem:aedc984e87c69c8802479def914195ae6" id="r_aedc984e87c69c8802479def914195ae6"><td class="memTemplParams" colspan="2">template&lt;size_t N, bytelike B, size_t SN = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:aedc984e87c69c8802479def914195ae6 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aedc984e87c69c8802479def914195ae6">set_nth_bit</a> (span&lt; B, SN &gt; range, bool value) noexcept</td></tr>
-<tr class="memitem:ad877f7fe8731ea0973f29c0bc27512b7" id="r_ad877f7fe8731ea0973f29c0bc27512b7"><td class="memTemplParams" colspan="2">template&lt;size_t N, typename T&gt; </td></tr>
-<tr class="memitem:ad877f7fe8731ea0973f29c0bc27512b7 template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ad877f7fe8731ea0973f29c0bc27512b7">nth_bit</a> (T const &amp;pod) noexcept</td></tr>
-<tr class="memitem:abb9d05f33630a4022602d63885174af4" id="r_abb9d05f33630a4022602d63885174af4"><td class="memTemplParams" colspan="2">template&lt;size_t N, typename T&gt; </td></tr>
-<tr class="memitem:abb9d05f33630a4022602d63885174af4 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#abb9d05f33630a4022602d63885174af4">set_nth_bit</a> (T &amp;pod, bool value) noexcept</td></tr>
-<tr class="memitem:a69095cc14e36394ade64edd858c7f4e6" id="r_a69095cc14e36394ade64edd858c7f4e6"><td class="memTemplParams" colspan="2">template&lt;bytelike B, std::integral T&gt; </td></tr>
-<tr class="memitem:a69095cc14e36394ade64edd858c7f4e6 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a69095cc14e36394ade64edd858c7f4e6">to_bytelike_array</a> (T value_)</td></tr>
-<tr class="memdesc:a69095cc14e36394ade64edd858c7f4e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constexpr function that converts an integral value to its constituent bytelikes TODO: This is NOT like a reinterpret_/bit_cast to u8s, because it's not endian-aware.  <br /></td></tr>
-<tr class="memitem:af8211680c8e71485ee56ee4ae8e1e86b" id="r_af8211680c8e71485ee56ee4ae8e1e86b"><td class="memTemplParams" colspan="2">template&lt;std::integral T&gt; </td></tr>
-<tr class="memitem:af8211680c8e71485ee56ee4ae8e1e86b template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#af8211680c8e71485ee56ee4ae8e1e86b">to_u8_array</a> (T value)</td></tr>
-<tr class="memitem:a55cd35e86d28722a42e76de1aed2b021" id="r_a55cd35e86d28722a42e76de1aed2b021"><td class="memTemplParams" colspan="2">template&lt;size_t ALIGN, bytelike T, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:a55cd35e86d28722a42e76de1aed2b021 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a55cd35e86d28722a42e76de1aed2b021">align_front_to</a> (span&lt; T, N &gt; bytes) noexcept -&gt; align_front_to_result&lt; T &gt;</td></tr>
-<tr class="memdesc:a55cd35e86d28722a42e76de1aed2b021"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits the argument span into two spans, the first one being the prefix, the second one having its data pointer aligned to the given alignment.  <br /></td></tr>
-<tr class="memitem:ac010a9ad12c0d21cdf4015f8eb12e49e" id="r_ac010a9ad12c0d21cdf4015f8eb12e49e"><td class="memTemplParams" colspan="2">template&lt;size_t ALIGN, bytelike T, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:ac010a9ad12c0d21cdf4015f8eb12e49e template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ac010a9ad12c0d21cdf4015f8eb12e49e">align_back_to</a> (span&lt; T, N &gt; bytes) noexcept -&gt; align_back_to_result&lt; T &gt;</td></tr>
-<tr class="memdesc:ac010a9ad12c0d21cdf4015f8eb12e49e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits the argument span into two spans, the first one having its size aligned to the given alignment, the second one being the suffix.  <br /></td></tr>
-<tr class="memitem:ac54d9279fe5803e82493a2e107049dd7" id="r_ac54d9279fe5803e82493a2e107049dd7"><td class="memTemplParams" colspan="2">template&lt;size_t ALIGN, bytelike T, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:ac54d9279fe5803e82493a2e107049dd7 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#ac54d9279fe5803e82493a2e107049dd7">align_to</a> (span&lt; T, N &gt; bytes) noexcept -&gt; align_to_result&lt; T &gt;</td></tr>
-<tr class="memdesc:ac54d9279fe5803e82493a2e107049dd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits the argument span into three spans, the first one being the prefix, the second one having its data and size aligned to the given alignment, the third one being the suffix.  <br /></td></tr>
-<tr class="memitem:af5603074ceb6ed74088f592925cba030" id="r_af5603074ceb6ed74088f592925cba030"><td class="memTemplParams" colspan="2">template&lt;typename TO, bytelike B, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:af5603074ceb6ed74088f592925cba030 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#af5603074ceb6ed74088f592925cba030">aligned_span_cast</a> (span&lt; B, N &gt; bytes) noexcept -&gt; align_to_result&lt; B, TO &gt;</td></tr>
-<tr class="memitem:a11d48890a075fdac6256788d436c1e90" id="r_a11d48890a075fdac6256788d436c1e90"><td class="memTemplParams" colspan="2">template&lt;typename TO, bytelike B, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:a11d48890a075fdac6256788d436c1e90 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a11d48890a075fdac6256788d436c1e90">aligned_span_cast_and_construct</a> (span&lt; B, N &gt; bytes) noexcept -&gt; align_to_result&lt; B, TO &gt;</td></tr>
+<tr class="memitem:ga0144e38c473a0d29c6c280b0d8ca6503" id="r_ga0144e38c473a0d29c6c280b0d8ca6503"><td class="memTemplParams" colspan="2">template&lt;bytelike TO, typename FROM, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ga0144e38c473a0d29c6c280b0d8ca6503 template"><td class="memItemLeft">std::span&lt; TO &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga0144e38c473a0d29c6c280b0d8ca6503">as_bytelikes</a> (std::span&lt; FROM, N &gt; elements) noexcept</td></tr>
+<tr class="memdesc:ga0144e38c473a0d29c6c280b0d8ca6503"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a span of trivial values to a span of <code>bytelike</code> s.  <br /></td></tr>
+<tr class="memitem:ga8f159c1b7fbe3f78b62772606e3c884e" id="r_ga8f159c1b7fbe3f78b62772606e3c884e"><td class="memTemplParams" colspan="2">template&lt;typename TO, bytelike FROM&gt; </td></tr>
+<tr class="memitem:ga8f159c1b7fbe3f78b62772606e3c884e template"><td class="memItemLeft">TO&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga8f159c1b7fbe3f78b62772606e3c884e">from_bytelikes</a> (std::span&lt; FROM const &gt; from)</td></tr>
+<tr class="memdesc:ga8f159c1b7fbe3f78b62772606e3c884e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an object whose internal representation is initialized from the argument.  <br /></td></tr>
+<tr class="memitem:ga1e130a5c9709c40849f4f01c58afd0cf" id="r_ga1e130a5c9709c40849f4f01c58afd0cf"><td class="memTemplParams" colspan="2">template&lt;typename TO, bytelike FROM&gt; </td></tr>
+<tr class="memitem:ga1e130a5c9709c40849f4f01c58afd0cf template"><td class="memItemLeft">std::span&lt; TO &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga1e130a5c9709c40849f4f01c58afd0cf">span_from_bytelikes</a> (std::span&lt; FROM &gt; from)</td></tr>
+<tr class="memdesc:ga1e130a5c9709c40849f4f01c58afd0cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an object whose internal representation is initialized from the argument.  <br /></td></tr>
+<tr class="memitem:ga3eb5ccb64aaa4dcb9d7a57e8c63b1575" id="r_ga3eb5ccb64aaa4dcb9d7a57e8c63b1575"><td class="memTemplParams" colspan="2">template&lt;bytelike TO, typename T&gt; </td></tr>
+<tr class="memitem:ga3eb5ccb64aaa4dcb9d7a57e8c63b1575 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga3eb5ccb64aaa4dcb9d7a57e8c63b1575">as_bytelikes</a> (T &amp;pod) noexcept</td></tr>
+<tr class="memdesc:ga3eb5ccb64aaa4dcb9d7a57e8c63b1575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <code>bytelike</code> s that represents the internal object representation of the argument.  <br /></td></tr>
+<tr class="memitem:ga1baae095d480b5a29409dafd50f6d8fb" id="r_ga1baae095d480b5a29409dafd50f6d8fb"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM&gt; </td></tr>
+<tr class="memitem:ga1baae095d480b5a29409dafd50f6d8fb template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga1baae095d480b5a29409dafd50f6d8fb">to_u8</a> (FROM byte) noexcept</td></tr>
+<tr class="memdesc:ga1baae095d480b5a29409dafd50f6d8fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit-casts the given bytelike to a <span class="tt">uint8_t</span>.  <br /></td></tr>
+<tr class="memitem:ga70ba945f6f4693bad4779467f1abae54" id="r_ga70ba945f6f4693bad4779467f1abae54"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM&gt; </td></tr>
+<tr class="memitem:ga70ba945f6f4693bad4779467f1abae54 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga70ba945f6f4693bad4779467f1abae54">to_char</a> (FROM byte) noexcept</td></tr>
+<tr class="memdesc:ga70ba945f6f4693bad4779467f1abae54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit-casts the given bytelike to a <span class="tt">char</span>.  <br /></td></tr>
+<tr class="memitem:ga945f8c7f2d179898e7eafda7e7235c28" id="r_ga945f8c7f2d179898e7eafda7e7235c28"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM&gt; </td></tr>
+<tr class="memitem:ga945f8c7f2d179898e7eafda7e7235c28 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga945f8c7f2d179898e7eafda7e7235c28">to_byte</a> (FROM byte) noexcept</td></tr>
+<tr class="memdesc:ga945f8c7f2d179898e7eafda7e7235c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit-casts the given bytelike to a <span class="tt">std::byte</span>.  <br /></td></tr>
+<tr class="memitem:gaf6241c4999e474d086f01b5a06d978b2" id="r_gaf6241c4999e474d086f01b5a06d978b2"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM&gt; </td></tr>
+<tr class="memitem:gaf6241c4999e474d086f01b5a06d978b2 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gaf6241c4999e474d086f01b5a06d978b2">to_uchar</a> (FROM byte) noexcept</td></tr>
+<tr class="memdesc:gaf6241c4999e474d086f01b5a06d978b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit-casts the given bytelike to a <span class="tt">unsigned char</span>.  <br /></td></tr>
+<tr class="memitem:ga5fab4952934556ae70cc9b7f95abfabe" id="r_ga5fab4952934556ae70cc9b7f95abfabe"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM&gt; </td></tr>
+<tr class="memitem:ga5fab4952934556ae70cc9b7f95abfabe template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga5fab4952934556ae70cc9b7f95abfabe">to_char8</a> (FROM byte) noexcept</td></tr>
+<tr class="memdesc:ga5fab4952934556ae70cc9b7f95abfabe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bit-casts the given bytelike to a <span class="tt">char8_t</span>.  <br /></td></tr>
+<tr class="memitem:ga8c365fd666afec5373ce1f07efa7841c" id="r_ga8c365fd666afec5373ce1f07efa7841c"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ga8c365fd666afec5373ce1f07efa7841c template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga8c365fd666afec5373ce1f07efa7841c">as_chars</a> (std::span&lt; FROM, N &gt; bytes) noexcept</td></tr>
+<tr class="memdesc:ga8c365fd666afec5373ce1f07efa7841c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <span class="tt">char</span>s that represents the bytelikes in <span class="tt">bytes</span>.  <br /></td></tr>
+<tr class="memitem:gace877e6d47e5c17fe4a85103df4f3e6a" id="r_gace877e6d47e5c17fe4a85103df4f3e6a"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:gace877e6d47e5c17fe4a85103df4f3e6a template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gace877e6d47e5c17fe4a85103df4f3e6a">as_bytes</a> (std::span&lt; FROM, N &gt; bytes) noexcept</td></tr>
+<tr class="memdesc:gace877e6d47e5c17fe4a85103df4f3e6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <span class="tt">std::byte</span>s that represents the bytelikes in <span class="tt">bytes</span>.  <br /></td></tr>
+<tr class="memitem:gada51c80abc6e1c161e1d4e120697603e" id="r_gada51c80abc6e1c161e1d4e120697603e"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:gada51c80abc6e1c161e1d4e120697603e template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gada51c80abc6e1c161e1d4e120697603e">as_uchars</a> (std::span&lt; FROM, N &gt; bytes) noexcept</td></tr>
+<tr class="memdesc:gada51c80abc6e1c161e1d4e120697603e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <span class="tt">unsigned char</span>s that represents the bytelikes in <span class="tt">bytes</span>.  <br /></td></tr>
+<tr class="memitem:ga8aabad0ae5682b3eb427f761e867730a" id="r_ga8aabad0ae5682b3eb427f761e867730a"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ga8aabad0ae5682b3eb427f761e867730a template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga8aabad0ae5682b3eb427f761e867730a">as_u8s</a> (std::span&lt; FROM, N &gt; bytes) noexcept</td></tr>
+<tr class="memdesc:ga8aabad0ae5682b3eb427f761e867730a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <span class="tt">uint8_t</span>s that represents the bytelikes in <span class="tt">bytes</span>.  <br /></td></tr>
+<tr class="memitem:ga9c5c64df70209aa3277a43d242309a8e" id="r_ga9c5c64df70209aa3277a43d242309a8e"><td class="memTemplParams" colspan="2">template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ga9c5c64df70209aa3277a43d242309a8e template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga9c5c64df70209aa3277a43d242309a8e">as_char8s</a> (std::span&lt; FROM, N &gt; bytes) noexcept</td></tr>
+<tr class="memdesc:ga9c5c64df70209aa3277a43d242309a8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <span class="tt">char8_t</span>s that represents the bytelikes in <span class="tt">bytes</span>.  <br /></td></tr>
+<tr class="memitem:gac30e06861e7349f51a537bd5366dddfb" id="r_gac30e06861e7349f51a537bd5366dddfb"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gac30e06861e7349f51a537bd5366dddfb template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gac30e06861e7349f51a537bd5366dddfb">as_chars</a> (T const &amp;data) noexcept</td></tr>
+<tr class="memdesc:gac30e06861e7349f51a537bd5366dddfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <span class="tt">char</span>s that represents the internal object representation of the <span class="tt">data</span> object.  <br /></td></tr>
+<tr class="memitem:gaae280089b3246c27c3c27c8e02c14fc7" id="r_gaae280089b3246c27c3c27c8e02c14fc7"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gaae280089b3246c27c3c27c8e02c14fc7 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gaae280089b3246c27c3c27c8e02c14fc7">as_bytes</a> (T const &amp;data) noexcept</td></tr>
+<tr class="memdesc:gaae280089b3246c27c3c27c8e02c14fc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <span class="tt">std::byte</span>s that represents the internal object representation of the <span class="tt">data</span> object.  <br /></td></tr>
+<tr class="memitem:ga33716a6a0b110112a43ffb99a25cf530" id="r_ga33716a6a0b110112a43ffb99a25cf530"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga33716a6a0b110112a43ffb99a25cf530 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga33716a6a0b110112a43ffb99a25cf530">as_uchars</a> (T const &amp;data) noexcept</td></tr>
+<tr class="memdesc:ga33716a6a0b110112a43ffb99a25cf530"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <span class="tt">unsigned char</span>s that represents the internal object representation of the <span class="tt">data</span> object.  <br /></td></tr>
+<tr class="memitem:ga8d60dc3e578aaa1f8df4f1506ed36ad7" id="r_ga8d60dc3e578aaa1f8df4f1506ed36ad7"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga8d60dc3e578aaa1f8df4f1506ed36ad7 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga8d60dc3e578aaa1f8df4f1506ed36ad7">as_u8s</a> (T const &amp;data) noexcept</td></tr>
+<tr class="memdesc:ga8d60dc3e578aaa1f8df4f1506ed36ad7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <span class="tt">uint8_t</span>s that represents the internal object representation of the <span class="tt">data</span> object.  <br /></td></tr>
+<tr class="memitem:gad0609dea8cb095442d5f0536daaa4843" id="r_gad0609dea8cb095442d5f0536daaa4843"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gad0609dea8cb095442d5f0536daaa4843 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gad0609dea8cb095442d5f0536daaa4843">as_char8s</a> (T const &amp;data) noexcept</td></tr>
+<tr class="memdesc:gad0609dea8cb095442d5f0536daaa4843"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a span of <span class="tt">char8_t</span>s that represents the internal object representation of the <span class="tt">data</span> object.  <br /></td></tr>
+<tr class="memitem:gacc7cc60df3672aea571732124a2f188a" id="r_gacc7cc60df3672aea571732124a2f188a"><td class="memTemplParams" colspan="2">template&lt;bytelike B, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:gacc7cc60df3672aea571732124a2f188a template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gacc7cc60df3672aea571732124a2f188a">nth_bit</a> (std::span&lt; B const, N &gt; range, size_t n) noexcept</td></tr>
+<tr class="memdesc:gacc7cc60df3672aea571732124a2f188a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the nth bit in the range of bytelikes.  <br /></td></tr>
+<tr class="memitem:ga5329c8df26a23ab719b73a11a3ea3fc8" id="r_ga5329c8df26a23ab719b73a11a3ea3fc8"><td class="memTemplParams" colspan="2">template&lt;bytelike B, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ga5329c8df26a23ab719b73a11a3ea3fc8 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga5329c8df26a23ab719b73a11a3ea3fc8">set_nth_bit</a> (std::span&lt; B, N &gt; range, size_t n, bool value) noexcept</td></tr>
+<tr class="memdesc:ga5329c8df26a23ab719b73a11a3ea3fc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value of the nth bit in the range of bytelikes.  <br /></td></tr>
+<tr class="memitem:ga9f30b8252650d50344f8bf6819402ab6" id="r_ga9f30b8252650d50344f8bf6819402ab6"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga9f30b8252650d50344f8bf6819402ab6 template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga9f30b8252650d50344f8bf6819402ab6">nth_bit</a> (T const &amp;pod, size_t n) noexcept</td></tr>
+<tr class="memdesc:ga9f30b8252650d50344f8bf6819402ab6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the nth bit in the internal object representation of the <span class="tt">pod</span> object.  <br /></td></tr>
+<tr class="memitem:ga5875a163dec286000df769e029668488" id="r_ga5875a163dec286000df769e029668488"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga5875a163dec286000df769e029668488 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga5875a163dec286000df769e029668488">set_nth_bit</a> (T &amp;pod, size_t n, bool value) noexcept</td></tr>
+<tr class="memdesc:ga5875a163dec286000df769e029668488"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value of the nth bit in the internal object representation of the <span class="tt">pod</span> object.  <br /></td></tr>
+<tr class="memitem:gacc4ad279a64c3a963e218704a376887d" id="r_gacc4ad279a64c3a963e218704a376887d"><td class="memTemplParams" colspan="2">template&lt;size_t N, bytelike B, size_t SN = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:gacc4ad279a64c3a963e218704a376887d template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gacc4ad279a64c3a963e218704a376887d">nth_bit</a> (std::span&lt; B const, SN &gt; range) noexcept</td></tr>
+<tr class="memdesc:gacc4ad279a64c3a963e218704a376887d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the Nth bit in the range of bytelikes.  <br /></td></tr>
+<tr class="memitem:gae8de5aa883b14c543b6e375cc9b6458d" id="r_gae8de5aa883b14c543b6e375cc9b6458d"><td class="memTemplParams" colspan="2">template&lt;size_t N, bytelike B, size_t SN = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:gae8de5aa883b14c543b6e375cc9b6458d template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gae8de5aa883b14c543b6e375cc9b6458d">set_nth_bit</a> (std::span&lt; B, SN &gt; range, bool value) noexcept</td></tr>
+<tr class="memdesc:gae8de5aa883b14c543b6e375cc9b6458d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value of the Nth bit in the range of bytelikes.  <br /></td></tr>
+<tr class="memitem:gad877f7fe8731ea0973f29c0bc27512b7" id="r_gad877f7fe8731ea0973f29c0bc27512b7"><td class="memTemplParams" colspan="2">template&lt;size_t N, typename T&gt; </td></tr>
+<tr class="memitem:gad877f7fe8731ea0973f29c0bc27512b7 template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gad877f7fe8731ea0973f29c0bc27512b7">nth_bit</a> (T const &amp;pod) noexcept</td></tr>
+<tr class="memdesc:gad877f7fe8731ea0973f29c0bc27512b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the Nth bit in the internal object representation of the <span class="tt">pod</span> object.  <br /></td></tr>
+<tr class="memitem:gabb9d05f33630a4022602d63885174af4" id="r_gabb9d05f33630a4022602d63885174af4"><td class="memTemplParams" colspan="2">template&lt;size_t N, typename T&gt; </td></tr>
+<tr class="memitem:gabb9d05f33630a4022602d63885174af4 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gabb9d05f33630a4022602d63885174af4">set_nth_bit</a> (T &amp;pod, bool value) noexcept</td></tr>
+<tr class="memdesc:gabb9d05f33630a4022602d63885174af4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the value of the Nth bit in the internal object representation of the <span class="tt">pod</span> object.  <br /></td></tr>
+<tr class="memitem:ga69095cc14e36394ade64edd858c7f4e6" id="r_ga69095cc14e36394ade64edd858c7f4e6"><td class="memTemplParams" colspan="2">template&lt;bytelike B, std::integral T&gt; </td></tr>
+<tr class="memitem:ga69095cc14e36394ade64edd858c7f4e6 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga69095cc14e36394ade64edd858c7f4e6">to_bytelike_array</a> (T value_)</td></tr>
+<tr class="memdesc:ga69095cc14e36394ade64edd858c7f4e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A constexpr function that converts an integral value to its constituent bytelikes TODO: This is NOT like a reinterpret_/bit_cast to u8s, because it's not endian-aware.  <br /></td></tr>
+<tr class="memitem:gaf8211680c8e71485ee56ee4ae8e1e86b" id="r_gaf8211680c8e71485ee56ee4ae8e1e86b"><td class="memTemplParams" colspan="2">template&lt;std::integral T&gt; </td></tr>
+<tr class="memitem:gaf8211680c8e71485ee56ee4ae8e1e86b template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gaf8211680c8e71485ee56ee4ae8e1e86b">to_u8_array</a> (T value)</td></tr>
+<tr class="memitem:ga7b8b4748a86bcc02e4a2580efe90c50a" id="r_ga7b8b4748a86bcc02e4a2580efe90c50a"><td class="memTemplParams" colspan="2">template&lt;size_t ALIGN, bytelike T, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ga7b8b4748a86bcc02e4a2580efe90c50a template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga7b8b4748a86bcc02e4a2580efe90c50a">align_front_to</a> (std::span&lt; T, N &gt; bytes) noexcept -&gt; align_front_to_result&lt; T &gt;</td></tr>
+<tr class="memdesc:ga7b8b4748a86bcc02e4a2580efe90c50a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits the argument span into two spans, the first one being the prefix, the second one having its data pointer aligned to the given alignment.  <br /></td></tr>
+<tr class="memitem:gae799337db5a077ed406d44f2cddc33ee" id="r_gae799337db5a077ed406d44f2cddc33ee"><td class="memTemplParams" colspan="2">template&lt;size_t ALIGN, bytelike T, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:gae799337db5a077ed406d44f2cddc33ee template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gae799337db5a077ed406d44f2cddc33ee">align_back_to</a> (std::span&lt; T, N &gt; bytes) noexcept -&gt; align_back_to_result&lt; T &gt;</td></tr>
+<tr class="memdesc:gae799337db5a077ed406d44f2cddc33ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits the argument span into two spans, the first one having its size aligned to the given alignment, the second one being the suffix.  <br /></td></tr>
+<tr class="memitem:gad6f2dae3f0afd6e25fcbb3de05a5c8d5" id="r_gad6f2dae3f0afd6e25fcbb3de05a5c8d5"><td class="memTemplParams" colspan="2">template&lt;size_t ALIGN, bytelike T, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:gad6f2dae3f0afd6e25fcbb3de05a5c8d5 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gad6f2dae3f0afd6e25fcbb3de05a5c8d5">align_to</a> (std::span&lt; T, N &gt; bytes) noexcept -&gt; align_to_result&lt; T &gt;</td></tr>
+<tr class="memdesc:gad6f2dae3f0afd6e25fcbb3de05a5c8d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits the argument span into three spans, the first one being the prefix, the second one having its data and size aligned to the given alignment, the third one being the suffix.  <br /></td></tr>
+<tr class="memitem:gac3030ed23af16b54ee468b2c1ee81d17" id="r_gac3030ed23af16b54ee468b2c1ee81d17"><td class="memTemplParams" colspan="2">template&lt;typename TO, bytelike B, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:gac3030ed23af16b54ee468b2c1ee81d17 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#gac3030ed23af16b54ee468b2c1ee81d17">aligned_span_cast</a> (std::span&lt; B, N &gt; bytes) noexcept -&gt; align_to_result&lt; B, TO &gt;</td></tr>
+<tr class="memdesc:gac3030ed23af16b54ee468b2c1ee81d17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits the argument span into three spans, the first one being the prefix, the second one capable of storing one ore more objects of type <span class="tt">TO</span> with the proper alignment, and the third one being the suffix.  <br /></td></tr>
+<tr class="memitem:ga5bf61bb98c1d06c6f93114e785868898" id="r_ga5bf61bb98c1d06c6f93114e785868898"><td class="memTemplParams" colspan="2">template&lt;typename TO, bytelike B, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ga5bf61bb98c1d06c6f93114e785868898 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___bytes.html#ga5bf61bb98c1d06c6f93114e785868898">aligned_span_cast_and_construct</a> (std::span&lt; B, N &gt; bytes) noexcept -&gt; align_to_result&lt; B, TO &gt;</td></tr>
+<tr class="memdesc:ga5bf61bb98c1d06c6f93114e785868898"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does the same as <span class="tt"><a class="el" href="group___bytes.html#gac3030ed23af16b54ee468b2c1ee81d17" title="Splits the argument span into three spans, the first one being the prefix, the second one capable of ...">aligned_span_cast</a></span> but then default-constructs the elements of the of middle span.  <br /></td></tr>
 <tr class="memitem:ga30f26bfb288572cfe5fad259de10e360" id="r_ga30f26bfb288572cfe5fad259de10e360"><td class="memItemLeft">constexpr <a class="el" href="group___colors.html#gac3ffacdbc51059e642673ba6968ec9d9">color_t</a>&#160;</td><td class="memItemRight"><a class="el" href="group___colors.html#ga30f26bfb288572cfe5fad259de10e360">premultiplied</a> (<a class="el" href="group___colors.html#gac3ffacdbc51059e642673ba6968ec9d9">color_t</a> const &amp;color)</td></tr>
 <tr class="memdesc:ga30f26bfb288572cfe5fad259de10e360"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the color multiplied by its own alpha.  <br /></td></tr>
 <tr class="memitem:ga8462a96d63293ca3b901f628e8fac9d9" id="r_ga8462a96d63293ca3b901f628e8fac9d9"><td class="memItemLeft">constexpr <a class="el" href="group___colors.html#gac3ffacdbc51059e642673ba6968ec9d9">color_t</a>&#160;</td><td class="memItemRight"><a class="el" href="group___colors.html#ga8462a96d63293ca3b901f628e8fac9d9">with_alpha</a> (<a class="el" href="group___colors.html#gac3ffacdbc51059e642673ba6968ec9d9">color_t</a> const &amp;color, float a)</td></tr>
@@ -735,8 +752,6 @@ template&lt;typename COMPRESSOR, typename BUFFER&gt; </td></tr>
 <tr class="memitem:ga560bac3ba887c634bdc9c1eba87fc2cc" id="r_ga560bac3ba887c634bdc9c1eba87fc2cc"><td class="memTemplParams" colspan="2">template&lt;typename K, typename V, typename C, typename VAL&gt; </td></tr>
 <tr class="memitem:ga560bac3ba887c634bdc9c1eba87fc2cc template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___containers.html#ga560bac3ba887c634bdc9c1eba87fc2cc">at_ptr</a> (std::map&lt; K, V, C &gt; &amp;map, VAL &amp;&amp;value)</td></tr>
 <tr class="memdesc:ga560bac3ba887c634bdc9c1eba87fc2cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <code><a class="el" href="group___containers.html#gaa914e3ba869f77f558dadc670e5c59c3" title="Finds the value associated with key in the map and retuns a pointer to it, or nullptr if none found.">map_find()</a></code>.  <br /></td></tr>
-<tr class="memitem:aeb9a34fda6851ff34cbaf42cd4f17fdc" id="r_aeb9a34fda6851ff34cbaf42cd4f17fdc"><td class="memTemplParams" colspan="2">template&lt;typename RESULT_TYPE = unsigned long long, typename... ARGS&gt; </td></tr>
-<tr class="memitem:aeb9a34fda6851ff34cbaf42cd4f17fdc template"><td class="memItemLeft">constexpr RESULT_TYPE&#160;</td><td class="memItemRight"><a class="el" href="#aeb9a34fda6851ff34cbaf42cd4f17fdc">flag_bits</a> (ARGS... args) noexcept</td></tr>
 <tr class="memitem:a700b4c4c84c4024ce498c8e4f2c95456" id="r_a700b4c4c84c4024ce498c8e4f2c95456"><td class="memTemplParams" colspan="2">template&lt;class T, class U&gt; </td></tr>
 <tr class="memitem:a700b4c4c84c4024ce498c8e4f2c95456 template"><td class="memItemLeft">constexpr std::unique_ptr&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a700b4c4c84c4024ce498c8e4f2c95456">dynamic_pointer_cast</a> (std::unique_ptr&lt; U &gt; &amp;&amp;r) noexcept</td></tr>
 <tr class="memitem:ae68a41dd5265d4b55d835099c39a3d8b" id="r_ae68a41dd5265d4b55d835099c39a3d8b"><td class="memTemplParams" colspan="2">template&lt;class T, class U&gt; </td></tr>
@@ -755,8 +770,6 @@ template&lt;typename COMPRESSOR, typename BUFFER&gt; </td></tr>
 <tr class="memitem:a73abba3579537e6b80b1b573d3b329ae" id="r_a73abba3579537e6b80b1b573d3b329ae"><td class="memTemplParams" colspan="2">template&lt;class T, std::enable_if_t&lt; std::is_integral_v&lt; T &gt;, int &gt; = 0&gt; </td></tr>
 <tr class="memitem:a73abba3579537e6b80b1b573d3b329ae template"><td class="memItemLeft">constexpr T&#160;</td><td class="memItemRight"><a class="el" href="#a73abba3579537e6b80b1b573d3b329ae">byteswap</a> (const T val) noexcept</td></tr>
 <tr class="memitem:afb28124815d521588c361b22afdc2241" id="r_afb28124815d521588c361b22afdc2241"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#afb28124815d521588c361b22afdc2241">unreachable</a> () noexcept</td></tr>
-<tr class="memitem:a062dd3a76ace64c32633042cb0849540" id="r_a062dd3a76ace64c32633042cb0849540"><td class="memTemplParams" colspan="2">template&lt;typename RESULT_TYPE, typename ENUM_TYPE&gt; </td></tr>
-<tr class="memitem:a062dd3a76ace64c32633042cb0849540 template"><td class="memItemLeft">EF_CONSTEXPR RESULT_TYPE&#160;</td><td class="memItemRight"><a class="el" href="#a062dd3a76ace64c32633042cb0849540">flag_bit</a> (ENUM_TYPE e) EF_NOEXCEPT</td></tr>
 <tr class="memitem:ac938e3d5b4ebe9523f2fea70ac825fa1" id="r_ac938e3d5b4ebe9523f2fea70ac825fa1"><td class="memTemplParams" colspan="2">template&lt;typename ENUM_TYPE&gt; </td></tr>
 <tr class="memitem:ac938e3d5b4ebe9523f2fea70ac825fa1 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#ac938e3d5b4ebe9523f2fea70ac825fa1">GHPL_REQUIRES</a> (std::is_enum_v&lt; ENUM_TYPE &gt;) struct circular_enum</td></tr>
 <tr class="memdesc:ac938e3d5b4ebe9523f2fea70ac825fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Finish this.  <br /></td></tr>
@@ -800,45 +813,45 @@ requires detail::valid_flag_bits_arguments&lt;RESULT_TYPE, ARGS...&gt;</td></tr>
 <tr class="memitem:gaf4b91c5c9e05a5dee0c0a8548bcf4c85" id="r_gaf4b91c5c9e05a5dee0c0a8548bcf4c85"><td class="memTemplParams" colspan="2">template&lt;typename FUNC&gt; </td></tr>
 <tr class="memitem:gaf4b91c5c9e05a5dee0c0a8548bcf4c85 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#gaf4b91c5c9e05a5dee0c0a8548bcf4c85">make_single_time_function</a> (FUNC &amp;&amp;func)</td></tr>
 <tr class="memdesc:gaf4b91c5c9e05a5dee0c0a8548bcf4c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a function that calls <span class="tt">func</span> when invoked, but only the first time.  <br /></td></tr>
-<tr class="memitem:ab3958af2be0ba12ca9e9512d990ae9ca" id="r_ab3958af2be0ba12ca9e9512d990ae9ca"><td class="memTemplParams" colspan="2">template&lt;typename T, typename FUNC&gt; </td></tr>
-<tr class="memitem:ab3958af2be0ba12ca9e9512d990ae9ca template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ab3958af2be0ba12ca9e9512d990ae9ca">transformed</a> (std::optional&lt; T &gt; const &amp;value, FUNC &amp;&amp;func) -&gt; decltype(std::optional{ func(value.value()) })</td></tr>
-<tr class="memdesc:ab3958af2be0ba12ca9e9512d990ae9ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre C++23 transform/fmap.  <br /></td></tr>
-<tr class="memitem:a54509b26aada327a760c2d71b3f5eebb" id="r_a54509b26aada327a760c2d71b3f5eebb"><td class="memTemplParams" colspan="2">template&lt;typename T, typename FUNC&gt; </td></tr>
-<tr class="memitem:a54509b26aada327a760c2d71b3f5eebb template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a54509b26aada327a760c2d71b3f5eebb">transformed</a> (std::optional&lt; T &gt; &amp;&amp;value, FUNC &amp;&amp;func) -&gt; decltype(std::optional{ func(value.value()) })</td></tr>
-<tr class="memdesc:a54509b26aada327a760c2d71b3f5eebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre C++23 transform/fmap.  <br /></td></tr>
-<tr class="memitem:abfdbe49e7349ce50a7a7a31f4908452b" id="r_abfdbe49e7349ce50a7a7a31f4908452b"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:abfdbe49e7349ce50a7a7a31f4908452b template"><td class="memItemLeft">std::optional&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#abfdbe49e7349ce50a7a7a31f4908452b">to_optional</a> (T *value) noexcept</td></tr>
-<tr class="memitem:ab492cb9901596190c12c040cf7989dfe" id="r_ab492cb9901596190c12c040cf7989dfe"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ab492cb9901596190c12c040cf7989dfe template"><td class="memItemLeft">std::optional&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ab492cb9901596190c12c040cf7989dfe">move_to_optional</a> (T *value) noexcept</td></tr>
-<tr class="memitem:a4e2c589c0b0fcd0bc4133aadabe16474" id="r_a4e2c589c0b0fcd0bc4133aadabe16474"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a4e2c589c0b0fcd0bc4133aadabe16474 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a4e2c589c0b0fcd0bc4133aadabe16474">flattened</a> (std::optional&lt; std::optional&lt; T &gt; &gt; &amp;&amp;value)</td></tr>
-<tr class="memitem:af67e5e45c4e8d814925bdd4aa771e8b5" id="r_af67e5e45c4e8d814925bdd4aa771e8b5"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:af67e5e45c4e8d814925bdd4aa771e8b5 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#af67e5e45c4e8d814925bdd4aa771e8b5">flattened</a> (std::optional&lt; T &gt; &amp;&amp;value)</td></tr>
-<tr class="memitem:ab1f2fe2be6c40de0d4d2a60dca7bd3cf" id="r_ab1f2fe2be6c40de0d4d2a60dca7bd3cf"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:ab1f2fe2be6c40de0d4d2a60dca7bd3cf template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ab1f2fe2be6c40de0d4d2a60dca7bd3cf">flattened</a> (std::optional&lt; std::optional&lt; T &gt; &gt; const &amp;value)</td></tr>
-<tr class="memitem:a8d12f5399ba8802e3e145668af20fffa" id="r_a8d12f5399ba8802e3e145668af20fffa"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a8d12f5399ba8802e3e145668af20fffa template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a8d12f5399ba8802e3e145668af20fffa">flattened</a> (std::optional&lt; T &gt; const &amp;value)</td></tr>
-<tr class="memitem:a1bf2ee53b8c8310c8e9c45a30b7facc1" id="r_a1bf2ee53b8c8310c8e9c45a30b7facc1"><td class="memTemplParams" colspan="2">template&lt;typename T, typename FUNC&gt; </td></tr>
-<tr class="memitem:a1bf2ee53b8c8310c8e9c45a30b7facc1 template"><td class="memItemLeft">constexpr T&#160;</td><td class="memItemRight"><a class="el" href="#a1bf2ee53b8c8310c8e9c45a30b7facc1">resulting</a> (FUNC &amp;&amp;func)</td></tr>
-<tr class="memdesc:a1bf2ee53b8c8310c8e9c45a30b7facc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new <span class="tt">T</span> transformed by <span class="tt">func</span>.  <br /></td></tr>
-<tr class="memitem:a1dbdf7eba8c91d86f60368b9230f134c" id="r_a1dbdf7eba8c91d86f60368b9230f134c"><td class="memTemplParams" colspan="2">template&lt;typename FUNC&gt; </td></tr>
-<tr class="memitem:a1dbdf7eba8c91d86f60368b9230f134c template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a1dbdf7eba8c91d86f60368b9230f134c">GHPL_REQUIRES</a> ((!std::is_void_v&lt; typename decltype(detail::detect_first_arg(std::function{ std::declval&lt; FUNC &gt;() }))::type &gt; &amp;&amp;requires { std::function{ std::declval&lt; FUNC &gt;() };})) const expr auto <a class="el" href="#a1bf2ee53b8c8310c8e9c45a30b7facc1">resulting</a>(FUNC &amp;&amp;func)</td></tr>
-<tr class="memdesc:a1dbdf7eba8c91d86f60368b9230f134c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new object transformed by <span class="tt">func</span>. The first argument to <span class="tt">func</span> determines what the object's type is.  <br /></td></tr>
-<tr class="memitem:afc86755da841da6811e55c8f6ff61853" id="r_afc86755da841da6811e55c8f6ff61853"><td class="memTemplParams" colspan="2">template&lt;typename T, typename... ARGS&gt; </td></tr>
-<tr class="memitem:afc86755da841da6811e55c8f6ff61853 template"><td class="memItemLeft">constexpr std::optional&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#afc86755da841da6811e55c8f6ff61853">optional_get</a> (std::variant&lt; ARGS... &gt; const &amp;var) noexcept</td></tr>
-<tr class="memdesc:afc86755da841da6811e55c8f6ff61853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variant operations.  <br /></td></tr>
-<tr class="memitem:a6b80a8c6ef24ecc5525bf179b3e86b93" id="r_a6b80a8c6ef24ecc5525bf179b3e86b93"><td class="memTemplParams" colspan="2">template&lt;typename FUNC, typename... Ts&gt; </td></tr>
-<tr class="memitem:a6b80a8c6ef24ecc5525bf179b3e86b93 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a6b80a8c6ef24ecc5525bf179b3e86b93">transformed</a> (std::variant&lt; Ts... &gt; const &amp;var, FUNC &amp;&amp;func)</td></tr>
-<tr class="memdesc:a6b80a8c6ef24ecc5525bf179b3e86b93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new variant transformed by <span class="tt">func</span>.  <br /></td></tr>
-<tr class="memitem:aca5b8e4f526048d9886cbae37e407d27" id="r_aca5b8e4f526048d9886cbae37e407d27"><td class="memTemplParams" colspan="2"><a id="aca5b8e4f526048d9886cbae37e407d27" name="aca5b8e4f526048d9886cbae37e407d27"></a>
+<tr class="memitem:gab3958af2be0ba12ca9e9512d990ae9ca" id="r_gab3958af2be0ba12ca9e9512d990ae9ca"><td class="memTemplParams" colspan="2">template&lt;typename T, typename FUNC&gt; </td></tr>
+<tr class="memitem:gab3958af2be0ba12ca9e9512d990ae9ca template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#gab3958af2be0ba12ca9e9512d990ae9ca">transformed</a> (std::optional&lt; T &gt; const &amp;value, FUNC &amp;&amp;func) -&gt; decltype(std::optional{ func(value.value()) })</td></tr>
+<tr class="memdesc:gab3958af2be0ba12ca9e9512d990ae9ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre C++23 transform/fmap.  <br /></td></tr>
+<tr class="memitem:ga54509b26aada327a760c2d71b3f5eebb" id="r_ga54509b26aada327a760c2d71b3f5eebb"><td class="memTemplParams" colspan="2">template&lt;typename T, typename FUNC&gt; </td></tr>
+<tr class="memitem:ga54509b26aada327a760c2d71b3f5eebb template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#ga54509b26aada327a760c2d71b3f5eebb">transformed</a> (std::optional&lt; T &gt; &amp;&amp;value, FUNC &amp;&amp;func) -&gt; decltype(std::optional{ func(value.value()) })</td></tr>
+<tr class="memdesc:ga54509b26aada327a760c2d71b3f5eebb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pre C++23 transform/fmap.  <br /></td></tr>
+<tr class="memitem:gabfdbe49e7349ce50a7a7a31f4908452b" id="r_gabfdbe49e7349ce50a7a7a31f4908452b"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gabfdbe49e7349ce50a7a7a31f4908452b template"><td class="memItemLeft">std::optional&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#gabfdbe49e7349ce50a7a7a31f4908452b">to_optional</a> (T *value) noexcept</td></tr>
+<tr class="memitem:gab492cb9901596190c12c040cf7989dfe" id="r_gab492cb9901596190c12c040cf7989dfe"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gab492cb9901596190c12c040cf7989dfe template"><td class="memItemLeft">std::optional&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#gab492cb9901596190c12c040cf7989dfe">move_to_optional</a> (T *value) noexcept</td></tr>
+<tr class="memitem:ga4e2c589c0b0fcd0bc4133aadabe16474" id="r_ga4e2c589c0b0fcd0bc4133aadabe16474"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga4e2c589c0b0fcd0bc4133aadabe16474 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#ga4e2c589c0b0fcd0bc4133aadabe16474">flattened</a> (std::optional&lt; std::optional&lt; T &gt; &gt; &amp;&amp;value)</td></tr>
+<tr class="memitem:gaf67e5e45c4e8d814925bdd4aa771e8b5" id="r_gaf67e5e45c4e8d814925bdd4aa771e8b5"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gaf67e5e45c4e8d814925bdd4aa771e8b5 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#gaf67e5e45c4e8d814925bdd4aa771e8b5">flattened</a> (std::optional&lt; T &gt; &amp;&amp;value)</td></tr>
+<tr class="memitem:gab1f2fe2be6c40de0d4d2a60dca7bd3cf" id="r_gab1f2fe2be6c40de0d4d2a60dca7bd3cf"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gab1f2fe2be6c40de0d4d2a60dca7bd3cf template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#gab1f2fe2be6c40de0d4d2a60dca7bd3cf">flattened</a> (std::optional&lt; std::optional&lt; T &gt; &gt; const &amp;value)</td></tr>
+<tr class="memitem:ga8d12f5399ba8802e3e145668af20fffa" id="r_ga8d12f5399ba8802e3e145668af20fffa"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga8d12f5399ba8802e3e145668af20fffa template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#ga8d12f5399ba8802e3e145668af20fffa">flattened</a> (std::optional&lt; T &gt; const &amp;value)</td></tr>
+<tr class="memitem:ga1bf2ee53b8c8310c8e9c45a30b7facc1" id="r_ga1bf2ee53b8c8310c8e9c45a30b7facc1"><td class="memTemplParams" colspan="2">template&lt;typename T, typename FUNC&gt; </td></tr>
+<tr class="memitem:ga1bf2ee53b8c8310c8e9c45a30b7facc1 template"><td class="memItemLeft">constexpr T&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#ga1bf2ee53b8c8310c8e9c45a30b7facc1">resulting</a> (FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga1bf2ee53b8c8310c8e9c45a30b7facc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new <span class="tt">T</span> transformed by <span class="tt">func</span>.  <br /></td></tr>
+<tr class="memitem:ga1dbdf7eba8c91d86f60368b9230f134c" id="r_ga1dbdf7eba8c91d86f60368b9230f134c"><td class="memTemplParams" colspan="2">template&lt;typename FUNC&gt; </td></tr>
+<tr class="memitem:ga1dbdf7eba8c91d86f60368b9230f134c template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#ga1dbdf7eba8c91d86f60368b9230f134c">GHPL_REQUIRES</a> ((!std::is_void_v&lt; typename decltype(detail::detect_first_arg(std::function{ std::declval&lt; FUNC &gt;() }))::type &gt; &amp;&amp;requires { std::function{ std::declval&lt; FUNC &gt;() };})) const expr auto <a class="el" href="group___functional.html#ga1bf2ee53b8c8310c8e9c45a30b7facc1">resulting</a>(FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga1dbdf7eba8c91d86f60368b9230f134c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new object transformed by <span class="tt">func</span>. The first argument to <span class="tt">func</span> determines what the object's type is.  <br /></td></tr>
+<tr class="memitem:gafc86755da841da6811e55c8f6ff61853" id="r_gafc86755da841da6811e55c8f6ff61853"><td class="memTemplParams" colspan="2">template&lt;typename T, typename... ARGS&gt; </td></tr>
+<tr class="memitem:gafc86755da841da6811e55c8f6ff61853 template"><td class="memItemLeft">constexpr std::optional&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#gafc86755da841da6811e55c8f6ff61853">optional_get</a> (std::variant&lt; ARGS... &gt; const &amp;var) noexcept</td></tr>
+<tr class="memdesc:gafc86755da841da6811e55c8f6ff61853"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variant operations.  <br /></td></tr>
+<tr class="memitem:ga6b80a8c6ef24ecc5525bf179b3e86b93" id="r_ga6b80a8c6ef24ecc5525bf179b3e86b93"><td class="memTemplParams" colspan="2">template&lt;typename FUNC, typename... Ts&gt; </td></tr>
+<tr class="memitem:ga6b80a8c6ef24ecc5525bf179b3e86b93 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#ga6b80a8c6ef24ecc5525bf179b3e86b93">transformed</a> (std::variant&lt; Ts... &gt; const &amp;var, FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga6b80a8c6ef24ecc5525bf179b3e86b93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new variant transformed by <span class="tt">func</span>.  <br /></td></tr>
+<tr class="memitem:gaca5b8e4f526048d9886cbae37e407d27" id="r_gaca5b8e4f526048d9886cbae37e407d27"><td class="memTemplParams" colspan="2">
 template&lt;typename... TYPES&gt; </td></tr>
-<tr class="memitem:aca5b8e4f526048d9886cbae37e407d27 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>convertible_to_variant</b> (std::variant&lt; TYPES... &gt;) -&gt; convertible_to_variant&lt; TYPES... &gt;</td></tr>
-<tr class="memitem:a3b63d417b5b9104464db001a5d9f1d49" id="r_a3b63d417b5b9104464db001a5d9f1d49"><td class="memTemplParams" colspan="2"><a id="a3b63d417b5b9104464db001a5d9f1d49" name="a3b63d417b5b9104464db001a5d9f1d49"></a>
+<tr class="memitem:gaca5b8e4f526048d9886cbae37e407d27 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>convertible_to_variant</b> (std::variant&lt; TYPES... &gt;) -&gt; convertible_to_variant&lt; TYPES... &gt;</td></tr>
+<tr class="memitem:ga3b63d417b5b9104464db001a5d9f1d49" id="r_ga3b63d417b5b9104464db001a5d9f1d49"><td class="memTemplParams" colspan="2">
 template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a3b63d417b5b9104464db001a5d9f1d49 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>convertible_to_variant</b> (T) -&gt; convertible_to_variant&lt; remove_cvref_t&lt; T &gt; &gt;</td></tr>
-<tr class="memitem:a15ca4e1f6d497d72d03d4dbac1360699" id="r_a15ca4e1f6d497d72d03d4dbac1360699"><td class="memTemplParams" colspan="2">template&lt;typename FUNC, typename... Ts&gt; </td></tr>
-<tr class="memitem:a15ca4e1f6d497d72d03d4dbac1360699 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a15ca4e1f6d497d72d03d4dbac1360699">transformed_flattened</a> (std::variant&lt; Ts... &gt; const &amp;var, FUNC &amp;&amp;func)</td></tr>
-<tr class="memdesc:a15ca4e1f6d497d72d03d4dbac1360699"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new variant transformed by <span class="tt">func</span>, flattened.  <br /></td></tr>
+<tr class="memitem:ga3b63d417b5b9104464db001a5d9f1d49 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>convertible_to_variant</b> (T) -&gt; convertible_to_variant&lt; remove_cvref_t&lt; T &gt; &gt;</td></tr>
+<tr class="memitem:ga15ca4e1f6d497d72d03d4dbac1360699" id="r_ga15ca4e1f6d497d72d03d4dbac1360699"><td class="memTemplParams" colspan="2">template&lt;typename FUNC, typename... Ts&gt; </td></tr>
+<tr class="memitem:ga15ca4e1f6d497d72d03d4dbac1360699 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___functional.html#ga15ca4e1f6d497d72d03d4dbac1360699">transformed_flattened</a> (std::variant&lt; Ts... &gt; const &amp;var, FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga15ca4e1f6d497d72d03d4dbac1360699"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a new variant transformed by <span class="tt">func</span>, flattened.  <br /></td></tr>
 <tr class="memitem:gaf559378f05624ae0996944830c41bff9" id="r_gaf559378f05624ae0996944830c41bff9"><td class="memTemplParams" colspan="2">template&lt;bytelike_range RANGE&gt; </td></tr>
 <tr class="memitem:gaf559378f05624ae0996944830c41bff9 template"><td class="memItemLeft">constexpr uint32_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#gaf559378f05624ae0996944830c41bff9">crc32</a> (RANGE &amp;&amp;bytes)</td></tr>
 <tr class="memdesc:gaf559378f05624ae0996944830c41bff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a CRC32 for a range of bytelikes.  <br /></td></tr>
@@ -853,29 +866,21 @@ template&lt;typename T&gt; </td></tr>
 <tr class="memdesc:ga9656f460b372051539fd8df108d85f29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a CRC4 for a variadic number of bytelikes.  <br /></td></tr>
 <tr class="memitem:ga0e168d1a17e11e72dd1d66775f073139" id="r_ga0e168d1a17e11e72dd1d66775f073139"><td class="memTemplParams" colspan="2">template&lt;bytelike_range RANGE&gt; </td></tr>
 <tr class="memitem:ga0e168d1a17e11e72dd1d66775f073139 template"><td class="memItemLeft">constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga0e168d1a17e11e72dd1d66775f073139">fnv64</a> (RANGE &amp;&amp;bytes)</td></tr>
-<tr class="memdesc:ga0e168d1a17e11e72dd1d66775f073139"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Add support for non-64bit hashes to all the functions below, especially since std::hash operates on size_t.  <br /></td></tr>
+<tr class="memdesc:ga0e168d1a17e11e72dd1d66775f073139"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a FNV Hash for a range of bytes.  <br /></td></tr>
 <tr class="memitem:gab2275a78b23399267a860926c46d5d1f" id="r_gab2275a78b23399267a860926c46d5d1f"><td class="memTemplParams" colspan="2">template&lt;bytelike... BYTES&gt; </td></tr>
 <tr class="memitem:gab2275a78b23399267a860926c46d5d1f template"><td class="memItemLeft">constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#gab2275a78b23399267a860926c46d5d1f">fnv64</a> (BYTES... bytes)</td></tr>
 <tr class="memdesc:gab2275a78b23399267a860926c46d5d1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates a FNV Hash for a variadic number of bytes.  <br /></td></tr>
-<tr class="memitem:a7fd636e17629a740d0687e9451788767" id="r_a7fd636e17629a740d0687e9451788767"><td class="memItemLeft">constexpr void&#160;</td><td class="memItemRight"><a class="el" href="#a7fd636e17629a740d0687e9451788767">fold_in_hash64</a> (uint64_t &amp;hash1, uint64_t hash2) noexcept</td></tr>
-<tr class="memitem:aad2cd32bacd7d7edbae98ea564501a6b" id="r_aad2cd32bacd7d7edbae98ea564501a6b"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:aad2cd32bacd7d7edbae98ea564501a6b template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#aad2cd32bacd7d7edbae98ea564501a6b">ce_hash64</a> (T val) noexcept</td></tr>
-<tr class="memitem:ab7e50ec2bd9149a096d924a0f8b88b8e" id="r_ab7e50ec2bd9149a096d924a0f8b88b8e"><td class="memTemplParams" colspan="2">template&lt;bytelike T&gt; </td></tr>
-<tr class="memitem:ab7e50ec2bd9149a096d924a0f8b88b8e template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#ab7e50ec2bd9149a096d924a0f8b88b8e">ce_hash64</a> (std::basic_string_view&lt; T &gt; const &amp;val) noexcept</td></tr>
-<tr class="memitem:a24bb155cca017b97ee30d9c35582c7be" id="r_a24bb155cca017b97ee30d9c35582c7be"><td class="memTemplParams" colspan="2">template&lt;typename FIRST, typename... T&gt; </td></tr>
-<tr class="memitem:a24bb155cca017b97ee30d9c35582c7be template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#a24bb155cca017b97ee30d9c35582c7be">ce_hash64</a> (FIRST const &amp;first, T const &amp;... values)</td></tr>
-<tr class="memitem:a760733edb7f8d49b7ec650d5d85ce1ff" id="r_a760733edb7f8d49b7ec650d5d85ce1ff"><td class="memTemplParams" colspan="2">template&lt;typename TUPLE_TYPE, uint64_t... Is&gt; </td></tr>
-<tr class="memitem:a760733edb7f8d49b7ec650d5d85ce1ff template"><td class="memItemLeft">consteval void&#160;</td><td class="memItemRight"><a class="el" href="#a760733edb7f8d49b7ec650d5d85ce1ff">ce_hash64_tuple_elements</a> (uint64_t &amp;hash, TUPLE_TYPE const &amp;t, std::index_sequence&lt; Is... &gt;)</td></tr>
-<tr class="memitem:a99107c53ee828c233d69d7ea22a8bfc6" id="r_a99107c53ee828c233d69d7ea22a8bfc6"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
-<tr class="memitem:a99107c53ee828c233d69d7ea22a8bfc6 template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#a99107c53ee828c233d69d7ea22a8bfc6">ce_hash64</a> (std::tuple&lt; T... &gt; const &amp;tupl) noexcept</td></tr>
+<tr class="memitem:ga7fd636e17629a740d0687e9451788767" id="r_ga7fd636e17629a740d0687e9451788767"><td class="memItemLeft">constexpr void&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga7fd636e17629a740d0687e9451788767">fold_in_hash64</a> (uint64_t &amp;hash1, uint64_t hash2) noexcept</td></tr>
+<tr class="memdesc:ga7fd636e17629a740d0687e9451788767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines an existing hash with a new hash value.  <br /></td></tr>
 <tr class="memitem:ga6f04675eaaa69c1d1a6edb6c51ba0af6" id="r_ga6f04675eaaa69c1d1a6edb6c51ba0af6"><td class="memTemplParams" colspan="2">template&lt;typename T, typename HASHER = std::hash&lt;std::remove_cvref_t&lt;T&gt;&gt;&gt; </td></tr>
 <tr class="memitem:ga6f04675eaaa69c1d1a6edb6c51ba0af6 template"><td class="memItemLeft">constexpr void&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga6f04675eaaa69c1d1a6edb6c51ba0af6">hash64_combine_to</a> (uint64_t &amp;seed, T &amp;&amp;v, HASHER &amp;&amp;hasher=HASHER{})</td></tr>
-<tr class="memdesc:ga6f04675eaaa69c1d1a6edb6c51ba0af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: ce_hash64(array/span) TODO: ce_hash64(thread::id) ?  <br /></td></tr>
-<tr class="memitem:a4f6d48794593e4b7dae05edcc1d22359" id="r_a4f6d48794593e4b7dae05edcc1d22359"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename &gt; typename HASHER = std::hash, typename FIRST, typename... T&gt; </td></tr>
-<tr class="memitem:a4f6d48794593e4b7dae05edcc1d22359 template"><td class="memItemLeft">constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#a4f6d48794593e4b7dae05edcc1d22359">hash64</a> (FIRST const &amp;first, T &amp;&amp;... values)</td></tr>
-<tr class="memitem:gad309fb81967d86cb78a3c9acf969d6cf" id="r_gad309fb81967d86cb78a3c9acf969d6cf"><td class="memTemplParams" colspan="2">template&lt;typename It, typename HASHER = std::hash&lt;std::iter_value_t&lt;It&gt;&gt;&gt; </td></tr>
-<tr class="memitem:gad309fb81967d86cb78a3c9acf969d6cf template"><td class="memItemLeft">constexpr void&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#gad309fb81967d86cb78a3c9acf969d6cf">hash64_range</a> (uint64_t &amp;seed, It first, It last, HASHER const &amp;hasher={})</td></tr>
-<tr class="memdesc:gad309fb81967d86cb78a3c9acf969d6cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines an existing hash value (<span class="tt">seed</span>) with the hash of a range of values.  <br /></td></tr>
+<tr class="memdesc:ga6f04675eaaa69c1d1a6edb6c51ba0af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines an existing hash value (<span class="tt">seed</span>) with the hash of value <span class="tt">v</span>.  <br /></td></tr>
+<tr class="memitem:ga4f6d48794593e4b7dae05edcc1d22359" id="r_ga4f6d48794593e4b7dae05edcc1d22359"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename &gt; typename HASHER = std::hash, typename FIRST, typename... T&gt; </td></tr>
+<tr class="memitem:ga4f6d48794593e4b7dae05edcc1d22359 template"><td class="memItemLeft">constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga4f6d48794593e4b7dae05edcc1d22359">hash64</a> (FIRST const &amp;first, T &amp;&amp;... values)</td></tr>
+<tr class="memdesc:ga4f6d48794593e4b7dae05edcc1d22359"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a hash of multiple values.  <br /></td></tr>
+<tr class="memitem:ga6add81ba474f4cd478318dec3e0ea95f" id="r_ga6add81ba474f4cd478318dec3e0ea95f"><td class="memTemplParams" colspan="2">template&lt;typename It, typename HASHER = std::hash&lt;std::iter_value_t&lt;It&gt;&gt;&gt; </td></tr>
+<tr class="memitem:ga6add81ba474f4cd478318dec3e0ea95f template"><td class="memItemLeft">constexpr void&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga6add81ba474f4cd478318dec3e0ea95f">fold_in_hash64_range</a> (uint64_t &amp;seed, It first, It last, HASHER const &amp;hasher={})</td></tr>
+<tr class="memdesc:ga6add81ba474f4cd478318dec3e0ea95f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Combines an existing hash value (<span class="tt">seed</span>) with the hash of a range of values.  <br /></td></tr>
 <tr class="memitem:gaeb2a33e18b58a0126d504024a1420185" id="r_gaeb2a33e18b58a0126d504024a1420185"><td class="memTemplParams" colspan="2">template&lt;typename It, typename HASHER = std::hash&lt;std::iter_value_t&lt;It&gt;&gt;&gt; </td></tr>
 <tr class="memitem:gaeb2a33e18b58a0126d504024a1420185 template"><td class="memItemLeft">constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#gaeb2a33e18b58a0126d504024a1420185">hash64_range</a> (It first, It last, HASHER &amp;&amp;hasher={})</td></tr>
 <tr class="memdesc:gaeb2a33e18b58a0126d504024a1420185"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hashes a range of values.  <br /></td></tr>
@@ -903,9 +908,9 @@ template&lt;typename T&gt; </td></tr>
 <tr class="memitem:ga8c514196fd41009d1b23dacbc7e0c74e" id="r_ga8c514196fd41009d1b23dacbc7e0c74e"><td class="memTemplParams" colspan="2">template&lt;typename VALUE_TYPE&gt; </td></tr>
 <tr class="memitem:ga8c514196fd41009d1b23dacbc7e0c74e template"><td class="memItemLeft"><a class="el" href="structghassanpl_1_1mmap__sink.html">mmap_sink</a>&lt; VALUE_TYPE &gt;&#160;</td><td class="memItemRight"><a class="el" href="group__mmap.html#ga8c514196fd41009d1b23dacbc7e0c74e">make_mmap_sink</a> (const std::filesystem::path &amp;path)</td></tr>
 <tr class="memitem:a54719f0ccf3618fdeac57c3a673f573c" id="r_a54719f0ccf3618fdeac57c3a673f573c"><td class="memTemplParams" colspan="2">template&lt;typename T, detail::FixedString PARAMETER, typename STRINGIFIER&gt; </td></tr>
-<tr class="memitem:a54719f0ccf3618fdeac57c3a673f573c template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a54719f0ccf3618fdeac57c3a673f573c">stringify</a> (STRINGIFIER &amp;str, named&lt; T, PARAMETER &gt; const &amp;val)</td></tr>
+<tr class="memitem:a54719f0ccf3618fdeac57c3a673f573c template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a54719f0ccf3618fdeac57c3a673f573c">stringify</a> (STRINGIFIER &amp;str, <a class="el" href="structghassanpl_1_1named.html">named</a>&lt; T, PARAMETER &gt; const &amp;val)</td></tr>
 <tr class="memitem:a5aa8e71374154f947503428c064bb5f8" id="r_a5aa8e71374154f947503428c064bb5f8"><td class="memTemplParams" colspan="2">template&lt;typename ALPHA, typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </td></tr>
-<tr class="memitem:a5aa8e71374154f947503428c064bb5f8 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a5aa8e71374154f947503428c064bb5f8">lerp</a> (named&lt; T, PARAMETER, TRAITS... &gt; const &amp;value_a, named&lt; T, PARAMETER, TRAITS... &gt; const &amp;value_b, ALPHA &amp;&amp;alpha)</td></tr>
+<tr class="memitem:a5aa8e71374154f947503428c064bb5f8 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a5aa8e71374154f947503428c064bb5f8">lerp</a> (<a class="el" href="structghassanpl_1_1named.html">named</a>&lt; T, PARAMETER, TRAITS... &gt; const &amp;value_a, <a class="el" href="structghassanpl_1_1named.html">named</a>&lt; T, PARAMETER, TRAITS... &gt; const &amp;value_b, ALPHA &amp;&amp;alpha)</td></tr>
 <tr class="memitem:ad0759e73fb2924a4b5034aaca55408c9" id="r_ad0759e73fb2924a4b5034aaca55408c9"><td class="memTemplParams" colspan="2">template&lt;typename T, typename... ARGS&gt; </td></tr>
 <tr class="memitem:ad0759e73fb2924a4b5034aaca55408c9 template"><td class="memItemLeft">thread_local_pool&lt; T &gt;::pooled_ptr&#160;</td><td class="memItemRight"><a class="el" href="#ad0759e73fb2924a4b5034aaca55408c9">make_pooled</a> (ARGS &amp;&amp;... args)</td></tr>
 <tr class="memitem:gaaf99e06b29cc11fb54a534afc20d4c01" id="r_gaaf99e06b29cc11fb54a534afc20d4c01"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gaaf99e06b29cc11fb54a534afc20d4c01">valid_index</a> (random_access_range auto &amp;range, std::integral auto index)</td></tr>
@@ -1154,6 +1159,17 @@ uri_expected&lt; <a class="el" href="group___u_r_i.html#gac48aa55b764c8275255643
 <tr class="memitem:gafbebda022875e2264d6fc9a0c666717e" id="r_gafbebda022875e2264d6fc9a0c666717e"><td class="memTemplParams" colspan="2">template&lt;bit_integral B&gt; </td></tr>
 <tr class="memitem:gafbebda022875e2264d6fc9a0c666717e template"><td class="memItemLeft">constexpr B&#160;</td><td class="memItemRight"><a class="el" href="group___bits.html#gafbebda022875e2264d6fc9a0c666717e">from_endian</a> (B val, std::endian endianness) noexcept</td></tr>
 <tr class="memdesc:gafbebda022875e2264d6fc9a0c666717e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <span class="tt">val</span> (in <span class="tt">endianness</span> representation) converted into native representation.  <br /></td></tr>
+<tr id="func-members-1" class="groupHeader"><td colspan="2"><div class="groupHeader">consteval Hash Functions</div></td></tr>
+<tr class="memitem:gaad2cd32bacd7d7edbae98ea564501a6b" id="r_gaad2cd32bacd7d7edbae98ea564501a6b"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gaad2cd32bacd7d7edbae98ea564501a6b template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#gaad2cd32bacd7d7edbae98ea564501a6b">ce_hash64</a> (T val) noexcept</td></tr>
+<tr class="memitem:gab7e50ec2bd9149a096d924a0f8b88b8e" id="r_gab7e50ec2bd9149a096d924a0f8b88b8e"><td class="memTemplParams" colspan="2">template&lt;bytelike T&gt; </td></tr>
+<tr class="memitem:gab7e50ec2bd9149a096d924a0f8b88b8e template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#gab7e50ec2bd9149a096d924a0f8b88b8e">ce_hash64</a> (std::basic_string_view&lt; T &gt; const &amp;val) noexcept</td></tr>
+<tr class="memitem:ga24bb155cca017b97ee30d9c35582c7be" id="r_ga24bb155cca017b97ee30d9c35582c7be"><td class="memTemplParams" colspan="2">template&lt;typename FIRST, typename... T&gt; </td></tr>
+<tr class="memitem:ga24bb155cca017b97ee30d9c35582c7be template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga24bb155cca017b97ee30d9c35582c7be">ce_hash64</a> (FIRST const &amp;first, T const &amp;... values)</td></tr>
+<tr class="memitem:ga760733edb7f8d49b7ec650d5d85ce1ff" id="r_ga760733edb7f8d49b7ec650d5d85ce1ff"><td class="memTemplParams" colspan="2">template&lt;typename TUPLE_TYPE, uint64_t... Is&gt; </td></tr>
+<tr class="memitem:ga760733edb7f8d49b7ec650d5d85ce1ff template"><td class="memItemLeft">consteval void&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga760733edb7f8d49b7ec650d5d85ce1ff">ce_hash64_tuple_elements</a> (uint64_t &amp;hash, TUPLE_TYPE const &amp;t, std::index_sequence&lt; Is... &gt;)</td></tr>
+<tr class="memitem:ga99107c53ee828c233d69d7ea22a8bfc6" id="r_ga99107c53ee828c233d69d7ea22a8bfc6"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
+<tr class="memitem:ga99107c53ee828c233d69d7ea22a8bfc6 template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga99107c53ee828c233d69d7ea22a8bfc6">ce_hash64</a> (std::tuple&lt; T... &gt; const &amp;tupl) noexcept</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -1172,7 +1188,7 @@ Variables</h2></td></tr>
 <tr class="memitem:gaebe51f656d88afd9621b5a499255d20e" id="r_gaebe51f656d88afd9621b5a499255d20e"><td class="memItemLeft">constexpr const char *&#160;</td><td class="memItemRight"><a class="el" href="group___alignment.html#gaebe51f656d88afd9621b5a499255d20e">align_names</a> []</td></tr>
 <tr class="memitem:ga4a3dfbca5f8e90239268f94282492df9" id="r_ga4a3dfbca5f8e90239268f94282492df9"><td class="memItemLeft">constexpr const char *&#160;</td><td class="memItemRight"><a class="el" href="group___alignment.html#ga4a3dfbca5f8e90239268f94282492df9">align_names_natural</a> []</td></tr>
 <tr class="memitem:gac8103791bc87e3a83056eb36db42b41d" id="r_gac8103791bc87e3a83056eb36db42b41d"><td class="memItemLeft">auto(*&#160;</td><td class="memItemRight"><a class="el" href="group___assuming.html#gac8103791bc87e3a83056eb36db42b41d">AssumptionFailureHandler</a> )(std::string_view expectation, std::initializer_list&lt; std::pair&lt; std::string_view, std::string &gt; &gt; values, std::string data, source_location loc) -&gt; <a class="el" href="#ab5a0f4c7ffcd4f4e36aa90edf539e0c6">AssumptionHandlerResult</a>=nullptr</td></tr>
-<tr class="memdesc:gac8103791bc87e3a83056eb36db42b41d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function must be provided by your own code, as it is called by an assumption macro with a failing assumption.  <br /></td></tr>
+<tr class="memdesc:gac8103791bc87e3a83056eb36db42b41d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This variable should be set to a handler function by your own code, as it is called by an assumption macro with a failing assumption; if you do not provide it, an exception with an unspecified type will be thrown.  <br /></td></tr>
 <tr class="memitem:gac47c8e8b6a53fb7495f97f2a15fd618d" id="r_gac47c8e8b6a53fb7495f97f2a15fd618d"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:gac47c8e8b6a53fb7495f97f2a15fd618d template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___bits.html#gac47c8e8b6a53fb7495f97f2a15fd618d">bit_count</a></td></tr>
 <tr class="memdesc:gac47c8e8b6a53fb7495f97f2a15fd618d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Equal to the number of bits in the type.  <br /></td></tr>
@@ -1213,8 +1229,8 @@ constexpr struct ghassanpl::no_flags_t&#160;</td><td class="memItemRight"><b>no_
 <tr class="memitem:a9b03d14dcab3fa83bddf1584a4279287 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a9b03d14dcab3fa83bddf1584a4279287">toggle_flag_v</a></td></tr>
 <tr class="memitem:a95b0208a42f9b37d62bcaa5f94514af4" id="r_a95b0208a42f9b37d62bcaa5f94514af4"><td class="memTemplParams" colspan="2">template&lt;auto INT_VALUE, bool TO, auto... VALUES&gt; </td></tr>
 <tr class="memitem:a95b0208a42f9b37d62bcaa5f94514af4 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#a95b0208a42f9b37d62bcaa5f94514af4">set_flag_to_v</a></td></tr>
-<tr class="memitem:a9a9bc7a7a7acb52f1dc61e2bac7d9132" id="r_a9a9bc7a7a7acb52f1dc61e2bac7d9132"><td class="memItemLeft">static constexpr uint32_t&#160;</td><td class="memItemRight"><a class="el" href="#a9a9bc7a7a7acb52f1dc61e2bac7d9132">crc32_table</a> [256]</td></tr>
-<tr class="memitem:a6d574ea3f39464e7e36e412d226166df" id="r_a6d574ea3f39464e7e36e412d226166df"><td class="memItemLeft">static constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="#a6d574ea3f39464e7e36e412d226166df">crc64_table</a> [256]</td></tr>
+<tr class="memitem:ga9a9bc7a7a7acb52f1dc61e2bac7d9132" id="r_ga9a9bc7a7a7acb52f1dc61e2bac7d9132"><td class="memItemLeft">static constexpr uint32_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga9a9bc7a7a7acb52f1dc61e2bac7d9132">crc32_table</a> [256]</td></tr>
+<tr class="memitem:ga6d574ea3f39464e7e36e412d226166df" id="r_ga6d574ea3f39464e7e36e412d226166df"><td class="memItemLeft">static constexpr uint64_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga6d574ea3f39464e7e36e412d226166df">crc64_table</a> [256]</td></tr>
 <tr class="memitem:a5b0833e2ab9c14ded1701bbf9794d02b" id="r_a5b0833e2ab9c14ded1701bbf9794d02b"><td class="memItemLeft">static constexpr size_t&#160;</td><td class="memItemRight"><a class="el" href="#a5b0833e2ab9c14ded1701bbf9794d02b">map_entire_file</a></td></tr>
 <tr class="memitem:a021b3c7ba3a09a12c2af82b734f0384f" id="r_a021b3c7ba3a09a12c2af82b734f0384f"><td class="memItemLeft">const file_handle_type&#160;</td><td class="memItemRight"><a class="el" href="#a021b3c7ba3a09a12c2af82b734f0384f">invalid_handle</a></td></tr>
 <tr class="memitem:aa545c5bd0381c55ddd9aca89b6e24d3d" id="r_aa545c5bd0381c55ddd9aca89b6e24d3d"><td class="memTemplParams" colspan="2">template&lt;typename OTHER&gt; </td></tr>
@@ -1295,7 +1311,7 @@ template&lt;typename T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00275">275</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00276">276</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
 
 </div>
 </div>
@@ -1331,7 +1347,7 @@ template&lt;typename S, typename D&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00074">74</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00018">18</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
 
 </div>
 </div>
@@ -1547,6 +1563,8 @@ template&lt;class T&gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Return one of these values from the assumption failure handler <code>AssumptionFailureHandler</code> to trigger a specific behavior at the point of failure. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ab5a0f4c7ffcd4f4e36aa90edf539e0c6ae4c38d6d45baf080943d323dd51a2ce8" name="ab5a0f4c7ffcd4f4e36aa90edf539e0c6ae4c38d6d45baf080943d323dd51a2ce8"></a>Break&#160;</td><td class="fielddoc"><p>Break into debugger after reporting the assumption failure. </p>
 </td></tr>
@@ -1556,7 +1574,7 @@ template&lt;class T&gt; </div>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00366">366</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00377">377</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -1580,55 +1598,7 @@ template&lt;class T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00260">260</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
-
-</div>
-</div>
-<a id="af8a51289b1f8de76368a33eb174e7d43" name="af8a51289b1f8de76368a33eb174e7d43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8a51289b1f8de76368a33eb174e7d43">&#9670;&#160;</a></span>enum_flag_change <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class ghassanpl::enum_flag_change : uint8_t</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cpp17_2enum__flags_8h_source.html#l00426">426</a> of file <a class="el" href="cpp17_2enum__flags_8h_source.html">enum_flags.h</a>.</p>
-
-</div>
-</div>
-<a id="af8a51289b1f8de76368a33eb174e7d43" name="af8a51289b1f8de76368a33eb174e7d43"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8a51289b1f8de76368a33eb174e7d43">&#9670;&#160;</a></span>enum_flag_change <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class ghassanpl::enum_flag_change : uint8_t</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="enum__flags_8h_source.html#l00381">381</a> of file <a class="el" href="enum__flags_8h_source.html">enum_flags.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00261">261</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
 
 </div>
 </div>
@@ -1657,100 +1627,6 @@ template&lt;class T&gt; </div>
 </div>
 </div>
 <a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
-<a id="ac010a9ad12c0d21cdf4015f8eb12e49e" name="ac010a9ad12c0d21cdf4015f8eb12e49e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac010a9ad12c0d21cdf4015f8eb12e49e">&#9670;&#160;</a></span>align_back_to()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t ALIGN, bytelike T, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::align_back_to </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; T, N &gt;</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
-          <td> -&gt; align_back_to_result&lt; T &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Splits the argument span into two spans, the first one having its size aligned to the given alignment, the second one being the suffix. </p>
-<p>Assumes/expects bytes.data() is aligned to the specified alignment. </p>
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00223">223</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a55cd35e86d28722a42e76de1aed2b021" name="a55cd35e86d28722a42e76de1aed2b021"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a55cd35e86d28722a42e76de1aed2b021">&#9670;&#160;</a></span>align_front_to()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t ALIGN, bytelike T, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::align_front_to </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; T, N &gt;</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
-          <td> -&gt; align_front_to_result&lt; T &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Splits the argument span into two spans, the first one being the prefix, the second one having its data pointer aligned to the given alignment. </p>
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00194">194</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="ac54d9279fe5803e82493a2e107049dd7" name="ac54d9279fe5803e82493a2e107049dd7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac54d9279fe5803e82493a2e107049dd7">&#9670;&#160;</a></span>align_to()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t ALIGN, bytelike T, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::align_to </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; T, N &gt;</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
-          <td> -&gt; align_to_result&lt; T &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Splits the argument span into three spans, the first one being the prefix, the second one having its data and size aligned to the given alignment, the third one being the suffix. </p>
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00253">253</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
 <a id="a7f73d33c2bc9134d0e648b879be8a5d4" name="a7f73d33c2bc9134d0e648b879be8a5d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7f73d33c2bc9134d0e648b879be8a5d4">&#9670;&#160;</a></span>aligned() <span class="overload">[1/2]</span></h2>
 
@@ -1824,64 +1700,6 @@ template&lt;typename T&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="align_09rec2_8h_source.html#l00012">12</a> of file <a class="el" href="align_09rec2_8h_source.html">align+rec2.h</a>.</p>
-
-</div>
-</div>
-<a id="af5603074ceb6ed74088f592925cba030" name="af5603074ceb6ed74088f592925cba030"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5603074ceb6ed74088f592925cba030">&#9670;&#160;</a></span>aligned_span_cast()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TO, bytelike B, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::aligned_span_cast </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; B, N &gt;</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
-          <td> -&gt; align_to_result&lt; B, TO &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00278">278</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a11d48890a075fdac6256788d436c1e90" name="a11d48890a075fdac6256788d436c1e90"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11d48890a075fdac6256788d436c1e90">&#9670;&#160;</a></span>aligned_span_cast_and_construct()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TO, bytelike B, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::aligned_span_cast_and_construct </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; B, N &gt;</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
-          <td> -&gt; align_to_result&lt; B, TO &gt;</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00289">289</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
 
 </div>
 </div>
@@ -2319,358 +2137,6 @@ template&lt;typename C, typename X&gt; </div>
 
 </div>
 </div>
-<a id="a2f2554a01c8f233639067ae44c5455da" name="a2f2554a01c8f233639067ae44c5455da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f2554a01c8f233639067ae44c5455da">&#9670;&#160;</a></span>as_bytelikes() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike TO, typename FROM, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">span&lt; TO &gt; ghassanpl::as_bytelikes </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; FROM, N &gt;</td>          <td class="paramname"><span class="paramname"><em>elements</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Converts a span of trivial values to a span of <code>bytelike</code> s. </p>
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00028">28</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a3eb5ccb64aaa4dcb9d7a57e8c63b1575" name="a3eb5ccb64aaa4dcb9d7a57e8c63b1575"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3eb5ccb64aaa4dcb9d7a57e8c63b1575">&#9670;&#160;</a></span>as_bytelikes() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike TO, typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_bytelikes </td>
-          <td>(</td>
-          <td class="paramtype">T &amp;</td>          <td class="paramname"><span class="paramname"><em>pod</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns a span of <code>bytelike</code> s that represents the internal object representation of the argument. </p>
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00059">59</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="ae2e5d59d4b69a42bf248fd10c3311981" name="ae2e5d59d4b69a42bf248fd10c3311981"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae2e5d59d4b69a42bf248fd10c3311981">&#9670;&#160;</a></span>as_bytes() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_bytes </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; FROM, N &gt;</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00079">79</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="aae280089b3246c27c3c27c8e02c14fc7" name="aae280089b3246c27c3c27c8e02c14fc7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aae280089b3246c27c3c27c8e02c14fc7">&#9670;&#160;</a></span>as_bytes() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_bytes </td>
-          <td>(</td>
-          <td class="paramtype">T const &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00088">88</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a245a1ada01456edfd616c2a4356a2e73" name="a245a1ada01456edfd616c2a4356a2e73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a245a1ada01456edfd616c2a4356a2e73">&#9670;&#160;</a></span>as_char8s() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_char8s </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; FROM, N &gt;</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00085">85</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="ad0609dea8cb095442d5f0536daaa4843" name="ad0609dea8cb095442d5f0536daaa4843"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0609dea8cb095442d5f0536daaa4843">&#9670;&#160;</a></span>as_char8s() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_char8s </td>
-          <td>(</td>
-          <td class="paramtype">T const &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00091">91</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a8d6e50f6f918c0fb303dab6c9927d92d" name="a8d6e50f6f918c0fb303dab6c9927d92d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d6e50f6f918c0fb303dab6c9927d92d">&#9670;&#160;</a></span>as_chars() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_chars </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; FROM, N &gt;</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00077">77</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="ac30e06861e7349f51a537bd5366dddfb" name="ac30e06861e7349f51a537bd5366dddfb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac30e06861e7349f51a537bd5366dddfb">&#9670;&#160;</a></span>as_chars() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_chars </td>
-          <td>(</td>
-          <td class="paramtype">T const &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00087">87</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a9c31de4d2cae5b7e5d50caf3da4919bd" name="a9c31de4d2cae5b7e5d50caf3da4919bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c31de4d2cae5b7e5d50caf3da4919bd">&#9670;&#160;</a></span>as_u8s() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_u8s </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; FROM, N &gt;</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00083">83</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a8d60dc3e578aaa1f8df4f1506ed36ad7" name="a8d60dc3e578aaa1f8df4f1506ed36ad7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d60dc3e578aaa1f8df4f1506ed36ad7">&#9670;&#160;</a></span>as_u8s() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_u8s </td>
-          <td>(</td>
-          <td class="paramtype">T const &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00090">90</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="ab79e83a46b1e38b252fc13c30ae8c0d7" name="ab79e83a46b1e38b252fc13c30ae8c0d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab79e83a46b1e38b252fc13c30ae8c0d7">&#9670;&#160;</a></span>as_uchars() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike FROM, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_uchars </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; FROM, N &gt;</td>          <td class="paramname"><span class="paramname"><em>bytes</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00081">81</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a33716a6a0b110112a43ffb99a25cf530" name="a33716a6a0b110112a43ffb99a25cf530"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33716a6a0b110112a43ffb99a25cf530">&#9670;&#160;</a></span>as_uchars() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::as_uchars </td>
-          <td>(</td>
-          <td class="paramtype">T const &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00089">89</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
 <a id="aad88cd58d00bdff453e2e0c25106ae23" name="aad88cd58d00bdff453e2e0c25106ae23"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aad88cd58d00bdff453e2e0c25106ae23">&#9670;&#160;</a></span>buffer_append_compressed()</h2>
 
@@ -2697,7 +2163,7 @@ template&lt;typename BUFFER, bytelike_range RANGE, typename COMPRESSOR&gt; </div
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00294">294</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="buffers_8h_source.html#l00295">295</a> of file <a class="el" href="buffers_8h_source.html">buffers.h</a>.</p>
 
 </div>
 </div>
@@ -2844,164 +2310,6 @@ template&lt;typename FUNC, typename... ARGS&gt; </div>
 <dl class="section return"><dt>Returns</dt><dd>an <span class="tt">expected</span> with the result of the function call if the <span class="tt">std::error_code</span> is <span class="tt">0</span>, otherwise an <span class="tt">unexpected</span> with the error code </dd></dl>
 
 <p class="definition">Definition at line <a class="el" href="expected_8h_source.html#l00060">60</a> of file <a class="el" href="expected_8h_source.html">expected.h</a>.</p>
-
-</div>
-</div>
-<a id="a24bb155cca017b97ee30d9c35582c7be" name="a24bb155cca017b97ee30d9c35582c7be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24bb155cca017b97ee30d9c35582c7be">&#9670;&#160;</a></span>ce_hash64() <span class="overload">[1/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FIRST, typename... T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t ghassanpl::ce_hash64 </td>
-          <td>(</td>
-          <td class="paramtype">FIRST const &amp;</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T const &amp;...</td>          <td class="paramname"><span class="paramname"><em>values</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel consteval">consteval</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00286">286</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
-
-</div>
-</div>
-<a id="ab7e50ec2bd9149a096d924a0f8b88b8e" name="ab7e50ec2bd9149a096d924a0f8b88b8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab7e50ec2bd9149a096d924a0f8b88b8e">&#9670;&#160;</a></span>ce_hash64() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t ghassanpl::ce_hash64 </td>
-          <td>(</td>
-          <td class="paramtype">std::basic_string_view&lt; T &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>val</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel consteval">consteval</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00282">282</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
-
-</div>
-</div>
-<a id="a99107c53ee828c233d69d7ea22a8bfc6" name="a99107c53ee828c233d69d7ea22a8bfc6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99107c53ee828c233d69d7ea22a8bfc6">&#9670;&#160;</a></span>ce_hash64() <span class="overload">[3/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename... T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t ghassanpl::ce_hash64 </td>
-          <td>(</td>
-          <td class="paramtype">std::tuple&lt; T... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>tupl</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel consteval">consteval</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00300">300</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
-
-</div>
-</div>
-<a id="aad2cd32bacd7d7edbae98ea564501a6b" name="aad2cd32bacd7d7edbae98ea564501a6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad2cd32bacd7d7edbae98ea564501a6b">&#9670;&#160;</a></span>ce_hash64() <span class="overload">[4/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t ghassanpl::ce_hash64 </td>
-          <td>(</td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>val</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel consteval">consteval</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00269">269</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
-
-</div>
-</div>
-<a id="a760733edb7f8d49b7ec650d5d85ce1ff" name="a760733edb7f8d49b7ec650d5d85ce1ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a760733edb7f8d49b7ec650d5d85ce1ff">&#9670;&#160;</a></span>ce_hash64_tuple_elements()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TUPLE_TYPE, uint64_t... Is&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ghassanpl::ce_hash64_tuple_elements </td>
-          <td>(</td>
-          <td class="paramtype">uint64_t &amp;</td>          <td class="paramname"><span class="paramname"><em>hash</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">TUPLE_TYPE const &amp;</td>          <td class="paramname"><span class="paramname"><em>t</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::index_sequence&lt; Is... &gt;</td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel consteval">consteval</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00294">294</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
@@ -3185,7 +2493,7 @@ template&lt;&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00373">373</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00384">384</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
 
 </div>
 </div>
@@ -3366,203 +2674,6 @@ template&lt;typename... Ts&gt; </div>
 
 </div>
 </div>
-<a id="a062dd3a76ace64c32633042cb0849540" name="a062dd3a76ace64c32633042cb0849540"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a062dd3a76ace64c32633042cb0849540">&#9670;&#160;</a></span>flag_bit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename RESULT_TYPE, typename ENUM_TYPE&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">EF_CONSTEXPR RESULT_TYPE ghassanpl::flag_bit </td>
-          <td>(</td>
-          <td class="paramtype">ENUM_TYPE</td>          <td class="paramname"><span class="paramname"><em>e</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cpp98_2enum__flags_8h_source.html#l00022">22</a> of file <a class="el" href="cpp98_2enum__flags_8h_source.html">enum_flags.h</a>.</p>
-
-</div>
-</div>
-<a id="aeb9a34fda6851ff34cbaf42cd4f17fdc" name="aeb9a34fda6851ff34cbaf42cd4f17fdc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb9a34fda6851ff34cbaf42cd4f17fdc">&#9670;&#160;</a></span>flag_bits()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename RESULT_TYPE = unsigned long long, typename... ARGS&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">RESULT_TYPE ghassanpl::flag_bits </td>
-          <td>(</td>
-          <td class="paramtype">ARGS...</td>          <td class="paramname"><span class="paramname"><em>args</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="cpp17_2enum__flags_8h_source.html#l00069">69</a> of file <a class="el" href="cpp17_2enum__flags_8h_source.html">enum_flags.h</a>.</p>
-
-</div>
-</div>
-<a id="a4e2c589c0b0fcd0bc4133aadabe16474" name="a4e2c589c0b0fcd0bc4133aadabe16474"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4e2c589c0b0fcd0bc4133aadabe16474">&#9670;&#160;</a></span>flattened() <span class="overload">[1/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::flattened </td>
-          <td>(</td>
-          <td class="paramtype">std::optional&lt; std::optional&lt; T &gt; &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00057">57</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
-<a id="ab1f2fe2be6c40de0d4d2a60dca7bd3cf" name="ab1f2fe2be6c40de0d4d2a60dca7bd3cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1f2fe2be6c40de0d4d2a60dca7bd3cf">&#9670;&#160;</a></span>flattened() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::flattened </td>
-          <td>(</td>
-          <td class="paramtype">std::optional&lt; std::optional&lt; T &gt; &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00059">59</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
-<a id="af67e5e45c4e8d814925bdd4aa771e8b5" name="af67e5e45c4e8d814925bdd4aa771e8b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af67e5e45c4e8d814925bdd4aa771e8b5">&#9670;&#160;</a></span>flattened() <span class="overload">[3/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::flattened </td>
-          <td>(</td>
-          <td class="paramtype">std::optional&lt; T &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00058">58</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
-<a id="a8d12f5399ba8802e3e145668af20fffa" name="a8d12f5399ba8802e3e145668af20fffa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d12f5399ba8802e3e145668af20fffa">&#9670;&#160;</a></span>flattened() <span class="overload">[4/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::flattened </td>
-          <td>(</td>
-          <td class="paramtype">std::optional&lt; T &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00060">60</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
-<a id="a7fd636e17629a740d0687e9451788767" name="a7fd636e17629a740d0687e9451788767"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fd636e17629a740d0687e9451788767">&#9670;&#160;</a></span>fold_in_hash64()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ghassanpl::fold_in_hash64 </td>
-          <td>(</td>
-          <td class="paramtype">uint64_t &amp;</td>          <td class="paramname"><span class="paramname"><em>hash1</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint64_t</td>          <td class="paramname"><span class="paramname"><em>hash2</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00252">252</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
-
-</div>
-</div>
 <a id="a2850e9ad9015f69748e820f6a65da62e" name="a2850e9ad9015f69748e820f6a65da62e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2850e9ad9015f69748e820f6a65da62e">&#9670;&#160;</a></span>for_each()</h2>
 
@@ -3726,37 +2837,6 @@ template&lt;class Ty, class Uty&gt; </div>
 
 </div>
 </div>
-<a id="ad8879d66b6081ac33ad78e88800ee1a9" name="ad8879d66b6081ac33ad78e88800ee1a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8879d66b6081ac33ad78e88800ee1a9">&#9670;&#160;</a></span>from_bytelikes()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TO, bytelike FROM&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">TO ghassanpl::from_bytelikes </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; FROM const &gt;</td>          <td class="paramname"><span class="paramname"><em>from</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns an object whose internal representation is initialized from the argument. </p>
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00036">36</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
 <a id="ad2ed2313b9f5ed13be4ea588e4ccf0da" name="ad2ed2313b9f5ed13be4ea588e4ccf0da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad2ed2313b9f5ed13be4ea588e4ccf0da">&#9670;&#160;</a></span>from_string() <span class="overload">[1/2]</span></h2>
 
@@ -3838,31 +2918,8 @@ template&lt;typename T, template&lt; bool &gt; typename STRINGIFIER = string_str
 
 </div>
 </div>
-<a id="a1dbdf7eba8c91d86f60368b9230f134c" name="a1dbdf7eba8c91d86f60368b9230f134c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1dbdf7eba8c91d86f60368b9230f134c">&#9670;&#160;</a></span>GHPL_REQUIRES() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FUNC&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">ghassanpl::GHPL_REQUIRES </td>
-          <td>(</td>
-          <td class="paramtype">(!std::is_void_v&lt; typename decltype(detail::detect_first_arg(std::function{ std::declval&lt; FUNC &gt;() }))::type &gt; &amp;&amp;requires { std::function{ std::declval&lt; FUNC &gt;() };})</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const &amp;&amp;</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns a new object transformed by <span class="tt">func</span>. The first argument to <span class="tt">func</span> determines what the object's type is. </p>
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00319">319</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
 <a id="aa96fda0449d163c03bc6c62b6fb31604" name="aa96fda0449d163c03bc6c62b6fb31604"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa96fda0449d163c03bc6c62b6fb31604">&#9670;&#160;</a></span>GHPL_REQUIRES() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa96fda0449d163c03bc6c62b6fb31604">&#9670;&#160;</a></span>GHPL_REQUIRES() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3891,7 +2948,7 @@ template&lt;typename ENUM_TYPE&gt; </div>
 </div>
 </div>
 <a id="ac938e3d5b4ebe9523f2fea70ac825fa1" name="ac938e3d5b4ebe9523f2fea70ac825fa1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac938e3d5b4ebe9523f2fea70ac825fa1">&#9670;&#160;</a></span>GHPL_REQUIRES() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac938e3d5b4ebe9523f2fea70ac825fa1">&#9670;&#160;</a></span>GHPL_REQUIRES() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3910,39 +2967,6 @@ template&lt;typename ENUM_TYPE&gt; </div>
 <p>TODO: Finish this. </p>
 
 <p class="definition">Definition at line <a class="el" href="enums_8h_source.html#l00023">23</a> of file <a class="el" href="enums_8h_source.html">enums.h</a>.</p>
-
-</div>
-</div>
-<a id="a4f6d48794593e4b7dae05edcc1d22359" name="a4f6d48794593e4b7dae05edcc1d22359"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f6d48794593e4b7dae05edcc1d22359">&#9670;&#160;</a></span>hash64()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;template&lt; typename &gt; typename HASHER = std::hash, typename FIRST, typename... T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t ghassanpl::hash64 </td>
-          <td>(</td>
-          <td class="paramtype">FIRST const &amp;</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>values</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00322">322</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
@@ -4232,12 +3256,12 @@ template&lt;typename ALPHA, typename T, detail::FixedString PARAMETER, typename.
         <tr>
           <td class="memname">auto ghassanpl::lerp </td>
           <td>(</td>
-          <td class="paramtype">named&lt; T, PARAMETER, TRAITS... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>value_a</em></span>, </td>
+          <td class="paramtype"><a class="el" href="structghassanpl_1_1named.html">named</a>&lt; T, PARAMETER, TRAITS... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>value_a</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">named&lt; T, PARAMETER, TRAITS... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>value_b</em></span>, </td>
+          <td class="paramtype"><a class="el" href="structghassanpl_1_1named.html">named</a>&lt; T, PARAMETER, TRAITS... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>value_b</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -4247,7 +3271,7 @@ template&lt;typename ALPHA, typename T, detail::FixedString PARAMETER, typename.
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00326">326</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00380">380</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -4330,35 +3354,6 @@ template&lt;class T, std::enable_if_t&lt; std::is_constructible_v&lt; std::decay
 
 </div>
 </div>
-<a id="ab492cb9901596190c12c040cf7989dfe" name="ab492cb9901596190c12c040cf7989dfe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab492cb9901596190c12c040cf7989dfe">&#9670;&#160;</a></span>move_to_optional()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; T &gt; ghassanpl::move_to_optional </td>
-          <td>(</td>
-          <td class="paramtype">T *</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00054">54</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
 <a id="ga07999481d80aa0d552f59e9aa6d5d4da" name="ga07999481d80aa0d552f59e9aa6d5d4da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga07999481d80aa0d552f59e9aa6d5d4da">&#9670;&#160;</a></span>named_cast()</h2>
 
@@ -4385,130 +3380,6 @@ template&lt;std::same_as&lt; <a class="el" href="group___colors.html#ga32c9d74c4
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="colors_8h_source.html#l00211">211</a> of file <a class="el" href="colors_8h_source.html">colors.h</a>.</p>
-
-</div>
-</div>
-<a id="a138f802b0d44cd9d5a2aab5bbea3a253" name="a138f802b0d44cd9d5a2aab5bbea3a253"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a138f802b0d44cd9d5a2aab5bbea3a253">&#9670;&#160;</a></span>nth_bit() <span class="overload">[1/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike B, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ghassanpl::nth_bit </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; B const, N &gt;</td>          <td class="paramname"><span class="paramname"><em>range</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00095">95</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a04fefdc75fc3cda96aad31483925c5a3" name="a04fefdc75fc3cda96aad31483925c5a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a04fefdc75fc3cda96aad31483925c5a3">&#9670;&#160;</a></span>nth_bit() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t N, bytelike B, size_t SN = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ghassanpl::nth_bit </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; B const, SN &gt;</td>          <td class="paramname"><span class="paramname"><em>range</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00132">132</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="ad877f7fe8731ea0973f29c0bc27512b7" name="ad877f7fe8731ea0973f29c0bc27512b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad877f7fe8731ea0973f29c0bc27512b7">&#9670;&#160;</a></span>nth_bit() <span class="overload">[3/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t N, typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ghassanpl::nth_bit </td>
-          <td>(</td>
-          <td class="paramtype">T const &amp;</td>          <td class="paramname"><span class="paramname"><em>pod</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00156">156</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a9f30b8252650d50344f8bf6819402ab6" name="a9f30b8252650d50344f8bf6819402ab6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9f30b8252650d50344f8bf6819402ab6">&#9670;&#160;</a></span>nth_bit() <span class="overload">[4/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ghassanpl::nth_bit </td>
-          <td>(</td>
-          <td class="paramtype">T const &amp;</td>          <td class="paramname"><span class="paramname"><em>pod</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00119">119</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
 
 </div>
 </div>
@@ -4578,37 +3449,6 @@ template&lt;class T&gt; </div>
 
 </div>
 </div>
-<a id="afc86755da841da6811e55c8f6ff61853" name="afc86755da841da6811e55c8f6ff61853"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc86755da841da6811e55c8f6ff61853">&#9670;&#160;</a></span>optional_get()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename... ARGS&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; T &gt; ghassanpl::optional_get </td>
-          <td>(</td>
-          <td class="paramtype">std::variant&lt; ARGS... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>var</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Variant operations. </p>
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00334">334</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
 <a id="a917f631f5e0c5eb343ffd1a4c2d525c0" name="a917f631f5e0c5eb343ffd1a4c2d525c0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a917f631f5e0c5eb343ffd1a4c2d525c0">&#9670;&#160;</a></span>protected_copy()</h2>
 
@@ -4675,253 +3515,6 @@ TL TO TR</h2>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
 LE | MI | RI</h2>
 <p>BL BO BR </p>
-
-</div>
-</div>
-<a id="a50d103bbcd57bbe91c03bfe1ef658f88" name="a50d103bbcd57bbe91c03bfe1ef658f88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50d103bbcd57bbe91c03bfe1ef658f88">&#9670;&#160;</a></span>ReportAssumptionFailure()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::ReportAssumptionFailure </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>expectation</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::initializer_list&lt; std::pair&lt; std::string_view, std::string &gt; &gt;</td>          <td class="paramname"><span class="paramname"><em>values</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string</td>          <td class="paramname"><span class="paramname"><em>data</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">source_location</td>          <td class="paramname"><span class="paramname"><em>loc</em></span><span class="paramdefsep"> = </span><span class="paramdefval">source_location::current()</span>&#160;) -&gt; <a class="el" href="#ab5a0f4c7ffcd4f4e36aa90edf539e0c6">AssumptionHandlerResult</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>TODO: AssumptionFailureHandler should return bool, and based on that we should brek into debugger or not. </p>
-
-<p class="definition">Definition at line <a class="el" href="assuming_8h_source.html#l00407">407</a> of file <a class="el" href="assuming_8h_source.html">assuming.h</a>.</p>
-
-</div>
-</div>
-<a id="a1bf2ee53b8c8310c8e9c45a30b7facc1" name="a1bf2ee53b8c8310c8e9c45a30b7facc1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1bf2ee53b8c8310c8e9c45a30b7facc1">&#9670;&#160;</a></span>resulting()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename FUNC&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T ghassanpl::resulting </td>
-          <td>(</td>
-          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns a new <span class="tt">T</span> transformed by <span class="tt">func</span>. </p>
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00295">295</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
-<a id="aa53277bb0bb612f23f338fdd46066ac4" name="aa53277bb0bb612f23f338fdd46066ac4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa53277bb0bb612f23f338fdd46066ac4">&#9670;&#160;</a></span>set_nth_bit() <span class="overload">[1/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike B, size_t N = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ghassanpl::set_nth_bit </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; B, N &gt;</td>          <td class="paramname"><span class="paramname"><em>range</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00105">105</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="aedc984e87c69c8802479def914195ae6" name="aedc984e87c69c8802479def914195ae6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedc984e87c69c8802479def914195ae6">&#9670;&#160;</a></span>set_nth_bit() <span class="overload">[2/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t N, bytelike B, size_t SN = std::dynamic_extent&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ghassanpl::set_nth_bit </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; B, SN &gt;</td>          <td class="paramname"><span class="paramname"><em>range</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00142">142</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="abb9d05f33630a4022602d63885174af4" name="abb9d05f33630a4022602d63885174af4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb9d05f33630a4022602d63885174af4">&#9670;&#160;</a></span>set_nth_bit() <span class="overload">[3/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;size_t N, typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ghassanpl::set_nth_bit </td>
-          <td>(</td>
-          <td class="paramtype">T &amp;</td>          <td class="paramname"><span class="paramname"><em>pod</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00163">163</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a5875a163dec286000df769e029668488" name="a5875a163dec286000df769e029668488"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5875a163dec286000df769e029668488">&#9670;&#160;</a></span>set_nth_bit() <span class="overload">[4/4]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void ghassanpl::set_nth_bit </td>
-          <td>(</td>
-          <td class="paramtype">T &amp;</td>          <td class="paramname"><span class="paramname"><em>pod</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t</td>          <td class="paramname"><span class="paramname"><em>n</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>value</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00126">126</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="ad9c05b60a68f3164351cb7ee0659b39f" name="ad9c05b60a68f3164351cb7ee0659b39f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9c05b60a68f3164351cb7ee0659b39f">&#9670;&#160;</a></span>span_from_bytelikes()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename TO, bytelike FROM&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">span&lt; TO &gt; ghassanpl::span_from_bytelikes </td>
-          <td>(</td>
-          <td class="paramtype">span&lt; FROM &gt;</td>          <td class="paramname"><span class="paramname"><em>from</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns an object whose internal representation is initialized from the argument. </p>
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00049">49</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
 
 </div>
 </div>
@@ -5024,12 +3617,12 @@ template&lt;typename T, detail::FixedString PARAMETER, typename STRINGIFIER&gt; 
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">named&lt; T, PARAMETER &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>val</em></span>&#160;)</td>
+          <td class="paramtype"><a class="el" href="structghassanpl_1_1named.html">named</a>&lt; T, PARAMETER &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>val</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00320">320</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00374">374</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>
@@ -5080,153 +3673,6 @@ template&lt;typename T, typename STRINGIFIER&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="rec2_8h_source.html#l00390">390</a> of file <a class="el" href="rec2_8h_source.html">rec2.h</a>.</p>
-
-</div>
-</div>
-<a id="a945f8c7f2d179898e7eafda7e7235c28" name="a945f8c7f2d179898e7eafda7e7235c28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a945f8c7f2d179898e7eafda7e7235c28">&#9670;&#160;</a></span>to_byte()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike FROM&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::to_byte </td>
-          <td>(</td>
-          <td class="paramtype">FROM</td>          <td class="paramname"><span class="paramname"><em>byte</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00069">69</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a69095cc14e36394ade64edd858c7f4e6" name="a69095cc14e36394ade64edd858c7f4e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69095cc14e36394ade64edd858c7f4e6">&#9670;&#160;</a></span>to_bytelike_array()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike B, std::integral T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::to_bytelike_array </td>
-          <td>(</td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>value_</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>A constexpr function that converts an integral value to its constituent bytelikes TODO: This is NOT like a reinterpret_/bit_cast to u8s, because it's not endian-aware. </p>
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00171">171</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a70ba945f6f4693bad4779467f1abae54" name="a70ba945f6f4693bad4779467f1abae54"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70ba945f6f4693bad4779467f1abae54">&#9670;&#160;</a></span>to_char()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike FROM&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::to_char </td>
-          <td>(</td>
-          <td class="paramtype">FROM</td>          <td class="paramname"><span class="paramname"><em>byte</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00068">68</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="a5fab4952934556ae70cc9b7f95abfabe" name="a5fab4952934556ae70cc9b7f95abfabe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5fab4952934556ae70cc9b7f95abfabe">&#9670;&#160;</a></span>to_char8()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike FROM&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::to_char8 </td>
-          <td>(</td>
-          <td class="paramtype">FROM</td>          <td class="paramname"><span class="paramname"><em>byte</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00071">71</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="abfdbe49e7349ce50a7a7a31f4908452b" name="abfdbe49e7349ce50a7a7a31f4908452b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abfdbe49e7349ce50a7a7a31f4908452b">&#9670;&#160;</a></span>to_optional()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt; T &gt; ghassanpl::to_optional </td>
-          <td>(</td>
-          <td class="paramtype">T *</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00051">51</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -5402,93 +3848,6 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
-<a id="a1baae095d480b5a29409dafd50f6d8fb" name="a1baae095d480b5a29409dafd50f6d8fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1baae095d480b5a29409dafd50f6d8fb">&#9670;&#160;</a></span>to_u8()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike FROM&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::to_u8 </td>
-          <td>(</td>
-          <td class="paramtype">FROM</td>          <td class="paramname"><span class="paramname"><em>byte</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00067">67</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="af8211680c8e71485ee56ee4ae8e1e86b" name="af8211680c8e71485ee56ee4ae8e1e86b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8211680c8e71485ee56ee4ae8e1e86b">&#9670;&#160;</a></span>to_u8_array()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::integral T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::to_u8_array </td>
-          <td>(</td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00183">183</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
-<a id="af6241c4999e474d086f01b5a06d978b2" name="af6241c4999e474d086f01b5a06d978b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6241c4999e474d086f01b5a06d978b2">&#9670;&#160;</a></span>to_uchar()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bytelike FROM&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::to_uchar </td>
-          <td>(</td>
-          <td class="paramtype">FROM</td>          <td class="paramname"><span class="paramname"><em>byte</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="bytes_8h_source.html#l00070">70</a> of file <a class="el" href="bytes_8h_source.html">bytes.h</a>.</p>
-
-</div>
-</div>
 <a id="a269f238f50b4a10ef0360d426ca000c6" name="a269f238f50b4a10ef0360d426ca000c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a269f238f50b4a10ef0360d426ca000c6">&#9670;&#160;</a></span>transform_tuple()</h2>
 
@@ -5521,146 +3880,6 @@ template&lt;typename... ARGS, typename FUNC&gt; </div>
 <p>Function: transform_tuple. </p>
 
 <p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00487">487</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
-
-</div>
-</div>
-<a id="a54509b26aada327a760c2d71b3f5eebb" name="a54509b26aada327a760c2d71b3f5eebb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54509b26aada327a760c2d71b3f5eebb">&#9670;&#160;</a></span>transformed() <span class="overload">[1/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename FUNC&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::transformed </td>
-          <td>(</td>
-          <td class="paramtype">std::optional&lt; T &gt; &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;) -&gt; decltype(std::optional{ func(value.value()) })</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pre C++23 transform/fmap. </p>
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00045">45</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
-<a id="ab3958af2be0ba12ca9e9512d990ae9ca" name="ab3958af2be0ba12ca9e9512d990ae9ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3958af2be0ba12ca9e9512d990ae9ca">&#9670;&#160;</a></span>transformed() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename FUNC&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::transformed </td>
-          <td>(</td>
-          <td class="paramtype">std::optional&lt; T &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;) -&gt; decltype(std::optional{ func(value.value()) })</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Pre C++23 transform/fmap. </p>
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00038">38</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
-<a id="a6b80a8c6ef24ecc5525bf179b3e86b93" name="a6b80a8c6ef24ecc5525bf179b3e86b93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b80a8c6ef24ecc5525bf179b3e86b93">&#9670;&#160;</a></span>transformed() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FUNC, typename... Ts&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::transformed </td>
-          <td>(</td>
-          <td class="paramtype">std::variant&lt; Ts... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>var</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns a new variant transformed by <span class="tt">func</span>. </p>
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00387">387</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
-
-</div>
-</div>
-<a id="a15ca4e1f6d497d72d03d4dbac1360699" name="a15ca4e1f6d497d72d03d4dbac1360699"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15ca4e1f6d497d72d03d4dbac1360699">&#9670;&#160;</a></span>transformed_flattened()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename FUNC, typename... Ts&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto ghassanpl::transformed_flattened </td>
-          <td>(</td>
-          <td class="paramtype">std::variant&lt; Ts... &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>var</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns a new variant transformed by <span class="tt">func</span>, flattened. </p>
-
-<p class="definition">Definition at line <a class="el" href="functional_8h_source.html#l00465">465</a> of file <a class="el" href="functional_8h_source.html">functional.h</a>.</p>
 
 </div>
 </div>
@@ -5801,54 +4020,6 @@ template&lt;auto INT_VALUE, auto... VALUES&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="flag__bits__v_8h_source.html#l00052">52</a> of file <a class="el" href="flag__bits__v_8h_source.html">flag_bits_v.h</a>.</p>
-
-</div>
-</div>
-<a id="a9a9bc7a7a7acb52f1dc61e2bac7d9132" name="a9a9bc7a7a7acb52f1dc61e2bac7d9132"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a9bc7a7a7acb52f1dc61e2bac7d9132">&#9670;&#160;</a></span>crc32_table</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t ghassanpl::crc32_table[256]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00020">20</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
-
-</div>
-</div>
-<a id="a6d574ea3f39464e7e36e412d226166df" name="a6d574ea3f39464e7e36e412d226166df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d574ea3f39464e7e36e412d226166df">&#9670;&#160;</a></span>crc64_table</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint64_t ghassanpl::crc64_table[256]</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel static">static</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="hashes_8h_source.html#l00098">98</a> of file <a class="el" href="hashes_8h_source.html">hashes.h</a>.</p>
 
 </div>
 </div>
@@ -6000,7 +4171,7 @@ template&lt;typename TYPE&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="cpp17_2enum__flags_8h_source.html#l00424">424</a> of file <a class="el" href="cpp17_2enum__flags_8h_source.html">enum_flags.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="enum__flags_8h_source.html#l00380">380</a> of file <a class="el" href="enum__flags_8h_source.html">enum_flags.h</a>.</p>
 
 </div>
 </div>
@@ -6104,7 +4275,7 @@ template&lt;typename OTHER&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00316">316</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="named_8h_source.html#l00370">370</a> of file <a class="el" href="named_8h_source.html">named.h</a>.</p>
 
 </div>
 </div>

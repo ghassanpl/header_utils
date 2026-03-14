@@ -15,8 +15,11 @@
 
 namespace ghassanpl
 {
+	/// \defgroup Functional Functional
+	/// Useful functions and types for functional-style programming
+	/// @{
+
 	/// Returns a function that calls `func` when invoked, but only the first time
-	/// \ingroup Functional
 	template <typename... ARGS>
 	[[nodiscard]] constexpr auto make_single_time_function(std::function<void(ARGS...)> func)
 	{
@@ -26,7 +29,6 @@ namespace ghassanpl
 	}
 
 	/// Returns a function that calls `func` when invoked, but only the first time
-	/// \ingroup Functional
 	template <typename FUNC>
 	[[nodiscard]] constexpr auto make_single_time_function(FUNC&& func)
 	{
@@ -59,7 +61,15 @@ namespace ghassanpl
 	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<std::optional<T>> const& value) { return value ? flatten(value.value()) : std::nullopt; }
 	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<T> const& value) { return value; }
 
-	///
+	/// Can be used to create an object with an overload set of `operator()` if constructed from multiple lambdas.
+	/// Example:
+	/// ```c++
+	/// std::variant<int, std::string> var;
+	/// auto res = std::visit(overloaded {
+	///		[](int i) { return std::to_string(i); },
+	///		[](std::string const& s) { return s; }
+	///	}, var);
+	/// ```
 	template <class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
 
 	///
@@ -67,11 +77,11 @@ namespace ghassanpl
 		return __VA_ARGS__(std::forward<decltype(args)>(args)...); \
 	}
 
-	/// TODO: Boost::phoenix::arg_names is a better version of this
-
-	/// Appropriate for predicate-taking functions like std::all_of
+	/// Contains functions that return predicates; appropriate for functions like `std::all_of`
 	namespace pred
 	{
+		// TODO: Boost::phoenix::arg_names is a better version of this
+
 		                      [[nodiscard]] constexpr auto always_true() { return [](auto&& other) { return true; }; }
 
 		template <typename T> [[nodiscard]] constexpr auto equal_to(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other == val; }; }
@@ -134,7 +144,7 @@ namespace ghassanpl
 		*/
 	}
 
-	/// Appropriate for functions like std::for_each that don't have semantics by themselves
+	/// Contains functions that return functors that perform an operation without output; appropriate for functions like `std::for_each`
 	namespace op
 	{
 		template <typename T> [[nodiscard]] constexpr auto push_back_to(T& to) noexcept { return [&to](auto&& val) { to.push_back(std::forward<decltype(val)>(val)); }; }
@@ -239,7 +249,7 @@ namespace ghassanpl
 
 	}
 
-	/// Appropriate for not-in-place transformation functions 
+	/// Contains functions that return functors which transform and return their inputs somehow; appropriate for not-in-place transformation functions (e.g. `std::transform`)
 	namespace xf
 	{
 		                      [[nodiscard]] constexpr auto identity() noexcept { return [](auto&& val) { return std::forward<decltype(val)>(val); }; }
@@ -290,6 +300,7 @@ namespace ghassanpl
 	/// Macro that allows us to pass std:: functions to algorithms as if they were function pointers,
 	/// because you can't take the address of an std:: function for some stupid reason
 #define std_call(func) ([](auto&&... vals) { return std::func(std::forward<decltype(vals)>(vals)...); })
+
 	/// Returns a new `T` transformed by `func`
 	template <typename T, typename FUNC>
 	constexpr T resulting(FUNC&& func)
@@ -330,6 +341,7 @@ namespace ghassanpl
 
 	/// Variant operations
 	
+	/// Returns an `std::optional<T>` with a copy of the value in the variant, if `T` is currently in the variant, or `nullopt` otherwise
 	template <typename T, typename... ARGS>
 	[[nodiscard]] constexpr std::optional<T> optional_get(std::variant<ARGS...> const& var) noexcept
 	{
@@ -470,4 +482,6 @@ namespace ghassanpl
 		return std::visit([&func](auto&& val) -> result_type { return convertible_to_variant(func(std::forward<decltype(val)>(val))); }, var);
 	}
 #endif
+
+	/// @}
 }

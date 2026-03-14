@@ -15,7 +15,8 @@
 namespace ghassanpl
 {
 	/// \defgroup Hashes Hashes
-	/// Hashing functions.
+	/// Hashing functions, mostly constexpr when possible.
+	/// @{
 
 	static constexpr inline uint32_t crc32_table[256] = {
 		0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
@@ -131,7 +132,6 @@ namespace ghassanpl
 	};
 
 	/// Calculates a CRC4 for a range of bytelikes
-	/// \ingroup Hashes
 	template <bytelike_range RANGE>
 	[[nodiscard]] constexpr uint64_t crc64(RANGE&& bytes)
 	{
@@ -142,7 +142,6 @@ namespace ghassanpl
 	}
 
 	/// Calculates a CRC4 for a variadic number of bytelikes
-	/// \ingroup Hashes
 	template <bytelike... BYTES>
 	[[nodiscard]] constexpr uint64_t crc64(BYTES... bytes)
 	{
@@ -153,7 +152,6 @@ namespace ghassanpl
 
 #ifdef __cpp_consteval
 	/// Calculates a CRC64 of a source_location (constexpr, so can be used at compile time)
-	/// \ingroup Hashes
 	[[nodiscard]] constexpr auto crc64(const source_location& k)
 	{
 		return crc64(std::string_view{ k.file_name() }) ^ k.line() ^ k.column();
@@ -165,11 +163,10 @@ namespace ghassanpl
 	};
 #endif
 
-	/// TODO: Add support for non-64bit hashes to all the functions below, especially since
-	/// std::hash operates on size_t
+	// TODO: Add support for non-64bit hashes to all the functions below, especially since
+	// std::hash operates on size_t
 
 	/// Calculates a FNV Hash for a range of bytes
-	/// \ingroup Hashes
 	template <bytelike_range RANGE>
 	[[nodiscard]] constexpr uint64_t fnv64(RANGE&& bytes)
 	{
@@ -180,7 +177,6 @@ namespace ghassanpl
 	}
 
 	/// Calculates a FNV Hash for a variadic number of bytes
-	/// \ingroup Hashes
 	template <bytelike... BYTES>
 	[[nodiscard]] constexpr uint64_t fnv64(BYTES... bytes)
 	{
@@ -189,6 +185,7 @@ namespace ghassanpl
 		return result;
 	}
 
+	/// Hash functions that only work on integers
 	namespace integer
 	{
 		struct splitmix64_state { uint64_t state{}; };
@@ -236,6 +233,7 @@ namespace ghassanpl
 			return b;
 		}
 
+		///
 		[[nodiscard]] constexpr uint32_t triple32(uint32_t x)
 		{
 			x ^= x >> 17;
@@ -249,6 +247,7 @@ namespace ghassanpl
 		}
 	}
 
+	/// Combines an existing hash with a new hash value
 	constexpr void fold_in_hash64(uint64_t& hash1, uint64_t hash2) noexcept
 	{
 		constexpr uint64_t kMul = 0x9ddfea08eb382d69ULL;
@@ -261,9 +260,73 @@ namespace ghassanpl
 		hash1 = b;
 	}
 
+	/// Combines an existing hash value (`seed`) with the hash of value `v`
+	template <typename T, typename HASHER = std::hash<std::remove_cvref_t<T>>>
+	constexpr void hash64_combine_to(uint64_t& seed, T&& v, HASHER&& hasher = HASHER{})
+	{
+		auto result = hasher(v);
+		static_assert(std::is_same_v<decltype(result), uint64_t>, "hasher() must return a uint64_t");
+		fold_in_hash64(seed, result);
+	}
+
+	/// Performs a hash of multiple values
+	template <template<typename> typename HASHER = std::hash, typename FIRST, typename... T>
+	[[nodiscard]] constexpr uint64_t hash64(FIRST const& first, T&&... values)
+	{
+		auto hasher = HASHER<FIRST>{};
+		
+		static_assert(
+			std::is_same_v<decltype(std::declval<HASHER<std::remove_cvref_t<FIRST>>>()(std::declval<FIRST>())), uint64_t> &&
+			(std::is_same_v<decltype(std::declval<HASHER<std::remove_cvref_t<T>>>()(std::declval<T>())), uint64_t> && ... && true),
+			"hasher() must return a uint64_t for each type");
+
+		uint64_t result = hasher(first);
+#if !defined(MSVC_BUG_11047635) /// https://developercommunity.visualstudio.com/t/Internal-Compiler-Error-in-latest-versio/11047635?
+		auto func = [&result]<typename U>(U&& value) {
+			ghassanpl::hash64_combine_to(result, std::forward<U>(value), HASHER<std::remove_cvref_t<U>>{});
+		};
+		(func(std::forward<T>(values)), ...);
+#else
+		(ghassanpl::hash64_combine_to(result, std::forward<T>(values), HASHER<std::remove_cvref_t<T>>{}), ...);
+#endif
+		return result;
+	}
+
+	/// Combines an existing hash value (`seed`) with the hash of a range of values
+	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
+	constexpr void fold_in_hash64_range(uint64_t& seed, It first, It last, HASHER const& hasher = {})
+	{
+		static_assert(std::same_as<decltype(hasher(std::declval<std::iter_value_t<It>>())), uint64_t>, "hasher() must return a uint64_t");
+		for (; first != last; ++first)
+			hash64_combine_to(seed, *first, hasher);
+	}
+
+	/// Hashes a range of values
+	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
+	[[nodiscard]] constexpr uint64_t hash64_range(It first, It last, HASHER&& hasher = {})
+	{
+		static_assert(std::same_as<decltype(hasher(std::declval<std::iter_value_t<It>>())), uint64_t>, "hasher() must return a uint64_t");
+		uint64_t seed = 0;
+		fold_in_hash64_range(seed, first, last, std::forward<HASHER>(hasher));
+		return seed;
+	}
+
+	/// Hashes a range of values
+	template <std::ranges::range T, typename HASHER = std::hash<std::ranges::range_value_t<T>>>
+	[[nodiscard]] constexpr uint64_t hash64_range(T range, HASHER&& hasher = {})
+	{
+		static_assert(std::same_as<decltype(hasher(std::declval<std::ranges::range_value_t<T>>())), uint64_t>, "hasher() must return a uint64_t");
+		uint64_t seed = 0;
+		fold_in_hash64_range(seed, std::ranges::begin(range), std::ranges::end(range), std::forward<HASHER>(hasher));
+		return seed;
+	}
+
+
+	/// \name consteval Hash Functions
+	/// @{
+
 	template <typename T>
-	requires 
-		(sizeof(T) <= sizeof(uint64_t)) && 
+	requires (sizeof(T) <= sizeof(uint64_t)) &&
 		((sizeof(T) & (sizeof(T) - 1)) == 0) && /// Power of 2
 		std::is_trivially_copyable_v<T>
 	[[nodiscard]] consteval uint64_t ce_hash64(T val) noexcept
@@ -304,71 +367,11 @@ namespace ghassanpl
 		return result;
 	}
 
-	/// TODO: ce_hash64(array/span)
-	/// TODO: ce_hash64(thread::id) ?
-	/// TODO: ce_hash64(optional/variant) ?
+	/// @}
 
-	/// Combines an existing hash value (`seed`) with the hash of value `v`
-	/// \ingroup Hashes
-	template <typename T, typename HASHER = std::hash<std::remove_cvref_t<T>>>
-	constexpr void hash64_combine_to(uint64_t& seed, T&& v, HASHER&& hasher = HASHER{})
-	{
-		auto result = hasher(v);
-		static_assert(std::is_same_v<decltype(result), uint64_t>, "hasher() must return a uint64_t");
-		fold_in_hash64(seed, result);
-	}
+	// TODO: ce_hash64(array/span)
+	// TODO: ce_hash64(thread::id) ?
+	// TODO: ce_hash64(optional/variant) ?
 
-	template <template<typename> typename HASHER = std::hash, typename FIRST, typename... T>
-	[[nodiscard]] constexpr uint64_t hash64(FIRST const& first, T&&... values)
-	{
-		auto hasher = HASHER<FIRST>{};
-		
-		static_assert(
-			std::is_same_v<decltype(std::declval<HASHER<std::remove_cvref_t<FIRST>>>()(std::declval<FIRST>())), uint64_t> &&
-			(std::is_same_v<decltype(std::declval<HASHER<std::remove_cvref_t<T>>>()(std::declval<T>())), uint64_t> && ... && true),
-			"hasher() must return a uint64_t for each type");
-
-		uint64_t result = hasher(first);
-#if !defined(MSVC_BUG_11047635) /// https://developercommunity.visualstudio.com/t/Internal-Compiler-Error-in-latest-versio/11047635?
-		auto func = [&result]<typename U>(U&& value) {
-			ghassanpl::hash64_combine_to(result, std::forward<U>(value), HASHER<std::remove_cvref_t<U>>{});
-		};
-		(func(std::forward<T>(values)), ...);
-#else
-		(ghassanpl::hash64_combine_to(result, std::forward<T>(values), HASHER<std::remove_cvref_t<T>>{}), ...);
-#endif
-		return result;
-	}
-
-	/// Combines an existing hash value (`seed`) with the hash of a range of values
-	/// \ingroup Hashes
-	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
-	constexpr void hash64_range(uint64_t& seed, It first, It last, HASHER const& hasher = {})
-	{
-		static_assert(std::same_as<decltype(hasher(std::declval<std::iter_value_t<It>>())), uint64_t>, "hasher() must return a uint64_t");
-		for (; first != last; ++first)
-			hash64_combine_to(seed, *first, hasher);
-	}
-
-	/// Hashes a range of values
-	/// \ingroup Hashes
-	template<typename It, typename HASHER = std::hash<std::iter_value_t<It>>>
-	[[nodiscard]] constexpr uint64_t hash64_range(It first, It last, HASHER&& hasher = {})
-	{
-		static_assert(std::same_as<decltype(hasher(std::declval<std::iter_value_t<It>>())), uint64_t>, "hasher() must return a uint64_t");
-		uint64_t seed = 0;
-		hash64_range(seed, first, last, std::forward<HASHER>(hasher));
-		return seed;
-	}
-
-	/// Hashes a range of values
-	/// \ingroup Hashes
-	template <std::ranges::range T, typename HASHER = std::hash<std::ranges::range_value_t<T>>>
-	[[nodiscard]] constexpr uint64_t hash64_range(T range, HASHER&& hasher = {})
-	{
-		static_assert(std::same_as<decltype(hasher(std::declval<std::ranges::range_value_t<T>>())), uint64_t>, "hasher() must return a uint64_t");
-		uint64_t seed = 0;
-		hash64_range(seed, std::ranges::begin(range), std::ranges::end(range), std::forward<HASHER>(hasher));
-		return seed;
-	}
+	/// @}
 }

@@ -7,5 +7,6 @@ var searchData=
   ['line_5fcrossing_5fpoints_4',['line_crossing_points',['../group___lines.html#ga4d428198e18d13f22d34625243c13dbf',1,'ghassanpl::geometry']]],
   ['listeners_5',['listeners',['../classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#a721fe377c5269c82ce9a0bf27b363b19',1,'ghassanpl::mutlticast_function&lt; R(ARGS...)&gt;']]],
   ['load_6',['load',['../group___c_s_v.html#gaa3b6289aa14bfed0dadcf1b5eb0b6322',1,'ghassanpl::formats::csv']]],
-  ['luminance_7',['luminance',['../group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11',1,'ghassanpl']]]
+  ['load_5ffile_7',['load_file',['../group___wilson.html#ga71aa6ec3fb9dd6e146622402ddf67766',1,'ghassanpl::formats::wilson']]],
+  ['luminance_8',['luminance',['../group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11',1,'ghassanpl']]]
 ];

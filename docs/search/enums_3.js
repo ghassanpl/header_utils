@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['text_5fencoding_5ftype_0',['text_encoding_type',['../group___unicode.html#ga05990bf332d1e3aeefa175160e9dd0ea',1,'ghassanpl::string_ops']]]
+  ['horizontal_5falign_0',['horizontal_align',['../group___alignment.html#ga93fc1bd0f731fa127d4254a34a994ff7',1,'ghassanpl']]]
 ];

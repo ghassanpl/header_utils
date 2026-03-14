@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['unique_5fresource_0',['unique_resource',['../structghassanpl_1_1unique__resource.html',1,'ghassanpl']]],
-  ['utf8_5fview_1',['utf8_view',['../structghassanpl_1_1string__ops_1_1utf8__view.html',1,'ghassanpl::string_ops']]]
+  ['polygon_5ftriangulation_0',['polygon_triangulation',['../structghassanpl_1_1geometry_1_1polygon__triangulation.html',1,'ghassanpl::geometry']]]
 ];

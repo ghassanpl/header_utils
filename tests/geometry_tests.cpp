@@ -107,6 +107,12 @@ TEST(squares, tile_world_grid_functions_work)
 	}
 }
 
+TEST(squares, tile_spaces_work)
+{
+	chebyshev_tile_space space;
+	EXPECT_EQ(space.snap_to_grid(glm::vec2{ 10.4, 10.7 }), (glm::vec2{ 10,11 }));
+}
+
 TEST(grid, works)
 {
 	struct tile

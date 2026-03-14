@@ -10,7 +10,7 @@
 #include "expected.h"
 #include <ostream>
 
-/// TODO: https://dev.stenway.com/SML/Examples.html
+// TODO: https://dev.stenway.com/SML/Examples.html
 
 namespace ghassanpl::formats::wilson
 {
@@ -18,9 +18,64 @@ namespace ghassanpl::formats::wilson
 
 	using wilson = nlohmann::json;
 
+	/// \addtogroup Wilson
+	/// Wilson is a superset of JSON with a strongly permissive syntax.
+	/// Uses the `nlohmann::json` library to store parsed values.
+	/// 
+	/// Differences from JSON:
+	/// * supports line comments - `#` starts a comment that runs until `\n` is encountered; comments are treated as whitespace
+	/// * strings can be delimited by both `'` and `"` characters (they must be paired tho)
+	/// * single-word strings do not need to start with `'` or `"` (unless you want a `"null"`, `"true"` or `"false"` string) - a sequence of characters matching /[A-Za-z_][A-Za-z0-9]*/ will be considered a string
+	/// * both `null` and `nil` will be treated as the null value
+	/// * numbers are parsed using the C++ `std::from_chars` function, as doubles, with all that entails
+	/// * arrays can be delimited by both `(`/`)` and `[`/`]` bracket pairs (they must be paired tho)
+	/// * array elements and object pairs can be separated by the `,` or `;` characters
+	/// * array element and object pair separated are optional
+	/// * keys and values can be separated by the `:` or `=` characters
+	/// * key and value separators are also optional
+	/// * in an object pair, if a value is not given, and the object pair separator like `,` or `;` or the end of the object is encountered, the value will be considered to be `true`
+	/// * trailing separators are permitted
+	/// * an ending array/object delimiter (`}`, `)`, `]` etc) is not required if end-of-string is encountered
+	/// * additional escape sequences are recognized
+	///		- `"\'"` for `'`-delimited strings
+	///		- `"\0"` for embedded zeroes
+	///		- `"\onnn"` for C-style octal escapes (but requires exactly 3 digits)
+	///		- `"\xnn"` for C-style hex escapes (but requires exactly 2 digits)
+	///		- `"\unnnn"` for C++-style encoding of Unicode codepoints from U+0000 to U+FFFF as UTF-8
+	///		- `"\Unnnnnnnn"` for C++-style encoding of all Unicode codepoints as UTF-8
+	/// Therefore this is a valid Wilson document:
+	/// 
+	/// ```json
+	/// {
+	/// 	# comment
+	/// 	array = ( 10 20 30 ) # another comment
+	/// 	"another array": [10; 20; 30]
+	/// 	key value # yes, this is a "key":"value" pair
+	/// 	true_key; # this will be a "true_key":true pair
+	/// 	also_true_key
+	/// }
+	/// ```
+	/// 
+	/// equivalent to:
+	/// 
+	/// ```json
+	/// {
+	/// 	"array": [10, 20, 30],
+	/// 	"another array": [10, 20, 30],
+	/// 	"key": "value",
+	/// 	"true_key": true,
+	/// 	"also_true_key": true
+	/// }
+	/// ```
+	/// \ingroup Formats
+	/// @{
+
+	/// Parses any Wilson value
 	auto parse(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>;
+	/// Parses a set of key-value pairs, until end of string or encountering the `closing_char`
 	auto parse_object(std::string_view wilson_str, char closing_char = '}') -> expected<wilson, wilson_parsing_error>;
-	auto parse_array(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>;
+	/// Parses an array of Wilson values, until end of string or encountering the `closing_char`
+	auto parse_array(std::string_view wilson_str, char closing_char = ']') -> expected<wilson, wilson_parsing_error>;
 	/// Parses: a word as a string value or bool/null value; a "string literal" as a string value
 	auto parse_word_or_string(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>;
 	/// Parses a word or a string literal a string value
@@ -42,27 +97,36 @@ namespace ghassanpl::formats::wilson
 		std::string_view indent_str = "\t";
 	};
 
+	/// Outputs `value` formatted as a string using the `out` function which should take a string_view to append to the output.
 	template <typename OUTFUNC>
 	void output(OUTFUNC&& out, wilson const& value, output_parameters const& parameters = {}, size_t indent = 0);
 
+	/// Outputs `value` formatted as a string to the `strm` output stream.
 	inline void output_to_stream(std::ostream& strm, wilson const& value, output_parameters const& parameters = {})
 	{
 		output([&](std::string_view val) { strm.write(val.data(), val.size()); }, value, parameters);
 	}
 
+	/// Returns `value` formatted as a string.
 	std::string to_string(wilson const& value, output_parameters const& parameters = {});
 
+	/// Loads a Wilson value from a file.
 	expected<wilson, wilson_parsing_error> load_file(std::filesystem::path const& from);
+
+	/// Loads a Wilson value from a file, or returns `or_json` on failure.
 	wilson try_load_file(std::filesystem::path const& from, wilson or_json = json::empty_json);
 
-	/// TODO: Add ec version
+	/// Saves a Wilson value to a file formatted as a string.
 	inline void save_file(std::filesystem::path const& to, wilson const& j, output_parameters const& parameters = {})
 	{
+		/// TODO: Add ec version
 		std::ofstream out{ to };
 		if (!out)
 			throw std::runtime_error{ "could not open file for writing" };
 		formats::wilson::output_to_stream(out, j, parameters);
 	}
+
+	/// @}
 }
 
 namespace ghassanpl::formats::wilson
@@ -235,9 +299,9 @@ namespace ghassanpl::formats::wilson
 		return formats::wilson::consume_object(wilson_str, closing_char);
 	}
 
-	inline auto parse_array(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>
+	inline auto parse_array(std::string_view wilson_str, char closing_char) -> expected<wilson, wilson_parsing_error>
 	{
-		return formats::wilson::consume_array(wilson_str);
+		return formats::wilson::consume_array(wilson_str, closing_char);
 	}
 
 	inline auto parse_word_or_string(std::string_view wilson_str) -> expected<wilson, wilson_parsing_error>
