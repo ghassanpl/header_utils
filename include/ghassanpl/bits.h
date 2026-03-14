@@ -25,7 +25,7 @@ namespace ghassanpl
 	/// bool being integral is basically a remnant of the old days. Its size is implementation defined, and giving it any values except true (1) or false (0) is pretty much undefined behavior.
 	/// Therefore, the rest of this code uses bit_integral to detect values for which manipulating bits is well defined (that actually represent and are meant to model integers).
 	template<typename T>
-	concept bit_integral = std::integral<T> && !std::same_as<std::decay_t<T>, bool>;
+	concept bit_integral = std::integral<T> && !std::same_as<std::remove_cvref_t<T>, bool>;
 
 	/// Equal to the number of bits in the type
 	/// \ingroup Bits
@@ -37,25 +37,29 @@ namespace ghassanpl
 
 	/// Value with bits between BEGIN and END (exclusive) set
 	template <size_t BEGIN, size_t END>
+	requires (END > BEGIN) && (END <= 64)
 	constexpr inline uint64_t bit_mask_v = (all_bits >> (64 - END)) << BEGIN;
 
 	/// Value with all bits available for the FOR type set (e.g. first 8 bits for uint8_t will be set, etc.)
 	template <bit_integral FOR>
 	constexpr inline uint64_t bit_mask_for_v = (all_bits >> (64 - bit_count<FOR>));
 
+	/// Whether two types can be safely bit_cast between each other
 	template <typename TO, typename FROM>
 	concept bit_castable = std::is_trivially_copyable_v<TO> && std::is_trivially_copyable_v<FROM> && sizeof(TO) == sizeof(FROM);
 
+	/// Returns just the bits between BEGIN and END in `value`
 	template <size_t BEGIN, size_t END, bit_integral T>
 	constexpr T extract_bits(T value) {
-		static_assert(END > BEGIN);
+		static_assert(END > BEGIN, "range size must be greater than zero");
+		static_assert(END <= bit_count<T>, "range must be within type bit size");
 		return T(value >> BEGIN) & T((T(1)<<(END-BEGIN))-1);
 	};
 
 	template <size_t... RANGES, bit_integral T>
 	constexpr auto split_bit_ranges(T value) {
 		static_assert((RANGES + ...) == bit_count<T>);
-		uint64_t bits = std::bit_cast<uint64_t>(value);
+		uint64_t bits = static_cast<uint64_t>(value);
 		auto extract = [&]<size_t N>(std::integral_constant<size_t, N>) {
 			auto result = extract_bits<0, N>(bits);
 			bits >>= N;
@@ -65,12 +69,6 @@ namespace ghassanpl
 			extract(std::integral_constant<size_t, RANGES>{})...
 		};
 	};
-
-	template <size_t N, bit_integral T>
-	constexpr T n_most_significant(T value) { return (value >> T(bit_count<T> -N)) & T(bit_mask_v<0, N>); };
-
-	template <size_t N, bit_integral T>
-	constexpr T n_least_significant(T value) { return value & T(bit_mask_v<0, N>); };
 
 	template <size_t N, bit_integral T>
 	constexpr bool bit_at(T bits) { return ((bits >> N) & 1) == 1; }
@@ -155,7 +153,13 @@ namespace ghassanpl
 		((assign.template operator()<BIT_COUNT>(values)), ...);
 		return result;
 	}
-	
+
+	template <size_t N, bit_integral T>
+	constexpr T n_most_significant(T value) { return (value >> T(bit_count<T> -N)) & T(bit_mask_v<0, N>); };
+
+	template <size_t N, bit_integral T>
+	constexpr T n_least_significant(T value) { return value & T(bit_mask_v<0, N>); };
+
 	/// Returns an integer with the N/2 most significant bits of the given N-bit integer
 	template <bit_integral T>
 	[[nodiscard]] constexpr auto most_significant_half(T v) noexcept

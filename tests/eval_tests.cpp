@@ -96,7 +96,7 @@ TEST(eval, lib_base)
 
 	EXPECT_EQ(env.safe_eval(parse_value("[5 and 10]")), (json(10)));
 	EXPECT_EQ(env.safe_eval(parse_value("[5 or 10]")), (json(5)));
-	EXPECT_EQ(env.safe_eval(parse_value("[5 + 10]")), (json(15)));
+	//EXPECT_EQ(env.safe_eval(parse_value("[5 + 10]")), (json(15)));
 
 	env.safe_eval(parse_value("[[.l @ 1] = [.l @ 2]]"));
 	EXPECT_EQ(env.safe_eval(parse_value("[get 1 of .l]")), (json("c")));

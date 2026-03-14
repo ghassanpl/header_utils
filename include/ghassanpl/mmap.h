@@ -331,6 +331,11 @@ namespace ghassanpl
 		template <typename VALUE_TYPE_>
 		friend mmap_source<VALUE_TYPE_> make_mmap_source(const std::filesystem::path& path, typename mmap_source<VALUE_TYPE_>::size_type offset, typename mmap_source<VALUE_TYPE_>::size_type length, std::error_code& error) noexcept;
 
+		operator std::basic_string_view<VALUE_TYPE>() const noexcept
+		{
+			return std::basic_string_view<VALUE_TYPE>{ this->data(), this->size() };
+		}
+
 	protected:
 
 		friend struct basic_mmap<mmap_source<VALUE_TYPE>, VALUE_TYPE>;

@@ -1919,13 +1919,13 @@ namespace ghassanpl::string_ops
 /// \showinitializer
 #define GHPL_FORMAT_TEMPLATE typename... GHPL_ARGS
 /// \showinitializer
-#define GHPL_FORMAT_ARGS std::string_view ghpl_fmt, GHPL_ARGS&&... ghpl_args
+#define GHPL_FORMAT_ARGS std::format_string<GHPL_ARGS...> ghpl_fmt, GHPL_ARGS&&... ghpl_args
 /// \showinitializer
 #define GHPL_FORMAT_FORWARD ghpl_fmt, ghpl_args...
 /// \showinitializer
-#define GHPL_FORMAT_CALL std::vformat(ghpl_fmt, std::make_format_args(ghpl_args...))
+#define GHPL_FORMAT_CALL std::format(ghpl_fmt, std::forward<GHPL_ARGS>(ghpl_args)...)
 /// \showinitializer
-#define GHPL_PRINT_CALL std::vprint_unicode(ghpl_fmt, std::make_format_args(ghpl_args...))
+#define GHPL_PRINT_CALL std::print_unicode(ghpl_fmt, std::forward<GHPL_ARGS>(ghpl_args)...)
 
 	/// @}
 }

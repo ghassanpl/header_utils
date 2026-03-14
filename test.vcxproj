@@ -295,6 +295,7 @@
     <ClInclude Include="include\ghassanpl\interpolation.h" />
     <ClInclude Include="include\ghassanpl\multicast.h" />
     <ClInclude Include="include\ghassanpl\path_reference.h" />
+    <ClInclude Include="include\ghassanpl\pools.h" />
     <ClInclude Include="include\ghassanpl\span.h" />
     <ClInclude Include="include\ghassanpl\string_interpolate.h" />
     <ClInclude Include="include\ghassanpl\json_helpers.h" />
@@ -390,6 +391,7 @@
     <ClCompile Include="tests\parsing_tests.cpp" />
     <ClCompile Include="tests\paths_tests.cpp" />
     <ClCompile Include="tests\path_reference_tests.cpp" />
+    <ClCompile Include="tests\pools_tests.cpp" />
     <ClCompile Include="tests\random_tests.cpp" />
     <ClCompile Include="tests\ranges_tests.cpp" />
     <ClCompile Include="tests\regex_tests.cpp" />

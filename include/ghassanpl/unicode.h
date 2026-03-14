@@ -43,8 +43,12 @@ namespace ghassanpl::string_ops
 	enum class text_encoding_type
 	{
 		unknown, utf8, utf16, utf32,
-		utf7, utf1, utf_ebcdic,
-		scsu, bocu1, gb18030,
+		utf7,		/// https://en.wikipedia.org/wiki/UTF-7
+		utf1,		/// https://en.wikipedia.org/wiki/UTF-1
+		utf_ebcdic,	/// https://en.wikipedia.org/wiki/UTF-EBCDIC
+		scsu,		/// https://en.wikipedia.org/wiki/Standard_Compression_Scheme_for_Unicode
+		bocu1,		/// https://en.wikipedia.org/wiki/Binary_Ordered_Compression_for_Unicode
+		gb18030,	/// https://en.wikipedia.org/wiki/GB_18030
 	};
 
 	/// Type that represents a specific text encoding - a combination of \c ghassanpl::string_ops::text_encoding_type and endianness
@@ -54,6 +58,7 @@ namespace ghassanpl::string_ops
 		std::endian endianness;
 
 		[[nodiscard]] constexpr auto operator<=>(text_encoding const& other) const noexcept = default;
+		[[nodiscard]] constexpr operator text_encoding_type() const noexcept { return type; }
 	};
 
 	/// \name Encodings

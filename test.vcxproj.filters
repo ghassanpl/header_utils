@@ -324,6 +324,9 @@
     <ClInclude Include="include\ghassanpl\cpp17\enum_flags.h">
       <Filter>Header Files\cpp17</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\pools.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -497,6 +500,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\path_reference_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\pools_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
