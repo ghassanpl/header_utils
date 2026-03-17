@@ -28,5 +28,6 @@ var namespaces_dup =
       [ "zero", "namespacedetail.html#a9b7f90f2fd3c5884f3d8e1f71ac14551", null ]
     ] ],
     [ "ghassanpl", "namespaceghassanpl.html", "namespaceghassanpl" ],
-    [ "impl", "namespaceimpl.html", null ]
+    [ "impl", "namespaceimpl.html", null ],
+    [ "known_schemes", "namespaceknown__schemes.html", null ]
 ];

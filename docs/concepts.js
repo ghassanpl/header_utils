@@ -34,6 +34,9 @@ var concepts =
       [ "bytelike", "conceptghassanpl_1_1bytelike.html", null ],
       [ "bytelike_range", "conceptghassanpl_1_1bytelike__range.html", null ],
       [ "range_predicate", "conceptghassanpl_1_1range__predicate.html", null ],
-      [ "symbol_provider", "conceptghassanpl_1_1symbol__provider.html", null ]
+      [ "symbol_provider", "conceptghassanpl_1_1symbol__provider.html", null ],
+      [ "mutexlike", "conceptghassanpl_1_1mutexlike.html", null ],
+      [ "timed_mutexlike", "conceptghassanpl_1_1timed__mutexlike.html", null ],
+      [ "shared_mutexlike", "conceptghassanpl_1_1shared__mutexlike.html", null ]
     ] ]
 ];

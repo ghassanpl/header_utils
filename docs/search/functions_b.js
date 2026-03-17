@@ -10,5 +10,7 @@ var searchData=
   ['map_5ffind_5fvalue_7',['map_find_value',['../group___containers.html#ga8f114ccf16647458b35b3680e7c8b48f',1,'ghassanpl']]],
   ['modulo_5fat_8',['modulo_at',['../group___ranges.html#gaffbed2b6ccc672a584c2d67bd964e2f6',1,'ghassanpl']]],
   ['modulo_5findex_9',['modulo_index',['../group___ranges.html#gac7f887707d285f61bc2f1aae98f1c976',1,'ghassanpl::modulo_index(size_t range_size, std::integral auto index)'],['../group___ranges.html#ga20c2be04e0d273af66ebf28f2c22fa14',1,'ghassanpl::modulo_index(random_access_range auto &amp;range, std::integral auto index)']]],
-  ['most_5fsignificant_5fhalf_10',['most_significant_half',['../group___bits.html#gac9acca647beedcaf4a8b49f519148f7a',1,'ghassanpl']]]
+  ['most_5fsignificant_5fhalf_10',['most_significant_half',['../group___bits.html#gac9acca647beedcaf4a8b49f519148f7a',1,'ghassanpl']]],
+  ['mutate_5fby_5fcopy_11',['mutate_by_copy',['../structghassanpl_1_1protected__object.html#ab2cf4e191aea4f6d8c8f6e0ae42403a5',1,'ghassanpl::protected_object']]],
+  ['mutate_5fin_5fplace_12',['mutate_in_place',['../structghassanpl_1_1protected__object.html#af52b035bcb7b64bc75de894117260cb2',1,'ghassanpl::protected_object']]]
 ];

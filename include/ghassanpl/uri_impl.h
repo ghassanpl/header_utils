@@ -317,7 +317,7 @@ namespace ghassanpl
 
 	uri_expected<uri> compose_uri(decomposed_uri const& decomposed, enum_flags<uri_decompose_flags> const flags)
 	{
-		return {};
+		throw "unimplemented";
 	}
 
 	bool decomposed_uri::operator==(decomposed_uri const& other) const noexcept
@@ -386,15 +386,15 @@ namespace ghassanpl
 			virtual std::string_view default_port() const noexcept override { return "443"; }
 		};
 
-		static http_scheme http;
-		static https_scheme https;
+		inline const http_scheme http;
+		inline const https_scheme https;
 
-		/// https://en.wikipedia.org/wiki/Data_URI_scheme
-
+		/// TODO: https://en.wikipedia.org/wiki/Data_URI_scheme
 	}
 
 	known_uri_scheme const* query_uri_scheme(std::string_view scheme)
 	{
+		/// TODO: Should this map be user-extendable?
 		static std::map<std::string, known_uri_scheme const*, std::less<>> const schemes = {
 			{"file", &known_schemes::file},
 			{"http", &known_schemes::http},

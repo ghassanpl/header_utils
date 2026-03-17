@@ -17,6 +17,7 @@ var topics =
     [ "Functional", "group___functional.html", "group___functional" ],
     [ "Geometry", "group___geometry.html", "group___geometry" ],
     [ "Hashes", "group___hashes.html", "group___hashes" ],
+    [ "Memory Mapped Files", "group__mmap.html", "group__mmap" ],
     [ "Named-Type Pattern", "group___named.html", "group___named" ],
     [ "Noise", "group___noise.html", null ],
     [ "Object Pools", "group___object_pools.html", "group___object_pools" ],
@@ -30,7 +31,8 @@ var topics =
     [ "String Operations", "group___string_ops.html", "group___string_ops" ],
     [ "Stringification", "group___stringification.html", "group___stringification" ],
     [ "Symbol", "group___symbol.html", "group___symbol" ],
+    [ "Threading", "group___threading.html", "group___threading" ],
     [ "URI", "group___u_r_i.html", "group___u_r_i" ],
-    [ "mmap", "group__mmap.html", "group__mmap" ],
+    [ "Uninitialized", "group___uninitialized.html", "group___uninitialized" ],
     [ "with_sl", "group___with_s_l.html", "group___with_s_l" ]
 ];

@@ -59,11 +59,15 @@ var annotated_dup =
         [ "utf8_view", "structghassanpl_1_1string__ops_1_1utf8__view.html", null ],
         [ "text_decode_result", "structghassanpl_1_1string__ops_1_1text__decode__result.html", "structghassanpl_1_1string__ops_1_1text__decode__result" ]
       ] ],
+      [ "known_schemes", null, [
+        [ "file_scheme", "structghassanpl_1_1known__schemes_1_1file__scheme.html", "structghassanpl_1_1known__schemes_1_1file__scheme" ]
+      ] ],
       [ "bit_view", "structghassanpl_1_1bit__view.html", "structghassanpl_1_1bit__view" ],
       [ "bit_reference", "structghassanpl_1_1bit__reference.html", "structghassanpl_1_1bit__reference" ],
       [ "enum_flag_changes", "structghassanpl_1_1enum__flag__changes.html", "structghassanpl_1_1enum__flag__changes" ],
       [ "enum_flags", "structghassanpl_1_1enum__flags.html", "structghassanpl_1_1enum__flags" ],
       [ "overloaded", "structghassanpl_1_1overloaded.html", null ],
+      [ "basic_mmap_base", "structghassanpl_1_1basic__mmap__base.html", null ],
       [ "mmap_source", "structghassanpl_1_1mmap__source.html", null ],
       [ "mmap_sink", "structghassanpl_1_1mmap__sink.html", null ],
       [ "mutlticast_function&lt; R(ARGS...)&gt;", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4" ],
@@ -81,7 +85,11 @@ var annotated_dup =
       [ "symbol_base", "structghassanpl_1_1symbol__base.html", "structghassanpl_1_1symbol__base" ],
       [ "default_symbol_provider_t", "structghassanpl_1_1default__symbol__provider__t.html", null ],
       [ "get_index", "namespaceghassanpl.html#structghassanpl_1_1get__index", null ],
+      [ "protected_object", "structghassanpl_1_1protected__object.html", "structghassanpl_1_1protected__object" ],
+      [ "unititialized_t", "unionghassanpl_1_1unititialized__t.html", null ],
       [ "decomposed_uri", "structghassanpl_1_1decomposed__uri.html", "structghassanpl_1_1decomposed__uri" ],
+      [ "known_uri_scheme", "structghassanpl_1_1known__uri__scheme.html", "structghassanpl_1_1known__uri__scheme" ],
+      [ "uri_builder", "structghassanpl_1_1uri__builder.html", null ],
       [ "with_sl", "structghassanpl_1_1with__sl.html", null ],
       [ "with_slh", "structghassanpl_1_1with__slh.html", null ],
       [ "trec2", "structghassanpl_1_1trec2.html", "structghassanpl_1_1trec2" ]

@@ -80,6 +80,11 @@ namespace ghassanpl
 		bool create_file(std::filesystem::path const& path, size_t size, std::error_code& error) noexcept;
 	}
 
+	/// \defgroup mmap Memory Mapped Files
+	/// Classes for platform-independent memory mapping of filesystem files.
+	/// @{
+
+	/// Base for `mmap_source` and `mmap_sink` with a specific value type
 	template <typename VALUE_TYPE>
 	//requires std::is_integral_v<VALUE_TYPE>
 	struct basic_mmap_base
@@ -316,11 +321,7 @@ namespace ghassanpl
 		}
 
 	};
-
-	/// \defgroup mmap mmap
-	/// Classes for platform-independent memory mapping of filesystem files.
-	/// @{
-	
+		
 	/// A read-only memory view over a file.
 	/// \tparam VALUE_TYPE the type to represent each byte of the file
 	template <typename VALUE_TYPE = std::byte>

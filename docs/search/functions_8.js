@@ -21,7 +21,8 @@ var searchData=
   ['is_5funicode_5fcharacter_18',['is_unicode_character',['../group___unicode.html#ga435b274b58154448f23240e03d6a01b8',1,'ghassanpl::string_ops']]],
   ['isany_19',['isany',['../group___string_ops.html#ga29098238e9ec30d9e8d86d3b4fe022ae',1,'ghassanpl::string_ops::isany(char32_t cp, T &amp;&amp;chars) noexcept'],['../group___string_ops.html#ga9fc6c9deb645fb0cfa1895a0891b02c2',1,'ghassanpl::string_ops::isany(char32_t c, char32_t c2) noexcept']]],
   ['isascii_20',['isascii',['../group___string_ops.html#ga0020f77460bec9f336727d824d730aa1',1,'ghassanpl::string_ops']]],
-  ['iterator_21',['iterator',['../group___random.html#ga86db59d98c700841796b439a41ca6262',1,'ghassanpl::random']]],
-  ['iterator_5fif_22',['iterator_if',['../group___random.html#gac08b924d15fa2f61c3596b4c61add639',1,'ghassanpl::random']]],
-  ['iterator_5fwith_5fprobability_23',['iterator_with_probability',['../group___random.html#ga9a4799e5f181e136f7b6ee673fe3ab46',1,'ghassanpl::random']]]
+  ['iterate_5fscheme_5felements_21',['iterate_scheme_elements',['../structghassanpl_1_1known__uri__scheme.html#a68f7d38ee3b9e6e84c4ca1242fea363c',1,'ghassanpl::known_uri_scheme']]],
+  ['iterator_22',['iterator',['../group___random.html#ga86db59d98c700841796b439a41ca6262',1,'ghassanpl::random']]],
+  ['iterator_5fif_23',['iterator_if',['../group___random.html#gac08b924d15fa2f61c3596b4c61add639',1,'ghassanpl::random']]],
+  ['iterator_5fwith_5fprobability_24',['iterator_with_probability',['../group___random.html#ga9a4799e5f181e136f7b6ee673fe3ab46',1,'ghassanpl::random']]]
 ];

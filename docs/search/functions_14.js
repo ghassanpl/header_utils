@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['with_5fprobability_0',['with_probability',['../group___random.html#gaed4400ac0cf22b7bda44073836b8dcae',1,'ghassanpl::random::with_probability(double probability, RANDOM &amp;rng=::ghassanpl::random::default_random_engine)'],['../group___random.html#ga6f986f0d244d229193945c96d8c1011d',1,'ghassanpl::random::with_probability(double probability, double &amp;result, RANDOM &amp;rng=::ghassanpl::random::default_random_engine)']]],
-  ['without_5fprefix_1',['without_prefix',['../group___string_ops.html#gaecb93cbb9bc1ca687065fe6b7db271a0',1,'ghassanpl::string_ops']]],
-  ['without_5fsuffix_2',['without_suffix',['../group___string_ops.html#gac1336f6dc03584c2c2f003d8730b7fd7',1,'ghassanpl::string_ops']]],
-  ['word_5fwrap_3',['word_wrap',['../group___string_ops.html#ga22e78f1403b0c661ba1c7544dca2eceb',1,'ghassanpl::string_ops::word_wrap(std::string_view _source, T max_width, FUNC width_getter, std::string_view split_chars=&quot; &quot;)'],['../group___string_ops.html#ga4639d00cdc1d6157949e6102fa9b9cba',1,'ghassanpl::string_ops::word_wrap(std::string_view _source, T max_width, T letter_width)']]]
+  ['valid_5faddress_0',['valid_address',['../group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422',1,'ghassanpl']]],
+  ['valid_5findex_1',['valid_index',['../group___ranges.html#gaaf99e06b29cc11fb54a534afc20d4c01',1,'ghassanpl']]],
+  ['vertical_2',['vertical',['../group___direction.html#gac393817bea9682b34ede7117bec0fe76',1,'ghassanpl::geometry']]],
+  ['vertical_5ffrom_3',['vertical_from',['../group___alignment.html#gab572de4ef31d7f4a6464a3249e4bf716',1,'ghassanpl']]],
+  ['visit_4',['visit',['../group___j_s_o_n.html#gaecf5c728787ec6a6c49b818c2a55e8bf',1,'ghassanpl::formats::json']]]
 ];

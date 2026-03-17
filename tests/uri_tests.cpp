@@ -92,3 +92,19 @@ TEST(uri, uri_decompose_handles_simplified_file_uris)
 	EXPECT_EQ(uri2.path_elements, (std::vector<std::string>{"a", "b", "c"}));
 	EXPECT_TRUE(uri2.query_elements.empty());
 }
+
+TEST(uri, uri_decompose_handles_windows_file_uris)
+{
+	auto uri = decompose_uri("file:///c:/path/to/the%20file.txt").value();
+	EXPECT_EQ(uri.scheme, "file");
+	EXPECT_EQ(uri.path, "/c:/path/to/the%20file.txt");
+	EXPECT_EQ(uri.host, "");
+	EXPECT_EQ(uri.user_info, "");
+	EXPECT_EQ(uri.port, "");
+	EXPECT_EQ(uri.authority, "");
+	EXPECT_EQ(uri.query, "");
+	EXPECT_EQ(uri.fragment, "");
+	EXPECT_EQ(uri.path_elements, (std::vector<std::string>{"c:", "path", "to", "the file.txt"}));
+	EXPECT_EQ(std::filesystem::weakly_canonical(known_schemes::file.filesystem_path(uri)), std::filesystem::path{ "c:path\\to\\the file.txt" });
+	EXPECT_TRUE(uri.query_elements.empty());
+}

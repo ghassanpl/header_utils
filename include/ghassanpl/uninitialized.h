@@ -48,10 +48,14 @@ namespace ghassanpl
 		concept const_ref = std::is_reference_v<T> and std::is_const_v<std::remove_reference_t<T>>;
 	}
 
-	struct default_init_t {} default_init;
-	struct paren_init_t {} paren_init;
-	struct brace_init_t {} brace_init;
+	/// \defgroup Uninitialized Uninitialized
+	/// @{
 
+	struct default_init_t {} default_init; ///< Constructor tag to default-construct the object inside an `unititialized_t`
+	struct paren_init_t {} paren_init; ///< Constructor tag to paren-construct the object inside an `unititialized_t`
+	struct brace_init_t {} brace_init; ///< Constructor tag to brace-construct the object inside an `unititialized_t`
+
+	/// `unititialized_t<T>` is an appropriately sized and aligned storage for type T, with a useful interface to create and destroy the object
 	template <detail::sized T>
 	union unititialized_t
 	{
@@ -166,4 +170,6 @@ namespace ghassanpl
 
 	template <detail::sized T>
 	unititialized_t(brace_init_t, T) -> unititialized_t<T>;
+
+	/// @}
 }

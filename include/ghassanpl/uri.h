@@ -17,7 +17,7 @@
 namespace ghassanpl
 {
 	/// \defgroup URI URI
-	/// Basic functionality for URI encoding and decoding.
+	/// Basic functionality for URI encoding and decoding. Unfortunately a lot of the functionality here, except basic URI parsing, is unimplemented.
 	/// @{
 
 	// https://github.com/austinsc/Poco/blob/master/Foundation/include/Poco/URI.h
@@ -31,6 +31,7 @@ namespace ghassanpl
 	/// Forward declare
 	struct known_uri_scheme;
 
+	/// Error codes relating to URI decomposing, composing, and other operations
 	enum class uri_error_code
 	{
 		no_error,
@@ -101,8 +102,8 @@ namespace ghassanpl
 	/// Holds the constituents of a URI
 	struct decomposed_uri
 	{
-		/// TODO: Should the optional elements be std::optional<std::string> instead of relying on empty strings?
-		///	      Or we could have an enum_flags and accessors?
+		// TODO: Should the optional elements be std::optional<std::string> instead of relying on empty strings?
+		//	      Or we could have an enum_flags and accessors?
 
 		std::string scheme{};
 		std::string authority{};
@@ -125,35 +126,47 @@ namespace ghassanpl
 
 		bool empty() const noexcept { return scheme.empty(); }
 
-		/// URL Stuff
-		uri_expected<std::string> url_origin() const; /// https://datatracker.ietf.org/doc/html/rfc6454
-		uri_expected<std::string> url_site() const; /// https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site
+		// URL Stuff
+		
+		/// [Unimplemented]
+		uri_expected<std::string> url_origin() const; ///< https://datatracker.ietf.org/doc/html/rfc6454
+		/// [Unimplemented]
+		uri_expected<std::string> url_site() const; ///< https://html.spec.whatwg.org/multipage/browsers.html#obtain-a-site
+		/// [Unimplemented]
 		uri_expected<std::pair<std::string, std::string>> url_user_info() const;
+		/// [Unimplemented]
 		uri_expected<struct url_host> url_host() const;
+		/// [Unimplemented]
 		uri_expected<struct url_blob> url_blob() const;
 
+		/// [Unimplemented]
 		bool same_origin(decomposed_uri const& other) const noexcept;
+		/// [Unimplemented]
 		bool same_site(decomposed_uri const& other) const noexcept;
 
 		bool operator==(decomposed_uri const& other) const noexcept;
 	};
 
 	uri_expected<std::string_view> extract_scheme(uri_view uri) noexcept;
+	/// [Unimplemented]
 	uri_expected<std::string_view> extract_authority(uri_view uri) noexcept;
+	/// [Unimplemented]
 	uri_expected<std::string_view> extract_path(uri_view uri) noexcept;
+	/// [Unimplemented]
 	template <typename FUNC>
 	uri_expected<void> extract_path_elements(uri_view uri, FUNC&& func) noexcept;
+	/// [Unimplemented]
 	uri_expected<std::string_view> extract_query(uri_view uri) noexcept;
+	/// [Unimplemented]
 	uri_expected<std::string_view> extract_fragment(uri_view uri) noexcept;
+	/// [Unimplemented]
 	template <typename FUNC>
 	uri_expected<void> extract_query_elements(uri_view uri, FUNC&& func) noexcept;
 
-	/// Removes data that should not be displayed to an untrusted user (user-info after the first ':', perhaps other things)
+	/// [Unimplemented] Removes data that should not be displayed to an untrusted user (user-info after the first ':', perhaps other things)
 	uri_expected<uri> make_uri_safe_for_display(uri_view uri);
 
-	/// <summary>
 	/// This function will decompose URI into its composite elements, which includes percent-decoding all the elements.
-	/// </summary>
 	uri_expected<decomposed_uri> decompose_uri(uri_view uri, enum_flags<uri_decompose_flags> flags = enum_flags<uri_decompose_flags>::all());
 
 	enum class uri_compose_flags
@@ -166,10 +179,13 @@ namespace ghassanpl
 		//convert_space_to_plus
 	};
 
+	/// [Unimplemented]
 	uri_expected<uri> compose_uri(decomposed_uri const& decomposed, enum_flags<uri_compose_flags> flags = enum_flags<uri_compose_flags>::all());
 
+	/// [Unimplemented] Converts a URI to a normalized form
 	uri_expected<uri> normalize_uri(uri_view uri);
 
+	/// An base class for classes that can validate (and potentially parse more info from) a known URI scheme (e.g. http, file, ftp, etc.)
 	struct known_uri_scheme
 	{
 		virtual ~known_uri_scheme() noexcept = default;
@@ -228,7 +244,7 @@ namespace ghassanpl
 		virtual std::string normalize_query(std::string_view element) const noexcept { return std::string{ element }; }
 		virtual std::string normalize_fragment(std::string_view element) const noexcept { return std::string{ element }; }
 
-		/// These function is used to call the `callback` function for each scheme-specific "element" of the uri.
+		/// Calls the `callback` function for each scheme-specific "element" of the uri.
 		/// For example, when decoding the data URI "data:text/plain;charset=UTF-8;page=21,the%20data:1234,5678", it will call callback with approximately these results:
 		/// ("scheme", "data")
 		/// ("media_type", "text/plain")
@@ -236,8 +252,8 @@ namespace ghassanpl
 		/// ("data", "the data:1234,5678")
 		/// 
 		/// The function will return the same errors decompose_uri if there is an issue decomposing the URI, as well as:
-		/// - no_scheme_specific_elements - if this known_scheme does not support scheme element iteration
-		/// - scheme_specific_element_malformed - if a scheme-specific element was malformed or missing when required
+		/// - `no_scheme_specific_elements` - if this known_scheme does not support scheme element iteration
+		/// - `scheme_specific_element_malformed` - if a scheme-specific element was malformed or missing when required
 		virtual uri_error_code iterate_scheme_elements(uri_view uri, std::function<bool(std::string_view element_name, std::string_view element_value)> callback) const noexcept
 		{
 			return uri_error_code::no_scheme_specific_elements;
@@ -248,10 +264,14 @@ namespace ghassanpl
 		virtual bool equivalent(uri_view u1, uri_view u2) const noexcept { return decompose_uri(u1) == decompose_uri(u2); }
 	};
 
+	/// Looks up the scheme in the internal URI scheme database
 	known_uri_scheme const* query_uri_scheme(std::string_view scheme);
 
+	/// \namespace known_schemes
+	/// Contains known URI scheme types and objects
 	namespace known_schemes
 	{
+		/// The "file:" known scheme
 		struct file_scheme : public known_uri_scheme
 		{
 			/// https://datatracker.ietf.org/doc/html/rfc8089
@@ -261,10 +281,26 @@ namespace ghassanpl
 			{
 				return uri.host.empty() || uri.host == "localhost";
 			}
+
+			static std::filesystem::path filesystem_path(decomposed_uri const& uri)
+			{
+				if (uri.path_elements.empty())
+				{
+					/// TODO: uri.split_path_elements();
+					return {};
+				}
+
+				std::filesystem::path result;
+				for (auto& pe : uri.path_elements)
+					result /= pe;
+				return result;
+			}
 		};
+
 		inline const file_scheme file;
 	}
 
+	/// [Unimplemented]
 	struct uri_builder
 	{
 		explicit uri_builder(uri& uri);

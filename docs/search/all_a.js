@@ -1,26 +1,5 @@
 var searchData=
 [
-  ['l2_0',['L2',['../namespacedetail.html#ad8b0d1d4ff11bc15ec6f572f970a716e',1,'detail']]],
-  ['l3_1',['L3',['../namespacedetail.html#a98b9ac7a2ef96f8056ad34d6f74103c4',1,'detail']]],
-  ['l4_2',['L4',['../namespacedetail.html#aac8a7cebf5743df174f17d9bbfc2f5e8',1,'detail']]],
-  ['l5_3',['L5',['../namespacedetail.html#ade86759fd74cae0128bfb43f661e94a3',1,'detail']]],
-  ['l6_4',['L6',['../namespacedetail.html#af14e7ecb214cf528320927ca8cb825c9',1,'detail']]],
-  ['last_5fset_5',['last_set',['../structghassanpl_1_1enum__flags.html#afd7fb255400c2ff5296062b6aaaef1cb',1,'ghassanpl::enum_flags']]],
-  ['le_20mi_20ri_6',['LE | MI | RI',['../namespaceghassanpl.html#autotoc_md1',1,'']]],
-  ['least_5fsignificant_5fhalf_7',['least_significant_half',['../group___bits.html#ga5dca0f9652c136114bd37de68aa559aa',1,'ghassanpl']]],
-  ['left_8',['left',['../group___alignment.html#gga93fc1bd0f731fa127d4254a34a994ff7a811882fecd5c7618d7099ebbd39ea254',1,'ghassanpl']]],
-  ['lg2_9',['lg2',['../namespacedetail.html#a2cda969ea89be7bb84d6d8c810c94ac2',1,'detail']]],
-  ['lg2_5fh_10',['lg2_h',['../namespacedetail.html#a59a5d62c1f3689107d2f689392c0d541',1,'detail']]],
-  ['lg2_5fl_11',['lg2_l',['../namespacedetail.html#a33548d6301b870d32737011cd7951cc9',1,'detail']]],
-  ['lighten_12',['lighten',['../group___colors.html#ga424eb26450c5b94374828f9aa1f33648',1,'ghassanpl']]],
-  ['line_5fcast_13',['line_cast',['../structghassanpl_1_1geometry_1_1squares_1_1grid.html#a5519427e39744a7c77708ecc46257dfd',1,'ghassanpl::geometry::squares::grid']]],
-  ['line_5fcrossing_5fpoints_14',['line_crossing_points',['../group___lines.html#ga4d428198e18d13f22d34625243c13dbf',1,'ghassanpl::geometry']]],
-  ['lines_15',['Lines',['../group___lines.html',1,'']]],
-  ['list_16',['Todo List',['../todo.html',1,'']]],
-  ['listeners_17',['listeners',['../classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html#a721fe377c5269c82ce9a0bf27b363b19',1,'ghassanpl::mutlticast_function&lt; R(ARGS...)&gt;']]],
-  ['load_18',['load',['../group___c_s_v.html#gaa3b6289aa14bfed0dadcf1b5eb0b6322',1,'ghassanpl::formats::csv']]],
-  ['load_5ffile_19',['load_file',['../group___wilson.html#ga71aa6ec3fb9dd6e146622402ddf67766',1,'ghassanpl::formats::wilson']]],
-  ['location_20',['location',['../structghassanpl_1_1traits_1_1location.html',1,'ghassanpl::traits']]],
-  ['lowercase_5fchars_21',['lowercase_chars',['../group___a_s_c_i_i.html#ga4aab61f41de43417a717a703f1e0a706',1,'ghassanpl::string_ops::ascii']]],
-  ['luminance_22',['luminance',['../group___colors.html#ga036c395e3bf0b1ae2c6c6afe0f035a11',1,'ghassanpl']]]
+  ['known_5fschemes_0',['known_schemes',['../namespaceknown__schemes.html',1,'']]],
+  ['known_5furi_5fscheme_1',['known_uri_scheme',['../structghassanpl_1_1known__uri__scheme.html',1,'ghassanpl']]]
 ];

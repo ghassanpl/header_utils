@@ -2,6 +2,8 @@ var hierarchy =
 [
     [ "ghassanpl::traits::addable", "structghassanpl_1_1traits_1_1addable.html", null ],
     [ "ghassanpl::geometry::basic_line_t&lt; T &gt;", "structghassanpl_1_1geometry_1_1basic__line__t.html", null ],
+    [ "ghassanpl::basic_mmap_base&lt; VALUE_TYPE &gt;", "structghassanpl_1_1basic__mmap__base.html", null ],
+    [ "ghassanpl::basic_mmap_base&lt; std::byte &gt;", "structghassanpl_1_1basic__mmap__base.html", null ],
     [ "ghassanpl::bit_reference&lt; VALUE_TYPE, BIT_NUM &gt;", "structghassanpl_1_1bit__reference.html", null ],
     [ "ghassanpl::bit_reference&lt; INTEGER &gt;", "structghassanpl_1_1bit__reference.html", null ],
     [ "ghassanpl::bit_reference&lt; integer_type &gt;", "structghassanpl_1_1bit__reference.html", null ],
@@ -28,12 +30,11 @@ var hierarchy =
     [ "ghassanpl::geometry::interval&lt; T &gt;", "structghassanpl_1_1geometry_1_1interval.html", null ],
     [ "ghassanpl::traits::is_displacement_of&lt; LOCATION_NAMED_TYPE &gt;", "structghassanpl_1_1traits_1_1is__displacement__of.html", null ],
     [ "ghassanpl::traits::is_location_of&lt; DISPLACEMENT_NAMED_TYPE &gt;", "structghassanpl_1_1traits_1_1is__location__of.html", null ],
+    [ "ghassanpl::known_uri_scheme", "structghassanpl_1_1known__uri__scheme.html", [
+      [ "ghassanpl::known_schemes::file_scheme", "structghassanpl_1_1known__schemes_1_1file__scheme.html", null ]
+    ] ],
     [ "ghassanpl::traits::location", "structghassanpl_1_1traits_1_1location.html", null ],
     [ "ghassanpl::geometry::squares::manhattan_metric", "structghassanpl_1_1geometry_1_1squares_1_1manhattan__metric.html", null ],
-    [ "ghassanpl::mmap_sink&lt; VALUE_TYPE &gt;", "structghassanpl_1_1mmap__sink.html", null ],
-    [ "ghassanpl::mmap_source&lt; VALUE_TYPE &gt;", "structghassanpl_1_1mmap__source.html", null ],
-    [ "ghassanpl::mmap_source&lt; char &gt;", "structghassanpl_1_1mmap__source.html", null ],
-    [ "ghassanpl::mmap_source&lt; char8_t &gt;", "structghassanpl_1_1mmap__source.html", null ],
     [ "ghassanpl::mutlticast_function&lt; R(ARGS...)&gt;", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html", null ],
     [ "ghassanpl::named&lt; T, PARAMETER, TRAITS &gt;", "structghassanpl_1_1named.html", null ],
     [ "ghassanpl::overloaded&lt; Ts &gt;", "structghassanpl_1_1overloaded.html", null ],
@@ -45,6 +46,7 @@ var hierarchy =
       [ "ghassanpl::pooled_ptr< T >", "structghassanpl_1_1thread__local__pool.html", null ],
       [ "ghassanpl::thread_local_pool< T, BLOCK_SIZE >", "structghassanpl_1_1thread__local__pool.html", null ]
     ] ],
+    [ "ghassanpl::protected_object&lt; T, MUTEX_TYPE &gt;", "structghassanpl_1_1protected__object.html", null ],
     [ "ghassanpl::scope_counter&lt; T &gt;", "structghassanpl_1_1scope__counter.html", null ],
     [ "ghassanpl::scope_guard&lt; EF &gt;", "structghassanpl_1_1scope__guard.html", null ],
     [ "ghassanpl::scoped_value_change&lt; T, IS_OPTIONAL &gt;", "structghassanpl_1_1scoped__value__change.html", null ],
@@ -70,6 +72,8 @@ var hierarchy =
     [ "ghassanpl::geometry::tshape_intersection&lt; T &gt;", "namespaceghassanpl_1_1geometry.html#structghassanpl_1_1geometry_1_1tshape__intersection", null ],
     [ "ghassanpl::geometry::squares::ttile_space&lt; I, F, METRIC &gt;", "structghassanpl_1_1geometry_1_1squares_1_1ttile__space.html", null ],
     [ "ghassanpl::unique_resource&lt; R, D &gt;", "structghassanpl_1_1unique__resource.html", null ],
+    [ "ghassanpl::unititialized_t&lt; T &gt;", "unionghassanpl_1_1unititialized__t.html", null ],
+    [ "ghassanpl::uri_builder", "structghassanpl_1_1uri__builder.html", null ],
     [ "ghassanpl::string_ops::utf8_view&lt; R &gt;", "structghassanpl_1_1string__ops_1_1utf8__view.html", null ],
     [ "ghassanpl::with_sl&lt; T &gt;", "structghassanpl_1_1with__sl.html", null ],
     [ "ghassanpl::with_slh&lt; T, HASH_FUNC &gt;", "structghassanpl_1_1with__slh.html", null ]

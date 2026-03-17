@@ -95,10 +95,21 @@ $(function(){initNavTree('group___u_r_i.html','',''); });
 <p>Basic functionality for URI encoding and decoding.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-namespaces" class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:known_5Fschemes" id="r_known_5Fschemes"><td class="memItemLeft">namespace &#160;</td><td class="memItemRight"><a class="el" href="namespaceknown__schemes.html">known_schemes</a></td></tr>
+<tr class="memdesc:namespaceknown__schemes"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains known URI scheme types and objects. <br /></td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:ghassanpl_3A_3Adecomposed_5Furi" id="r_ghassanpl_3A_3Adecomposed_5Furi"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1decomposed__uri.html">ghassanpl::decomposed_uri</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds the constituents of a URI.  <a href="structghassanpl_1_1decomposed__uri.html#details">More...</a><br /></td></tr>
+<tr class="memitem:ghassanpl_3A_3Aknown_5Furi_5Fscheme" id="r_ghassanpl_3A_3Aknown_5Furi_5Fscheme"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1known__uri__scheme.html">ghassanpl::known_uri_scheme</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An base class for classes that can validate (and potentially parse more info from) a known URI scheme (e.g. http, file, ftp, etc.).  <a href="structghassanpl_1_1known__uri__scheme.html#details">More...</a><br /></td></tr>
+<tr class="memitem:ghassanpl_3A_3Aknown_5Fschemes_3A_3Afile_5Fscheme" id="r_ghassanpl_3A_3Aknown_5Fschemes_3A_3Afile_5Fscheme"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1known__schemes_1_1file__scheme.html">ghassanpl::known_schemes::file_scheme</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The "file:" known scheme.  <a href="structghassanpl_1_1known__schemes_1_1file__scheme.html#details">More...</a><br /></td></tr>
+<tr class="memitem:ghassanpl_3A_3Auri_5Fbuilder" id="r_ghassanpl_3A_3Auri_5Fbuilder"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1uri__builder.html">ghassanpl::uri_builder</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Unimplemented]  <a href="structghassanpl_1_1uri__builder.html#details">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -111,7 +122,7 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ga642fc0f92e3010276e80fa008ac5c9f9" id="r_ga642fc0f92e3010276e80fa008ac5c9f9"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><b>uri_error_code</b> { <br />
+<tr class="memitem:ga642fc0f92e3010276e80fa008ac5c9f9" id="r_ga642fc0f92e3010276e80fa008ac5c9f9"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#ga642fc0f92e3010276e80fa008ac5c9f9">ghassanpl::uri_error_code</a> { <br />
 &#160;&#160;<b>no_error</b>
 , <b>unknown_uri_scheme</b>
 , <b>scheme_malformed</b>
@@ -157,6 +168,7 @@ Enumerations</h2></td></tr>
 , <b>scheme_specific_element_malformed</b>
 <br />
  }</td></tr>
+<tr class="memdesc:ga642fc0f92e3010276e80fa008ac5c9f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error codes relating to URI decomposing, composing, and other operations.  <a href="#ga642fc0f92e3010276e80fa008ac5c9f9">More...</a><br /></td></tr>
 <tr class="memitem:gab4b9557b00251178a94706a5ebb1452f" id="r_gab4b9557b00251178a94706a5ebb1452f"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#gab4b9557b00251178a94706a5ebb1452f">ghassanpl::uri_decompose_flags</a> { <br />
 &#160;&#160;<b>split_query_elements</b>
 , <b>split_path_elements</b>
@@ -184,31 +196,41 @@ Functions</h2></td></tr>
 <tr class="memitem:gabbfeb69ad24ca4c3d7071012c9cad606" id="r_gabbfeb69ad24ca4c3d7071012c9cad606"><td class="memItemLeft">uri_expected&lt; std::string_view &gt;&#160;</td><td class="memItemRight"><a class="el" href="#gabbfeb69ad24ca4c3d7071012c9cad606">ghassanpl::extract_scheme</a> (uri_view <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a>) noexcept</td></tr>
 <tr class="memitem:ga78588932611a97ee85921cd461b9f955" id="r_ga78588932611a97ee85921cd461b9f955"><td class="memItemLeft"><a id="ga78588932611a97ee85921cd461b9f955" name="ga78588932611a97ee85921cd461b9f955"></a>
 uri_expected&lt; std::string_view &gt;&#160;</td><td class="memItemRight"><b>ghassanpl::extract_authority</b> (uri_view <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a>) noexcept</td></tr>
+<tr class="memdesc:ga78588932611a97ee85921cd461b9f955"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Unimplemented] <br /></td></tr>
 <tr class="memitem:ga6d8b650405818240c2b494590124b0ce" id="r_ga6d8b650405818240c2b494590124b0ce"><td class="memItemLeft"><a id="ga6d8b650405818240c2b494590124b0ce" name="ga6d8b650405818240c2b494590124b0ce"></a>
 uri_expected&lt; std::string_view &gt;&#160;</td><td class="memItemRight"><b>ghassanpl::extract_path</b> (uri_view <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a>) noexcept</td></tr>
+<tr class="memdesc:ga6d8b650405818240c2b494590124b0ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Unimplemented] <br /></td></tr>
 <tr class="memitem:gab51d48f14eb24be9386564b18cbe1268" id="r_gab51d48f14eb24be9386564b18cbe1268"><td class="memTemplParams" colspan="2"><a id="gab51d48f14eb24be9386564b18cbe1268" name="gab51d48f14eb24be9386564b18cbe1268"></a>
 template&lt;typename FUNC&gt; </td></tr>
 <tr class="memitem:gab51d48f14eb24be9386564b18cbe1268 template"><td class="memItemLeft">uri_expected&lt; void &gt;&#160;</td><td class="memItemRight"><b>ghassanpl::extract_path_elements</b> (uri_view <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a>, FUNC &amp;&amp;func) noexcept</td></tr>
+<tr class="memdesc:gab51d48f14eb24be9386564b18cbe1268"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Unimplemented] <br /></td></tr>
 <tr class="memitem:ga0babd3afc8f658223aace146a07a3dea" id="r_ga0babd3afc8f658223aace146a07a3dea"><td class="memItemLeft"><a id="ga0babd3afc8f658223aace146a07a3dea" name="ga0babd3afc8f658223aace146a07a3dea"></a>
 uri_expected&lt; std::string_view &gt;&#160;</td><td class="memItemRight"><b>ghassanpl::extract_query</b> (uri_view <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a>) noexcept</td></tr>
+<tr class="memdesc:ga0babd3afc8f658223aace146a07a3dea"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Unimplemented] <br /></td></tr>
 <tr class="memitem:gac63ea9291497d1c618470a6491c8e990" id="r_gac63ea9291497d1c618470a6491c8e990"><td class="memItemLeft"><a id="gac63ea9291497d1c618470a6491c8e990" name="gac63ea9291497d1c618470a6491c8e990"></a>
 uri_expected&lt; std::string_view &gt;&#160;</td><td class="memItemRight"><b>ghassanpl::extract_fragment</b> (uri_view <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a>) noexcept</td></tr>
+<tr class="memdesc:gac63ea9291497d1c618470a6491c8e990"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Unimplemented] <br /></td></tr>
 <tr class="memitem:ga436f0b5b147eef1fbe8e75fc7b0c1a0d" id="r_ga436f0b5b147eef1fbe8e75fc7b0c1a0d"><td class="memTemplParams" colspan="2"><a id="ga436f0b5b147eef1fbe8e75fc7b0c1a0d" name="ga436f0b5b147eef1fbe8e75fc7b0c1a0d"></a>
 template&lt;typename FUNC&gt; </td></tr>
 <tr class="memitem:ga436f0b5b147eef1fbe8e75fc7b0c1a0d template"><td class="memItemLeft">uri_expected&lt; void &gt;&#160;</td><td class="memItemRight"><b>ghassanpl::extract_query_elements</b> (uri_view <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a>, FUNC &amp;&amp;func) noexcept</td></tr>
+<tr class="memdesc:ga436f0b5b147eef1fbe8e75fc7b0c1a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Unimplemented] <br /></td></tr>
 <tr class="memitem:ga6c9f44bc8a421872f0b3d31bb874258d" id="r_ga6c9f44bc8a421872f0b3d31bb874258d"><td class="memItemLeft"><a id="ga6c9f44bc8a421872f0b3d31bb874258d" name="ga6c9f44bc8a421872f0b3d31bb874258d"></a>
 uri_expected&lt; <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a> &gt;&#160;</td><td class="memItemRight"><b>ghassanpl::make_uri_safe_for_display</b> (uri_view <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a>)</td></tr>
-<tr class="memdesc:ga6c9f44bc8a421872f0b3d31bb874258d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes data that should not be displayed to an untrusted user (user-info after the first ':', perhaps other things). <br /></td></tr>
+<tr class="memdesc:ga6c9f44bc8a421872f0b3d31bb874258d"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Unimplemented] Removes data that should not be displayed to an untrusted user (user-info after the first ':', perhaps other things) <br /></td></tr>
 <tr class="memitem:gaee289b0da5943b65c8bcc142fde4711c" id="r_gaee289b0da5943b65c8bcc142fde4711c"><td class="memItemLeft">uri_expected&lt; <a class="el" href="structghassanpl_1_1decomposed__uri.html">decomposed_uri</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#gaee289b0da5943b65c8bcc142fde4711c">ghassanpl::decompose_uri</a> (uri_view <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a>, <a class="el" href="structghassanpl_1_1enum__flags.html">enum_flags</a>&lt; <a class="el" href="#gab4b9557b00251178a94706a5ebb1452f">uri_decompose_flags</a> &gt; flags=<a class="el" href="structghassanpl_1_1enum__flags.html">enum_flags</a>&lt; <a class="el" href="#gab4b9557b00251178a94706a5ebb1452f">uri_decompose_flags</a> &gt;::all())</td></tr>
 <tr class="memdesc:gaee289b0da5943b65c8bcc142fde4711c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function will decompose URI into its composite elements, which includes percent-decoding all the elements.  <br /></td></tr>
 <tr class="memitem:ga30fb38ea18cab07bc43be7b4d6ca1f76" id="r_ga30fb38ea18cab07bc43be7b4d6ca1f76"><td class="memItemLeft"><a id="ga30fb38ea18cab07bc43be7b4d6ca1f76" name="ga30fb38ea18cab07bc43be7b4d6ca1f76"></a>
 uri_expected&lt; <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a> &gt;&#160;</td><td class="memItemRight"><b>ghassanpl::compose_uri</b> (<a class="el" href="structghassanpl_1_1decomposed__uri.html">decomposed_uri</a> const &amp;decomposed, <a class="el" href="structghassanpl_1_1enum__flags.html">enum_flags</a>&lt; uri_compose_flags &gt; flags=<a class="el" href="structghassanpl_1_1enum__flags.html">enum_flags</a>&lt; uri_compose_flags &gt;::all())</td></tr>
+<tr class="memdesc:ga30fb38ea18cab07bc43be7b4d6ca1f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Unimplemented] <br /></td></tr>
 <tr class="memitem:ga082401deccc063dfcdebfef3d753e09a" id="r_ga082401deccc063dfcdebfef3d753e09a"><td class="memItemLeft"><a id="ga082401deccc063dfcdebfef3d753e09a" name="ga082401deccc063dfcdebfef3d753e09a"></a>
 uri_expected&lt; <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a> &gt;&#160;</td><td class="memItemRight"><b>ghassanpl::normalize_uri</b> (uri_view <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a>)</td></tr>
-<tr class="memitem:gad62fd1313f1c7461f33fb8d872f068de" id="r_gad62fd1313f1c7461f33fb8d872f068de"><td class="memItemLeft">known_uri_scheme const *&#160;</td><td class="memItemRight"><a class="el" href="#gad62fd1313f1c7461f33fb8d872f068de">ghassanpl::query_uri_scheme</a> (std::string_view scheme)</td></tr>
+<tr class="memdesc:ga082401deccc063dfcdebfef3d753e09a"><td class="mdescLeft">&#160;</td><td class="mdescRight">[Unimplemented] Converts a URI to a normalized form <br /></td></tr>
+<tr class="memitem:gad62fd1313f1c7461f33fb8d872f068de" id="r_gad62fd1313f1c7461f33fb8d872f068de"><td class="memItemLeft"><a class="el" href="structghassanpl_1_1known__uri__scheme.html">known_uri_scheme</a> const *&#160;</td><td class="memItemRight"><a class="el" href="#gad62fd1313f1c7461f33fb8d872f068de">ghassanpl::query_uri_scheme</a> (std::string_view scheme)</td></tr>
+<tr class="memdesc:gad62fd1313f1c7461f33fb8d872f068de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Looks up the scheme in the internal URI scheme database.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Basic functionality for URI encoding and decoding. </p>
+<p>Unfortunately a lot of the functionality here, except basic URI parsing, is unimplemented. </p>
 </div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
 <a id="gac48aa55b764c827525564327649355d8" name="gac48aa55b764c827525564327649355d8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gac48aa55b764c827525564327649355d8">&#9670;&#160;</a></span>uri</h2>
@@ -240,7 +262,7 @@ uri_expected&lt; <a class="el" href="#gac48aa55b764c827525564327649355d8">uri</a
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uri_8h_source.html#l00086">86</a> of file <a class="el" href="uri_8h_source.html">uri.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uri_8h_source.html#l00087">87</a> of file <a class="el" href="uri_8h_source.html">uri.h</a>.</p>
 
 </div>
 </div>
@@ -258,7 +280,7 @@ template&lt;typename T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uri_8h_source.html#l00085">85</a> of file <a class="el" href="uri_8h_source.html">uri.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uri_8h_source.html#l00086">86</a> of file <a class="el" href="uri_8h_source.html">uri.h</a>.</p>
 
 </div>
 </div>
@@ -299,7 +321,7 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uri_8h_source.html#l00159">159</a> of file <a class="el" href="uri_8h_source.html">uri.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uri_8h_source.html#l00172">172</a> of file <a class="el" href="uri_8h_source.html">uri.h</a>.</p>
 
 </div>
 </div>
@@ -329,7 +351,7 @@ template&lt;typename T&gt; </div>
 </td></tr>
 </table>
 
-<p class="definition">Definition at line <a class="el" href="uri_8h_source.html#l00089">89</a> of file <a class="el" href="uri_8h_source.html">uri.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="uri_8h_source.html#l00090">90</a> of file <a class="el" href="uri_8h_source.html">uri.h</a>.</p>
 
 </div>
 </div>
@@ -343,7 +365,7 @@ template&lt;typename T&gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum class ghassanpl::uri_error_code</td>
+          <td class="memname">enum class <a class="el" href="#ga642fc0f92e3010276e80fa008ac5c9f9">ghassanpl::uri_error_code</a></td>
         </tr>
       </table>
   </td>
@@ -353,7 +375,9 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uri_8h_source.html#l00034">34</a> of file <a class="el" href="uri_8h_source.html">uri.h</a>.</p>
+<p>Error codes relating to URI decomposing, composing, and other operations. </p>
+
+<p class="definition">Definition at line <a class="el" href="uri_8h_source.html#l00035">35</a> of file <a class="el" href="uri_8h_source.html">uri.h</a>.</p>
 
 </div>
 </div>
@@ -417,7 +441,7 @@ template&lt;typename T&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">known_uri_scheme const  * ghassanpl::query_uri_scheme </td>
+          <td class="memname"><a class="el" href="structghassanpl_1_1known__uri__scheme.html">known_uri_scheme</a> const  * ghassanpl::query_uri_scheme </td>
           <td>(</td>
           <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>scheme</em></span></td><td>)</td>
           <td></td>
@@ -425,7 +449,9 @@ template&lt;typename T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="uri__impl_8h_source.html#l00396">396</a> of file <a class="el" href="uri__impl_8h_source.html">uri_impl.h</a>.</p>
+<p>Looks up the scheme in the internal URI scheme database. </p>
+
+<p class="definition">Definition at line <a class="el" href="uri__impl_8h_source.html#l00395">395</a> of file <a class="el" href="uri__impl_8h_source.html">uri_impl.h</a>.</p>
 
 </div>
 </div>

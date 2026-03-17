@@ -38,10 +38,11 @@ var searchData=
   ['is_5funicode_5fcharacter_35',['is_unicode_character',['../group___unicode.html#ga435b274b58154448f23240e03d6a01b8',1,'ghassanpl::string_ops']]],
   ['isany_36',['isany',['../group___string_ops.html#ga29098238e9ec30d9e8d86d3b4fe022ae',1,'ghassanpl::string_ops::isany(char32_t cp, T &amp;&amp;chars) noexcept'],['../group___string_ops.html#ga9fc6c9deb645fb0cfa1895a0891b02c2',1,'ghassanpl::string_ops::isany(char32_t c, char32_t c2) noexcept']]],
   ['isascii_37',['isascii',['../group___string_ops.html#ga0020f77460bec9f336727d824d730aa1',1,'ghassanpl::string_ops']]],
-  ['iterator_38',['iterator',['../group___random.html#ga86db59d98c700841796b439a41ca6262',1,'ghassanpl::random']]],
-  ['iterator_5fif_39',['iterator_if',['../group___random.html#gac08b924d15fa2f61c3596b4c61add639',1,'ghassanpl::random']]],
-  ['iterator_5fwith_5fprobability_40',['iterator_with_probability',['../group___random.html#ga9a4799e5f181e136f7b6ee673fe3ab46',1,'ghassanpl::random']]],
-  ['ivln2_41',['ivln2',['../namespacedetail.html#a8aedc2c2170b745b7512fd55c39ccdb1',1,'detail']]],
-  ['ivln2_5fh_42',['ivln2_h',['../namespacedetail.html#ae031e1020e29c6225658ffb5115c42da',1,'detail']]],
-  ['ivln2_5fl_43',['ivln2_l',['../namespacedetail.html#af53a8a8442ecb712c678c77f617c584f',1,'detail']]]
+  ['iterate_5fscheme_5felements_38',['iterate_scheme_elements',['../structghassanpl_1_1known__uri__scheme.html#a68f7d38ee3b9e6e84c4ca1242fea363c',1,'ghassanpl::known_uri_scheme']]],
+  ['iterator_39',['iterator',['../group___random.html#ga86db59d98c700841796b439a41ca6262',1,'ghassanpl::random']]],
+  ['iterator_5fif_40',['iterator_if',['../group___random.html#gac08b924d15fa2f61c3596b4c61add639',1,'ghassanpl::random']]],
+  ['iterator_5fwith_5fprobability_41',['iterator_with_probability',['../group___random.html#ga9a4799e5f181e136f7b6ee673fe3ab46',1,'ghassanpl::random']]],
+  ['ivln2_42',['ivln2',['../namespacedetail.html#a8aedc2c2170b745b7512fd55c39ccdb1',1,'detail']]],
+  ['ivln2_5fh_43',['ivln2_h',['../namespacedetail.html#ae031e1020e29c6225658ffb5115c42da',1,'detail']]],
+  ['ivln2_5fl_44',['ivln2_l',['../namespacedetail.html#af53a8a8442ecb712c678c77f617c584f',1,'detail']]]
 ];
