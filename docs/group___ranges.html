@@ -92,7 +92,7 @@ $(function(){initNavTree('group___ranges.html','',''); });
 </div><!--header-->
 <div class="contents">
 
-<p>Ranges and such.  
+<p>Operations on C++20-style ranges.  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-concepts" class="groupheader"><a id="concepts" name="concepts"></a>
@@ -130,22 +130,37 @@ requires requires (T value, RANGE range) { { *std::ranges::begin(range) == value
 <tr class="memitem:gab3b228bfee2bb2c489b0bf08628ad817" id="r_gab3b228bfee2bb2c489b0bf08628ad817"><td class="memTemplParams" colspan="2">template&lt;random_access_range RANGE, typename T = range_value&lt;RANGE&gt;&gt; </td></tr>
 <tr class="memitem:gab3b228bfee2bb2c489b0bf08628ad817 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#gab3b228bfee2bb2c489b0bf08628ad817">ghassanpl::at_or_default</a> (RANGE &amp;&amp;range, std::integral auto index, T &amp;&amp;default_value)</td></tr>
 <tr class="memdesc:gab3b228bfee2bb2c489b0bf08628ad817"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the element at <span class="tt">index</span> or <span class="tt">default_value</span> if not a valid index.  <br /></td></tr>
-<tr class="memitem:ga58b6ea74ef4536304442a7fb752733c9" id="r_ga58b6ea74ef4536304442a7fb752733c9"><td class="memTemplParams" colspan="2">template&lt;random_access_range RANGE, typename FUNC&gt; </td></tr>
-<tr class="memitem:ga58b6ea74ef4536304442a7fb752733c9 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga58b6ea74ef4536304442a7fb752733c9">ghassanpl::find_index</a> (RANGE const &amp;range, FUNC &amp;&amp;func) -&gt; std::iter_difference_t&lt; <a class="el" href="#ga38e1dac5f81ca29822e3f8d4963739dc">range_iterator</a>&lt; RANGE &gt; &gt;</td></tr>
-<tr class="memdesc:ga58b6ea74ef4536304442a7fb752733c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a value in <span class="tt">range</span> and returns an index to it.  <br /></td></tr>
-<tr class="memitem:ga2d6ec855951fa9b03d32b38143896920" id="r_ga2d6ec855951fa9b03d32b38143896920"><td class="memTemplParams" colspan="2">template&lt;std::ranges::range RANGE, typename FUNC&gt; </td></tr>
-<tr class="memitem:ga2d6ec855951fa9b03d32b38143896920 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga2d6ec855951fa9b03d32b38143896920">ghassanpl::find_ptr</a> (RANGE &amp;range, FUNC &amp;&amp;func)</td></tr>
-<tr class="memdesc:ga2d6ec855951fa9b03d32b38143896920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a value in <span class="tt">range</span> and returns a pointer to it, or null if none found.  <br /></td></tr>
-<tr class="memitem:gaa05bdb1138678d36065c57c8b75beb22" id="r_gaa05bdb1138678d36065c57c8b75beb22"><td class="memTemplParams" colspan="2">template&lt;random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_value&lt;RANGE&gt;&gt; </td></tr>
-<tr class="memitem:gaa05bdb1138678d36065c57c8b75beb22 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#gaa05bdb1138678d36065c57c8b75beb22">ghassanpl::find_if_or_default</a> (RANGE &amp;range, FUNC &amp;&amp;func, DEF_TYPE &amp;&amp;default_value=DEF_TYPE{})</td></tr>
+<tr class="memitem:ga7264fc8133a4b72f21406732ae98ec9d" id="r_ga7264fc8133a4b72f21406732ae98ec9d"><td class="memTemplParams" colspan="2">template&lt;random_access_range RANGE, typename FUNC&gt; </td></tr>
+<tr class="memitem:ga7264fc8133a4b72f21406732ae98ec9d template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga7264fc8133a4b72f21406732ae98ec9d">ghassanpl::find_index</a> (RANGE const &amp;range, FUNC &amp;&amp;<a class="el" href="namespaceghassanpl_1_1pred.html">pred</a>) -&gt; std::iter_difference_t&lt; <a class="el" href="#ga38e1dac5f81ca29822e3f8d4963739dc">range_iterator</a>&lt; RANGE &gt; &gt;</td></tr>
+<tr class="memdesc:ga7264fc8133a4b72f21406732ae98ec9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a value in <span class="tt">range</span> that matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred</a></span>, and returns an index to it.  <br /></td></tr>
+<tr class="memitem:ga9062af46ea9f31e554a6812fd57a73af" id="r_ga9062af46ea9f31e554a6812fd57a73af"><td class="memTemplParams" colspan="2">template&lt;std::ranges::range RANGE, typename FUNC&gt; </td></tr>
+<tr class="memitem:ga9062af46ea9f31e554a6812fd57a73af template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga9062af46ea9f31e554a6812fd57a73af">ghassanpl::find_ptr</a> (RANGE &amp;range, FUNC &amp;&amp;<a class="el" href="namespaceghassanpl_1_1pred.html">pred</a>)</td></tr>
+<tr class="memdesc:ga9062af46ea9f31e554a6812fd57a73af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a value in <span class="tt">range</span> that matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred</a></span>, and returns a pointer to it, or null if none found.  <br /></td></tr>
+<tr class="memitem:ga5e432adbde852ba34c51a86399e9ff8f" id="r_ga5e432adbde852ba34c51a86399e9ff8f"><td class="memTemplParams" colspan="2">template&lt;random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_value&lt;RANGE&gt;&gt; </td></tr>
+<tr class="memitem:ga5e432adbde852ba34c51a86399e9ff8f template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#ga5e432adbde852ba34c51a86399e9ff8f">ghassanpl::find_if_or_default</a> (RANGE &amp;range, FUNC &amp;&amp;<a class="el" href="namespaceghassanpl_1_1pred.html">pred</a>, DEF_TYPE &amp;&amp;default_value=DEF_TYPE{})</td></tr>
+<tr class="memdesc:ga5e432adbde852ba34c51a86399e9ff8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a value in <span class="tt">range</span> that matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred</a></span>, and returns it, or <span class="tt">default_value</span> if none found.  <br /></td></tr>
 <tr class="memitem:gaa0acfa0520ddfe27b7b120bdb0ce1742" id="r_gaa0acfa0520ddfe27b7b120bdb0ce1742"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#gaa0acfa0520ddfe27b7b120bdb0ce1742">ghassanpl::to_index</a> (random_access_iterator auto iterator, random_access_range auto const &amp;range)</td></tr>
 <tr class="memdesc:gaa0acfa0520ddfe27b7b120bdb0ce1742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns an <span class="tt">iterator</span> to <span class="tt">range</span> to an index.  <br /></td></tr>
 <tr class="memitem:ga9b220807298f2d39fe0e1075d52a7422" id="r_ga9b220807298f2d39fe0e1075d52a7422"><td class="memTemplParams" colspan="2">template&lt;contiguous_range RANGE&gt; </td></tr>
 <tr class="memitem:ga9b220807298f2d39fe0e1075d52a7422 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="#ga9b220807298f2d39fe0e1075d52a7422">ghassanpl::valid_address</a> (RANGE &amp;&amp;range, <a class="el" href="#gae9ad1518f47ff203386a4c5cf3ca371a">range_value</a>&lt; RANGE &gt; *pointer)</td></tr>
 <tr class="memdesc:ga9b220807298f2d39fe0e1075d52a7422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not <span class="tt">pointer</span> is a valid pointer to an element in the contiguous <span class="tt">range</span>.  <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-member-group" class="groupheader"><a id="member-group" name="member-group"></a>
+C++23 Compatibility</h2></td></tr>
+<tr class="memitem:gafa66c510b1bca79889cfb20c2c5e07ad" id="r_gafa66c510b1bca79889cfb20c2c5e07ad"><td class="memItemLeft">constexpr __contains_fn&#160;</td><td class="memItemRight"><a class="el" href="#gafa66c510b1bca79889cfb20c2c5e07ad">ghassanpl::contains</a></td></tr>
+<tr class="memdesc:gafa66c510b1bca79889cfb20c2c5e07ad"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#gafa66c510b1bca79889cfb20c2c5e07ad" title="contains(range, el)">contains(range, el)</a>  <br /></td></tr>
+<tr class="memitem:ga9bb1a259ef8c7774c28f6f2971a41af2" id="r_ga9bb1a259ef8c7774c28f6f2971a41af2"><td class="memItemLeft">constexpr __contains_subrange_fn&#160;</td><td class="memItemRight"><a class="el" href="#ga9bb1a259ef8c7774c28f6f2971a41af2">ghassanpl::contains_subrange</a></td></tr>
+<tr class="memdesc:ga9bb1a259ef8c7774c28f6f2971a41af2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#ga9bb1a259ef8c7774c28f6f2971a41af2" title="contains_subrange(range, subrange)">contains_subrange(range, subrange)</a>  <br /></td></tr>
+<tr class="memitem:gaf0e48f4e15e1aefe379fa05337a2bfc0" id="r_gaf0e48f4e15e1aefe379fa05337a2bfc0"><td class="memTemplParams" colspan="2">template&lt;class CONTAINER, std::ranges::input_range RANGE, class... TYPES&gt; </td></tr>
+<tr class="memitem:gaf0e48f4e15e1aefe379fa05337a2bfc0 template"><td class="memItemLeft">constexpr CONTAINER&#160;</td><td class="memItemRight"><a class="el" href="#gaf0e48f4e15e1aefe379fa05337a2bfc0">ghassanpl::to</a> (RANGE &amp;&amp;range, TYPES &amp;&amp;... args)</td></tr>
+<tr class="memdesc:gaf0e48f4e15e1aefe379fa05337a2bfc0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#gaf0e48f4e15e1aefe379fa05337a2bfc0" title="to&lt;container&gt;();">to&lt;container&gt;()</a>;  <br /></td></tr>
+<tr class="memitem:ga121ad3ff2c59625299e3fef02909b4eb" id="r_ga121ad3ff2c59625299e3fef02909b4eb"><td class="memTemplParams" colspan="2">template&lt;template&lt; class... &gt; class CONTAINER, std::ranges::input_range RANGE, class... TYPES, class _Deduced = std::remove_pointer_t&lt;decltype(detail::to_helper&lt;CONTAINER, RANGE, TYPES...&gt;())&gt;&gt; </td></tr>
+<tr class="memitem:ga121ad3ff2c59625299e3fef02909b4eb template"><td class="memItemLeft">constexpr _Deduced&#160;</td><td class="memItemRight"><a class="el" href="#ga121ad3ff2c59625299e3fef02909b4eb">ghassanpl::to</a> (RANGE &amp;&amp;_Range, TYPES &amp;&amp;... ARGS)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-member-group" class="groupheader"><a id="member-group" name="member-group"></a>
+Span Operations</h2></td></tr>
 <tr class="memitem:gacd70f29258ebed17c37f8adbf4383ada" id="r_gacd70f29258ebed17c37f8adbf4383ada"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N = std::dynamic_extent&gt; </td></tr>
 <tr class="memitem:gacd70f29258ebed17c37f8adbf4383ada template"><td class="memItemLeft">constexpr std::pair&lt; span&lt; T &gt;, span&lt; T &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="#gacd70f29258ebed17c37f8adbf4383ada">ghassanpl::split_at</a> (span&lt; T, N &gt; spn, size_t index)</td></tr>
-<tr class="memdesc:gacd70f29258ebed17c37f8adbf4383ada"><td class="mdescLeft">&#160;</td><td class="mdescRight">Span stuff.  <br /></td></tr>
 <tr class="memitem:gadc1098c3ce226d3e4db63f382898556a" id="r_gadc1098c3ce226d3e4db63f382898556a"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N = std::dynamic_extent&gt; </td></tr>
 <tr class="memitem:gadc1098c3ce226d3e4db63f382898556a template"><td class="memItemLeft">constexpr std::array&lt; span&lt; T &gt;, 3 &gt;&#160;</td><td class="memItemRight"><a class="el" href="#gadc1098c3ce226d3e4db63f382898556a">ghassanpl::split_at</a> (span&lt; T, N &gt; spn, size_t index, size_t size)</td></tr>
 <tr class="memitem:ga8b0dc5b62082b9a975d520f6d71fc4b3" id="r_ga8b0dc5b62082b9a975d520f6d71fc4b3"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N = std::dynamic_extent&gt; </td></tr>
@@ -153,7 +168,7 @@ requires requires (T value, RANGE range) { { *std::ranges::begin(range) == value
 <tr class="memitem:gaaf995c79d3d231f850adfacccffa9035" id="r_gaaf995c79d3d231f850adfacccffa9035"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#gaaf995c79d3d231f850adfacccffa9035">ghassanpl::as_span</a> (std::ranges::range auto &amp;range)</td></tr>
 <tr class="memitem:ga3cbc4ac8d7f78e7db3b3cb0683d7c792" id="r_ga3cbc4ac8d7f78e7db3b3cb0683d7c792"><td class="memTemplParams" colspan="2">template&lt;typename TO, typename FROM, size_t N = std::dynamic_extent&gt; </td></tr>
 <tr class="memitem:ga3cbc4ac8d7f78e7db3b3cb0683d7c792 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#ga3cbc4ac8d7f78e7db3b3cb0683d7c792">ghassanpl::span_cast</a> (span&lt; FROM, N &gt; bytes) noexcept</td></tr>
-<tr class="memdesc:ga3cbc4ac8d7f78e7db3b3cb0683d7c792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts a spn of objects of type FROM to a spn of objects of type TO Does not perform any checks, specifically, no alignment or size checks are performed.  <br /></td></tr>
+<tr class="memdesc:ga3cbc4ac8d7f78e7db3b3cb0683d7c792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts a span of objects of type FROM to a span of objects of type TO.  <br /></td></tr>
 <tr class="memitem:ga189578b5b2d949158ea74ffd6ba2c3b8" id="r_ga189578b5b2d949158ea74ffd6ba2c3b8"><td class="memTemplParams" colspan="2">template&lt;typename T1, size_t N1, typename T2, size_t N2&gt; </td></tr>
 <tr class="memitem:ga189578b5b2d949158ea74ffd6ba2c3b8 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="#ga189578b5b2d949158ea74ffd6ba2c3b8">ghassanpl::are_adjacent</a> (span&lt; T1, N1 &gt; s1, span&lt; T2, N2 &gt; s2)</td></tr>
 <tr class="memitem:gad35c98114cc22981fe48e7ea02e4b456" id="r_gad35c98114cc22981fe48e7ea02e4b456"><td class="memTemplParams" colspan="2">template&lt;typename T1, size_t N1, typename T2, size_t N2&gt; </td></tr>
@@ -162,26 +177,16 @@ requires requires (T value, RANGE range) { { *std::ranges::begin(range) == value
 <tr class="memitem:ga700f379d147eb6951b6e7734d9617108 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="#ga700f379d147eb6951b6e7734d9617108">ghassanpl::ends_with</a> (span&lt; T, N1 &gt; s1, span&lt; U, N2 &gt; s2)</td></tr>
 <tr class="memitem:gafd849fac4dbddc2384e0acd9fb99fb8a" id="r_gafd849fac4dbddc2384e0acd9fb99fb8a"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N1, typename U, size_t N2&gt; </td></tr>
 <tr class="memitem:gafd849fac4dbddc2384e0acd9fb99fb8a template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="#gafd849fac4dbddc2384e0acd9fb99fb8a">ghassanpl::starts_with</a> (span&lt; T, N1 &gt; s1, span&lt; U, N2 &gt; s2)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-member-group" class="groupheader"><a id="member-group" name="member-group"></a>
+Array Operations</h2></td></tr>
 <tr class="memitem:ga0531b42271ed8ee6b10a84c1a6fff48f" id="r_ga0531b42271ed8ee6b10a84c1a6fff48f"><td class="memTemplParams" colspan="2">template&lt;typename T, std::size_t... Ns&gt; </td></tr>
 <tr class="memitem:ga0531b42271ed8ee6b10a84c1a6fff48f template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga0531b42271ed8ee6b10a84c1a6fff48f">ghassanpl::join</a> (std::array&lt; T, Ns &gt;... arrays)</td></tr>
-<tr class="memdesc:ga0531b42271ed8ee6b10a84c1a6fff48f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arrays.  <br /></td></tr>
 <tr class="memitem:ga1302ffe0ca898405d38c41707a665566" id="r_ga1302ffe0ca898405d38c41707a665566"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t LL, typename... ARGS&gt; </td></tr>
 <tr class="memitem:ga1302ffe0ca898405d38c41707a665566 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="#ga1302ffe0ca898405d38c41707a665566">ghassanpl::join</a> (std::array&lt; T, LL &gt; rhs, ARGS &amp;&amp;... args)</td></tr>
-<tr class="memitem:gaf0e48f4e15e1aefe379fa05337a2bfc0" id="r_gaf0e48f4e15e1aefe379fa05337a2bfc0"><td class="memTemplParams" colspan="2">template&lt;class CONTAINER, std::ranges::input_range RANGE, class... TYPES&gt; </td></tr>
-<tr class="memitem:gaf0e48f4e15e1aefe379fa05337a2bfc0 template"><td class="memItemLeft">constexpr CONTAINER&#160;</td><td class="memItemRight"><a class="el" href="#gaf0e48f4e15e1aefe379fa05337a2bfc0">ghassanpl::to</a> (RANGE &amp;&amp;range, TYPES &amp;&amp;... args)</td></tr>
-<tr class="memdesc:gaf0e48f4e15e1aefe379fa05337a2bfc0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#gaf0e48f4e15e1aefe379fa05337a2bfc0" title="to&lt;container&gt;();">to&lt;container&gt;()</a>;  <br /></td></tr>
-<tr class="memitem:ga121ad3ff2c59625299e3fef02909b4eb" id="r_ga121ad3ff2c59625299e3fef02909b4eb"><td class="memTemplParams" colspan="2">template&lt;template&lt; class... &gt; class CONTAINER, std::ranges::input_range RANGE, class... TYPES, class _Deduced = std::remove_pointer_t&lt;decltype(detail::to_helper&lt;CONTAINER, RANGE, TYPES...&gt;())&gt;&gt; </td></tr>
-<tr class="memitem:ga121ad3ff2c59625299e3fef02909b4eb template"><td class="memItemLeft">constexpr _Deduced&#160;</td><td class="memItemRight"><a class="el" href="#ga121ad3ff2c59625299e3fef02909b4eb">ghassanpl::to</a> (RANGE &amp;&amp;_Range, TYPES &amp;&amp;... ARGS)</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:gafa66c510b1bca79889cfb20c2c5e07ad" id="r_gafa66c510b1bca79889cfb20c2c5e07ad"><td class="memItemLeft">constexpr __contains_fn&#160;</td><td class="memItemRight"><a class="el" href="#gafa66c510b1bca79889cfb20c2c5e07ad">ghassanpl::contains</a></td></tr>
-<tr class="memdesc:gafa66c510b1bca79889cfb20c2c5e07ad"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#gafa66c510b1bca79889cfb20c2c5e07ad" title="contains(range, el)">contains(range, el)</a>  <br /></td></tr>
-<tr class="memitem:ga9bb1a259ef8c7774c28f6f2971a41af2" id="r_ga9bb1a259ef8c7774c28f6f2971a41af2"><td class="memItemLeft">constexpr __contains_subrange_fn&#160;</td><td class="memItemRight"><a class="el" href="#ga9bb1a259ef8c7774c28f6f2971a41af2">ghassanpl::contains_subrange</a></td></tr>
-<tr class="memdesc:ga9bb1a259ef8c7774c28f6f2971a41af2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="#ga9bb1a259ef8c7774c28f6f2971a41af2" title="contains_subrange(range, subrange)">contains_subrange(range, subrange)</a>  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Ranges and such. </p>
+<div class="textblock"><p>Operations on C++20-style ranges. </p>
 </div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Typedef Documentation</h2>
 <a id="ga38e1dac5f81ca29822e3f8d4963739dc" name="ga38e1dac5f81ca29822e3f8d4963739dc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga38e1dac5f81ca29822e3f8d4963739dc">&#9670;&#160;</a></span>range_iterator</h2>
@@ -253,7 +258,7 @@ template&lt;typename T1, size_t N1, typename T2, size_t N2&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00185">185</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00187">187</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -286,7 +291,7 @@ template&lt;typename T1, size_t N1, typename T2, size_t N2&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00192">192</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00194">194</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -315,7 +320,7 @@ template&lt;typename T, size_t N = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00166">166</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00168">168</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -342,7 +347,7 @@ template&lt;typename T, size_t N = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00171">171</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00173">173</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -481,12 +486,12 @@ template&lt;typename T, size_t N1, typename U, size_t N2&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00199">199</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00201">201</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
-<a id="gaa05bdb1138678d36065c57c8b75beb22" name="gaa05bdb1138678d36065c57c8b75beb22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaa05bdb1138678d36065c57c8b75beb22">&#9670;&#160;</a></span>find_if_or_default()</h2>
+<a id="ga5e432adbde852ba34c51a86399e9ff8f" name="ga5e432adbde852ba34c51a86399e9ff8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5e432adbde852ba34c51a86399e9ff8f">&#9670;&#160;</a></span>find_if_or_default()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -504,7 +509,7 @@ template&lt;random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>, </td>
+          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>pred</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -519,12 +524,14 @@ template&lt;random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00125">125</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p>Find a value in <span class="tt">range</span> that matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred</a></span>, and returns it, or <span class="tt">default_value</span> if none found. </p>
+
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00126">126</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
-<a id="ga58b6ea74ef4536304442a7fb752733c9" name="ga58b6ea74ef4536304442a7fb752733c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga58b6ea74ef4536304442a7fb752733c9">&#9670;&#160;</a></span>find_index()</h2>
+<a id="ga7264fc8133a4b72f21406732ae98ec9d" name="ga7264fc8133a4b72f21406732ae98ec9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7264fc8133a4b72f21406732ae98ec9d">&#9670;&#160;</a></span>find_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -542,7 +549,7 @@ template&lt;random_access_range RANGE, typename FUNC&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;) -&gt; std::iter_difference_t&lt; <a class="el" href="#ga38e1dac5f81ca29822e3f8d4963739dc">range_iterator</a>&lt; RANGE &gt; &gt;</td>
+          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>pred</em></span>&#160;) -&gt; std::iter_difference_t&lt; <a class="el" href="#ga38e1dac5f81ca29822e3f8d4963739dc">range_iterator</a>&lt; RANGE &gt; &gt;</td>
         </tr>
       </table>
   </td>
@@ -552,14 +559,14 @@ template&lt;random_access_range RANGE, typename FUNC&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Find a value in <span class="tt">range</span> and returns an index to it. </p>
+<p>Find a value in <span class="tt">range</span> that matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred</a></span>, and returns an index to it. </p>
 
 <p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00106">106</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
-<a id="ga2d6ec855951fa9b03d32b38143896920" name="ga2d6ec855951fa9b03d32b38143896920"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga2d6ec855951fa9b03d32b38143896920">&#9670;&#160;</a></span>find_ptr()</h2>
+<a id="ga9062af46ea9f31e554a6812fd57a73af" name="ga9062af46ea9f31e554a6812fd57a73af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9062af46ea9f31e554a6812fd57a73af">&#9670;&#160;</a></span>find_ptr()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -577,7 +584,7 @@ template&lt;std::ranges::range RANGE, typename FUNC&gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;)</td>
+          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>pred</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -587,7 +594,7 @@ template&lt;std::ranges::range RANGE, typename FUNC&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Find a value in <span class="tt">range</span> and returns a pointer to it, or null if none found. </p>
+<p>Find a value in <span class="tt">range</span> that matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred</a></span>, and returns a pointer to it, or null if none found. </p>
 
 <p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00117">117</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
@@ -658,7 +665,7 @@ template&lt;typename T, size_t LL, typename... ARGS&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00226">226</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00231">231</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -687,9 +694,7 @@ template&lt;typename T, std::size_t... Ns&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Arrays. </p>
-
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00216">216</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00221">221</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -820,9 +825,10 @@ template&lt;typename TO, typename FROM, size_t N = std::dynamic_extent&gt; </div
 </table>
 </div><div class="memdoc">
 
-<p>Casts a spn of objects of type FROM to a spn of objects of type TO Does not perform any checks, specifically, no alignment or size checks are performed. </p>
+<p>Casts a span of objects of type FROM to a span of objects of type TO. </p>
+<p>Does not perform any checks, specifically, no alignment or size checks are performed. </p>
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00179">179</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00181">181</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -855,9 +861,7 @@ template&lt;typename T, size_t N = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Span stuff. </p>
-
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00150">150</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00152">152</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -895,7 +899,7 @@ template&lt;typename T, size_t N = std::dynamic_extent&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00158">158</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00160">160</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -928,7 +932,7 @@ template&lt;typename T, size_t N1, typename U, size_t N2&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00207">207</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00209">209</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -961,7 +965,7 @@ template&lt;template&lt; class... &gt; class CONTAINER, std::ranges::input_range
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00406">406</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00416">416</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -996,7 +1000,7 @@ template&lt;class CONTAINER, std::ranges::input_range RANGE, class... TYPES&gt; 
 
 <p><a class="el" href="#gaf0e48f4e15e1aefe379fa05337a2bfc0" title="to&lt;container&gt;();">to&lt;container&gt;()</a>; </p>
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00376">376</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00386">386</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -1029,7 +1033,7 @@ template&lt;class CONTAINER, std::ranges::input_range RANGE, class... TYPES&gt; 
 
 <p>Turns an <span class="tt">iterator</span> to <span class="tt">range</span> to an index. </p>
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00134">134</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00135">135</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -1064,7 +1068,7 @@ template&lt;contiguous_range RANGE&gt; </div>
 
 <p>Returns whether or not <span class="tt">pointer</span> is a valid pointer to an element in the contiguous <span class="tt">range</span>. </p>
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00141">141</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00142">142</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -1124,7 +1128,7 @@ template&lt;contiguous_range RANGE&gt; </div>
 
 <p><a class="el" href="#gafa66c510b1bca79889cfb20c2c5e07ad" title="contains(range, el)">contains(range, el)</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00254">254</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00264">264</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>
@@ -1150,7 +1154,7 @@ template&lt;contiguous_range RANGE&gt; </div>
 
 <p><a class="el" href="#ga9bb1a259ef8c7774c28f6f2971a41af2" title="contains_subrange(range, subrange)">contains_subrange(range, subrange)</a> </p>
 
-<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00276">276</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ranges_8h_source.html#l00286">286</a> of file <a class="el" href="ranges_8h_source.html">ranges.h</a>.</p>
 
 </div>
 </div>

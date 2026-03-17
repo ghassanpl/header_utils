@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['tile_5fpos_0',['tile_pos',['../group___squares.html#ga0f69a759e699742e8ffd47594ca63732',1,'ghassanpl::geometry::squares']]],
-  ['tile_5frec_1',['tile_rec',['../group___squares.html#gaef68c489a9e7782a3fedb17cf0e074cd',1,'ghassanpl::geometry::squares']]]
+  ['sintn_5ft_0',['sintN_t',['../group___bits.html#ga239781715bee2b27732cf080925785d1',1,'ghassanpl']]],
+  ['symbol_1',['symbol',['../group___symbol.html#ga5e9130801c8caffe43e4f641b39a49eb',1,'ghassanpl']]]
 ];

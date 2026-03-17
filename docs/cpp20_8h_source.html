@@ -105,7 +105,10 @@ $(function(){initNavTree('cpp20_8h_source.html','',''); });
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>T, <span class="keyword">class</span>... TYPES&gt;</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keyword">concept </span>is_any_of_v = (std::is_same_v&lt;T, TYPES&gt; || ...);</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>}</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    </div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>T, <span class="keyword">template</span> &lt;<span class="keyword">typename</span>...&gt; <span class="keyword">typename</span> PRED&gt;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keyword">concept </span>meets = PRED&lt;T&gt;::value;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>}</div>
 <div class="ttc" id="anamespaceghassanpl_html"><div class="ttname"><a href="namespaceghassanpl.html">ghassanpl</a></div><div class="ttdoc">Primary namespace for everything in this library.</div><div class="ttdef"><b>Definition</b> <a href="align_09rec2_8h_source.html#l00009">align+rec2.h:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

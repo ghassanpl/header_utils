@@ -10,8 +10,11 @@
 
 namespace ghassanpl
 {
+	/// \defgroup Scope Scope
+	/// RAII-related types
+	/// @{
 
-	/// \brief A RAII class that executes a function on destruction.
+	/// An RAII class that executes a function on destruction.
 	template <class EF>
 	struct scope_guard
 	{
@@ -53,7 +56,7 @@ namespace ghassanpl
 		bool execute_on_destruction{ true };
 	};
 
-	/// \brief A RAII class that executes a function on destruction, if its request counter is greater than zero.
+	/// An RAII class that executes a function on destruction, if its request counter is greater than zero.
 	template <class EF>
 	struct counted_scope_guard
 	{
@@ -74,27 +77,27 @@ namespace ghassanpl
 		counted_scope_guard& operator=(const counted_scope_guard&) = delete;
 		counted_scope_guard& operator=(counted_scope_guard&&) = delete;
 
-		/// \brief Executes the function on destruction if the request counter is greater than zero.
+		/// Executes the function on destruction if the request counter is greater than zero.
 		~counted_scope_guard() noexcept(noexcept(m_exit_function()))
 		{
 			if (m_count > 0)
 				m_exit_function();
 		}
 
-		/// \brief Increments the request counter.
+		/// Increments the request counter.
 		void request() noexcept
 		{
 			++m_count;
 		}
 
-		/// \brief Decrements the request counter.
+		/// Decrements the request counter.
 		void unrequest() noexcept
 		{
 			if (m_count > 0)
 				--m_count;
 		}
 
-		/// \brief Releases the guard, so that it will not execute the function on destruction.
+		/// Releases the guard, so that it will not execute the function on destruction.
 		void release() noexcept
 		{
 			m_count = 0;
@@ -114,7 +117,7 @@ namespace ghassanpl
 	template <class EF>
 	scope_guard(EF) -> scope_guard<EF>;
 
-	/// \brief An equivalent to unique_ptr for values that are not heap pointers.
+	/// An equivalent to unique_ptr for values that are not heap pointers.
 	/// Not exception-safe. https://github.com/PeterSommerlad/scope17/blob/main/scope.hpp
 	template <class R, class D> 
 	struct unique_resource
@@ -255,7 +258,7 @@ namespace ghassanpl
 	template <class R, class D, class I = std::decay_t<R>>
 	unique_resource(R, I, D) -> unique_resource<R, D>;
 
-	/// \brief A RAII class that changes the value of a variable and reverts it to the original value on destruction.
+	/// An RAII class that changes the value of a variable and reverts it to the original value on destruction.
 	/// Not exception-safe (probably).
 	template <typename T, bool IS_OPTIONAL = false>
 	struct scoped_value_change
@@ -307,28 +310,28 @@ namespace ghassanpl
 
 		bool valid() const noexcept { return m_ref != nullptr; }
 
-		/// \brief Returns the original value.
+		/// Returns the original value.
 		/// \pre valid() == true
 		T const& original_value() const & noexcept
 		{
 			return m_original_value;
 		}
 
-		/// \brief Returns the original value.
+		/// Returns the original value.
 		/// \pre valid() == true
 		T original_value() && noexcept(std::is_nothrow_move_constructible_v<T>)
 		{
 			return std::move(m_original_value);
 		}
 
-		/// \brief Returns the current value.
+		/// Returns the current value.
 		/// \pre valid() == true
 		T const& current_value()
 		{
 			return *m_ref;
 		}
 
-		/// \brief Reverts the value to the original one. If OPTIONAL is true, the change is not reverted if the current value is equal to the original one.
+		/// Reverts the value to the original one. If OPTIONAL is true, the change is not reverted if the current value is equal to the original one.
 		/// \post valid() == false
 		void revert() noexcept(std::is_nothrow_move_assignable_v<T>)
 		{
@@ -347,7 +350,7 @@ namespace ghassanpl
 			}
 		}
 
-		/// \brief Reverts the value to the original one.
+		/// Reverts the value to the original one.
 		/// \pre valid() == true
 		/// \post valid() == false
 		/// \return The current value, or the original value if the change is not needed (when IS_OPTIONAL is true).
@@ -365,14 +368,14 @@ namespace ghassanpl
 			return std::exchange(ref, std::move(m_original_value));
 		}
 
-		/// \brief Causes the value to not be reverted on destruction.
+		/// Causes the value to not be reverted on destruction.
 		/// \post valid() == false
 		void release() noexcept
 		{
 			m_ref = nullptr;
 		}
 
-		/// \brief Causes the value to not be reverted on destruction.
+		/// Causes the value to not be reverted on destruction.
 		/// \post valid() == false
 		/// \return The original value.
 		T release_and_return() noexcept(std::is_nothrow_move_constructible_v<T>)
@@ -393,9 +396,9 @@ namespace ghassanpl
 	template <typename T, typename U>
 	scoped_value_change(T&, U&&) -> scoped_value_change<T>;
 
-	/// TODO: atomic_scoped_value_change
+	// TODO: atomic_scoped_value_change
 	
-	/// \brief A RAII class that increments a value on construction and decrements it on destruction.
+	/// An RAII class that increments a value on construction and decrements it on destruction.
 	template <typename T>
 	struct scope_counter
 	{
@@ -432,4 +435,5 @@ namespace ghassanpl
 	};
 
 
+	/// @}
 }

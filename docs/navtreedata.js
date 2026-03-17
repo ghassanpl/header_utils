@@ -25,6 +25,13 @@
 var NAVTREE =
 [
   [ "header_utils", "index.html", [
+    [ "Common Definitions", "_common_defs.html", [
+      [ "Consuming, Eating and Parsing", "_common_defs.html#cep", [
+        [ "Consuming", "_common_defs.html#consuming", null ],
+        [ "Eating", "_common_defs.html#eating", null ],
+        [ "Parsing", "_common_defs.html#parsing", null ]
+      ] ]
+    ] ],
     [ "Todo List", "todo.html", null ],
     [ "Topics", "topics.html", "topics" ],
     [ "Namespaces", "namespaces.html", [
@@ -41,6 +48,7 @@ var NAVTREE =
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
+      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
         [ "Functions", "functions_func.html", null ],
@@ -56,10 +64,11 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"align_09rec2_8h_source.html",
-"group___bytes.html#ga7b8b4748a86bcc02e4a2580efe90c50a",
-"group___string_ops.html#gae4090063b47fbf51bb74e50dec614022",
-"ranges_8h_source.html"
+"_common_defs.html",
+"group___bytes.html#ga5329c8df26a23ab719b73a11a3ea3fc8",
+"group___string_ops.html#ga3b4189da7b9ab1dd821ccf5f8bd7c879",
+"namespacemembers_func_e.html",
+"structghassanpl_1_1with__sl.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronization';

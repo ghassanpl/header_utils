@@ -40,3 +40,41 @@ TEST(soptional_test, works_with_set_sentinel)
 	opt = -1;
 	EXPECT_FALSE(opt.has_value());
 }
+
+TEST(soptional_test, works_with_double)
+{
+	ghassanpl::sentinel_optional<double, NAN> opt;
+	ghassanpl::sentinel_optional<double, NAN> opt2 = 4.0;
+	(void)opt2;
+	EXPECT_FALSE(opt.has_value());
+	opt = 5;
+	EXPECT_TRUE(opt.has_value());
+	EXPECT_EQ(opt.value(), 5);
+	opt.reset();
+	EXPECT_FALSE(opt.has_value());
+	EXPECT_TRUE(std::isnan(std::bit_cast<double>(opt)));
+
+	opt = NAN;
+	EXPECT_FALSE(opt.has_value());
+}
+
+TEST(soptional_test, ordering)
+{
+	using dopt = ghassanpl::sentinel_optional<double, NAN>;
+
+	std::set<dopt> dopts;
+
+	dopts.insert(50.0);
+	dopts.insert(std::nullopt);
+	dopts.insert(20.0);
+	dopts.insert(NAN);
+	dopts.insert(-20.0);
+	dopts.insert(dopt{});
+
+	std::vector<dopt> values{ dopts.begin(), dopts.end() };
+	ASSERT_EQ(values.size(), 4);
+	EXPECT_EQ(values[0], std::nullopt);
+	EXPECT_EQ(values[1], -20.0);
+	EXPECT_EQ(values[2], 20.0);
+	EXPECT_EQ(values[3], 50.0);
+}

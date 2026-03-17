@@ -8,23 +8,38 @@
 
 namespace ghassanpl
 {
-	template <std::same_as<char> T>
-	[[nodiscard]] std::string to_string(T c) { return std::string{c}; }
-	template <typename T>
-	requires (!std::same_as<T, char> && std::integral<T>)
-	[[nodiscard]] std::string to_string(T val) { return std::to_string(val); }
+	/// \defgroup Stringification Stringification
+	/// TODO: Documentation
+	/// @{
+
+	/// float overload
 	template <std::floating_point T>
-	[[nodiscard]] std::string to_string(T val)
+	[[nodiscard]] std::string to_string(T floating_point)
 	{
-		const auto len = static_cast<size_t>(::snprintf(nullptr, 0, "%g", val));
+		const auto len = static_cast<size_t>(::snprintf(nullptr, 0, "%g", floating_point));
 		std::string str(len, '\0');
-		::sprintf_s(&str[0], len+ 1, "%g", val);
+		::sprintf_s(&str[0], len + 1, "%g", floating_point);
 		return str;
 	}
+
+	/// integral overload
+	template <typename T>
+	requires (!std::same_as<T, char>&& std::integral<T>)
+	[[nodiscard]] std::string to_string(T integral) { return std::to_string(integral); }
+
+	/// char overload
+	template <std::same_as<char> T>
+	[[nodiscard]] std::string to_string(T c) { return std::string{c}; }
+
+	/// string-like overload
 	template <typename T>
 	requires std::constructible_from<std::string_view, T>
 	[[nodiscard]] std::string to_string(T&& val) { return std::string{std::string_view{std::forward<T>(val)}}; }
+
+	/// nullptr overload
 	[[nodiscard]] inline std::string to_string(nullptr_t) { return "null"; }
+	
+	/// @}
 }
 
 /// WIP WIP WIP WIP

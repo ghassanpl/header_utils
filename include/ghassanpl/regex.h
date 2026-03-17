@@ -10,6 +10,9 @@
 namespace ghassanpl::regex
 {
 	/// Shamelessly stolen from https://stackoverflow.com/a/37516316
+	
+	/// \defgroup Regex Regex
+	/// @{
 
 	using svmatch = std::match_results<std::string_view::const_iterator>;
 
@@ -69,4 +72,5 @@ namespace ghassanpl::regex
 		});
 	}
 
+	/// @}
 }

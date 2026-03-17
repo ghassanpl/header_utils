@@ -10,11 +10,12 @@
 
 namespace ghassanpl::noise
 {
-	//using ghassanpl::integer::splitmix64;
+	/// \defgroup RandomSeq Sequences
+	/// Functions that return the next or specific value in a random (known) sequence
+	/// \ingroup Random
+	/// @{
 
-	/// Value Noise
-
-	[[nodiscard]] constexpr uint64_t SquirrelNoise3(uint64_t seed, uint64_t position)
+	[[nodiscard]] constexpr uint64_t seeded_noise64(uint64_t position, uint64_t seed)
 	{
 		const uint64_t BIT_NOISE1 = 0xB5297A4DB5297A4D;
 		const uint64_t BIT_NOISE2 = 0x68E31DA468E31DA4;
@@ -31,7 +32,7 @@ namespace ghassanpl::noise
 		return mangled;
 	}
 
-	[[nodiscard]] constexpr uint32_t SquirrelNoise5(uint32_t seed, int32_t position)
+	[[nodiscard]] constexpr uint32_t seeded_noise(int32_t position, uint32_t seed)
 	{
 		constexpr uint32_t SQ5_BIT_NOISE1 = 0xd2a80a3f;	// 11010010101010000000101000111111
 		constexpr uint32_t SQ5_BIT_NOISE2 = 0xa884f197;	// 10101000100001001111000110010111
@@ -54,29 +55,28 @@ namespace ghassanpl::noise
 		return mangledBits;
 	}
 
-	[[nodiscard]] constexpr uint32_t Get2dNoiseUint(int32_t indexX, int32_t indexY, uint32_t seed)
+	[[nodiscard]] constexpr uint32_t seeded_noise2d(int32_t indexX, int32_t indexY, uint32_t seed)
 	{
 		constexpr int PRIME_NUMBER = 198491317; // Large prime number with non-boring bits
-		return SquirrelNoise5(indexX + (PRIME_NUMBER * indexY), seed);
+		return seeded_noise(indexX + (PRIME_NUMBER * indexY), seed);
 	}
 
-	[[nodiscard]] constexpr double Get1dNoiseZeroToOne(int32_t index, uint32_t seed)
+	[[nodiscard]] constexpr double seeded_noise_normalized(int32_t index, uint32_t seed)
 	{
 		constexpr double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
-		return ONE_OVER_MAX_UINT * (double)SquirrelNoise5(index, seed);
+		return ONE_OVER_MAX_UINT * (double)seeded_noise(index, seed);
 	}
 
-	[[nodiscard]] constexpr double Get2dNoiseZeroToOne(int32_t indexX, int32_t indexY, uint32_t seed)
+	[[nodiscard]] constexpr double seeded_noise2d_normalized(int32_t indexX, int32_t indexY, uint32_t seed)
 	{
 		constexpr double ONE_OVER_MAX_UINT = (1.0 / (double)0xFFFFFFFF);
-		return ONE_OVER_MAX_UINT * (double)Get2dNoiseUint(indexX, indexY, seed);
+		return ONE_OVER_MAX_UINT * (double)seeded_noise2d(indexX, indexY, seed);
 	}
 }
 
 namespace ghassanpl::random
 {
-
-	inline uint64_t xorshift64(uint64_t& state) noexcept
+	constexpr uint64_t xorshift64(uint64_t& state) noexcept
 	{
 		uint64_t x = state;
 		x ^= x >> 12;
@@ -86,7 +86,7 @@ namespace ghassanpl::random
 		return x * 0x2545F4914F6CDD1D;
 	}
 
-	inline uint64_t numrep_hash(uint64_t index)
+	constexpr inline uint64_t numrep_hash(uint64_t index)
 	{
 		uint64_t v = index * 3935559000370003845LL + 2691343689449507681LL;
 		v ^= v >> 21; v ^= v << 37; v ^= v >> 4;
@@ -118,9 +118,9 @@ namespace ghassanpl::random
 	}
 	*/
 
-	inline uint64_t philox64(uint64_t sequence_index, uint32_t sequence_key)
+	constexpr uint64_t philox64(uint64_t sequence_index, uint32_t sequence_key)
 	{
-		static constexpr auto _philox2x32round = [](std::pair<uint32_t, uint32_t> ctr, uint32_t key) -> std::pair<uint32_t, uint32_t> {
+		constexpr auto _philox2x32round = [](std::pair<uint32_t, uint32_t> ctr, uint32_t key) -> std::pair<uint32_t, uint32_t> {
 			uint64_t product = (((uint64_t)0xd256d193)) * ctr.first;
 			uint32_t hi = (uint32_t)(product >> 32);
 			uint32_t lo = (uint32_t)product;
@@ -140,19 +140,20 @@ namespace ghassanpl::random
 		return uint64_t(ctrPair.first) | (uint64_t(ctrPair.second) << 32ULL);
 	}
 
+	/// Another good quality random engine, this time based on the `philox64` random function
 	struct philox64_engine
 	{
 		using result_type = uint64_t;
 
-		result_type operator()() noexcept { return philox64(m_index + n++, m_key); }
-		philox64_engine(uint64_t index = 0, uint32_t key = 0) noexcept : m_index(index), m_key(key), n(0) { }
+		[[nodiscard]] constexpr result_type operator()() noexcept { return philox64(m_index + n++, m_key); }
+		constexpr philox64_engine(uint64_t index = 0, uint32_t key = 0) noexcept : m_index(index), m_key(key), n(0) { }
 
 		static constexpr result_type min() { return 0; }
 		static constexpr result_type max() { return ~((result_type)0); }
 
-		uint64_t index() const noexcept { return m_index; }
-		uint32_t key() const noexcept { return m_key; }
-		void reset(uint64_t index, uint32_t key) noexcept
+		[[nodiscard]] constexpr uint64_t index() const noexcept { return m_index; }
+		[[nodiscard]] constexpr uint32_t key() const noexcept { return m_key; }
+		constexpr void reset(uint64_t index, uint32_t key) noexcept
 		{
 			m_index = index;
 			m_key = key;
@@ -163,4 +164,10 @@ namespace ghassanpl::random
 		uint32_t m_key;
 		uint64_t n;
 	};
+
+#if GHPL_CPP20
+	static_assert(std::uniform_random_bit_generator<philox64_engine>);
+#endif
+
+	/// @}
 }

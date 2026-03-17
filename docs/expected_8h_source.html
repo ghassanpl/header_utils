@@ -99,7 +99,7 @@ $(function(){initNavTree('expected_8h_source.html','',''); });
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;min-cpp-version/cpp17.h&quot;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#define GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS 1942</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#if __has_include(&lt;expected&gt;) &amp;&amp; (_MSC_VER &gt; GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS) &amp;&amp; defined(__cpp_lib_expected) &amp;&amp; __cpp_lib_expected &gt;= 202202L</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#if __has_include(&lt;expected&gt;) &amp;&amp; (!defined(_MSC_VER) || _MSC_VER &gt; GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS) &amp;&amp; defined(__cpp_lib_expected) &amp;&amp; __cpp_lib_expected &gt;= 202202L</span></div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &lt;expected&gt;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceghassanpl.html">ghassanpl</a></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>{</div>

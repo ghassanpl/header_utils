@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ri_0',['LE | MI | RI',['../namespaceghassanpl.html#autotoc_md1',1,'']]]
+  ['definitions_0',['Common Definitions',['../_common_defs.html',1,'']]]
 ];

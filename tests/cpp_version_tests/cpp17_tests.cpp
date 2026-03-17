@@ -42,7 +42,7 @@
 #include "../../include/ghassanpl/regex.h"
 #include "../../include/ghassanpl/scope.h"
 //#include "../../include/ghassanpl/sexps.h" /// charconv, optional, ranges, concepts
-#include "../../include/ghassanpl/soptional.h"
+//#include "../../include/ghassanpl/soptional.h" /// NTTPs
 //#include "../../include/ghassanpl/source_location.h" /// source_location obv
 //#include "../../include/ghassanpl/stringification.h" /// charconv, optional, ranges, concepts
 //#include "../../include/ghassanpl/string_interpolate.h" /// charconv, optional, ranges, concepts

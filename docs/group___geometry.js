@@ -1,12 +1,12 @@
 var group___geometry =
 [
-    [ "Direction", "group___direction.html", "group___direction" ],
-    [ "Normals", "group___normals.html", "group___normals" ],
     [ "Angles", "group___angles.html", null ],
+    [ "Direction", "group___direction.html", "group___direction" ],
     [ "Lines", "group___lines.html", "group___lines" ],
-    [ "Projections", "group___projections.html", "group___projections" ],
+    [ "Normals", "group___normals.html", "group___normals" ],
     [ "Points", "group___points.html", "group___points" ],
     [ "Polygon", "group___polygon.html", "group___polygon" ],
+    [ "Projections", "group___projections.html", "group___projections" ],
     [ "Squares", "group___squares.html", "group___squares" ],
     [ "Triangles", "group___triangles.html", "group___triangles" ],
     [ "ghassanpl::geometry::shape", "conceptghassanpl_1_1geometry_1_1shape.html", null ],

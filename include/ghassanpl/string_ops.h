@@ -386,7 +386,7 @@ namespace ghassanpl::string_ops
 			}
 		}
 
-		/// \name *_chars variables
+		/// \name \*_chars variables
 		/// Constexpr arrays listing the characters that match their respective ascii::is* functions
 		/// @{
 		constexpr inline auto alphabetic_chars = detail::compute_characters_matching<char, ::ghassanpl::string_ops::ascii::isalpha>(); ///< All characters that match \c ascii::isalpha
@@ -482,7 +482,7 @@ namespace ghassanpl::string_ops
 		[[nodiscard]] constexpr int xdigit_to_number(char32_t cp) noexcept { return isdigit(cp) ? int(cp - 48) : ((int(cp) & ~0b100000) - 55); }
 
 		/// \name Case-invariant Comparisons
-		/// TODO: Add rfind, find_first_of, find_last_of, find_first_not_of, find_last_not_of
+		/// \internal TODO: Add rfind, find_first_of, find_last_of, find_first_not_of, find_last_not_of
 		/// @{
 		[[nodiscard]] constexpr bool strings_equal_ignore_case(std::string_view sa, std::string_view sb)
 		{
@@ -1811,6 +1811,7 @@ namespace ghassanpl::string_ops
 		return lev_dist[min_size];
 	}
 
+#ifndef __clang__ /// Oh my god libc++ STILL doesn't support from_chars fully
 	namespace detail
 	{
 		template <std::integral T>
@@ -1916,6 +1917,8 @@ namespace ghassanpl::string_ops
 		return result;
 	}
 
+#endif
+
 /// \showinitializer
 #define GHPL_FORMAT_TEMPLATE typename... GHPL_ARGS
 /// \showinitializer
@@ -1929,3 +1932,42 @@ namespace ghassanpl::string_ops
 
 	/// @}
 }
+
+/// \page CommonDefs Common Definitions
+/// \section cep Consuming, Eating and Parsing
+/// A lot of the operations that work on strings or spans use the words `consume` and `eat`, as well as `parse`. Here we define these terms:
+/// 
+/// \subsection consuming Consuming
+/// Consuming is the act of taking a string_view or span by reference, matching the start (or end) of this range with a certain predicate, removing
+/// that prefix from the range, and usually returning a subrange containing that prefix. 
+/// 
+/// Consuming is permissive and safe - if the predicate cannot be met, nothing will be consumed, and an appropriate subrange to indicate that will be returned.
+/// 
+/// The most basic example is \ref ghassanpl::string_ops::consume(std::string_view&) which will remove a single character prefix, and return it. If the `string_view`
+/// is empty, it will return `char{}` and not remove anything.
+/// 
+/// Similarly, \ref ghassanpl::string_ops::consume(std::string_view&,char) will consume the first character if it matches the given argument, and do nothing otherwise,
+/// returning whether or not the consumption took place.
+/// 
+/// You can look at the documentation and bodies of the various `consume_*` functions to get a better feeling of what consuming means.
+/// 
+/// \subsection eating Eating
+/// Eating is similar to consuming, except stronger - when you eat something, you **expect** it to be there, and you expect that something to be returned
+/// by the function, *preferably in an already interpreted way*.
+/// 
+/// For example, the \ref ghassanpl::parsing::eat_float(std::string_view&) function will consume a substring representing a C-style float from the string_view,
+/// try to interpret the consumed substring as a `double`, and return it. If any part of this operation fails, an error will be thrown.
+/// 
+/// There exist `try_eat_*` variants of many `eat_*` functions, with `optional<T>`-style return types, returning `nullopt` instead of throwing on error.
+///
+/// \subsection parsing Parsing
+/// Parsing is pretty much eating, except that it implies that whatever we are trying to parse is complex. Parsing operations are often recursive,
+/// and usually return complex types, or are part of parsing other complex types. 
+/// 
+/// Parsing functions usually take a `std::string_view` by value, implying that we are giving these functions a string that only contains the thing we are trying
+/// to parse. Internally, these functions may use other, eat/consume-style functions to carve up the input string into eatable chunks.
+/// 
+/// A good example is \ref ghassanpl::formats::wilson::parse(std::string_view) function, which takes a `string_view` and assumes it contains a Wilson (JSON superset)
+/// string representation. It will try to parse it, and return a `nlohmann::json` type that contains the value interpreted.
+/// 
+/// It's up to the specific parsing functions whether or not they handle or even notice any additional data in the string *after* whatever they were supposed to parse.

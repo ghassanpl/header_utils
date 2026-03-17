@@ -3,7 +3,7 @@
 
 int test_cpp11()
 {
-	string_view v = "55asd";
+	ghassanpl::string_view v = "55asd";
 	v.find("s");
 	return stoi(v);
 }

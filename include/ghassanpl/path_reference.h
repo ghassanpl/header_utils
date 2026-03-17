@@ -9,6 +9,9 @@
 
 namespace ghassanpl
 {
+	/// \defgroup PathReference Caching Path Reference
+	/// @{
+
 	namespace detail
 	{
 		template <typename RESOLVER, typename PATH_TYPE, typename POINTER_TYPE, typename... TAGS>
@@ -76,10 +79,12 @@ namespace ghassanpl
 		};
 	}
 
-	/// TODO: Possible tags:
-	/// - thread_safe (adds a shared_mutex and protection for accessors)
-	/// - resolver_context (adds a pointer to RESOLVER_TYPE that is used to call the resolution functions)
-
+	/// A value that references an object via a (usually string-like) "path"; it lazily resolves the pointer to the object, and caches it.
+	/// \usage TODO
+	/// \tparam POINTER_TYPE the type to store the pointer in - must be copyable, so should be a pointer of some sort
+	/// \tparam PATH_TYPE (optional) the type to store the path in; if not given, will use `std::string`
+	/// \tparam RESOLVER_TYPE (optional) type used to resolve the pointer from the path; if not given, will use a thread-safe global storage for these pointer+path types
+	/// \tparam TAGS... a list of tags that modify the behavior of this type; currently none are available
 	template <
 		typename POINTER_TYPE,
 		typename PATH_TYPE = std::string,
@@ -87,6 +92,10 @@ namespace ghassanpl
 		typename... TAGS>
 	struct caching_path_reference
 	{
+		// TODO: Possible tags:
+		// - thread_safe (adds a shared_mutex and protection for accessors)
+		// - resolver_context (adds a pointer to RESOLVER_TYPE that is used to call the resolution functions)
+
 		using resolver_type = RESOLVER_TYPE;
 		using path_type = PATH_TYPE;
 		using pointer_type = POINTER_TYPE;
@@ -103,12 +112,14 @@ namespace ghassanpl
 		caching_path_reference& operator=(caching_path_reference const& obj) noexcept = default;
 		caching_path_reference& operator=(caching_path_reference&& obj) noexcept = default;
 
+		/// Construction from path
 		template <typename T>
-			requires (std::constructible_from<path_type, T> && !std::same_as<caching_path_reference, std::remove_cvref_t<T>>)
+		requires (std::constructible_from<path_type, T> && !std::same_as<caching_path_reference, std::remove_cvref_t<T>>)
 		caching_path_reference(T&& p) : m_path(std::forward<T>(p)) { validate_path(); }
 
+		/// Assignment from path
 		template <typename T>
-			requires (std::assignable_from<path_type, T> && !std::same_as<caching_path_reference, std::remove_cvref_t<T>>)
+		requires (std::assignable_from<path_type, T> && !std::same_as<caching_path_reference, std::remove_cvref_t<T>>)
 		auto& operator=(T&& p) {
 			m_pointer = {};
 			m_path = std::forward<T>(p);
@@ -116,12 +127,14 @@ namespace ghassanpl
 			return *this;
 		}
 
+		/// Construction from pointer
 		template <typename T>
-			requires (can_resolve_path_from_pointer&& std::constructible_from<pointer_type, T>)
+		requires (can_resolve_path_from_pointer&& std::constructible_from<pointer_type, T>)
 		caching_path_reference(T&& p) : m_pointer(std::forward<T>(p)) { m_path = {}; }
 
+		/// Assignment from pointer
 		template <typename T>
-			requires (can_resolve_path_from_pointer&& std::assignable_from<pointer_type, T> && !std::same_as<caching_path_reference, std::remove_cvref_t<T>>)
+		requires (can_resolve_path_from_pointer&& std::assignable_from<pointer_type, T> && !std::same_as<caching_path_reference, std::remove_cvref_t<T>>)
 		auto& operator=(T&& p) {
 			m_pointer = std::forward<T>(p);
 			m_path = {};
@@ -169,6 +182,7 @@ namespace ghassanpl
 				return path() <=> std::string_view{ other };
 		}
 
+		/// Sets both the path and pointer to their defaults
 		void reset() { m_path = {}; m_pointer = {}; }
 
 		path_type const& path() const& {
@@ -181,7 +195,7 @@ namespace ghassanpl
 			return path_empty(m_path);
 		}
 
-		path_type path()&& {
+		path_type path() && {
 			resolve_path();
 			return std::move(m_path);
 		}
@@ -191,7 +205,7 @@ namespace ghassanpl
 			return m_pointer;
 		}
 
-		pointer_type pointer()&& {
+		pointer_type pointer() && {
 			resolve_pointer();
 			return std::move(m_pointer);
 		}
@@ -235,6 +249,8 @@ namespace ghassanpl
 		mutable path_type m_path{};
 		mutable pointer_type m_pointer{};
 	};
+
+	/// @}
 
 #if 0
 	template <typename RESOLVER_TYPE, typename PATH_TYPE, typename POINTER_TYPE>

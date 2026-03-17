@@ -12,4 +12,7 @@ namespace ghassanpl
 
 	template <class T, class... TYPES>
 	concept is_any_of_v = (std::is_same_v<T, TYPES> || ...);
+	
+	template <class T, template <typename...> typename PRED>
+	concept meets = PRED<T>::value;
 }

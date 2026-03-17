@@ -46,8 +46,12 @@ var annotated_dup =
         [ "is_location_of", "structghassanpl_1_1traits_1_1is__location__of.html", null ],
         [ "constructible_using", "group___named_traits.html#structghassanpl_1_1traits_1_1constructible__using", null ]
       ] ],
+      [ "parsing", "namespaceghassanpl_1_1parsing.html", [
+        [ "parse_error", "structghassanpl_1_1parsing_1_1parse__error.html", "structghassanpl_1_1parsing_1_1parse__error" ]
+      ] ],
       [ "random", "namespaceghassanpl_1_1random.html", [
-        [ "good_random_engine", "structghassanpl_1_1random_1_1good__random__engine.html", null ]
+        [ "good_random_engine", "structghassanpl_1_1random_1_1good__random__engine.html", null ],
+        [ "philox64_engine", "structghassanpl_1_1random_1_1philox64__engine.html", null ]
       ] ],
       [ "string_ops", "namespaceghassanpl_1_1string__ops.html", [
         [ "split_range", "structghassanpl_1_1string__ops_1_1split__range.html", "structghassanpl_1_1string__ops_1_1split__range" ],
@@ -65,12 +69,17 @@ var annotated_dup =
       [ "mutlticast_function&lt; R(ARGS...)&gt;", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4" ],
       [ "named", "structghassanpl_1_1named.html", "structghassanpl_1_1named" ],
       [ "caching_path_reference", "structghassanpl_1_1caching__path__reference.html", "structghassanpl_1_1caching__path__reference" ],
+      [ "pool", "structghassanpl_1_1pool.html", null ],
+      [ "thread_local_pool", "structghassanpl_1_1thread__local__pool.html", null ],
       [ "scope_guard", "structghassanpl_1_1scope__guard.html", null ],
       [ "counted_scope_guard", "structghassanpl_1_1counted__scope__guard.html", "structghassanpl_1_1counted__scope__guard" ],
       [ "unique_resource", "structghassanpl_1_1unique__resource.html", null ],
       [ "scoped_value_change", "structghassanpl_1_1scoped__value__change.html", "structghassanpl_1_1scoped__value__change" ],
       [ "scope_counter", "structghassanpl_1_1scope__counter.html", null ],
+      [ "sentinel_optional", "structghassanpl_1_1sentinel__optional.html", "structghassanpl_1_1sentinel__optional" ],
       [ "string_stringifier", "structghassanpl_1_1string__stringifier.html", null ],
+      [ "symbol_base", "structghassanpl_1_1symbol__base.html", "structghassanpl_1_1symbol__base" ],
+      [ "default_symbol_provider_t", "structghassanpl_1_1default__symbol__provider__t.html", null ],
       [ "get_index", "namespaceghassanpl.html#structghassanpl_1_1get__index", null ],
       [ "decomposed_uri", "structghassanpl_1_1decomposed__uri.html", "structghassanpl_1_1decomposed__uri" ],
       [ "with_sl", "structghassanpl_1_1with__sl.html", null ],

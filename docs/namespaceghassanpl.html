@@ -142,19 +142,29 @@ Classes</h2></td></tr>
 <tr class="memitem:named" id="r_named"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1named.html">named</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to create a strong typedef of <span class="tt">T</span>.  <a href="structghassanpl_1_1named.html#details">More...</a><br /></td></tr>
 <tr class="memitem:caching_5Fpath_5Freference" id="r_caching_5Fpath_5Freference"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1caching__path__reference.html">caching_path_reference</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Possible tags:  <a href="structghassanpl_1_1caching__path__reference.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A value that references an object via a (usually string-like) "path"; it lazily resolves the pointer to the object, and caches it.  <a href="structghassanpl_1_1caching__path__reference.html#details">More...</a><br /></td></tr>
+<tr class="memitem:pool" id="r_pool"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1pool.html">pool</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Very simple object pool implementation.  <a href="structghassanpl_1_1pool.html#details">More...</a><br /></td></tr>
+<tr class="memitem:thread_5Flocal_5Fpool" id="r_thread_5Flocal_5Fpool"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1thread__local__pool.html">thread_local_pool</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <span class="tt"><a class="el" href="structghassanpl_1_1pool.html" title="Very simple object pool implementation.">pool</a></span> that can be used in a thread-local fashion.  <a href="structghassanpl_1_1thread__local__pool.html#details">More...</a><br /></td></tr>
 <tr class="memitem:scope_5Fguard" id="r_scope_5Fguard"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1scope__guard.html">scope_guard</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A RAII class that executes a function on destruction.  <a href="structghassanpl_1_1scope__guard.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An RAII class that executes a function on destruction.  <a href="structghassanpl_1_1scope__guard.html#details">More...</a><br /></td></tr>
 <tr class="memitem:counted_5Fscope_5Fguard" id="r_counted_5Fscope_5Fguard"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1counted__scope__guard.html">counted_scope_guard</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A RAII class that executes a function on destruction, if its request counter is greater than zero.  <a href="structghassanpl_1_1counted__scope__guard.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An RAII class that executes a function on destruction, if its request counter is greater than zero.  <a href="structghassanpl_1_1counted__scope__guard.html#details">More...</a><br /></td></tr>
 <tr class="memitem:unique_5Fresource" id="r_unique_5Fresource"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1unique__resource.html">unique_resource</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An equivalent to unique_ptr for values that are not heap pointers.  <a href="structghassanpl_1_1unique__resource.html#details">More...</a><br /></td></tr>
 <tr class="memitem:scoped_5Fvalue_5Fchange" id="r_scoped_5Fvalue_5Fchange"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1scoped__value__change.html">scoped_value_change</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A RAII class that changes the value of a variable and reverts it to the original value on destruction.  <a href="structghassanpl_1_1scoped__value__change.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An RAII class that changes the value of a variable and reverts it to the original value on destruction.  <a href="structghassanpl_1_1scoped__value__change.html#details">More...</a><br /></td></tr>
 <tr class="memitem:scope_5Fcounter" id="r_scope_5Fcounter"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1scope__counter.html">scope_counter</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: atomic_scoped_value_change.  <a href="structghassanpl_1_1scope__counter.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An RAII class that increments a value on construction and decrements it on destruction.  <a href="structghassanpl_1_1scope__counter.html#details">More...</a><br /></td></tr>
+<tr class="memitem:sentinel_5Foptional" id="r_sentinel_5Foptional"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1sentinel__optional.html">sentinel_optional</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">An equivalent to <span class="tt">std::optional&lt;T&gt;</span> except that instead of keeping an additional <span class="tt">bool</span> to indicate value presence, it uses one of the potential values of <span class="tt">T</span> as a "sentinel" value to indicate <span class="tt">nullopt</span>.  <a href="structghassanpl_1_1sentinel__optional.html#details">More...</a><br /></td></tr>
 <tr class="memitem:string_5Fstringifier" id="r_string_5Fstringifier"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1string__stringifier.html">string_stringifier</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">NOTE: The below is a MAJOR WORK IN PROGRESS.  <a href="structghassanpl_1_1string__stringifier.html#details">More...</a><br /></td></tr>
+<tr class="memitem:symbol_5Fbase" id="r_symbol_5Fbase"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1symbol__base.html">symbol_base</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The base class for all symbols.  <a href="structghassanpl_1_1symbol__base.html#details">More...</a><br /></td></tr>
+<tr class="memitem:default_5Fsymbol_5Fprovider_5Ft" id="r_default_5Fsymbol_5Fprovider_5Ft"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1default__symbol__provider__t.html">default_symbol_provider_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default symbol provider usable for most symbol implementations.  <a href="structghassanpl_1_1default__symbol__provider__t.html#details">More...</a><br /></td></tr>
 <tr class="memitem:get_5Findex_5Fstructghassanpl_5F1_5F1get_5F_5Findex" id="r_get_5Findex_5Fstructghassanpl_5F1_5F1get_5F_5Findex"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="#structghassanpl_1_1get__index">get_index</a></td></tr>
 <tr class="memdesc:structghassanpl_1_1get__index"><td class="mdescLeft">&#160;</td><td class="mdescRight">std::variant get index of type  <a href="#structghassanpl_1_1get__index">More...</a><br /></td></tr>
 <tr class="memitem:decomposed_5Furi" id="r_decomposed_5Furi"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1decomposed__uri.html">decomposed_uri</a></td></tr>
@@ -180,6 +190,8 @@ Concepts</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A range of bytelikes. <br /></td></tr>
 <tr class="memitem:range_5Fpredicate" id="r_range_5Fpredicate"><td class="memItemLeft">concept &#160;</td><td class="memItemRight"><a class="el" href="conceptghassanpl_1_1range__predicate.html">range_predicate</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Concept to check if a function is a predicate on the range elements (i.e. returns boolable). <br /></td></tr>
+<tr class="memitem:symbol_5Fprovider" id="r_symbol_5Fprovider"><td class="memItemLeft">concept &#160;</td><td class="memItemRight"><a class="el" href="conceptghassanpl_1_1symbol__provider.html">symbol_provider</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The requirements for a symbol provider. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-typedef-members" class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -224,18 +236,21 @@ Typedefs</h2></td></tr>
 <tr class="memitem:gafec42e7ebcde345357bf5fa4b819ed86" id="r_gafec42e7ebcde345357bf5fa4b819ed86"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="group__mmap.html#gafec42e7ebcde345357bf5fa4b819ed86">u8_mmap_source</a></td></tr>
 <tr class="memitem:gacb7443d8690dc6d2147bc58122276137" id="r_gacb7443d8690dc6d2147bc58122276137"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="group__mmap.html#gacb7443d8690dc6d2147bc58122276137">char_mmap_source</a></td></tr>
 <tr class="memitem:ga884b26139ff56c36b67ebc7da3b505b0" id="r_ga884b26139ff56c36b67ebc7da3b505b0"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="group__mmap.html#ga884b26139ff56c36b67ebc7da3b505b0">char8_mmap_source</a></td></tr>
-<tr class="memitem:abdc285da362353ef3b0236844e2c07ff" id="r_abdc285da362353ef3b0236844e2c07ff"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:abdc285da362353ef3b0236844e2c07ff template"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#abdc285da362353ef3b0236844e2c07ff">pooled_ptr</a></td></tr>
+<tr class="memitem:gabdc285da362353ef3b0236844e2c07ff" id="r_gabdc285da362353ef3b0236844e2c07ff"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:gabdc285da362353ef3b0236844e2c07ff template"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="group___object_pools.html#gabdc285da362353ef3b0236844e2c07ff">pooled_ptr</a></td></tr>
+<tr class="memdesc:gabdc285da362353ef3b0236844e2c07ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">A version of <span class="tt">unique_ptr&lt;T&gt;</span> that returns the object to the (thread-local) pool on destruction.  <br /></td></tr>
 <tr class="memitem:gae9ad1518f47ff203386a4c5cf3ca371a" id="r_gae9ad1518f47ff203386a4c5cf3ca371a"><td class="memTemplParams" colspan="2">template&lt;typename RANGE&gt; </td></tr>
 <tr class="memitem:gae9ad1518f47ff203386a4c5cf3ca371a template"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gae9ad1518f47ff203386a4c5cf3ca371a">range_value</a></td></tr>
 <tr class="memdesc:gae9ad1518f47ff203386a4c5cf3ca371a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper template to get the value type of a type that decays to a <span class="tt">range</span>.  <br /></td></tr>
 <tr class="memitem:ga38e1dac5f81ca29822e3f8d4963739dc" id="r_ga38e1dac5f81ca29822e3f8d4963739dc"><td class="memTemplParams" colspan="2">template&lt;typename RANGE&gt; </td></tr>
 <tr class="memitem:ga38e1dac5f81ca29822e3f8d4963739dc template"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga38e1dac5f81ca29822e3f8d4963739dc">range_iterator</a></td></tr>
 <tr class="memdesc:ga38e1dac5f81ca29822e3f8d4963739dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper template to get the iterator type of a type that decays to a <span class="tt">range</span>.  <br /></td></tr>
-<tr class="memitem:a1e7473993881920c5f691fc2d504b70a" id="r_a1e7473993881920c5f691fc2d504b70a"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a1e7473993881920c5f691fc2d504b70a template"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#a1e7473993881920c5f691fc2d504b70a">optional_scoped_value_change</a></td></tr>
-<tr class="memitem:ae195fa23acbec24a52949731c3ff5526" id="r_ae195fa23acbec24a52949731c3ff5526"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#ae195fa23acbec24a52949731c3ff5526">default_symbol_provider</a></td></tr>
-<tr class="memitem:a5e9130801c8caffe43e4f641b39a49eb" id="r_a5e9130801c8caffe43e4f641b39a49eb"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#a5e9130801c8caffe43e4f641b39a49eb">symbol</a></td></tr>
+<tr class="memitem:ga1e7473993881920c5f691fc2d504b70a" id="r_ga1e7473993881920c5f691fc2d504b70a"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga1e7473993881920c5f691fc2d504b70a template"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="group___scope.html#ga1e7473993881920c5f691fc2d504b70a">optional_scoped_value_change</a></td></tr>
+<tr class="memitem:gae195fa23acbec24a52949731c3ff5526" id="r_gae195fa23acbec24a52949731c3ff5526"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="group___symbol.html#gae195fa23acbec24a52949731c3ff5526">default_symbol_provider</a></td></tr>
+<tr class="memdesc:gae195fa23acbec24a52949731c3ff5526"><td class="mdescLeft">&#160;</td><td class="mdescRight">A basic <span class="tt"><a class="el" href="conceptghassanpl_1_1symbol__provider.html" title="The requirements for a symbol provider.">symbol_provider</a></span> suitable for most single-threaded uses.  <br /></td></tr>
+<tr class="memitem:ga5e9130801c8caffe43e4f641b39a49eb" id="r_ga5e9130801c8caffe43e4f641b39a49eb"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="group___symbol.html#ga5e9130801c8caffe43e4f641b39a49eb">symbol</a></td></tr>
+<tr class="memdesc:ga5e9130801c8caffe43e4f641b39a49eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">A <span class="tt"><a class="el" href="group___symbol.html#ga5e9130801c8caffe43e4f641b39a49eb" title="A symbol type suitable for most single-threaded uses.">symbol</a></span> type suitable for most single-threaded uses.  <br /></td></tr>
 <tr class="memitem:aba01b03b987cf3cf813b9593ae72beeb" id="r_aba01b03b987cf3cf813b9593ae72beeb"><td class="memTemplParams" colspan="2">template&lt;size_t I, typename... Ts&gt; </td></tr>
 <tr class="memitem:aba01b03b987cf3cf813b9593ae72beeb template"><td class="memItemLeft">using&#160;</td><td class="memItemRight"><a class="el" href="#aba01b03b987cf3cf813b9593ae72beeb">nth_type_of</a></td></tr>
 <tr class="memitem:aa414bbbcd86172ce1fa8f14802fe472d" id="r_aa414bbbcd86172ce1fa8f14802fe472d"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
@@ -911,8 +926,9 @@ template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a54719f0ccf3618fdeac57c3a673f573c template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a54719f0ccf3618fdeac57c3a673f573c">stringify</a> (STRINGIFIER &amp;str, <a class="el" href="structghassanpl_1_1named.html">named</a>&lt; T, PARAMETER &gt; const &amp;val)</td></tr>
 <tr class="memitem:a5aa8e71374154f947503428c064bb5f8" id="r_a5aa8e71374154f947503428c064bb5f8"><td class="memTemplParams" colspan="2">template&lt;typename ALPHA, typename T, detail::FixedString PARAMETER, typename... TRAITS&gt; </td></tr>
 <tr class="memitem:a5aa8e71374154f947503428c064bb5f8 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a5aa8e71374154f947503428c064bb5f8">lerp</a> (<a class="el" href="structghassanpl_1_1named.html">named</a>&lt; T, PARAMETER, TRAITS... &gt; const &amp;value_a, <a class="el" href="structghassanpl_1_1named.html">named</a>&lt; T, PARAMETER, TRAITS... &gt; const &amp;value_b, ALPHA &amp;&amp;alpha)</td></tr>
-<tr class="memitem:ad0759e73fb2924a4b5034aaca55408c9" id="r_ad0759e73fb2924a4b5034aaca55408c9"><td class="memTemplParams" colspan="2">template&lt;typename T, typename... ARGS&gt; </td></tr>
-<tr class="memitem:ad0759e73fb2924a4b5034aaca55408c9 template"><td class="memItemLeft">thread_local_pool&lt; T &gt;::pooled_ptr&#160;</td><td class="memItemRight"><a class="el" href="#ad0759e73fb2924a4b5034aaca55408c9">make_pooled</a> (ARGS &amp;&amp;... args)</td></tr>
+<tr class="memitem:gad0759e73fb2924a4b5034aaca55408c9" id="r_gad0759e73fb2924a4b5034aaca55408c9"><td class="memTemplParams" colspan="2">template&lt;typename T, typename... ARGS&gt; </td></tr>
+<tr class="memitem:gad0759e73fb2924a4b5034aaca55408c9 template"><td class="memItemLeft"><a class="el" href="structghassanpl_1_1thread__local__pool.html">thread_local_pool</a>&lt; T &gt;<a class="el" href="group___object_pools.html#gabdc285da362353ef3b0236844e2c07ff">::pooled_ptr</a>&#160;</td><td class="memItemRight"><a class="el" href="group___object_pools.html#gad0759e73fb2924a4b5034aaca55408c9">make_pooled</a> (ARGS &amp;&amp;... args)</td></tr>
+<tr class="memdesc:gad0759e73fb2924a4b5034aaca55408c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Helper to create <span class="tt"><a class="el" href="group___object_pools.html#gabdc285da362353ef3b0236844e2c07ff" title="A version of unique_ptr&lt;T&gt; that returns the object to the (thread-local) pool on destruction.">pooled_ptr</a></span>s ala <span class="tt">make_unique</span>.  <br /></td></tr>
 <tr class="memitem:gaaf99e06b29cc11fb54a534afc20d4c01" id="r_gaaf99e06b29cc11fb54a534afc20d4c01"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gaaf99e06b29cc11fb54a534afc20d4c01">valid_index</a> (random_access_range auto &amp;range, std::integral auto index)</td></tr>
 <tr class="memdesc:gaaf99e06b29cc11fb54a534afc20d4c01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not a given integer is a valid index to a random access <span class="tt">range</span>.  <br /></td></tr>
 <tr class="memitem:gac7f887707d285f61bc2f1aae98f1c976" id="r_gac7f887707d285f61bc2f1aae98f1c976"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gac7f887707d285f61bc2f1aae98f1c976">modulo_index</a> (size_t range_size, std::integral auto index)</td></tr>
@@ -932,48 +948,20 @@ requires requires (T value, RANGE range) { { *std::ranges::begin(range) == value
 <tr class="memitem:gab3b228bfee2bb2c489b0bf08628ad817" id="r_gab3b228bfee2bb2c489b0bf08628ad817"><td class="memTemplParams" colspan="2">template&lt;random_access_range RANGE, typename T = range_value&lt;RANGE&gt;&gt; </td></tr>
 <tr class="memitem:gab3b228bfee2bb2c489b0bf08628ad817 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gab3b228bfee2bb2c489b0bf08628ad817">at_or_default</a> (RANGE &amp;&amp;range, std::integral auto index, T &amp;&amp;default_value)</td></tr>
 <tr class="memdesc:gab3b228bfee2bb2c489b0bf08628ad817"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the element at <span class="tt">index</span> or <span class="tt">default_value</span> if not a valid index.  <br /></td></tr>
-<tr class="memitem:ga58b6ea74ef4536304442a7fb752733c9" id="r_ga58b6ea74ef4536304442a7fb752733c9"><td class="memTemplParams" colspan="2">template&lt;random_access_range RANGE, typename FUNC&gt; </td></tr>
-<tr class="memitem:ga58b6ea74ef4536304442a7fb752733c9 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga58b6ea74ef4536304442a7fb752733c9">find_index</a> (RANGE const &amp;range, FUNC &amp;&amp;func) -&gt; std::iter_difference_t&lt; <a class="el" href="group___ranges.html#ga38e1dac5f81ca29822e3f8d4963739dc">range_iterator</a>&lt; RANGE &gt; &gt;</td></tr>
-<tr class="memdesc:ga58b6ea74ef4536304442a7fb752733c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a value in <span class="tt">range</span> and returns an index to it.  <br /></td></tr>
-<tr class="memitem:ga2d6ec855951fa9b03d32b38143896920" id="r_ga2d6ec855951fa9b03d32b38143896920"><td class="memTemplParams" colspan="2">template&lt;std::ranges::range RANGE, typename FUNC&gt; </td></tr>
-<tr class="memitem:ga2d6ec855951fa9b03d32b38143896920 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga2d6ec855951fa9b03d32b38143896920">find_ptr</a> (RANGE &amp;range, FUNC &amp;&amp;func)</td></tr>
-<tr class="memdesc:ga2d6ec855951fa9b03d32b38143896920"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a value in <span class="tt">range</span> and returns a pointer to it, or null if none found.  <br /></td></tr>
-<tr class="memitem:gaa05bdb1138678d36065c57c8b75beb22" id="r_gaa05bdb1138678d36065c57c8b75beb22"><td class="memTemplParams" colspan="2">template&lt;random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_value&lt;RANGE&gt;&gt; </td></tr>
-<tr class="memitem:gaa05bdb1138678d36065c57c8b75beb22 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gaa05bdb1138678d36065c57c8b75beb22">find_if_or_default</a> (RANGE &amp;range, FUNC &amp;&amp;func, DEF_TYPE &amp;&amp;default_value=DEF_TYPE{})</td></tr>
+<tr class="memitem:ga7264fc8133a4b72f21406732ae98ec9d" id="r_ga7264fc8133a4b72f21406732ae98ec9d"><td class="memTemplParams" colspan="2">template&lt;random_access_range RANGE, typename FUNC&gt; </td></tr>
+<tr class="memitem:ga7264fc8133a4b72f21406732ae98ec9d template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga7264fc8133a4b72f21406732ae98ec9d">find_index</a> (RANGE const &amp;range, FUNC &amp;&amp;<a class="el" href="namespaceghassanpl_1_1pred.html">pred</a>) -&gt; std::iter_difference_t&lt; <a class="el" href="group___ranges.html#ga38e1dac5f81ca29822e3f8d4963739dc">range_iterator</a>&lt; RANGE &gt; &gt;</td></tr>
+<tr class="memdesc:ga7264fc8133a4b72f21406732ae98ec9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a value in <span class="tt">range</span> that matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred</a></span>, and returns an index to it.  <br /></td></tr>
+<tr class="memitem:ga9062af46ea9f31e554a6812fd57a73af" id="r_ga9062af46ea9f31e554a6812fd57a73af"><td class="memTemplParams" colspan="2">template&lt;std::ranges::range RANGE, typename FUNC&gt; </td></tr>
+<tr class="memitem:ga9062af46ea9f31e554a6812fd57a73af template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga9062af46ea9f31e554a6812fd57a73af">find_ptr</a> (RANGE &amp;range, FUNC &amp;&amp;<a class="el" href="namespaceghassanpl_1_1pred.html">pred</a>)</td></tr>
+<tr class="memdesc:ga9062af46ea9f31e554a6812fd57a73af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a value in <span class="tt">range</span> that matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred</a></span>, and returns a pointer to it, or null if none found.  <br /></td></tr>
+<tr class="memitem:ga5e432adbde852ba34c51a86399e9ff8f" id="r_ga5e432adbde852ba34c51a86399e9ff8f"><td class="memTemplParams" colspan="2">template&lt;random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_value&lt;RANGE&gt;&gt; </td></tr>
+<tr class="memitem:ga5e432adbde852ba34c51a86399e9ff8f template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga5e432adbde852ba34c51a86399e9ff8f">find_if_or_default</a> (RANGE &amp;range, FUNC &amp;&amp;<a class="el" href="namespaceghassanpl_1_1pred.html">pred</a>, DEF_TYPE &amp;&amp;default_value=DEF_TYPE{})</td></tr>
+<tr class="memdesc:ga5e432adbde852ba34c51a86399e9ff8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a value in <span class="tt">range</span> that matches <span class="tt"><a class="el" href="namespaceghassanpl_1_1pred.html" title="Contains functions that return predicates; appropriate for functions like std::all_of.">pred</a></span>, and returns it, or <span class="tt">default_value</span> if none found.  <br /></td></tr>
 <tr class="memitem:gaa0acfa0520ddfe27b7b120bdb0ce1742" id="r_gaa0acfa0520ddfe27b7b120bdb0ce1742"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gaa0acfa0520ddfe27b7b120bdb0ce1742">to_index</a> (random_access_iterator auto iterator, random_access_range auto const &amp;range)</td></tr>
 <tr class="memdesc:gaa0acfa0520ddfe27b7b120bdb0ce1742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns an <span class="tt">iterator</span> to <span class="tt">range</span> to an index.  <br /></td></tr>
 <tr class="memitem:ga9b220807298f2d39fe0e1075d52a7422" id="r_ga9b220807298f2d39fe0e1075d52a7422"><td class="memTemplParams" colspan="2">template&lt;contiguous_range RANGE&gt; </td></tr>
 <tr class="memitem:ga9b220807298f2d39fe0e1075d52a7422 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">valid_address</a> (RANGE &amp;&amp;range, <a class="el" href="group___ranges.html#gae9ad1518f47ff203386a4c5cf3ca371a">range_value</a>&lt; RANGE &gt; *pointer)</td></tr>
 <tr class="memdesc:ga9b220807298f2d39fe0e1075d52a7422"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns whether or not <span class="tt">pointer</span> is a valid pointer to an element in the contiguous <span class="tt">range</span>.  <br /></td></tr>
-<tr class="memitem:gacd70f29258ebed17c37f8adbf4383ada" id="r_gacd70f29258ebed17c37f8adbf4383ada"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:gacd70f29258ebed17c37f8adbf4383ada template"><td class="memItemLeft">constexpr std::pair&lt; span&lt; T &gt;, span&lt; T &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gacd70f29258ebed17c37f8adbf4383ada">split_at</a> (span&lt; T, N &gt; spn, size_t index)</td></tr>
-<tr class="memdesc:gacd70f29258ebed17c37f8adbf4383ada"><td class="mdescLeft">&#160;</td><td class="mdescRight">Span stuff.  <br /></td></tr>
-<tr class="memitem:gadc1098c3ce226d3e4db63f382898556a" id="r_gadc1098c3ce226d3e4db63f382898556a"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:gadc1098c3ce226d3e4db63f382898556a template"><td class="memItemLeft">constexpr std::array&lt; span&lt; T &gt;, 3 &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gadc1098c3ce226d3e4db63f382898556a">split_at</a> (span&lt; T, N &gt; spn, size_t index, size_t size)</td></tr>
-<tr class="memitem:ga8b0dc5b62082b9a975d520f6d71fc4b3" id="r_ga8b0dc5b62082b9a975d520f6d71fc4b3"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:ga8b0dc5b62082b9a975d520f6d71fc4b3 template"><td class="memItemLeft">constexpr std::pair&lt; T *, T * &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga8b0dc5b62082b9a975d520f6d71fc4b3">as_range</a> (span&lt; T, N &gt; spn)</td></tr>
-<tr class="memitem:gaaf995c79d3d231f850adfacccffa9035" id="r_gaaf995c79d3d231f850adfacccffa9035"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gaaf995c79d3d231f850adfacccffa9035">as_span</a> (std::ranges::range auto &amp;range)</td></tr>
-<tr class="memitem:ga3cbc4ac8d7f78e7db3b3cb0683d7c792" id="r_ga3cbc4ac8d7f78e7db3b3cb0683d7c792"><td class="memTemplParams" colspan="2">template&lt;typename TO, typename FROM, size_t N = std::dynamic_extent&gt; </td></tr>
-<tr class="memitem:ga3cbc4ac8d7f78e7db3b3cb0683d7c792 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga3cbc4ac8d7f78e7db3b3cb0683d7c792">span_cast</a> (span&lt; FROM, N &gt; bytes) noexcept</td></tr>
-<tr class="memdesc:ga3cbc4ac8d7f78e7db3b3cb0683d7c792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts a spn of objects of type FROM to a spn of objects of type TO Does not perform any checks, specifically, no alignment or size checks are performed.  <br /></td></tr>
-<tr class="memitem:ga189578b5b2d949158ea74ffd6ba2c3b8" id="r_ga189578b5b2d949158ea74ffd6ba2c3b8"><td class="memTemplParams" colspan="2">template&lt;typename T1, size_t N1, typename T2, size_t N2&gt; </td></tr>
-<tr class="memitem:ga189578b5b2d949158ea74ffd6ba2c3b8 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga189578b5b2d949158ea74ffd6ba2c3b8">are_adjacent</a> (span&lt; T1, N1 &gt; s1, span&lt; T2, N2 &gt; s2)</td></tr>
-<tr class="memitem:gad35c98114cc22981fe48e7ea02e4b456" id="r_gad35c98114cc22981fe48e7ea02e4b456"><td class="memTemplParams" colspan="2">template&lt;typename T1, size_t N1, typename T2, size_t N2&gt; </td></tr>
-<tr class="memitem:gad35c98114cc22981fe48e7ea02e4b456 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gad35c98114cc22981fe48e7ea02e4b456">are_overlapping</a> (span&lt; T1, N1 &gt; s1, span&lt; T2, N2 &gt; s2)</td></tr>
-<tr class="memitem:ga700f379d147eb6951b6e7734d9617108" id="r_ga700f379d147eb6951b6e7734d9617108"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N1, typename U, size_t N2&gt; </td></tr>
-<tr class="memitem:ga700f379d147eb6951b6e7734d9617108 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga700f379d147eb6951b6e7734d9617108">ends_with</a> (span&lt; T, N1 &gt; s1, span&lt; U, N2 &gt; s2)</td></tr>
-<tr class="memitem:gafd849fac4dbddc2384e0acd9fb99fb8a" id="r_gafd849fac4dbddc2384e0acd9fb99fb8a"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N1, typename U, size_t N2&gt; </td></tr>
-<tr class="memitem:gafd849fac4dbddc2384e0acd9fb99fb8a template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gafd849fac4dbddc2384e0acd9fb99fb8a">starts_with</a> (span&lt; T, N1 &gt; s1, span&lt; U, N2 &gt; s2)</td></tr>
-<tr class="memitem:ga0531b42271ed8ee6b10a84c1a6fff48f" id="r_ga0531b42271ed8ee6b10a84c1a6fff48f"><td class="memTemplParams" colspan="2">template&lt;typename T, std::size_t... Ns&gt; </td></tr>
-<tr class="memitem:ga0531b42271ed8ee6b10a84c1a6fff48f template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga0531b42271ed8ee6b10a84c1a6fff48f">join</a> (std::array&lt; T, Ns &gt;... arrays)</td></tr>
-<tr class="memdesc:ga0531b42271ed8ee6b10a84c1a6fff48f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arrays.  <br /></td></tr>
-<tr class="memitem:ga1302ffe0ca898405d38c41707a665566" id="r_ga1302ffe0ca898405d38c41707a665566"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t LL, typename... ARGS&gt; </td></tr>
-<tr class="memitem:ga1302ffe0ca898405d38c41707a665566 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga1302ffe0ca898405d38c41707a665566">join</a> (std::array&lt; T, LL &gt; rhs, ARGS &amp;&amp;... args)</td></tr>
-<tr class="memitem:gaf0e48f4e15e1aefe379fa05337a2bfc0" id="r_gaf0e48f4e15e1aefe379fa05337a2bfc0"><td class="memTemplParams" colspan="2">template&lt;class CONTAINER, std::ranges::input_range RANGE, class... TYPES&gt; </td></tr>
-<tr class="memitem:gaf0e48f4e15e1aefe379fa05337a2bfc0 template"><td class="memItemLeft">constexpr CONTAINER&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">to</a> (RANGE &amp;&amp;range, TYPES &amp;&amp;... args)</td></tr>
-<tr class="memdesc:gaf0e48f4e15e1aefe379fa05337a2bfc0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0" title="to&lt;container&gt;();">to&lt;container&gt;()</a>;  <br /></td></tr>
-<tr class="memitem:ga121ad3ff2c59625299e3fef02909b4eb" id="r_ga121ad3ff2c59625299e3fef02909b4eb"><td class="memTemplParams" colspan="2">template&lt;template&lt; class... &gt; class CONTAINER, std::ranges::input_range RANGE, class... TYPES, class _Deduced = std::remove_pointer_t&lt;decltype(detail::to_helper&lt;CONTAINER, RANGE, TYPES...&gt;())&gt;&gt; </td></tr>
-<tr class="memitem:ga121ad3ff2c59625299e3fef02909b4eb template"><td class="memItemLeft">constexpr _Deduced&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga121ad3ff2c59625299e3fef02909b4eb">to</a> (RANGE &amp;&amp;_Range, TYPES &amp;&amp;... ARGS)</td></tr>
 <tr class="memitem:abd1e19e8612b2a57662bb16477efe9c7" id="r_abd1e19e8612b2a57662bb16477efe9c7"><td class="memTemplParams" colspan="2"><a id="abd1e19e8612b2a57662bb16477efe9c7" name="abd1e19e8612b2a57662bb16477efe9c7"></a>
 template&lt;template&lt; typename &gt; typename HASHER, typename FIRST, typename... T&gt; </td></tr>
 <tr class="memitem:abd1e19e8612b2a57662bb16477efe9c7 template"><td class="memItemLeft">constexpr size_t&#160;</td><td class="memItemRight"><b>hash</b> (FIRST &amp;&amp;first, T &amp;&amp;... values)</td></tr>
@@ -981,45 +969,48 @@ template&lt;template&lt; typename &gt; typename HASHER, typename FIRST, typename
 <tr class="memitem:a10f8bca1a2f95a55516a4c675f84e2e9 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a10f8bca1a2f95a55516a4c675f84e2e9">stringify</a> (STRINGIFIER &amp;str, <a class="el" href="structghassanpl_1_1geometry_1_1trec2.html">trec2</a>&lt; T &gt; &amp;b)</td></tr>
 <tr class="memitem:ac26dd5b548242578b984f95ec309f680" id="r_ac26dd5b548242578b984f95ec309f680"><td class="memTemplParams" colspan="2">template&lt;typename T, typename STRINGIFIER&gt; </td></tr>
 <tr class="memitem:ac26dd5b548242578b984f95ec309f680 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#ac26dd5b548242578b984f95ec309f680">stringify</a> (STRINGIFIER &amp;str, <a class="el" href="structghassanpl_1_1geometry_1_1trec2.html">trec2</a>&lt; T &gt; const &amp;b)</td></tr>
-<tr class="memitem:ae39ca4d8e1e3c93788f9a53b894be182" id="r_ae39ca4d8e1e3c93788f9a53b894be182"><td class="memTemplParams" colspan="2"><a id="ae39ca4d8e1e3c93788f9a53b894be182" name="ae39ca4d8e1e3c93788f9a53b894be182"></a>
+<tr class="memitem:gae39ca4d8e1e3c93788f9a53b894be182" id="r_gae39ca4d8e1e3c93788f9a53b894be182"><td class="memTemplParams" colspan="2">
 template&lt;class EF&gt; </td></tr>
-<tr class="memitem:ae39ca4d8e1e3c93788f9a53b894be182 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>scope_guard</b> (EF) -&gt; scope_guard&lt; EF &gt;</td></tr>
-<tr class="memitem:a52852f931e350b726d0757079616ab4b" id="r_a52852f931e350b726d0757079616ab4b"><td class="memTemplParams" colspan="2"><a id="a52852f931e350b726d0757079616ab4b" name="a52852f931e350b726d0757079616ab4b"></a>
+<tr class="memitem:gae39ca4d8e1e3c93788f9a53b894be182 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>scope_guard</b> (EF) -&gt; scope_guard&lt; EF &gt;</td></tr>
+<tr class="memitem:ga52852f931e350b726d0757079616ab4b" id="r_ga52852f931e350b726d0757079616ab4b"><td class="memTemplParams" colspan="2">
 template&lt;class R, class D&gt; </td></tr>
-<tr class="memitem:a52852f931e350b726d0757079616ab4b template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>unique_resource</b> (R, D) -&gt; unique_resource&lt; R, D &gt;</td></tr>
-<tr class="memitem:a46c584867316711f62774d94a4cce025" id="r_a46c584867316711f62774d94a4cce025"><td class="memTemplParams" colspan="2"><a id="a46c584867316711f62774d94a4cce025" name="a46c584867316711f62774d94a4cce025"></a>
+<tr class="memitem:ga52852f931e350b726d0757079616ab4b template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>unique_resource</b> (R, D) -&gt; unique_resource&lt; R, D &gt;</td></tr>
+<tr class="memitem:ga46c584867316711f62774d94a4cce025" id="r_ga46c584867316711f62774d94a4cce025"><td class="memTemplParams" colspan="2">
 template&lt;class R, class D, class I = std::decay_t&lt;R&gt;&gt; </td></tr>
-<tr class="memitem:a46c584867316711f62774d94a4cce025 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>unique_resource</b> (R, I, D) -&gt; unique_resource&lt; R, D &gt;</td></tr>
-<tr class="memitem:a78f4cc4013402707c5508ccafc3e4d54" id="r_a78f4cc4013402707c5508ccafc3e4d54"><td class="memTemplParams" colspan="2"><a id="a78f4cc4013402707c5508ccafc3e4d54" name="a78f4cc4013402707c5508ccafc3e4d54"></a>
+<tr class="memitem:ga46c584867316711f62774d94a4cce025 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>unique_resource</b> (R, I, D) -&gt; unique_resource&lt; R, D &gt;</td></tr>
+<tr class="memitem:ga78f4cc4013402707c5508ccafc3e4d54" id="r_ga78f4cc4013402707c5508ccafc3e4d54"><td class="memTemplParams" colspan="2">
 template&lt;typename T, typename U&gt; </td></tr>
-<tr class="memitem:a78f4cc4013402707c5508ccafc3e4d54 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>scoped_value_change</b> (T &amp;, U &amp;&amp;) -&gt; scoped_value_change&lt; T &gt;</td></tr>
-<tr class="memitem:ab62d9a58de3d86d4395f21f1bcd14c84" id="r_ab62d9a58de3d86d4395f21f1bcd14c84"><td class="memTemplParams" colspan="2">template&lt;class T&gt; </td></tr>
-<tr class="memitem:ab62d9a58de3d86d4395f21f1bcd14c84 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="#ab62d9a58de3d86d4395f21f1bcd14c84">operator==</a> (const sentinel_optional&lt; T &gt; &amp;left, std::nullopt_t) noexcept</td></tr>
-<tr class="memitem:ae81c33d207bf8340f0c7541576c47893" id="r_ae81c33d207bf8340f0c7541576c47893"><td class="memTemplParams" colspan="2">template&lt;class T, std::enable_if_t&lt; std::is_constructible_v&lt; std::decay_t&lt; T &gt;, T &gt;, int &gt; = 0&gt; </td></tr>
-<tr class="memitem:ae81c33d207bf8340f0c7541576c47893 template"><td class="memItemLeft">constexpr sentinel_optional&lt; std::decay_t&lt; T &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="#ae81c33d207bf8340f0c7541576c47893">make_sentinel_optional</a> (T &amp;&amp;value) noexcept(noexcept(sentinel_optional&lt; std::decay_t&lt; T &gt; &gt;{std::forward&lt; T &gt;(value)}))</td></tr>
-<tr class="memitem:a6b8596562fee2b80f3291037b8ac7929" id="r_a6b8596562fee2b80f3291037b8ac7929"><td class="memTemplParams" colspan="2">template&lt;class T, class... TYPES, std::enable_if_t&lt; std::is_constructible_v&lt; T, TYPES... &gt;, int &gt; = 0&gt; </td></tr>
-<tr class="memitem:a6b8596562fee2b80f3291037b8ac7929 template"><td class="memItemLeft">constexpr sentinel_optional&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a6b8596562fee2b80f3291037b8ac7929">make_optional</a> (TYPES &amp;&amp;... args) noexcept(noexcept(sentinel_optional&lt; T &gt;{std::in_place, std::forward&lt; TYPES &gt;(args)...}))</td></tr>
+<tr class="memitem:ga78f4cc4013402707c5508ccafc3e4d54 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><b>scoped_value_change</b> (T &amp;, U &amp;&amp;) -&gt; scoped_value_change&lt; T &gt;</td></tr>
+<tr class="memitem:gae81c33d207bf8340f0c7541576c47893" id="r_gae81c33d207bf8340f0c7541576c47893"><td class="memTemplParams" colspan="2">template&lt;class T, std::enable_if_t&lt; std::is_constructible_v&lt; std::decay_t&lt; T &gt;, T &gt;, int &gt; = 0&gt; </td></tr>
+<tr class="memitem:gae81c33d207bf8340f0c7541576c47893 template"><td class="memItemLeft">constexpr <a class="el" href="structghassanpl_1_1sentinel__optional.html">sentinel_optional</a>&lt; std::decay_t&lt; T &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="group__soptional.html#gae81c33d207bf8340f0c7541576c47893">make_sentinel_optional</a> (T &amp;&amp;value) noexcept(noexcept(<a class="el" href="structghassanpl_1_1sentinel__optional.html">sentinel_optional</a>&lt; std::decay_t&lt; T &gt; &gt;{std::forward&lt; T &gt;(value)}))</td></tr>
+<tr class="memitem:ga6b8596562fee2b80f3291037b8ac7929" id="r_ga6b8596562fee2b80f3291037b8ac7929"><td class="memTemplParams" colspan="2">template&lt;class T, class... TYPES, std::enable_if_t&lt; std::is_constructible_v&lt; T, TYPES... &gt;, int &gt; = 0&gt; </td></tr>
+<tr class="memitem:ga6b8596562fee2b80f3291037b8ac7929 template"><td class="memItemLeft">constexpr <a class="el" href="structghassanpl_1_1sentinel__optional.html">sentinel_optional</a>&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="group__soptional.html#ga6b8596562fee2b80f3291037b8ac7929">make_optional</a> (TYPES &amp;&amp;... args) noexcept(noexcept(<a class="el" href="structghassanpl_1_1sentinel__optional.html">sentinel_optional</a>&lt; T &gt;{std::in_place, std::forward&lt; TYPES &gt;(args)...}))</td></tr>
 <tr class="memitem:a6bbe26bf519e6c7768e9bc438be4b052" id="r_a6bbe26bf519e6c7768e9bc438be4b052"><td class="memTemplParams" colspan="2">template&lt;typename STRINGIFIER&gt; </td></tr>
 <tr class="memitem:a6bbe26bf519e6c7768e9bc438be4b052 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a6bbe26bf519e6c7768e9bc438be4b052">stringify</a> (STRINGIFIER &amp;str, const source_location &amp;b)</td></tr>
 <tr class="memitem:aff7f21f5641081476af1a71d99286048" id="r_aff7f21f5641081476af1a71d99286048"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:aff7f21f5641081476af1a71d99286048 template"><td class="memItemLeft">span&lt; T &gt;&#160;</td><td class="memItemRight"><a class="el" href="#aff7f21f5641081476af1a71d99286048">consume_n</a> (span&lt; T &gt; &amp;s, size_t n)</td></tr>
 <tr class="memitem:abf4be824af9ec50ddd7abd78b1eb7fc7" id="r_abf4be824af9ec50ddd7abd78b1eb7fc7"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:abf4be824af9ec50ddd7abd78b1eb7fc7 template"><td class="memItemLeft">decltype(auto)&#160;</td><td class="memItemRight"><a class="el" href="#abf4be824af9ec50ddd7abd78b1eb7fc7">consume</a> (span&lt; T &gt; &amp;s)</td></tr>
-<tr class="memitem:a4dc4ceba292cdfda32f28e0464136505" id="r_a4dc4ceba292cdfda32f28e0464136505"><td class="memTemplParams" colspan="2">template&lt;char open = '[', char close = ']', typename FUNC&gt; </td></tr>
-<tr class="memitem:a4dc4ceba292cdfda32f28e0464136505 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a4dc4ceba292cdfda32f28e0464136505">interpolate_simple</a> (std::string_view str, FUNC &amp;&amp;func)</td></tr>
-<tr class="memitem:a33ba9e57a00b4aa6d7cab9446f0cfc9f" id="r_a33ba9e57a00b4aa6d7cab9446f0cfc9f"><td class="memTemplParams" colspan="2">template&lt;char open = '[', char close = ']', typename FUNC&gt; </td></tr>
-<tr class="memitem:a33ba9e57a00b4aa6d7cab9446f0cfc9f template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a33ba9e57a00b4aa6d7cab9446f0cfc9f">interpolate_recursive</a> (std::string_view str, FUNC &amp;&amp;func)</td></tr>
-<tr class="memitem:ab06a008f03b778d3911782acab93bc10" id="r_ab06a008f03b778d3911782acab93bc10"><td class="memTemplParams" colspan="2">template&lt;bool SYNTAX&gt; </td></tr>
-<tr class="memitem:ab06a008f03b778d3911782acab93bc10 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ab06a008f03b778d3911782acab93bc10">interpolate_eval</a> (std::string_view str, <a class="el" href="structghassanpl_1_1eval_1_1environment.html">eval::environment</a>&lt; SYNTAX &gt; &amp;env)</td></tr>
-<tr class="memitem:a6f8b63031b10f917ed6908d4604a5514" id="r_a6f8b63031b10f917ed6908d4604a5514"><td class="memTemplParams" colspan="2">template&lt;std::same_as&lt; char &gt; T&gt; </td></tr>
-<tr class="memitem:a6f8b63031b10f917ed6908d4604a5514 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a6f8b63031b10f917ed6908d4604a5514">to_string</a> (T c)</td></tr>
-<tr class="memitem:a91f3d5afa62c33cf5e6898b0951639e5" id="r_a91f3d5afa62c33cf5e6898b0951639e5"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a91f3d5afa62c33cf5e6898b0951639e5 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a91f3d5afa62c33cf5e6898b0951639e5">to_string</a> (T val)</td></tr>
-<tr class="memitem:a91f3d5afa62c33cf5e6898b0951639e5" id="r_a91f3d5afa62c33cf5e6898b0951639e5"><td class="memTemplParams" colspan="2">template&lt;std::floating_point T&gt; </td></tr>
-<tr class="memitem:a91f3d5afa62c33cf5e6898b0951639e5 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a91f3d5afa62c33cf5e6898b0951639e5">to_string</a> (T val)</td></tr>
-<tr class="memitem:a5135b5f128bac021439c965af4a46e3d" id="r_a5135b5f128bac021439c965af4a46e3d"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
-<tr class="memitem:a5135b5f128bac021439c965af4a46e3d template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a5135b5f128bac021439c965af4a46e3d">to_string</a> (T &amp;&amp;val)</td></tr>
-<tr class="memitem:a6a9afae30cd83cbdac36b6717859e910" id="r_a6a9afae30cd83cbdac36b6717859e910"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a6a9afae30cd83cbdac36b6717859e910">to_string</a> (nullptr_t)</td></tr>
+<tr class="memitem:ga4dc4ceba292cdfda32f28e0464136505" id="r_ga4dc4ceba292cdfda32f28e0464136505"><td class="memTemplParams" colspan="2">template&lt;char open = '[', char close = ']', typename FUNC&gt; </td></tr>
+<tr class="memitem:ga4dc4ceba292cdfda32f28e0464136505 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___string_interpolate.html#ga4dc4ceba292cdfda32f28e0464136505">interpolate_simple</a> (std::string_view str, FUNC &amp;&amp;func)</td></tr>
+<tr class="memitem:ga33ba9e57a00b4aa6d7cab9446f0cfc9f" id="r_ga33ba9e57a00b4aa6d7cab9446f0cfc9f"><td class="memTemplParams" colspan="2">template&lt;char open = '[', char close = ']', typename FUNC&gt; </td></tr>
+<tr class="memitem:ga33ba9e57a00b4aa6d7cab9446f0cfc9f template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___string_interpolate.html#ga33ba9e57a00b4aa6d7cab9446f0cfc9f">interpolate_recursive</a> (std::string_view str, FUNC &amp;&amp;func)</td></tr>
+<tr class="memitem:gab06a008f03b778d3911782acab93bc10" id="r_gab06a008f03b778d3911782acab93bc10"><td class="memTemplParams" colspan="2">template&lt;bool SYNTAX&gt; </td></tr>
+<tr class="memitem:gab06a008f03b778d3911782acab93bc10 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___string_interpolate.html#gab06a008f03b778d3911782acab93bc10">interpolate_eval</a> (std::string_view str, <a class="el" href="structghassanpl_1_1eval_1_1environment.html">eval::environment</a>&lt; SYNTAX &gt; &amp;env)</td></tr>
+<tr class="memitem:ga3fc46c8bb82b9eb3b64b08ed1cdc282b" id="r_ga3fc46c8bb82b9eb3b64b08ed1cdc282b"><td class="memTemplParams" colspan="2">template&lt;std::floating_point T&gt; </td></tr>
+<tr class="memitem:ga3fc46c8bb82b9eb3b64b08ed1cdc282b template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___stringification.html#ga3fc46c8bb82b9eb3b64b08ed1cdc282b">to_string</a> (T floating_point)</td></tr>
+<tr class="memdesc:ga3fc46c8bb82b9eb3b64b08ed1cdc282b"><td class="mdescLeft">&#160;</td><td class="mdescRight">float overload  <br /></td></tr>
+<tr class="memitem:ga3fc46c8bb82b9eb3b64b08ed1cdc282b" id="r_ga3fc46c8bb82b9eb3b64b08ed1cdc282b"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga3fc46c8bb82b9eb3b64b08ed1cdc282b template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ga3fc46c8bb82b9eb3b64b08ed1cdc282b">to_string</a> (T integral)</td></tr>
+<tr class="memdesc:ga3fc46c8bb82b9eb3b64b08ed1cdc282b"><td class="mdescLeft">&#160;</td><td class="mdescRight">integral overload  <br /></td></tr>
+<tr class="memitem:ga3fc46c8bb82b9eb3b64b08ed1cdc282b" id="r_ga3fc46c8bb82b9eb3b64b08ed1cdc282b"><td class="memTemplParams" colspan="2">template&lt;std::same_as&lt; char &gt; T&gt; </td></tr>
+<tr class="memitem:ga3fc46c8bb82b9eb3b64b08ed1cdc282b template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ga3fc46c8bb82b9eb3b64b08ed1cdc282b">to_string</a> (T c)</td></tr>
+<tr class="memdesc:ga3fc46c8bb82b9eb3b64b08ed1cdc282b"><td class="mdescLeft">&#160;</td><td class="mdescRight">char overload  <br /></td></tr>
+<tr class="memitem:ga5135b5f128bac021439c965af4a46e3d" id="r_ga5135b5f128bac021439c965af4a46e3d"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
+<tr class="memitem:ga5135b5f128bac021439c965af4a46e3d template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___stringification.html#ga5135b5f128bac021439c965af4a46e3d">to_string</a> (T &amp;&amp;val)</td></tr>
+<tr class="memdesc:ga5135b5f128bac021439c965af4a46e3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">string-like overload  <br /></td></tr>
+<tr class="memitem:ga6a9afae30cd83cbdac36b6717859e910" id="r_ga6a9afae30cd83cbdac36b6717859e910"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___stringification.html#ga6a9afae30cd83cbdac36b6717859e910">to_string</a> (nullptr_t)</td></tr>
+<tr class="memdesc:ga6a9afae30cd83cbdac36b6717859e910"><td class="mdescLeft">&#160;</td><td class="mdescRight">nullptr overload  <br /></td></tr>
 <tr class="memitem:a5b441fd3cf8a670b8eb6c5de02eef50c" id="r_a5b441fd3cf8a670b8eb6c5de02eef50c"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a5b441fd3cf8a670b8eb6c5de02eef50c template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a5b441fd3cf8a670b8eb6c5de02eef50c">eat_from_string</a> (std::string_view &amp;from, T &amp;&amp;val)</td></tr>
 <tr class="memitem:aefe7eae91bc6fbd23e1c5b708f95289f" id="r_aefe7eae91bc6fbd23e1c5b708f95289f"><td class="memTemplParams" colspan="2">template&lt;typename T, template&lt; bool &gt; typename STRINGIFIER = string_stringifier&gt; </td></tr>
@@ -1170,6 +1161,30 @@ uri_expected&lt; <a class="el" href="group___u_r_i.html#gac48aa55b764c8275255643
 <tr class="memitem:ga760733edb7f8d49b7ec650d5d85ce1ff template"><td class="memItemLeft">consteval void&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga760733edb7f8d49b7ec650d5d85ce1ff">ce_hash64_tuple_elements</a> (uint64_t &amp;hash, TUPLE_TYPE const &amp;t, std::index_sequence&lt; Is... &gt;)</td></tr>
 <tr class="memitem:ga99107c53ee828c233d69d7ea22a8bfc6" id="r_ga99107c53ee828c233d69d7ea22a8bfc6"><td class="memTemplParams" colspan="2">template&lt;typename... T&gt; </td></tr>
 <tr class="memitem:ga99107c53ee828c233d69d7ea22a8bfc6 template"><td class="memItemLeft">consteval uint64_t&#160;</td><td class="memItemRight"><a class="el" href="group___hashes.html#ga99107c53ee828c233d69d7ea22a8bfc6">ce_hash64</a> (std::tuple&lt; T... &gt; const &amp;tupl) noexcept</td></tr>
+<tr id="func-members-2" class="groupHeader"><td colspan="2"><div class="groupHeader">Span Operations</div></td></tr>
+<tr class="memitem:gacd70f29258ebed17c37f8adbf4383ada" id="r_gacd70f29258ebed17c37f8adbf4383ada"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:gacd70f29258ebed17c37f8adbf4383ada template"><td class="memItemLeft">constexpr std::pair&lt; span&lt; T &gt;, span&lt; T &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gacd70f29258ebed17c37f8adbf4383ada">split_at</a> (span&lt; T, N &gt; spn, size_t index)</td></tr>
+<tr class="memitem:gadc1098c3ce226d3e4db63f382898556a" id="r_gadc1098c3ce226d3e4db63f382898556a"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:gadc1098c3ce226d3e4db63f382898556a template"><td class="memItemLeft">constexpr std::array&lt; span&lt; T &gt;, 3 &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gadc1098c3ce226d3e4db63f382898556a">split_at</a> (span&lt; T, N &gt; spn, size_t index, size_t size)</td></tr>
+<tr class="memitem:ga8b0dc5b62082b9a975d520f6d71fc4b3" id="r_ga8b0dc5b62082b9a975d520f6d71fc4b3"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ga8b0dc5b62082b9a975d520f6d71fc4b3 template"><td class="memItemLeft">constexpr std::pair&lt; T *, T * &gt;&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga8b0dc5b62082b9a975d520f6d71fc4b3">as_range</a> (span&lt; T, N &gt; spn)</td></tr>
+<tr class="memitem:gaaf995c79d3d231f850adfacccffa9035" id="r_gaaf995c79d3d231f850adfacccffa9035"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gaaf995c79d3d231f850adfacccffa9035">as_span</a> (std::ranges::range auto &amp;range)</td></tr>
+<tr class="memitem:ga3cbc4ac8d7f78e7db3b3cb0683d7c792" id="r_ga3cbc4ac8d7f78e7db3b3cb0683d7c792"><td class="memTemplParams" colspan="2">template&lt;typename TO, typename FROM, size_t N = std::dynamic_extent&gt; </td></tr>
+<tr class="memitem:ga3cbc4ac8d7f78e7db3b3cb0683d7c792 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga3cbc4ac8d7f78e7db3b3cb0683d7c792">span_cast</a> (span&lt; FROM, N &gt; bytes) noexcept</td></tr>
+<tr class="memdesc:ga3cbc4ac8d7f78e7db3b3cb0683d7c792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Casts a span of objects of type FROM to a span of objects of type TO.  <br /></td></tr>
+<tr class="memitem:ga189578b5b2d949158ea74ffd6ba2c3b8" id="r_ga189578b5b2d949158ea74ffd6ba2c3b8"><td class="memTemplParams" colspan="2">template&lt;typename T1, size_t N1, typename T2, size_t N2&gt; </td></tr>
+<tr class="memitem:ga189578b5b2d949158ea74ffd6ba2c3b8 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga189578b5b2d949158ea74ffd6ba2c3b8">are_adjacent</a> (span&lt; T1, N1 &gt; s1, span&lt; T2, N2 &gt; s2)</td></tr>
+<tr class="memitem:gad35c98114cc22981fe48e7ea02e4b456" id="r_gad35c98114cc22981fe48e7ea02e4b456"><td class="memTemplParams" colspan="2">template&lt;typename T1, size_t N1, typename T2, size_t N2&gt; </td></tr>
+<tr class="memitem:gad35c98114cc22981fe48e7ea02e4b456 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gad35c98114cc22981fe48e7ea02e4b456">are_overlapping</a> (span&lt; T1, N1 &gt; s1, span&lt; T2, N2 &gt; s2)</td></tr>
+<tr class="memitem:ga700f379d147eb6951b6e7734d9617108" id="r_ga700f379d147eb6951b6e7734d9617108"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N1, typename U, size_t N2&gt; </td></tr>
+<tr class="memitem:ga700f379d147eb6951b6e7734d9617108 template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga700f379d147eb6951b6e7734d9617108">ends_with</a> (span&lt; T, N1 &gt; s1, span&lt; U, N2 &gt; s2)</td></tr>
+<tr class="memitem:gafd849fac4dbddc2384e0acd9fb99fb8a" id="r_gafd849fac4dbddc2384e0acd9fb99fb8a"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t N1, typename U, size_t N2&gt; </td></tr>
+<tr class="memitem:gafd849fac4dbddc2384e0acd9fb99fb8a template"><td class="memItemLeft">constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gafd849fac4dbddc2384e0acd9fb99fb8a">starts_with</a> (span&lt; T, N1 &gt; s1, span&lt; U, N2 &gt; s2)</td></tr>
+<tr id="func-members-3" class="groupHeader"><td colspan="2"><div class="groupHeader">Array Operations</div></td></tr>
+<tr class="memitem:ga0531b42271ed8ee6b10a84c1a6fff48f" id="r_ga0531b42271ed8ee6b10a84c1a6fff48f"><td class="memTemplParams" colspan="2">template&lt;typename T, std::size_t... Ns&gt; </td></tr>
+<tr class="memitem:ga0531b42271ed8ee6b10a84c1a6fff48f template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga0531b42271ed8ee6b10a84c1a6fff48f">join</a> (std::array&lt; T, Ns &gt;... arrays)</td></tr>
+<tr class="memitem:ga1302ffe0ca898405d38c41707a665566" id="r_ga1302ffe0ca898405d38c41707a665566"><td class="memTemplParams" colspan="2">template&lt;typename T, size_t LL, typename... ARGS&gt; </td></tr>
+<tr class="memitem:ga1302ffe0ca898405d38c41707a665566 template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga1302ffe0ca898405d38c41707a665566">join</a> (std::array&lt; T, LL &gt; rhs, ARGS &amp;&amp;... args)</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -1235,10 +1250,6 @@ constexpr struct ghassanpl::no_flags_t&#160;</td><td class="memItemRight"><b>no_
 <tr class="memitem:a021b3c7ba3a09a12c2af82b734f0384f" id="r_a021b3c7ba3a09a12c2af82b734f0384f"><td class="memItemLeft">const file_handle_type&#160;</td><td class="memItemRight"><a class="el" href="#a021b3c7ba3a09a12c2af82b734f0384f">invalid_handle</a></td></tr>
 <tr class="memitem:aa545c5bd0381c55ddd9aca89b6e24d3d" id="r_aa545c5bd0381c55ddd9aca89b6e24d3d"><td class="memTemplParams" colspan="2">template&lt;typename OTHER&gt; </td></tr>
 <tr class="memitem:aa545c5bd0381c55ddd9aca89b6e24d3d template"><td class="memItemLeft">static constexpr bool&#160;</td><td class="memItemRight"><a class="el" href="#aa545c5bd0381c55ddd9aca89b6e24d3d">is_named_v</a></td></tr>
-<tr class="memitem:gafa66c510b1bca79889cfb20c2c5e07ad" id="r_gafa66c510b1bca79889cfb20c2c5e07ad"><td class="memItemLeft">constexpr __contains_fn&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gafa66c510b1bca79889cfb20c2c5e07ad">contains</a></td></tr>
-<tr class="memdesc:gafa66c510b1bca79889cfb20c2c5e07ad"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group___ranges.html#gafa66c510b1bca79889cfb20c2c5e07ad" title="contains(range, el)">contains(range, el)</a>  <br /></td></tr>
-<tr class="memitem:ga9bb1a259ef8c7774c28f6f2971a41af2" id="r_ga9bb1a259ef8c7774c28f6f2971a41af2"><td class="memItemLeft">constexpr __contains_subrange_fn&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga9bb1a259ef8c7774c28f6f2971a41af2">contains_subrange</a></td></tr>
-<tr class="memdesc:ga9bb1a259ef8c7774c28f6f2971a41af2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group___ranges.html#ga9bb1a259ef8c7774c28f6f2971a41af2" title="contains_subrange(range, subrange)">contains_subrange(range, subrange)</a>  <br /></td></tr>
 <tr class="memitem:aedf5d16e3cd5d2944c2bec93f9f4b60c" id="r_aedf5d16e3cd5d2944c2bec93f9f4b60c"><td class="memTemplParams" colspan="2">template&lt;typename TYPE, typename TYPE_CONTAINER&gt; </td></tr>
 <tr class="memitem:aedf5d16e3cd5d2944c2bec93f9f4b60c template"><td class="memItemLeft">constexpr size_t&#160;</td><td class="memItemRight"><a class="el" href="#aedf5d16e3cd5d2944c2bec93f9f4b60c">get_index_v</a></td></tr>
 <tr class="memitem:ad93ce73883cee79a2130887fcc330a54" id="r_ad93ce73883cee79a2130887fcc330a54"><td class="memTemplParams" colspan="2">template&lt;typename TYPE, typename TYPE_CONTAINER&gt; </td></tr>
@@ -1249,6 +1260,18 @@ struct ghassanpl::default_init_t&#160;</td><td class="memItemRight"><b>default_i
 struct ghassanpl::paren_init_t&#160;</td><td class="memItemRight"><b>paren_init</b></td></tr>
 <tr class="memitem:ad6b0dea79b994ad8b36dbf96d8be1b99" id="r_ad6b0dea79b994ad8b36dbf96d8be1b99"><td class="memItemLeft"><a id="ad6b0dea79b994ad8b36dbf96d8be1b99" name="ad6b0dea79b994ad8b36dbf96d8be1b99"></a>
 struct ghassanpl::brace_init_t&#160;</td><td class="memItemRight"><b>brace_init</b></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-member-group" class="groupheader"><a id="member-group" name="member-group"></a>
+C++23 Compatibility</h2></td></tr>
+<tr class="memitem:gafa66c510b1bca79889cfb20c2c5e07ad" id="r_gafa66c510b1bca79889cfb20c2c5e07ad"><td class="memItemLeft">constexpr __contains_fn&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gafa66c510b1bca79889cfb20c2c5e07ad">contains</a></td></tr>
+<tr class="memdesc:gafa66c510b1bca79889cfb20c2c5e07ad"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group___ranges.html#gafa66c510b1bca79889cfb20c2c5e07ad" title="contains(range, el)">contains(range, el)</a>  <br /></td></tr>
+<tr class="memitem:ga9bb1a259ef8c7774c28f6f2971a41af2" id="r_ga9bb1a259ef8c7774c28f6f2971a41af2"><td class="memItemLeft">constexpr __contains_subrange_fn&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga9bb1a259ef8c7774c28f6f2971a41af2">contains_subrange</a></td></tr>
+<tr class="memdesc:ga9bb1a259ef8c7774c28f6f2971a41af2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group___ranges.html#ga9bb1a259ef8c7774c28f6f2971a41af2" title="contains_subrange(range, subrange)">contains_subrange(range, subrange)</a>  <br /></td></tr>
+<tr class="memitem:gaf0e48f4e15e1aefe379fa05337a2bfc0" id="r_gaf0e48f4e15e1aefe379fa05337a2bfc0"><td class="memTemplParams" colspan="2">template&lt;class CONTAINER, std::ranges::input_range RANGE, class... TYPES&gt; </td></tr>
+<tr class="memitem:gaf0e48f4e15e1aefe379fa05337a2bfc0 template"><td class="memItemLeft">constexpr CONTAINER&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">to</a> (RANGE &amp;&amp;range, TYPES &amp;&amp;... args)</td></tr>
+<tr class="memdesc:gaf0e48f4e15e1aefe379fa05337a2bfc0"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0" title="to&lt;container&gt;();">to&lt;container&gt;()</a>;  <br /></td></tr>
+<tr class="memitem:ga121ad3ff2c59625299e3fef02909b4eb" id="r_ga121ad3ff2c59625299e3fef02909b4eb"><td class="memTemplParams" colspan="2">template&lt;template&lt; class... &gt; class CONTAINER, std::ranges::input_range RANGE, class... TYPES, class _Deduced = std::remove_pointer_t&lt;decltype(detail::to_helper&lt;CONTAINER, RANGE, TYPES...&gt;())&gt;&gt; </td></tr>
+<tr class="memitem:ga121ad3ff2c59625299e3fef02909b4eb template"><td class="memItemLeft">constexpr _Deduced&#160;</td><td class="memItemRight"><a class="el" href="group___ranges.html#ga121ad3ff2c59625299e3fef02909b4eb">to</a> (RANGE &amp;&amp;_Range, TYPES &amp;&amp;... ARGS)</td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Primary namespace for everything in this library. </p>
@@ -1351,22 +1374,6 @@ template&lt;typename S, typename D&gt; </div>
 
 </div>
 </div>
-<a id="ae195fa23acbec24a52949731c3ff5526" name="ae195fa23acbec24a52949731c3ff5526"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae195fa23acbec24a52949731c3ff5526">&#9670;&#160;</a></span>default_symbol_provider</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using ghassanpl::default_symbol_provider</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="symbol_8h_source.html#l00139">139</a> of file <a class="el" href="symbol_8h_source.html">symbol.h</a>.</p>
-
-</div>
-</div>
 <a id="ae10d4cebc6050a1e2d466b57e4a666a7" name="ae10d4cebc6050a1e2d466b57e4a666a7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae10d4cebc6050a1e2d466b57e4a666a7">&#9670;&#160;</a></span>file_handle_type</h2>
 
@@ -1437,42 +1444,6 @@ template&lt;size_t I, typename... Ts&gt; </div>
 
 </div>
 </div>
-<a id="a1e7473993881920c5f691fc2d504b70a" name="a1e7473993881920c5f691fc2d504b70a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e7473993881920c5f691fc2d504b70a">&#9670;&#160;</a></span>optional_scoped_value_change</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using ghassanpl::optional_scoped_value_change</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="scope_8h_source.html#l00391">391</a> of file <a class="el" href="scope_8h_source.html">scope.h</a>.</p>
-
-</div>
-</div>
-<a id="abdc285da362353ef3b0236844e2c07ff" name="abdc285da362353ef3b0236844e2c07ff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abdc285da362353ef3b0236844e2c07ff">&#9670;&#160;</a></span>pooled_ptr</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">using ghassanpl::pooled_ptr</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pools_8h_source.html#l00083">83</a> of file <a class="el" href="pools_8h_source.html">pools.h</a>.</p>
-
-</div>
-</div>
 <a id="a11166f0f7688708e65f1b516e2bbff4e" name="a11166f0f7688708e65f1b516e2bbff4e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a11166f0f7688708e65f1b516e2bbff4e">&#9670;&#160;</a></span>remove_cvref_t</h2>
 
@@ -1506,22 +1477,6 @@ template&lt;typename T, shared_mutexlike MUTEX_TYPE = std::shared_mutex&gt; </di
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="threading_8h_source.html#l00126">126</a> of file <a class="el" href="threading_8h_source.html">threading.h</a>.</p>
-
-</div>
-</div>
-<a id="a5e9130801c8caffe43e4f641b39a49eb" name="a5e9130801c8caffe43e4f641b39a49eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e9130801c8caffe43e4f641b39a49eb">&#9670;&#160;</a></span>symbol</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">using ghassanpl::symbol</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="symbol_8h_source.html#l00140">140</a> of file <a class="el" href="symbol_8h_source.html">symbol.h</a>.</p>
 
 </div>
 </div>
@@ -2605,7 +2560,7 @@ template&lt;typename T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00056">56</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00071">71</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>
@@ -2862,7 +2817,7 @@ template&lt;typename T, template&lt; bool &gt; typename STRINGIFIER = string_str
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00129">129</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00144">144</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>
@@ -2887,7 +2842,7 @@ template&lt;typename T, template&lt; bool &gt; typename STRINGIFIER = string_str
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00119">119</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00134">134</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>
@@ -2967,105 +2922,6 @@ template&lt;typename ENUM_TYPE&gt; </div>
 <p>TODO: Finish this. </p>
 
 <p class="definition">Definition at line <a class="el" href="enums_8h_source.html#l00023">23</a> of file <a class="el" href="enums_8h_source.html">enums.h</a>.</p>
-
-</div>
-</div>
-<a id="ab06a008f03b778d3911782acab93bc10" name="ab06a008f03b778d3911782acab93bc10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab06a008f03b778d3911782acab93bc10">&#9670;&#160;</a></span>interpolate_eval()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;bool SYNTAX&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string ghassanpl::interpolate_eval </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>str</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="structghassanpl_1_1eval_1_1environment.html">eval::environment</a>&lt; SYNTAX &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>env</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="string__interpolate_8h_source.html#l00066">66</a> of file <a class="el" href="string__interpolate_8h_source.html">string_interpolate.h</a>.</p>
-
-</div>
-</div>
-<a id="a33ba9e57a00b4aa6d7cab9446f0cfc9f" name="a33ba9e57a00b4aa6d7cab9446f0cfc9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33ba9e57a00b4aa6d7cab9446f0cfc9f">&#9670;&#160;</a></span>interpolate_recursive()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;char open = '[', char close = ']', typename FUNC&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string ghassanpl::interpolate_recursive </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>str</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="string__interpolate_8h_source.html#l00034">34</a> of file <a class="el" href="string__interpolate_8h_source.html">string_interpolate.h</a>.</p>
-
-</div>
-</div>
-<a id="a4dc4ceba292cdfda32f28e0464136505" name="a4dc4ceba292cdfda32f28e0464136505"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4dc4ceba292cdfda32f28e0464136505">&#9670;&#160;</a></span>interpolate_simple()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;char open = '[', char close = ']', typename FUNC&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string ghassanpl::interpolate_simple </td>
-          <td>(</td>
-          <td class="paramtype">std::string_view</td>          <td class="paramname"><span class="paramname"><em>str</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">FUNC &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>func</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="string__interpolate_8h_source.html#l00014">14</a> of file <a class="el" href="string__interpolate_8h_source.html">string_interpolate.h</a>.</p>
 
 </div>
 </div>
@@ -3275,85 +3131,6 @@ template&lt;typename ALPHA, typename T, detail::FixedString PARAMETER, typename.
 
 </div>
 </div>
-<a id="a6b8596562fee2b80f3291037b8ac7929" name="a6b8596562fee2b80f3291037b8ac7929"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b8596562fee2b80f3291037b8ac7929">&#9670;&#160;</a></span>make_optional()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T, class... TYPES, std::enable_if_t&lt; std::is_constructible_v&lt; T, TYPES... &gt;, int &gt; = 0&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">sentinel_optional&lt; T &gt; ghassanpl::make_optional </td>
-          <td>(</td>
-          <td class="paramtype">TYPES &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>args</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="soptional_8h_source.html#l00239">239</a> of file <a class="el" href="soptional_8h_source.html">soptional.h</a>.</p>
-
-</div>
-</div>
-<a id="ad0759e73fb2924a4b5034aaca55408c9" name="ad0759e73fb2924a4b5034aaca55408c9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0759e73fb2924a4b5034aaca55408c9">&#9670;&#160;</a></span>make_pooled()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T, typename... ARGS&gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">thread_local_pool&lt; T &gt;::pooled_ptr ghassanpl::make_pooled </td>
-          <td>(</td>
-          <td class="paramtype">ARGS &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>args</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="pools_8h_source.html#l00086">86</a> of file <a class="el" href="pools_8h_source.html">pools.h</a>.</p>
-
-</div>
-</div>
-<a id="ae81c33d207bf8340f0c7541576c47893" name="ae81c33d207bf8340f0c7541576c47893"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae81c33d207bf8340f0c7541576c47893">&#9670;&#160;</a></span>make_sentinel_optional()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T, std::enable_if_t&lt; std::is_constructible_v&lt; std::decay_t&lt; T &gt;, T &gt;, int &gt; = 0&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">sentinel_optional&lt; std::decay_t&lt; T &gt; &gt; ghassanpl::make_sentinel_optional </td>
-          <td>(</td>
-          <td class="paramtype">T &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>value</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="soptional_8h_source.html#l00234">234</a> of file <a class="el" href="soptional_8h_source.html">soptional.h</a>.</p>
-
-</div>
-</div>
 <a id="ga07999481d80aa0d552f59e9aa6d5d4da" name="ga07999481d80aa0d552f59e9aa6d5d4da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga07999481d80aa0d552f59e9aa6d5d4da">&#9670;&#160;</a></span>named_cast()</h2>
 
@@ -3413,39 +3190,6 @@ template&lt;size_t I, typename T, typename... Ts&gt; </div>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="templates_8h_source.html#l00027">27</a> of file <a class="el" href="templates_8h_source.html">templates.h</a>.</p>
-
-</div>
-</div>
-<a id="ab62d9a58de3d86d4395f21f1bcd14c84" name="ab62d9a58de3d86d4395f21f1bcd14c84"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab62d9a58de3d86d4395f21f1bcd14c84">&#9670;&#160;</a></span>operator==()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;class T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool ghassanpl::operator== </td>
-          <td>(</td>
-          <td class="paramtype">const sentinel_optional&lt; T &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>left</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::nullopt_t</td>          <td class="paramname"><span class="paramname"><em></em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel constexpr">constexpr</span><span class="mlabel noexcept">noexcept</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="soptional_8h_source.html#l00231">231</a> of file <a class="el" href="soptional_8h_source.html">soptional.h</a>.</p>
 
 </div>
 </div>
@@ -3676,35 +3420,8 @@ template&lt;typename T, typename STRINGIFIER&gt; </div>
 
 </div>
 </div>
-<a id="a6a9afae30cd83cbdac36b6717859e910" name="a6a9afae30cd83cbdac36b6717859e910"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a9afae30cd83cbdac36b6717859e910">&#9670;&#160;</a></span>to_string() <span class="overload">[1/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string ghassanpl::to_string </td>
-          <td>(</td>
-          <td class="paramtype">nullptr_t</td>          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00027">27</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
-
-</div>
-</div>
 <a id="aefe7eae91bc6fbd23e1c5b708f95289f" name="aefe7eae91bc6fbd23e1c5b708f95289f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aefe7eae91bc6fbd23e1c5b708f95289f">&#9670;&#160;</a></span>to_string() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aefe7eae91bc6fbd23e1c5b708f95289f">&#9670;&#160;</a></span>to_string() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3728,41 +3445,12 @@ template&lt;typename T, template&lt; bool &gt; typename STRINGIFIER = string_str
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00109">109</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00124">124</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>
-<a id="a5135b5f128bac021439c965af4a46e3d" name="a5135b5f128bac021439c965af4a46e3d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5135b5f128bac021439c965af4a46e3d">&#9670;&#160;</a></span>to_string() <span class="overload">[3/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string ghassanpl::to_string </td>
-          <td>(</td>
-          <td class="paramtype">T &amp;&amp;</td>          <td class="paramname"><span class="paramname"><em>val</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00026">26</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
-
-</div>
-</div>
-<a id="a6f8b63031b10f917ed6908d4604a5514" name="a6f8b63031b10f917ed6908d4604a5514"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f8b63031b10f917ed6908d4604a5514">&#9670;&#160;</a></span>to_string() <span class="overload">[4/6]</span></h2>
+<a id="ga3fc46c8bb82b9eb3b64b08ed1cdc282b" name="ga3fc46c8bb82b9eb3b64b08ed1cdc282b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3fc46c8bb82b9eb3b64b08ed1cdc282b">&#9670;&#160;</a></span>to_string() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3786,41 +3474,14 @@ template&lt;std::same_as&lt; char &gt; T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00012">12</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p>char overload </p>
+
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00032">32</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>
-<a id="a91f3d5afa62c33cf5e6898b0951639e5" name="a91f3d5afa62c33cf5e6898b0951639e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91f3d5afa62c33cf5e6898b0951639e5">&#9670;&#160;</a></span>to_string() <span class="overload">[5/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::floating_point T&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string ghassanpl::to_string </td>
-          <td>(</td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>val</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel nodiscard">nodiscard</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00017">17</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
-
-</div>
-</div>
-<a id="a91f3d5afa62c33cf5e6898b0951639e5" name="a91f3d5afa62c33cf5e6898b0951639e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91f3d5afa62c33cf5e6898b0951639e5">&#9670;&#160;</a></span>to_string() <span class="overload">[6/6]</span></h2>
+<a id="ga3fc46c8bb82b9eb3b64b08ed1cdc282b" name="ga3fc46c8bb82b9eb3b64b08ed1cdc282b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3fc46c8bb82b9eb3b64b08ed1cdc282b">&#9670;&#160;</a></span>to_string() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3833,7 +3494,7 @@ template&lt;typename T&gt; </div>
         <tr>
           <td class="memname">std::string ghassanpl::to_string </td>
           <td>(</td>
-          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>val</em></span></td><td>)</td>
+          <td class="paramtype">T</td>          <td class="paramname"><span class="paramname"><em>integral</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -3844,7 +3505,9 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00015">15</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p>integral overload </p>
+
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00028">28</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>

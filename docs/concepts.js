@@ -33,6 +33,7 @@ var concepts =
       [ "output_buffer", "conceptghassanpl_1_1output__buffer.html", null ],
       [ "bytelike", "conceptghassanpl_1_1bytelike.html", null ],
       [ "bytelike_range", "conceptghassanpl_1_1bytelike__range.html", null ],
-      [ "range_predicate", "conceptghassanpl_1_1range__predicate.html", null ]
+      [ "range_predicate", "conceptghassanpl_1_1range__predicate.html", null ],
+      [ "symbol_provider", "conceptghassanpl_1_1symbol__provider.html", null ]
     ] ]
 ];

@@ -117,7 +117,7 @@ class StringableTestFixture : public ::testing::Test
 {
 public:
 	T null_value = {};
-	T empty_string_value{ "" };
+	T empty_string_value{ ""};
 	T complex_value{ "ZCoo(01_;" };
 	T embedded_zeroes_value{ "asdf\0ZXCV" };
 };
@@ -137,6 +137,22 @@ TYPED_TEST(StringableTestFixture, ascii_works_with_all_stringable_types)
 	EXPECT_EQ(ascii::toupper(this->complex_value), "ZCOO(01_;");
 	EXPECT_EQ(ascii::toupper(this->embedded_zeroes_value), "ASDF\0ZXCV");
 }
+
+/*
+TEST(string_ops, ascii_works_with_nonconst_char_arrays)
+{
+	char empty_string_value[] = "";
+	char complex_value[] = "ZCoo(01_;" ;
+	char embedded_zeroes_value[] = "asdf\0ZXCV";
+	EXPECT_EQ(ascii::tolower(empty_string_value), std::string_view{ "\0" });
+	EXPECT_EQ(ascii::tolower(complex_value), "zcoo(01_;\0");
+	EXPECT_EQ(ascii::tolower(embedded_zeroes_value), "asdf\0ZXCV\0");
+
+	EXPECT_EQ(ascii::toupper(empty_string_value), "\0");
+	EXPECT_EQ(ascii::toupper(complex_value), "ZCOO(01_;");
+	EXPECT_EQ(ascii::toupper(embedded_zeroes_value), "ASDF\0ZXCV");
+}
+*/
 
 template <typename T, int VALUE>
 concept narrowable = requires (T t) { { t = T{ VALUE } }; };

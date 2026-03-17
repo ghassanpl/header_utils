@@ -9,6 +9,11 @@
 
 namespace ghassanpl
 {
+	/// \defgroup ObjectPools Object Pools
+	/// Classes that implement object pools and pointers to them
+	/// @{
+
+	/// Very simple object pool implementation
 	template <typename T, size_t BLOCK_SIZE = 1024>
 	struct pool
 	{
@@ -51,7 +56,7 @@ namespace ghassanpl
 		std::vector<std::unique_ptr<mem_proxy[]>> mBlocks;
 	};
 
-
+	/// A `pool` that can be used in a thread-local fashion
 	template <typename T, size_t BLOCK_SIZE = 1024>
 	struct thread_local_pool : pool<T, BLOCK_SIZE>
 	{
@@ -79,12 +84,16 @@ namespace ghassanpl
 		}
 	};
 
+	/// A version of `unique_ptr<T>` that returns the object to the (thread-local) pool on destruction
 	template <typename T>
 	using pooled_ptr = thread_local_pool<T>::pooled_ptr;
 
+	/// Helper to create `pooled_ptr`s ala `make_unique`
 	template <typename T, typename... ARGS>
 	thread_local_pool<T>::pooled_ptr make_pooled(ARGS&&... args)
 	{
 		return pooled_ptr<T>{ thread_local_pool<T>::get_pool().create(std::forward<ARGS>(args)...) };
 	}
+
+	/// @}
 }

@@ -8,7 +8,7 @@
 #include <optional>
 #include "min-cpp-version/cpp17.h"
 #define GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS 1942
-#if __has_include(<expected>) && (_MSC_VER > GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS) && defined(__cpp_lib_expected) && __cpp_lib_expected >= 202202L
+#if __has_include(<expected>) && (!defined(_MSC_VER) || _MSC_VER > GHPL_LATEST_MSVC_VERSION_WITH_EXPECTED_BUGS) && defined(__cpp_lib_expected) && __cpp_lib_expected >= 202202L
 #include <expected>
 namespace ghassanpl
 {

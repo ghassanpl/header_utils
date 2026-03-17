@@ -88,11 +88,11 @@ $(function(){initNavTree('structghassanpl_1_1caching__path__reference.html','','
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">ghassanpl::caching_path_reference&lt; POINTER_TYPE, PATH_TYPE, RESOLVER_TYPE, TAGS &gt; Struct Template Reference</div></div>
+  <div class="headertitle"><div class="title">ghassanpl::caching_path_reference&lt; POINTER_TYPE, PATH_TYPE, RESOLVER_TYPE, TAGS &gt; Struct Template Reference<div class="ingroups"><a class="el" href="group___path_reference.html">Caching Path Reference</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>TODO: Possible tags:  
+<p>A value that references an object via a (usually string-like) "path"; it lazily resolves the pointer to the object, and caches it.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="path__reference_8h_source.html">path_reference.h</a>&gt;</code></p>
@@ -115,12 +115,16 @@ caching_path_reference &amp;&#160;</td><td class="memItemRight"><b>operator=</b>
 caching_path_reference &amp;&#160;</td><td class="memItemRight"><b>operator=</b> (caching_path_reference &amp;&amp;obj) noexcept=default</td></tr>
 <tr class="memitem:a1311a04b30544bfd613b458223732e34" id="r_a1311a04b30544bfd613b458223732e34"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a1311a04b30544bfd613b458223732e34 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a1311a04b30544bfd613b458223732e34">caching_path_reference</a> (T &amp;&amp;p)</td></tr>
+<tr class="memdesc:a1311a04b30544bfd613b458223732e34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construction from path.  <br /></td></tr>
 <tr class="memitem:aa22ba1bb047c2482007289f83e8237de" id="r_aa22ba1bb047c2482007289f83e8237de"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:aa22ba1bb047c2482007289f83e8237de template"><td class="memItemLeft">auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aa22ba1bb047c2482007289f83e8237de">operator=</a> (T &amp;&amp;p)</td></tr>
+<tr class="memdesc:aa22ba1bb047c2482007289f83e8237de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment from path.  <br /></td></tr>
 <tr class="memitem:a1311a04b30544bfd613b458223732e34" id="r_a1311a04b30544bfd613b458223732e34"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:a1311a04b30544bfd613b458223732e34 template"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a1311a04b30544bfd613b458223732e34">caching_path_reference</a> (T &amp;&amp;p)</td></tr>
+<tr class="memdesc:a1311a04b30544bfd613b458223732e34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construction from pointer.  <br /></td></tr>
 <tr class="memitem:aa22ba1bb047c2482007289f83e8237de" id="r_aa22ba1bb047c2482007289f83e8237de"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:aa22ba1bb047c2482007289f83e8237de template"><td class="memItemLeft">auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="#aa22ba1bb047c2482007289f83e8237de">operator=</a> (T &amp;&amp;p)</td></tr>
+<tr class="memdesc:aa22ba1bb047c2482007289f83e8237de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment from pointer.  <br /></td></tr>
 <tr class="memitem:aa15f003321cf1c1728611d668c573345" id="r_aa15f003321cf1c1728611d668c573345"><td class="memItemLeft">pointer_type&#160;</td><td class="memItemRight"><a class="el" href="#aa15f003321cf1c1728611d668c573345">operator-&gt;</a> () const</td></tr>
 <tr class="memitem:ac9610d29571bb7c3f96af0b6f67b262c" id="r_ac9610d29571bb7c3f96af0b6f67b262c"><td class="memItemLeft">auto &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ac9610d29571bb7c3f96af0b6f67b262c">operator*</a> () const</td></tr>
 <tr class="memitem:a3059ff6a3395f50a5bed81d434666758" id="r_a3059ff6a3395f50a5bed81d434666758"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; <br />
@@ -130,6 +134,7 @@ requires ( (std::same_as&lt;std::remove_cvref_t&lt;T&gt;, caching_path_reference
 requires ( (std::same_as&lt;std::remove_cvref_t&lt;T&gt;, caching_path_reference&gt;) || (std::same_as&lt;std::remove_cvref_t&lt;T&gt;, pointer_type&gt;) || (std::same_as&lt;std::remove_cvref_t&lt;T&gt;, path_type&gt;) || (std::constructible_from&lt;std::string_view, T const&amp;&gt; &amp;&amp; std::equality_comparable_with&lt;path_type const&amp;, std::string_view&gt;) )</td></tr>
 <tr class="memitem:a83d7198af2275862a416a55553588700 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="#a83d7198af2275862a416a55553588700">operator&lt;=&gt;</a> (T const &amp;other) const</td></tr>
 <tr class="memitem:a55af31db33d7b49f5733b1c15b7f83b6" id="r_a55af31db33d7b49f5733b1c15b7f83b6"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a55af31db33d7b49f5733b1c15b7f83b6">reset</a> ()</td></tr>
+<tr class="memdesc:a55af31db33d7b49f5733b1c15b7f83b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets both the path and pointer to their defaults.  <br /></td></tr>
 <tr class="memitem:a3d1535df9cf5712ce5cd1c68b688201b" id="r_a3d1535df9cf5712ce5cd1c68b688201b"><td class="memItemLeft">path_type const &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a3d1535df9cf5712ce5cd1c68b688201b">path</a> () const &amp;</td></tr>
 <tr class="memitem:a0b08584673b73d6fa8998134a72c78ee" id="r_a0b08584673b73d6fa8998134a72c78ee"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a0b08584673b73d6fa8998134a72c78ee">path_empty</a> () const</td></tr>
 <tr class="memitem:a1c5b754177862b58c169894587a0d98d" id="r_a1c5b754177862b58c169894587a0d98d"><td class="memItemLeft">path_type&#160;</td><td class="memItemRight"><a class="el" href="#a1c5b754177862b58c169894587a0d98d">path</a> () &amp;&amp;</td></tr>
@@ -145,13 +150,18 @@ Static Public Attributes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><div class="compoundTemplParams">template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RESOLVER_TYPE = detail::flyweight_resolver&lt;POINTER_TYPE, PATH_TYPE&gt;, typename... TAGS&gt;<br />
-struct ghassanpl::caching_path_reference&lt; POINTER_TYPE, PATH_TYPE, RESOLVER_TYPE, TAGS &gt;</div><p>TODO: Possible tags: </p>
-<ul>
-<li>thread_safe (adds a shared_mutex and protection for accessors)</li>
-<li>resolver_context (adds a pointer to RESOLVER_TYPE that is used to call the resolution functions) </li>
-</ul>
+struct ghassanpl::caching_path_reference&lt; POINTER_TYPE, PATH_TYPE, RESOLVER_TYPE, TAGS &gt;</div><p>A value that references an object via a (usually string-like) "path"; it lazily resolves the pointer to the object, and caches it. </p>
+<p>\usage TODO </p><dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">POINTER_TYPE</td><td>the type to store the pointer in - must be copyable, so should be a pointer of some sort </td></tr>
+    <tr><td class="paramname">PATH_TYPE</td><td>(optional) the type to store the path in; if not given, will use <span class="tt">std::string</span> </td></tr>
+    <tr><td class="paramname">RESOLVER_TYPE</td><td>(optional) type used to resolve the pointer from the path; if not given, will use a thread-safe global storage for these pointer+path types </td></tr>
+    <tr><td class="paramname">TAGS...</td><td>a list of tags that modify the behavior of this type; currently none are available </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00088">88</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00093">93</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 </div><a name="doc-typedef-members" id="doc-typedef-members"></a><h2 id="header-doc-typedef-members" class="groupheader">Member Typedef Documentation</h2>
 <a id="ae2c63abd93971af7089bff16915cf281" name="ae2c63abd93971af7089bff16915cf281"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae2c63abd93971af7089bff16915cf281">&#9670;&#160;</a></span>path_type</h2>
@@ -167,7 +177,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00091">91</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00100">100</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -185,7 +195,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00092">92</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00101">101</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -203,7 +213,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00090">90</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00099">99</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -235,7 +245,9 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00108">108</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p>Construction from path. </p>
+
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00118">118</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -266,7 +278,9 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00121">121</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p>Construction from pointer. </p>
+
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00133">133</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -296,7 +310,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00199">199</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00213">213</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -325,7 +339,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00200">200</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00214">214</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -354,7 +368,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00132">132</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00145">145</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -383,7 +397,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00131">131</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00144">144</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -415,7 +429,7 @@ requires ( (std::same_as&lt;std::remove_cvref_t&lt;T&gt;, caching_path_reference
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00154">154</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00167">167</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -446,7 +460,9 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00125">125</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p>Assignment from pointer. </p>
+
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00138">138</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -477,7 +493,9 @@ template&lt;typename T&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00112">112</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p>Assignment from path. </p>
+
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00123">123</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -509,7 +527,7 @@ requires ( (std::same_as&lt;std::remove_cvref_t&lt;T&gt;, caching_path_reference
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00135">135</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00148">148</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -538,7 +556,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00184">184</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00198">198</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -567,7 +585,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00174">174</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00188">188</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -596,7 +614,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00179">179</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00193">193</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -625,7 +643,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00194">194</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00208">208</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -654,7 +672,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00189">189</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00203">203</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -683,7 +701,9 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00172">172</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p>Sets both the path and pointer to their defaults. </p>
+
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00186">186</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>
@@ -712,7 +732,7 @@ template&lt;typename POINTER_TYPE, typename PATH_TYPE = std::string, typename RE
 
 <p>Doesn't work for some reason... static_assert(detail::valid_resolver&lt;resolver_type, path_type, pointer_type, TAGS...&gt;, "Invalid resolver type - must implement the ResolveReferenceFromPath function template as specified by the valid_resolver concept");. </p>
 
-<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00098">98</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="path__reference_8h_source.html#l00107">107</a> of file <a class="el" href="path__reference_8h_source.html">path_reference.h</a>.</p>
 
 </div>
 </div>

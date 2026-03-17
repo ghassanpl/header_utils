@@ -15,6 +15,10 @@
 
 namespace ghassanpl::random
 {
+	/// \defgroup RandomGeom Geometry
+	/// \ingroup Random
+	/// @{
+	
 	template <std::floating_point T = float, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] T radians(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -86,14 +90,14 @@ namespace ghassanpl::random
 		return point_in(poly.triangle(i), rng);
 	}
 
-	/// \brief Returns a random point on the edge of the shape.
+	/// Returns a random point on the edge of the shape.
 	template <typename T, geometry::shape<T> S, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] glm::tvec2<T> point_on(S const& shape, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return shape.edge_point_alpha(percentage(rng));
 	}
 
-	/// TODO: in(circle), in(poly)?, on(rect), on(circle), on(arc)
+	// TODO: in(circle), in(poly)?, on(rect), on(circle), on(arc)
 	/*
 	template <typename T>
 	auto RandomNotIn(ghassanpl::trec2<T> const& verboten, ghassanpl::trec2<T> const& bounds)
@@ -166,13 +170,15 @@ namespace ghassanpl::random
 		return {};
 	}
 
-	/// TODO: Should we move the below to random_seq?
+	// TODO: Should we move the below to random_seq?
 	
-	/// \brief Returns the nth quasi-random vector in the [0, 1]^2 space.
+	/// Returns the nth quasi-random vector in the [0, 1]^2 space.
 	template <std::floating_point T = float>
 	[[nodiscard]] constexpr glm::tvec2<T> halton_sequence_2d(size_t index, size_t base_x = 2, size_t base_y = 3)
 	{
 		return { halton_sequence<T>(index, base_x), halton_sequence<T>(index, base_y) };
 	}
+
+	/// @}
 
 }

@@ -191,9 +191,9 @@ $(function(){initNavTree('ranges_8h_source.html','',''); });
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keyword">template</span> &lt;random_access_range RANGE, <span class="keyword">typename</span> FUNC&gt;</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    <span class="keyword">requires</span> range_predicate&lt;RANGE, FUNC&gt;</div>
 <div class="foldopen" id="foldopen00106" data-start="{" data-end="}">
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="group___ranges.html#ga58b6ea74ef4536304442a7fb752733c9">  106</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#ga58b6ea74ef4536304442a7fb752733c9">find_index</a>(RANGE <span class="keyword">const</span>&amp; range, FUNC&amp;&amp; func) -&gt; std::iter_difference_t&lt;range_iterator&lt;RANGE&gt;&gt;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="group___ranges.html#ga7264fc8133a4b72f21406732ae98ec9d">  106</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#ga7264fc8133a4b72f21406732ae98ec9d">find_index</a>(RANGE <span class="keyword">const</span>&amp; range, FUNC&amp;&amp; <a class="code hl_namespace" href="namespaceghassanpl_1_1pred.html">pred</a>) -&gt; std::iter_difference_t&lt;range_iterator&lt;RANGE&gt;&gt;</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    {</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keyword">const</span> <span class="keyword">auto</span> it = std::ranges::find_if(range, std::forward&lt;FUNC&gt;(func));</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keyword">const</span> <span class="keyword">auto</span> it = std::ranges::find_if(range, std::forward&lt;FUNC&gt;(<a class="code hl_namespace" href="namespaceghassanpl_1_1pred.html">pred</a>));</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordflow">if</span> (it == std::ranges::end(range))</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            <span class="keywordflow">return</span> -1;</div>
 <div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <span class="keywordflow">return</span> std::ranges::distance(std::ranges::begin(range), it);</div>
@@ -203,376 +203,379 @@ $(function(){initNavTree('ranges_8h_source.html','',''); });
 <div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    <span class="keyword">template</span> &lt;std::ranges::range RANGE, <span class="keyword">typename</span> FUNC&gt;</div>
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    <span class="keyword">requires</span> range_predicate&lt;RANGE, FUNC&gt;</div>
 <div class="foldopen" id="foldopen00117" data-start="{" data-end="}">
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="group___ranges.html#ga2d6ec855951fa9b03d32b38143896920">  117</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#ga2d6ec855951fa9b03d32b38143896920">find_ptr</a>(RANGE&amp; range, FUNC&amp;&amp; func)</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="group___ranges.html#ga9062af46ea9f31e554a6812fd57a73af">  117</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#ga9062af46ea9f31e554a6812fd57a73af">find_ptr</a>(RANGE&amp; range, FUNC&amp;&amp; <a class="code hl_namespace" href="namespaceghassanpl_1_1pred.html">pred</a>)</div>
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    {</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keyword">const</span> <span class="keyword">auto</span> it = std::ranges::find_if(range, std::forward&lt;FUNC&gt;(func));</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <span class="keyword">const</span> <span class="keyword">auto</span> it = std::ranges::find_if(range, std::forward&lt;FUNC&gt;(<a class="code hl_namespace" href="namespaceghassanpl_1_1pred.html">pred</a>));</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordflow">return</span> it == std::ranges::end(range) ? nullptr : std::to_address(it);</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    }</div>
 </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keyword">template</span> &lt;random_access_range RANGE, <span class="keyword">typename</span> FUNC, <span class="keyword">typename</span> DEF_TYPE = range_value&lt;RANGE&gt;&gt;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keyword">requires</span> range_predicate&lt;RANGE, FUNC&gt;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    [[nodiscard]] <span class="keyword">auto</span> find_if_or_default(RANGE&amp; range, FUNC&amp;&amp; func, DEF_TYPE&amp;&amp; default_value = DEF_TYPE{})</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    {</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <span class="keyword">auto</span> it = std::ranges::find_if(range, std::forward&lt;FUNC&gt;(func));</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">if</span> (it == std::ranges::end(range))</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <span class="keywordflow">return</span> <a class="code hl_typedef" href="group___ranges.html#gae9ad1518f47ff203386a4c5cf3ca371a">range_value&lt;RANGE&gt;</a>{std::forward&lt;DEF_TYPE&gt;(default_value)};</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="keywordflow">return</span> *it;</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span></div>
-<div class="foldopen" id="foldopen00134" data-start="{" data-end="}">
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="group___ranges.html#gaa0acfa0520ddfe27b7b120bdb0ce1742">  134</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#gaa0acfa0520ddfe27b7b120bdb0ce1742">to_index</a>(random_access_iterator <span class="keyword">auto</span> iterator, random_access_range <span class="keyword">auto</span> <span class="keyword">const</span>&amp; range)</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    {</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="keywordflow">return</span> std::ranges::distance(std::ranges::begin(range), iterator);</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    }</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <span class="keyword">template</span> &lt;random_access_range RANGE, <span class="keyword">typename</span> FUNC, <span class="keyword">typename</span> DEF_TYPE = range_value&lt;RANGE&gt;&gt;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    <span class="keyword">requires</span> range_predicate&lt;RANGE, FUNC&gt;</div>
+<div class="foldopen" id="foldopen00126" data-start="{" data-end="}">
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="group___ranges.html#ga5e432adbde852ba34c51a86399e9ff8f">  126</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#ga5e432adbde852ba34c51a86399e9ff8f">find_if_or_default</a>(RANGE&amp; range, FUNC&amp;&amp; <a class="code hl_namespace" href="namespaceghassanpl_1_1pred.html">pred</a>, DEF_TYPE&amp;&amp; default_value = DEF_TYPE{})</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keyword">auto</span> it = std::ranges::find_if(range, std::forward&lt;FUNC&gt;(pred));</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordflow">if</span> (it == std::ranges::end(range))</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>            <span class="keywordflow">return</span> <a class="code hl_typedef" href="group___ranges.html#gae9ad1518f47ff203386a4c5cf3ca371a">range_value&lt;RANGE&gt;</a>{std::forward&lt;DEF_TYPE&gt;(default_value)};</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keywordflow">return</span> *it;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    }</div>
 </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span></div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <span class="keyword">template</span> &lt;contiguous_range RANGE&gt;</div>
-<div class="foldopen" id="foldopen00141" data-start="{" data-end="}">
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">  141</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">valid_address</a>(RANGE&amp;&amp; range, <a class="code hl_typedef" href="group___ranges.html#gae9ad1518f47ff203386a4c5cf3ca371a">range_value&lt;RANGE&gt;</a>* pointer)</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    {</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        <span class="keywordflow">if</span> (std::ranges::empty(range)) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="keywordflow">return</span> pointer &gt;= std::to_address(std::ranges::begin(range)) &amp;&amp; pointer &lt; std::to_address(std::ranges::end(range));</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span></div>
+<div class="foldopen" id="foldopen00135" data-start="{" data-end="}">
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="group___ranges.html#gaa0acfa0520ddfe27b7b120bdb0ce1742">  135</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#gaa0acfa0520ddfe27b7b120bdb0ce1742">to_index</a>(random_access_iterator <span class="keyword">auto</span> iterator, random_access_range <span class="keyword">auto</span> <span class="keyword">const</span>&amp; range)</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    {</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <span class="keywordflow">return</span> std::ranges::distance(std::ranges::begin(range), iterator);</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    }</div>
 </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span></div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    </div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> N = std::dynamic_extent&gt;</div>
-<div class="foldopen" id="foldopen00150" data-start="{" data-end="}">
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="group___ranges.html#gacd70f29258ebed17c37f8adbf4383ada">  150</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> std::pair&lt;span&lt;T&gt;, span&lt;T&gt;&gt; <a class="code hl_function" href="group___ranges.html#gacd70f29258ebed17c37f8adbf4383ada">split_at</a>(span&lt;T, N&gt; spn, <span class="keywordtype">size_t</span> index)</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    {</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keywordflow">if</span> (index &gt;= spn.size())</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            <span class="keywordflow">return</span> { spn, span&lt;T&gt;{} };</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <span class="keywordflow">return</span> { spn.subspan(0, index), spn.subspan(index) };</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    }</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span></div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    <span class="keyword">template</span> &lt;contiguous_range RANGE&gt;</div>
+<div class="foldopen" id="foldopen00142" data-start="{" data-end="}">
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">  142</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> <a class="code hl_function" href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">valid_address</a>(RANGE&amp;&amp; range, <a class="code hl_typedef" href="group___ranges.html#gae9ad1518f47ff203386a4c5cf3ca371a">range_value&lt;RANGE&gt;</a>* pointer)</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    {</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="keywordflow">if</span> (std::ranges::empty(range)) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <span class="keywordflow">return</span> pointer &gt;= std::to_address(std::ranges::begin(range)) &amp;&amp; pointer &lt; std::to_address(std::ranges::end(range));</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    }</div>
 </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> N = std::dynamic_extent&gt;</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    [[nodiscard]] <span class="keyword">constexpr</span> std::array&lt;span&lt;T&gt;, 3&gt; <a class="code hl_function" href="group___ranges.html#gacd70f29258ebed17c37f8adbf4383ada">split_at</a>(span&lt;T, N&gt; spn, <span class="keywordtype">size_t</span> index, <span class="keywordtype">size_t</span> size)</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    {</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="keywordflow">if</span> (index &gt;= spn.size() || index + size &gt;= spn.size())</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>            <span class="keywordflow">return</span> { spn, span&lt;T&gt;{}, span&lt;T&gt;{} };</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <span class="keywordflow">return</span> { spn.subspan(0, index), spn.subspan(index, size), spn.subspan(index + size) };</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    }</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    </div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> N = std::dynamic_extent&gt;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    [[nodiscard]] <span class="keyword">constexpr</span> std::pair&lt;T*, T*&gt; as_range(span&lt;T, N&gt; spn)</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    {</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        <span class="keywordflow">return</span> { spn.data(), spn.data() + spn.size() };</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    }</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> as_span(std::ranges::range <span class="keyword">auto</span> &amp; range)</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    {</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        <span class="keywordflow">return</span> std::span{ range };</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    }</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span></div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> TO, <span class="keyword">typename</span> FROM, <span class="keywordtype">size_t</span> N = std::dynamic_extent&gt;</div>
-<div class="foldopen" id="foldopen00179" data-start="{" data-end="}">
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="group___ranges.html#ga3cbc4ac8d7f78e7db3b3cb0683d7c792">  179</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#ga3cbc4ac8d7f78e7db3b3cb0683d7c792">span_cast</a>(span&lt;FROM, N&gt; bytes) <span class="keyword">noexcept</span></div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    {</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        <span class="keywordflow">return</span> span&lt;TO&gt;{ <span class="keyword">reinterpret_cast&lt;</span>TO*<span class="keyword">&gt;</span>(bytes.data()), (bytes.size() * <span class="keyword">sizeof</span>(FROM)) / <span class="keyword">sizeof</span>(TO) };</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    }</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span></div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> N = std::dynamic_extent&gt;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    [[nodiscard]] <span class="keyword">constexpr</span> std::pair&lt;span&lt;T&gt;, span&lt;T&gt;&gt; split_at(span&lt;T, N&gt; spn, <span class="keywordtype">size_t</span> index)</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        <span class="keywordflow">if</span> (index &gt;= spn.size())</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            <span class="keywordflow">return</span> { spn, span&lt;T&gt;{} };</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        <span class="keywordflow">return</span> { spn.subspan(0, index), spn.subspan(index) };</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    }</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> N = std::dynamic_extent&gt;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    [[nodiscard]] <span class="keyword">constexpr</span> std::array&lt;span&lt;T&gt;, 3&gt; split_at(span&lt;T, N&gt; spn, <span class="keywordtype">size_t</span> index, <span class="keywordtype">size_t</span> size)</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    {</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        <span class="keywordflow">if</span> (index &gt;= spn.size() || index + size &gt;= spn.size())</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            <span class="keywordflow">return</span> { spn, span&lt;T&gt;{}, span&lt;T&gt;{} };</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        <span class="keywordflow">return</span> { spn.subspan(0, index), spn.subspan(index, size), spn.subspan(index + size) };</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    }</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    </div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> N = std::dynamic_extent&gt;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    [[nodiscard]] <span class="keyword">constexpr</span> std::pair&lt;T*, T*&gt; as_range(span&lt;T, N&gt; spn)</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    {</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        <span class="keywordflow">return</span> { spn.data(), spn.data() + spn.size() };</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    }</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> as_span(std::ranges::range <span class="keyword">auto</span> &amp; range)</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        <span class="keywordflow">return</span> std::span{ range };</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    }</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span></div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> TO, <span class="keyword">typename</span> FROM, <span class="keywordtype">size_t</span> N = std::dynamic_extent&gt;</div>
+<div class="foldopen" id="foldopen00181" data-start="{" data-end="}">
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno"><a class="line" href="group___ranges.html#ga3cbc4ac8d7f78e7db3b3cb0683d7c792">  181</a></span>    [[nodiscard]] <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#ga3cbc4ac8d7f78e7db3b3cb0683d7c792">span_cast</a>(span&lt;FROM, N&gt; bytes) <span class="keyword">noexcept</span></div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="keywordflow">return</span> span&lt;TO&gt;{ <span class="keyword">reinterpret_cast&lt;</span>TO*<span class="keyword">&gt;</span>(bytes.data()), (bytes.size() * <span class="keyword">sizeof</span>(FROM)) / <span class="keyword">sizeof</span>(TO) };</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    }</div>
 </div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keywordtype">size_t</span> N1, <span class="keyword">typename</span> T2, <span class="keywordtype">size_t</span> N2&gt;</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> are_adjacent(span&lt;T1, N1&gt; s1, span&lt;T2, N2&gt; s2)</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    {</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>        <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> const*<span class="keyword">&gt;</span>(s1.data() + s1.size()) == <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> const*<span class="keyword">&gt;</span>(s2.data())</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            || <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> const*<span class="keyword">&gt;</span>(s2.data() + s2.size()) == <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> const*<span class="keyword">&gt;</span>(s1.data());</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    }</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keywordtype">size_t</span> N1, <span class="keyword">typename</span> T2, <span class="keywordtype">size_t</span> N2&gt;</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> are_overlapping(span&lt;T1, N1&gt; s1, span&lt;T2, N2&gt; s2)</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    {</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">valid_address</a>(s1, s2.data()) || <a class="code hl_function" href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">valid_address</a>(s2, s1.data());</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    }</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> N1, <span class="keyword">typename</span> U, <span class="keywordtype">size_t</span> N2&gt;</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    <span class="keyword">requires</span> std::same_as&lt;std::remove_cvref_t&lt;T&gt;, std::remove_cvref_t&lt;U&gt;&gt;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> ends_with(span&lt;T, N1&gt; s1, span&lt;U, N2&gt; s2)</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    {</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        <span class="keywordflow">if</span> (s1.size() &lt; s2.size()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        <span class="keywordflow">return</span> std::ranges::equal(s1.subspan(s1.size() - s2.size()), s2);</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    }</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> N1, <span class="keyword">typename</span> U, <span class="keywordtype">size_t</span> N2&gt;</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="keyword">requires</span> std::same_as&lt;std::remove_cvref_t&lt;T&gt;, std::remove_cvref_t&lt;U&gt;&gt;</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> starts_with(span&lt;T, N1&gt; s1, span&lt;U, N2&gt; s2)</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    {</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        <span class="keywordflow">if</span> (s1.size() &lt; s2.size()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        <span class="keywordflow">return</span> std::ranges::equal(s1.subspan(0, s2.size()), s2);</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    }</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span></div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, std::size_t... Ns&gt;</div>
-<div class="foldopen" id="foldopen00216" data-start="{" data-end="}">
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno"><a class="line" href="group___ranges.html#ga0531b42271ed8ee6b10a84c1a6fff48f">  216</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#ga0531b42271ed8ee6b10a84c1a6fff48f">join</a>(std::array&lt;T, Ns&gt;... arrays)</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    {</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        std::array&lt;T, (Ns + ...)&gt; result;</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        std::size_t index = 0;</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        ((std::copy_n(std::make_move_iterator(arrays.begin()), Ns, result.begin() + index), index += Ns), ...);</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    }</div>
-</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> LL, <span class="keyword">typename</span>... ARGS&gt;</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keyword">requires</span> (std::same_as&lt;std::remove_cvref_t&lt;ARGS&gt;, T&gt; &amp;&amp; ...)</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> <a class="code hl_function" href="group___ranges.html#ga0531b42271ed8ee6b10a84c1a6fff48f">join</a>(std::array&lt;T, LL&gt; rhs, ARGS&amp;&amp;... args)</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    {</div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        std::array&lt;T, LL + <span class="keyword">sizeof</span>...(ARGS)&gt; ar;</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        <span class="keyword">auto</span> current = std::move(rhs.begin(), rhs.end(), ar.begin());</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        ((*current++ = args), ...);</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        <span class="keywordflow">return</span> ar;</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    }</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="preprocessor">#ifndef __cpp_lib_ranges_contains</span></div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>    <span class="keyword">struct </span>__contains_fn</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    {</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        <span class="keyword">template</span> &lt;std::input_iterator I, std::sentinel_for&lt;I&gt; S, <span class="keyword">class</span> T, <span class="keyword">class</span> Proj = std::<span class="keywordtype">id</span>entity&gt;</div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        <span class="keyword">requires</span> std::indirect_binary_predicate&lt;std::ranges::equal_to, std::projected&lt;I, Proj&gt;, <span class="keyword">const</span> T*&gt;</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> operator()(I first, S last, <span class="keyword">const</span> T&amp; value, Proj proj = {}) <span class="keyword">const</span></div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        {</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            <span class="keywordflow">return</span> std::ranges::find(std::move(first), last, value, proj) != last;</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>        }</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <span class="keyword">template</span> &lt;std::ranges::input_range R, <span class="keyword">class</span> T, <span class="keyword">class</span> Proj = std::<span class="keywordtype">id</span>entity&gt;</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>        <span class="keyword">requires</span> std::indirect_binary_predicate&lt;std::ranges::equal_to, std::projected&lt;std::ranges::iterator_t&lt;R&gt;, Proj&gt;, <span class="keyword">const</span> T*&gt;</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> operator()(R&amp;&amp; r, <span class="keyword">const</span> T&amp; value, Proj proj = {}) <span class="keyword">const</span></div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        {</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span>)(std::ranges::begin(r), std::ranges::end(r), std::move(value), proj);</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        }</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    };</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno"><a class="line" href="group___ranges.html#gafa66c510b1bca79889cfb20c2c5e07ad">  254</a></span>    <span class="keyword">constexpr</span> <span class="keyword">inline</span> __contains_fn <a class="code hl_variable" href="group___ranges.html#gafa66c510b1bca79889cfb20c2c5e07ad">contains</a>{};</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="keyword">struct </span>__contains_subrange_fn</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    {</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>        <span class="keyword">template</span> &lt;std::forward_iterator I1, std::sentinel_for&lt;I1&gt; S1, std::forward_iterator I2, std::sentinel_for&lt;I2&gt; S2, <span class="keyword">class</span> Pred = std::ranges::equal_to, <span class="keyword">class</span> Proj1 = std::<span class="keywordtype">id</span>entity, <span class="keyword">class</span> Proj2 = std::<span class="keywordtype">id</span>entity&gt;</div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        <span class="keyword">requires</span> std::indirectly_comparable&lt;I1, I2, Pred, Proj1, Proj2&gt;</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> operator()(I1 first1, S1 last1, I2 first2, S2 last2, Pred pred = {}, Proj1 proj1 = {}, Proj2 proj2 = {}) <span class="keyword">const</span></div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        {</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>            <span class="keywordflow">return</span> (first2 == last2) || !std::ranges::search(first1, last1, first2, last2, pred, proj1, proj2).empty();</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        }</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span> </div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keywordtype">size_t</span> N1, <span class="keyword">typename</span> T2, <span class="keywordtype">size_t</span> N2&gt;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> are_adjacent(span&lt;T1, N1&gt; s1, span&lt;T2, N2&gt; s2)</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    {</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>        <span class="keywordflow">return</span> <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> const*<span class="keyword">&gt;</span>(s1.data() + s1.size()) == <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> const*<span class="keyword">&gt;</span>(s2.data())</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>            || <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> const*<span class="keyword">&gt;</span>(s2.data() + s2.size()) == <span class="keyword">reinterpret_cast&lt;</span><span class="keywordtype">char</span> const*<span class="keyword">&gt;</span>(s1.data());</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    }</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T1, <span class="keywordtype">size_t</span> N1, <span class="keyword">typename</span> T2, <span class="keywordtype">size_t</span> N2&gt;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> are_overlapping(span&lt;T1, N1&gt; s1, span&lt;T2, N2&gt; s2)</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    {</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">valid_address</a>(s1, s2.data()) || <a class="code hl_function" href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">valid_address</a>(s2, s1.data());</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    }</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> N1, <span class="keyword">typename</span> U, <span class="keywordtype">size_t</span> N2&gt;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <span class="keyword">requires</span> std::same_as&lt;std::remove_cvref_t&lt;T&gt;, std::remove_cvref_t&lt;U&gt;&gt;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> ends_with(span&lt;T, N1&gt; s1, span&lt;U, N2&gt; s2)</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    {</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        <span class="keywordflow">if</span> (s1.size() &lt; s2.size()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        <span class="keywordflow">return</span> std::ranges::equal(s1.subspan(s1.size() - s2.size()), s2);</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    }</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> N1, <span class="keyword">typename</span> U, <span class="keywordtype">size_t</span> N2&gt;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>    <span class="keyword">requires</span> std::same_as&lt;std::remove_cvref_t&lt;T&gt;, std::remove_cvref_t&lt;U&gt;&gt;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> starts_with(span&lt;T, N1&gt; s1, span&lt;U, N2&gt; s2)</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    {</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>        <span class="keywordflow">if</span> (s1.size() &lt; s2.size()) <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>        <span class="keywordflow">return</span> std::ranges::equal(s1.subspan(0, s2.size()), s2);</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    }</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    </div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, std::size_t... Ns&gt;</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> join(std::array&lt;T, Ns&gt;... arrays)</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    {</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        std::array&lt;T, (Ns + ...)&gt; result;</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>        std::size_t <a class="code hl_function" href="group___random.html#gac1034aeb20eb11b6b948e0f05e6bf88a">index</a> = 0;</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        ((std::copy_n(std::make_move_iterator(arrays.begin()), Ns, result.begin() + index), <a class="code hl_function" href="group___random.html#gac1034aeb20eb11b6b948e0f05e6bf88a">index</a> += Ns), ...);</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>    }</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span> </div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keywordtype">size_t</span> LL, <span class="keyword">typename</span>... ARGS&gt;</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keyword">requires</span> (std::same_as&lt;std::remove_cvref_t&lt;ARGS&gt;, T&gt; &amp;&amp; ...)</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> join(std::array&lt;T, LL&gt; rhs, ARGS&amp;&amp;... args)</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    {</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        std::array&lt;T, LL + <span class="keyword">sizeof</span>...(ARGS)&gt; ar;</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        <span class="keyword">auto</span> current = std::move(rhs.begin(), rhs.end(), ar.begin());</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        ((*current++ = args), ...);</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        <span class="keywordflow">return</span> ar;</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    }</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span> </div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span><span class="preprocessor">#ifndef __cpp_lib_ranges_contains</span></div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span> </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="keyword">struct </span>__contains_fn</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    {</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>        <span class="keyword">template</span> &lt;std::input_iterator I, std::sentinel_for&lt;I&gt; S, <span class="keyword">class</span> T, <span class="keyword">class</span> Proj = std::<span class="keywordtype">id</span>entity&gt;</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>        <span class="keyword">requires</span> std::indirect_binary_predicate&lt;std::ranges::equal_to, std::projected&lt;I, Proj&gt;, <span class="keyword">const</span> T*&gt;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> operator()(I first, S last, <span class="keyword">const</span> T&amp; value, Proj proj = {}) <span class="keyword">const</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>        {</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>            <span class="keywordflow">return</span> std::ranges::find(std::move(first), last, value, proj) != last;</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>        }</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>        <span class="keyword">template</span> &lt;std::ranges::input_range R, <span class="keyword">class</span> T, <span class="keyword">class</span> Proj = std::<span class="keywordtype">id</span>entity&gt;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>        <span class="keyword">requires</span> std::indirect_binary_predicate&lt;std::ranges::equal_to, std::projected&lt;std::ranges::iterator_t&lt;R&gt;, Proj&gt;, <span class="keyword">const</span> T*&gt;</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>        <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> operator()(R&amp;&amp; r, <span class="keyword">const</span> T&amp; value, Proj proj = {}) <span class="keyword">const</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        {</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span>)(std::ranges::begin(r), std::ranges::end(r), std::move(value), proj);</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>        }</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    };</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span></div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno"><a class="line" href="group___ranges.html#gafa66c510b1bca79889cfb20c2c5e07ad">  264</a></span>    <span class="keyword">constexpr</span> <span class="keyword">inline</span> __contains_fn <a class="code hl_variable" href="group___ranges.html#gafa66c510b1bca79889cfb20c2c5e07ad">contains</a>{};</div>
 <div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        <span class="keyword">template</span> &lt;std::ranges::forward_range R1, std::ranges::forward_range R2, <span class="keyword">class</span> Pred = std::ranges::equal_to, <span class="keyword">class</span> Proj1 = std::<span class="keywordtype">id</span>entity, <span class="keyword">class</span> Proj2 = std::<span class="keywordtype">id</span>entity&gt;</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>            <span class="keyword">requires</span> std::indirectly_comparable&lt;std::ranges::iterator_t&lt;R1&gt;, std::ranges::iterator_t&lt;R2&gt;, Pred, Proj1, Proj2&gt;</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> operator()(R1&amp;&amp; r1, R2&amp;&amp; r2, Pred pred = {}, Proj1 proj1 = {}, Proj2 proj2 = {}) <span class="keyword">const</span></div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        {</div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span>)(std::ranges::begin(r1), std::ranges::end(r1), std::ranges::begin(r2), std::ranges::end(r2), std::move(pred), std::move(proj1), std::move(proj2));</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        }</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>    };</div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span> </div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span></div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno"><a class="line" href="group___ranges.html#ga9bb1a259ef8c7774c28f6f2971a41af2">  276</a></span>    <span class="keyword">constexpr</span> <span class="keyword">inline</span> __contains_subrange_fn <a class="code hl_variable" href="group___ranges.html#ga9bb1a259ef8c7774c28f6f2971a41af2">contains_subrange</a>{};</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span> </div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="preprocessor">#ifndef __cpp_lib_ranges_to_container</span></div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="keyword">namespace </span><a class="code hl_namespace" href="namespacedetail.html">detail</a></div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>    {</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <span class="keyword">struct </span>from_range_t { <span class="keyword">explicit</span> from_range_t() = <span class="keywordflow">default</span>; };</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>        <span class="keyword">constexpr</span> <span class="keyword">inline</span> from_range_t from_range;</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>        <span class="keyword">template</span> &lt;<span class="keyword">class</span> RANGE, <span class="keyword">class</span> CONTAINER&gt;</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>        <span class="keyword">concept </span>_Ref_converts = std::convertible_to&lt;std::ranges::range_reference_t&lt;RANGE&gt;, std::ranges::range_value_t&lt;CONTAINER&gt;&gt;;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span> </div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="keyword">struct </span>__contains_subrange_fn</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>    {</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        <span class="keyword">template</span> &lt;std::forward_iterator I1, std::sentinel_for&lt;I1&gt; S1, std::forward_iterator I2, std::sentinel_for&lt;I2&gt; S2, <span class="keyword">class</span> Pred = std::ranges::equal_to, <span class="keyword">class</span> Proj1 = std::<span class="keywordtype">id</span>entity, <span class="keyword">class</span> Proj2 = std::<span class="keywordtype">id</span>entity&gt;</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <span class="keyword">requires</span> std::indirectly_comparable&lt;I1, I2, Pred, Proj1, Proj2&gt;</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> operator()(I1 first1, S1 last1, I2 first2, S2 last2, Pred pred = {}, Proj1 proj1 = {}, Proj2 proj2 = {}) <span class="keyword">const</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        {</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            <span class="keywordflow">return</span> (first2 == last2) || !std::ranges::search(first1, last1, first2, last2, pred, proj1, proj2).empty();</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>        }</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        <span class="keyword">template</span> &lt;std::ranges::forward_range R1, std::ranges::forward_range R2, <span class="keyword">class</span> Pred = std::ranges::equal_to, <span class="keyword">class</span> Proj1 = std::<span class="keywordtype">id</span>entity, <span class="keyword">class</span> Proj2 = std::<span class="keywordtype">id</span>entity&gt;</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>            <span class="keyword">requires</span> std::indirectly_comparable&lt;std::ranges::iterator_t&lt;R1&gt;, std::ranges::iterator_t&lt;R2&gt;, Pred, Proj1, Proj2&gt;</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        <span class="keyword">constexpr</span> <span class="keywordtype">bool</span> operator()(R1&amp;&amp; r1, R2&amp;&amp; r2, Pred pred = {}, Proj1 proj1 = {}, Proj2 proj2 = {}) <span class="keyword">const</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        {</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>            <span class="keywordflow">return</span> (*<span class="keyword">this</span>)(std::ranges::begin(r1), std::ranges::end(r1), std::ranges::begin(r2), std::ranges::end(r2), std::move(pred), std::move(proj1), std::move(proj2));</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>        }</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    };</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span></div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno"><a class="line" href="group___ranges.html#ga9bb1a259ef8c7774c28f6f2971a41af2">  286</a></span>    <span class="keyword">constexpr</span> <span class="keyword">inline</span> __contains_subrange_fn <a class="code hl_variable" href="group___ranges.html#ga9bb1a259ef8c7774c28f6f2971a41af2">contains_subrange</a>{};</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        <span class="keyword">template</span> &lt;<span class="keyword">class </span>RANGE, <span class="keyword">class </span>CONTAINER, <span class="keyword">class</span>... TYPES&gt;</div>
-<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        <span class="keyword">concept </span>_Converts_direct_constructible = _Ref_converts&lt;RANGE, CONTAINER&gt;</div>
-<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>            &amp;&amp; std::constructible_from&lt;CONTAINER, RANGE, TYPES...&gt;;</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span> </div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keyword">template</span> &lt;<span class="keyword">class </span>RANGE, <span class="keyword">class </span>CONTAINER, <span class="keyword">class</span>... TYPES&gt;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>        <span class="keyword">concept </span>_Converts_tag_constructible = _Ref_converts&lt;RANGE, CONTAINER&gt;</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>            &amp;&amp; std::constructible_from&lt;CONTAINER, <span class="keyword">const</span> from_range_t&amp;, RANGE, TYPES...&gt;;</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        <span class="keyword">template</span> &lt;<span class="keyword">class </span>RANGE, <span class="keyword">class </span>CONTAINER, <span class="keyword">class</span>... TYPES&gt;</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        <span class="keyword">concept </span>_Converts_and_common_constructible = _Ref_converts&lt;RANGE, CONTAINER&gt; &amp;&amp; std::ranges::common_range&lt;RANGE&gt; <span class="comment">//</span></div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>            &amp;&amp; std::input_iterator&lt;std::ranges::iterator_t&lt;RANGE&gt;&gt; <span class="comment">//</span></div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>            &amp;&amp; std::constructible_from&lt;CONTAINER, std::ranges::iterator_t&lt;RANGE&gt;, std::ranges::iterator_t&lt;RANGE&gt;, TYPES...&gt;;</div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>        <span class="keyword">template</span> &lt;<span class="keyword">class</span> CONTAINER, <span class="keyword">class</span> REFERENCE&gt;</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>        <span class="keyword">concept </span>can_push_back = <span class="keyword">requires</span> (CONTAINER&amp; container, REFERENCE ref) {</div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>            container.push_back(ref);</div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>        };</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="preprocessor">#ifndef __cpp_lib_ranges_to_container</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span> </div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    <span class="keyword">namespace </span><a class="code hl_namespace" href="namespacedetail.html">detail</a></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    {</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keyword">struct </span>from_range_t { <span class="keyword">explicit</span> from_range_t() = <span class="keywordflow">default</span>; };</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>        <span class="keyword">constexpr</span> <span class="keyword">inline</span> from_range_t from_range;</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <span class="keyword">template</span> &lt;<span class="keyword">class</span> RANGE, <span class="keyword">class</span> CONTAINER&gt;</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        <span class="keyword">concept </span>_Ref_converts = std::convertible_to&lt;std::ranges::range_reference_t&lt;RANGE&gt;, std::ranges::range_value_t&lt;CONTAINER&gt;&gt;;</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span> </div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>        <span class="keyword">template</span> &lt;<span class="keyword">class </span>RANGE, <span class="keyword">class </span>CONTAINER, <span class="keyword">class</span>... TYPES&gt;</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>        <span class="keyword">concept </span>_Converts_direct_constructible = _Ref_converts&lt;RANGE, CONTAINER&gt;</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>            &amp;&amp; std::constructible_from&lt;CONTAINER, RANGE, TYPES...&gt;;</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>        <span class="keyword">template</span> &lt;<span class="keyword">class </span>RANGE, <span class="keyword">class </span>CONTAINER, <span class="keyword">class</span>... TYPES&gt;</div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>        <span class="keyword">concept </span>_Converts_tag_constructible = _Ref_converts&lt;RANGE, CONTAINER&gt;</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>            &amp;&amp; std::constructible_from&lt;CONTAINER, <span class="keyword">const</span> from_range_t&amp;, RANGE, TYPES...&gt;;</div>
 <div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
-<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>        <span class="keyword">template</span> &lt;<span class="keyword">class</span> CONTAINER, <span class="keyword">class</span> REFERENCE&gt;</div>
-<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>        <span class="keyword">concept </span>can_insert_at_end = <span class="keyword">requires</span> (CONTAINER &amp; container, REFERENCE ref) {</div>
-<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>            container.insert(container.end(), ref);</div>
-<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>        };</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span>        <span class="keyword">template</span> &lt;<span class="keyword">class </span>RANGE, <span class="keyword">class </span>CONTAINER, <span class="keyword">class</span>... TYPES&gt;</div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>        <span class="keyword">concept </span>_Converts_and_common_constructible = _Ref_converts&lt;RANGE, CONTAINER&gt; &amp;&amp; std::ranges::common_range&lt;RANGE&gt; <span class="comment">//</span></div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>            &amp;&amp; std::input_iterator&lt;std::ranges::iterator_t&lt;RANGE&gt;&gt; <span class="comment">//</span></div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>            &amp;&amp; std::constructible_from&lt;CONTAINER, std::ranges::iterator_t&lt;RANGE&gt;, std::ranges::iterator_t&lt;RANGE&gt;, TYPES...&gt;;</div>
 <div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span> </div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>        <span class="comment">// clang-format off</span></div>
-<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>        <span class="keyword">template</span> &lt;<span class="keyword">class </span>RANGE, <span class="keyword">class </span>CONTAINER, <span class="keyword">class</span>... TYPES&gt;</div>
-<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>        <span class="keyword">concept </span>_Converts_constructible_insertable = _Ref_converts&lt;RANGE, CONTAINER&gt;</div>
-<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>            &amp;&amp; std::constructible_from&lt;CONTAINER, TYPES...&gt;</div>
-<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>            &amp;&amp; (can_push_back&lt;CONTAINER, std::ranges::range_reference_t&lt;RANGE&gt;&gt;</div>
-<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>                || can_insert_at_end&lt;CONTAINER, std::ranges::range_reference_t&lt;RANGE&gt;&gt;);</div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>        <span class="comment">// clang-format on</span></div>
-<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
-<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>        <span class="keyword">template</span> &lt;<span class="keyword">class</span> REFERENCE, <span class="keyword">class</span> CONTAINER&gt;</div>
-<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>        [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> container_inserter(CONTAINER&amp; _Cont)</div>
-<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>        {</div>
-<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>            <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (can_push_back&lt;CONTAINER, REFERENCE&gt;) {</div>
-<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>                <span class="keywordflow">return</span> std::back_insert_iterator{ _Cont };</div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>            }</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>            <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                <span class="keywordflow">return</span> std::insert_iterator{ _Cont, _Cont.end() };</div>
-<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>            }</div>
-<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span>        }</div>
-<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span> </div>
-<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        <span class="keyword">template</span> &lt;<span class="keyword">class</span> RANGE, <span class="keyword">class</span> CONTAINER&gt;</div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        <span class="keyword">concept </span>sized_and_reservable =</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>            std::ranges::sized_range&lt;RANGE&gt; &amp;&amp;</div>
-<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>            std::ranges::sized_range&lt;CONTAINER&gt; &amp;&amp;</div>
-<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>            <span class="keyword">requires</span>(CONTAINER &amp; container, <span class="keyword">const</span> std::ranges::range_size_t&lt;CONTAINER&gt; count) {</div>
-<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>            container.reserve(count);</div>
-<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>            { container.capacity() } -&gt; std::same_as&lt;std::ranges::range_size_t&lt;CONTAINER&gt;&gt;;</div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>            { container.max_size() } -&gt; std::same_as&lt;std::ranges::range_size_t&lt;CONTAINER&gt;&gt;;</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        };</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>        <span class="keyword">template</span> &lt;<span class="keyword">class</span> CONTAINER, <span class="keyword">class</span> REFERENCE&gt;</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span>        <span class="keyword">concept </span>can_push_back = <span class="keyword">requires</span> (CONTAINER&amp; container, REFERENCE ref) {</div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>            container.push_back(ref);</div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>        };</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>        <span class="keyword">template</span> &lt;<span class="keyword">class</span> CONTAINER, <span class="keyword">class</span> REFERENCE&gt;</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>        <span class="keyword">concept </span>can_insert_at_end = <span class="keyword">requires</span> (CONTAINER &amp; container, REFERENCE ref) {</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>            container.insert(container.end(), ref);</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>        };</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span> </div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span>        <span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>        <span class="keyword">template</span> &lt;<span class="keyword">class </span>RANGE, <span class="keyword">class </span>CONTAINER, <span class="keyword">class</span>... TYPES&gt;</div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>        <span class="keyword">concept </span>_Converts_constructible_insertable = _Ref_converts&lt;RANGE, CONTAINER&gt;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>            &amp;&amp; std::constructible_from&lt;CONTAINER, TYPES...&gt;</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>            &amp;&amp; (can_push_back&lt;CONTAINER, std::ranges::range_reference_t&lt;RANGE&gt;&gt;</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>                || can_insert_at_end&lt;CONTAINER, std::ranges::range_reference_t&lt;RANGE&gt;&gt;);</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>        <span class="comment">// clang-format on</span></div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>        <span class="keyword">template</span> &lt;<span class="keyword">class</span> REFERENCE, <span class="keyword">class</span> CONTAINER&gt;</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span>        [[nodiscard]] <span class="keyword">constexpr</span> <span class="keyword">auto</span> container_inserter(CONTAINER&amp; _Cont)</div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        {</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>            <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (can_push_back&lt;CONTAINER, REFERENCE&gt;) {</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>                <span class="keywordflow">return</span> std::back_insert_iterator{ _Cont };</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span>            }</div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>            <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>                <span class="keywordflow">return</span> std::insert_iterator{ _Cont, _Cont.end() };</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>            }</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>        }</div>
 <div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span> </div>
-<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        <span class="keyword">template</span> &lt;std::ranges::input_range RANGE&gt;</div>
-<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        <span class="keyword">struct </span>phony_input_iterator</div>
-<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        {</div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>            <span class="keyword">using </span>iterator_category = std::input_iterator_tag;</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>            <span class="keyword">using </span>value_type = std::ranges::range_value_t&lt;RANGE&gt;;</div>
-<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>            <span class="keyword">using </span>difference_type = ptrdiff_t;</div>
-<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>            <span class="keyword">using </span>pointer = std::add_pointer_t&lt;std::ranges::range_reference_t&lt;RANGE&gt;&gt;;</div>
-<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>            <span class="keyword">using </span>reference = std::ranges::range_reference_t&lt;RANGE&gt;;</div>
-<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span> </div>
-<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>            reference operator*() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>            pointer operator-&gt;() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span> </div>
-<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>            phony_input_iterator&amp; operator++();</div>
-<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>            phony_input_iterator operator++(<span class="keywordtype">int</span>);</div>
-<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span> </div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>            <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> phony_input_iterator&amp;) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>        };</div>
-<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
-<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>        <span class="keyword">template</span> &lt;<span class="keyword">template</span> &lt;<span class="keyword">class</span>...&gt; <span class="keyword">class </span>CONTAINER, <span class="keyword">class </span>RANGE, <span class="keyword">class</span>... ARGS&gt;</div>
-<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>        <span class="keyword">auto</span> to_helper()</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>        {</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span>            <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (<span class="keyword">requires</span> (RANGE range, ARGS... args) { CONTAINER(range, args...); })</div>
-<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>decltype(CONTAINER(std::declval&lt;RANGE&gt;(), std::declval&lt;ARGS&gt;()...))*<span class="keyword">&gt;</span>(<span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (<span class="keyword">requires</span> (RANGE range, ARGS... args) { CONTAINER(from_range, range, args...); })</div>
-<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>decltype(CONTAINER(from_range, std::declval&lt;RANGE&gt;(), std::declval&lt;ARGS&gt;()...))*<span class="keyword">&gt;</span>(<span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (<span class="keyword">requires</span> (phony_input_iterator&lt;RANGE&gt; it, ARGS... args) { CONTAINER(it, it, args...);})</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>decltype(CONTAINER(std::declval&lt;phony_input_iterator&lt;RANGE&gt;<span class="keyword">&gt;</span>(), std::declval&lt;phony_input_iterator&lt;RANGE&gt;&gt;(), std::declval&lt;ARGS&gt;()...))*&gt;(<span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>        }</div>
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
-<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    }</div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span></div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>CONTAINER, std::ranges::input_range RANGE, <span class="keyword">class</span>... TYPES&gt;</div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>    <span class="keyword">requires</span> (!std::ranges::view&lt;CONTAINER&gt;)</div>
-<div class="foldopen" id="foldopen00376" data-start="{" data-end="}">
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno"><a class="line" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">  376</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> CONTAINER <a class="code hl_function" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">to</a>(RANGE&amp;&amp; range, TYPES&amp;&amp;... args)</div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>    {</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>        <span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacedetail.html">detail</a>;</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (_Converts_direct_constructible&lt;RANGE, CONTAINER, TYPES...&gt;)</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>            <span class="keywordflow">return</span> CONTAINER(std::forward&lt;RANGE&gt;(range), std::forward&lt;TYPES&gt;(args)...);</div>
-<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (_Converts_tag_constructible&lt;RANGE, CONTAINER, TYPES...&gt;)</div>
-<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>            <span class="keywordflow">return</span> CONTAINER(from_range, std::forward&lt;RANGE&gt;(range), std::forward&lt;TYPES&gt;(args)...);</div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (_Converts_and_common_constructible&lt;RANGE, CONTAINER, TYPES...&gt;)</div>
-<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>            <span class="keywordflow">return</span> CONTAINER(std::ranges::begin(range), std::ranges::end(range), std::forward&lt;TYPES&gt;(args)...);</div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (_Converts_constructible_insertable&lt;RANGE, CONTAINER, TYPES...&gt;)</div>
-<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>        {</div>
-<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>            CONTAINER container(std::forward&lt;TYPES&gt;(args)...);</div>
-<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>            <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (sized_and_reservable&lt;RANGE, CONTAINER&gt;) {</div>
-<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>                container.reserve(std::ranges::size(range));</div>
-<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>            }</div>
-<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>            std::ranges::copy(range, detail::container_inserter&lt;std::ranges::range_reference_t&lt;RANGE&gt;&gt;(container));</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>            <span class="keywordflow">return</span> container;</div>
-<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>        }</div>
-<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::ranges::input_range&lt;std::ranges::range_reference_t&lt;RANGE&gt;&gt;)</div>
-<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>        {</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>            <span class="keyword">const</span> <span class="keyword">auto</span> transform = [](<span class="keyword">auto</span>&amp;&amp; _Elem) {</div>
-<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>                <span class="keywordflow">return</span> <a class="code hl_function" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">ghassanpl::to&lt;std::ranges::range_value_t&lt;CONTAINER&gt;</a>&gt;(std::forward&lt;decltype(_Elem)&gt;(_Elem));</div>
-<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>                };</div>
-<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>            <span class="keywordflow">return</span> <a class="code hl_function" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">ghassanpl::to&lt;CONTAINER&gt;</a>(std::ranges::views::transform(range, transform), std::forward&lt;TYPES&gt;(args)...);</div>
-<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>        }</div>
-<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>        <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>            <span class="keyword">static_assert</span>(::ghassanpl::always_false&lt;CONTAINER&gt;, <span class="stringliteral">&quot;the program is ill-formed per N4910 [range.utility.conv.to]/1.3&quot;</span>);</div>
-<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>    }</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span>        <span class="keyword">template</span> &lt;<span class="keyword">class</span> RANGE, <span class="keyword">class</span> CONTAINER&gt;</div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        <span class="keyword">concept </span>sized_and_reservable =</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>            std::ranges::sized_range&lt;RANGE&gt; &amp;&amp;</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>            std::ranges::sized_range&lt;CONTAINER&gt; &amp;&amp;</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>            <span class="keyword">requires</span>(CONTAINER &amp; container, <span class="keyword">const</span> std::ranges::range_size_t&lt;CONTAINER&gt; count) {</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>            container.reserve(count);</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>            { container.capacity() } -&gt; std::same_as&lt;std::ranges::range_size_t&lt;CONTAINER&gt;&gt;;</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span>            { container.max_size() } -&gt; std::same_as&lt;std::ranges::range_size_t&lt;CONTAINER&gt;&gt;;</div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        };</div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span> </div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>        <span class="keyword">template</span> &lt;std::ranges::input_range RANGE&gt;</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>        <span class="keyword">struct </span>phony_input_iterator</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>        {</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span>            <span class="keyword">using </span>iterator_category = std::input_iterator_tag;</div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>            <span class="keyword">using </span>value_type = std::ranges::range_value_t&lt;RANGE&gt;;</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>            <span class="keyword">using </span>difference_type = ptrdiff_t;</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span>            <span class="keyword">using </span>pointer = std::add_pointer_t&lt;std::ranges::range_reference_t&lt;RANGE&gt;&gt;;</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>            <span class="keyword">using </span>reference = std::ranges::range_reference_t&lt;RANGE&gt;;</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>            reference operator*() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>            pointer operator-&gt;() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>            phony_input_iterator&amp; operator++();</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>            phony_input_iterator operator++(<span class="keywordtype">int</span>);</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> </div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>            <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> phony_input_iterator&amp;) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>        };</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span> </div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>        <span class="keyword">template</span> &lt;<span class="keyword">template</span> &lt;<span class="keyword">class</span>...&gt; <span class="keyword">class </span>CONTAINER, <span class="keyword">class </span>RANGE, <span class="keyword">class</span>... ARGS&gt;</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>        <span class="keyword">auto</span> to_helper()</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>        {</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span>            <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (<span class="keyword">requires</span> (RANGE range, ARGS... args) { CONTAINER(range, args...); })</div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>decltype(CONTAINER(std::declval&lt;RANGE&gt;(), std::declval&lt;ARGS&gt;()...))*<span class="keyword">&gt;</span>(<span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (<span class="keyword">requires</span> (RANGE range, ARGS... args) { CONTAINER(from_range, range, args...); })</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>decltype(CONTAINER(from_range, std::declval&lt;RANGE&gt;(), std::declval&lt;ARGS&gt;()...))*<span class="keyword">&gt;</span>(<span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (<span class="keyword">requires</span> (phony_input_iterator&lt;RANGE&gt; it, ARGS... args) { CONTAINER(it, it, args...);})</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>                <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>decltype(CONTAINER(std::declval&lt;phony_input_iterator&lt;RANGE&gt;<span class="keyword">&gt;</span>(), std::declval&lt;phony_input_iterator&lt;RANGE&gt;&gt;(), std::declval&lt;ARGS&gt;()...))*&gt;(<span class="keyword">nullptr</span>);</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>        }</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span> </div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    }</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>    <span class="keyword">template</span> &lt;<span class="keyword">class </span>CONTAINER, std::ranges::input_range RANGE, <span class="keyword">class</span>... TYPES&gt;</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>    <span class="keyword">requires</span> (!std::ranges::view&lt;CONTAINER&gt;)</div>
+<div class="foldopen" id="foldopen00386" data-start="{" data-end="}">
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno"><a class="line" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">  386</a></span>    [[nodiscard]] <span class="keyword">constexpr</span> CONTAINER <a class="code hl_function" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">to</a>(RANGE&amp;&amp; range, TYPES&amp;&amp;... args)</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    {</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>        <span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacedetail.html">detail</a>;</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (_Converts_direct_constructible&lt;RANGE, CONTAINER, TYPES...&gt;)</div>
+<div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span>            <span class="keywordflow">return</span> CONTAINER(std::forward&lt;RANGE&gt;(range), std::forward&lt;TYPES&gt;(args)...);</div>
+<div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (_Converts_tag_constructible&lt;RANGE, CONTAINER, TYPES...&gt;)</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>            <span class="keywordflow">return</span> CONTAINER(from_range, std::forward&lt;RANGE&gt;(range), std::forward&lt;TYPES&gt;(args)...);</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (_Converts_and_common_constructible&lt;RANGE, CONTAINER, TYPES...&gt;)</div>
+<div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span>            <span class="keywordflow">return</span> CONTAINER(std::ranges::begin(range), std::ranges::end(range), std::forward&lt;TYPES&gt;(args)...);</div>
+<div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (_Converts_constructible_insertable&lt;RANGE, CONTAINER, TYPES...&gt;)</div>
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>        {</div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>            CONTAINER container(std::forward&lt;TYPES&gt;(args)...);</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>            <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (sized_and_reservable&lt;RANGE, CONTAINER&gt;) {</div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>                container.reserve(std::ranges::size(range));</div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>            }</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>            std::ranges::copy(range, detail::container_inserter&lt;std::ranges::range_reference_t&lt;RANGE&gt;&gt;(container));</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>            <span class="keywordflow">return</span> container;</div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>        }</div>
+<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>        <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::ranges::input_range&lt;std::ranges::range_reference_t&lt;RANGE&gt;&gt;)</div>
+<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>        {</div>
+<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>            <span class="keyword">const</span> <span class="keyword">auto</span> transform = [](<span class="keyword">auto</span>&amp;&amp; _Elem) {</div>
+<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>                <span class="keywordflow">return</span> <a class="code hl_function" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">ghassanpl::to&lt;std::ranges::range_value_t&lt;CONTAINER&gt;</a>&gt;(std::forward&lt;decltype(_Elem)&gt;(_Elem));</div>
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>                };</div>
+<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>            <span class="keywordflow">return</span> <a class="code hl_function" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">ghassanpl::to&lt;CONTAINER&gt;</a>(std::ranges::views::transform(range, transform), std::forward&lt;TYPES&gt;(args)...);</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        }</div>
+<div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>        <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span>            <span class="keyword">static_assert</span>(::ghassanpl::always_false&lt;CONTAINER&gt;, <span class="stringliteral">&quot;the program is ill-formed per N4910 [range.utility.conv.to]/1.3&quot;</span>);</div>
+<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    }</div>
 </div>
-<div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span> </div>
-<div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    <span class="keyword">template</span> &lt;<span class="keyword">template</span> &lt;<span class="keyword">class</span>...&gt; <span class="keyword">class </span>CONTAINER, std::ranges::input_range RANGE, <span class="keyword">class</span>... TYPES, <span class="keyword">class </span>_Deduced = std::remove_pointer_t&lt;<span class="keyword">decltype</span>(detail::to_helper&lt;CONTAINER, RANGE, TYPES...&gt;())&gt;&gt;</div>
-<div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span>    [[nodiscard]] <span class="keyword">constexpr</span> _Deduced <a class="code hl_function" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">to</a>(RANGE&amp;&amp; _Range, TYPES&amp;&amp;... ARGS)</div>
-<div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    {</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">to&lt;_Deduced&gt;</a>(std::forward&lt;RANGE&gt;(_Range), std::forward&lt;TYPES&gt;(ARGS)...);</div>
-<div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    }</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span></div>
-<div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span><span class="preprocessor">#else</span></div>
-<div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span> </div>
-<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span>    <span class="keyword">using </span>std::ranges::to;</div>
-<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span> </div>
-<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span> </div>
-<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>    <span class="comment">/*</span></div>
-<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span><span class="comment">    template &lt;class _Ty = void&gt;</span></div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span><span class="comment">    struct plus_equals</span></div>
-<div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span><span class="comment">    {</span></div>
-<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span><span class="comment">        [[nodiscard]] constexpr _Ty operator()(_Ty&amp; left, const _Ty&amp; right) const { return left += right; }</span></div>
-<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span><span class="comment">    };</span></div>
-<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span><span class="comment"></span> </div>
-<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span><span class="comment">    template &lt;&gt;</span></div>
-<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span><span class="comment">    struct plus_equals&lt;void&gt;</span></div>
-<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span><span class="comment">    {</span></div>
-<div class="line"><a id="l00428" name="l00428"></a><span class="lineno">  428</span><span class="comment">        template &lt;class _Ty1, class _Ty2&gt;</span></div>
-<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span><span class="comment">        [[nodiscard]] constexpr auto operator()(_Ty1&amp; _Left, _Ty2&amp;&amp; _Right) const noexcept(noexcept(static_cast&lt;_Ty1&amp;&gt;(_Left) + static_cast&lt;_Ty2&amp;&amp;&gt;(_Right)))</span></div>
-<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span><span class="comment">            -&gt; decltype(static_cast&lt;_Ty1&amp;&gt;(_Left) + static_cast&lt;_Ty2&amp;&amp;&gt;(_Right))</span></div>
-<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span><span class="comment">        {</span></div>
-<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="comment">            return static_cast&lt;_Ty1&amp;&gt;(_Left) + static_cast&lt;_Ty2&amp;&amp;&gt;(_Right);</span></div>
-<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span><span class="comment">        }</span></div>
-<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="comment">        using is_transparent = int;</span></div>
+<div class="line"><a id="l00414" name="l00414"></a><span class="lineno">  414</span> </div>
+<div class="line"><a id="l00415" name="l00415"></a><span class="lineno">  415</span>    <span class="keyword">template</span> &lt;<span class="keyword">template</span> &lt;<span class="keyword">class</span>...&gt; <span class="keyword">class </span>CONTAINER, std::ranges::input_range RANGE, <span class="keyword">class</span>... TYPES, <span class="keyword">class </span>_Deduced = std::remove_pointer_t&lt;<span class="keyword">decltype</span>(detail::to_helper&lt;CONTAINER, RANGE, TYPES...&gt;())&gt;&gt;</div>
+<div class="line"><a id="l00416" name="l00416"></a><span class="lineno">  416</span>    [[nodiscard]] <span class="keyword">constexpr</span> _Deduced <a class="code hl_function" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">to</a>(RANGE&amp;&amp; _Range, TYPES&amp;&amp;... ARGS)</div>
+<div class="line"><a id="l00417" name="l00417"></a><span class="lineno">  417</span>    {</div>
+<div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span>        <span class="keywordflow">return</span> <a class="code hl_function" href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">to&lt;_Deduced&gt;</a>(std::forward&lt;RANGE&gt;(_Range), std::forward&lt;TYPES&gt;(ARGS)...);</div>
+<div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    }</div>
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span></div>
+<div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span> </div>
+<div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span>    <span class="keyword">using </span>std::ranges::to;</div>
+<div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span> </div>
+<div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00427" name="l00427"></a><span class="lineno">  427</span></div>
+<div class="line"><a id="l00429" name="l00429"></a><span class="lineno">  429</span> </div>
+<div class="line"><a id="l00430" name="l00430"></a><span class="lineno">  430</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00431" name="l00431"></a><span class="lineno">  431</span><span class="comment">    template &lt;class _Ty = void&gt;</span></div>
+<div class="line"><a id="l00432" name="l00432"></a><span class="lineno">  432</span><span class="comment">    struct plus_equals</span></div>
+<div class="line"><a id="l00433" name="l00433"></a><span class="lineno">  433</span><span class="comment">    {</span></div>
+<div class="line"><a id="l00434" name="l00434"></a><span class="lineno">  434</span><span class="comment">        [[nodiscard]] constexpr _Ty operator()(_Ty&amp; left, const _Ty&amp; right) const { return left += right; }</span></div>
 <div class="line"><a id="l00435" name="l00435"></a><span class="lineno">  435</span><span class="comment">    };</span></div>
 <div class="line"><a id="l00436" name="l00436"></a><span class="lineno">  436</span><span class="comment"></span> </div>
-<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="comment">    template &lt;std::ranges::range RANGE, std::movable FOLD_VALUE, typename FOLD_FUNC = std::plus&lt;&gt;&gt;</span></div>
-<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span><span class="comment">    requires std::is_invocable_v&lt;FOLD_FUNC, FOLD_VALUE&amp;, std::ranges::range_reference_t&lt;RANGE&gt;&gt;</span></div>
-<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="comment">    auto fold(RANGE&amp;&amp; r, FOLD_VALUE init, FOLD_FUNC&amp;&amp; op = {})</span></div>
-<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span><span class="comment">    {</span></div>
-<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span><span class="comment">        auto first = std::ranges::begin(r);</span></div>
-<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span><span class="comment">        auto const last = std::ranges::end(r);</span></div>
-<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span><span class="comment">        for (; first != last; ++first)</span></div>
-<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span><span class="comment">            init = std::invoke(op, std::move(init), *first);</span></div>
-<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span><span class="comment">        return init;</span></div>
-<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span><span class="comment">    }</span></div>
-<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span><span class="comment"></span> </div>
-<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span><span class="comment">    template &lt;std::ranges::range RANGE, typename FOLD_VALUE, typename FOLD_FUNC = plus_equals&lt;&gt;&gt;</span></div>
-<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span><span class="comment">    decltype(auto) fold_while(RANGE&amp;&amp; r, FOLD_VALUE&amp;&amp; init, FOLD_FUNC&amp;&amp; op = {})</span></div>
-<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span><span class="comment">    requires std::is_invocable_r_v&lt;bool, FOLD_FUNC, FOLD_VALUE&amp;, std::ranges::range_reference_t&lt;RANGE&gt;&gt;</span></div>
-<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span><span class="comment">    {</span></div>
-<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span><span class="comment">        auto first = std::ranges::begin(r);</span></div>
-<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="comment">        auto const last = std::ranges::end(r);</span></div>
-<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="comment">        for (; first != last; ++first)</span></div>
-<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="comment">        {</span></div>
-<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span><span class="comment">            if (!std::invoke(op, std::ref(init), *first))</span></div>
-<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span><span class="comment">                break;</span></div>
-<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span><span class="comment">        }</span></div>
-<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span><span class="comment">        return init;</span></div>
-<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span><span class="comment">    }</span></div>
-<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="comment">    */</span></div>
-<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span>}</div>
+<div class="line"><a id="l00437" name="l00437"></a><span class="lineno">  437</span><span class="comment">    template &lt;&gt;</span></div>
+<div class="line"><a id="l00438" name="l00438"></a><span class="lineno">  438</span><span class="comment">    struct plus_equals&lt;void&gt;</span></div>
+<div class="line"><a id="l00439" name="l00439"></a><span class="lineno">  439</span><span class="comment">    {</span></div>
+<div class="line"><a id="l00440" name="l00440"></a><span class="lineno">  440</span><span class="comment">        template &lt;class _Ty1, class _Ty2&gt;</span></div>
+<div class="line"><a id="l00441" name="l00441"></a><span class="lineno">  441</span><span class="comment">        [[nodiscard]] constexpr auto operator()(_Ty1&amp; _Left, _Ty2&amp;&amp; _Right) const noexcept(noexcept(static_cast&lt;_Ty1&amp;&gt;(_Left) + static_cast&lt;_Ty2&amp;&amp;&gt;(_Right)))</span></div>
+<div class="line"><a id="l00442" name="l00442"></a><span class="lineno">  442</span><span class="comment">            -&gt; decltype(static_cast&lt;_Ty1&amp;&gt;(_Left) + static_cast&lt;_Ty2&amp;&amp;&gt;(_Right))</span></div>
+<div class="line"><a id="l00443" name="l00443"></a><span class="lineno">  443</span><span class="comment">        {</span></div>
+<div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span><span class="comment">            return static_cast&lt;_Ty1&amp;&gt;(_Left) + static_cast&lt;_Ty2&amp;&amp;&gt;(_Right);</span></div>
+<div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span><span class="comment">        }</span></div>
+<div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span><span class="comment">        using is_transparent = int;</span></div>
+<div class="line"><a id="l00447" name="l00447"></a><span class="lineno">  447</span><span class="comment">    };</span></div>
+<div class="line"><a id="l00448" name="l00448"></a><span class="lineno">  448</span><span class="comment"></span> </div>
+<div class="line"><a id="l00449" name="l00449"></a><span class="lineno">  449</span><span class="comment">    template &lt;std::ranges::range RANGE, std::movable FOLD_VALUE, typename FOLD_FUNC = std::plus&lt;&gt;&gt;</span></div>
+<div class="line"><a id="l00450" name="l00450"></a><span class="lineno">  450</span><span class="comment">    requires std::is_invocable_v&lt;FOLD_FUNC, FOLD_VALUE&amp;, std::ranges::range_reference_t&lt;RANGE&gt;&gt;</span></div>
+<div class="line"><a id="l00451" name="l00451"></a><span class="lineno">  451</span><span class="comment">    auto fold(RANGE&amp;&amp; r, FOLD_VALUE init, FOLD_FUNC&amp;&amp; op = {})</span></div>
+<div class="line"><a id="l00452" name="l00452"></a><span class="lineno">  452</span><span class="comment">    {</span></div>
+<div class="line"><a id="l00453" name="l00453"></a><span class="lineno">  453</span><span class="comment">        auto first = std::ranges::begin(r);</span></div>
+<div class="line"><a id="l00454" name="l00454"></a><span class="lineno">  454</span><span class="comment">        auto const last = std::ranges::end(r);</span></div>
+<div class="line"><a id="l00455" name="l00455"></a><span class="lineno">  455</span><span class="comment">        for (; first != last; ++first)</span></div>
+<div class="line"><a id="l00456" name="l00456"></a><span class="lineno">  456</span><span class="comment">            init = std::invoke(op, std::move(init), *first);</span></div>
+<div class="line"><a id="l00457" name="l00457"></a><span class="lineno">  457</span><span class="comment">        return init;</span></div>
+<div class="line"><a id="l00458" name="l00458"></a><span class="lineno">  458</span><span class="comment">    }</span></div>
+<div class="line"><a id="l00459" name="l00459"></a><span class="lineno">  459</span><span class="comment"></span> </div>
+<div class="line"><a id="l00460" name="l00460"></a><span class="lineno">  460</span><span class="comment">    template &lt;std::ranges::range RANGE, typename FOLD_VALUE, typename FOLD_FUNC = plus_equals&lt;&gt;&gt;</span></div>
+<div class="line"><a id="l00461" name="l00461"></a><span class="lineno">  461</span><span class="comment">    decltype(auto) fold_while(RANGE&amp;&amp; r, FOLD_VALUE&amp;&amp; init, FOLD_FUNC&amp;&amp; op = {})</span></div>
+<div class="line"><a id="l00462" name="l00462"></a><span class="lineno">  462</span><span class="comment">    requires std::is_invocable_r_v&lt;bool, FOLD_FUNC, FOLD_VALUE&amp;, std::ranges::range_reference_t&lt;RANGE&gt;&gt;</span></div>
+<div class="line"><a id="l00463" name="l00463"></a><span class="lineno">  463</span><span class="comment">    {</span></div>
+<div class="line"><a id="l00464" name="l00464"></a><span class="lineno">  464</span><span class="comment">        auto first = std::ranges::begin(r);</span></div>
+<div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span><span class="comment">        auto const last = std::ranges::end(r);</span></div>
+<div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span><span class="comment">        for (; first != last; ++first)</span></div>
+<div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span><span class="comment">        {</span></div>
+<div class="line"><a id="l00468" name="l00468"></a><span class="lineno">  468</span><span class="comment">            if (!std::invoke(op, std::ref(init), *first))</span></div>
+<div class="line"><a id="l00469" name="l00469"></a><span class="lineno">  469</span><span class="comment">                break;</span></div>
+<div class="line"><a id="l00470" name="l00470"></a><span class="lineno">  470</span><span class="comment">        }</span></div>
+<div class="line"><a id="l00471" name="l00471"></a><span class="lineno">  471</span><span class="comment">        return init;</span></div>
+<div class="line"><a id="l00472" name="l00472"></a><span class="lineno">  472</span><span class="comment">    }</span></div>
+<div class="line"><a id="l00473" name="l00473"></a><span class="lineno">  473</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00474" name="l00474"></a><span class="lineno">  474</span>}</div>
 <div class="ttc" id="aconceptghassanpl_1_1range__predicate_html"><div class="ttname"><a href="conceptghassanpl_1_1range__predicate.html">ghassanpl::range_predicate</a></div><div class="ttdoc">Concept to check if a function is a predicate on the range elements (i.e. returns boolable).</div><div class="ttdef"><b>Definition</b> <a href="#l00036">ranges.h:36</a></div></div>
 <div class="ttc" id="agroup___containers_html_ga39650a6b16752b831b435262d0c2b20a"><div class="ttname"><a href="group___containers.html#ga39650a6b16752b831b435262d0c2b20a">ghassanpl::at_ptr</a></div><div class="ttdeci">auto at_ptr(std::map&lt; K, V, C &gt; const &amp;map, VAL &amp;&amp;value)</div><div class="ttdoc">Same as map_find().</div><div class="ttdef"><b>Definition</b> <a href="containers_8h_source.html#l00191">containers.h:191</a></div></div>
-<div class="ttc" id="agroup___ranges_html_ga0531b42271ed8ee6b10a84c1a6fff48f"><div class="ttname"><a href="group___ranges.html#ga0531b42271ed8ee6b10a84c1a6fff48f">ghassanpl::join</a></div><div class="ttdeci">constexpr auto join(std::array&lt; T, Ns &gt;... arrays)</div><div class="ttdoc">Arrays.</div><div class="ttdef"><b>Definition</b> <a href="#l00216">ranges.h:216</a></div></div>
+<div class="ttc" id="agroup___random_html_gac1034aeb20eb11b6b948e0f05e6bf88a"><div class="ttname"><a href="group___random.html#gac1034aeb20eb11b6b948e0f05e6bf88a">ghassanpl::random::index</a></div><div class="ttdeci">auto index(T &amp;cont, RANDOM &amp;rng=::ghassanpl::random::default_random_engine)</div><div class="ttdoc">Returns an index of a random element in cont.</div><div class="ttdef"><b>Definition</b> <a href="random_8h_source.html#l00331">random.h:331</a></div></div>
 <div class="ttc" id="agroup___ranges_html_ga1d95372dfd0d8d5f3f3cc52c2880d0e9"><div class="ttname"><a href="group___ranges.html#ga1d95372dfd0d8d5f3f3cc52c2880d0e9">ghassanpl::index_of</a></div><div class="ttdeci">constexpr auto index_of(RANGE const &amp;range, T &amp;&amp;value) -&gt; std::iter_difference_t&lt; range_iterator&lt; RANGE &gt; &gt;</div><div class="ttdoc">Find a value in range and returns an index to it.</div><div class="ttdef"><b>Definition</b> <a href="#l00086">ranges.h:86</a></div></div>
-<div class="ttc" id="agroup___ranges_html_ga2d6ec855951fa9b03d32b38143896920"><div class="ttname"><a href="group___ranges.html#ga2d6ec855951fa9b03d32b38143896920">ghassanpl::find_ptr</a></div><div class="ttdeci">constexpr auto find_ptr(RANGE &amp;range, FUNC &amp;&amp;func)</div><div class="ttdoc">Find a value in range and returns a pointer to it, or null if none found.</div><div class="ttdef"><b>Definition</b> <a href="#l00117">ranges.h:117</a></div></div>
 <div class="ttc" id="agroup___ranges_html_ga38e1dac5f81ca29822e3f8d4963739dc"><div class="ttname"><a href="group___ranges.html#ga38e1dac5f81ca29822e3f8d4963739dc">ghassanpl::range_iterator</a></div><div class="ttdeci">std::ranges::iterator_t&lt; std::decay_t&lt; RANGE &gt; &gt; range_iterator</div><div class="ttdoc">Helper template to get the iterator type of a type that decays to a range.</div><div class="ttdef"><b>Definition</b> <a href="#l00032">ranges.h:32</a></div></div>
-<div class="ttc" id="agroup___ranges_html_ga3cbc4ac8d7f78e7db3b3cb0683d7c792"><div class="ttname"><a href="group___ranges.html#ga3cbc4ac8d7f78e7db3b3cb0683d7c792">ghassanpl::span_cast</a></div><div class="ttdeci">auto span_cast(span&lt; FROM, N &gt; bytes) noexcept</div><div class="ttdoc">Casts a spn of objects of type FROM to a spn of objects of type TO Does not perform any checks,...</div><div class="ttdef"><b>Definition</b> <a href="#l00179">ranges.h:179</a></div></div>
-<div class="ttc" id="agroup___ranges_html_ga58b6ea74ef4536304442a7fb752733c9"><div class="ttname"><a href="group___ranges.html#ga58b6ea74ef4536304442a7fb752733c9">ghassanpl::find_index</a></div><div class="ttdeci">constexpr auto find_index(RANGE const &amp;range, FUNC &amp;&amp;func) -&gt; std::iter_difference_t&lt; range_iterator&lt; RANGE &gt; &gt;</div><div class="ttdoc">Find a value in range and returns an index to it.</div><div class="ttdef"><b>Definition</b> <a href="#l00106">ranges.h:106</a></div></div>
+<div class="ttc" id="agroup___ranges_html_ga3cbc4ac8d7f78e7db3b3cb0683d7c792"><div class="ttname"><a href="group___ranges.html#ga3cbc4ac8d7f78e7db3b3cb0683d7c792">ghassanpl::span_cast</a></div><div class="ttdeci">auto span_cast(span&lt; FROM, N &gt; bytes) noexcept</div><div class="ttdoc">Casts a span of objects of type FROM to a span of objects of type TO.</div><div class="ttdef"><b>Definition</b> <a href="#l00181">ranges.h:181</a></div></div>
+<div class="ttc" id="agroup___ranges_html_ga5e432adbde852ba34c51a86399e9ff8f"><div class="ttname"><a href="group___ranges.html#ga5e432adbde852ba34c51a86399e9ff8f">ghassanpl::find_if_or_default</a></div><div class="ttdeci">auto find_if_or_default(RANGE &amp;range, FUNC &amp;&amp;pred, DEF_TYPE &amp;&amp;default_value=DEF_TYPE{})</div><div class="ttdoc">Find a value in range that matches pred, and returns it, or default_value if none found.</div><div class="ttdef"><b>Definition</b> <a href="#l00126">ranges.h:126</a></div></div>
 <div class="ttc" id="agroup___ranges_html_ga68e2ca4d8e988630b92301728d1ba7d9"><div class="ttname"><a href="group___ranges.html#ga68e2ca4d8e988630b92301728d1ba7d9">ghassanpl::at</a></div><div class="ttdeci">constexpr decltype(auto) at(random_access_range auto &amp;range, std::integral auto index)</div><div class="ttdoc">Returns a reference to the value at index of range.</div><div class="ttdef"><b>Definition</b> <a href="#l00061">ranges.h:61</a></div></div>
-<div class="ttc" id="agroup___ranges_html_ga9b220807298f2d39fe0e1075d52a7422"><div class="ttname"><a href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">ghassanpl::valid_address</a></div><div class="ttdeci">constexpr bool valid_address(RANGE &amp;&amp;range, range_value&lt; RANGE &gt; *pointer)</div><div class="ttdoc">Returns whether or not pointer is a valid pointer to an element in the contiguous range.</div><div class="ttdef"><b>Definition</b> <a href="#l00141">ranges.h:141</a></div></div>
-<div class="ttc" id="agroup___ranges_html_ga9bb1a259ef8c7774c28f6f2971a41af2"><div class="ttname"><a href="group___ranges.html#ga9bb1a259ef8c7774c28f6f2971a41af2">ghassanpl::contains_subrange</a></div><div class="ttdeci">constexpr __contains_subrange_fn contains_subrange</div><div class="ttdoc">contains_subrange(range, subrange)</div><div class="ttdef"><b>Definition</b> <a href="#l00276">ranges.h:276</a></div></div>
-<div class="ttc" id="agroup___ranges_html_gaa0acfa0520ddfe27b7b120bdb0ce1742"><div class="ttname"><a href="group___ranges.html#gaa0acfa0520ddfe27b7b120bdb0ce1742">ghassanpl::to_index</a></div><div class="ttdeci">constexpr auto to_index(random_access_iterator auto iterator, random_access_range auto const &amp;range)</div><div class="ttdoc">Turns an iterator to range to an index.</div><div class="ttdef"><b>Definition</b> <a href="#l00134">ranges.h:134</a></div></div>
+<div class="ttc" id="agroup___ranges_html_ga7264fc8133a4b72f21406732ae98ec9d"><div class="ttname"><a href="group___ranges.html#ga7264fc8133a4b72f21406732ae98ec9d">ghassanpl::find_index</a></div><div class="ttdeci">constexpr auto find_index(RANGE const &amp;range, FUNC &amp;&amp;pred) -&gt; std::iter_difference_t&lt; range_iterator&lt; RANGE &gt; &gt;</div><div class="ttdoc">Find a value in range that matches pred, and returns an index to it.</div><div class="ttdef"><b>Definition</b> <a href="#l00106">ranges.h:106</a></div></div>
+<div class="ttc" id="agroup___ranges_html_ga9062af46ea9f31e554a6812fd57a73af"><div class="ttname"><a href="group___ranges.html#ga9062af46ea9f31e554a6812fd57a73af">ghassanpl::find_ptr</a></div><div class="ttdeci">constexpr auto find_ptr(RANGE &amp;range, FUNC &amp;&amp;pred)</div><div class="ttdoc">Find a value in range that matches pred, and returns a pointer to it, or null if none found.</div><div class="ttdef"><b>Definition</b> <a href="#l00117">ranges.h:117</a></div></div>
+<div class="ttc" id="agroup___ranges_html_ga9b220807298f2d39fe0e1075d52a7422"><div class="ttname"><a href="group___ranges.html#ga9b220807298f2d39fe0e1075d52a7422">ghassanpl::valid_address</a></div><div class="ttdeci">constexpr bool valid_address(RANGE &amp;&amp;range, range_value&lt; RANGE &gt; *pointer)</div><div class="ttdoc">Returns whether or not pointer is a valid pointer to an element in the contiguous range.</div><div class="ttdef"><b>Definition</b> <a href="#l00142">ranges.h:142</a></div></div>
+<div class="ttc" id="agroup___ranges_html_ga9bb1a259ef8c7774c28f6f2971a41af2"><div class="ttname"><a href="group___ranges.html#ga9bb1a259ef8c7774c28f6f2971a41af2">ghassanpl::contains_subrange</a></div><div class="ttdeci">constexpr __contains_subrange_fn contains_subrange</div><div class="ttdoc">contains_subrange(range, subrange)</div><div class="ttdef"><b>Definition</b> <a href="#l00286">ranges.h:286</a></div></div>
+<div class="ttc" id="agroup___ranges_html_gaa0acfa0520ddfe27b7b120bdb0ce1742"><div class="ttname"><a href="group___ranges.html#gaa0acfa0520ddfe27b7b120bdb0ce1742">ghassanpl::to_index</a></div><div class="ttdeci">constexpr auto to_index(random_access_iterator auto iterator, random_access_range auto const &amp;range)</div><div class="ttdoc">Turns an iterator to range to an index.</div><div class="ttdef"><b>Definition</b> <a href="#l00135">ranges.h:135</a></div></div>
 <div class="ttc" id="agroup___ranges_html_gaaf99e06b29cc11fb54a534afc20d4c01"><div class="ttname"><a href="group___ranges.html#gaaf99e06b29cc11fb54a534afc20d4c01">ghassanpl::valid_index</a></div><div class="ttdeci">constexpr bool valid_index(random_access_range auto &amp;range, std::integral auto index)</div><div class="ttdoc">Returns whether or not a given integer is a valid index to a random access range.</div><div class="ttdef"><b>Definition</b> <a href="#l00039">ranges.h:39</a></div></div>
 <div class="ttc" id="agroup___ranges_html_gab3b228bfee2bb2c489b0bf08628ad817"><div class="ttname"><a href="group___ranges.html#gab3b228bfee2bb2c489b0bf08628ad817">ghassanpl::at_or_default</a></div><div class="ttdeci">constexpr auto at_or_default(RANGE &amp;&amp;range, std::integral auto index, T &amp;&amp;default_value)</div><div class="ttdoc">Return the element at index or default_value if not a valid index.</div><div class="ttdef"><b>Definition</b> <a href="#l00097">ranges.h:97</a></div></div>
 <div class="ttc" id="agroup___ranges_html_gac7f887707d285f61bc2f1aae98f1c976"><div class="ttname"><a href="group___ranges.html#gac7f887707d285f61bc2f1aae98f1c976">ghassanpl::modulo_index</a></div><div class="ttdeci">constexpr auto modulo_index(size_t range_size, std::integral auto index)</div><div class="ttdoc">Returns index converted to a valid index into a range of range_size as if using modulo arithmetic.</div><div class="ttdef"><b>Definition</b> <a href="#l00046">ranges.h:46</a></div></div>
-<div class="ttc" id="agroup___ranges_html_gacd70f29258ebed17c37f8adbf4383ada"><div class="ttname"><a href="group___ranges.html#gacd70f29258ebed17c37f8adbf4383ada">ghassanpl::split_at</a></div><div class="ttdeci">constexpr std::pair&lt; span&lt; T &gt;, span&lt; T &gt; &gt; split_at(span&lt; T, N &gt; spn, size_t index)</div><div class="ttdoc">Span stuff.</div><div class="ttdef"><b>Definition</b> <a href="#l00150">ranges.h:150</a></div></div>
 <div class="ttc" id="agroup___ranges_html_gae9ad1518f47ff203386a4c5cf3ca371a"><div class="ttname"><a href="group___ranges.html#gae9ad1518f47ff203386a4c5cf3ca371a">ghassanpl::range_value</a></div><div class="ttdeci">std::ranges::range_value_t&lt; std::decay_t&lt; RANGE &gt; &gt; range_value</div><div class="ttdoc">Helper template to get the value type of a type that decays to a range.</div><div class="ttdef"><b>Definition</b> <a href="#l00028">ranges.h:28</a></div></div>
-<div class="ttc" id="agroup___ranges_html_gaf0e48f4e15e1aefe379fa05337a2bfc0"><div class="ttname"><a href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">ghassanpl::to</a></div><div class="ttdeci">constexpr CONTAINER to(RANGE &amp;&amp;range, TYPES &amp;&amp;... args)</div><div class="ttdoc">to&lt;container&gt;();</div><div class="ttdef"><b>Definition</b> <a href="#l00376">ranges.h:376</a></div></div>
-<div class="ttc" id="agroup___ranges_html_gafa66c510b1bca79889cfb20c2c5e07ad"><div class="ttname"><a href="group___ranges.html#gafa66c510b1bca79889cfb20c2c5e07ad">ghassanpl::contains</a></div><div class="ttdeci">constexpr __contains_fn contains</div><div class="ttdoc">contains(range, el)</div><div class="ttdef"><b>Definition</b> <a href="#l00254">ranges.h:254</a></div></div>
+<div class="ttc" id="agroup___ranges_html_gaf0e48f4e15e1aefe379fa05337a2bfc0"><div class="ttname"><a href="group___ranges.html#gaf0e48f4e15e1aefe379fa05337a2bfc0">ghassanpl::to</a></div><div class="ttdeci">constexpr CONTAINER to(RANGE &amp;&amp;range, TYPES &amp;&amp;... args)</div><div class="ttdoc">to&lt;container&gt;();</div><div class="ttdef"><b>Definition</b> <a href="#l00386">ranges.h:386</a></div></div>
+<div class="ttc" id="agroup___ranges_html_gafa66c510b1bca79889cfb20c2c5e07ad"><div class="ttname"><a href="group___ranges.html#gafa66c510b1bca79889cfb20c2c5e07ad">ghassanpl::contains</a></div><div class="ttdeci">constexpr __contains_fn contains</div><div class="ttdoc">contains(range, el)</div><div class="ttdef"><b>Definition</b> <a href="#l00264">ranges.h:264</a></div></div>
 <div class="ttc" id="agroup___ranges_html_gaffbed2b6ccc672a584c2d67bd964e2f6"><div class="ttname"><a href="group___ranges.html#gaffbed2b6ccc672a584c2d67bd964e2f6">ghassanpl::modulo_at</a></div><div class="ttdeci">constexpr decltype(auto) modulo_at(random_access_range auto &amp;range, std::integral auto index)</div><div class="ttdoc">Returns a reference to the value at modulo_index of range.</div><div class="ttdef"><b>Definition</b> <a href="#l00079">ranges.h:79</a></div></div>
 <div class="ttc" id="anamespacedetail_html"><div class="ttname"><a href="namespacedetail.html">detail</a></div><div class="ttdoc">The below code is based on Sun&#39;s libm library code, which is licensed under the following license:</div><div class="ttdef"><b>Definition</b> <a href="constexpr__math_8inl_source.html#l00011">constexpr_math.inl:12</a></div></div>
+<div class="ttc" id="anamespaceghassanpl_1_1pred_html"><div class="ttname"><a href="namespaceghassanpl_1_1pred.html">ghassanpl::pred</a></div><div class="ttdoc">Contains functions that return predicates; appropriate for functions like std::all_of.</div><div class="ttdef"><b>Definition</b> <a href="functional_8h_source.html#l00081">functional.h:82</a></div></div>
 <div class="ttc" id="anamespaceghassanpl_html"><div class="ttname"><a href="namespaceghassanpl.html">ghassanpl</a></div><div class="ttdoc">Primary namespace for everything in this library.</div><div class="ttdef"><b>Definition</b> <a href="align_09rec2_8h_source.html#l00009">align+rec2.h:10</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

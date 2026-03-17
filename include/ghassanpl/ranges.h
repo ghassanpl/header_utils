@@ -13,7 +13,7 @@
 namespace ghassanpl
 {
 	/// \defgroup Ranges Ranges
-	/// Ranges and such
+	/// Operations on C++20-style ranges
 
 	/// \ingroup Ranges
 	///@{
@@ -100,31 +100,32 @@ namespace ghassanpl
 		return at(range, index);
 	}
 
-	/// Find a value in `range` and returns an index to it
+	/// Find a value in `range` that matches `pred`, and returns an index to it
 	template <random_access_range RANGE, typename FUNC>
 	requires range_predicate<RANGE, FUNC>
-	[[nodiscard]] constexpr auto find_index(RANGE const& range, FUNC&& func) -> std::iter_difference_t<range_iterator<RANGE>>
+	[[nodiscard]] constexpr auto find_index(RANGE const& range, FUNC&& pred) -> std::iter_difference_t<range_iterator<RANGE>>
 	{
-		const auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
+		const auto it = std::ranges::find_if(range, std::forward<FUNC>(pred));
 		if (it == std::ranges::end(range))
 			return -1;
 		return std::ranges::distance(std::ranges::begin(range), it);
 	}
 	
-	/// Find a value in `range` and returns a pointer to it, or null if none found
+	/// Find a value in `range` that matches `pred`, and returns a pointer to it, or null if none found
 	template <std::ranges::range RANGE, typename FUNC>
 	requires range_predicate<RANGE, FUNC>
-	[[nodiscard]] constexpr auto find_ptr(RANGE& range, FUNC&& func)
+	[[nodiscard]] constexpr auto find_ptr(RANGE& range, FUNC&& pred)
 	{
-		const auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
+		const auto it = std::ranges::find_if(range, std::forward<FUNC>(pred));
 		return it == std::ranges::end(range) ? nullptr : std::to_address(it);
 	}
 
+	/// Find a value in `range` that matches `pred`, and returns it, or `default_value` if none found
 	template <random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_value<RANGE>>
 	requires range_predicate<RANGE, FUNC>
-	[[nodiscard]] auto find_if_or_default(RANGE& range, FUNC&& func, DEF_TYPE&& default_value = DEF_TYPE{})
+	[[nodiscard]] auto find_if_or_default(RANGE& range, FUNC&& pred, DEF_TYPE&& default_value = DEF_TYPE{})
 	{
-		auto it = std::ranges::find_if(range, std::forward<FUNC>(func));
+		auto it = std::ranges::find_if(range, std::forward<FUNC>(pred));
 		if (it == std::ranges::end(range))
 			return range_value<RANGE>{std::forward<DEF_TYPE>(default_value)};
 		return *it;
@@ -144,7 +145,8 @@ namespace ghassanpl
 		return pointer >= std::to_address(std::ranges::begin(range)) && pointer < std::to_address(std::ranges::end(range));
 	}
 
-	/// Span stuff
+	/// \name Span Operations
+	/// @{
 	
 	template <typename T, size_t N = std::dynamic_extent>
 	[[nodiscard]] constexpr std::pair<span<T>, span<T>> split_at(span<T, N> spn, size_t index)
@@ -173,7 +175,7 @@ namespace ghassanpl
 		return std::span{ range };
 	}
 
-	/// Casts a spn of objects of type FROM to a spn of objects of type TO
+	/// Casts a span of objects of type FROM to a span of objects of type TO.
 	/// Does not perform any checks, specifically, no alignment or size checks are performed.
 	template <typename TO, typename FROM, size_t N = std::dynamic_extent>
 	[[nodiscard]] auto span_cast(span<FROM, N> bytes) noexcept
@@ -210,7 +212,10 @@ namespace ghassanpl
 		return std::ranges::equal(s1.subspan(0, s2.size()), s2);
 	}
 
-	/// Arrays
+	/// @}
+
+	/// \name Array Operations
+	/// @{
 	
 	template <typename T, std::size_t... Ns>
 	[[nodiscard]] constexpr auto join(std::array<T, Ns>... arrays)
@@ -230,6 +235,11 @@ namespace ghassanpl
 		((*current++ = args), ...);
 		return ar;
 	}
+
+	/// @}
+
+	/// \name C++23 Compatibility
+	/// @{
 
 #ifndef __cpp_lib_ranges_contains
 
@@ -414,6 +424,8 @@ namespace ghassanpl
 	using std::ranges::to;
 
 #endif
+
+	/// @}
 
 	/*
 	template <class _Ty = void>

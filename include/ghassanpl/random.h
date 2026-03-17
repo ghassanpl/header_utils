@@ -11,9 +11,15 @@
 
 namespace ghassanpl::random
 {
-	/// TODO: Tests
-	/// check out https://github.com/effolkronium/random/
-	
+	/// \defgroup Random Random
+	/// Random number generation, and other random value generation functions.
+	/// Most of the random functions take, as their last argument, a random engine to use, but they are all defaulted to use the thread local
+	/// \ref default_random_engine variable.
+	/// @{
+	// TODO: Tests
+	// check out https://github.com/effolkronium/random/
+
+	/// A good quality random engine that meets the standard library concept of a random bit generator.
 	/// Shamelessly stolen from 'Numeric Recipes: The Art of Scientific Computing' Third Edition, by  William H. Press et. al, Cambridge University Press, 2007 (ISBN  978-0521880688),
 	struct good_random_engine
 	{
@@ -48,8 +54,10 @@ namespace ghassanpl::random
 	static_assert(std::uniform_random_bit_generator<good_random_engine>);
 #endif
 	
+	/// A thread-local random engine used by default by all random functions.
 	thread_local inline std::default_random_engine default_random_engine;
 	
+	/// Returns a random integer of the given type.
 	template <typename INTEGER = uint64_t, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] constexpr INTEGER integer(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -57,6 +65,7 @@ namespace ghassanpl::random
 		return dist(rng);
 	}
 
+	/// Returns a random value between 0 and 1 of the given floating-point type.
 	template <typename REAL = double, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] REAL percentage(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -76,6 +85,7 @@ namespace ghassanpl::random
 	}
 	*/
 
+	/// Returns a random value of the given floating-point type in a normal distribution.
 	template <typename REAL = double, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] REAL normal(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -83,6 +93,7 @@ namespace ghassanpl::random
 		return dist(rng);
 	}
 
+	/// Returns the result of throwing an `n_sided` die (1-N)
 	template <typename RANDOM = std::default_random_engine>
 	[[nodiscard]] uint64_t dice(uint64_t n_sided, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -91,17 +102,19 @@ namespace ghassanpl::random
 		return dist(rng) + 1;
 	}
 
+	/// Returns the result of throwing `n_dice` number of `n_sided` dice
 	template <typename RANDOM = std::default_random_engine>
 	[[nodiscard]] uint64_t dice(uint64_t n_dice, uint64_t n_sided, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		if (n_sided < 2) return 0;
+		if (n_sided < 2 || n_dice == 0) return 0;
 		std::uniform_int_distribution<uint64_t> dist{ 0, n_sided - 1 };
 		uint64_t sum = 0;
 		for (uint64_t i = 0; i < n_dice; ++i)
 			sum += dist(rng) + 1;
 		return sum;
 	}
-	
+
+	/// Returns the result of throwing an `N_SIDED` die (1-N)
 	template <uint64_t N_SIDED, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] uint64_t dice(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -110,10 +123,11 @@ namespace ghassanpl::random
 		return dist(rng) + 1;
 	}
 
+	/// Returns the result of throwing `N_DICE` number of `N_SIDED` dice
 	template <uint64_t N_DICE, uint64_t N_SIDED, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] uint64_t dice(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		static_assert(N_DICE >= 1 , "you cannot roll less than one die");
+		static_assert(N_DICE >= 1 , "you cannot roll fewer than one die");
 		static_assert(N_SIDED >= 2, "you cannot roll a 0 or 1-sided die");
 		static std::uniform_int_distribution<uint64_t> dist{ 0, N_SIDED - 1 };
 		uint64_t sum = 0;
@@ -122,6 +136,7 @@ namespace ghassanpl::random
 		return sum;
 	}
 
+	/// Returns `true` or `false` randomly
 	template <typename RANDOM = std::default_random_engine>
 	[[nodiscard]] bool coin(RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -131,6 +146,11 @@ namespace ghassanpl::random
 	 
 	namespace operators
 	{
+		/// \defgroup Operators Dice Operators
+		/// \ingroup Random
+		/// Integral UDLs for dice throwing; for example, `3_d10` will return a random result of throwing three 10-sided dice.
+		/// @{
+		
 		[[nodiscard]] inline int operator""_d2(unsigned long long int n) { return (int)dice(n, 2, default_random_engine); }
 		[[nodiscard]] inline int operator""_d4(unsigned long long int n) { return (int)dice(n, 4, default_random_engine); }
 		[[nodiscard]] inline int operator""_d6(unsigned long long int n) { return (int)dice(n, 6, default_random_engine); }
@@ -139,6 +159,8 @@ namespace ghassanpl::random
 		[[nodiscard]] inline int operator""_d12(unsigned long long int n) { return (int)dice(n, 12, default_random_engine); }
 		[[nodiscard]] inline int operator""_d20(unsigned long long int n) { return (int)dice(n, 20, default_random_engine); }
 		[[nodiscard]] inline int operator""_d100(unsigned long long int n) { return (int)dice(n, 100, default_random_engine); }
+		
+		/// @}
 	}
 
 	template <typename RANDOM = std::default_random_engine, std::integral T>
@@ -222,7 +244,7 @@ namespace ghassanpl::random
 		}
 	}
 
-	/// TODO: Should we move the below to random_seq?
+	// TODO: Should we move the below to random_seq?
 	
 	template <typename T = float>
 	[[nodiscard]] constexpr T halton_sequence(size_t index, size_t base = 2)
@@ -240,12 +262,14 @@ namespace ghassanpl::random
 		return result;
 	}
 
+	/// Returns `true` with the given 0-1 `probability`, false otherwise.
 	template <typename RANDOM = std::default_random_engine>
 	[[nodiscard]] bool with_probability(double probability, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return percentage(rng) < std::clamp(probability, 0.0, 1.0);
 	}
 
+	/// Returns `true` with the given 0-1 `probability`, false otherwise; stores the result of the 0-1 "roll" in `result`.
 	template <typename RANDOM = std::default_random_engine>
 	[[nodiscard]] bool with_probability(double probability, double& result, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -253,6 +277,7 @@ namespace ghassanpl::random
 		return res < std::clamp(probability, 0.0, 1.0);
 	}
 
+	/// Returns `true` with a one-in-`n` chance.
 	template <typename RANDOM = std::default_random_engine>
 	[[nodiscard]] bool one_in(size_t n, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -260,6 +285,7 @@ namespace ghassanpl::random
 		return with_probability(1.0 / double(n), rng);
 	}
 
+	/// Shuffles the `cont` container (as if by std::shuffle).
 	template <typename RANDOM = std::default_random_engine, typename T>
 	void shuffle(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -268,17 +294,19 @@ namespace ghassanpl::random
 		std::shuffle(begin(cont), end(cont), rng);
 	}
 
+	/// Returns an iterator to a random element in `cont`.
 	template <typename RANDOM = std::default_random_engine, typename T>
-	GHPL_REQUIRES(std::ranges::sized_range<T>)
-		[[nodiscard]] auto iterator(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	requires std::ranges::sized_range<T>
+	[[nodiscard]] auto iterator(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::size;
 		using std::begin;
 		return begin(cont) + in_integer_range(0LL, (int64_t)size(cont) - 1, rng);
 	}
 
+	/// Returns an iterator to a random element in `cont` that matches `pred`.
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
-	GHPL_REQUIRES(std::ranges::sized_range<T>)
+	requires std::ranges::sized_range<T>
 	[[nodiscard]] auto iterator_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::size;
@@ -298,18 +326,21 @@ namespace ghassanpl::random
 		return end_it;
 	}
 
+	/// Returns an index of a random element in `cont`.
 	template <typename RANDOM = std::default_random_engine, typename T>
 	[[nodiscard]] auto index(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return std::distance(begin(cont), iterator(cont, rng));
 	}
 
+	/// Returns an index of a random element in `cont` that matches `pred`.
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
 	[[nodiscard]] auto index_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		return std::distance(begin(cont), iterator_if(cont, std::forward<PRED>(pred), rng));
 	}
 
+	/// Returns an pointer to a random element in `cont`.
 	template <typename RANDOM = std::default_random_engine, typename T>
 	[[nodiscard]] auto* element(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -318,14 +349,16 @@ namespace ghassanpl::random
 		return (result != end(cont)) ? std::addressof(*result) : nullptr;
 	}
 	
+	/// Returns an pointer to a random element in `cont` that matches `pred`.
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
-	[[nodiscard]] auto* element_if(T& cont, PRED&& predicate, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto* element_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::end;
-		auto result = iterator_if(cont, std::forward<PRED>(predicate), rng);
+		auto result = iterator_if(cont, std::forward<PRED>(pred), rng);
 		return (result != end(cont)) ? std::addressof(*result) : nullptr;
 	}
 
+	/// Returns one of its arguments at random.
 	template <typename... T>
 	[[nodiscard]] auto one_of(T&&... values)
 	{
@@ -335,6 +368,7 @@ namespace ghassanpl::random
 		return std::move(*element(v, ::ghassanpl::random::default_random_engine));
 	}
 
+	/// Returns one of the values in `values` at random.
 	template <typename RANDOM = std::default_random_engine, typename T>
 	[[nodiscard]] auto one_of(std::initializer_list<T> values, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
@@ -342,48 +376,51 @@ namespace ghassanpl::random
 		return *element(values, rng);
 	}
 
-	/// TODO: random_range()
-	/// 
-	/// TODO: template <typename T> T enum_value(enum_flags<T> set);
+	// TODO: random_range()
+	// 
+	// TODO: template <typename T> T enum_value(enum_flags<T> set);
 	
-
+	/// Returns an object that represents a random "bag" of iterators to objects in `container`. Using its `next()` function you can get a random iterator from the bag,
+	/// guaranteeing that it wasn't retrieved before UNLESS all of the iterators have already been retrieved, in which case all iterators are returned to the bag, and
+	/// a fresh one is drawn at random. You can also manually call `shuffle()` on it to put all the iterators back in the bag.
 	template <typename RANDOM = std::default_random_engine, typename T>
 	[[nodiscard]] auto make_bag_randomizer(T& container, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		using Iterator = decltype(std::end(container));
-		struct Randomizer
+		using Iterator = decltype(std::begin(container));
+		struct randomizer_t
 		{
-			Randomizer(RANDOM& rng, T& container)
+			randomizer_t(RANDOM& rng, T& container)
 				: mRNG(rng)
 			{
 				for (auto it = std::begin(container); it != std::end(container); ++it)
 					mIterators.push_back(it);
 				mCurrent = mIterators.end();
 			}
-			auto Next() { if (mCurrent == mIterators.end()) { Shuffle(); } return *mCurrent++; }
-			void Shuffle() { std::shuffle(mIterators.begin(), mIterators.end(), mRNG); mCurrent = mIterators.begin(); }
+			decltype(auto) next() { if (mCurrent == mIterators.end()) { shuffle(); } return *mCurrent++; }
+			void shuffle() { std::shuffle(mIterators.begin(), mIterators.end(), mRNG); mCurrent = mIterators.begin(); }
 		private:
 			RANDOM& mRNG;
 			std::vector<Iterator> mIterators;
 			typename std::vector<Iterator>::iterator mCurrent;
 		};
 
-		return Randomizer{ rng, container };
+		return randomizer_t{ rng, container };
 	}
 
-	/// When probability calculations are known ahead of time or expensive
+	/// Returns an index of one of the options in `option_probabilities`, where its elements are the probability weights of their specific options.
 	/// \complexity O(N) space, O(N+logN) time
-	/// TODO: Check if works with known-sized spans
 	template <typename T, typename RANDOM>
 	[[nodiscard]] size_t option_with_probability(span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
+		/// TODO: Check if works with known-sized spans
 		static_assert(std::is_convertible_v<T, double>, "option probabilities must be convertible to double");
 		/// Well, <random> is pretty dope it seems
 		std::discrete_distribution<size_t> dist(option_probabilities.begin(), option_probabilities.end());
 		return dist(rng);
 	}
 
-	/// For cheap probability functions
+	/// Returns an iterator to a random object in `range`, with the probability weights of an object being chosen given by `prob_func(obj)`.
+	/// `prob_func` will be called at least twice per object.
 	/// \pre prob_func will never return < 0.0
 	/// \complexity O(1) space, O(2N) time
 	template <typename RANGE, typename FUNC, typename RANDOM>
@@ -412,4 +449,5 @@ namespace ghassanpl::random
 		return end;
 	}
 
+	/// @}
 }

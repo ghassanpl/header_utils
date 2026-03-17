@@ -11,6 +11,15 @@
 
 namespace ghassanpl
 {
+	/// \defgroup Symbol Symbol
+	/// Interned strings; see description for details.
+	/// 
+	/// The `symbol` is a classic interned-string type that enables small storage sizes, content deduplication and quick comparisons,
+	/// by only storing the (unique) pointer to a single instance of the string data.
+	/// The specific operations of interning, hashing and comparisons are provided by a `symbol_provider` type parameter.
+	/// @{
+
+	/// The base class for all symbols
 	template <typename SYMBOL_PROVIDER>
 	struct symbol_base
 	{
@@ -41,7 +50,10 @@ namespace ghassanpl
 		[[nodiscard]] explicit operator std::string() const noexcept { return std::string{ get_string() }; }
 		[[nodiscard]] auto to_string() const noexcept { return std::string{ get_string() }; }
 
-		[[nodiscard]] auto operator->() const noexcept requires std::is_pointer_v<internal_value_type> { return value; }
+		/// Only available if the internal value type is a pointer
+		[[nodiscard]] auto operator->() const noexcept 
+		requires requires { { std::to_address(value) } -> meets<std::is_pointer>; } /// Works for std::shared_ptr where std::is_pointer_v would not
+		{ return std::to_address(value); }
 
 		[[nodiscard]] bool operator==(symbol_base const& other) const noexcept { return value == other.value || symbol_provider::compare(value, other.value) == 0; }
 		[[nodiscard]] auto operator<=>(symbol_base const& other) const noexcept { return symbol_provider::compare(value, other.value); }
@@ -59,6 +71,38 @@ namespace ghassanpl
 			return o;
 		}
 	};
+	
+	/// The requirements for a symbol provider.
+	template <typename T>
+	concept symbol_provider = 
+		std::is_class_v<T> 
+		&& requires {
+			/// What will be stored inside a symbol
+			typename T::internal_value_type;
+
+			/// Usually the same as for std::hash
+			typename T::hash_type;
+
+			/// Returns an internal_value_type representing an empty string ("" or std::string{})
+			{ T::empty_value() } noexcept -> std::same_as<typename T::internal_value_type>;
+
+			/// Called when we want to intern a string
+			{ T::insert(std::string_view{}) } -> std::same_as<typename T::internal_value_type>;
+
+			/// Returns the string the internal value represents
+			{ T::string_for(typename T::internal_value_type{}) } noexcept -> std::same_as<std::string_view>;
+
+			/// Could hash the string or just the pointer to it, depends on which behavior you prefer
+			{ T::hash_for(typename T::internal_value_type{}) } noexcept -> std::same_as<typename T::hash_type>;
+
+			/// Compares the symbols by their internal value; this could be a value-comparison if lexicographical ordering of strings is important to you
+			{ T::compare(typename T::internal_value_type{}, typename T::internal_value_type{}) } noexcept -> std::same_as<std::strong_ordering>;
+		}
+		&& std::three_way_comparable<typename T::internal_value_type>
+		&& std::regular<typename T::internal_value_type>
+	;
+
+	/// @}
 }
 
 template <typename SYMBOL_PROVIDER>
@@ -69,22 +113,11 @@ struct std::hash<ghassanpl::symbol_base<SYMBOL_PROVIDER>> {
 namespace ghassanpl
 {
 
-	template <typename T>
-	concept symbol_provider = 
-		std::is_class_v<T> 
-		&& requires {
-			typename T::internal_value_type;
-			typename T::hash_type;
-			{ T::empty_value() } noexcept -> std::same_as<typename T::internal_value_type>;
-			{ T::insert(std::string_view{}) } -> std::same_as<typename T::internal_value_type>;
-			{ T::string_for(typename T::internal_value_type{}) } noexcept -> std::same_as<std::string_view>;
-			{ T::hash_for(typename T::internal_value_type{}) } noexcept -> std::same_as<typename T::hash_type>;
-			{ T::compare(typename T::internal_value_type{}, typename T::internal_value_type{}) } noexcept -> std::same_as<std::strong_ordering>;
-		}
-		&& std::three_way_comparable<typename T::internal_value_type>
-		&& std::regular<typename T::internal_value_type>
-	;
-
+	/// The default symbol provider usable for most symbol implementations. NOT THREAD SAFE. Uses a `TAG` type parameter if you want to create
+	/// different "namespaces" of symbols.
+	/// 
+	/// This class can be easily made thread-safe, just wrap all operations that touch `m_values` in a mutex (specifically `insert` and `clear`).
+	/// \ingroup Symbol
 	template <typename TAG = void>
 	struct default_symbol_provider_t
 	{
@@ -115,13 +148,14 @@ namespace ghassanpl
 			return (a == b) ? std::strong_ordering::equal : (*a <=> *b);
 		}
 
-		/// Utility functions
+		// Utility functions
 
 		void clear() noexcept
 		{
+			/// Extracting preserves the pointer to the empty string, which means we don't have to change m_empty_string
+			auto e = m_values.extract(std::string{});
 			m_values.clear();
-			m_values.insert(std::string{});
-			m_empty_string = &*m_values.begin();
+			m_values.insert(std::move(e));
 		}
 
 		[[nodiscard]] size_t size() const noexcept { return m_values.size(); }
@@ -133,12 +167,21 @@ namespace ghassanpl
 	protected:
 
 		std::set<std::string, std::less<>> m_values{ std::string{} };
-		std::string const* m_empty_string = &*m_values.begin(); /// TODO: Could be made atomic
+		std::string const* m_empty_string = &*m_values.begin();
+
+		default_symbol_provider_t() = default;
+		default_symbol_provider_t(default_symbol_provider_t const&) = delete;
+		default_symbol_provider_t& operator=(default_symbol_provider_t const&) = delete;
 	};
 
+	/// A basic `symbol_provider` suitable for most single-threaded uses.
+	/// \ingroup Symbol
 	using default_symbol_provider = default_symbol_provider_t<void>;
+
+	/// A `symbol` type suitable for most single-threaded uses.
+	/// \ingroup Symbol
 	using symbol = symbol_base<default_symbol_provider>;
 }
 
 /// TODO: ostream << and formatter, or enable stringification
-/// TODO: a thread-safe version of the symbol provider
+/// TODO: thread-safe/thread-local versions of the symbol provider

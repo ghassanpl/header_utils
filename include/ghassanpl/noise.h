@@ -12,7 +12,29 @@
 namespace ghassanpl::noise
 {
 
-	/// Gradient noise
+	/// \defgroup Noise Noise
+	/// 1D and 2D simplex noise generation functions
+	/// @{
+
+	template <typename F>
+	[[nodiscard]] constexpr F simplex_noise(F x) noexcept;
+
+	template <typename F>
+	[[nodiscard]] constexpr F simplex_noise(F x, F y) noexcept;
+
+	template <typename F>
+	[[nodiscard]] constexpr F fractal_simplex_noise(size_t octaves, F x, F frequency = F(1.0), F amplitude = F(1.0), F lacunarity = F(2.0), F persistence = F(0.5)) noexcept;
+
+	template <typename F>
+	[[nodiscard]] constexpr F fractal_simplex_noise_2d(size_t octaves, F x, F y, F frequency = F(1.0), F amplitude = F(1.0), F lacunarity = F(2.0), F persistence = F(0.5)) noexcept;
+	
+	/// @}
+}
+
+/// \internal Implementation
+
+namespace ghassanpl::noise
+{
 
 	namespace detail
 	{
@@ -164,7 +186,7 @@ namespace ghassanpl::noise
 	}
 
 	template <typename F>
-	[[nodiscard]] constexpr F fractal_simplex_noise(size_t octaves, F x, F frequency = F(1.0), F amplitude = F(1.0), F lacunarity = F(2.0), F persistence = F(0.5)) noexcept
+	[[nodiscard]] constexpr F fractal_simplex_noise(size_t octaves, F x, F frequency, F amplitude, F lacunarity, F persistence) noexcept
 	{
 		static_assert(std::is_floating_point_v<F>, "fractal_simplex_noise only works with floating point arguments");
 
@@ -184,7 +206,7 @@ namespace ghassanpl::noise
 	}
 
 	template <typename F>
-	[[nodiscard]] constexpr F fractal_simplex_noise_2d(size_t octaves, F x, F y, F frequency = F(1.0), F amplitude = F(1.0), F lacunarity = F(2.0), F persistence = F(0.5)) noexcept
+	[[nodiscard]] constexpr F fractal_simplex_noise_2d(size_t octaves, F x, F y, F frequency, F amplitude, F lacunarity, F persistence) noexcept
 	{
 		static_assert(std::is_floating_point_v<F>, "fractal_simplex_noise only works with floating point arguments");
 

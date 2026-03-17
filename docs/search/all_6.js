@@ -2,7 +2,7 @@ var searchData=
 [
   ['gamma_5fcorrect_0',['gamma_correct',['../group___colors.html#gab597f8f103a37a9d100b5c20c799082d',1,'ghassanpl']]],
   ['gb18030_1',['gb18030',['../group___unicode.html#gga05990bf332d1e3aeefa175160e9dd0eaadf5406096b7ec5329d3a13468430e56a',1,'ghassanpl::string_ops']]],
-  ['geometry_2',['Geometry',['../group___geometry.html',1,'']]],
+  ['geometry_2',['Geometry',['../group___geometry.html',1,'Geometry'],['../group___random_geom.html',1,'Geometry']]],
   ['get_3',['get',['../structghassanpl_1_1enum__flags.html#afeb04368c683cf8384209f7da344e313',1,'ghassanpl::enum_flags']]],
   ['get_5findex_4',['get_index',['../namespaceghassanpl.html#structghassanpl_1_1get__index',1,'ghassanpl']]],
   ['ghassanpl_5',['ghassanpl',['../namespaceghassanpl.html',1,'']]],

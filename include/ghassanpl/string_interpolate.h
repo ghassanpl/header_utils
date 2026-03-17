@@ -10,6 +10,10 @@
 
 namespace ghassanpl
 {
+	/// \defgroup StringInterpolate String Interpolation
+	/// TODO: Documentation
+	/// @{
+
 	template <char open = '[', char close = ']', typename FUNC>
 	[[nodiscard]] std::string interpolate_simple(std::string_view str, FUNC&& func)
 	{
@@ -90,5 +94,7 @@ namespace ghassanpl
 		return result;
 	}
 
+	/// @}
+	
 	/// https://projectfluent.org/ <- a nice example of what we could implement with sexps interpolate
 }

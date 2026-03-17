@@ -10,14 +10,28 @@
 
 namespace ghassanpl::parsing
 {
+	/// \defgroup Parsing Parsing
+	/// Functions for parsing typical value and token types from strings.
+	/// 
+	/// \warning This code partially relies on the `std::from_chars` functionality, which is not available in the lastest Clang libc++ versions (for some reason).
+	/// 
+	/// A failure usually results in throwing a `parse_error`
+	/// @{
 
+	/// Given a multiline `in_document`, will return the line number (starting at 1) of the line which contains the start of `of_string`.
+	/// \pre `of_string` must be somewhere inside `in_document`
 	[[nodiscard]] size_t find_line_number(std::string_view of_string, std::string_view in_document) noexcept;
+
+	/// Given a multiline `in_document`, will return the line and column numbers (starting at 1) of the start of `of_string`.
+	/// \pre `of_string` must be somewhere inside `in_document`
 	[[nodiscard]] std::pair<size_t, size_t> find_line_and_column(std::string_view of_string, std::string_view in_document) noexcept;
 
+	/// Will consume a C-style identifier: `[A-Za-z_][A-Za-z0-9_]*`
 	[[nodiscard]] std::string_view consume_c_identifier(std::string_view& str);
+	/// Will consume a C-style identifier that may contain any additional characters from `additional_chars`: `'[A-Za-z_'+additional_chars+'][A-Za-z0-9_'+additional_chars+']*'`
 	[[nodiscard]] std::string_view consume_c_identifier_with(std::string_view& str, std::string_view additional_chars);
 
-#if __cpp_lib_to_chars
+#if __cpp_lib_to_chars || defined(DOXYGEN)
 	[[nodiscard]] std::pair<std::string_view, double> consume_c_float(std::string_view& str);
 	[[nodiscard]] std::pair<std::string_view, int64_t> consume_c_integer(std::string_view& str, int base);
 	[[nodiscard]] std::pair<std::string_view, uint64_t> consume_c_unsigned(std::string_view& str, int base );
@@ -44,15 +58,32 @@ namespace ghassanpl::parsing
 	std::optional<double> try_eat_float(std::string_view& str);
 	uint64_t eat_unsigned(std::string_view& str, int base);
 	int64_t eat_integer(std::string_view& str, int base);
+	/// Eats a C-style floating-point value
 	double eat_float(std::string_view& str);
 	char32_t try_eat_utf8_codepoint(std::string_view& str);
 	char32_t eat_utf8_codepoint(std::string_view& str);
+
+	/// An exception type that will be thrown when eating/parsing fails
+	struct parse_error : std::runtime_error
+	{
+		std::string_view Where; ///< Starts at (or near) the point where the parsing failed
+
+		template <GHPL_FORMAT_TEMPLATE>
+		parse_error(std::string_view where, GHPL_FORMAT_ARGS)
+			: runtime_error(GHPL_FORMAT_CALL)
+			, Where(where)
+		{
+
+		}
+	};
+
+	/// @}
 
 	/// ////////////////////////////////////////////////////////////////////////////////////////////////////////// ///
 
 	using namespace string_ops;
 
-	/// TODO: Use expecteds for results of these functions
+	// TODO: Use expecteds for results of these functions
 
 	[[nodiscard]] inline size_t find_line_number(std::string_view of_string, std::string_view in_document) noexcept
 	{
@@ -110,7 +141,7 @@ namespace ghassanpl::parsing
 	}
 
 
-#if __cpp_lib_to_chars
+#if __cpp_lib_to_chars || defined(DOXYGEN)
 	[[nodiscard]] inline std::pair<std::string_view, double> consume_c_float(std::string_view& str)
 	{
 		if (str.empty() || !(ascii::isdigit(str[0]) || str[0] == '-'))
@@ -291,19 +322,6 @@ namespace ghassanpl::parsing
 		strv = view;
 		return result;
 	}
-
-	struct parse_error : std::runtime_error
-	{
-		std::string_view Where;
-
-		template <GHPL_FORMAT_TEMPLATE>
-		parse_error(std::string_view where, GHPL_FORMAT_ARGS)
-			: runtime_error(GHPL_FORMAT_CALL)
-			, Where(where)
-		{
-
-		}
-	};
 
 	inline bool try_eat(std::string_view& str, std::string_view what)
 	{

@@ -8,6 +8,9 @@
 
 namespace ghassanpl
 {
+	// This was a proof of concept; it relies on the ID field to be const/never changed, and therefore is very error-prone.
+	// Probably best not to use this unless you're absolutely sure the ID field will never change (or at least its invariants under operator<()).
+
 	template <typename ROW, auto ID_FIELD_PTR>
 	class table
 	{

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['uintn_5ft_0',['uintN_t',['../group___bits.html#ga517c295a9a8325a01efe54c96f7cb53e',1,'ghassanpl']]],
-  ['uri_1',['uri',['../group___u_r_i.html#gac48aa55b764c827525564327649355d8',1,'ghassanpl']]]
+  ['tile_5fpos_0',['tile_pos',['../group___squares.html#ga0f69a759e699742e8ffd47594ca63732',1,'ghassanpl::geometry::squares']]],
+  ['tile_5frec_1',['tile_rec',['../group___squares.html#gaef68c489a9e7782a3fedb17cf0e074cd',1,'ghassanpl::geometry::squares']]]
 ];
