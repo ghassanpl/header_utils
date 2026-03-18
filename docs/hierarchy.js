@@ -33,6 +33,7 @@ var hierarchy =
     [ "ghassanpl::known_uri_scheme", "structghassanpl_1_1known__uri__scheme.html", [
       [ "ghassanpl::known_schemes::file_scheme", "structghassanpl_1_1known__schemes_1_1file__scheme.html", null ]
     ] ],
+    [ "ghassanpl::eval::lib_core&lt; DECADE_SYNTAX &gt;", "structghassanpl_1_1eval_1_1lib__core.html", null ],
     [ "ghassanpl::traits::location", "structghassanpl_1_1traits_1_1location.html", null ],
     [ "ghassanpl::geometry::squares::manhattan_metric", "structghassanpl_1_1geometry_1_1squares_1_1manhattan__metric.html", null ],
     [ "ghassanpl::mutlticast_function&lt; R(ARGS...)&gt;", "classghassanpl_1_1mutlticast__function_3_01_r_07_a_r_g_s_8_8_8_08_4.html", null ],
@@ -75,6 +76,7 @@ var hierarchy =
     [ "ghassanpl::unititialized_t&lt; T &gt;", "unionghassanpl_1_1unititialized__t.html", null ],
     [ "ghassanpl::uri_builder", "structghassanpl_1_1uri__builder.html", null ],
     [ "ghassanpl::string_ops::utf8_view&lt; R &gt;", "structghassanpl_1_1string__ops_1_1utf8__view.html", null ],
+    [ "ghassanpl::eval::value", "structghassanpl_1_1eval_1_1value.html", null ],
     [ "ghassanpl::with_sl&lt; T &gt;", "structghassanpl_1_1with__sl.html", null ],
     [ "ghassanpl::with_slh&lt; T, HASH_FUNC &gt;", "structghassanpl_1_1with__slh.html", null ]
 ];

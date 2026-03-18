@@ -93,14 +93,109 @@ $(function(){initNavTree('group___d_i.html','',''); });
 <div class="contents">
 
 <p>Basic dependency injection framework.  
-</p>
+<a href="#details">More...</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-concepts" class="groupheader"><a id="concepts" name="concepts"></a>
+Concepts</h2></td></tr>
+<tr class="memitem:ghassanpl_3A_3Adi_3A_3Ahas_5Fdefault_5Flifetime" id="r_ghassanpl_3A_3Adi_3A_3Ahas_5Fdefault_5Flifetime"><td class="memItemLeft">concept &#160;</td><td class="memItemRight"><a class="el" href="conceptghassanpl_1_1di_1_1has__default__lifetime.html">ghassanpl::di::has_default_lifetime</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the interface or implementation has a DefaultLifetime static member field, that specified lifetime will be used by default for that interface/implementation. <br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:ghassanpl_3A_3Adi_3A_3AContainer" id="r_ghassanpl_3A_3Adi_3A_3AContainer"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1di_1_1_container.html">ghassanpl::di::Container</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The container for implementations; used to request interfaces.  <a href="structghassanpl_1_1di_1_1_container.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:gadf2b8a7294174253e0f4732394ce60e5" id="r_gadf2b8a7294174253e0f4732394ce60e5"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="#gadf2b8a7294174253e0f4732394ce60e5">ghassanpl::di::Lifetime</a> { <br />
+&#160;&#160;<a class="el" href="#ggadf2b8a7294174253e0f4732394ce60e5a7a1920d61156abc05a60135aefe8bc67">ghassanpl::di::Lifetime::Default</a>
+, <a class="el" href="#ggadf2b8a7294174253e0f4732394ce60e5ab1f023eff9a6b5308d6024e4c6b3d475">ghassanpl::di::Lifetime::Transient</a>
+, <a class="el" href="#ggadf2b8a7294174253e0f4732394ce60e5a45ecf82a5adf95ce6d133a9b55335cc6">ghassanpl::di::Lifetime::InstanceSingleton</a>
+, <a class="el" href="#ggadf2b8a7294174253e0f4732394ce60e5a249a7dc863c158c636331126ad5ca5db">ghassanpl::di::Lifetime::WeakSingleton</a>
+, <br />
+&#160;&#160;<a class="el" href="#ggadf2b8a7294174253e0f4732394ce60e5a499d91bd36f09b349b4e16fe93911552">ghassanpl::di::Lifetime::ThreadSingleton</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:gadf2b8a7294174253e0f4732394ce60e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the lifetime of an implementation.  <a href="#gadf2b8a7294174253e0f4732394ce60e5">More...</a><br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ga9e667bc295574fb669963cbc3db3bc22" id="r_ga9e667bc295574fb669963cbc3db3bc22"><td class="memItemLeft">constexpr DefaultImplementationStruct&#160;</td><td class="memItemRight"><a class="el" href="#ga9e667bc295574fb669963cbc3db3bc22">ghassanpl::di::DefaultImplementation</a></td></tr>
+<tr class="memdesc:ga9e667bc295574fb669963cbc3db3bc22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to specify an implementation is the default one for the interface being registered.  <br /></td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Basic dependency injection framework. </p>
-<dl class="section copyright"><dt>Copyright</dt><dd>This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at <a href="https://mozilla.org/MPL/2.0/">https://mozilla.org/MPL/2.0/</a>. </dd></dl>
-<p>Documentation for it is in progress.</p>
 <p>A tiny and as-simple-as-possible Dependency Injection/IoC library, based around <span class="tt">shared_ptr</span>s.</p>
-<p>Works, but is not-documented and might contain bugs. Still, you should be able to register types, instances, factory functions, and the construction arguments should resolve automatically, so, a basic DI container.</p>
-<p>Supports custom instance lifetimes (strong and weak singletons, per-thread singleton, multiple-instances), naming interfaces/instances, instance creation callbacks, and probably other stuff. </p>
-</div></div><!-- contents -->
+<p>Works, but might contain bugs. Still, you should be able to register types, instances, factory functions, and the construction arguments should resolve automatically, so, a basic DI container.</p>
+<p>Supports custom instance lifetimes (strong and weak singletons, per-thread singleton, multiple-instances), naming interfaces/instances, instance creation callbacks, and probably other stuff.</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo</a></b></dt><dd>example usage</dd></dl>
+</div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
+<a id="gadf2b8a7294174253e0f4732394ce60e5" name="gadf2b8a7294174253e0f4732394ce60e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadf2b8a7294174253e0f4732394ce60e5">&#9670;&#160;</a></span>Lifetime</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum class <a class="el" href="#gadf2b8a7294174253e0f4732394ce60e5">ghassanpl::di::Lifetime</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Specifies the lifetime of an implementation. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggadf2b8a7294174253e0f4732394ce60e5a7a1920d61156abc05a60135aefe8bc67" name="ggadf2b8a7294174253e0f4732394ce60e5a7a1920d61156abc05a60135aefe8bc67"></a>Default&#160;</td><td class="fielddoc"><p>Does not specify which lifetime of the implementation you want; you will be given one that's available, of unspecified lifetime. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggadf2b8a7294174253e0f4732394ce60e5ab1f023eff9a6b5308d6024e4c6b3d475" name="ggadf2b8a7294174253e0f4732394ce60e5ab1f023eff9a6b5308d6024e4c6b3d475"></a>Transient&#160;</td><td class="fielddoc"><p>Will always give you a freshly instantiated implementation object when requesting the interface. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggadf2b8a7294174253e0f4732394ce60e5a45ecf82a5adf95ce6d133a9b55335cc6" name="ggadf2b8a7294174253e0f4732394ce60e5a45ecf82a5adf95ce6d133a9b55335cc6"></a>InstanceSingleton&#160;</td><td class="fielddoc"><p>If a singleton instance of the implementation has not yet been created, it will be created and returned; otherwise, the existing instance will be returned. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggadf2b8a7294174253e0f4732394ce60e5a249a7dc863c158c636331126ad5ca5db" name="ggadf2b8a7294174253e0f4732394ce60e5a249a7dc863c158c636331126ad5ca5db"></a>WeakSingleton&#160;</td><td class="fielddoc"><p>Same as <span class="tt">InstanceSingleton</span>, but will not hold on to an instance, so when your last <span class="tt">shared_ptr</span> to it will be destroyed, so will the instance. </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggadf2b8a7294174253e0f4732394ce60e5a499d91bd36f09b349b4e16fe93911552" name="ggadf2b8a7294174253e0f4732394ce60e5a499d91bd36f09b349b4e16fe93911552"></a>ThreadSingleton&#160;</td><td class="fielddoc"><p>Same as <span class="tt">InstanceSingleton</span>, but each thread gets its own instance. </p>
+</td></tr>
+</table>
+
+<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00036">36</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
+
+</div>
+</div>
+<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
+<a id="ga9e667bc295574fb669963cbc3db3bc22" name="ga9e667bc295574fb669963cbc3db3bc22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga9e667bc295574fb669963cbc3db3bc22">&#9670;&#160;</a></span>DefaultImplementation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">DefaultImplementationStruct ghassanpl::di::DefaultImplementation</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Used to specify an implementation is the default one for the interface being registered. </p>
+
+<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00048">48</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

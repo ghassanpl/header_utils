@@ -1011,10 +1011,13 @@ template&lt;typename T, typename U&gt; </td></tr>
 <tr class="memitem:abf4be824af9ec50ddd7abd78b1eb7fc7 template"><td class="memItemLeft">decltype(auto)&#160;</td><td class="memItemRight"><a class="el" href="#abf4be824af9ec50ddd7abd78b1eb7fc7">consume</a> (span&lt; T &gt; &amp;s)</td></tr>
 <tr class="memitem:ga4dc4ceba292cdfda32f28e0464136505" id="r_ga4dc4ceba292cdfda32f28e0464136505"><td class="memTemplParams" colspan="2">template&lt;char open = '[', char close = ']', typename FUNC&gt; </td></tr>
 <tr class="memitem:ga4dc4ceba292cdfda32f28e0464136505 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___string_interpolate.html#ga4dc4ceba292cdfda32f28e0464136505">interpolate_simple</a> (std::string_view str, FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga4dc4ceba292cdfda32f28e0464136505"><td class="mdescLeft">&#160;</td><td class="mdescRight">The simplest string interpolation function; calls <span class="tt">func</span> for every <span class="tt">[group]</span> in <span class="tt">str</span>.  <br /></td></tr>
 <tr class="memitem:ga33ba9e57a00b4aa6d7cab9446f0cfc9f" id="r_ga33ba9e57a00b4aa6d7cab9446f0cfc9f"><td class="memTemplParams" colspan="2">template&lt;char open = '[', char close = ']', typename FUNC&gt; </td></tr>
 <tr class="memitem:ga33ba9e57a00b4aa6d7cab9446f0cfc9f template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___string_interpolate.html#ga33ba9e57a00b4aa6d7cab9446f0cfc9f">interpolate_recursive</a> (std::string_view str, FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga33ba9e57a00b4aa6d7cab9446f0cfc9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <span class="tt"><a class="el" href="group___string_interpolate.html#ga4dc4ceba292cdfda32f28e0464136505" title="The simplest string interpolation function; calls func for every [group] in str.">interpolate_simple</a></span> except <span class="tt">[group]</span>s can be recursive, that is, can contain other groups that will be interpolated before the outer group.  <br /></td></tr>
 <tr class="memitem:gab06a008f03b778d3911782acab93bc10" id="r_gab06a008f03b778d3911782acab93bc10"><td class="memTemplParams" colspan="2">template&lt;bool SYNTAX&gt; </td></tr>
 <tr class="memitem:gab06a008f03b778d3911782acab93bc10 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___string_interpolate.html#gab06a008f03b778d3911782acab93bc10">interpolate_eval</a> (std::string_view str, <a class="el" href="structghassanpl_1_1eval_1_1environment.html">eval::environment</a>&lt; SYNTAX &gt; &amp;env)</td></tr>
+<tr class="memdesc:gab06a008f03b778d3911782acab93bc10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpolation using the <span class="tt"><a class="el" href="namespaceghassanpl_1_1eval.html">eval</a></span> module functionality.  <br /></td></tr>
 <tr class="memitem:ga3fc46c8bb82b9eb3b64b08ed1cdc282b" id="r_ga3fc46c8bb82b9eb3b64b08ed1cdc282b"><td class="memTemplParams" colspan="2">template&lt;std::floating_point T&gt; </td></tr>
 <tr class="memitem:ga3fc46c8bb82b9eb3b64b08ed1cdc282b template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___stringification.html#ga3fc46c8bb82b9eb3b64b08ed1cdc282b">to_string</a> (T floating_point)</td></tr>
 <tr class="memdesc:ga3fc46c8bb82b9eb3b64b08ed1cdc282b"><td class="mdescLeft">&#160;</td><td class="mdescRight">float overload  <br /></td></tr>
@@ -2581,7 +2584,7 @@ template&lt;typename T&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00071">71</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00070">70</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>
@@ -2838,7 +2841,7 @@ template&lt;typename T, template&lt; bool &gt; typename STRINGIFIER = string_str
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00144">144</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00143">143</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>
@@ -2863,7 +2866,7 @@ template&lt;typename T, template&lt; bool &gt; typename STRINGIFIER = string_str
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00134">134</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00133">133</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>
@@ -3433,7 +3436,7 @@ template&lt;typename T, template&lt; bool &gt; typename STRINGIFIER = string_str
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00124">124</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00123">123</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>
@@ -3464,7 +3467,7 @@ template&lt;std::same_as&lt; char &gt; T&gt; </div>
 
 <p>char overload </p>
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00032">32</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00031">31</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>
@@ -3495,7 +3498,7 @@ template&lt;typename T&gt; </div>
 
 <p>integral overload </p>
 
-<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00028">28</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="stringification_8h_source.html#l00027">27</a> of file <a class="el" href="stringification_8h_source.html">stringification.h</a>.</p>
 
 </div>
 </div>

@@ -12,8 +12,34 @@
 
 namespace ghassanpl::eval
 {
+	/// \defgroup Eval Eval
+	/// A **very simple** Lisp-based scripting system useful pretty much only for scripting translation strings.
+	/// \warning This is severly undertested!
+	/// 
+	/// The system uses the `json` class to store values, so it's not condusive to too complex systems. A lot of operations are done by copying values around,
+	/// so the performance is also sub-optimal, although *some* effort was put into allowing references to be passed in some places, to improve performance.
+	/// 
+	/// Specifically, global variables can only store pure JSON values, without embedded references.
+	/// 
+	/// Two syntaxes are available: sexps and decade. Sexps is the lisp (Polish Notation) syntax; Decade is my own custom syntax variant, which 
+	/// allows for smalltalk-style infix notation: 
+	/// ```
+	///		[a + b + c] -> func: ':+*':, args: a, b, c
+	///		[set a to b] -> func: 'set:to:', args: a, b
+	/// ```
+	/// Note that Decade syntax is slower to execute.
+	/// 
+	/// The semantics are closest to MDL, a Lisp flavor where you need to explicitly request the value of a variable using a prefix (`.var`).
+	/// 
+	/// @{
+
+	/// \private
 	using json = nlohmann::json;
+	/// \private
 	static inline const json null_json;
+
+	/// Represents a single evaluated value; can store an rvalue (as `json`), an lvalue (`json*`), or a (const) reference (`json const*`); lvalues and refs are used
+	/// purely in function arguments. Notably, no garbage collection is performed, so take care around lifetimes of values and references.
 	struct value
 	{
 		std::variant<json, json*, json const*> v;
@@ -90,7 +116,7 @@ namespace ghassanpl::eval
 		[[nodiscard]] json const* operator->() const& noexcept { return &ref(); }
 	};
 
-	/// NOTE: Decade syntax is slower to execute but more natural
+	/// The primary class to store the evaluation environment, declared functions, variables, etc.
 	template <bool DECADE_SYNTAX = false>
 	struct environment
 	{
@@ -431,4 +457,5 @@ namespace ghassanpl::eval
 		}
 	};
 
+	/// @}
 }

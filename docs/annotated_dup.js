@@ -5,7 +5,9 @@ var annotated_dup =
         [ "Container", "structghassanpl_1_1di_1_1_container.html", "structghassanpl_1_1di_1_1_container" ]
       ] ],
       [ "eval", "namespaceghassanpl_1_1eval.html", [
-        [ "environment", "structghassanpl_1_1eval_1_1environment.html", "structghassanpl_1_1eval_1_1environment" ]
+        [ "value", "structghassanpl_1_1eval_1_1value.html", null ],
+        [ "environment", "structghassanpl_1_1eval_1_1environment.html", "structghassanpl_1_1eval_1_1environment" ],
+        [ "lib_core", "structghassanpl_1_1eval_1_1lib__core.html", null ]
       ] ],
       [ "geometry", "namespaceghassanpl_1_1geometry.html", [
         [ "immutable", null, [

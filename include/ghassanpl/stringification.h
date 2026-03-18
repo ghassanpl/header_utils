@@ -9,7 +9,6 @@
 namespace ghassanpl
 {
 	/// \defgroup Stringification Stringification
-	/// TODO: Documentation
 	/// @{
 
 	/// float overload

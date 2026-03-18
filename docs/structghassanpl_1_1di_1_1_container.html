@@ -88,74 +88,53 @@ $(function(){initNavTree('structghassanpl_1_1di_1_1_container.html','','structgh
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">ghassanpl::di::Container Struct Reference</div></div>
+  <div class="headertitle"><div class="title">ghassanpl::di::Container Struct Reference<div class="ingroups"><a class="el" href="group___d_i.html">Dependency Injection</a></div></div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>TODO: Split into ContainerBuilder and <a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a> (or [Dependency]Registry and [Dependency]<a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a>) Oooh, idea: <a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a> container = <a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a>(Registry1(), Registry2(), ...);.  
+<p>The container for implementations; used to request interfaces.  
  <a href="#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="di_8h_source.html">di.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad414006ffcca833f2a2bb9b5353632c7" id="r_ad414006ffcca833f2a2bb9b5353632c7"><td class="memTemplParams" colspan="2">template&lt;typename INTERFACE, typename IMPLEMENTATION, typename... ARGS&gt; </td></tr>
-<tr class="memitem:ad414006ffcca833f2a2bb9b5353632c7 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad414006ffcca833f2a2bb9b5353632c7">RegisterType</a> (ARGS &amp;&amp;... args)</td></tr>
-<tr class="memdesc:ad414006ffcca833f2a2bb9b5353632c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers.  <br /></td></tr>
+<tr class="memitem:af24bd093583f6677a042fb4d333e11d7" id="r_af24bd093583f6677a042fb4d333e11d7"><td class="memTemplParams" colspan="2">template&lt;typename INTERFACE, typename IMPLEMENTATION, typename... PROPS&gt; </td></tr>
+<tr class="memitem:af24bd093583f6677a042fb4d333e11d7 template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af24bd093583f6677a042fb4d333e11d7">RegisterType</a> (PROPS &amp;&amp;... properties)</td></tr>
+<tr class="memdesc:af24bd093583f6677a042fb4d333e11d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers the type <span class="tt">IMPLEMENTATION</span> as an implementation of <span class="tt">INTERFACE</span>.  <br /></td></tr>
 <tr class="memitem:ac8e798925c07432351584624a4dc19af" id="r_ac8e798925c07432351584624a4dc19af"><td class="memTemplParams" colspan="2">template&lt;typename INTERFACE&gt; </td></tr>
 <tr class="memitem:ac8e798925c07432351584624a4dc19af template"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#ac8e798925c07432351584624a4dc19af">HasAnyImplementationsOf</a> () const</td></tr>
+<tr class="memdesc:ac8e798925c07432351584624a4dc19af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks if there are any implementation registered for <span class="tt">INTERFACE</span>.  <br /></td></tr>
+<tr id="pub-methods-0" class="groupHeader"><td colspan="2"><div class="groupHeader">Resolvers</div></td></tr>
 <tr class="memitem:a2dedfff52f46ecde8b040c995ff8d9b2" id="r_a2dedfff52f46ecde8b040c995ff8d9b2"><td class="memTemplParams" colspan="2">template&lt;typename INTERFACE&gt; </td></tr>
 <tr class="memitem:a2dedfff52f46ecde8b040c995ff8d9b2 template"><td class="memItemLeft">std::shared_ptr&lt; INTERFACE &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a2dedfff52f46ecde8b040c995ff8d9b2">Resolve</a> ()</td></tr>
-<tr class="memdesc:a2dedfff52f46ecde8b040c995ff8d9b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolves.  <br /></td></tr>
+<tr class="memdesc:a2dedfff52f46ecde8b040c995ff8d9b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to an implementation of <span class="tt">INTERFACE</span>.  <br /></td></tr>
 <tr class="memitem:aa7f04a0673de88163a80301674a367fb" id="r_aa7f04a0673de88163a80301674a367fb"><td class="memTemplParams" colspan="2">template&lt;typename INTERFACE&gt; </td></tr>
 <tr class="memitem:aa7f04a0673de88163a80301674a367fb template"><td class="memItemLeft">std::shared_ptr&lt; INTERFACE &gt;&#160;</td><td class="memItemRight"><a class="el" href="#aa7f04a0673de88163a80301674a367fb">ResolveByName</a> (std::string_view name)</td></tr>
+<tr class="memdesc:aa7f04a0673de88163a80301674a367fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to an implementation of <span class="tt">INTERFACE</span> with the name <span class="tt">name</span> If an implementation with that name is not found, <span class="tt">nullptr</span> will be returned.  <br /></td></tr>
 <tr class="memitem:a8829f7e90c9b68791bef9fdeeeee00d1" id="r_a8829f7e90c9b68791bef9fdeeeee00d1"><td class="memTemplParams" colspan="2">template&lt;typename INTERFACE&gt; </td></tr>
 <tr class="memitem:a8829f7e90c9b68791bef9fdeeeee00d1 template"><td class="memItemLeft">std::vector&lt; std::shared_ptr&lt; INTERFACE &gt; &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a8829f7e90c9b68791bef9fdeeeee00d1">ResolveAll</a> ()</td></tr>
+<tr class="memdesc:a8829f7e90c9b68791bef9fdeeeee00d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Will return a vector of all available implementations of <span class="tt">INTERFACE</span>; useful for interfaces like <span class="tt">image_decoder</span>.  <br /></td></tr>
+<tr id="pub-methods-1" class="groupHeader"><td colspan="2"><div class="groupHeader">Other</div></td></tr>
 <tr class="memitem:a167c78d25429fd305113edbeca8469e4" id="r_a167c78d25429fd305113edbeca8469e4"><td class="memTemplParams" colspan="2">template&lt;typename TYPE&gt; </td></tr>
 <tr class="memitem:a167c78d25429fd305113edbeca8469e4 template"><td class="memItemLeft">std::shared_ptr&lt; TYPE &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a167c78d25429fd305113edbeca8469e4">Create</a> ()</td></tr>
-<tr class="memdesc:a167c78d25429fd305113edbeca8469e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Other.  <br /></td></tr>
+<tr class="memdesc:a167c78d25429fd305113edbeca8469e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a new (shared pointer to an) object of <span class="tt">TYPE</span>, resolving any interface pointer parameters its constructor requests using this container.  <br /></td></tr>
 <tr class="memitem:a3014fafe19748f54b5ab4cfb41378207" id="r_a3014fafe19748f54b5ab4cfb41378207"><td class="memTemplParams" colspan="2">template&lt;typename TYPE&gt; </td></tr>
 <tr class="memitem:a3014fafe19748f54b5ab4cfb41378207 template"><td class="memItemLeft">std::unique_ptr&lt; TYPE &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a3014fafe19748f54b5ab4cfb41378207">CreateRaw</a> ()</td></tr>
+<tr class="memdesc:a3014fafe19748f54b5ab4cfb41378207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <span class="tt"><a class="el" href="#a167c78d25429fd305113edbeca8469e4" title="Creates a new (shared pointer to an) object of TYPE, resolving any interface pointer parameters its c...">Create</a></span>, but returns a <span class="tt">unique_ptr</span> to the new object.  <br /></td></tr>
 <tr class="memitem:aa654b00ae67c512b79de55fa369cc19c" id="r_aa654b00ae67c512b79de55fa369cc19c"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#aa654b00ae67c512b79de55fa369cc19c">DestroyAll</a> ()</td></tr>
-<tr class="memitem:ae49bbf94513601fa427aeba64e42b953" id="r_ae49bbf94513601fa427aeba64e42b953"><td class="memItemLeft">auto const &amp;&#160;</td><td class="memItemRight"><a class="el" href="#ae49bbf94513601fa427aeba64e42b953">Containers</a> () const</td></tr>
-<tr class="memitem:a50eefa71c88dd719b2850e986bb7d73a" id="r_a50eefa71c88dd719b2850e986bb7d73a"><td class="memItemLeft">auto const &amp;&#160;</td><td class="memItemRight"><a class="el" href="#a50eefa71c88dd719b2850e986bb7d73a">DebugStore</a> () const</td></tr>
+<tr class="memdesc:aa654b00ae67c512b79de55fa369cc19c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregisters all the registered implementations and removes any pointers to their instances.  <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:af01e7c272e5d4e8919e44c15d4b0b110" id="r_af01e7c272e5d4e8919e44c15d4b0b110"><td class="memItemLeft">Lifetime&#160;</td><td class="memItemRight"><a class="el" href="#af01e7c272e5d4e8919e44c15d4b0b110">DefaultLifetime</a></td></tr>
+<tr class="memitem:af01e7c272e5d4e8919e44c15d4b0b110" id="r_af01e7c272e5d4e8919e44c15d4b0b110"><td class="memItemLeft"><a class="el" href="group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5">Lifetime</a>&#160;</td><td class="memItemRight"><a class="el" href="#af01e7c272e5d4e8919e44c15d4b0b110">DefaultLifetime</a></td></tr>
+<tr class="memdesc:af01e7c272e5d4e8919e44c15d4b0b110"><td class="mdescLeft">&#160;</td><td class="mdescRight">The default lifetime of implementations in this container, unless specified otherwise by the interface/implementation types, or when registering them.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>TODO: Split into ContainerBuilder and <a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a> (or [Dependency]Registry and [Dependency]<a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a>) Oooh, idea: <a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a> container = <a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a>(Registry1(), Registry2(), ...);. </p>
+<div class="textblock"><p>The container for implementations; used to request interfaces. </p>
 
-<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00048">48</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00054">54</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Member Function Documentation</h2>
-<a id="ae49bbf94513601fa427aeba64e42b953" name="ae49bbf94513601fa427aeba64e42b953"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae49bbf94513601fa427aeba64e42b953">&#9670;&#160;</a></span>Containers()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto const  &amp; ghassanpl::di::Container::Containers </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00085">85</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
-
-</div>
-</div>
 <a id="a167c78d25429fd305113edbeca8469e4" name="a167c78d25429fd305113edbeca8469e4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a167c78d25429fd305113edbeca8469e4">&#9670;&#160;</a></span>Create()</h2>
 
@@ -173,8 +152,18 @@ template&lt;typename TYPE&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Other. </p>
-
+<p>Creates a new (shared pointer to an) object of <span class="tt">TYPE</span>, resolving any interface pointer parameters its constructor requests using this container. </p>
+<p>Any new implementations created to fulfill the constructor's requests will of course be resolved by the container recursively, so their constructors can also request other interface pointers. </p><div class="fragment"><div class="line"><span class="keyword">struct </span>ILogger</div>
+<div class="line">{</div>
+<div class="line">    ILogger(shared_ptr&lt;ITimer&gt; timer);</div>
+<div class="line">};</div>
+<div class="line"><span class="keyword">struct </span>BigClass</div>
+<div class="line">{</div>
+<div class="line">    BigClass(shared_ptr&lt;ILogger&gt; logger, shared_ptr&lt;ITimer&gt; timer);</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line">container.Create&lt;BigClass&gt;() -&gt; make_shared&lt;BigClass&gt;(container.Resolve&lt;ILogger&gt;(), container.Resolve&lt;ITimer&gt;());</div>
+</div><!-- fragment --> 
 <p class="definition">Definition at line <a class="el" href="di__impl_8h_source.html#l00414">414</a> of file <a class="el" href="di__impl_8h_source.html">di_impl.h</a>.</p>
 
 </div>
@@ -196,34 +185,9 @@ template&lt;typename TYPE&gt; </div>
       </table>
 </div><div class="memdoc">
 
+<p>Same as <span class="tt"><a class="el" href="#a167c78d25429fd305113edbeca8469e4" title="Creates a new (shared pointer to an) object of TYPE, resolving any interface pointer parameters its c...">Create</a></span>, but returns a <span class="tt">unique_ptr</span> to the new object. </p>
+
 <p class="definition">Definition at line <a class="el" href="di__impl_8h_source.html#l00420">420</a> of file <a class="el" href="di__impl_8h_source.html">di_impl.h</a>.</p>
-
-</div>
-</div>
-<a id="a50eefa71c88dd719b2850e986bb7d73a" name="a50eefa71c88dd719b2850e986bb7d73a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a50eefa71c88dd719b2850e986bb7d73a">&#9670;&#160;</a></span>DebugStore()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">auto const  &amp; ghassanpl::di::Container::DebugStore </td>
-          <td>(</td>
-          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00086">86</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
 
 </div>
 </div>
@@ -250,7 +214,9 @@ template&lt;typename TYPE&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00079">79</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
+<p>Unregisters all the registered implementations and removes any pointers to their instances. </p>
+
+<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00128">128</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
 
 </div>
 </div>
@@ -271,28 +237,50 @@ template&lt;typename INTERFACE&gt; </div>
       </table>
 </div><div class="memdoc">
 
+<p>Checks if there are any implementation registered for <span class="tt">INTERFACE</span>. </p>
+
 <p class="definition">Definition at line <a class="el" href="di__impl_8h_source.html#l00362">362</a> of file <a class="el" href="di__impl_8h_source.html">di_impl.h</a>.</p>
 
 </div>
 </div>
-<a id="ad414006ffcca833f2a2bb9b5353632c7" name="ad414006ffcca833f2a2bb9b5353632c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad414006ffcca833f2a2bb9b5353632c7">&#9670;&#160;</a></span>RegisterType()</h2>
+<a id="af24bd093583f6677a042fb4d333e11d7" name="af24bd093583f6677a042fb4d333e11d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af24bd093583f6677a042fb4d333e11d7">&#9670;&#160;</a></span>RegisterType()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename INTERFACE, typename IMPLEMENTATION, typename ... ARGS&gt; </div>
+template&lt;typename INTERFACE, typename IMPLEMENTATION, typename ... PROPS&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void ghassanpl::di::Container::RegisterType </td>
           <td>(</td>
-          <td class="paramtype">ARGS &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>args</em></span></td><td>)</td>
+          <td class="paramtype">PROPS &amp;&amp;...</td>          <td class="paramname"><span class="paramname"><em>properties</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Registers. </p>
+<p>Registers the type <span class="tt">IMPLEMENTATION</span> as an implementation of <span class="tt">INTERFACE</span>. </p>
+<p>The arguments specify the lifetime, behavior and properties of the implementation: </p><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Argument Type  </th><th class="markdownTableHeadNone">Means  </th><th class="markdownTableHeadNone">Usage  </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">string_view</span>  </td><td class="markdownTableBodyNone"><span class="tt">name</span>  </td><td class="markdownTableBodyNone">will register <span class="tt">name</span> as the name of this implementation  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt"><a class="el" href="group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5" title="Specifies the lifetime of an implementation.">Lifetime</a></span>  </td><td class="markdownTableBodyNone"><span class="tt">lifetime</span>  </td><td class="markdownTableBodyNone">will specify the lifetime of the implementation  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">DefaultImplementationStruct</span>  </td><td class="markdownTableBodyNone"><span class="tt"><a class="el" href="group___d_i.html#ga9e667bc295574fb669963cbc3db3bc22" title="Used to specify an implementation is the default one for the interface being registered.">DefaultImplementation</a></span>  </td><td class="markdownTableBodyNone">will specify this implementation as the default one for the INTERFACE (specifically, the first one on the list of implementations)  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">function&lt;shared_ptr&lt;INTERFACE&gt;(<a class="el" href="structghassanpl_1_1di_1_1_container.html" title="The container for implementations; used to request interfaces.">Container</a>&amp;)&gt;</span>  </td><td class="markdownTableBodyNone"><span class="tt">factory</span>  </td><td class="markdownTableBodyNone">will be used as the factory function to create the implementation objects  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">shared_ptr&lt;INTERFACE&gt;</span>  </td><td class="markdownTableBodyNone"><span class="tt">instance</span>  </td><td class="markdownTableBodyNone">will be used as the instance singleton for this interface  </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><span class="tt">INTERFACE*</span>  </td><td class="markdownTableBodyNone"><span class="tt">instance</span>  </td><td class="markdownTableBodyNone">same as above  </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><span class="tt">function&lt;void(<a class="el" href="structghassanpl_1_1di_1_1_container.html" title="The container for implementations; used to request interfaces.">Container</a>&amp;, shared_ptr&lt;INTERFACE&gt;)&gt;</span>  </td><td class="markdownTableBodyNone"><span class="tt">on_create</span>  </td><td class="markdownTableBodyNone">function that will be called when a new instance of the implementation is created  </td></tr>
+</table>
+<p>Also, if <span class="tt">INTERFACE/IMPLEMENTATION::DefaultLifetime</span> is declared (see <span class="tt"><a class="el" href="conceptghassanpl_1_1di_1_1has__default__lifetime.html" title="If the interface or implementation has a DefaultLifetime static member field, that specified lifetime...">has_default_lifetime</a></span>), that lifetime will be used by default for that interface/implementation.</p>
+<p>You can register multiple implementations of the same <span class="tt">INTERFACE</span> type, but a specific <span class="tt">IMPLEMENTATION</span> type only once. </p>
 
 <p class="definition">Definition at line <a class="el" href="di__impl_8h_source.html#l00370">370</a> of file <a class="el" href="di__impl_8h_source.html">di_impl.h</a>.</p>
 
@@ -315,7 +303,8 @@ template&lt;typename INTERFACE&gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Resolves. </p>
+<p>Returns a pointer to an implementation of <span class="tt">INTERFACE</span>. </p>
+<p>The first implementation on the list of registered implementations will be used, if there are multiple. If there are no implementations of this interface, <span class="tt">nullptr</span> will be returned. </p>
 
 <p class="definition">Definition at line <a class="el" href="di__impl_8h_source.html#l00390">390</a> of file <a class="el" href="di__impl_8h_source.html">di_impl.h</a>.</p>
 
@@ -338,6 +327,8 @@ template&lt;typename INTERFACE&gt; </div>
       </table>
 </div><div class="memdoc">
 
+<p>Will return a vector of all available implementations of <span class="tt">INTERFACE</span>; useful for interfaces like <span class="tt">image_decoder</span>. </p>
+
 <p class="definition">Definition at line <a class="el" href="di__impl_8h_source.html#l00408">408</a> of file <a class="el" href="di__impl_8h_source.html">di_impl.h</a>.</p>
 
 </div>
@@ -359,6 +350,8 @@ template&lt;typename INTERFACE&gt; </div>
       </table>
 </div><div class="memdoc">
 
+<p>Returns a pointer to an implementation of <span class="tt">INTERFACE</span> with the name <span class="tt">name</span> If an implementation with that name is not found, <span class="tt">nullptr</span> will be returned. </p>
+
 <p class="definition">Definition at line <a class="el" href="di__impl_8h_source.html#l00396">396</a> of file <a class="el" href="di__impl_8h_source.html">di_impl.h</a>.</p>
 
 </div>
@@ -371,12 +364,14 @@ template&lt;typename INTERFACE&gt; </div>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">Lifetime ghassanpl::di::Container::DefaultLifetime</td>
+          <td class="memname"><a class="el" href="group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5">Lifetime</a> ghassanpl::di::Container::DefaultLifetime</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00050">50</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
+<p>The default lifetime of implementations in this container, unless specified otherwise by the interface/implementation types, or when registering them. </p>
+
+<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00057">57</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
 
 </div>
 </div>

@@ -49,6 +49,7 @@ namespace ghassanpl
 	}
 
 	/// \defgroup Uninitialized Uninitialized
+	/// Contains `unititialized_t`
 	/// @{
 
 	struct default_init_t {} default_init; ///< Constructor tag to default-construct the object inside an `unititialized_t`

@@ -10,6 +10,7 @@
 namespace ghassanpl
 {
 	/// \defgroup PathReference Caching Path Reference
+	/// Contains `caching_path_reference`
 	/// @{
 
 	namespace detail

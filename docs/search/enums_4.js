@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['text_5fencoding_5ftype_0',['text_encoding_type',['../group___unicode.html#ga05990bf332d1e3aeefa175160e9dd0ea',1,'ghassanpl::string_ops']]]
+  ['lifetime_0',['Lifetime',['../group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5',1,'ghassanpl::di']]]
 ];

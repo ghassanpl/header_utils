@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['scsu_0',['scsu',['../group___unicode.html#gga05990bf332d1e3aeefa175160e9dd0eaaed5f91480124966fba7051889ac61393',1,'ghassanpl::string_ops']]]
+  ['right_0',['right',['../group___alignment.html#gga93fc1bd0f731fa127d4254a34a994ff7a7c4f29407893c334a6cb7a87bf045c0d',1,'ghassanpl']]]
 ];

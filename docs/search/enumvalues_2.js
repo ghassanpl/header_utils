@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gb18030_0',['gb18030',['../group___unicode.html#gga05990bf332d1e3aeefa175160e9dd0eaadf5406096b7ec5329d3a13468430e56a',1,'ghassanpl::string_ops']]]
+  ['default_0',['Default',['../group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a7a1920d61156abc05a60135aefe8bc67',1,'ghassanpl::di']]]
 ];

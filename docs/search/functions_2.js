@@ -56,5 +56,6 @@ var searchData=
   ['crc32_53',['crc32',['../group___hashes.html#gaf559378f05624ae0996944830c41bff9',1,'ghassanpl::crc32(RANGE &amp;&amp;bytes)'],['../group___hashes.html#ga27a9c9cbfb214d40aca1c461d51d76f0',1,'ghassanpl::crc32(BYTES... bytes)']]],
   ['crc64_54',['crc64',['../group___hashes.html#ga2d2ddcf061f773bafad7f9a10c64767a',1,'ghassanpl::crc64(RANGE &amp;&amp;bytes)'],['../group___hashes.html#ga9656f460b372051539fd8df108d85f29',1,'ghassanpl::crc64(BYTES... bytes)']]],
   ['create_55',['Create',['../structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4',1,'ghassanpl::di::Container']]],
-  ['current_5fvalue_56',['current_value',['../structghassanpl_1_1scoped__value__change.html#a73d0bb162eeada9211f4f5a429d60cf2',1,'ghassanpl::scoped_value_change']]]
+  ['createraw_56',['CreateRaw',['../structghassanpl_1_1di_1_1_container.html#a3014fafe19748f54b5ab4cfb41378207',1,'ghassanpl::di::Container']]],
+  ['current_5fvalue_57',['current_value',['../structghassanpl_1_1scoped__value__change.html#a73d0bb162eeada9211f4f5a429d60cf2',1,'ghassanpl::scoped_value_change']]]
 ];

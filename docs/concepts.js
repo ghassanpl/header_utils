@@ -1,6 +1,9 @@
 var concepts =
 [
     [ "ghassanpl", "namespaceghassanpl.html", [
+      [ "di", "namespaceghassanpl_1_1di.html", [
+        [ "has_default_lifetime", "conceptghassanpl_1_1di_1_1has__default__lifetime.html", null ]
+      ] ],
       [ "geometry", "namespaceghassanpl_1_1geometry.html", [
         [ "squares", "namespaceghassanpl_1_1geometry_1_1squares.html", [
           [ "metric", "conceptghassanpl_1_1geometry_1_1squares_1_1metric.html", null ]

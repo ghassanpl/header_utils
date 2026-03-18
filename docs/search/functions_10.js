@@ -2,7 +2,7 @@ var searchData=
 [
   ['raw_5fvalue_0',['raw_value',['../structghassanpl_1_1sentinel__optional.html#ada342add57574ef568bea0380e4fb570',1,'ghassanpl::sentinel_optional::raw_value() const &amp;'],['../structghassanpl_1_1sentinel__optional.html#ae560f097a704b6d4bcb0407bf8560a8d',1,'ghassanpl::sentinel_optional::raw_value() &amp;'],['../structghassanpl_1_1sentinel__optional.html#ad33ec6ba29a38865d7c3e99c8d0671bf',1,'ghassanpl::sentinel_optional::raw_value() &amp;&amp;'],['../structghassanpl_1_1sentinel__optional.html#a1087a51211d9eb6ca4472dc540e19a87',1,'ghassanpl::sentinel_optional::raw_value() const &amp;&amp;']]],
   ['read_5fonly_5faccess_1',['read_only_access',['../structghassanpl_1_1protected__object.html#a443e1c73fbd63014ca69749f19e1128a',1,'ghassanpl::protected_object']]],
-  ['registertype_2',['RegisterType',['../structghassanpl_1_1di_1_1_container.html#ad414006ffcca833f2a2bb9b5353632c7',1,'ghassanpl::di::Container']]],
+  ['registertype_2',['RegisterType',['../structghassanpl_1_1di_1_1_container.html#af24bd093583f6677a042fb4d333e11d7',1,'ghassanpl::di::Container']]],
   ['relative_5falignment_3',['relative_alignment',['../namespaceghassanpl.html#ae59d19bc9869225166953457ea83919f',1,'ghassanpl']]],
   ['release_4',['release',['../structghassanpl_1_1counted__scope__guard.html#aef31a2bcab51dee99a5b40abf8238c0c',1,'ghassanpl::counted_scope_guard::release()'],['../structghassanpl_1_1scoped__value__change.html#a9a45ed34c583d676df68145172aa54e3',1,'ghassanpl::scoped_value_change::release() noexcept']]],
   ['release_5fand_5freturn_5',['release_and_return',['../structghassanpl_1_1scoped__value__change.html#ac2b784f42bc2b2822f801246cd5ad633',1,'ghassanpl::scoped_value_change']]],
@@ -12,9 +12,11 @@ var searchData=
   ['request_9',['request',['../structghassanpl_1_1counted__scope__guard.html#ad37433b2664d322d606045911ffd758c',1,'ghassanpl::counted_scope_guard']]],
   ['reset_10',['reset',['../structghassanpl_1_1caching__path__reference.html#a55af31db33d7b49f5733b1c15b7f83b6',1,'ghassanpl::caching_path_reference']]],
   ['resolve_11',['Resolve',['../structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2',1,'ghassanpl::di::Container']]],
-  ['resulting_12',['resulting',['../group___functional.html#ga1bf2ee53b8c8310c8e9c45a30b7facc1',1,'ghassanpl']]],
-  ['revert_13',['revert',['../structghassanpl_1_1scoped__value__change.html#a056ac6ec565299ec98b23f8ef4298ab2',1,'ghassanpl::scoped_value_change']]],
-  ['revert_5fand_5freturn_14',['revert_and_return',['../structghassanpl_1_1scoped__value__change.html#a2f369959395383cab1802d1b9a1b9f5a',1,'ghassanpl::scoped_value_change']]],
-  ['rotated_5fclockwise_15',['rotated_clockwise',['../group___alignment.html#gac1baca062f426bb518875ff47a26e9e4',1,'ghassanpl']]],
-  ['rotated_5fcounter_5fclockwise_16',['rotated_counter_clockwise',['../group___alignment.html#ga37e503c880c8aebf3103b37d40a4648f',1,'ghassanpl']]]
+  ['resolveall_12',['ResolveAll',['../structghassanpl_1_1di_1_1_container.html#a8829f7e90c9b68791bef9fdeeeee00d1',1,'ghassanpl::di::Container']]],
+  ['resolvebyname_13',['ResolveByName',['../structghassanpl_1_1di_1_1_container.html#aa7f04a0673de88163a80301674a367fb',1,'ghassanpl::di::Container']]],
+  ['resulting_14',['resulting',['../group___functional.html#ga1bf2ee53b8c8310c8e9c45a30b7facc1',1,'ghassanpl']]],
+  ['revert_15',['revert',['../structghassanpl_1_1scoped__value__change.html#a056ac6ec565299ec98b23f8ef4298ab2',1,'ghassanpl::scoped_value_change']]],
+  ['revert_5fand_5freturn_16',['revert_and_return',['../structghassanpl_1_1scoped__value__change.html#a2f369959395383cab1802d1b9a1b9f5a',1,'ghassanpl::scoped_value_change']]],
+  ['rotated_5fclockwise_17',['rotated_clockwise',['../group___alignment.html#gac1baca062f426bb518875ff47a26e9e4',1,'ghassanpl']]],
+  ['rotated_5fcounter_5fclockwise_18',['rotated_counter_clockwise',['../group___alignment.html#ga37e503c880c8aebf3103b37d40a4648f',1,'ghassanpl']]]
 ];

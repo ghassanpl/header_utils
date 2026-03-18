@@ -233,9 +233,6 @@ namespace ghassanpl::di
 			if (CustomLifetime != Lifetime::Default)
 				lifetime = CustomLifetime;
 
-			if (StrongInstancePointer)
-				return StrongInstancePointer;
-
 			if (lifetime == Lifetime::ThreadSingleton)
 			{
 				auto& ptr = ThreadInstances[std::this_thread::get_id()];
@@ -252,9 +249,15 @@ namespace ghassanpl::di
 				return ptr;
 			}
 			else if (lifetime == Lifetime::InstanceSingleton)
-				return StrongInstancePointer = Create(container);
-			else
-				return Create(container);
+			{
+				if (!StrongInstancePointer)
+					StrongInstancePointer = Create(container);
+				return StrongInstancePointer;
+			}
+			
+			if (StrongInstancePointer)
+				return StrongInstancePointer;
+			return Create(container);
 		}
 
 	private:
@@ -283,9 +286,6 @@ namespace ghassanpl::di
 		}
 
 	};
-
-	template <typename T>
-	concept has_default_lifetime = requires { { T::DefaultLifetime } -> std::convertible_to<Lifetime>; };
 
 	template <typename INTERFACE>
 	struct Container::InterfaceContainer : Container::BaseInterfaceContainer
@@ -366,8 +366,8 @@ namespace ghassanpl::di
 		return false;
 	}
 
-	template<typename INTERFACE, typename IMPLEMENTATION, typename ...ARGS>
-	void Container::RegisterType(ARGS&& ...args)
+	template<typename INTERFACE, typename IMPLEMENTATION, typename ...PROPS>
+	void Container::RegisterType(PROPS&& ...properties)
 	{
 		/// NOTE: Previously we used a requires clause in the header of the function, but static asserts here are better at reporting
 		/// errors to the user :)
@@ -375,14 +375,14 @@ namespace ghassanpl::di
 		static_assert(!std::is_abstract_v<IMPLEMENTATION>, "Implementation cannot be abstract");
 		if constexpr (std::is_base_of_v<INTERFACE, IMPLEMENTATION> && !std::is_abstract_v<IMPLEMENTATION>)
 		{
-			constexpr auto instance_given = is_any_of_v<std::shared_ptr<IMPLEMENTATION>, ARGS...>;
-			constexpr auto interface_factory = is_any_of_v<std::function<std::shared_ptr<INTERFACE>(Container&)>, ARGS...>;
-			constexpr auto impl_factory = is_any_of_v<std::function<std::shared_ptr<IMPLEMENTATION>(Container&)>, ARGS...>;
+			constexpr auto instance_given = is_any_of_v<std::shared_ptr<IMPLEMENTATION>, PROPS...>;
+			constexpr auto interface_factory = is_any_of_v<std::function<std::shared_ptr<INTERFACE>(Container&)>, PROPS...>;
+			constexpr auto impl_factory = is_any_of_v<std::function<std::shared_ptr<IMPLEMENTATION>(Container&)>, PROPS...>;
 			static_assert(!(instance_given && (interface_factory || impl_factory)), "Cannot register type with both factory and instance");
 			if constexpr (instance_given || interface_factory || impl_factory) /// if user gave instance or factory, don't register the factory
-				GetInterfaceContainer<INTERFACE>().template RegisterImplementationType<IMPLEMENTATION>(std::forward<ARGS>(args)...);
+				GetInterfaceContainer<INTERFACE>().template RegisterImplementationType<IMPLEMENTATION>(std::forward<PROPS>(properties)...);
 			else
-				GetInterfaceContainer<INTERFACE>().template RegisterImplementationType<IMPLEMENTATION>(detail::ConstructorDescriptorForClass<IMPLEMENTATION>::CreateFactory(), std::forward<ARGS>(args)...);
+				GetInterfaceContainer<INTERFACE>().template RegisterImplementationType<IMPLEMENTATION>(detail::ConstructorDescriptorForClass<IMPLEMENTATION>::CreateFactory(), std::forward<PROPS>(properties)...);
 		}
 	}
 

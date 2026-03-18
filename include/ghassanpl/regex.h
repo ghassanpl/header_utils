@@ -9,7 +9,7 @@
 
 namespace ghassanpl::regex
 {
-	/// Shamelessly stolen from https://stackoverflow.com/a/37516316
+	// Shamelessly stolen from https://stackoverflow.com/a/37516316
 	
 	/// \defgroup Regex Regex
 	/// @{

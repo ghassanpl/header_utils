@@ -35,6 +35,8 @@ namespace ghassanpl::eval
 
 	};
 
+	/// Used with `ghassanpl::eval::environment::import_lib()` to add functions for basic decade to an `eval` environment
+	/// \ingroup Eval
 	template <bool DECADE_SYNTAX>
 	struct lib_core : public base_lib<DECADE_SYNTAX>
 	{
@@ -43,6 +45,8 @@ namespace ghassanpl::eval
 		using base_type = base_lib<DECADE_SYNTAX>;
 		using env_type = base_type::env_type;
 		using json_pointer = base_type::json_pointer;
+
+	private:
 
 		static inline value if_then_else(env_type& e, std::vector<value> args)
 		{
@@ -304,6 +308,8 @@ namespace ghassanpl::eval
 				return prefix;
 			};
 		}
+
+	public:
 
 		static void import_to(env_type& e)
 		{

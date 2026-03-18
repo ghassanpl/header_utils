@@ -293,7 +293,7 @@ $(function(){initNavTree('di__impl_8h_source.html','',''); });
 <div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
 <div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keyword">struct </span>Container::ImplementationContainer</div>
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    {</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        Lifetime CustomLifetime = Lifetime::Default;</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <a class="code hl_enumeration" href="group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5">Lifetime</a> CustomLifetime = <a class="code hl_enumvalue" href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a7a1920d61156abc05a60135aefe8bc67">Lifetime::Default</a>;</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        std::string Name;</div>
 <div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        std::shared_ptr&lt;INTERFACE&gt; StrongInstancePointer;</div>
@@ -303,7 +303,7 @@ $(function(){initNavTree('di__impl_8h_source.html','',''); });
 <div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        std::function&lt;void(Container&amp;, std::shared_ptr&lt;INTERFACE&gt;)&gt; mOnCreate;</div>
 <div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span></div>
 <div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        <span class="keywordtype">void</span> Set(std::string_view name) { Name = std::string{ name }; }</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        <span class="keywordtype">void</span> Set(Lifetime lifetime) { CustomLifetime = lifetime; }</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        <span class="keywordtype">void</span> Set(<a class="code hl_enumeration" href="group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5">Lifetime</a> lifetime) { CustomLifetime = lifetime; }</div>
 <div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        <span class="keywordtype">void</span> Set(DefaultImplementationStruct) { }</div>
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="keyword">template</span> &lt;std::derived_from&lt;INTERFACE&gt; T&gt;</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        <span class="keywordtype">void</span> Set(std::function&lt;std::shared_ptr&lt;T&gt;(Container&amp;)&gt; factory)</div>
@@ -316,70 +316,70 @@ $(function(){initNavTree('di__impl_8h_source.html','',''); });
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        <span class="keywordtype">void</span> Set(INTERFACE* instance) { StrongInstancePointer = std::shared_ptr&lt;INTERFACE&gt;{ std::shared_ptr&lt;INTERFACE&gt;{}, instance }; }</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        <span class="keywordtype">void</span> Set(std::function&lt;<span class="keywordtype">void</span>(Container&amp;, std::shared_ptr&lt;INTERFACE&gt;)&gt; on_create) { mOnCreate = std::move(on_create); }</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        std::shared_ptr&lt;INTERFACE&gt; <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2">Resolve</a>(Container&amp; container, Lifetime lifetime)</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        std::shared_ptr&lt;INTERFACE&gt; <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2">Resolve</a>(Container&amp; container, <a class="code hl_enumeration" href="group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5">Lifetime</a> lifetime)</div>
 <div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        {</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            <span class="keywordflow">if</span> (CustomLifetime != Lifetime::Default)</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>            <span class="keywordflow">if</span> (CustomLifetime != <a class="code hl_enumvalue" href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a7a1920d61156abc05a60135aefe8bc67">Lifetime::Default</a>)</div>
 <div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>                lifetime = CustomLifetime;</div>
 <div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            <span class="keywordflow">if</span> (StrongInstancePointer)</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>                <span class="keywordflow">return</span> StrongInstancePointer;</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            <span class="keywordflow">if</span> (lifetime == Lifetime::ThreadSingleton)</div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            {</div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>                <span class="keyword">auto</span>&amp; ptr = ThreadInstances[std::this_thread::get_id()];</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>                <span class="keywordflow">if</span> (!ptr)</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>                    ptr = <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>(container);</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                <span class="keywordflow">return</span> ptr;</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>            }</div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (lifetime == Lifetime::WeakSingleton)</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>            {</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                <span class="keywordflow">if</span> (<span class="keyword">auto</span> result = WeakInstancePointer.lock(); result)</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                <span class="keyword">auto</span> ptr = <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>(container);</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                WeakInstancePointer = ptr;</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>                <span class="keywordflow">return</span> ptr;</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>            }</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (lifetime == Lifetime::InstanceSingleton)</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                <span class="keywordflow">return</span> StrongInstancePointer = <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>(container);</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>                <span class="keywordflow">return</span> <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>(container);</div>
-<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>        }</div>
-<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>    <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
-<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>        <span class="keywordtype">void</span> ResetInstance()</div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        {</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>            StrongInstancePointer.reset();</div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>            WeakInstancePointer.reset();</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>            ThreadInstances.clear();</div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        }</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>        std::shared_ptr&lt;INTERFACE&gt; <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>(Container&amp; container)<span class="keyword"> const</span></div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="keyword">        </span>{</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>            <span class="keyword">auto</span> obj = mFactory(container);</div>
-<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>            </div>
-<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>            <span class="keywordflow">if</span> (!container.mDebugStore.contains(obj.get()))</div>
-<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>                container.mDebugStore.emplace(obj.get(), std::pair&lt;std::type_index, std::weak_ptr&lt;void&gt;&gt;{ typeid(*obj), std::weak_ptr&lt;void&gt;{obj} });</div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            <span class="keywordflow">if</span> (mOnCreate)</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>            {</div>
-<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>                container.ReportCreation(obj, [<span class="keyword">this</span>](Container&amp; container, std::shared_ptr&lt;void&gt; instance) {</div>
-<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>                    mOnCreate(container, std::static_pointer_cast&lt;INTERFACE&gt;(std::move(instance)));</div>
-<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>                });</div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>            }</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>            <span class="keywordflow">return</span> obj;</div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>        }</div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>    };</div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    <span class="keyword">concept </span>has_default_lifetime = <span class="keyword">requires</span> { { T::DefaultLifetime } -&gt; std::convertible_to&lt;Lifetime&gt;; };</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            <span class="keywordflow">if</span> (lifetime == <a class="code hl_enumvalue" href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a499d91bd36f09b349b4e16fe93911552">Lifetime::ThreadSingleton</a>)</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>            {</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>                <span class="keyword">auto</span>&amp; ptr = ThreadInstances[std::this_thread::get_id()];</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>                <span class="keywordflow">if</span> (!ptr)</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                    ptr = <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>(container);</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>                <span class="keywordflow">return</span> ptr;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>            }</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (lifetime == <a class="code hl_enumvalue" href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a249a7dc863c158c636331126ad5ca5db">Lifetime::WeakSingleton</a>)</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            {</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>                <span class="keywordflow">if</span> (<span class="keyword">auto</span> result = WeakInstancePointer.lock(); result)</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>                    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>                <span class="keyword">auto</span> ptr = <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>(container);</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                WeakInstancePointer = ptr;</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                <span class="keywordflow">return</span> ptr;</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>            }</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>            <span class="keywordflow">else</span> <span class="keywordflow">if</span> (lifetime == <a class="code hl_enumvalue" href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a45ecf82a5adf95ce6d133a9b55335cc6">Lifetime::InstanceSingleton</a>)</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>            {</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>                <span class="keywordflow">if</span> (!StrongInstancePointer)</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                    StrongInstancePointer = <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>(container);</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                <span class="keywordflow">return</span> StrongInstancePointer;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>            }</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>            </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>            <span class="keywordflow">if</span> (StrongInstancePointer)</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>                <span class="keywordflow">return</span> StrongInstancePointer;</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>            <span class="keywordflow">return</span> <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>(container);</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>        }</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span> </div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>        <span class="keywordtype">void</span> ResetInstance()</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        {</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>            StrongInstancePointer.reset();</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>            WeakInstancePointer.reset();</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>            ThreadInstances.clear();</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        }</div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        std::shared_ptr&lt;INTERFACE&gt; <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">Create</a>(Container&amp; container)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="keyword">        </span>{</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            <span class="keyword">auto</span> obj = mFactory(container);</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>            </div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>            <span class="keywordflow">if</span> (!container.mDebugStore.contains(obj.get()))</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span>                container.mDebugStore.emplace(obj.get(), std::pair&lt;std::type_index, std::weak_ptr&lt;void&gt;&gt;{ typeid(*obj), std::weak_ptr&lt;void&gt;{obj} });</div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span> </div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>            <span class="keywordflow">if</span> (mOnCreate)</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>            {</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>                container.ReportCreation(obj, [<span class="keyword">this</span>](Container&amp; container, std::shared_ptr&lt;void&gt; instance) {</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>                    mOnCreate(container, std::static_pointer_cast&lt;INTERFACE&gt;(std::move(instance)));</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>                });</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>            }</div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>            <span class="keywordflow">return</span> obj;</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        }</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span> </div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>    };</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    <span class="keyword">struct </span>Container::InterfaceContainer : Container::BaseInterfaceContainer</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>    {</div>
 <div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> I = INTERFACE&gt;</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keyword">static</span> <span class="keyword">constexpr</span> Lifetime GetDeclaredLifetime()</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keyword">static</span> <span class="keyword">constexpr</span> <a class="code hl_enumeration" href="group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5">Lifetime</a> GetDeclaredLifetime()</div>
 <div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>        {</div>
 <div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>            <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (has_default_lifetime&lt;I&gt;)</div>
 <div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>                <span class="keywordflow">return</span> I::DefaultLifetime;</div>
@@ -447,29 +447,31 @@ $(function(){initNavTree('di__impl_8h_source.html','',''); });
 <div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>    };</div>
 <div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span> </div>
 <div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>    <span class="keywordtype">bool</span> Container::HasAnyImplementationsOf()<span class="keyword"> const</span></div>
+<div class="foldopen" id="foldopen00362" data-start="{" data-end="}">
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno"><a class="line" href="structghassanpl_1_1di_1_1_container.html#ac8e798925c07432351584624a4dc19af">  362</a></span>    <span class="keywordtype">bool</span> <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#ac8e798925c07432351584624a4dc19af">Container::HasAnyImplementationsOf</a>()<span class="keyword"> const</span></div>
 <div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span><span class="keyword">    </span>{</div>
 <div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>        <span class="keywordflow">if</span> (<span class="keyword">auto</span> it = mContainers.find(<span class="keyword">typeid</span>(INTERFACE)); it != mContainers.end())</div>
 <div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>            <span class="keywordflow">return</span> it-&gt;second-&gt;HasAnyImplementations();</div>
 <div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>        <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>    }</div>
+</div>
 <div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> </div>
-<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> INTERFACE, <span class="keyword">typename</span> IMPLEMENTATION, <span class="keyword">typename</span> ...ARGS&gt;</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> INTERFACE, <span class="keyword">typename</span> IMPLEMENTATION, <span class="keyword">typename</span> ...PROPS&gt;</div>
 <div class="foldopen" id="foldopen00370" data-start="{" data-end="}">
-<div class="line"><a id="l00370" name="l00370"></a><span class="lineno"><a class="line" href="structghassanpl_1_1di_1_1_container.html#ad414006ffcca833f2a2bb9b5353632c7">  370</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#ad414006ffcca833f2a2bb9b5353632c7">Container::RegisterType</a>(ARGS&amp;&amp; ...args)</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno"><a class="line" href="structghassanpl_1_1di_1_1_container.html#af24bd093583f6677a042fb4d333e11d7">  370</a></span>    <span class="keywordtype">void</span> <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#af24bd093583f6677a042fb4d333e11d7">Container::RegisterType</a>(PROPS&amp;&amp; ...properties)</div>
 <div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>    {</div>
 <div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>        <span class="keyword">static_assert</span>(std::is_base_of_v&lt;INTERFACE, IMPLEMENTATION&gt;, <span class="stringliteral">&quot;Implementation class must inherit from interface class&quot;</span>);</div>
 <div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>        <span class="keyword">static_assert</span>(!std::is_abstract_v&lt;IMPLEMENTATION&gt;, <span class="stringliteral">&quot;Implementation cannot be abstract&quot;</span>);</div>
 <div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>        <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_base_of_v&lt;INTERFACE, IMPLEMENTATION&gt; &amp;&amp; !std::is_abstract_v&lt;IMPLEMENTATION&gt;)</div>
 <div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        {</div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>            <span class="keyword">constexpr</span> <span class="keyword">auto</span> instance_given = is_any_of_v&lt;std::shared_ptr&lt;IMPLEMENTATION&gt;, ARGS...&gt;;</div>
-<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>            <span class="keyword">constexpr</span> <span class="keyword">auto</span> interface_factory = is_any_of_v&lt;std::function&lt;std::shared_ptr&lt;INTERFACE&gt;(<a class="code hl_struct" href="structghassanpl_1_1di_1_1_container.html">Container</a>&amp;)&gt;, ARGS...&gt;;</div>
-<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>            <span class="keyword">constexpr</span> <span class="keyword">auto</span> impl_factory = is_any_of_v&lt;std::function&lt;std::shared_ptr&lt;IMPLEMENTATION&gt;(<a class="code hl_struct" href="structghassanpl_1_1di_1_1_container.html">Container</a>&amp;)&gt;, ARGS...&gt;;</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>            <span class="keyword">constexpr</span> <span class="keyword">auto</span> instance_given = is_any_of_v&lt;std::shared_ptr&lt;IMPLEMENTATION&gt;, PROPS...&gt;;</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>            <span class="keyword">constexpr</span> <span class="keyword">auto</span> interface_factory = is_any_of_v&lt;std::function&lt;std::shared_ptr&lt;INTERFACE&gt;(<a class="code hl_struct" href="structghassanpl_1_1di_1_1_container.html">Container</a>&amp;)&gt;, PROPS...&gt;;</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>            <span class="keyword">constexpr</span> <span class="keyword">auto</span> impl_factory = is_any_of_v&lt;std::function&lt;std::shared_ptr&lt;IMPLEMENTATION&gt;(<a class="code hl_struct" href="structghassanpl_1_1di_1_1_container.html">Container</a>&amp;)&gt;, PROPS...&gt;;</div>
 <div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>            <span class="keyword">static_assert</span>(!(instance_given &amp;&amp; (interface_factory || impl_factory)), <span class="stringliteral">&quot;Cannot register type with both factory and instance&quot;</span>);</div>
 <div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>            <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (instance_given || interface_factory || impl_factory) </div>
-<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>                GetInterfaceContainer&lt;INTERFACE&gt;().template RegisterImplementationType&lt;IMPLEMENTATION&gt;(std::forward&lt;ARGS&gt;(args)...);</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>                GetInterfaceContainer&lt;INTERFACE&gt;().template RegisterImplementationType&lt;IMPLEMENTATION&gt;(std::forward&lt;PROPS&gt;(properties)...);</div>
 <div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>            <span class="keywordflow">else</span></div>
-<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>                GetInterfaceContainer&lt;INTERFACE&gt;().template RegisterImplementationType&lt;IMPLEMENTATION&gt;(detail::ConstructorDescriptorForClass&lt;IMPLEMENTATION&gt;::CreateFactory(), std::forward&lt;ARGS&gt;(args)...);</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>                GetInterfaceContainer&lt;INTERFACE&gt;().template RegisterImplementationType&lt;IMPLEMENTATION&gt;(detail::ConstructorDescriptorForClass&lt;IMPLEMENTATION&gt;::CreateFactory(), std::forward&lt;PROPS&gt;(properties)...);</div>
 <div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>        }</div>
 <div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span>    }</div>
 </div>
@@ -478,27 +480,31 @@ $(function(){initNavTree('di__impl_8h_source.html','',''); });
 <div class="foldopen" id="foldopen00390" data-start="{" data-end="}">
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno"><a class="line" href="structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2">  390</a></span>    std::shared_ptr&lt;INTERFACE&gt; <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2">Container::Resolve</a>()</div>
 <div class="line"><a id="l00391" name="l00391"></a><span class="lineno">  391</span>    {</div>
-<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>        <span class="keywordflow">return</span> GetInterfaceContainer&lt;INTERFACE&gt;().Resolve(*<span class="keyword">this</span>, DefaultLifetime);</div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span>        <span class="keywordflow">return</span> GetInterfaceContainer&lt;INTERFACE&gt;().Resolve(*<span class="keyword">this</span>, <a class="code hl_variable" href="structghassanpl_1_1di_1_1_container.html#af01e7c272e5d4e8919e44c15d4b0b110">DefaultLifetime</a>);</div>
 <div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span>    }</div>
 </div>
 <div class="line"><a id="l00394" name="l00394"></a><span class="lineno">  394</span> </div>
 <div class="line"><a id="l00395" name="l00395"></a><span class="lineno">  395</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
-<div class="line"><a id="l00396" name="l00396"></a><span class="lineno">  396</span>    std::shared_ptr&lt;INTERFACE&gt; Container::ResolveByName(std::string_view name)</div>
+<div class="foldopen" id="foldopen00396" data-start="{" data-end="}">
+<div class="line"><a id="l00396" name="l00396"></a><span class="lineno"><a class="line" href="structghassanpl_1_1di_1_1_container.html#aa7f04a0673de88163a80301674a367fb">  396</a></span>    std::shared_ptr&lt;INTERFACE&gt; <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#aa7f04a0673de88163a80301674a367fb">Container::ResolveByName</a>(std::string_view name)</div>
 <div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>    {</div>
 <div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span>        <span class="keyword">auto</span>&amp; interface_container = GetInterfaceContainer&lt;INTERFACE&gt;();</div>
 <div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span>        <span class="keywordflow">for</span> (<span class="keyword">auto</span>&amp; <a class="code hl_namespace" href="namespaceimpl.html">impl</a> : interface_container.mImplementations)</div>
 <div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>        {</div>
 <div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span>            <span class="keywordflow">if</span> (<a class="code hl_namespace" href="namespaceimpl.html">impl</a>.Name == name)</div>
-<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>                <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespaceimpl.html">impl</a>.Resolve(*<span class="keyword">this</span>, DefaultLifetime);</div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span>                <span class="keywordflow">return</span> <a class="code hl_namespace" href="namespaceimpl.html">impl</a>.Resolve(*<span class="keyword">this</span>, <a class="code hl_variable" href="structghassanpl_1_1di_1_1_container.html#af01e7c272e5d4e8919e44c15d4b0b110">DefaultLifetime</a>);</div>
 <div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span>        }</div>
 <div class="line"><a id="l00404" name="l00404"></a><span class="lineno">  404</span>        <span class="keywordflow">return</span> {}; </div>
 <div class="line"><a id="l00405" name="l00405"></a><span class="lineno">  405</span>    }</div>
+</div>
 <div class="line"><a id="l00406" name="l00406"></a><span class="lineno">  406</span> </div>
 <div class="line"><a id="l00407" name="l00407"></a><span class="lineno">  407</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
-<div class="line"><a id="l00408" name="l00408"></a><span class="lineno">  408</span>    std::vector&lt;std::shared_ptr&lt;INTERFACE&gt;&gt; Container::ResolveAll()</div>
+<div class="foldopen" id="foldopen00408" data-start="{" data-end="}">
+<div class="line"><a id="l00408" name="l00408"></a><span class="lineno"><a class="line" href="structghassanpl_1_1di_1_1_container.html#a8829f7e90c9b68791bef9fdeeeee00d1">  408</a></span>    std::vector&lt;std::shared_ptr&lt;INTERFACE&gt;&gt; <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a8829f7e90c9b68791bef9fdeeeee00d1">Container::ResolveAll</a>()</div>
 <div class="line"><a id="l00409" name="l00409"></a><span class="lineno">  409</span>    {</div>
-<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        <span class="keywordflow">return</span> GetInterfaceContainer&lt;INTERFACE&gt;().ResolveAll(*<span class="keyword">this</span>, DefaultLifetime);</div>
+<div class="line"><a id="l00410" name="l00410"></a><span class="lineno">  410</span>        <span class="keywordflow">return</span> GetInterfaceContainer&lt;INTERFACE&gt;().ResolveAll(*<span class="keyword">this</span>, <a class="code hl_variable" href="structghassanpl_1_1di_1_1_container.html#af01e7c272e5d4e8919e44c15d4b0b110">DefaultLifetime</a>);</div>
 <div class="line"><a id="l00411" name="l00411"></a><span class="lineno">  411</span>    }</div>
+</div>
 <div class="line"><a id="l00412" name="l00412"></a><span class="lineno">  412</span> </div>
 <div class="line"><a id="l00413" name="l00413"></a><span class="lineno">  413</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> TYPE&gt;</div>
 <div class="foldopen" id="foldopen00414" data-start="{" data-end="}">
@@ -509,10 +515,12 @@ $(function(){initNavTree('di__impl_8h_source.html','',''); });
 </div>
 <div class="line"><a id="l00418" name="l00418"></a><span class="lineno">  418</span> </div>
 <div class="line"><a id="l00419" name="l00419"></a><span class="lineno">  419</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> TYPE&gt;</div>
-<div class="line"><a id="l00420" name="l00420"></a><span class="lineno">  420</span>    std::unique_ptr&lt;TYPE&gt; Container::CreateRaw()</div>
+<div class="foldopen" id="foldopen00420" data-start="{" data-end="}">
+<div class="line"><a id="l00420" name="l00420"></a><span class="lineno"><a class="line" href="structghassanpl_1_1di_1_1_container.html#a3014fafe19748f54b5ab4cfb41378207">  420</a></span>    std::unique_ptr&lt;TYPE&gt; <a class="code hl_function" href="structghassanpl_1_1di_1_1_container.html#a3014fafe19748f54b5ab4cfb41378207">Container::CreateRaw</a>()</div>
 <div class="line"><a id="l00421" name="l00421"></a><span class="lineno">  421</span>    {</div>
 <div class="line"><a id="l00422" name="l00422"></a><span class="lineno">  422</span>        <span class="keywordflow">return</span> std::unique_ptr&lt;TYPE&gt;{ detail::ConstructorDescriptorForClass&lt;TYPE&gt;::Create(*<span class="keyword">this</span>) };</div>
 <div class="line"><a id="l00423" name="l00423"></a><span class="lineno">  423</span>    }</div>
+</div>
 <div class="line"><a id="l00424" name="l00424"></a><span class="lineno">  424</span> </div>
 <div class="line"><a id="l00425" name="l00425"></a><span class="lineno">  425</span>    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> INTERFACE&gt;</div>
 <div class="line"><a id="l00426" name="l00426"></a><span class="lineno">  426</span>    Container::InterfaceContainer&lt;INTERFACE&gt;&amp; Container::GetInterfaceContainer()</div>
@@ -557,12 +565,22 @@ $(function(){initNavTree('di__impl_8h_source.html','',''); });
 <div class="line"><a id="l00465" name="l00465"></a><span class="lineno">  465</span>    }</div>
 <div class="line"><a id="l00466" name="l00466"></a><span class="lineno">  466</span> </div>
 <div class="line"><a id="l00467" name="l00467"></a><span class="lineno">  467</span>}</div>
-<div class="ttc" id="anamespaceghassanpl_1_1di_html"><div class="ttname"><a href="namespaceghassanpl_1_1di.html">ghassanpl::di</a></div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00031">di.h:32</a></div></div>
+<div class="ttc" id="agroup___d_i_html_gadf2b8a7294174253e0f4732394ce60e5"><div class="ttname"><a href="group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5">ghassanpl::di::Lifetime</a></div><div class="ttdeci">Lifetime</div><div class="ttdoc">Specifies the lifetime of an implementation.</div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00036">di.h:37</a></div></div>
+<div class="ttc" id="agroup___d_i_html_ggadf2b8a7294174253e0f4732394ce60e5a249a7dc863c158c636331126ad5ca5db"><div class="ttname"><a href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a249a7dc863c158c636331126ad5ca5db">ghassanpl::di::Lifetime::WeakSingleton</a></div><div class="ttdeci">@ WeakSingleton</div><div class="ttdoc">Same as InstanceSingleton, but will not hold on to an instance, so when your last shared_ptr to it wi...</div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00041">di.h:41</a></div></div>
+<div class="ttc" id="agroup___d_i_html_ggadf2b8a7294174253e0f4732394ce60e5a45ecf82a5adf95ce6d133a9b55335cc6"><div class="ttname"><a href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a45ecf82a5adf95ce6d133a9b55335cc6">ghassanpl::di::Lifetime::InstanceSingleton</a></div><div class="ttdeci">@ InstanceSingleton</div><div class="ttdoc">If a singleton instance of the implementation has not yet been created, it will be created and return...</div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00040">di.h:40</a></div></div>
+<div class="ttc" id="agroup___d_i_html_ggadf2b8a7294174253e0f4732394ce60e5a499d91bd36f09b349b4e16fe93911552"><div class="ttname"><a href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a499d91bd36f09b349b4e16fe93911552">ghassanpl::di::Lifetime::ThreadSingleton</a></div><div class="ttdeci">@ ThreadSingleton</div><div class="ttdoc">Same as InstanceSingleton, but each thread gets its own instance.</div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00042">di.h:42</a></div></div>
+<div class="ttc" id="agroup___d_i_html_ggadf2b8a7294174253e0f4732394ce60e5a7a1920d61156abc05a60135aefe8bc67"><div class="ttname"><a href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a7a1920d61156abc05a60135aefe8bc67">ghassanpl::di::Lifetime::Default</a></div><div class="ttdeci">@ Default</div><div class="ttdoc">Does not specify which lifetime of the implementation you want; you will be given one that&#39;s availabl...</div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00038">di.h:38</a></div></div>
+<div class="ttc" id="anamespaceghassanpl_1_1di_html"><div class="ttname"><a href="namespaceghassanpl_1_1di.html">ghassanpl::di</a></div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00020">di.h:21</a></div></div>
 <div class="ttc" id="anamespaceimpl_html"><div class="ttname"><a href="namespaceimpl.html">impl</a></div><div class="ttdef"><b>Definition</b> <a href="platform__impl_8inl_source.html#l00005">platform_impl.inl:6</a></div></div>
-<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html">ghassanpl::di::Container</a></div><div class="ttdoc">TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...</div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00048">di.h:49</a></div></div>
-<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_a167c78d25429fd305113edbeca8469e4"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">ghassanpl::di::Container::Create</a></div><div class="ttdeci">std::shared_ptr&lt; TYPE &gt; Create()</div><div class="ttdoc">Other.</div><div class="ttdef"><b>Definition</b> <a href="#l00414">di_impl.h:414</a></div></div>
-<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_a2dedfff52f46ecde8b040c995ff8d9b2"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2">ghassanpl::di::Container::Resolve</a></div><div class="ttdeci">std::shared_ptr&lt; INTERFACE &gt; Resolve()</div><div class="ttdoc">Resolves.</div><div class="ttdef"><b>Definition</b> <a href="#l00390">di_impl.h:390</a></div></div>
-<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_ad414006ffcca833f2a2bb9b5353632c7"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#ad414006ffcca833f2a2bb9b5353632c7">ghassanpl::di::Container::RegisterType</a></div><div class="ttdeci">void RegisterType(ARGS &amp;&amp;... args)</div><div class="ttdoc">Registers.</div><div class="ttdef"><b>Definition</b> <a href="#l00370">di_impl.h:370</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html">ghassanpl::di::Container</a></div><div class="ttdoc">The container for implementations; used to request interfaces.</div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00054">di.h:55</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_a167c78d25429fd305113edbeca8469e4"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#a167c78d25429fd305113edbeca8469e4">ghassanpl::di::Container::Create</a></div><div class="ttdeci">std::shared_ptr&lt; TYPE &gt; Create()</div><div class="ttdoc">Creates a new (shared pointer to an) object of TYPE, resolving any interface pointer parameters its c...</div><div class="ttdef"><b>Definition</b> <a href="#l00414">di_impl.h:414</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_a2dedfff52f46ecde8b040c995ff8d9b2"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#a2dedfff52f46ecde8b040c995ff8d9b2">ghassanpl::di::Container::Resolve</a></div><div class="ttdeci">std::shared_ptr&lt; INTERFACE &gt; Resolve()</div><div class="ttdoc">Returns a pointer to an implementation of INTERFACE.</div><div class="ttdef"><b>Definition</b> <a href="#l00390">di_impl.h:390</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_a3014fafe19748f54b5ab4cfb41378207"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#a3014fafe19748f54b5ab4cfb41378207">ghassanpl::di::Container::CreateRaw</a></div><div class="ttdeci">std::unique_ptr&lt; TYPE &gt; CreateRaw()</div><div class="ttdoc">Same as Create, but returns a unique_ptr to the new object.</div><div class="ttdef"><b>Definition</b> <a href="#l00420">di_impl.h:420</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_a8829f7e90c9b68791bef9fdeeeee00d1"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#a8829f7e90c9b68791bef9fdeeeee00d1">ghassanpl::di::Container::ResolveAll</a></div><div class="ttdeci">std::vector&lt; std::shared_ptr&lt; INTERFACE &gt; &gt; ResolveAll()</div><div class="ttdoc">Will return a vector of all available implementations of INTERFACE; useful for interfaces like image_...</div><div class="ttdef"><b>Definition</b> <a href="#l00408">di_impl.h:408</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_aa7f04a0673de88163a80301674a367fb"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#aa7f04a0673de88163a80301674a367fb">ghassanpl::di::Container::ResolveByName</a></div><div class="ttdeci">std::shared_ptr&lt; INTERFACE &gt; ResolveByName(std::string_view name)</div><div class="ttdoc">Returns a pointer to an implementation of INTERFACE with the name name If an implementation with that...</div><div class="ttdef"><b>Definition</b> <a href="#l00396">di_impl.h:396</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_ac8e798925c07432351584624a4dc19af"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#ac8e798925c07432351584624a4dc19af">ghassanpl::di::Container::HasAnyImplementationsOf</a></div><div class="ttdeci">bool HasAnyImplementationsOf() const</div><div class="ttdoc">Checks if there are any implementation registered for INTERFACE.</div><div class="ttdef"><b>Definition</b> <a href="#l00362">di_impl.h:362</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_af01e7c272e5d4e8919e44c15d4b0b110"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#af01e7c272e5d4e8919e44c15d4b0b110">ghassanpl::di::Container::DefaultLifetime</a></div><div class="ttdeci">Lifetime DefaultLifetime</div><div class="ttdoc">The default lifetime of implementations in this container, unless specified otherwise by the interfac...</div><div class="ttdef"><b>Definition</b> <a href="di_8h_source.html#l00057">di.h:57</a></div></div>
+<div class="ttc" id="astructghassanpl_1_1di_1_1_container_html_af24bd093583f6677a042fb4d333e11d7"><div class="ttname"><a href="structghassanpl_1_1di_1_1_container.html#af24bd093583f6677a042fb4d333e11d7">ghassanpl::di::Container::RegisterType</a></div><div class="ttdeci">void RegisterType(PROPS &amp;&amp;... properties)</div><div class="ttdoc">Registers the type IMPLEMENTATION as an implementation of INTERFACE.</div><div class="ttdef"><b>Definition</b> <a href="#l00370">di_impl.h:370</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 </div><!-- container -->

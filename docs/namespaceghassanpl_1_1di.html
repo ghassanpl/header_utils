@@ -95,77 +95,34 @@ $(function(){initNavTree('namespaceghassanpl_1_1di.html','',''); });
 <tr class="heading"><td colspan="2"><h2 id="header-nested-classes" class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:Container" id="r_Container"><td class="memItemLeft">struct &#160;</td><td class="memItemRight"><a class="el" href="structghassanpl_1_1di_1_1_container.html">Container</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">TODO: Split into ContainerBuilder and <a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a> (or [Dependency]Registry and [Dependency]<a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a>) Oooh, idea: <a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a> container = <a class="el" href="structghassanpl_1_1di_1_1_container.html" title="TODO: Split into ContainerBuilder and Container (or [Dependency]Registry and [Dependency]Container) O...">Container</a>(Registry1(), Registry2(), ...);.  <a href="structghassanpl_1_1di_1_1_container.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The container for implementations; used to request interfaces.  <a href="structghassanpl_1_1di_1_1_container.html#details">More...</a><br /></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-concepts" class="groupheader"><a id="concepts" name="concepts"></a>
+Concepts</h2></td></tr>
+<tr class="memitem:has_5Fdefault_5Flifetime" id="r_has_5Fdefault_5Flifetime"><td class="memItemLeft">concept &#160;</td><td class="memItemRight"><a class="el" href="conceptghassanpl_1_1di_1_1has__default__lifetime.html">has_default_lifetime</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the interface or implementation has a DefaultLifetime static member field, that specified lifetime will be used by default for that interface/implementation. <br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-enum-members" class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:adf2b8a7294174253e0f4732394ce60e5" id="r_adf2b8a7294174253e0f4732394ce60e5"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><b>Lifetime</b> { <br />
-&#160;&#160;<b>Default</b>
-, <b>Transient</b>
-, <b>InstanceSingleton</b>
-, <b>WeakSingleton</b>
+<tr class="memitem:gadf2b8a7294174253e0f4732394ce60e5" id="r_gadf2b8a7294174253e0f4732394ce60e5"><td class="memItemLeft">enum class &#160;</td><td class="memItemRight"><a class="el" href="group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5">Lifetime</a> { <br />
+&#160;&#160;<a class="el" href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a7a1920d61156abc05a60135aefe8bc67">Lifetime::Default</a>
+, <a class="el" href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5ab1f023eff9a6b5308d6024e4c6b3d475">Lifetime::Transient</a>
+, <a class="el" href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a45ecf82a5adf95ce6d133a9b55335cc6">Lifetime::InstanceSingleton</a>
+, <a class="el" href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a249a7dc863c158c636331126ad5ca5db">Lifetime::WeakSingleton</a>
 , <br />
-&#160;&#160;<b>ThreadSingleton</b>
+&#160;&#160;<a class="el" href="group___d_i.html#ggadf2b8a7294174253e0f4732394ce60e5a499d91bd36f09b349b4e16fe93911552">Lifetime::ThreadSingleton</a>
 <br />
  }</td></tr>
+<tr class="memdesc:gadf2b8a7294174253e0f4732394ce60e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies the lifetime of an implementation.  <a href="group___d_i.html#gadf2b8a7294174253e0f4732394ce60e5">More...</a><br /></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a9e667bc295574fb669963cbc3db3bc22" id="r_a9e667bc295574fb669963cbc3db3bc22"><td class="memItemLeft">constexpr DefaultImplementationStruct&#160;</td><td class="memItemRight"><a class="el" href="#a9e667bc295574fb669963cbc3db3bc22">DefaultImplementation</a></td></tr>
+<tr class="memitem:ga9e667bc295574fb669963cbc3db3bc22" id="r_ga9e667bc295574fb669963cbc3db3bc22"><td class="memItemLeft">constexpr DefaultImplementationStruct&#160;</td><td class="memItemRight"><a class="el" href="group___d_i.html#ga9e667bc295574fb669963cbc3db3bc22">DefaultImplementation</a></td></tr>
+<tr class="memdesc:ga9e667bc295574fb669963cbc3db3bc22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Used to specify an implementation is the default one for the interface being registered.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section copyright"><dt>Copyright</dt><dd>This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at <a href="https://mozilla.org/MPL/2.0/">https://mozilla.org/MPL/2.0/</a>. </dd></dl>
-</div><a name="doc-enum-members" id="doc-enum-members"></a><h2 id="header-doc-enum-members" class="groupheader">Enumeration Type Documentation</h2>
-<a id="adf2b8a7294174253e0f4732394ce60e5" name="adf2b8a7294174253e0f4732394ce60e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf2b8a7294174253e0f4732394ce60e5">&#9670;&#160;</a></span>Lifetime</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class ghassanpl::di::Lifetime</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel strong">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00033">33</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
-
-</div>
-</div>
-<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Variable Documentation</h2>
-<a id="a9e667bc295574fb669963cbc3db3bc22" name="a9e667bc295574fb669963cbc3db3bc22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e667bc295574fb669963cbc3db3bc22">&#9670;&#160;</a></span>DefaultImplementation</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">DefaultImplementationStruct ghassanpl::di::DefaultImplementation</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel inline">inline</span><span class="mlabel constexpr">constexpr</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="di_8h_source.html#l00043">43</a> of file <a class="el" href="di_8h_source.html">di.h</a>.</p>
-
-</div>
-</div>
-</div><!-- contents -->
+</div></div><!-- contents -->
 </div><!-- doc-content -->
 <div id="page-nav" class="page-nav-panel">
 <div id="page-nav-resize-handle"></div>

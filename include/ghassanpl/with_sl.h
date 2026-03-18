@@ -19,7 +19,7 @@ namespace ghassanpl
 {
 
 	/// \defgroup WithSL with_sl
-	/// A set of usesful types (`with_sl` and `with_slh`) that allow for variadic functions taking a `std::source_location`.
+	/// A set of useful types (`with_sl` and `with_slh`) that allow for variadic functions taking a `std::source_location`.
 	/// 
 	/// \par Example Usage
 	/// ```cpp

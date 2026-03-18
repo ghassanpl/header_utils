@@ -354,7 +354,7 @@ template&lt;typename C&gt; </td></tr>
 <tr class="memitem:ga9e503190304b9c05017d15be7683650f template"><td class="memItemLeft">constexpr auto&#160;</td><td class="memItemRight"><a class="el" href="group___string_ops.html#ga9e503190304b9c05017d15be7683650f">make_string</a> (ARGS &amp;&amp;... args)</td></tr>
 <tr id="func-members-1" class="groupHeader"><td colspan="2"><div class="groupHeader">to_string Functions</div></td></tr>
 <tr><td colspan="2" class="ititle"><div class="groupText"><p>Basic identity and utility <span class="tt">to_string</span> functions.</p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group___stringification.html" title="TODO: Documentation.">Stringification</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group___stringification.html">Stringification</a> </dd></dl>
 </div></td></tr>
 <tr class="memitem:ga666dc0f9f93c8b318ab993ca3034cb2d" id="r_ga666dc0f9f93c8b318ab993ca3034cb2d"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___string_ops.html#ga666dc0f9f93c8b318ab993ca3034cb2d">to_string</a> (std::string_view from) noexcept</td></tr>
 <tr class="memitem:ga6dc53c5283e0b3a2b186096c182cc411" id="r_ga6dc53c5283e0b3a2b186096c182cc411"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="group___string_ops.html#ga6dc53c5283e0b3a2b186096c182cc411">string_view_to_string</a> (std::string_view from) noexcept</td></tr>
@@ -491,7 +491,7 @@ requires requires { std::to_string(t); }</td></tr>
 <tr id="func-members-5" class="groupHeader"><td colspan="2"><div class="groupHeader">Join Functions</div></td></tr>
 <tr><td colspan="2" class="ititle"><div class="groupText"><p>Functions that join a range of formattable elements into a single string</p>
 <dl class="section note"><dt>Note</dt><dd>Formatting is done using stream operators (<span class="tt">operator&lt;&lt;</span>). </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo</a></b></dt><dd>Use <code>Stringification</code> instead</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo</a></b></dt><dd>Use <code>Stringification</code> instead</dd></dl>
 </div></td></tr>
 <tr class="memitem:gaae9506226c20d35af4c4dd96509881e2" id="r_gaae9506226c20d35af4c4dd96509881e2"><td class="memTemplParams" colspan="2">template&lt;typename T&gt; </td></tr>
 <tr class="memitem:gaae9506226c20d35af4c4dd96509881e2 template"><td class="memItemLeft">auto&#160;</td><td class="memItemRight"><a class="el" href="group___string_ops.html#gaae9506226c20d35af4c4dd96509881e2">join</a> (T &amp;&amp;source)</td></tr>
@@ -513,7 +513,7 @@ requires requires { std::to_string(t); }</td></tr>
 <tr class="memdesc:ga751367bcaeffb2d6f3ffc9d84522c8a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same as <code><a class="el" href="group___string_ops.html#ga643c865b0bde5ec924b0a72d30f79210" title="Returns a string that is created by joining together string representation of the elements in the sou...">join(T&amp;&amp; source, DELIM const&amp; delim)</a></code> except each element is transformed by <span class="tt">transform_func</span> before being stringified and added to the result.  <br /></td></tr>
 <tr id="func-members-6" class="groupHeader"><td colspan="2"><div class="groupHeader">Replace and Escape Functions</div></td></tr>
 <tr><td colspan="2" class="ititle"><div class="groupText"><dl class="section warning"><dt>Warning</dt><dd>A lot of these functions have stupid and/or subtle bugs, or are not intuitive in their behavior. Use at your own risk. Pull requests welcome. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo</a></b></dt><dd>C++23's format has a string format specifications that automatically escape, use those when they become available</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo</a></b></dt><dd>C++23's format has a string format specifications that automatically escape, use those when they become available</dd></dl>
 </div></td></tr>
 <tr class="memitem:gad417af4c4d6d0790a5f65e8ca3015f1c" id="r_gad417af4c4d6d0790a5f65e8ca3015f1c"><td class="memTemplParams" colspan="2">template&lt;string_or_char NEEDLE, string_or_char REPLACE&gt; </td></tr>
 <tr class="memitem:gad417af4c4d6d0790a5f65e8ca3015f1c template"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="group___string_ops.html#gad417af4c4d6d0790a5f65e8ca3015f1c">replace</a> (std::string &amp;subject, NEEDLE &amp;&amp;search, REPLACE &amp;&amp;replace)</td></tr>

@@ -92,20 +92,23 @@ $(function(){initNavTree('group___string_interpolate.html','',''); });
 </div><!--header-->
 <div class="contents">
 
-<p>TODO: Documentation.  
+<p><span class="tt">interpolate("hello [world]!", func) -&gt; "hello " + func("world") + "!"</span>  
 <a href="#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga4dc4ceba292cdfda32f28e0464136505" id="r_ga4dc4ceba292cdfda32f28e0464136505"><td class="memTemplParams" colspan="2">template&lt;char open = '[', char close = ']', typename FUNC&gt; </td></tr>
 <tr class="memitem:ga4dc4ceba292cdfda32f28e0464136505 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ga4dc4ceba292cdfda32f28e0464136505">ghassanpl::interpolate_simple</a> (std::string_view str, FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga4dc4ceba292cdfda32f28e0464136505"><td class="mdescLeft">&#160;</td><td class="mdescRight">The simplest string interpolation function; calls <span class="tt">func</span> for every <span class="tt">[group]</span> in <span class="tt">str</span>.  <br /></td></tr>
 <tr class="memitem:ga33ba9e57a00b4aa6d7cab9446f0cfc9f" id="r_ga33ba9e57a00b4aa6d7cab9446f0cfc9f"><td class="memTemplParams" colspan="2">template&lt;char open = '[', char close = ']', typename FUNC&gt; </td></tr>
 <tr class="memitem:ga33ba9e57a00b4aa6d7cab9446f0cfc9f template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ga33ba9e57a00b4aa6d7cab9446f0cfc9f">ghassanpl::interpolate_recursive</a> (std::string_view str, FUNC &amp;&amp;func)</td></tr>
+<tr class="memdesc:ga33ba9e57a00b4aa6d7cab9446f0cfc9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Like <span class="tt"><a class="el" href="#ga4dc4ceba292cdfda32f28e0464136505" title="The simplest string interpolation function; calls func for every [group] in str.">interpolate_simple</a></span> except <span class="tt">[group]</span>s can be recursive, that is, can contain other groups that will be interpolated before the outer group.  <br /></td></tr>
 <tr class="memitem:gab06a008f03b778d3911782acab93bc10" id="r_gab06a008f03b778d3911782acab93bc10"><td class="memTemplParams" colspan="2">template&lt;bool SYNTAX&gt; </td></tr>
 <tr class="memitem:gab06a008f03b778d3911782acab93bc10 template"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#gab06a008f03b778d3911782acab93bc10">ghassanpl::interpolate_eval</a> (std::string_view str, <a class="el" href="structghassanpl_1_1eval_1_1environment.html">eval::environment</a>&lt; SYNTAX &gt; &amp;env)</td></tr>
+<tr class="memdesc:gab06a008f03b778d3911782acab93bc10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interpolation using the <span class="tt"><a class="el" href="namespaceghassanpl_1_1eval.html">eval</a></span> module functionality.  <br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 id="header-details" class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>TODO: Documentation. </p>
+<div class="textblock"><p><span class="tt">interpolate("hello [world]!", func) -&gt; "hello " + func("world") + "!"</span> </p>
 </div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Function Documentation</h2>
 <a id="gab06a008f03b778d3911782acab93bc10" name="gab06a008f03b778d3911782acab93bc10"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gab06a008f03b778d3911782acab93bc10">&#9670;&#160;</a></span>interpolate_eval()</h2>
@@ -136,7 +139,9 @@ template&lt;bool SYNTAX&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__interpolate_8h_source.html#l00070">70</a> of file <a class="el" href="string__interpolate_8h_source.html">string_interpolate.h</a>.</p>
+<p>Interpolation using the <span class="tt"><a class="el" href="namespaceghassanpl_1_1eval.html">eval</a></span> module functionality. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__interpolate_8h_source.html#l00076">76</a> of file <a class="el" href="string__interpolate_8h_source.html">string_interpolate.h</a>.</p>
 
 </div>
 </div>
@@ -169,7 +174,10 @@ template&lt;char open = '[', char close = ']', typename FUNC&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__interpolate_8h_source.html#l00038">38</a> of file <a class="el" href="string__interpolate_8h_source.html">string_interpolate.h</a>.</p>
+<p>Like <span class="tt"><a class="el" href="#ga4dc4ceba292cdfda32f28e0464136505" title="The simplest string interpolation function; calls func for every [group] in str.">interpolate_simple</a></span> except <span class="tt">[group]</span>s can be recursive, that is, can contain other groups that will be interpolated before the outer group. </p>
+<div class="fragment"><div class="line">interpolate(<span class="stringliteral">&quot;hello [world [woo]]!&quot;</span>, func) -&gt; <span class="stringliteral">&quot;hello &quot;</span> + func(<span class="stringliteral">&quot;world &quot;</span> + func(<span class="stringliteral">&quot;woo&quot;</span>)) + <span class="stringliteral">&quot;!&quot;</span></div>
+</div><!-- fragment --> 
+<p class="definition">Definition at line <a class="el" href="string__interpolate_8h_source.html#l00043">43</a> of file <a class="el" href="string__interpolate_8h_source.html">string_interpolate.h</a>.</p>
 
 </div>
 </div>
@@ -202,7 +210,9 @@ template&lt;char open = '[', char close = ']', typename FUNC&gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="string__interpolate_8h_source.html#l00018">18</a> of file <a class="el" href="string__interpolate_8h_source.html">string_interpolate.h</a>.</p>
+<p>The simplest string interpolation function; calls <span class="tt">func</span> for every <span class="tt">[group]</span> in <span class="tt">str</span>. </p>
+
+<p class="definition">Definition at line <a class="el" href="string__interpolate_8h_source.html#l00019">19</a> of file <a class="el" href="string__interpolate_8h_source.html">string_interpolate.h</a>.</p>
 
 </div>
 </div>

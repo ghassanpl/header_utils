@@ -11,9 +11,10 @@
 namespace ghassanpl
 {
 	/// \defgroup StringInterpolate String Interpolation
-	/// TODO: Documentation
+	/// `interpolate("hello [world]!", func) -> "hello " + func("world") + "!"`
 	/// @{
 
+	/// The simplest string interpolation function; calls `func` for every `[group]` in `str`
 	template <char open = '[', char close = ']', typename FUNC>
 	[[nodiscard]] std::string interpolate_simple(std::string_view str, FUNC&& func)
 	{
@@ -34,6 +35,10 @@ namespace ghassanpl
 		return result;
 	}
 
+	/// Like `interpolate_simple` except `[group]`s can be recursive, that is, can contain other groups that will be interpolated before the outer group.
+	/// ```c++
+	/// interpolate("hello [world [woo]]!", func) -> "hello " + func("world " + func("woo")) + "!"
+	/// ```
 	template <char open = '[', char close = ']', typename FUNC>
 	[[nodiscard]] std::string interpolate_recursive(std::string_view str, FUNC&& func)
 	{
@@ -66,6 +71,7 @@ namespace ghassanpl
 		return result;
 	}
 
+	/// Interpolation using the `eval` module functionality
 	template <bool SYNTAX>
 	[[nodiscard]] std::string interpolate_eval(std::string_view str, eval::environment<SYNTAX>& env)
 	{
