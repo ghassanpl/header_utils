@@ -8,6 +8,6 @@ A collection of header-only C++20 "libraries" that implement small but useful ut
 
 ### Note on portability
 
-Since this is a C++20 library, and apparently no compiler except MSVC supports C++20 fully, don't expect it to work anywhere other than MSVC. Yay.
+Since this is a C++20 library, and apparently no compiler except MSVC supports C++20 fully, don't expect it to fully work anywhere other than MSVC (though Clang does a very good job). Yay.
 
 ## [Documentation](https://ghassanpl.github.io/header_utils/topics.html)
