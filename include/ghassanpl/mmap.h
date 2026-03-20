@@ -8,7 +8,7 @@
 #include <string>
 #include <system_error>
 #include <cstdint>
-#include "span.h"
+#include <span>
 #include <filesystem>
 
 /// TODO: https://www.remi-coulom.fr/joedb/checkpoints.html

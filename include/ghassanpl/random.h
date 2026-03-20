@@ -7,7 +7,7 @@
 #include "min-cpp-version/cpp20.h"
 #include <random>
 #include <numeric>
-#include "span.h"
+#include <span>
 
 namespace ghassanpl::random
 {
@@ -410,7 +410,7 @@ namespace ghassanpl::random
 	/// Returns an index of one of the options in `option_probabilities`, where its elements are the probability weights of their specific options.
 	/// \complexity O(N) space, O(N+logN) time
 	template <typename T, typename RANDOM>
-	[[nodiscard]] size_t option_with_probability(span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] size_t option_with_probability(std::span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		/// TODO: Check if works with known-sized spans
 		static_assert(std::is_convertible_v<T, double>, "option probabilities must be convertible to double");

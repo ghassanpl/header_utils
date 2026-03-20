@@ -9,10 +9,6 @@
 
 #include "cpp23.h"
 
-#if !defined(__cpp_concepts)
-#error "This library requires concepts"
-#endif
-
 namespace ghassanpl
 {
 	/// \defgroup Bits Bits

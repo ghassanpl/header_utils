@@ -8,7 +8,7 @@
 #include "string_ops.h"
 #include <format>
 #include <variant>
-#include "span.h"
+#include <span>
 
 namespace ghassanpl::eval
 {

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "span.h"
+#include <span>
 #include <algorithm>
 #include "bits.h"
 #include "ranges.h"

@@ -70,7 +70,7 @@ namespace ghassanpl
 	///		[](std::string const& s) { return s; }
 	///	}, var);
 	/// ```
-	template <class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
+	template <class... Ts> struct overloaded : Ts... { using Ts::operator()...; }; // Ah the magic of C++20 automatic CTAD
 
 	///
 	#define GHPL_OVERLOAD(...) [&](auto &&... args) -> decltype(auto) { \

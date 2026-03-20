@@ -8,10 +8,6 @@
 #include <climits> /// Only for CHAR_BIT, sigh
 #include <concepts>
 
-#if !__has_cpp_attribute(nodiscard)
-#error "This library requires [[nodiscard]]"
-#endif
-
 namespace ghassanpl
 {
 	template<typename T>

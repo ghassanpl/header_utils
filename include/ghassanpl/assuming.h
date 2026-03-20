@@ -7,10 +7,6 @@
 #include <version>
 #include <cassert>
 
-#if !defined(__cpp_lib_format)
-#error "This library requires std::format"
-#endif
-
 #include "source_location.h"
 
 /// \defgroup Assuming Assuming

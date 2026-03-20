@@ -38,7 +38,7 @@
 //	#include "../../include/ghassanpl/random_geom.h" /// is_constant_evaluated
 //  #include "../../include/ghassanpl/random_seq.h"
 //#include "../../include/ghassanpl/ranges.h" /// ranges
-#include "../../include/ghassanpl/rec2.h"
+//#include "../../include/ghassanpl/rec2.h" /// span
 #include "../../include/ghassanpl/regex.h"
 #include "../../include/ghassanpl/scope.h"
 //#include "../../include/ghassanpl/sexps.h" /// charconv, optional, ranges, concepts

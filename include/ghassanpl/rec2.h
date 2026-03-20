@@ -4,10 +4,10 @@
 
 #pragma once
 
-#include "min-cpp-version/cpp17.h"
+#include "min-cpp-version/cpp20.h"
 #include <glm/common.hpp>
 #include <glm/vec2.hpp>
-#include "span.h"
+#include <span>
 #include <functional>
 #include <optional>
 
@@ -37,7 +37,7 @@ namespace ghassanpl
 
 			constexpr trec2() noexcept = default;
 			constexpr trec2(tvec a, tvec b) noexcept : p1(a), p2(b) {}
-			explicit constexpr trec2(span<tvec const> points) noexcept
+			explicit constexpr trec2(std::span<tvec const> points) noexcept
 			{
 				*this = trec2::exclusive();
 				for (auto& p : points)
@@ -63,7 +63,7 @@ namespace ghassanpl
 			constexpr trec2& operator=(const trec2&) noexcept = default;
 			constexpr trec2& operator=(trec2&&) noexcept = default;
 
-			static constexpr trec2 from_points(span<tvec const> points) noexcept { return trec2{ points }; }
+			static constexpr trec2 from_points(std::span<tvec const> points) noexcept { return trec2{ points }; }
 			template <GHPL_TYPENAME(std::same_as<tvec>)... ARGS>
 			static constexpr trec2 from_points(ARGS&&... args) noexcept { return trec2(bounding_box_for, std::forward<ARGS>(args)...); }
 			static constexpr trec2 from_size(tvec s) noexcept { return { tvec{}, s }; };

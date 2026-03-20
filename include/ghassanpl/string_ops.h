@@ -12,19 +12,7 @@
 #include <ranges>
 #include <array>
 #include <numeric>
-
-#if !defined(__cpp_concepts)
-#error "This library requires concepts"
-#endif
-#if !defined(__cpp_lib_ranges)
-#error "This library requires ranges"
-#endif
-#if defined(__cpp_lib_format)
 #include <format>
-#endif
-#if !defined(__cpp_lib_to_address)
-#error "This library requires std::to_address"
-#endif
 
 #include "expected.h"
 
@@ -560,6 +548,16 @@ namespace ghassanpl::string_ops
 
 		/// A version of the `sv` suffix that returns a special type allowing for case-insensitive comparisons (e.g. `if (str == "hello"_i)`)
 		[[nodiscard]] consteval detail::string_view_case_insensitive operator""_i(const char* str, size_t size) noexcept { return detail::string_view_case_insensitive{ std::string_view{str, str + size} }; }
+
+		struct less_case_insensitive
+		{
+			constexpr bool operator() (auto const& a, auto const& b) const noexcept
+			{
+				return detail::string_view_case_insensitive{ a } < detail::string_view_case_insensitive{ b };
+			}
+
+			using is_transparent = int;
+		};
 
 		/// @}
 

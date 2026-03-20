@@ -16,3 +16,4 @@ talk/
 include/ghassanpl/not-ready/
 /tests/Build/objectfiles.txt
 /tests/build.xml
+/check-cppcheck-build-dir
