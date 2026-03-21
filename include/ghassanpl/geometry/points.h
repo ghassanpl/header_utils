@@ -21,7 +21,7 @@ namespace ghassanpl::geometry
 
 		auto it = std::ranges::begin(range);
 
-		const auto line = line_crossing_points(*it++, *it++);
+		const auto line = line_crossing_points(*it++, *it++); /// Ordering irrelevant
 		const auto end = std::ranges::end(range);
 		while (it != end)
 		{

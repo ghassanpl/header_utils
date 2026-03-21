@@ -1,4 +1,4 @@
-/// This Source Code Form is subject to the terms of the Mozilla Public
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
@@ -356,7 +356,7 @@ TEST(string_ops_test, consume_bom_and_detect_encoding)
 	}
 
 	{
-		std::string_view str = "\xEF\xBB\xBFhello";
+		std::string_view str = "\xEF\xBB\xBF" "hello";
 		auto [encoding, endianness] = consume_bom(str);
 		EXPECT_EQ(encoding, text_encoding_type::utf8);
 		EXPECT_EQ(endianness, std::endian::native);
@@ -481,7 +481,7 @@ TEST(string_ops, any_versions)
 		EXPECT_EQ(sv, "o"sv);
 	}
 
-	isany(char32_t(500), -1);
+	EXPECT_FALSE(isany(char32_t(500), -1));
 }
 
 TEST(string_ops, substr_functions_work)
@@ -518,4 +518,22 @@ TEST(string_ops, substr_functions_work)
 		erase_outside_from_to(s, 7, 4);
 		EXPECT_EQ(s, "456");
 	}
+}
+
+TEST(string_ops, split_range_works)
+{
+	std::vector<std::string_view> split;
+	for (auto word : split_range{ "hello world, this is a very long string                  many", " " })
+		split.push_back(word);
+
+	ASSERT_EQ(split.size(), 9);
+	EXPECT_EQ(split[0], "hello");
+	EXPECT_EQ(split[1], "world,");
+	EXPECT_EQ(split[2], "this");
+	EXPECT_EQ(split[3], "is");
+	EXPECT_EQ(split[4], "a");
+	EXPECT_EQ(split[5], "very");
+	EXPECT_EQ(split[6], "long");
+	EXPECT_EQ(split[7], "string");
+	EXPECT_EQ(split[8], "many");
 }

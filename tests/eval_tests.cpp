@@ -1,3 +1,7 @@
+/// \copyright This Source Code Form is subject to the terms of the Mozilla Public
+/// License, v. 2.0. If a copy of the MPL was not distributed with this
+/// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 #include "../include/ghassanpl/eval.h"
 #include "../include/ghassanpl/eval_libs/lib_core.h"
 #include "../include/ghassanpl/string_interpolate.h"
@@ -81,6 +85,8 @@ TEST(eval, lib_base)
 	EXPECT_EQ(env.safe_eval(parse_value("[get 1 of .l]")), (json(12)));
 	env.safe_eval(parse_value("[[get 1 of .l] = 10]"));
 	EXPECT_EQ(env.safe_eval(parse_value("[get 1 of .l]")), (json(10)));
+
+	ASSERT_TRUE(json(true).is_boolean());
 
 	EXPECT_EQ(env.safe_eval(parse_value("[[.l @ 1] == 10")), (json(true)));
 	EXPECT_EQ(env.safe_eval(parse_value("[[.l @ 1] != 5")), (json(true)));

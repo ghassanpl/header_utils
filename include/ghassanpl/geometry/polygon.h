@@ -312,7 +312,7 @@ namespace ghassanpl::geometry
 		{
 			for (auto& tr : triangles)
 			{
-				return tr.as_triangle(poly);
+				tr.as_triangle(poly);
 			}
 		}
 

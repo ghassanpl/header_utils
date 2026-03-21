@@ -443,7 +443,7 @@ namespace ghassanpl::geometry::squares
 				std::swap_ranges(std::make_reverse_iterator(GetRowStart(i) + mWidth), std::make_reverse_iterator(GetRowStart(i)), GetRowStart(mHeight - i - 1));
 
 			/// Need to reverse middle row if height is odd
-			if (mHeight % 1)
+			if (mHeight % 2)
 				std::reverse(GetRowStart(mHeight / 2 + 1), GetRowStart(mHeight / 2 + 1) + mWidth);
 		}
 
@@ -514,7 +514,7 @@ namespace ghassanpl::geometry::squares
 		{
 			if (w < 0) throw std::invalid_argument{ "width cannot be negative" };
 			if (h < 0) throw std::invalid_argument{ "height cannot be negative" };
-			if (size_t(w * h) > tiles.size()) throw std::invalid_argument{ "not enough tiles in vector" };
+			if (size_t(w) * size_t(h) > tiles.size()) throw std::invalid_argument{ "not enough tiles in vector" };
 
 			tiles.resize(w * h);
 			mTiles = std::move(tiles);

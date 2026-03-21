@@ -106,6 +106,8 @@ namespace ghassanpl
 		using handle_type = file_handle_type;
 
 		basic_mmap_base() noexcept = default;
+		basic_mmap_base(basic_mmap_base const& other) noexcept = delete;
+		basic_mmap_base& operator=(basic_mmap_base const& other) noexcept = delete;
 		basic_mmap_base(basic_mmap_base&& other) noexcept
 			: data_(std::exchange(other.data_, nullptr))
 			, length_(std::exchange(other.length_, 0))
@@ -113,6 +115,15 @@ namespace ghassanpl
 			, file_handle_(std::exchange(other.file_handle_, invalid_handle))
 			, file_mapping_handle_(std::exchange(other.file_mapping_handle_, invalid_handle))
 		{
+		}
+		basic_mmap_base& operator=(basic_mmap_base&& other) noexcept
+		{
+			this->data_ = std::exchange(other.data_, nullptr);
+			this->length_ = std::exchange(other.length_, 0);
+			this->mapped_length_ = std::exchange(other.mapped_length_, 0);
+			this->file_handle_ = std::exchange(other.file_handle_, invalid_handle);
+			this->file_mapping_handle_ = std::exchange(other.file_mapping_handle_, invalid_handle);
+			return *this;
 		}
 
 		[[nodiscard]] handle_type file_handle() const noexcept { return file_handle_; }

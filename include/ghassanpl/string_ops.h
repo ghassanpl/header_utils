@@ -1642,7 +1642,7 @@ namespace ghassanpl::string_ops
 	/// \tparam SINGLE if false, we ignore consecutive delimiters
 	/// 
 	/// \todo Make this an actual range
-	template <bool SINGLE>
+	template <bool SINGLE = false>
 	struct split_range
 	{
 		split_range(std::string_view source, std::string_view split_on) : mSource(source), mSplit(split_on) {}
@@ -1655,13 +1655,13 @@ namespace ghassanpl::string_ops
 			std::string_view SplitChars;
 
 			bool operator!=(const split_range_iterator& other) const { return RangeStart != other.SourceEnd; }
-			split_range_iterator& operator++(int) {
+			split_range_iterator operator++(int) {
 				auto copy = *this;
 				++*this;
 				return copy;
 			}
 
-			split_range_iterator operator++() {
+			split_range_iterator& operator++() {
 				auto rs = RangeEnd;
 				auto se = SourceEnd;
 				auto sc = SplitChars;
@@ -1686,7 +1686,7 @@ namespace ghassanpl::string_ops
 				return *this;
 			}
 
-			std::pair<const char*, const char*> operator*() const { return { RangeStart, RangeEnd }; }
+			std::string_view operator*() const { return { RangeStart, RangeEnd }; }
 		};
 
 		split_range_iterator begin() {
