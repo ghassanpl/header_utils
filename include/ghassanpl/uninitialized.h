@@ -53,21 +53,21 @@ namespace ghassanpl
 	}
 
 	/// \defgroup Uninitialized Uninitialized
-	/// Contains `unititialized_t`
+	/// Contains `uninitialized_t`
 	/// @{
 
-	struct default_init_t {} default_init; ///< Constructor tag to default-construct the object inside an `unititialized_t`
-	struct paren_init_t {} paren_init; ///< Constructor tag to paren-construct the object inside an `unititialized_t`
-	struct brace_init_t {} brace_init; ///< Constructor tag to brace-construct the object inside an `unititialized_t`
+	struct default_init_t {} default_init; ///< Constructor tag to default-construct the object inside an `uninitialized_t`
+	struct paren_init_t {} paren_init; ///< Constructor tag to paren-construct the object inside an `uninitialized_t`
+	struct brace_init_t {} brace_init; ///< Constructor tag to brace-construct the object inside an `uninitialized_t`
 
-	/// `unititialized_t<T>` is an appropriately sized and aligned storage for type T, with a useful interface to create and destroy the object
+	/// `uninitialized_t<T>` is an appropriately sized and aligned storage for type T, with a useful interface to create and destroy the object
 	template <detail::sized T>
-	union unititialized_t
+	union uninitialized_t
 	{
 	public:
-		constexpr unititialized_t() noexcept {}
+		constexpr uninitialized_t() noexcept {}
 
-		explicit constexpr unititialized_t(default_init_t)
+		explicit constexpr uninitialized_t(default_init_t)
 			noexcept(detail::nothrow_default_constructible<T>)
 			requires detail::default_constructible<T>
 		{
@@ -75,7 +75,7 @@ namespace ghassanpl
 		}
 
 		template <typename... Args>
-		explicit constexpr unititialized_t(paren_init_t, Args&&... args)
+		explicit constexpr uninitialized_t(paren_init_t, Args&&... args)
 			noexcept(detail::nothrow_paren_constructible_from<T, Args...>)
 			requires detail::paren_constructible_from<T, Args...>
 		{
@@ -83,18 +83,18 @@ namespace ghassanpl
 		}
 
 		template <typename... Args>
-		explicit constexpr unititialized_t(brace_init_t, Args&&... args)
+		explicit constexpr uninitialized_t(brace_init_t, Args&&... args)
 			noexcept(detail::nothrow_brace_constructible_from<T, Args...>)
 			requires detail::brace_constructible_from<T, Args...>
 		{
 			this->brace_init(std::forward<Args>(args)...);
 		}
 
-		constexpr ~unititialized_t()
+		constexpr ~uninitialized_t()
 			requires std::is_trivially_destructible_v<T>
 		= default;
 
-		constexpr ~unititialized_t() {}
+		constexpr ~uninitialized_t() {}
 
 		template <typename Self>
 		constexpr auto default_init(this Self&& self)
@@ -171,10 +171,10 @@ namespace ghassanpl
 	};
 
 	template <detail::sized T>
-	unititialized_t(paren_init_t, T) -> unititialized_t<T>;
+	uninitialized_t(paren_init_t, T) -> uninitialized_t<T>;
 
 	template <detail::sized T>
-	unititialized_t(brace_init_t, T) -> unititialized_t<T>;
+	uninitialized_t(brace_init_t, T) -> uninitialized_t<T>;
 
 	/// @}
 }
