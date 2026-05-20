@@ -211,6 +211,7 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] inline std::string to_string(T const& t) requires requires { std::to_string(t); } { return std::to_string(t); }
 
 	[[nodiscard]] constexpr std::string const& to_string(std::same_as<std::string> auto const& s) { return s; }
+	[[nodiscard]] constexpr std::string to_string(std::same_as<std::string> auto && s) { return std::move(s); } /// TODO: Should we use std::move here?
 
 	template<typename T>
 	[[nodiscard]] inline std::string to_string(std::optional<T> const& o) { if (o.has_value()) return std::to_string(o.value()); return "(empty)"; }
@@ -257,6 +258,11 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] constexpr bool is_inside(std::string_view big_string, std::string_view smaller_string)
 	{
 		return smaller_string.data() - big_string.data() >= 0 && (smaller_string.data() + smaller_string.size()) - (big_string.data() + big_string.size()) < 0;
+	}
+
+	[[nodiscard]] constexpr bool is_null_terminated(std::string_view str)
+	{
+		return str.data()[str.size()] == '\0';
 	}
 
 	namespace ascii

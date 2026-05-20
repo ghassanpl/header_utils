@@ -66,7 +66,7 @@ namespace ghassanpl
 	}
 
 	/// Returns a pointer to the value at `index` of `range` if index is valid, else returns null
-	[[nodiscard]] constexpr auto at_ptr(random_access_range auto& range, std::integral auto index)
+	[[nodiscard]] constexpr auto at_ptr(random_access_range auto&& range, std::integral auto index)
 		-> decltype(std::to_address(std::ranges::begin(range) + index))
 	{
 		if (!valid_index(range, index))
@@ -235,6 +235,19 @@ namespace ghassanpl
 		((*current++ = args), ...);
 		return ar;
 	}
+
+	/// @}
+
+	/// \name Cool Ranges
+	/// @{
+
+#ifdef __cpp_lib_ranges_fold
+	template <typename RANGE>
+	decltype(auto) sum(RANGE&& range)
+	{
+		return std::ranges::fold_left(std::forward<RANGE>(range), std::ranges::range_value_t<RANGE>{}, std::plus{});
+	}
+#endif
 
 	/// @}
 

@@ -18,7 +18,6 @@ namespace ghassanpl::geometry
 
 		using tvec = glm::tvec2<T>;
 		using value_type = T;
-		using segment = tsegment<T>;
 
 		tvec start{};
 		tvec dir{}; ///< \internal TODO: this should not be public, as it doesn't enforce the length to be 1
@@ -28,10 +27,10 @@ namespace ghassanpl::geometry
 		tray from_dir(tvec const& start, tvec const& dir) noexcept { return { start, glm::normalize(dir) }; }
 		tray from_points(tvec const& start, tvec const& second) noexcept { return from_dir(start, second - start); }
 		
-		segment& set_position(tvec const& pos) noexcept { start = pos; return *this; }
-		segment& operator+=(tvec const& offs) noexcept { start += offs; return *this; }
-		segment& operator-=(tvec const& offs) noexcept { start -= offs; return *this; }
-		segment& translate(tvec const& offs) noexcept { return this->operator+=(offs); }
+		tray& set_position(tvec const& pos) noexcept { start = pos; return *this; }
+		tray& operator+=(tvec const& offs) noexcept { start += offs; return *this; }
+		tray& operator-=(tvec const& offs) noexcept { start -= offs; return *this; }
+		tray& translate(tvec const& offs) noexcept { return this->operator+=(offs); }
 
 		T edge_length() const noexcept { return std::numeric_limits<T>::infinity(); }
 
@@ -51,5 +50,9 @@ namespace ghassanpl::geometry
 	};
 
 	using ray = tray<float>;
-
 }
+
+#define GHPL_GEOMETRY_RAY 1
+#ifdef GHPL_GEOMETRY_SEGMENT
+#include "ray+segment.h"
+#endif

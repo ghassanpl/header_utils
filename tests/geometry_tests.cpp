@@ -9,6 +9,7 @@
 #include "../include/ghassanpl/geometry/segment.h"
 #include "../include/ghassanpl/geometry/circle.h"
 #include "../include/ghassanpl/geometry/capsule.h"
+#include "../include/ghassanpl/geometry/ray.h"
 
 #include "../include/ghassanpl/geometry/points.h"
 #include "../include/ghassanpl/geometry/rectangles.h"
@@ -27,6 +28,15 @@
 using namespace std;
 using namespace ghassanpl::geometry;
 using namespace ghassanpl::geometry::angles;
+
+static_assert(polygon_shape<float, tsegment<float>>);
+//static_assert(polygon_shape3d<float, tsegment3d<float>>);
+
+TEST(geometry, basic_types_work)
+{
+	ray r;
+	segment s;
+}
 
 TEST(geometry_common, degrees_and_radians_work)
 {

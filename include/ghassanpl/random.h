@@ -196,6 +196,10 @@ namespace ghassanpl::random
 	template <typename RANDOM = std::default_random_engine, typename T>
 	[[nodiscard]] auto in_range(T from, T to, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
+		///static_assert(std::is_same_v<T, U>
+		///	|| (std::is_integral_v<T> && std::is_integral_v<U> && std::is_signed_v<T> == std::is_signed_v<U>)
+		///	|| (std::is_floating_point_v<T> && std::is_floating_point_v<U>));
+
 		if constexpr (std::is_enum_v<T>)
 		{
 			if (from >= to) return T{};
@@ -301,7 +305,7 @@ namespace ghassanpl::random
 	{
 		using std::size;
 		using std::begin;
-		return begin(cont) + in_integer_range(0LL, (int64_t)size(cont) - 1, rng);
+		return std::next(begin(cont), in_integer_range(0LL, (int64_t)size(cont) - 1, rng));
 	}
 
 	/// Returns an iterator to a random element in `cont` that matches `pred`.
@@ -342,7 +346,7 @@ namespace ghassanpl::random
 
 	/// Returns an pointer to a random element in `cont`.
 	template <typename RANDOM = std::default_random_engine, typename T>
-	[[nodiscard]] auto* element(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto* element(T&& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::end;
 		auto result = iterator(cont, rng);
@@ -351,7 +355,7 @@ namespace ghassanpl::random
 	
 	/// Returns an pointer to a random element in `cont` that matches `pred`.
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
-	[[nodiscard]] auto* element_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto* element_if(T&& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::end;
 		auto result = iterator_if(cont, std::forward<PRED>(pred), rng);

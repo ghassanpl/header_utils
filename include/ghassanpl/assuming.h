@@ -6,6 +6,7 @@
 
 #include <version>
 #include <cassert>
+#include <string>
 
 #include "source_location.h"
 
@@ -222,6 +223,10 @@
 /// Assumes the term evaluates to an non-empty container (tested via `empty(container)`)
 #define AssumingNotEmpty(exp, ...) do { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); empty(_assuming_exp_v)) [[unlikely]] \
 	ASSUMING_REPORT(#exp " will not be empty", { { "size of " #exp, std::format("{}", size(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
+
+/// Assumes the term evaluates to an non-empty container (tested via `empty(container)`)
+#define AssumingExpected(exp, ...) do { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); !(_assuming_exp_v)) [[unlikely]] \
+	ASSUMING_REPORT(#exp " will not be unexpected", { { #exp, std::format("{}", _assuming_exp_v.error()) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the term evaluates to either a null value or an empty string
 #define AssumingNullOrEmpty(exp, ...) do { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); !::ghassanpl::detail::IsNullOrEmpty(_assuming_exp_v)) [[unlikely]] \

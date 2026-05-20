@@ -222,6 +222,9 @@ namespace ghassanpl
 	/// Returns the color as a `glm::vec4` of `uint8_t`s
 	[[nodiscard]] constexpr glm::tvec4<uint8_t> to_u8(color_t const& rgba) { return { detail::f2b(rgba.x), detail::f2b(rgba.y), detail::f2b(rgba.z), detail::f2b(rgba.w) }; }
 
+	[[nodiscard]] constexpr color_t from_u8(glm::tvec4<uint8_t> const& rgba) { return { detail::b2f(rgba.x), detail::b2f(rgba.y), detail::b2f(rgba.z), detail::b2f(rgba.w) }; }
+	[[nodiscard]] constexpr color_t from_u8(glm::tvec3<uint8_t> const& rgb, uint8_t alpha = 0xFF) { return { detail::b2f(rgb.x), detail::b2f(rgb.y), detail::b2f(rgb.z), detail::b2f(alpha) }; }
+
 	/// Converts a HSVA color to RGBA space
 	[[nodiscard]] constexpr color_t to_rgb(color_hsva_t const& hsva)
 	{

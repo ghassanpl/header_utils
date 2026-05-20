@@ -21,6 +21,14 @@ namespace ghassanpl
 	}
 
 	template <typename T>
+	[[nodiscard]] std::span<T> consume_n_from_end(std::span<T>& s, size_t n)
+	{
+		auto result = s.subspan(s.size() - n, n);
+		s = s.subspan(0, s.size() - n);
+		return result;
+	}
+
+	template <typename T>
 	[[nodiscard]] decltype(auto) consume(std::span<T>& s)
 	{
 		if constexpr (std::is_const_v<T>) {
@@ -34,4 +42,11 @@ namespace ghassanpl
 			return val;
 		}
 	}
+
+	template <typename T>
+	[[nodiscard]] bool contains(std::span<T> const& s, T const& val)
+	{
+		return (std::addressof(val) >= s.data() && std::addressof(val) < s.data() + s.size());
+	}
+
 }

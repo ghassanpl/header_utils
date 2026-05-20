@@ -20,40 +20,56 @@ namespace ghassanpl
 		template <typename... ARGS>
 		T* create(ARGS&&... args)
 		{
-			if (mPointers.empty())
+			if (mFreeHead == nullptr)
 			{
 				auto& new_block = mBlocks.emplace_back(std::make_unique<mem_proxy[]>(BLOCK_SIZE));
+				auto free = mFreeHead;
 				for (size_t i = 0; i < BLOCK_SIZE; ++i)
-					mPointers.push_back(&new_block[i]);
+				{
+					new_block[i].next = free;
+					free = &new_block[i];
+				}
+				mFreeHead = free;
+				mFreeElements += BLOCK_SIZE;
 			}
-			auto result = std::construct_at(reinterpret_cast<T*>(mPointers.back()), std::forward<ARGS>(args)...); /// Could throw
-			mPointers.pop_back();
+			const auto proxy = mFreeHead;
+			const auto next = proxy->next;
+			const auto result = std::construct_at(std::addressof(proxy->value), std::forward<ARGS>(args)...); /// Could throw
+			mFreeHead = next;
+			--mFreeElements;
 			return result;
 		}
 
 		void destroy(T* ptr)
 		{
-			std::destroy_at(ptr);
-			mPointers.push_back(std::launder(reinterpret_cast<mem_proxy*>(ptr)));
+			auto proxy = reinterpret_cast<mem_proxy*>(ptr);
+			std::destroy_at(std::addressof(proxy->value));
+			proxy->next = mFreeHead;
+			mFreeHead = proxy;
+			++mFreeElements;
 		}
 
 		void clear()
 		{
-			mPointers.clear();
+			mFreeHead = nullptr;
 			mBlocks.clear();
 		}
 
 		size_t capacity() const noexcept { return mBlocks.size() * BLOCK_SIZE; }
-		size_t capacity_in_bytes() const noexcept { return capacity() * sizeof(mem_proxy); }
-		size_t free_elements() const noexcept { return mPointers.size(); }
+		size_t capacity_in_bytes() const noexcept { return capacity() * sizeof(T); }
+		size_t free_elements() const noexcept { return mFreeElements; }
 		size_t allocated_elements() const noexcept { return capacity() - free_elements(); }
 
 	private:
 
-		/// TODO: Maybe use ghassanpl::uninitialized_t for this
-		struct alignas(alignof(T)) mem_proxy { unsigned char mem[sizeof(T)]; };
-		std::vector<mem_proxy*> mPointers;
+		union mem_proxy { 
+			mem_proxy* next;
+			T value;
+		};
+
+		mem_proxy* mFreeHead = nullptr;
 		std::vector<std::unique_ptr<mem_proxy[]>> mBlocks;
+		size_t mFreeElements = 0;
 	};
 
 	/// A `pool` that can be used in a thread-local fashion

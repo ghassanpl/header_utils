@@ -158,4 +158,22 @@ namespace ghassanpl
 		__assume(false);
 	}
 #endif
+
+#if defined(__cpp_lib_start_lifetime_as)
+	using std::start_lifetime_as;
+#else
+	template<class T>
+	requires (std::is_trivially_copyable_v<T>/* && std::is_implicit_lifetime_v<T> */)
+	T* start_lifetime_as(void* p) noexcept
+	{
+		return std::launder(static_cast<T*>(std::memmove(p, p, sizeof(T))));
+	}
+
+	template<class T>
+	requires (std::is_trivially_copyable_v<T>/* && std::is_implicit_lifetime_v<T> */)
+	T* start_lifetime_as_array(void* p, size_t element_count) noexcept
+	{
+		return std::launder(static_cast<T*>(std::memmove(p, p, sizeof(T) * element_count)));
+	}
+#endif
 }

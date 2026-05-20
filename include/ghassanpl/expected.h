@@ -112,6 +112,44 @@ namespace ghassanpl
 		std::optional<T> m_value;
 	};
 
+	template <typename T, typename E, typename U>
+	expected<T, E> return_if(expected<U, E>& exp, T&& value)
+	{
+		if (exp)
+			return expected<T, E>{ std::forward<T>(value) };
+		else
+			return unexpected(std::move(exp).error());
+	}
+
+	template <typename T, typename E, typename FUNC>
+	auto with_error(expected<T, E> const& exp, FUNC&& func)
+	{
+		using result_type = std::invoke_result_t<FUNC, decltype(exp.error())>;
+		if constexpr (std::is_void_v<result_type>)
+		{
+			if (!exp)
+				func(exp.error());
+		}
+		else
+		{
+			return !exp ? func(exp.error()) : result_type{};
+		}
+	}
+
+	template <typename T, typename E, typename FUNC>
+	auto with_error(expected<T, E>&& exp, FUNC&& func)
+	{
+		using result_type = std::invoke_result_t<FUNC, decltype(exp.error())>;
+		if constexpr (std::is_void_v<result_type>)
+		{
+			if (!exp)
+				func(std::move(exp).error());
+		}
+		else
+		{
+			return !exp ? func(exp.error()) : result_type{};
+		}
+	}
 
 #define TOKEN_PASTE(x, y) x ## y
 #define TOKEN_PASTE2(x, y) TOKEN_PASTE(x, y)

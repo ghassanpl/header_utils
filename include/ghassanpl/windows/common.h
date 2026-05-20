@@ -212,5 +212,8 @@ namespace ghassanpl
 			GHPL_WINAPI HRESULT GHPL_APIENTRY CoInitializeEx(LPVOID pvReserved = nullptr, DWORD dwCoInit = COINIT_MULTITHREADED_);
 			GHPL_WINAPI void GHPL_APIENTRY CoUninitialize();
 		}
+
+		inline constexpr auto LOWORD(DWORD_PTR l) { return ((WORD)(((DWORD_PTR)(l)) & 0xffff)); }
+		inline constexpr auto HIWORD(DWORD_PTR l) { return ((WORD)((((DWORD_PTR)(l)) >> 16) & 0xffff)); }
 	}
 }

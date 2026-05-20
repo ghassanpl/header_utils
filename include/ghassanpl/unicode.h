@@ -262,8 +262,16 @@ namespace ghassanpl::string_ops
 	constexpr void transcode_unicode(FROM const& from, TO& out)
 	{
 		auto from_sv = make_sv(from);
-		while (!std::empty(from_sv))
-			append_codepoint(out, consume_codepoint(from_sv));
+		/// TODO: Should we do this optimization? It's nice, but consuming codepoints from `from` also counts as parsing/validation...
+		/*
+		if constexpr (std::is_same_v<typename TO::value_type, typename decltype(from_sv)::value_type>)
+			out = from;
+		else
+		*/
+		{
+			while (!std::empty(from_sv))
+				append_codepoint(out, consume_codepoint(from_sv));
+		}
 	}
 
 	/// Converts a UTF-encoded string to a UTF-encoded string, of a different encoding. Decides the encodings based on the char type of `TO` and `FROM`.
@@ -934,18 +942,6 @@ namespace ghassanpl::string_ops
 #endif
 	}
 
-	constexpr void transcode_codepage_to_utf8(string8 auto& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
-	{
-		using dest_char = typename std::decay_t<decltype(dest)>::value_type;
-		for (uint8_t cp : make_sv(source))
-		{
-			if (cp < 0x80)
-				dest += static_cast<dest_char>(cp);
-			else
-				append_utf8(dest, codepage_map[static_cast<size_t>(cp) - 0x80]);
-		}
-	}
-	
 	template <typename T>
 	constexpr void transcode_codepage_to_unicode(T& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
 	{
@@ -956,6 +952,19 @@ namespace ghassanpl::string_ops
 				dest += static_cast<dest_char>(cp);
 			else
 				append_codepoint(dest, codepage_map[static_cast<size_t>(cp) - 0x80]);
+		}
+	}
+
+	constexpr void transcode_codepage_to_utf8(string8 auto& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
+	{
+		/// TODO: Do this via transcode_codepage_to_unicode
+		using dest_char = typename std::decay_t<decltype(dest)>::value_type;
+		for (uint8_t cp : make_sv(source))
+		{
+			if (cp < 0x80)
+				dest += static_cast<dest_char>(cp);
+			else
+				append_utf8(dest, codepage_map[static_cast<size_t>(cp) - 0x80]);
 		}
 	}
 
@@ -970,10 +979,12 @@ namespace ghassanpl::string_ops
 	template <string8 T>
 	constexpr auto transcode_codepage_to_utf8(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> T
 	{
+		/// TODO: Do this via transcode_codepage_to_unicode
 		T result{};
 		transcode_codepage_to_utf8(result, source, codepage_map);
 		return result;
 	}
+
 
 	[[gsl::suppress("type.1", "es.79")]]
 	[[nodiscard]] constexpr char32_t consume_utf16(string_view16 auto& str)

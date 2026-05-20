@@ -221,7 +221,7 @@ namespace ghassanpl
 
 			constexpr bool contains(glm::vec<2, T> const& other) const noexcept
 			{
-				return other.x >= p1.x && other.y >= p1.y && other.x < p2.x && other.y < p2.y;
+				return other.x >= p1.x && other.y >= p1.y && other.x <= p2.x && other.y <= p2.y;
 			}
 
 			/// \pre `other` must be valid

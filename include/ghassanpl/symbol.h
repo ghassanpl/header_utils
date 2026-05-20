@@ -8,6 +8,7 @@
 #include <string>
 #include <string_view>
 #include <set>
+#include <format>
 
 namespace ghassanpl
 {
@@ -46,7 +47,7 @@ namespace ghassanpl
 
 		[[nodiscard]] hash_type get_hash() const noexcept { return symbol_provider::hash_for(value); }
 		[[nodiscard]] std::string_view get_string() const noexcept { return symbol_provider::string_for(value); }
-		[[nodiscard]] explicit operator std::string_view() const noexcept { return symbol_provider::string_for(value); }
+		[[nodiscard]] operator std::string_view() const noexcept { return symbol_provider::string_for(value); }
 		[[nodiscard]] explicit operator std::string() const noexcept { return std::string{ get_string() }; }
 		[[nodiscard]] auto to_string() const noexcept { return std::string{ get_string() }; }
 
@@ -108,6 +109,14 @@ namespace ghassanpl
 template <typename SYMBOL_PROVIDER>
 struct std::hash<ghassanpl::symbol_base<SYMBOL_PROVIDER>> {
 	size_t operator()(const ghassanpl::symbol_base<SYMBOL_PROVIDER>& x) const noexcept { return x.get_hash(); }
+};
+
+template <typename SYMBOL_PROVIDER>
+struct std::formatter<ghassanpl::symbol_base<SYMBOL_PROVIDER>> : std::formatter<std::string_view, char> {
+	template <typename FORMAT_CONTEXT>
+	auto format(ghassanpl::symbol_base<SYMBOL_PROVIDER> const& val, FORMAT_CONTEXT& ctx) const {
+		return std::formatter<std::string_view, char>::format(val.get_string(), ctx);
+	}
 };
 
 namespace ghassanpl

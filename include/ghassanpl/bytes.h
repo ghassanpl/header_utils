@@ -37,15 +37,15 @@ namespace ghassanpl
 	/// Converts a span of trivial values to a span of \c bytelike s
 	template <bytelike TO, typename FROM, size_t N = std::dynamic_extent>
 	requires std::is_trivially_copyable_v<FROM>
-	[[nodiscard]] std::span<TO> as_bytelikes(std::span<FROM, N> elements) noexcept
+	[[nodiscard]] auto as_bytelikes(std::span<FROM, N> elements) noexcept
 	{
-		return { reinterpret_cast<TO*>(elements.data()), elements.size() * sizeof(FROM) };
+		return std::span{ reinterpret_cast<copy_const_t<FROM, TO>*>(elements.data()), elements.size() * sizeof(FROM) };
 	}
 
 	/// Returns an object whose internal representation is initialized from the argument
 	template <typename TO, bytelike FROM>
 	requires std::is_trivially_copyable_v<TO>
-	[[nodiscard]] TO from_bytelikes(std::span<FROM const> from)
+	[[nodiscard]] TO from_bytelikes(std::span<FROM> from)
 	{
 		/// TODO: Use `expected` result instead of exceptions?
 		if (from.size() < sizeof(TO))
@@ -58,10 +58,10 @@ namespace ghassanpl
 	/// Returns an object whose internal representation is initialized from the argument
 	template <typename TO, bytelike FROM>
 	requires std::is_trivially_copyable_v<TO>
-	[[nodiscard]] std::span<TO> span_from_bytelikes(std::span<FROM> from)
+	[[nodiscard]] auto span_from_bytelikes(std::span<FROM> from)
 	{
 		const auto size = from.size() / sizeof(TO);
-		return std::span<TO>{ reinterpret_cast<TO*>(from.data()), size };
+		return std::span{ reinterpret_cast<copy_const_t<FROM, TO>*>(from.data()), size };
 	}
 
 
@@ -70,10 +70,7 @@ namespace ghassanpl
 	requires std::is_trivially_copyable_v<T>
 	[[nodiscard]] auto as_bytelikes(T& pod) noexcept
 	{
-		if constexpr (std::is_const_v<T>)
-			return std::span{ reinterpret_cast<TO const*>(std::addressof(pod)), sizeof(pod) };
-		else
-			return std::span{ reinterpret_cast<TO*>(std::addressof(pod)), sizeof(pod) };
+		return std::span{ reinterpret_cast<copy_const_t<T, TO>*>(std::addressof(pod)), sizeof(pod) };
 	}
 	
 	/// Bit-casts the given bytelike to a `uint8_t`

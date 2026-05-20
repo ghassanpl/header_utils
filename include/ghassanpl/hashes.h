@@ -166,7 +166,10 @@ namespace ghassanpl
 	// TODO: Add support for non-64bit hashes to all the functions below, especially since
 	// std::hash operates on size_t
 
+	/// TODO: Use the same hash function for everything... So that different generic hash functions hash to the same value
+
 	/// Calculates a FNV Hash for a range of bytes
+	/// FNV-1a is non-cryptographic, relatively weak compared to state of the art hash functions (although good for its class), but fast when the input strings are short.
 	template <bytelike_range RANGE>
 	[[nodiscard]] constexpr uint64_t fnv64(RANGE&& bytes)
 	{
@@ -281,14 +284,7 @@ namespace ghassanpl
 			"hasher() must return a uint64_t for each type");
 
 		uint64_t result = hasher(first);
-#if !defined(MSVC_BUG_11047635) /// https://developercommunity.visualstudio.com/t/Internal-Compiler-Error-in-latest-versio/11047635?
-		auto func = [&result]<typename U>(U&& value) {
-			ghassanpl::hash64_combine_to(result, std::forward<U>(value), HASHER<std::remove_cvref_t<U>>{});
-		};
-		(func(std::forward<T>(values)), ...);
-#else
 		(ghassanpl::hash64_combine_to(result, std::forward<T>(values), HASHER<std::remove_cvref_t<T>>{}), ...);
-#endif
 		return result;
 	}
 
@@ -342,7 +338,7 @@ namespace ghassanpl
 	}
 
 	template <bytelike T>
-	[[nodiscard]] consteval uint64_t ce_hash64(std::basic_string_view<T> const& val) noexcept { return fnv64(val); }
+	[[nodiscard]] constexpr uint64_t ce_hash64(std::basic_string_view<T> const& val) noexcept { return fnv64(val); }
 
 	template <typename FIRST, typename... T>
 	requires (sizeof...(T) > 0)
@@ -368,6 +364,61 @@ namespace ghassanpl
 	}
 
 	/// @}
+
+
+	struct hash_string
+	{
+		//template <class T>
+		//requires std::convertible_to<const T&, std::string_view>
+		//consteval hash_string(const T& str)
+		//	: mStr(str)
+		//	, mHash(ce_hash64(std::string_view{ str }))
+		//{
+		//}
+
+		template <size_t N>
+		consteval hash_string(const char(&str)[N])
+			: mStr(str)
+			, mHash(ce_hash64(std::string_view{ str }))
+		{
+		}
+
+		template <std::same_as<std::string_view> T>
+		constexpr hash_string(T const& str)
+			: mStr(str)
+			, mHash(ce_hash64(str))
+		{
+		}
+
+		template <std::same_as<std::string> T>
+		constexpr hash_string(T const& str)
+			: mStr(str)
+			, mHash(ce_hash64(std::string_view{ str }))
+		{
+		}
+
+		//constexpr static hash_string runtime(std::string_view str)
+		//{
+		//	return hash_string{ str, 0 };
+		//}
+
+		operator std::string_view() const { return mStr; }
+
+		constexpr auto string() const { return mStr; }
+		constexpr auto hash() const { return mHash; }
+
+	private:
+
+		constexpr hash_string(std::string_view str, int)
+			: mStr(str)
+			, mHash(ce_hash64(str))
+		{
+		}
+
+		std::string_view mStr;
+		size_t mHash;
+	};
+
 
 	// TODO: ce_hash64(array/span)
 	// TODO: ce_hash64(thread::id) ?

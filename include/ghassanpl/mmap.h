@@ -268,7 +268,8 @@ namespace ghassanpl
 			this->unmap();
 		}
 
-	protected:
+	/// TODO: Check why this was protected...
+	//protected:
 
 		void map(const std::filesystem::path& path, const size_type offset, const size_type length, std::error_code& error) noexcept
 		{
@@ -311,11 +312,11 @@ namespace ghassanpl
 			const auto ctx = static_cast<CRTP*>(this)->memory_map(handle, offset, length == map_entire_file ? (file_size - offset) : length, error);
 			if (!error)
 			{
-				// We must unmap the previous mapping that may have existed prior to this call.
-				// Note that this must only be invoked after a new mapping has been created in
-				// order to provide the strong guarantee that, should the new mapping fail, the
-				// `map` function leaves this instance in a state as though the function had
-				// never been invoked.
+				/// We must unmap the previous mapping that may have existed prior to this call.
+				/// Note that this must only be invoked after a new mapping has been created in
+				/// order to provide the strong guarantee that, should the new mapping fail, the
+				/// `map` function leaves this instance in a state as though the function had
+				/// never been invoked.
 				this->unmap();
 
 				this->file_handle_ = handle;

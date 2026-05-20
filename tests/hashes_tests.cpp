@@ -3,6 +3,7 @@
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "../include/ghassanpl/hashes.h"
+#include "../include/ghassanpl/hashes2.h"
 
 #include <gtest/gtest.h>
 #include <print>
@@ -21,7 +22,43 @@ TEST(fnv, works_at_compile_time)
 }
 */
 
-TEST(regression_msvc_ice, hash64_works)
+constexpr uint8_t some_array[] = "hello";
+constexpr uint8_t some_array2[] = "hello.";
+
+TEST(xxhash64, works_at_runtime)
+{
+	xxhash64_t hasher{};
+	hasher.add_bytes(some_array);
+	auto result = hasher.hash();
+
+	EXPECT_EQ(xxhash64_t::hash(some_array), result);
+	EXPECT_NE(xxhash64_t::hash(some_array, 1), result);
+	EXPECT_NE(xxhash64_t::hash(some_array), xxhash64_t::hash(some_array2));
+}
+
+TEST(xxhash64, works_at_compile_time)
+{
+	constexpr uint64_t some_val = xxhash64_t::hash(some_array);
+	EXPECT_EQ(some_val, xxhash64_t::hash(some_array));
+
+	constexpr uint64_t some_val2 = xxhash64_t::hash(2.6156);
+	EXPECT_EQ(some_val2, xxhash64_t::hash(2.6156));
+}
+
+
+TEST(xxhash64, regressions_and_edge_cases)
+{
+	constexpr auto neq = xxhash64_t::hash(0.0) != xxhash64_t::hash(-0.0);
+	EXPECT_TRUE(neq);
+	EXPECT_NE(xxhash64_t::hash(0.0), xxhash64_t::hash(-0.0));
+}
+
+TEST(xxhash64, compile_time_same_as_runtime)
+{
+	/// TODO: This
+}
+
+TEST(regression_msvc_ice_11047635, hash64_works)
 {
 	int world = 16;
 	hash64(std::string{ "hello" }, world);
@@ -49,4 +86,15 @@ TEST(constexpr_hashes, work_for_all_supported_types)
 
 	/// This only works on MSVC because it uses the same hash algo (fnv)
 	/// EXPECT_EQ(std::hash<float>{}(14.0f), flt_hash);
+}
+
+constexpr size_t test(hash_string hs)
+{
+	return hs.hash();
+}
+
+TEST(hash_string, works)
+{
+	constexpr auto val = test("hello");
+	EXPECT_EQ(test("hello"), val);
 }

@@ -6,7 +6,8 @@
 
 #include <nlohmann/json.hpp>
 #include <fstream>
-#include "string_ops.h"
+#include "formats.h"
+#include "unicode.h"
 #include "mmap.h"
 #include "expected.h"
 #include "functional.h"
@@ -236,6 +237,117 @@ namespace ghassanpl::formats
 			}
 		}
 
+
+		/// Gets the item in the json object `g` with the key `key`, or an empty json object if none found.
+		/// \param type the value must also be of this type
+		inline [[nodiscard]] nlohmann::json const& get(nlohmann::json const& g, std::string_view key, jtype type = jtype::discarded)
+		{
+			if (auto it = g.find(key); it != g.end() && (type == jtype::discarded || it->type() == type))
+				return *it;
+			return json::empty_json;
+		}
+
+		inline [[nodiscard]] nlohmann::json const* get_ptr(nlohmann::json const& g, std::string_view key, jtype type = jtype::discarded)
+		{
+			if (auto it = g.find(key); it != g.end() && (type == jtype::discarded || it->type() == type))
+				return &*it;
+			return nullptr;
+		}
+
+		/// Gets the array value in the json object `g` with the key `key`, or an empty array if none found.
+		inline [[nodiscard]] nlohmann::json const& get_array(nlohmann::json const& g, std::string_view key)
+		{
+			if (auto it = g.find(key); it != g.end() && it->type() == jtype::array)
+				return *it;
+			return json::empty_json_array;
+		}
+
+		/// Gets the object value in the json object `g` with the key `key`, or an empty array if none found.
+		inline [[nodiscard]] nlohmann::json const& get_object(nlohmann::json const& g, std::string_view key)
+		{
+			if (auto it = g.find(key); it != g.end() && it->type() == jtype::object)
+				return *it;
+			return json::empty_json_object;
+		}
+
+		/// Gets the value from the item in json object `g` with key `key`, to `val`
+		/// \exception std::runtime_error on error (no key found, cannot convert json to `val` type, etc.)
+		template <typename T>
+		inline void get_field(T& val, nlohmann::json const& g, std::string_view key)
+		{
+			try
+			{
+				auto it = g.find(key);
+				if (it != g.end())
+				{
+					val = *it;
+					return;
+				}
+			}
+			catch (...)
+			{
+				std::throw_with_nested(std::runtime_error{ std::format("while trying to convert value at key \"{}\" to type {}", key, typeid(T).name()) });
+			}
+
+			throw std::runtime_error(std::format("no key \"{}\" found", key));
+		}
+
+		/// Same as \c field() but returns false if it fails, instead of throwing.
+		/// \returns false if key is not found, or cannot be converted
+		/// \see field()
+		template <typename T>
+		inline bool get_field_opt(T& val, nlohmann::json const& g, std::string_view key)
+		{
+			try
+			{
+				auto it = g.find(key);
+				if (it != g.end())
+				{
+					val = *it;
+					return true;
+				}
+			}
+			catch (...)
+			{
+				//std::throw_with_nested(std::runtime_error{ std::format("while trying to convert value at key \"{}\" to type {}", key, typeid(T).name()) });
+			}
+			return false;
+		}
+
+		/// \exception std::runtime_error on error (no key found, cannot convert json to `val` type, etc.)
+		template <typename T>
+		[[nodiscard]] T get_field_val(nlohmann::json const& g, std::string_view key)
+		{
+			try
+			{
+				auto it = g.find(key);
+				if (it != g.end())
+					return *it;
+			}
+			catch (...)
+			{
+				std::throw_with_nested(std::runtime_error{ std::format("while trying to convert value at key \"{}\" to type {}", key, typeid(T).name()) });
+			}
+
+			throw std::runtime_error(std::format("no key \"{}\" found", key));
+		}
+
+		/// \exception std::runtime_error on error (no key found, cannot convert json to `val` type, etc.)
+		template <typename T>
+		[[nodiscard]] T get_field_val_or_default(nlohmann::json const& g, std::string_view key, T default_val = {})
+		{
+			try
+			{
+				auto it = g.find(key);
+				if (it != g.end())
+					return T{ *it };
+			}
+			catch (...)
+			{
+			}
+			return default_val;
+		}
+
 		/// @}
 	}
 
@@ -325,6 +437,363 @@ namespace ghassanpl::formats
 		}
 
 		/// @}
+	}
+
+	/// TODO: UNTESTED
+	namespace csv
+	{
+		namespace detail
+		{
+			inline std::string_view ensure_delimited_for_csv(std::string_view str, std::string& temp, bool raw)
+			{
+				if (raw)
+					return str;
+
+				std::string delimited;
+				std::string* out = nullptr;
+				for (size_t i = 0; i < str.size(); ++i)
+				{
+					const char c = str[i];
+					if (c == '\r' || c == '\n' || c == '"' || c == ',')
+					{
+						if (!out)
+						{
+							out = &delimited;
+							*out += '"';
+							*out += str.substr(0, i);
+						}
+
+						if (c == '"')
+							*out += '"';
+						*out += c;
+					}
+					else
+					{
+						if (out)
+						{
+							delimited += c;
+						}
+						else
+						{
+							/// No delimiters so far, we can keep returning the original string view
+						}
+					}
+				}
+
+				if (out)
+				{
+					*out += '"';
+					temp = std::move(delimited);
+					return temp;
+				}
+
+				/// No delimiters, we can return the original string view without copying
+				return str;
+			}
+
+			/// Takes a JSON value or a stringable and returns its (potentially delimited) string representation as a string_view;
+			/// tries to not allocate new string data if not necessary, but if it does, it does so in the `temp` object
+			template <typename T>
+			std::string_view to_csv_string(T const& val, std::string& temp, bool raw)
+			{
+				if constexpr (std::same_as<std::remove_cvref_t<T>, nlohmann::json>)
+				{
+					if (val.is_string())
+						return ensure_delimited_for_csv(val.get_ref<nlohmann::json::string_t const&>(), temp, raw);
+					else if (val.is_primitive()) /// Bools, nulls and numbers will never be delimited, but still need to be strringified
+					{
+						temp = to_string(val);
+						return temp;
+					}
+					else
+					{
+						/// Worst case, we convert the JSON to a string, then delimit it, 
+						/// potentially allocating twice
+						/// NOTE: TODO: Technically, we could reuse `temp` storage and insert the delimiters in there,
+						/// avoiding allocating twice, but this is a bit too premature for now
+						temp = to_string(val);
+						return ensure_delimited_for_csv(temp, temp, raw);
+					}
+				}
+				else /// Else something stringable
+				{
+					return ensure_delimited_for_csv(val, temp, raw);
+				}
+			}
+
+			template <typename OUTPUT_TYPE>
+			auto outputter_for(OUTPUT_TYPE&& output)
+			{
+				if constexpr (std::same_as<OUTPUT_TYPE, std::string&>) /// TODO: Technically could be any string specialization, and we could `transcode_unicode`
+				{
+					return outputter_for([&](std::string_view str) {
+						output += str;
+					});
+				}
+				else if constexpr (std::same_as<std::filesystem::path, std::remove_cvref_t<OUTPUT_TYPE>>)
+				{
+					std::ofstream file{ output, std::ios::binary };
+					return outputter_for([file = std::move(file)](std::string_view value) mutable {
+						file.write(value.data(), value.size());
+					});
+				}
+				else if constexpr (std::is_lvalue_reference_v<OUTPUT_TYPE> && std::is_base_of_v<std::ostream, std::remove_cvref_t<OUTPUT_TYPE>>)
+				{
+					return outputter_for([&](std::string_view value) {
+						output.write(value.data(), value.size());
+					});
+				}
+				else if constexpr (std::invocable<OUTPUT_TYPE, std::string_view>)
+				{
+					/// Hack to capture by forwarding reference
+					struct { OUTPUT_TYPE output; } cap{ std::forward<OUTPUT_TYPE>(output) };
+					return [cap = std::move(cap)](auto&& value, bool raw) mutable {
+						std::string temp;
+						cap.output(to_csv_string(std::forward<decltype(value)>(value), temp, raw));
+					};
+				}
+				else
+				{
+					static_assert(!std::same_as<std::void_t<OUTPUT_TYPE>, void>, "Cannot use this output");
+				}
+			}
+		}
+
+		/// Converts a JSON array of objects into CSV, assigning each object value to a specified column;
+		/// does the minimum amount of allocations reasonable
+		/// TODO: UNTESTED
+		template <typename OUTPUT_TYPE>
+		void json_to_csv(nlohmann::json const& j, OUTPUT_TYPE&& output, std::span<const std::string_view> column_names)
+		{
+			if (!j.is_array())
+				throw std::invalid_argument("json must be an array of objects");
+
+			const nlohmann::json empty_string = "";
+			const size_t row_count = j.size();
+
+			auto outputter = detail::outputter_for(output);
+
+			/// Columns
+			bool first = false;
+			for (auto& column_name : column_names)
+			{
+				if (std::exchange(first, true)) outputter(",", true);
+				outputter(column_name, false);
+			}
+			outputter("\r\n", true);
+
+			/// Rows
+			std::vector<nlohmann::json const*> row;
+			for (auto& item : j)
+			{
+				if (!item.is_object())
+					throw std::invalid_argument("json must be an array of objects");
+
+				row.clear();
+				row.resize(column_names.size(), &empty_string);
+
+				for (auto& [key, value] : item.items())
+				{
+					if (auto it = std::ranges::find(column_names, key); it != column_names.end())
+					{
+						const auto column_index = (it - column_names.begin());
+
+						/// NOTE: TODO: Technically we COULD rely on the fact that the keys are ordered, and not search from the beginning every time...
+						/// e.g. 
+						///		auto columns_skipped = (it - column_names.begin());
+						///		auto column_index = columns_skipped + prev_column_index;
+						///		column_names_copy = column_names_copy.subspan(column_index+1);
+						///		while (columns_skipped--) outputter(","); /// Skipped cells
+						///		outputter(value);
+						///		outputter(",");
+						///		prev_column_index = column_index;
+						/// 
+						/// This would allow us to not allocate the `row` vector
+
+						row[column_index] = &value;
+					}
+				}
+
+				bool first = false;
+				for (auto& cell : row)
+				{
+					if (std::exchange(first, true)) outputter(",", true);
+					outputter(*cell, false);
+				}
+				outputter("\r\n", true);
+			}
+		}
+
+
+		/// TODO: Very nice and very cool but needs C++23 which means we should probably move it to a different header
+
+#if 0
+		/// Converts a JSON array of objects into CSV, guessing column names;
+		/// does the minimum amount of allocations reasonable
+		/// TODO: UNTESTED
+		template <typename OUTPUT_TYPE>
+		void json_to_csv(nlohmann::json const& j, OUTPUT_TYPE&& output)
+		{
+			if (!j.is_array())
+				throw std::invalid_argument("json must be an array of objects");
+			
+			/// TODO: Technically, we could walk through the array twice, once gathering column names,
+			/// then dispatching to `json_to_csv` that takes the column names... 
+
+			const nlohmann::json empty_string = "";
+
+			const size_t row_count = j.size();
+			std::map<std::string_view, std::vector<nlohmann::json const*>> columns;
+
+			size_t row_num = 0;
+			for (auto& item : j)
+			{
+				if (!item.is_object())
+					throw std::invalid_argument("json must be an array of objects");
+
+				for (auto& [key, value] : item.items())
+				{
+					if (!columns.contains(key))
+						columns[key].resize(row_count, &empty_string);
+					columns[key][row_num] = &value;
+				}
+
+				++row_num;
+			}
+
+			std::vector<std::string_view> column_names;
+			column_names.assign_range(std::views::keys(columns));
+
+			auto outputter = detail::outputter_for(output);
+
+			bool first = false;
+			for (auto& column_name : column_names)
+			{
+				if (std::exchange(first, true)) outputter(",", true);
+				outputter(column_name, false);
+			}
+			outputter("\r\n", true);
+
+			for (size_t i = 0; i < row_count; i++)
+			{
+				bool first = false;
+				for (auto& column_name : column_names)
+				{
+					if (std::exchange(first, true)) outputter(",", true);
+					outputter(*columns[column_name][i], false);
+				}
+				outputter("\r\n", true);
+			}
+		}
+
+		template <typename OUTPUT_TYPE>
+		void json_to_csv(nlohmann::json const& j, OUTPUT_TYPE&& output, std::string_view column_name, std::convertible_to<std::string_view> auto... column_names)
+		{
+			json_to_csv(j, std::forward<OUTPUT_TYPE>(output), std::array{ column_name, std::string_view{ column_names }... });
+		}
+
+		/// Usage:
+		/// struct Entry
+		/// {
+		/// 	ItemCategory item_category;
+		/// 	int	item_type;
+		/// 	int	price;
+		/// 	int	count;
+		/// };
+		/// 
+		/// csv_outputter outputter{ filename, column_names };
+		/// 
+		/// for (Entry const & entry : entries)
+		/// {
+		/// 	outputter(entry.item_category);
+		/// 	outputter(entry.item_type);
+		/// 	outputter(entry.price);
+		/// 	outputter(entry.count);
+		/// }
+
+		struct csv_outputter
+		{
+			template <typename OUTPUTTER>
+			csv_outputter(OUTPUTTER&& outputter, std::span<const std::string_view> column_names)
+				: m_column_names(column_names)
+			{
+				if (column_names.empty())
+					throw std::invalid_argument("column names must not be empty");
+
+				m_outputter = [outputter = detail::outputter_for(std::forward<OUTPUTTER>(outputter))](std::string_view cell, bool raw) mutable {
+					outputter(cell, raw);
+				};
+
+				for (auto& column : column_names)
+					output_next_cell(column);
+			}
+
+			template <typename OUTPUTTER>
+			csv_outputter(OUTPUTTER&& outputter, std::convertible_to<std::string_view> auto... columns)
+				: csv_outputter(outputter, std::initializer_list{ std::string_view{columns}... })
+			{
+
+			}
+
+			/// TODO: Support non-linear outputting via operator()(size_t/string_view column_id, T&& val)
+
+			template <typename T>
+			csv_outputter& operator()(T&& val)
+			{
+				using std::to_string;
+				std::string temp;
+				std::string_view sv;
+
+				if constexpr (std::constructible_from<std::string_view, T&&>)
+				{
+					sv = std::string_view{ val };
+				}
+				else
+				{
+					temp = to_string(std::forward<T>(val));
+					sv = temp;
+				}
+
+				sv = ghassanpl::formats::csv::detail::ensure_delimited_for_csv(sv, temp, false);
+
+				output_next_cell(sv);
+
+				return *this;
+			}
+
+			void output_next_cell(std::string_view sv)
+			{
+				if (m_current_column != 0)
+					m_outputter(",", true);
+				m_outputter(sv, false);
+				if (++m_current_column == m_column_names.size())
+				{
+					m_current_column = 0;
+					m_outputter("\r\n", true);
+				}
+			}
+
+			void next_row()
+			{
+				do
+				{
+					this->operator()(std::string_view{});
+				} while (m_current_column != 0);
+			}
+
+			auto const& column_names() const { return m_column_names; }
+			size_t current_column() const { return m_current_column; }
+			auto const& current_column_name() const { return m_column_names[m_current_column]; }
+
+		private:
+
+			std::span<const std::string_view> m_column_names;
+			size_t m_current_column = 0;
+
+			std::move_only_function<void(std::string_view, bool)> m_outputter;
+		};
+
+#endif
 	}
 	/*
 	namespace json

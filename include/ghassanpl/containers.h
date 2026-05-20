@@ -30,6 +30,37 @@ namespace ghassanpl
 		return it;
 	}
 
+	///
+	template <typename T>
+	constexpr T pop_back(std::vector<T>& vector)
+	{
+		auto result = std::move(vector.back());
+		vector.pop_back();
+		return result;
+	}
+
+	///
+	template <typename T, typename U = T>
+	constexpr T pop_back(std::vector<T>& vector, U&& or_default)
+	{
+		if (vector.empty())
+			return std::forward<U>(or_default);
+		auto result = std::move(vector.back());
+		vector.pop_back();
+		return result;
+	}
+
+	///
+	template <typename T>
+	constexpr std::optional<T> try_pop_back(std::vector<T>& vector)
+	{
+		if (vector.empty())
+			return std::nullopt;
+		auto result = std::move(vector.back());
+		vector.pop_back();
+		return result;
+	}
+
 	/// Finds a value in the vector, and erases it, but returns the value
 	template <typename T, typename U>
 	constexpr std::optional<T> erase_single(std::vector<T>& vector, U&& value)
@@ -131,7 +162,16 @@ namespace ghassanpl
 		auto it = map.find(std::forward<KEY>(key));
 		return (it != map.end()) ? &it->second : nullptr;
 	}
-	
+
+	/// Finds the value associated with `key` in the `set` and retuns a pointer to it, or nullptr if none found
+	template <typename KEY, typename SET>
+	[[nodiscard]] auto set_find(SET& set, KEY&& key)
+	{
+		auto it = set.find(std::forward<KEY>(key));
+		return (it != set.end()) ? std::to_address(it) : nullptr;
+	}
+
+
 	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
 	template <typename DEF, typename KEY, typename MAP>
 	[[nodiscard]] auto map_at_or_default(MAP&& map, KEY&& key, DEF&& def)
@@ -140,6 +180,16 @@ namespace ghassanpl
 		if (it != map.end())
 			return ghassanpl::forward_like<MAP>(it->second);
 		return decltype(it->second){ std::forward<DEF>(def) };
+	}
+
+	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
+	template <typename DEF, typename KEY, typename SET>
+	[[nodiscard]] auto set_at_or_default(SET&& set, KEY&& key, DEF&& def)
+	{
+		auto it = set.find(std::forward<KEY>(key));
+		if (it != set.end())
+			return ghassanpl::forward_like<SET>(*it);
+		return decltype(*it){ std::forward<DEF>(def) };
 	}
 
 	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found

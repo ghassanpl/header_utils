@@ -129,6 +129,10 @@ namespace ghassanpl
 		[[nodiscard]]
 		constexpr bool contains(enum_type flag) const noexcept { return this->is_set(flag); }
 
+		/// Same as \ref is_set
+		[[nodiscard]]
+		constexpr bool operator[](enum_type flag) const noexcept { return this->is_set(flag); }
+
 		/// Returns an array of bools that are set to the value of contains(param) for each flag parameter
 		/// Useful for destructuring
 		template <std::convertible_to<enum_type>... FLAGS>
@@ -241,6 +245,9 @@ namespace ghassanpl
 		/// Returns a value with our bits from only the flags that are also set in `flags` (an intersection)
 		[[nodiscard]]
 		constexpr self_type but_only(self_type flags) const noexcept { return self_type::from_bits(bits & flags.bits); }
+		
+		template <std::convertible_to<enum_type>... ARGS>
+		[[nodiscard]] constexpr self_type but_only(ARGS... args) const noexcept { return self_type::from_bits(bits & flag_bits<VALUE_TYPE>(args...)); }
 
 		/// Returns a value with our bits from only the flags that are also set in `flags` (an intersection)
 		[[nodiscard]]
