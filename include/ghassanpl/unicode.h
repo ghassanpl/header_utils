@@ -1099,7 +1099,7 @@ namespace ghassanpl::string_ops
 		if (cp <= 0xFFFF)
 			return { static_cast<char_type>(cp) };
 		else
-			return { static_cast<char_type>((cp >> 10) + 0xD800), static_cast<char_type>((cp & 0x3FF) + 0xDC00) };
+			return { static_cast<char_type>(((cp - 0x10000) >> 10) + 0xD800), static_cast<char_type>((cp & 0x3FF) + 0xDC00) };
 	}
 
 	template <string16 T, stringable8 STR>

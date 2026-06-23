@@ -74,7 +74,7 @@ namespace ghassanpl::random
 	{
 		if (poly.triangles().empty()) return {};
 
-		auto r = between(T{}, poly.calculate_area());
+		auto r = between(T{}, poly.calculate_area(), rng);
 		size_t i = 0;
 		while (r > 0.0)
 		{

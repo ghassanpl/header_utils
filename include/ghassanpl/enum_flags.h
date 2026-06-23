@@ -60,12 +60,15 @@ namespace ghassanpl
 	{
 		/// The underlying integral value type that holds the bits representing the flags
 		using value_type = VALUE_TYPE;
+		using unsigned_value_type = std::make_unsigned_t<value_type>;
 
 		/// Type of the enum that is the source of the flags
 		using enum_type = ENUM;
 		using self_type = enum_flags;
 
 		value_type bits = 0;
+
+		constexpr unsigned_value_type unsigned_bits() const noexcept { return std::bit_cast<unsigned_value_type>(bits); }
 
 		constexpr enum_flags() noexcept = default;
 		constexpr enum_flags(const enum_flags&) noexcept = default;
@@ -143,24 +146,24 @@ namespace ghassanpl
 
 		/// Returns the number of flags set
 		[[nodiscard]]
-		constexpr int count() const noexcept { return std::popcount(bits); }
+		constexpr int count() const noexcept { return std::popcount(unsigned_bits()); }
 
 		/// Returns the value of the `n`th set bit in the set
 		/// Preconditions: `n` must be less than the number of bits set (`n < count()`)
 		[[nodiscard]]
 		constexpr enum_type nth_set(size_t n) const noexcept {
-			auto b = bits;
+			auto b = unsigned_bits();
 			while (n--) { b ^= (VALUE_TYPE{ 1 } << std::countr_zero(b)); }
 			return static_cast<enum_type>(std::countr_zero(b));
 		}
 
 		/// Returns the lowest numerical value in the set. Returns an unspecified value if no values are in the set.
 		[[nodiscard]]
-		constexpr enum_type first_set() const noexcept { return static_cast<enum_type>(std::countr_zero(bits)); }
+		constexpr enum_type first_set() const noexcept { return static_cast<enum_type>(std::countr_zero(unsigned_bits())); }
 
 		/// Returns the highest numerical value in the set, or enum_type(-1) if no values are in the set.
 		[[nodiscard]]
-		constexpr enum_type last_set() const noexcept { return static_cast<enum_type>((sizeof(value_type) * CHAR_BIT - std::countl_zero(bits)) - 1); }
+		constexpr enum_type last_set() const noexcept { return static_cast<enum_type>((sizeof(value_type) * CHAR_BIT - std::countl_zero(unsigned_bits())) - 1); }
 
 		/// Returns whether or not *any* of the given flags are set
 		template <typename... ARGS>
@@ -285,7 +288,7 @@ namespace ghassanpl
 		struct iterator
 		{
 			enum_flags::value_type bits;
-			using bitset_type = std::make_unsigned_t<enum_flags::value_type>;
+			using bitset_type = enum_flags::unsigned_value_type;
 
 			using difference_type = int;
 			using value_type = enum_type;
@@ -333,12 +336,11 @@ namespace ghassanpl
 		constexpr auto for_each(FUNC&& callback) const
 		{
 			using return_type = std::invoke_result_t<FUNC, enum_type>;
-			using bitset_type = std::make_unsigned_t<value_type>;
-			auto bitset = static_cast<bitset_type>(bits);
+			auto bitset = unsigned_bits();
 			while (bitset)
 			{
 #pragma warning(suppress: 4146)
-				const auto t = static_cast<bitset_type>(bitset & -bitset);
+				const auto t = static_cast<unsigned_value_type>(bitset & -bitset);
 				const auto r = std::countr_zero(t);
 				if constexpr (std::is_convertible_v<return_type, bool>)
 				{

@@ -263,7 +263,7 @@ namespace ghassanpl
 		constexpr T get() && noexcept { return std::move(value); }
 
 		template <typename U>
-		constexpr U as() noexcept { return static_cast<U>(value); }
+		constexpr U as() const noexcept(std::is_nothrow_copy_constructible_v<T>) { return static_cast<U>(value); }
 		
 		constexpr auto drop() noexcept(std::is_nothrow_move_constructible_v<T>) { return std::move(value); }
 
@@ -282,7 +282,7 @@ namespace ghassanpl
 		}
 
 		constexpr explicit operator bool() const noexcept { return value; }
-		constexpr explicit(false) operator base_type() const noexcept requires has_trait<traits::implicitly_convertible> { return value; }
+		constexpr explicit(false) operator base_type const&() const noexcept requires has_trait<traits::implicitly_convertible> { return value; }
 		
 		constexpr auto operator<=>(named const&) const = default;
 

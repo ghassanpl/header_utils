@@ -234,27 +234,38 @@ namespace ghassanpl::geometry::squares
 			if constexpr (std::is_void_v<return_type>)
 			{
 				for (int x = rect.left(); x < rect.right(); x++)
-				{
 					this->template apply<ONLY_VALID>({ x, rect.top() }, func);
-					this->template apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func);
+				if (rect.height() > 1)
+				{
+					for (int x = rect.left(); x < rect.right(); x++)
+						this->template apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func);
 				}
 				for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
-				{
 					this->template apply<ONLY_VALID>({ rect.left(), y }, func);
-					this->template apply<ONLY_VALID>({ rect.right() - 1, y }, func);
+				if (rect.width() > 1)
+				{
+					for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
+						this->template apply<ONLY_VALID>({ rect.right() - 1, y }, func);
 				}
 			}
 			else
 			{
 				for (int x = rect.left(); x < rect.right(); x++)
-				{
 					if (auto ret = this->template apply<ONLY_VALID>({ x, rect.top() }, func)) return ret;
-					if (auto ret = this->template apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func)) return ret;
-				}
-				for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
+
+				if (rect.height() > 1)
 				{
+					for (int x = rect.left(); x < rect.right(); x++)
+						if (auto ret = this->template apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func)) return ret;
+				}
+
+				for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
 					if (auto ret = this->template apply<ONLY_VALID>({ rect.left(), y }, func)) return ret;
-					if (auto ret = this->template apply<ONLY_VALID>({ rect.right() - 1, y }, func)) return ret;
+
+				if (rect.width() > 1)
+				{
+					for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
+						if (auto ret = this->template apply<ONLY_VALID>({ rect.right() - 1, y }, func)) return ret;
 				}
 
 				return return_type{};
@@ -444,7 +455,7 @@ namespace ghassanpl::geometry::squares
 
 			/// Need to reverse middle row if height is odd
 			if (mHeight % 2)
-				std::reverse(GetRowStart(mHeight / 2 + 1), GetRowStart(mHeight / 2 + 1) + mWidth);
+				std::reverse(GetRowStart(mHeight / 2), GetRowStart(mHeight / 2) + mWidth);
 		}
 
 		void resize(glm::uvec2 new_size, const TILE_DATA& new_element) requires RESIZABLE

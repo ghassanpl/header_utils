@@ -5,6 +5,8 @@
 #pragma once
 #include <stdexcept>
 
+#include "scope.h"
+
 namespace ghassanpl::di
 {
 	namespace detail
@@ -457,15 +459,15 @@ namespace ghassanpl::di
 	{
 		if (std::ranges::find(mResolutionStack, typeid(INTERFACE)) != mResolutionStack.end())
 			throw std::runtime_error{ "circular dependency" };
+
 		mResolutionStack.push_back(typeid(INTERFACE));
+		scope_guard pop{ [this] {
+			mResolutionStack.pop_back();
+			if (mResolutionStack.empty())
+				ReportAwaitingCreations();
+		}};
 
-		auto result = factory(*this);
-
-		mResolutionStack.pop_back();
-		if (mResolutionStack.empty())
-			ReportAwaitingCreations();
-
-		return std::static_pointer_cast<INTERFACE>(std::move(result));
+		return std::static_pointer_cast<INTERFACE>(factory(*this));
 	}
 
 }

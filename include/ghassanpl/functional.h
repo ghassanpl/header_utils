@@ -50,10 +50,10 @@ namespace ghassanpl
 	}
 
 	template <typename T>
-	std::optional<T> to_optional(T* value) noexcept { return value ? *value : std::nullopt; }
+	std::optional<T> to_optional(T* value) { return value ? *value : std::nullopt; }
 
 	template <typename T>
-	std::optional<T> move_to_optional(T* value) noexcept { return value ? std::move(*value) : std::nullopt; }
+	std::optional<T> move_to_optional(T* value) { return value ? std::move(*value) : std::nullopt; }
 
 	///
 	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<std::optional<T>>&& value) { return value ? flattened(std::move(value).value()) : std::nullopt; }
@@ -209,7 +209,7 @@ namespace ghassanpl
 		template <typename F, typename ... Fs>
 		[[nodiscard]] constexpr auto call_piped(F&& f, Fs&&... fs) /// forwarding F or Fs can throw
 		{
-			return [first = std::forward<F>(f), rest = call_composed(std::forward<Fs>(fs)...)](auto&&... args) {
+			return [first = std::forward<F>(f), rest = call_piped(std::forward<Fs>(fs)...)](auto&&... args) {
 				return rest(first(std::forward<decltype(args)>(args)...));
 			};
 		}

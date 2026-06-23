@@ -223,9 +223,16 @@ TEST(cpp17_enum_flags_test, changes_work)
 	EXPECT_EQ(test + changes, enum_flags<TestEnum>{TestEnum::Nine});
 }
 
-static_assert(enum_flags<int>::all().contains_all_of());
-static_assert(enum_flags<int>{5}.contains_all_of());
-static_assert(enum_flags<int>::none().contains_all_of());
-static_assert(enum_flags<int>::all().full());
-static_assert(!enum_flags<int>{5}.full());
-static_assert(!enum_flags<int>::none().full());
+#define CAT2(a, b)  a ## b
+#define CAT(a, b) CAT2(a, b)
+TEST(CAT(enum_flags_test, __cplusplus), all_works)
+{
+	EXPECT_TRUE(enum_flags<int>::all().contains_all_of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 31));
+	EXPECT_EQ(enum_flags<int>::all().bits, -1);
+	EXPECT_EQ(enum_flags<int>::all(31).bits, 0xFFFFFFFF);
+	EXPECT_TRUE(enum_flags<int>{5}.contains_all_of());
+	EXPECT_TRUE(enum_flags<int>::none().contains_all_of());
+	EXPECT_TRUE(enum_flags<int>::all().full());
+	EXPECT_TRUE(!enum_flags<int>{5}.full());
+	EXPECT_TRUE(!enum_flags<int>::none().full());
+}

@@ -349,15 +349,15 @@ namespace ghassanpl::formats::wilson
 					/// TODO: Maybe make this optional?
 					switch (*it)
 					{
-					case 'n': func("\\n"); goto reset_start_to_next_char;
+					case '\n': func("\\n"); goto reset_start_to_next_char;
 					case '"': func("\\\""); goto reset_start_to_next_char;
 					case '\'': func("\\'"); goto reset_start_to_next_char;
 					case '\\': func("\\\\"); goto reset_start_to_next_char;
-					case 'b': func("\\b"); goto reset_start_to_next_char;
-					case 'r': func("\\r"); goto reset_start_to_next_char;
-					case 'f': func("\\f"); goto reset_start_to_next_char;
-					case 't': func("\\t"); goto reset_start_to_next_char;
-					case '0': func("\\0"); goto reset_start_to_next_char;
+					case '\b': func("\\b"); goto reset_start_to_next_char;
+					case '\r': func("\\r"); goto reset_start_to_next_char;
+					case '\f': func("\\f"); goto reset_start_to_next_char;
+					case '\t': func("\\t"); goto reset_start_to_next_char;
+					case '\0': func("\\0"); goto reset_start_to_next_char;
 					default: break;
 					}
 

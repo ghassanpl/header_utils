@@ -22,6 +22,7 @@
 
 #include <gtest/gtest.h>
 #include <set>
+#include <optional>
 #include <glm/gtc/constants.hpp>
 
 //using namespace glm;
@@ -181,6 +182,61 @@ TEST(polygon, edges)
 {
 	polygon p{};
 	p.edges();;
+}
+
+TEST(segment, intersection_works)
+{
+	using seg = tsegment<float>;
+	constexpr float tol = 1e-5f;
+
+	const auto expect_point = [&](std::optional<glm::vec2> const& r, float x, float y)
+	{
+		ASSERT_TRUE(r.has_value());
+		EXPECT_NEAR(r->x, x, tol);
+		EXPECT_NEAR(r->y, y, tol);
+	};
+
+	// Crossing diagonals of a square meet at the centre.
+	expect_point(seg{ {0,0},{10,10} }.intersection(seg{ {0,10},{10,0} }), 5, 5);
+
+	// Intersection is symmetric.
+	expect_point(seg{ {0,10},{10,0} }.intersection(seg{ {0,0},{10,10} }), 5, 5);
+
+	// Lines would cross, but the crossing is outside the segment extents -> no intersection.
+	EXPECT_FALSE((seg{ {0,0},{1,0} }.intersection(seg{ {2,-1},{2,1} })).has_value());
+
+	// Parallel but offset -> never meet.
+	EXPECT_FALSE((seg{ {0,0},{10,0} }.intersection(seg{ {0,1},{10,1} })).has_value());
+
+	// Shared endpoint / T-junction touches at that point.
+	expect_point(seg{ {0,0},{10,0} }.intersection(seg{ {10,0},{10,10} }), 10, 0);
+
+	// Collinear and overlapping -> start of the overlapping sub-segment.
+	expect_point(seg{ {0,0},{10,0} }.intersection(seg{ {5,0},{15,0} }), 5, 0);
+
+	// Collinear overlap is independent of the other segment's direction.
+	expect_point(seg{ {0,0},{10,0} }.intersection(seg{ {15,0},{5,0} }), 5, 0);
+
+	// Collinear but disjoint -> no intersection.
+	EXPECT_FALSE((seg{ {0,0},{10,0} }.intersection(seg{ {20,0},{30,0} })).has_value());
+
+	// Degenerate 'this' (a zero-length point) lying on the other segment.
+	expect_point(seg{ {5,0},{5,0} }.intersection(seg{ {0,0},{10,0} }), 5, 0);
+
+	// Symmetric: degenerate 'other'.
+	expect_point(seg{ {0,0},{10,0} }.intersection(seg{ {5,0},{5,0} }), 5, 0);
+
+	// Degenerate point off the other segment's line -> no intersection.
+	EXPECT_FALSE((seg{ {5,5},{5,5} }.intersection(seg{ {0,0},{10,0} })).has_value());
+
+	// Degenerate point that projects within the span but is off the line -> no intersection.
+	EXPECT_FALSE((seg{ {5,0},{5,0} }.intersection(seg{ {0,1},{10,1} })).has_value());
+
+	// Two coincident points intersect at that point.
+	expect_point(seg{ {3,4},{3,4} }.intersection(seg{ {3,4},{3,4} }), 3, 4);
+
+	// Two distinct points do not.
+	EXPECT_FALSE((seg{ {3,4},{3,4} }.intersection(seg{ {5,6},{5,6} })).has_value());
 }
 
 /*

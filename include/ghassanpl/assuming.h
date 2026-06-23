@@ -124,6 +124,10 @@
 #endif
 #endif
 
+/// Stupid macros...
+#define ASSUMING_TOKEN_PASTE2(x, y) x ## y
+#define ASSUMING_TOKEN_PASTE(x, y) ASSUMING_TOKEN_PASTE2(x, y)
+
 #if ASSUMING_DEBUG || defined(DOXYGEN)
 
 #define ASSUMING_HANDLE_HANDLER_RESULT(result) do { \
@@ -148,11 +152,12 @@
 #define AssumingNotReachable(...) do { ASSUMING_REPORT("execution will never reach this point", {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); GHPL_UNREACHABLE(); } while (false)
 
 /// Assumes the point in code is not reached via a recursive function call.
+/// TODO: Should the recursion counter be thread_local?
 #define AssumingNotRecursive(...) \
-	static int _assuming_recursion_counter##__LINE__ = 0; \
-	if (_assuming_recursion_counter##__LINE__ != 0)  \
+	static int ASSUMING_TOKEN_PASTE(_assuming_recursion_counter, __LINE__) = 0; \
+	if (ASSUMING_TOKEN_PASTE(_assuming_recursion_counter, __LINE__) != 0)  \
 		ASSUMING_REPORT("enclosing block will not be entered recursively", {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); \
-	const ::ghassanpl::detail::RecursionScopeMarker _assuming_scope_marker##__LINE__( _assuming_recursion_counter##__LINE__ )
+	const ::ghassanpl::detail::RecursionScopeMarker ASSUMING_TOKEN_PASTE(_assuming_scope_marker, __LINE__) ( ASSUMING_TOKEN_PASTE(_assuming_recursion_counter, __LINE__) )
 
 /// Assumes the point in code executes in exactly one thread, the same thread over the lifetime of the program.
 #define AssumingSingleThread(...) do { \

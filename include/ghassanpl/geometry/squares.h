@@ -165,11 +165,11 @@ namespace ghassanpl::geometry::squares
 		using rec2 = trec2<F>;
 		using irec2 = trec2<I>;
 
-		using tile_pos = named<vec2, "tile_pos", traits::location>;
-		using world_pos = named<ivec2, "world_pos", traits::location>;
+		using tile_pos = named<ivec2, "tile_pos", traits::location>;
+		using world_pos = named<vec2, "world_pos", traits::location>;
 
-		using tile_rec = named<rec2, "tile_rec">;
-		using world_rec = named<irec2, "world_rec">;
+		using tile_rec = named<irec2, "tile_rec">;
+		using world_rec = named<rec2, "world_rec">;
 
 		vec2 tile_size{ F(1), F(1) };
 

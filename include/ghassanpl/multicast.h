@@ -89,6 +89,7 @@ namespace ghassanpl
 		/// Calls all the invocables added to this object
 		///
 		/// \returns If the return value is void, returns void, otherwise returns a vector of all the return values of the added invocables
+		/// \todo Adding/removing callbacks during the calls is unsafe...
 		template <typename... CALL_ARGS>
 		auto operator()(CALL_ARGS&&... args) const
 		{
@@ -133,5 +134,13 @@ namespace ghassanpl
 
 		flat_map_preferred<handle, std::function<R(ARGS...)>> m_listeners;
 		size_t m_last_id = {};
+
+		/// TODO:
+		//struct call_temps
+		//{
+		//	std::vector<std::pair< handle, std::function<R(ARGS...)>>> to_add;
+		//	std::vector<handle> to_remove;
+		//};
+		//call_temps* during_call = nullptr;
 	};
 }

@@ -151,7 +151,7 @@ namespace ghassanpl
 	size_t buffer_append_varint(BUFFER& buffer, std::integral auto oval)
 	{
 		auto val = std::bit_cast<std::make_unsigned_t<decltype(oval)>>(oval);
-		if constexpr (std::is_signed_v<decltype(val)>)
+		if constexpr (std::is_signed_v<decltype(oval)>)
 			val = (oval < 0) ? ((std::bit_cast<std::make_unsigned_t<decltype(oval)>>(-oval) << 1) | 1) : (val << 1);
 		size_t result = 0;
 		while (val >= 128)

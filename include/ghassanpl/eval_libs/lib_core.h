@@ -122,7 +122,7 @@ namespace ghassanpl::eval
 
 		static inline value new_var(env_type& e, std::vector<value> args)
 		{
-			e.assert_args(args, 2, 3);
+			e.assert_args(args, 1, 2);
 			auto name = e.eval_arg(args, 1, string);
 			auto val = args.size() == 3 ? e.eval_arg(args, 2) : value(null_json);
 			return &e.set_user_var(*name, std::move(val), true);

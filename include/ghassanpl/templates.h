@@ -30,7 +30,7 @@ namespace ghassanpl
 			return std::forward<T>(t);
 		else
 		{
-			using return_type = typename nth_type_of<I, T, Ts...>::type;
+			using return_type = nth_type_of<I, T, Ts...>;
 			return std::forward<return_type>(nth_value_of<I - 1>((std::forward<Ts>(args))...));
 		}
 	}
@@ -38,14 +38,14 @@ namespace ghassanpl
 	template <typename... Ts>
 	[[nodiscard]] auto first_value_of(Ts&&... args)
 	{
-		using return_type = typename first_type_of<Ts...>::type;
+		using return_type = first_type_of<Ts...>;
 		return std::forward<return_type>(nth_value_of<0>((std::forward<Ts>(args))...));
 	}
 
 	template <typename... Ts>
 	[[nodiscard]] auto last_value_of(Ts&&... args)
 	{
-		using return_type = typename last_type_of<Ts...>::type;
+		using return_type = last_type_of<Ts...>;
 		return std::forward<return_type>(nth_value_of<sizeof...(Ts) - 1>((std::forward<Ts>(args))...));
 	}
 
@@ -521,9 +521,11 @@ namespace ghassanpl
 	{
 		return [&] <size_t... Idxs>(std::index_sequence<Idxs...>) {
 			return ([&] {
-				static_assert(std::is_invocable_v<FUNC, ARGS>, "Cannot invoke callback with this type");
 				if constexpr (Idxs == I)
+				{
+					static_assert(std::is_invocable_v<FUNC, ARGS>, "Cannot invoke callback with this type");
 					return f(std::forward<ARGS>(args));
+				}
 				else
 					return detail::pass_identity{};
 			}() * ...);

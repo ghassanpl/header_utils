@@ -318,6 +318,16 @@ TEST(string_ops_test, split_functions_are_correct)
 	/// TODO: split_on, natural_split
 }
 
+TEST(split_on, works)
+{
+	std::vector<string> results;
+	split_on("alpha,beta;gamma", [](auto sv) { return sv.find_first_of(",;"); }, [&](auto sv, bool) { results.push_back(string{ sv }); });
+	ASSERT_EQ(results.size(), 3);
+	EXPECT_EQ(results[0], "alpha");
+	EXPECT_EQ(results[1], "beta");
+	EXPECT_EQ(results[2], "gamma");
+}
+
 TEST(string_ops_test, join_functions_are_correct)
 {
 	EXPECT_EQ("hello world", join(std::vector<std::string_view>{"hello"sv, "world"sv}, " "));
@@ -562,4 +572,22 @@ TEST(join_and, works_for_mutating_views)
 {
 	string_view sv = "hello!";
 	EXPECT_EQ(join_and(sv | std::views::filter(ascii::islower), ", ", ", and "), "h, e, l, l, and o");
+}
+
+TEST(to_utf16, works_for_surrogates)
+{
+	EXPECT_EQ(to_utf16(char32_t(0x1F603)), (std::wstring{ 0xD83D, 0xDE03 }));
+}
+
+TEST(is_inside, works)
+{
+	const string_view sv = "hello world";
+	const string_view sv1 = sv.substr(5);
+	const string_view sv2 = sv.substr(0, 5);
+	const string_view sv3 = "asdf";
+	const string_view sv4 = sv.substr(3, 6);
+	EXPECT_TRUE(is_inside(sv, sv1));
+	EXPECT_TRUE(is_inside(sv, sv2));
+	EXPECT_FALSE(is_inside(sv, sv3));
+	EXPECT_TRUE(is_inside(sv, sv4));
 }

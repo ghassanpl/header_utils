@@ -53,6 +53,7 @@ namespace ghassanpl
 		{
 			mFreeHead = nullptr;
 			mBlocks.clear();
+			mFreeElements = 0;
 		}
 
 		size_t capacity() const noexcept { return mBlocks.size() * BLOCK_SIZE; }

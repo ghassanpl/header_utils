@@ -256,7 +256,7 @@ namespace ghassanpl::string_ops
 	/// Checks if `smaller_string` is a true subset of `big_string` (true subset meaning they view over overlapping memory subregions)
 	[[nodiscard]] constexpr bool is_inside(std::string_view big_string, std::string_view smaller_string)
 	{
-		return smaller_string.data() - big_string.data() >= 0 && (smaller_string.data() + smaller_string.size()) - (big_string.data() + big_string.size()) < 0;
+		return smaller_string.data() - big_string.data() >= 0 && (smaller_string.data() + smaller_string.size()) - (big_string.data() + big_string.size()) <= 0;
 	}
 
 	/// \pre Call only when str[str.size()] is a valid expression
@@ -1102,13 +1102,12 @@ namespace ghassanpl::string_ops
 	inline void split_on(std::string_view source, DELIM_FUNC&& delim, FUNC&& func) noexcept(noexcept(split_invoke(func, std::string_view{}, true)) && noexcept(delim(std::string_view{})))
 	{
 		size_t start = 0;
-		size_t end = 0;
-		end = delim(source);
+		size_t end = delim(source);
 		while (end != std::string::npos)
 		{
 			split_invoke(func, source.substr(start, end - start), false);
 			//source.remove_prefix(end);
-			start = end;
+			start = end + 1;
 			auto next = delim(source.substr(end + 1));
 			if (next == std::string::npos)
 				break;
@@ -1749,7 +1748,7 @@ namespace ghassanpl::string_ops
 			for (auto r : split_range<false>(line, split_chars))
 			{
 				const auto word_width = T{ width_getter(r) };
-				const auto width = word_width + T{ width_getter(std::string{ *data_end(r) }) };
+				const auto width = word_width + T{ width_getter(std::string{ *data_end(r) }) }; /// TODO: OOB read for the last word ?
 				if (width > space_left)
 				{
 					result.push_back(RESULT_TYPE{ line_start, size_t(r.data() - line_start) });

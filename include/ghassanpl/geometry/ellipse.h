@@ -35,7 +35,7 @@ namespace ghassanpl::geometry
 			const auto a = std::max(radii.x, radii.y);
 			const auto b = std::min(radii.x, radii.y);
 			const auto h = ((a - b) * (a - b)) / ((a + b) * (a + b));
-			return glm::pi<T>() * (a + b) * (1 + ((3 * h) / (10 + sqrtf(4 - 3 * h))));
+			return glm::pi<T>() * (a + b) * (1 + ((3 * h) / (10 + std::sqrt(4 - 3 * h))));
 		}
 		
 		glm::tvec2<T> edge_point_alpha(T t) const

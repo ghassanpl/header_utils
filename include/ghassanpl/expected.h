@@ -147,7 +147,7 @@ namespace ghassanpl
 		}
 		else
 		{
-			return !exp ? func(exp.error()) : result_type{};
+			return !exp ? func(std::move(exp).error()) : result_type{};
 		}
 	}
 

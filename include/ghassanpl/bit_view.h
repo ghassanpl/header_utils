@@ -82,7 +82,7 @@ namespace ghassanpl
 			}
 			constexpr base_iterator& operator-=(difference_type n)
 			{
-				bit_number = std::clamp(bit_number + n, 0, bit_view(integers).size());
+				bit_number = n > difference_type(bit_number) ? 0 : std::min(bit_number - n, bit_view(integers).size());
 				return *this;
 			}
 

@@ -9,6 +9,7 @@
 #include <string_view>
 #include <glm/common.hpp>
 #include <glm/fwd.hpp>
+#include "min-cpp-version/cpp20.h"
 //#include <glm/ext/vector_float4.hpp>
 #include "named.h"
 #include "constexpr_math.h"
@@ -100,6 +101,8 @@ namespace ghassanpl
 	[[nodiscard]] constexpr color_t lighten(color_t const& color, float coef)
 	{
 		const auto rgb_max = glm::max(color.x, glm::max(color.y, color.z));
+		if (rgb_max <= 0.0f) /// black (or no positive channel): nothing to scale, leave as-is
+			return saturated(color);
 		const auto lighter = color * (1.0f / rgb_max);
 		const auto dif = rgb_max;
 		return saturated(color_t(lighter.x + dif * coef, lighter.y + dif * coef, lighter.z + dif * coef, 1.0f) * rgb_max);
@@ -264,7 +267,7 @@ namespace ghassanpl
 		if (delta != 0)
 		{
 			if (rgba.x == max)
-				h = fmod((rgba.y - rgba.z) / delta, 6.0f);
+				h = fmod((rgba.y - rgba.z) / delta + 6.0f, 6.0f);
 			else if (rgba.y == max)
 				h = 2 + (rgba.z - rgba.x) / delta;
 			else
@@ -280,7 +283,7 @@ namespace ghassanpl
 	}
 
 	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
-	[[nodiscard]] constexpr std::optional<color_rgba_t> try_from_html(std::string_view html)
+	[[nodiscard]] GHPL_CONSTEXPR23 std::optional<color_rgba_t> try_from_html(std::string_view html)
 	{
 		auto n = html.size();
 		auto str = html.data();
@@ -321,7 +324,7 @@ namespace ghassanpl
 	}
 
 	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
-	[[nodiscard]] constexpr color_rgba_t from_html(std::string_view html)
+	[[nodiscard]] GHPL_CONSTEXPR23 color_rgba_t from_html(std::string_view html)
 	{
 		if (auto const color = try_from_html(html))
 			return *color;
@@ -329,7 +332,7 @@ namespace ghassanpl
 	}
 
 	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
-	[[nodiscard]] consteval color_rgba_t operator ""_rgb(const char* str, size_t n)
+	[[nodiscard]] GHPL_CONSTEVAL23 color_rgba_t operator ""_rgb(const char* str, size_t n)
 	{
 		return from_html({ str, n });
 	}

@@ -55,8 +55,8 @@ namespace ghassanpl::noise
 
 	[[nodiscard]] constexpr uint32_t seeded_noise2d(int32_t indexX, int32_t indexY, uint32_t seed)
 	{
-		constexpr int PRIME_NUMBER = 198491317; // Large prime number with non-boring bits
-		return seeded_noise(indexX + (PRIME_NUMBER * indexY), seed);
+		constexpr uint32_t PRIME_NUMBER = 198491317; // Large prime number with non-boring bits
+		return seeded_noise(int32_t(uint32_t(indexX) + (PRIME_NUMBER * uint32_t(indexY))), seed);
 	}
 
 	[[nodiscard]] constexpr double seeded_noise_normalized(int32_t index, uint32_t seed)

@@ -227,18 +227,24 @@ namespace ghassanpl::parsing
 	template <char DELIMITER = '\''>
 	[[nodiscard]] inline std::pair<std::string_view, std::string> consume_c_string(std::string_view& strv)
 	{
-		if (strv.empty() || strv[0] != DELIMITER)
-			throw std::runtime_error("C string must start with delimiter");
-
 		std::pair<std::string_view, std::string> result;
 
 		auto view = strv;
 		auto start = view.begin();
-		view.remove_prefix(1);
-		while (view[0] != DELIMITER)
+
+		if (!consume(view, DELIMITER))
+			throw std::runtime_error("C string must start with delimiter");
+
+		while (!view.empty())
 		{
 			auto cp = consume(view);
-			if (cp == '\\')
+			if (cp == DELIMITER)
+			{
+				result.first = make_sv(start, view.begin());
+				strv = view;
+				return result;
+			}
+			else if (cp == '\\')
 			{
 				cp = consume(view);
 				if (view.empty())
@@ -259,47 +265,47 @@ namespace ghassanpl::parsing
 				case 'o':
 				{
 					auto num = consume_n(view, 3);
-					if (num.size() < 3 || view.empty()) return {}; /// malformed
+					if (num.size() < 3 || view.empty()) throw std::runtime_error("malformed octal escape character");
 
-					auto parsed = consume_c_integer(num, 8);
-					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+					auto [consumed, value] = consume_c_integer(num, 8);
+					if (consumed.empty() || !num.empty()) throw std::runtime_error("malformed octal escape character");
 
-					if (parsed.second > 255) return {}; /// invalid octal
-					result.second.push_back((char)parsed.second);
+					if (value > 255) throw std::runtime_error("malformed octal escape character"); /// invalid octal
+					result.second.push_back((char)value);
 					break;
 				}
 				case 'x':
 				{
 					auto num = consume_n(view, 2);
-					if (num.size() < 2 || view.empty()) return {}; /// malformed
+					if (num.size() < 2 || view.empty()) throw std::runtime_error("malformed hex escape character");
 
-					auto parsed = consume_c_integer(num, 16);
-					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+					auto [consumed, value] = consume_c_integer(num, 16);
+					if (consumed.empty() || !num.empty()) throw std::runtime_error("malformed hex escape character");
 
 					//append_utf8(result.second, (char32_t)parsed.second);
-					result.second += (char)parsed.second;
+					result.second += (char)value;
 					break;
 				}
 				case 'u':
 				{
 					auto num = consume_n(view, 4);
-					if (num.size() < 4 || view.empty()) return {}; /// malformed
+					if (num.size() < 4 || view.empty()) throw std::runtime_error("malformed unicode escape character");
 
-					auto parsed = consume_c_integer(num, 16);
-					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+					auto [consumed, value] = consume_c_integer(num, 16);
+					if (consumed.empty() || !num.empty()) throw std::runtime_error("malformed unicode escape character");
 
-					append_utf8(result.second, (char32_t)parsed.second);
+					append_utf8(result.second, (char32_t)value);
 					break;
 				}
 				case 'U':
 				{
 					auto num = consume_n(view, 8);
-					if (num.size() < 8 || view.empty()) return {}; /// malformed
+					if (num.size() < 8 || view.empty()) throw std::runtime_error("malformed unicode escape character");
 
-					auto parsed = consume_c_integer(num, 16);
-					if (parsed.first.empty() || !num.empty()) return {}; /// malformed
+					auto [consumed, value] = consume_c_integer(num, 16);
+					if (consumed.empty() || !num.empty()) throw std::runtime_error("malformed unicode escape character");
 
-					append_utf8(result.second, (char32_t)parsed.second);
+					append_utf8(result.second, (char32_t)value);
 					break;
 				}
 				default:
@@ -310,17 +316,9 @@ namespace ghassanpl::parsing
 			{
 				result.second += cp;
 			}
-
-			if (view.empty())
-				throw std::runtime_error("unterminated C string");
 		}
 
-		if (!consume(view, DELIMITER))
-			throw std::runtime_error("C string must end with delimiter");
-
-		result.first = make_sv(start, view.begin());
-		strv = view;
-		return result;
+		throw std::runtime_error("C string must end with delimiter");
 	}
 
 	inline bool try_eat(std::string_view& str, std::string_view what)

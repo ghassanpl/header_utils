@@ -109,27 +109,68 @@ namespace ghassanpl::geometry
 
 		constexpr std::optional<tvec> intersection(tsegment const& other) const noexcept
 		{
-			/// TODO: Copilot-generated :P Needs testing
-			const auto r = this->vec();
-			const auto s = other.vec();
-			const auto rxs = glm::cross(r, s);
-			const auto qp = other.start - this->start;
-			const auto qpxr = glm::cross(qp, r);
-			if (glm::abs(rxs) < std::numeric_limits<T>::epsilon() && glm::abs(qpxr) < std::numeric_limits<T>::epsilon())
+			/// TODO: Claude generated now :P Probably major overkill
+
+			/// glm::cross is 3D-only; this is the 2D perp-dot product (returns a scalar).
+			const auto cross2 = [](tvec const& a, tvec const& b) noexcept -> T { return a.x * b.y - a.y * b.x; };
+
+			const auto p = this->start, q = other.start;
+			const auto r = this->vec(), s = other.vec();   // end - start for each
+			const auto rr = glm::dot(r, r), ss = glm::dot(s, s);
+
+			/// Relative tolerance: a cross product's magnitude scales with the operands' lengths,
+			/// so a bare machine epsilon is the wrong threshold for non-unit vectors. We compare
+			/// squared magnitudes throughout to avoid sqrt and keep the test scale-invariant.
+			constexpr T eps = std::numeric_limits<T>::epsilon();
+
+			/// Degenerate (zero-length) segments can't be reasoned about via cross products of their
+			/// direction vectors, so handle point-containment explicitly first.
+			const bool this_is_point = rr <= eps;
+			const bool other_is_point = ss <= eps;
+			if (this_is_point || other_is_point)
 			{
-				/// Colinear
-				const auto t0 = glm::dot(qp, r) / glm::dot(r, r);
-				const auto t1 = t0 + glm::dot(s, r) / glm::dot(r, r);
-				if ((t0 >= 0 && t0 <= 1) || (t1 >= 0 && t1 <= 1))
+				if (this_is_point && other_is_point)        // both are points: meet iff coincident
+					return glm::dot(q - p, q - p) <= eps ? std::optional<tvec>{ p } : std::nullopt;
+
+				const auto pt = this_is_point ? p : q;      // the point
+				const auto a = this_is_point ? q : p;       // the proper segment's start
+				const auto d = this_is_point ? s : r;       // ...and its direction
+				const auto dd = this_is_point ? ss : rr;
+				const auto ap = pt - a;
+				/// On the segment iff collinear (zero perpendicular distance) and projection within [0,1].
+				if (cross2(ap, d) * cross2(ap, d) > eps * eps * glm::dot(ap, ap) * dd)
 					return std::nullopt;
-				return std::nullopt;
+				const auto tp = glm::dot(ap, d) / dd;
+				return (tp >= T(0) && tp <= T(1)) ? std::optional<tvec>{ pt } : std::nullopt;
 			}
-			if (glm::abs(rxs) < std::numeric_limits<T>::epsilon() && glm::abs(qpxr) > std::numeric_limits<T>::epsilon())
-				return std::nullopt;
-			const auto t = glm::cross(qp, s) / rxs;
-			const auto u = glm::cross(qp, r) / rxs;
-			if (rxs != 0 && t >= 0 && t <= 1 && u >= 0 && u <= 1)
-				return this->start + t * r;
+
+			const auto qp = q - p;
+			const auto rxs = cross2(r, s);
+
+			if (rxs * rxs <= eps * eps * rr * ss)
+			{
+				const auto qpxr = cross2(qp, r);
+				const bool collinear = qpxr * qpxr <= eps * eps * glm::dot(qp, qp) * rr;
+				if (!collinear)
+					return std::nullopt;                    // parallel but offset -> never meet
+
+				/// Project other's endpoints onto this segment's [0,1] parameter range.
+				auto t0 = glm::dot(qp, r) / rr;
+				auto t1 = t0 + glm::dot(s, r) / rr;
+				if (t0 > t1) { const auto tmp = t0; t0 = t1; t1 = tmp; }
+
+				const auto lo = t0 < T(0) ? T(0) : t0;
+				const auto hi = t1 > T(1) ? T(1) : t1;
+				if (lo > hi)
+					return std::nullopt;                    // collinear but disjoint
+				return p + lo * r;                          // start of the overlapping sub-segment
+			}
+
+			/// General case: unique intersection of the two lines, accepted only if it lies on both segments.
+			const auto t = cross2(qp, s) / rxs;
+			const auto u = cross2(qp, r) / rxs;
+			if (t >= T(0) && t <= T(1) && u >= T(0) && u <= T(1))
+				return p + t * r;
 			return std::nullopt;
 		}
 

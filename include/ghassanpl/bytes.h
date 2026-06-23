@@ -230,7 +230,7 @@ namespace ghassanpl
 		static_assert(ALIGN >= 1, "Alignment must be greater or equal to 1");
 		if constexpr (ALIGN == 1)
 		{
-			return bytes;
+			return { {}, bytes };
 		}
 		else
 		{
@@ -259,7 +259,7 @@ namespace ghassanpl
 		static_assert(ALIGN >= 1, "Alignment must be greater or equal to 1");
 		if constexpr (ALIGN == 1)
 		{
-			return bytes;
+			return { {}, bytes };
 		}
 		else
 		{
@@ -289,7 +289,7 @@ namespace ghassanpl
 		static_assert(ALIGN >= 1, "Alignment must be greater or equal to 1");
 		if constexpr (ALIGN == 1)
 		{
-			return bytes;
+			return { {}, bytes, {} };
 		}
 		else
 		{

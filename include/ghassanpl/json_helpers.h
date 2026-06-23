@@ -307,6 +307,7 @@ namespace ghassanpl::formats
 			catch (...)
 			{
 				//std::throw_with_nested(std::runtime_error{ std::format("while trying to convert value at key \"{}\" to type {}", key, typeid(T).name()) });
+				return false;
 			}
 		}
 

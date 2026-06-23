@@ -68,3 +68,13 @@ TEST(scope_guard, works)
 	}
 	EXPECT_EQ(booped, true);
 }
+
+TEST(scope_counter, works)
+{
+	int val = 10;
+	{
+		scope_counter cn{ val };
+		EXPECT_EQ(val, 11);
+	}
+	EXPECT_EQ(val, 10);
+}

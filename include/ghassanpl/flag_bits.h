@@ -83,7 +83,7 @@ namespace ghassanpl
 	requires detail::valid_flag_bits_arguments<INTEGRAL, ARGS...>
 	constexpr bool are_any_flags_set(INTEGRAL const& bits, ARGS... args) noexcept
 	{
-		return (bits & flag_bits(args...)) != 0;
+		return (bits & flag_bits<INTEGRAL>(args...)) != 0;
 	}
 
 	/// Checks if an integral value has **all** of the bits at numbers represented by `args` set
@@ -91,7 +91,7 @@ namespace ghassanpl
 	requires detail::valid_flag_bits_arguments<INTEGRAL, ARGS...>
 	constexpr bool are_all_flags_set(INTEGRAL const& bits, ARGS... args) noexcept
 	{
-		return (bits & flag_bits(args...)) == flag_bits(args...);
+		return (bits & flag_bits<INTEGRAL>(args...)) == flag_bits(args...);
 	}
 
 	/// Sets the bits at numbers represented by `args` in `bits`

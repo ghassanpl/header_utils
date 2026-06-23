@@ -159,7 +159,7 @@ namespace ghassanpl
 	template <typename T, size_t N = std::dynamic_extent>
 	[[nodiscard]] constexpr std::array<std::span<T>, 3> split_at(std::span<T, N> spn, size_t index, size_t size)
 	{
-		if (index >= spn.size() || index + size >= spn.size())
+		if (index >= spn.size() || index + size > spn.size())
 			return { spn, std::span<T>{}, std::span<T>{} };
 		return { spn.subspan(0, index), spn.subspan(index, size), spn.subspan(index + size) };
 	}

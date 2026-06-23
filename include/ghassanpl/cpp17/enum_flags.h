@@ -62,7 +62,12 @@ namespace ghassanpl {
 			#if __cpp_lib_bitops >= 201907L
 			return std::popcount(val);
 			#else
-			return __builtin_popcount(val);
+			if constexpr (sizeof(val) == sizeof(long))
+				return __builtin_popcountl(val);
+			else if constexpr (sizeof(val) == sizeof(long long))
+				return __builtin_popcountll(val);
+			else 
+				return __builtin_popcount(val);
 			#endif
 		}
 	}
@@ -154,11 +159,11 @@ namespace ghassanpl {
 
 		/// Returns a value with all bits set, up to and including the `last`
 		[[nodiscard]]
-		constexpr static self_type all(enum_type last) noexcept { return self_type::from_bits(flag_bits<VALUE_TYPE>(last) & ~(flag_bits<VALUE_TYPE>(last + 1) - 1)); }
+		constexpr static self_type all(enum_type last) noexcept { return self_type::from_bits(flag_bits<VALUE_TYPE>(last) | (flag_bits<VALUE_TYPE>(last) - 1)); }
 
 		/// Returns a value with bits starting with `first`, up to and including `last`, set
 		[[nodiscard]]
-		constexpr static self_type all_between(enum_type first, enum_type last) noexcept { return all(last) - self_type::from_bits(~(flag_bits<VALUE_TYPE>(first) - 1)); }
+		constexpr static self_type all_between(enum_type first, enum_type last) noexcept { return all(last) - all(first - 1); }
 
 		/// Returns a value with none of the bits set
 		[[nodiscard]]

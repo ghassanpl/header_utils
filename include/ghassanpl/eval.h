@@ -394,7 +394,7 @@ namespace ghassanpl::eval
 
 		static void assert_args(std::span<value const> args, size_t min_args, size_t max_args)
 		{
-			if (args.size() < min_args + 1 && args.size() >= max_args + 1)
+			if (args.size() < min_args + 1 || args.size() > max_args + 1)
 				throw std::runtime_error(std::format("function {} requires between {} and {} arguments, {} given", args[0]->dump(), min_args, max_args, args.size() - 1));
 		}
 

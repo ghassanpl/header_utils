@@ -70,9 +70,9 @@ namespace ghassanpl::geometry
 
 		auto calculate_area() const noexcept
 		{
-			const auto A = std::sqrt((b.x - a.x) * (b.x - a.x) + (b.y - a.y) * (b.y - a.y));
-			const auto B = std::sqrt((b.x - c.x) * (b.x - c.x) + (b.y - c.y) * (b.y - c.y));
-			const auto C = std::sqrt((b.x - c.x) * (a.x - c.x) + (a.y - c.y) * (a.y - c.y));
+			const auto A = glm::distance(b, a);
+			const auto B = glm::distance(b, c);
+			const auto C = glm::distance(a, c);
 			const auto s = (A + B + C) * T(0.5);
 			return std::sqrt(s * (s - A) * (s - B) * (s - C));
 		}

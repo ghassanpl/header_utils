@@ -129,8 +129,8 @@ namespace ghassanpl::noise
 		const F s = (x + y) * F2;
 		const F xs = x + s;
 		const F ys = y + s;
-		const int32_t i = fastfloor(xs);
-		const int32_t j = fastfloor(ys);
+		const int32_t i = detail::fastfloor(xs);
+		const int32_t j = detail::fastfloor(ys);
 
 		const F t = static_cast<F>(i + j) * G2;
 		const F X0 = i - t;

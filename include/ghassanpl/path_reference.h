@@ -52,8 +52,8 @@ namespace ghassanpl
 			static bool resolve_reference_from_path(PATH_TYPE const& path, POINTER_TYPE& out_ref)
 			{
 				out_ref = empty_path<POINTER_TYPE, TAGS...>(path)
-					? mapping.mutate_in_place([&path](auto& mapping) { return &mapping[path]; })
-					: POINTER_TYPE{};
+					? POINTER_TYPE{}
+					: mapping.mutate_in_place([&path](auto& mapping) { return &mapping[path]; });
 				return true;
 			}
 

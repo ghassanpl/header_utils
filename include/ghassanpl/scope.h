@@ -421,7 +421,7 @@ namespace ghassanpl
 		~scope_counter() noexcept(noexcept(--m_ref))
 		{
 			if (m_ref)
-				--m_ref;
+				--*m_ref;
 		}
 
 		void release() const noexcept

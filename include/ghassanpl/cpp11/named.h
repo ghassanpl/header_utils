@@ -33,9 +33,9 @@ namespace ghassanpl
 		T get()&& { return std::move(value); }
 
 		template <typename U>
-		constexpr U as() const noexcept { return static_cast<U>(value); }
+		constexpr U as() const noexcept(std::is_nothrow_copy_constructible<U>::value) { return static_cast<U>(value); }
 
-		constexpr T drop() const noexcept(std::is_nothrow_move_constructible<T>::value) { return std::move(value); }
+		constexpr T drop() noexcept(std::is_nothrow_move_constructible<T>::value) { return std::move(value); }
 
 		constexpr explicit operator bool() const noexcept { return value; }
 		constexpr explicit operator base_type() const noexcept { return value; }

@@ -2,7 +2,7 @@
 
 #include <type_traits>
 #include <iterator>
-#if __cpluslus >= 202002L
+#if __cplusplus >= 202002L
 #include <concepts>
 #endif
 
@@ -66,7 +66,7 @@ namespace ghassanpl
 		return seed;
 	}
 
-#if __cpluslus >= 202002L
+#if __cplusplus >= 202002L
 	/// Hashes a range of values
 	template <std::ranges::range T, typename HASHER = std::hash<std::ranges::range_value_t<T>>>
 	[[nodiscard]] constexpr uint64_t hash64_range(T range, HASHER&& hasher = {})

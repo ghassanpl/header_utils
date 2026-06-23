@@ -29,7 +29,7 @@ namespace ghassanpl::geometry
 	}
 
 	template <typename T>
-	bool intersects<tcircle<T>, tcircle<T>>(tcircle<T> const& a, tcircle<T> const& b) noexcept
+	bool intersects(tcircle<T> const& a, tcircle<T> const& b) noexcept
 	{
 		/// TODO: sqrt is expensive, use squared distance instead
 		return glm::distance(a.center, b.center) < a.radius + b.radius; /// <= ?

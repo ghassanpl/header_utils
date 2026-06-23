@@ -93,7 +93,7 @@ namespace ghassanpl::geometry
 	}
 
 	template <typename T>
-	constexpr glm::tvec2<T> length(glm::tvec2<T> const& a) noexcept
+	constexpr auto length(glm::tvec2<T> const& a) noexcept
 	{
 		return cem::sqrt(geometry::dot(a, a));
 	}
@@ -123,7 +123,7 @@ namespace ghassanpl::geometry
 		if (lsq < sqmin || sqmax < lsq)
 		{
 			const auto clamped = glm::clamp(lsq, min * min, max * max);
-			return with_length(a, cem::sqrt(lsq));
+			return with_length(a, cem::sqrt(clamped));
 		}
 		return a;
 	}
@@ -136,7 +136,7 @@ namespace ghassanpl::geometry
 		if (sqmax < lsq)
 		{
 			const auto clamped = glm::min(lsq, max * max);
-			return with_length(a, cem::sqrt(lsq));
+			return with_length(a, cem::sqrt(clamped));
 		}
 		return a;
 	}
@@ -185,8 +185,8 @@ namespace ghassanpl::geometry
 	template <std::floating_point T> using basic_heading_t = named<T, "heading", traits::location, traits::is_location_of<basic_degrees_t<T>>>;
 
 	using degrees = basic_degrees_t<float>; ghassanpl_named_float_literal(degrees, _deg);
-	using radians = basic_radians_t<float>; ghassanpl_named_float_literal(degrees, _rad);
-	using heading = basic_heading_t<float>; ghassanpl_named_float_literal(degrees, _head);
+	using radians = basic_radians_t<float>; ghassanpl_named_float_literal(radians, _rad);
+	using heading = basic_heading_t<float>; ghassanpl_named_float_literal(heading, _head);
 
 	template <std::floating_point T>
 	constexpr basic_degrees_t<T> to_degrees(basic_radians_t<T> r) { return degrees{ glm::degrees(*r) }; }

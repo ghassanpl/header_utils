@@ -255,6 +255,9 @@ namespace ghassanpl::random
 	{
 		static_assert(std::is_floating_point_v<T>, "halton_sequence only works on floating point types");
 
+		if (base <= 1)
+			return {};
+
 		auto result = T(0);
 		auto fraction = T(1);
 		while (index > 0)
@@ -265,6 +268,29 @@ namespace ghassanpl::random
 		}
 		return result;
 	}
+	/*
+	halton_sequence(size_t b)
+	{
+	    size_t n = 0, d = 1;
+	    while (true)
+	    {
+			auto x = d - n;
+	        if (x == 1)
+	        {
+				n = 1;
+	            d *= b;
+			}
+	        else
+	        {
+				y = d / b;
+	            while (x <= y)
+	                y /= b
+	            n = (b + 1) * y - x;
+			}
+	        co_yield n / d;
+		}
+	}
+*/
 
 	/// Returns `true` with the given 0-1 `probability`, false otherwise.
 	template <typename RANDOM = std::default_random_engine>
@@ -413,7 +439,7 @@ namespace ghassanpl::random
 
 	/// Returns an index of one of the options in `option_probabilities`, where its elements are the probability weights of their specific options.
 	/// \complexity O(N) space, O(N+logN) time
-	template <typename T, typename RANDOM>
+	template <typename T, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] size_t option_with_probability(std::span<T const> option_probabilities, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		/// TODO: Check if works with known-sized spans
@@ -427,7 +453,7 @@ namespace ghassanpl::random
 	/// `prob_func` will be called at least twice per object.
 	/// \pre prob_func will never return < 0.0
 	/// \complexity O(1) space, O(2N) time
-	template <typename RANGE, typename FUNC, typename RANDOM>
+	template <typename RANGE, typename FUNC, typename RANDOM = std::default_random_engine>
 	[[nodiscard]] auto iterator_with_probability(RANGE&& range, FUNC&& prob_func, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 #ifdef __cpp_lib_ranges

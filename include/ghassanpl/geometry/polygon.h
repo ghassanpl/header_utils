@@ -173,13 +173,13 @@ namespace ghassanpl::geometry
 
 			if constexpr (std::invocable<FUNC, tvec const&, tvec const&>)
 			{
-				for (size_t i = 0; i < c - 1; ++i)
-					func(vertices[i], vertices[i + 1]);
+				for (size_t i = 0; i < c; ++i)
+					func(vertices[i], vertices[(i + 1) % c]);
 			}
 			else
 			{
-				for (size_t i = 0; i < c - 1; ++i)
-					func(std::pair{ vertices[i], vertices[i + 1] });
+				for (size_t i = 0; i < c; ++i)
+					func(std::pair{ vertices[i], vertices[(i + 1) % c] });
 			}
 		}
 

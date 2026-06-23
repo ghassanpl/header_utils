@@ -16,3 +16,11 @@ namespace ghassanpl
 	template <class T, template <typename...> typename PRED>
 	concept meets = PRED<T>::value;
 }
+
+#if __cplusplus > 202002L
+#define GHPL_CONSTEXPR23 constexpr
+#define GHPL_CONSTEVAL23 consteval
+#else
+#define GHPL_CONSTEXPR23 inline
+#define GHPL_CONSTEVAL23 inline
+#endif

@@ -87,3 +87,18 @@ TEST(named, constructible_using)
 
 	EXPECT_EQ(*ly, 10.0);
 }
+
+TEST(named, implicitly_convertible)
+{
+	using d2 = named<double, "d2", traits::implicitly_convertible>;
+	using d3 = named<double, "d3">;
+	{
+		d2 d{ 10.0 };
+		double c = d;
+		static_assert(std::is_convertible_v<d2, double>);
+	}
+	{
+		d3 d{ 1.0 };
+		static_assert(!std::is_convertible_v<d3, double>);
+	}
+}
