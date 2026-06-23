@@ -196,6 +196,9 @@
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <Manifest>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ClangDbg|x64'">
     <ClCompile>
@@ -221,6 +224,9 @@
     <Bscmake>
       <PreserveSbr>true</PreserveSbr>
     </Bscmake>
+    <Manifest>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -243,6 +249,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Manifest>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
+    </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="include\ghassanpl\align+rec2.h" />
@@ -273,6 +282,7 @@
     <ClInclude Include="include\ghassanpl\filesystem.h" />
     <ClInclude Include="include\ghassanpl\flag_bits.h" />
     <ClInclude Include="include\ghassanpl\flag_bits_v.h" />
+    <ClInclude Include="include\ghassanpl\flat_map.h" />
     <ClInclude Include="include\ghassanpl\formats.h" />
     <ClInclude Include="include\ghassanpl\functional.h" />
     <ClInclude Include="include\ghassanpl\geometry\arcs.h" />
@@ -298,6 +308,7 @@
     <ClInclude Include="include\ghassanpl\geometry\triangles.h" />
     <ClInclude Include="include\ghassanpl\hashes.h" />
     <ClInclude Include="include\ghassanpl\hashes2.h" />
+    <ClInclude Include="include\ghassanpl\hashes_basic.h" />
     <ClInclude Include="include\ghassanpl\interpolation.h" />
     <ClInclude Include="include\ghassanpl\multicast.h" />
     <ClInclude Include="include\ghassanpl\path_reference.h" />
@@ -385,6 +396,7 @@
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='ClangDbg|x64'">stdcpp20</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp20</LanguageStandard>
     </ClCompile>
+    <ClCompile Include="tests\cpp_version_tests\cpp23_tests.cpp" />
     <ClCompile Include="tests\di_tests.cpp" />
     <ClCompile Include="tests\enum_flags_tests.cpp" />
     <ClCompile Include="tests\eval_tests.cpp" />

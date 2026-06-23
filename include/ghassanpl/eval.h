@@ -4,14 +4,19 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp20.h"
 #include "json_helpers.h"
-#include "string_ops.h"
 #include <format>
 #include <variant>
 #include <span>
 
+#if __cplusplus >= 202302L
+#warning This module is severely undertested!
+#endif
+
 namespace ghassanpl::eval
 {
+
 	/// \defgroup Eval Eval
 	/// A **very simple** Lisp-based scripting system useful pretty much only for scripting translation strings.
 	/// \warning This is severly undertested!
@@ -55,8 +60,8 @@ namespace ghassanpl::eval
 		explicit(false) value(ARGS&&... args) noexcept : v(json(std::forward<ARGS>(args)...)) {}
 
 		explicit(false) value(json&& j) noexcept : v(std::move(j)) {}
-		explicit(false) value(json const* j) noexcept : v(std::move(j)) {}
-		explicit(false) value(json* j) noexcept : v(std::move(j)) {}
+		explicit(false) value(json const* j) noexcept : v(j) {}
+		explicit(false) value(json* j) noexcept : v(j) {}
 
 		[[nodiscard]] bool is_lval() const noexcept { return v.index() == 1; }
 		[[nodiscard]] bool is_rval() const noexcept { return v.index() == 0; }
@@ -294,6 +299,7 @@ namespace ghassanpl::eval
 		}
 
 		template <typename V>
+		requires is_any_of_v<std::remove_cvref_t<V>, value, json>
 		value eval(V&& val)
 		{
 			if constexpr (std::same_as<V, value const&>)
@@ -313,13 +319,13 @@ namespace ghassanpl::eval
 						for (auto& [prefix, macro] : prefix_macros)
 						{
 							if (str.starts_with(prefix))
-								return eval(macro(*this, { std::move(val) }));
+								return eval(macro(*this, { std::forward<V>(val) }));
 						}
 					}
 				}
 
 				if (!val->is_array())
-					return std::move(val);
+					return std::forward<V>(val);
 
 				std::vector<value> args;
 				switch (val.v.index())
@@ -356,7 +362,7 @@ namespace ghassanpl::eval
 		{
 			try
 			{
-				auto result = eval(value);
+				auto result = eval(std::forward<T>(value));
 				return result.forward();
 			}
 			catch (e_scope_terminator const& e)
@@ -365,7 +371,7 @@ namespace ghassanpl::eval
 			}
 		}
 
-		[[nodiscard]] inline bool is_true(json const& val)
+		[[nodiscard]] inline bool is_true(json const& val) const
 		{
 			switch (val.type())
 			{
@@ -375,7 +381,7 @@ namespace ghassanpl::eval
 			}
 		}
 
-		[[nodiscard]] inline bool is_true(value const& val)
+		[[nodiscard]] inline bool is_true(value const& val) const
 		{
 			return is_true(*val);
 		}

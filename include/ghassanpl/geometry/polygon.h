@@ -8,7 +8,6 @@
 #include "./segment.h"
 #include "./triangles.h"
 #include "shape_concepts.h"
-#include <array>
 
 namespace ghassanpl::geometry
 {

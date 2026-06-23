@@ -7,7 +7,6 @@
 #include "min-cpp-version/cpp20.h"
 
 #include <set>
-#include <string>
 #include <stdexcept>
 
 namespace ghassanpl
@@ -83,7 +82,7 @@ namespace ghassanpl
 		template <typename T>
 		bool contains(const T& id) const
 		{
-			return rows.find(locator<T>{ id }) != rows.end();
+			return rows.contains(locator<T>{ id });
 		}
 
 	protected:

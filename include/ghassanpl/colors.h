@@ -5,6 +5,7 @@
 #pragma once
 
 #include <charconv>
+#include <stdexcept>
 #include <string_view>
 #include <glm/common.hpp>
 #include <glm/fwd.hpp>
@@ -110,7 +111,7 @@ namespace ghassanpl
 	[[nodiscard]] constexpr color_t contrast(color_t const& color, float contrast)
 	{
 		const auto t = (1.0f - contrast) * 0.5f;
-		return color_t(color.x*contrast + t, color.y*contrast + t, color.z*contrast + t, color.w);
+		return { color.x*contrast + t, color.y*contrast + t, color.z*contrast + t, color.w };
 	}
 
 	/// Returns a color with its contrast changed
@@ -121,7 +122,7 @@ namespace ghassanpl
 	{
 		constexpr double m = 1.0156862745098039215686274509804;
 		const auto t = (m * (contrast + 1.0f)) / (m - contrast);
-		return color_t(t * (color.x - 0.5f) + 0.5f, t * (color.y - 0.5f) + 0.5f, t * (color.z - 0.5f) + 0.5f, color.w);
+		return { t * (color.x - 0.5f) + 0.5f, t * (color.y - 0.5f) + 0.5f, t * (color.z - 0.5f) + 0.5f, color.w };
 	}
 
 	/// Returns a gamma corrected color
@@ -134,13 +135,13 @@ namespace ghassanpl
 	/// Returns an inverted color, i.e. with (1.0-x) on all of its elements, excluding its alpha
 	[[nodiscard]] constexpr color_t inverted(color_t const& color)
 	{
-		return color_t(1.0f - color.x, 1.0f - color.y, 1.0f - color.z, color.w);
+		return { 1.0f - color.x, 1.0f - color.y, 1.0f - color.z, color.w };
 	}
 
 	/// Returns a color that's a good contrasting color for the original
 	[[nodiscard]] constexpr color_t contrasting(color_t const& color)
 	{
-		const float gamma = 2.2f;
+		constexpr float gamma = 2.2f;
 		const float L = 0.2126f * cem::pow(color.r, gamma) + 0.7152f * cem::pow(color.g, gamma) + 0.0722f * cem::pow(color.b, gamma);
 		return (L > cem::pow(0.5f, gamma)) ? colors::black : colors::white;
 	}
@@ -160,8 +161,9 @@ namespace ghassanpl
 	
 	namespace detail 
 	{
-		constexpr float b2f(uint32_t byte) { return (byte & 0xFF) / 255.0f; } 
-		constexpr uint32_t f2b(float f) { return uint8_t(0.5f + f * 255.0f); } 
+		constexpr float b2f(uint32_t byte) { return float(byte & 0xFF) / 255.0f; }
+		constexpr float b2f(uint8_t byte) { return float(byte) / 255.0f; }
+		constexpr uint32_t f2b(float f) { return ::ghassanpl::cem::round(f * 255.0f); }
 		constexpr uint32_t f2u4(float b1, float b2, float b3, float b4) { return (f2b(b1) << 24) | (f2b(b2) << 16) | (f2b(b3) << 8) | f2b(b4); }
 		constexpr uint32_t f2u4(float b1, float b2, float b3) { return (f2b(b1) << 16) | (f2b(b2) << 8) | f2b(b3); }
 
@@ -171,22 +173,22 @@ namespace ghassanpl
 	}
 
 	/// Gets a color from an RGB 8bpp integer, with R being most significant
-	[[nodiscard]] constexpr color_t from_u32_rgb(uint32_t rgb) { return color_t(detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), 1.0f); }
+	[[nodiscard]] constexpr color_t from_u32_rgb(uint32_t rgb) { return { detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), 1.0f }; }
 	/// Gets a color from an BGR 8bpp integer, with R being least significant
-	[[nodiscard]] constexpr color_t from_u32_bgr(uint32_t rgb) { return color_t(detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), 1.0f); }
+	[[nodiscard]] constexpr color_t from_u32_bgr(uint32_t rgb) { return { detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), 1.0f }; }
 	/// Gets a color from an RGBA 8bpp integer, with R being most significant
-	[[nodiscard]] constexpr color_t from_u32_rgba(uint32_t rgb) { return color_t(detail::b2f(rgb >> 24), detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb)); }
+	[[nodiscard]] constexpr color_t from_u32_rgba(uint32_t rgb) { return { detail::b2f(rgb >> 24), detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb) }; }
 	/// Gets a color from an BGRA 8bpp integer, with A being least significant, and B being most significant
-	[[nodiscard]] constexpr color_t from_u32_bgra(uint32_t rgb) { return color_t(detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24), detail::b2f(rgb)); }
+	[[nodiscard]] constexpr color_t from_u32_bgra(uint32_t rgb) { return { detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24), detail::b2f(rgb) }; }
 	/// Gets a color from an ARGB 8bpp integer, with A being most significant, and B being least significant
-	[[nodiscard]] constexpr color_t from_u32_argb(uint32_t rgb) { return color_t(detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), detail::b2f(rgb >> 24)); }
+	[[nodiscard]] constexpr color_t from_u32_argb(uint32_t rgb) { return { detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), detail::b2f(rgb >> 24) }; }
 	/// Gets a color from an ABGR 8bpp integer, with A being most significant, and R being least significant
-	[[nodiscard]] constexpr color_t from_u32_abgr(uint32_t rgb) { return color_t(detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24)); }
+	[[nodiscard]] constexpr color_t from_u32_abgr(uint32_t rgb) { return { detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), detail::b2f(rgb >> 24) }; }
 
 	///
-	[[nodiscard]] constexpr color_t from_u8_rgb(uint8_t r, uint8_t g, uint8_t b) { return color_t(detail::b2f(r), detail::b2f(g), detail::b2f(b), 1.0f); }
+	[[nodiscard]] constexpr color_t from_u8_rgb(uint8_t r, uint8_t g, uint8_t b) { return { detail::b2f(r), detail::b2f(g), detail::b2f(b), 1.0f }; }
 	///
-	[[nodiscard]] constexpr color_t from_u8_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) { return color_t(detail::b2f(r), detail::b2f(g), detail::b2f(b), detail::b2f(a)); }
+	[[nodiscard]] constexpr color_t from_u8_rgba(uint8_t r, uint8_t g, uint8_t b, uint8_t a) { return { detail::b2f(r), detail::b2f(g), detail::b2f(b), detail::b2f(a) }; }
 
 	/// Creates an 8bpp ARGB integer from a color
 	[[nodiscard]] constexpr uint32_t to_u32_argb(color_t const& rgba) { return detail::f2u4(rgba.w, rgba.x, rgba.y, rgba.z); }
@@ -240,13 +242,13 @@ namespace ghassanpl
 		switch (i)
 		{
 		case 6:
-		case 0: return color_t(value, n, m, alpha);
-		case 1: return color_t(n, value, m, alpha);
-		case 2: return color_t(m, value, n, alpha);
-		case 3: return color_t(m, n, value, alpha);
-		case 4: return color_t(n, m, value, alpha);
-		case 5: return color_t(value, m, n, alpha);
-		default: return color_t(value, value, value, alpha);
+		case 0: return {value, n, m, alpha};
+		case 1: return {n, value, m, alpha};
+		case 2: return {m, value, n, alpha};
+		case 3: return {m, n, value, alpha};
+		case 4: return {n, m, value, alpha};
+		case 5: return {value, m, n, alpha};
+		default: return {value, value, value, alpha};
 		}
 	}
 
@@ -278,15 +280,19 @@ namespace ghassanpl
 	}
 
 	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
-	[[nodiscard]] constexpr color_rgba_t from_html(const char* str, size_t n)
+	[[nodiscard]] constexpr std::optional<color_rgba_t> try_from_html(std::string_view html)
 	{
+		auto n = html.size();
+		auto str = html.data();
 		if (n == 0)
-			throw n;
+			return std::nullopt;
+
 		if (str[0] == '#')
 		{
 			str++;
 			n--;
 		}
+
 		uint8_t r{};
 		uint8_t g{};
 		uint8_t b{};
@@ -294,12 +300,12 @@ namespace ghassanpl
 		switch (n)
 		{
 		case 4:
-			std::from_chars(str + 3, str + 4, a, 16); a = a << 4 | a;
+			std::from_chars(str + 3, str + 4, a, 16); a = uint8_t(a << 4) | a;
 			[[fallthrough]];
 		case 3:
-			std::from_chars(str + 0, str + 1, r, 16); r = r << 4 | r;
-			std::from_chars(str + 1, str + 2, g, 16); g = g << 4 | g;
-			std::from_chars(str + 2, str + 3, b, 16); b = b << 4 | b;
+			std::from_chars(str + 0, str + 1, r, 16); r = uint8_t(r << 4) | r;
+			std::from_chars(str + 1, str + 2, g, 16); g = uint8_t(g << 4) | g;
+			std::from_chars(str + 2, str + 3, b, 16); b = uint8_t(b << 4) | b;
 			break;
 		case 8:
 			std::from_chars(str + 6, str + 8, a, 16);
@@ -309,21 +315,23 @@ namespace ghassanpl
 			std::from_chars(str + 2, str + 4, g, 16);
 			std::from_chars(str + 4, str + 6, b, 16);
 			break;
-		default: throw "invalid number of characters";
+		default: return std::nullopt;
 		}
-		return { r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f };
-	}
-
-	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
-	[[nodiscard]] consteval color_rgba_t operator ""_rgb(const char* str, size_t n)
-	{
-		return from_html(str, n);
+		return color_rgba_t{ detail::b2f(r), detail::b2f(g), detail::b2f(b), detail::b2f(a) };
 	}
 
 	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
 	[[nodiscard]] constexpr color_rgba_t from_html(std::string_view html)
 	{
-		return from_html(html.data(), html.size());
+		if (auto const color = try_from_html(html))
+			return *color;
+		throw std::invalid_argument("Invalid HTML color string length");
+	}
+
+	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
+	[[nodiscard]] consteval color_rgba_t operator ""_rgb(const char* str, size_t n)
+	{
+		return from_html({ str, n });
 	}
 
 	///@}

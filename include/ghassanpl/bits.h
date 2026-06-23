@@ -90,7 +90,7 @@ namespace ghassanpl
 
 	/// An unsigned integer type for the given PoT bit size. \hideinitializer
 	template <size_t N>
-	using uintN_t = typename detail::uintN_t_t<N>::value;
+	using uintN_t = detail::uintN_t_t<N>::value;
 	
 	template <typename T>
 	using uint_sizeof_t = uintN_t<sizeof(T) * CHAR_BIT>;
@@ -106,7 +106,7 @@ namespace ghassanpl
 
 	/// An integer type for the given PoT bit size. \hideinitializer
 	template <size_t N>
-	using intN_t = typename detail::intN_t_t<N>::value;
+	using intN_t = detail::intN_t_t<N>::value;
 
 	template <typename T>
 	using int_sizeof_t = intN_t<sizeof(T)* CHAR_BIT>;
@@ -121,7 +121,7 @@ namespace ghassanpl
 
 	/// A signed integer type for the given PoT bit size. \hideinitializer
 	template <bool SIGNED, size_t N>
-	using sintN_t = typename detail::sintN_t_t<SIGNED, N>::value;
+	using sintN_t = detail::sintN_t_t<SIGNED, N>::value;
 
 	/// Creates a new integral value by concatenating the given bit values
 	template <bit_integral... BIT_TYPES>

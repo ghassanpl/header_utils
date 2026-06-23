@@ -27,7 +27,7 @@ namespace ghassanpl
 		template <typename T>
 		std::string condlower(T&& s, enum_flags<uri_decompose_flags> const flags)
 		{
-			return flags.contain(uri_decompose_flags::lowercase_when_appropriate) ? ascii::tolower(std::move(s)) : std::move(s);
+			return flags.contain(uri_decompose_flags::lowercase_when_appropriate) ? ascii::tolower(std::forward<T>(s)) : std::forward<T>(s);
 		}
 
 		static std::string parse_scheme(uri_view& uri, enum_flags<uri_decompose_flags> const flags)
@@ -76,16 +76,16 @@ namespace ghassanpl
 		static std::string try_parse_ipv4(std::string_view& str, enum_flags<uri_decompose_flags> const flags)
 		{
 			auto start = str;
-			auto [_, n1] = consume_c_unsigned(str);
+			auto [_1, n1] = consume_c_unsigned(str);
 			if (n1 < 0 || n1 > 255) return {};
 			if (!consume(str, '.')) return {};
-			auto [__, n2] = consume_c_unsigned(str);
+			auto [_2, n2] = consume_c_unsigned(str);
 			if (n2 < 0 || n2 > 255) return {};
 			if (!consume(str, '.')) return {};
-			auto [___, n3] = consume_c_unsigned(str);
+			auto [_3, n3] = consume_c_unsigned(str);
 			if (n3 < 0 || n3 > 255) return {};
 			if (!consume(str, '.')) return {};
-			auto [____, n4] = consume_c_unsigned(str);
+			auto [_4, n4] = consume_c_unsigned(str);
 			if (n4 < 0 || n4 > 255) return {};
 
 			return make_string(start.begin(), str.begin());
@@ -100,14 +100,14 @@ namespace ghassanpl
 				/// 
 				/// Not checking validity of IP-literals for now
 
-				auto result = consume_until(authority, ']');
+				const auto result = consume_until(authority, ']');
 				if (result.empty() || !consume(authority, ']'))
 					throw uri_error_code::host_malformed;
 				return std::string{ result };
 			}
 			else
 			{
-				auto start = authority;
+				const auto start = authority;
 				auto ipv4 = try_parse_ipv4(authority, flags);
 				if (!ipv4.empty())
 					return ipv4;
@@ -116,7 +116,8 @@ namespace ghassanpl
 				authority = start;
 
 				/// Not checking validity of reg-names for now
-				return condlower(consume_with_pct(authority, [](char c) { return isunreserved(c) || c == '-' || c == '.'; }), flags);
+				//return condlower(consume_with_pct(authority, [](char c) { return isunreserved(c) || c == '-' || c == '.'; }), flags);
+				return condlower(consume_with_pct(authority, [](char c) { return isunreserved(c) || issubdelims(c); }), flags);
 			}
 		}
 
@@ -128,17 +129,20 @@ namespace ghassanpl
 			{
 				std::get<0>(result) = consume_with_pct(authority, [](char c) { return isunreserved(c) || issubdelims(c) || c == ':'; }); /// user_info
 				eat(authority, '@', uri_error_code::authority_malformed);
-				std::get<1>(result) = parse_host(authority, flags);
 			}
-			else
-			{
-				std::get<1>(result) = parse_host(authority, flags); /// host
-			}
+
+			std::get<1>(result) = parse_host(authority, flags); /// host
 
 			if (consume(authority, ':'))
 			{
-				std::get<2>(result) = std::string(consume_while(authority, ascii::isdigit));
+				std::get<2>(result) = std::string(consume_while(authority, ascii::isdigit)); /// port
+
+				if (!authority.empty())
+					throw uri_error_code::port_malformed;
 			}
+
+			if (!authority.empty())
+				throw uri_error_code::authority_malformed;
 
 			return result;
 		}
@@ -279,17 +283,17 @@ namespace ghassanpl
 				result.port = std::move(port);
 			}
 
-			auto [path, elements] = detail::parse_path(!result.authority.empty(), uri, flags);
+			auto [path, path_elements] = detail::parse_path(!result.authority.empty(), uri, flags);
 			result.path = std::move(path);
-			result.path_elements = std::move(elements);
+			result.path_elements = std::move(path_elements);
 			if (flags.contain(uri_decompose_flags::normalize_path))
 				result.path_elements = result.normalized_path();
 
 			if (string_ops::consume(uri, '?'))
 			{
-				auto [query, elements] = detail::parse_query(uri, flags);
+				auto [query, query_elements] = detail::parse_query(uri, flags);
 				result.query = std::move(query);
-				result.query_elements = std::move(elements);
+				result.query_elements = std::move(query_elements);
 			}
 			
 			if (string_ops::consume(uri, '#'))
@@ -396,12 +400,13 @@ namespace ghassanpl
 	known_uri_scheme const* query_uri_scheme(std::string_view scheme)
 	{
 		/// TODO: Should this map be user-extendable?
+		/// TODO: use flat_map_preferred
 		static std::map<std::string, known_uri_scheme const*, std::less<>> const schemes = {
 			{"file", &known_schemes::file},
 			{"http", &known_schemes::http},
 			{"https", &known_schemes::https}
 		};
-		if (auto s = schemes.find(scheme); s != schemes.end())
+		if (auto const s = schemes.find(scheme); s != schemes.end())
 			return s->second;
 		return nullptr;
 	}

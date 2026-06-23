@@ -18,7 +18,7 @@ namespace ghassanpl
 	template <class EF>
 	struct scope_guard
 	{
-		template <class EFP>
+		template <class EFP, class = std::enable_if_t<std::is_invocable_v<EFP>>>
 		explicit scope_guard(EFP&& f) noexcept(noexcept(EFP(std::forward<EFP>(f))))
 			: exit_function(std::forward<EFP>(f))
 		{
@@ -26,8 +26,8 @@ namespace ghassanpl
 
 		scope_guard(scope_guard&& rhs) noexcept(noexcept(EF(std::move(rhs.exit_function))))
 			: exit_function(std::move(rhs.exit_function))
+			, execute_on_destruction(std::exchange(rhs.execute_on_destruction, false))
 		{
-			rhs.release();
 		}
 
 		scope_guard(const scope_guard&) = delete;
@@ -60,7 +60,7 @@ namespace ghassanpl
 	template <class EF>
 	struct counted_scope_guard
 	{
-		template <class EFP>
+		template <class EFP, class = std::enable_if_t<std::is_invocable_v<EFP>>>
 		explicit counted_scope_guard(EFP&& f, int initial_count = 0) noexcept(noexcept(EFP(std::forward<EFP>(f))))
 			: m_exit_function(std::forward<EFP>(f))
 			, m_count(initial_count)
@@ -264,14 +264,14 @@ namespace ghassanpl
 	struct scoped_value_change
 	{
 		template <typename U, bool OPT = IS_OPTIONAL>
-		scoped_value_change(T& ref, U new_val, typename std::enable_if_t<!OPT>* = 0) noexcept(std::is_nothrow_move_constructible_v<T>)
+		scoped_value_change(T& ref, U new_val, typename std::enable_if_t<!OPT>* = nullptr) noexcept(std::is_nothrow_move_constructible_v<T>)
 			: m_ref(std::addressof(ref))
 			, m_original_value(std::exchange(ref, new_val))
 		{
 		}
 
 		template <typename U, bool OPT = IS_OPTIONAL>
-		scoped_value_change(T& ref, U new_val, typename std::enable_if_t<OPT>* = 0) noexcept(std::is_nothrow_move_constructible_v<T> && std::is_nothrow_copy_constructible_v<T>)
+		scoped_value_change(T& ref, U new_val, typename std::enable_if_t<OPT>* = nullptr) noexcept(std::is_nothrow_move_constructible_v<T> && std::is_nothrow_copy_constructible_v<T>)
 			: m_ref(std::addressof(ref))
 			, m_original_value(*m_ref != new_val ? std::exchange(ref, new_val) : ref)
 		{

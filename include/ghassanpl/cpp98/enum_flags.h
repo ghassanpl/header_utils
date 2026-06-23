@@ -43,7 +43,7 @@ namespace ghassanpl
 		value_type bits;
 
 		EF_CONSTEXPR enum_flags() EF_NOEXCEPT : bits(0) {}
-		EF_CONSTEXPR enum_flags(const enum_flags& other) EF_NOEXCEPT : bits(other.bits) {};
+		EF_CONSTEXPR enum_flags(const enum_flags& other) EF_NOEXCEPT : bits(other.bits) {}
 		EF_CONSTEXPR enum_flags& operator=(const enum_flags& other) EF_NOEXCEPT { bits = other.bits; return *this; }
 
 		EF_CONSTEXPR enum_flags(enum_type base_value) EF_NOEXCEPT : bits(flag_bit<VALUE_TYPE>(base_value)) {}

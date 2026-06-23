@@ -63,12 +63,12 @@ namespace ghassanpl
 
 	/// Finds a value in the vector, and erases it, but returns the value
 	template <typename T, typename U>
-	constexpr std::optional<T> erase_single(std::vector<T>& vector, U&& value)
+	constexpr std::optional<T> erase_single(std::vector<T>& vector, U const& value)
 	{
-		const auto it = std::ranges::find(vector, value);
+		const auto it = std::ranges::find_if(vector, [&value](T const& a) { return a == value; });
 		if (it == std::ranges::end(vector))
 			return {};
-		auto&& result = std::move(*it);
+		auto result = std::move(*it);
 		vector.erase(it);
 		return result;
 	}
@@ -77,10 +77,10 @@ namespace ghassanpl
 	template <typename K, typename V, typename COMP, typename U>
 	constexpr std::optional<V> erase_single(std::map<K, V, COMP>& map, U&& key)
 	{
-		const auto it = map.find(key);
+		const auto it = map.find(std::forward<U>(key));
 		if (it == map.end())
 			return {};
-		auto&& result = std::move(it->second);
+		auto result = std::move(it->second);
 		map.erase(it);
 		return result;
 	}
@@ -92,7 +92,7 @@ namespace ghassanpl
 		const auto it = std::ranges::find_if(vector, pred);
 		if (it == std::ranges::end(vector))
 			return {};
-		auto&& result = std::move(*it);
+		auto result = std::move(*it);
 		vector.erase(it);
 		return result;
 	}
@@ -101,11 +101,11 @@ namespace ghassanpl
 	template <typename T, typename U>
 	constexpr std::optional<T> erase_single_swap(std::vector<T>& vector, U&& value)
 	{
-		const auto it = std::ranges::find(vector, value);
+		const auto it = std::ranges::find(vector, std::forward<U>(value));
 		if (it == std::ranges::end(vector))
 			return {};
 
-		auto&& result = std::exchange(*it, std::move(vector.back()));
+		auto result = std::exchange(*it, std::move(vector.back()));
 		vector.pop_back();
 		return result;
 	}
@@ -150,7 +150,7 @@ namespace ghassanpl
 		if (!valid_index(vector, index))
 			return {};
 
-		auto&& result = std::exchange(vector[index], std::move(vector.back()));
+		auto result = std::exchange(vector[index], std::move(vector.back()));
 		vector.pop_back();
 		return result;
 	}
@@ -174,7 +174,7 @@ namespace ghassanpl
 
 	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
 	template <typename DEF, typename KEY, typename MAP>
-	[[nodiscard]] auto map_at_or_default(MAP&& map, KEY&& key, DEF&& def)
+	[[nodiscard]] auto map_at_or_default(MAP& map, KEY&& key, DEF&& def)
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
@@ -184,7 +184,7 @@ namespace ghassanpl
 
 	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
 	template <typename DEF, typename KEY, typename SET>
-	[[nodiscard]] auto set_at_or_default(SET&& set, KEY&& key, DEF&& def)
+	[[nodiscard]] auto set_at_or_default(SET& set, KEY&& key, DEF&& def)
 	{
 		auto it = set.find(std::forward<KEY>(key));
 		if (it != set.end())
@@ -194,7 +194,7 @@ namespace ghassanpl
 
 	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
 	template <typename KEY, typename MAP>
-	[[nodiscard]] auto map_at_or_default(MAP&& map, KEY&& key)
+	[[nodiscard]] auto map_at_or_default(MAP& map, KEY&& key)
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
@@ -204,22 +204,12 @@ namespace ghassanpl
 
 	/// Basically map.at() but works with heterogenous key types
 	template <typename KEY, typename MAP>
-	[[nodiscard]] decltype(auto) map_at(MAP&& map, KEY&& key)
+	[[nodiscard]] decltype(auto) map_at(MAP& map, KEY&& key)
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
 			return ghassanpl::forward_like<MAP>(it->second);
 		throw std::out_of_range("invalid map key");
-	}
-
-	namespace detail
-	{
-		template <typename MAP>
-		inline auto map_key_type(MAP const& val)
-		{
-			auto& [k, v] = *std::begin(val);
-			return decltype(k){};
-		}
 	}
 
 	/// Finds the first `value` of a map element, and returns a pointer to its key, or nullptr if none found
@@ -231,7 +221,7 @@ namespace ghassanpl
 			if (&v == value)
 				return &k;
 		}
-		using map_key_type = decltype(detail::map_key_type(map));
+		using map_key_type = std::remove_cvref_t<decltype(std::begin(map)->first)>;
 		return (map_key_type const*)nullptr;
 	}
 
@@ -244,6 +234,23 @@ namespace ghassanpl
 	/// \see map_find()
 	template <typename K, typename V, typename C, typename VAL>
 	[[nodiscard]] auto at_ptr(std::map<K, V, C>& map, VAL&& value) { return map_find(map, std::forward<VAL>(value)); }
+
+
+	/// Returns a vector with reserved capacity for the number of elements in the given range
+	template <typename T, typename RANGE>
+	[[nodiscard]] std::vector<T> vector_reserved_for(RANGE const& range)
+	{
+		std::vector<T> result;
+		result.reserve(std::ranges::size(range));
+		return result;
+	}
+
+	/// Reserves the vector for the number of elements in the given range
+	template <typename T, typename RANGE>
+	void reserve_for(std::vector<T>& vec, RANGE const& range)
+	{
+		vec.reserve(std::ranges::size(range));
+	}
 
 	/// ordered container movement
 	/*

@@ -5,6 +5,7 @@
 #pragma once
 
 #include "geometry_common.h"
+#include "../align.h"
 
 #include <numbers>
 
@@ -29,14 +30,14 @@ namespace ghassanpl::geometry
 		up,
 		right_up,
 
-		east = 0,
-		south_east,
-		south,
-		south_west,
-		west,
-		north_west,
-		north,
-		north_east
+		east = right,
+		south_east = right_down,
+		south = down,
+		south_west = left_down,
+		west = left,
+		north_west = left_up,
+		north = up,
+		north_east = right_up,
 	};
 
 	static constexpr auto direction_count = 8;

@@ -33,7 +33,7 @@ namespace ghassanpl
 
 	/// Concept to check if a function is a predicate on the range elements (i.e. returns boolable)
 	template <typename RANGE, typename FUNC>
-	concept range_predicate = requires (FUNC func, RANGE range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; };
+	concept range_predicate = requires (FUNC&& func, RANGE&& range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; };
 
 	/// Returns whether or not a given integer is a valid index to a random access `range`
 	[[nodiscard]] constexpr bool valid_index(random_access_range auto& range, std::integral auto index)
@@ -84,7 +84,7 @@ namespace ghassanpl
 	/// Find a value in `range` and returns an index to it
 	template <random_access_range RANGE, typename T>
 	[[nodiscard]] constexpr auto index_of(RANGE const& range, T&& value) -> std::iter_difference_t<range_iterator<RANGE>>
-	requires requires (T value, RANGE range) { { *std::ranges::begin(range) == value } -> std::convertible_to<bool>; }
+	requires requires { { *std::ranges::begin(range) == value } -> std::convertible_to<bool>; }
 	{
 		const auto it = std::ranges::find(range, std::forward<T>(value));
 		if (it == std::ranges::end(range))
@@ -94,7 +94,7 @@ namespace ghassanpl
 
 	/// Return the element at `index` or `default_value` if not a valid index
 	template <random_access_range RANGE, typename T = range_value<RANGE>>
-	[[nodiscard]] constexpr auto at_or_default(RANGE&& range, std::integral auto index, T&& default_value)
+	[[nodiscard]] constexpr auto at_or_default(RANGE& range, std::integral auto index, T&& default_value)
 	{
 		if (!valid_index(range, index)) [[unlikely]] return std::forward<T>(default_value);
 		return at(range, index);
@@ -113,7 +113,7 @@ namespace ghassanpl
 	
 	/// Find a value in `range` that matches `pred`, and returns a pointer to it, or null if none found
 	template <std::ranges::range RANGE, typename FUNC>
-	requires range_predicate<RANGE, FUNC>
+	requires range_predicate<std::remove_cvref_t<RANGE>, FUNC>
 	[[nodiscard]] constexpr auto find_ptr(RANGE& range, FUNC&& pred)
 	{
 		const auto it = std::ranges::find_if(range, std::forward<FUNC>(pred));
@@ -122,7 +122,7 @@ namespace ghassanpl
 
 	/// Find a value in `range` that matches `pred`, and returns it, or `default_value` if none found
 	template <random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_value<RANGE>>
-	requires range_predicate<RANGE, FUNC>
+	requires range_predicate<std::remove_cvref_t<RANGE>, FUNC>
 	[[nodiscard]] auto find_if_or_default(RANGE& range, FUNC&& pred, DEF_TYPE&& default_value = DEF_TYPE{})
 	{
 		auto it = std::ranges::find_if(range, std::forward<FUNC>(pred));
@@ -139,7 +139,7 @@ namespace ghassanpl
 
 	/// Returns whether or not `pointer` is a valid pointer to an element in the contiguous `range`
 	template <contiguous_range RANGE>
-	[[nodiscard]] constexpr bool valid_address(RANGE&& range, range_value<RANGE>* pointer)
+	[[nodiscard]] constexpr bool valid_address(RANGE const& range, range_value<RANGE>* pointer)
 	{
 		if (std::ranges::empty(range)) return false;
 		return pointer >= std::to_address(std::ranges::begin(range)) && pointer < std::to_address(std::ranges::end(range));
@@ -232,7 +232,7 @@ namespace ghassanpl
 	{
 		std::array<T, LL + sizeof...(ARGS)> ar;
 		auto current = std::move(rhs.begin(), rhs.end(), ar.begin());
-		((*current++ = args), ...);
+		((*current++ = std::forward<ARGS>(args)), ...);
 		return ar;
 	}
 
@@ -383,11 +383,11 @@ namespace ghassanpl
 		template <template <class...> class CONTAINER, class RANGE, class... ARGS>
 		auto to_helper()
 		{
-			if constexpr (requires (RANGE range, ARGS... args) { CONTAINER(range, args...); })
+			if constexpr (requires (RANGE&& range, ARGS&&... args) { CONTAINER(range, args...); })
 				return static_cast<decltype(CONTAINER(std::declval<RANGE>(), std::declval<ARGS>()...))*>(nullptr);
-			else if constexpr (requires (RANGE range, ARGS... args) { CONTAINER(from_range, range, args...); })
+			else if constexpr (requires (RANGE && range, ARGS&&... args) { CONTAINER(from_range, range, args...); })
 				return static_cast<decltype(CONTAINER(from_range, std::declval<RANGE>(), std::declval<ARGS>()...))*>(nullptr);
-			else if constexpr (requires (phony_input_iterator<RANGE> it, ARGS... args) { CONTAINER(it, it, args...);})
+			else if constexpr (requires (phony_input_iterator<RANGE> it, ARGS&&... args) { CONTAINER(it, it, args...);})
 				return static_cast<decltype(CONTAINER(std::declval<phony_input_iterator<RANGE>>(), std::declval<phony_input_iterator<RANGE>>(), std::declval<ARGS>()...))*>(nullptr);
 		}
 

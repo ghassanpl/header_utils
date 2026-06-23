@@ -177,18 +177,18 @@ TYPED_TEST_SUITE(CharTestFixture, CharTypes);
 #undef FU
 
 #define FU(x) \
-	EXPECT_EQ(ascii::isalpha(x), (x < 256) ? (bool)::isalpha(x) : false); \
-	EXPECT_EQ(ascii::isdigit(x), (x < 256) ? (bool)::isdigit(x) : false); \
-	EXPECT_EQ(ascii::isxdigit(x),(x < 256) ? (bool)::isxdigit(x) : false); \
-	EXPECT_EQ(ascii::isalnum(x), (x < 256) ? (bool)::isalnum(x) : false); \
-	EXPECT_EQ(ascii::isspace(x), (x < 256) ? (bool)::isspace(x) : false); \
-	EXPECT_EQ(ascii::ispunct(x), (x < 256) ? (bool)::ispunct(x) : false); \
-	EXPECT_EQ(ascii::islower(x), (x < 256) ? (bool)::islower(x) : false); \
-	EXPECT_EQ(ascii::isupper(x), (x < 256) ? (bool)::isupper(x) : false); \
-	EXPECT_EQ(ascii::iscntrl(x), (x < 256) ? (bool)::iscntrl(x) : false); \
-	EXPECT_EQ(ascii::isblank(x), (x < 256) ? (bool)::isblank(x) : false); \
-	EXPECT_EQ(ascii::isgraph(x), (x < 256) ? (bool)::isgraph(x) : false); \
-	EXPECT_EQ(ascii::isprint(x), (x < 256) ? (bool)::isprint(x) : false); \
+	EXPECT_EQ(ascii::isalpha(char32_t(x)), ((x) < 256) ? (bool)::isalpha(x) : false); \
+	EXPECT_EQ(ascii::isdigit(char32_t(x)), ((x) < 256) ? (bool)::isdigit(x) : false); \
+	EXPECT_EQ(ascii::isxdigit(char32_t(x)),((x) < 256) ? (bool)::isxdigit(x) : false); \
+	EXPECT_EQ(ascii::isalnum(char32_t(x)), ((x) < 256) ? (bool)::isalnum(x) : false); \
+	EXPECT_EQ(ascii::isspace(char32_t(x)), ((x) < 256) ? (bool)::isspace(x) : false); \
+	EXPECT_EQ(ascii::ispunct(char32_t(x)), ((x) < 256) ? (bool)::ispunct(x) : false); \
+	EXPECT_EQ(ascii::islower(char32_t(x)), ((x) < 256) ? (bool)::islower(x) : false); \
+	EXPECT_EQ(ascii::isupper(char32_t(x)), ((x) < 256) ? (bool)::isupper(x) : false); \
+	EXPECT_EQ(ascii::iscntrl(char32_t(x)), ((x) < 256) ? (bool)::iscntrl(x) : false); \
+	EXPECT_EQ(ascii::isblank(char32_t(x)), ((x) < 256) ? (bool)::isblank(x) : false); \
+	EXPECT_EQ(ascii::isgraph(char32_t(x)), ((x) < 256) ? (bool)::isgraph(x) : false); \
+	EXPECT_EQ(ascii::isprint(char32_t(x)), ((x) < 256) ? (bool)::isprint(x) : false)
 
 TYPED_TEST(CharTestFixture, ascii_works_with_all_char_types)
 {
@@ -201,9 +201,9 @@ TYPED_TEST(CharTestFixture, ascii_works_with_all_char_types)
 	static_assert((sizeof(TypeParam) < 4) == std::is_same_v<decltype(this->long_value), int>);
 	static_assert((sizeof(TypeParam) < 2) == std::is_same_v<decltype(this->utf_value), int>);
 
-	EXPECT_TRUE(isascii(this->null_value));
-	EXPECT_TRUE(isascii(this->zero_value));
-	EXPECT_TRUE(isascii(this->a_value));
+	EXPECT_TRUE(isascii(char32_t(this->null_value)));
+	EXPECT_TRUE(isascii(char32_t(this->zero_value)));
+	EXPECT_TRUE(isascii(char32_t(this->a_value)));
 	EXPECT_FALSE(isascii(this->long_value)) << (int)this->long_value;
 	EXPECT_FALSE(isascii(this->utf_value));
 }
@@ -239,19 +239,28 @@ TEST(string_ops_test, make_string_works)
 
 TEST(string_ops_test, to_string_works)
 {
-	auto sv = std::string_view{};
+	{
+		static_assert(std::same_as<decltype(to_string("hello")), std::string>);
+		std::string s;
+		static_assert(std::same_as<decltype(to_string(s)), std::string const&>);
+		static_assert(std::same_as<decltype(to_string(std::move(s))), std::string>);
+	}
+
+	constexpr auto sv = std::string_view{};
 	auto s = to_string(sv);
+	static_assert(std::same_as<decltype(s), std::string>);
 	EXPECT_EQ(s, sv);
 
-	string so = "hello world";
+
+	string const so = "hello world";
 	EXPECT_EQ(to_string(so), so);
 	EXPECT_EQ(to_string("hello world"), so);
 }
 
 TEST(string_ops_test, trims_work)
 {
-	const auto base_test = "  \t\n\r\n\r\r\r \n\n\n\va0\n\n \n\tasd\n\b\v \v\t"sv;
-	const auto only_ws = "  \t\n\r\n\r\r\r \n\n\n\v"sv;
+	constexpr auto base_test = "  \t\n\r\n\r\r\r \n\n\n\va0\n\n \n\tasd\n\b\v \v\t"sv;
+	constexpr auto only_ws = "  \t\n\r\n\r\r\r \n\n\n\v"sv;
 	EXPECT_EQ(trimmed_whitespace_left(base_test), "a0\n\n \n\tasd\n\b\v \v\t");
 	EXPECT_EQ(trimmed_whitespace_right(base_test), "  \t\n\r\n\r\r\r \n\n\n\va0\n\n \n\tasd\n\b");
 	EXPECT_EQ(trimmed_whitespace(base_test), "a0\n\n \n\tasd\n\b");
@@ -536,4 +545,21 @@ TEST(string_ops, split_range_works)
 	EXPECT_EQ(split[6], "long");
 	EXPECT_EQ(split[7], "string");
 	EXPECT_EQ(split[8], "many");
+}
+
+
+TEST(string_ops, word_wrap_works)
+{
+	const auto split = word_wrap("hello\n      world my dear? dear ? ", 100ULL, [](std::string_view getter) { return std::size(getter) * 7; });
+
+	ASSERT_EQ(split.size(), 3);
+	EXPECT_EQ(split[0], "hello");
+	EXPECT_EQ(split[1], "      world my ");
+	EXPECT_EQ(split[2], "dear? dear ? ");
+}
+
+TEST(join_and, works_for_mutating_views)
+{
+	string_view sv = "hello!";
+	EXPECT_EQ(join_and(sv | std::views::filter(ascii::islower), ", ", ", and "), "h, e, l, l, and o");
 }

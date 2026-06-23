@@ -40,7 +40,7 @@ namespace ghassanpl::formats
 		//	      but reuse its storage (and the storage of its members)
 		// TODO: Extend this to use our own buffers API
 		template <typename BUFFER, typename ROW_CALLBACK>
-		intptr_t load(BUFFER&& buffer, ROW_CALLBACK&& row_callback)
+		intptr_t load(BUFFER& buffer, ROW_CALLBACK&& row_callback)
 		{
 			using ghassanpl::formats::detail::get_char;
 			using ghassanpl::formats::detail::get_invalid_char;
@@ -66,7 +66,7 @@ namespace ghassanpl::formats
 						if (cp != '"')
 						{
 							in_quote = false;
-							goto no_quote;
+							goto no_quote; /// raptor check
 						}
 					}
 					current_cell += (char)cp;

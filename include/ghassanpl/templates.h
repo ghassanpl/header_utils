@@ -316,7 +316,7 @@ namespace ghassanpl
 			requires (!std::is_same_v<T, pass_identity>)
 			T operator* (T&& obj) const { return std::forward<T>(obj); }
 
-			pass_identity operator* (pass_identity&&) const { return {}; }
+			constexpr pass_identity operator* (pass_identity&&) const { return {}; }
 		};
 
 		template <typename T>
@@ -408,7 +408,7 @@ namespace ghassanpl
 			else if constexpr (std::is_invocable_v<FUNC, VALUE>)
 				func(std::forward<VALUE>(value));
 			else if constexpr (std::is_invocable_v<FUNC, size_t, std::type_identity<VALUE>>)
-				func(std::forward<VALUE>(value));
+				func(INDEX, std::type_identity<VALUE>{});
 			else
 				func(INDEX);
 		}

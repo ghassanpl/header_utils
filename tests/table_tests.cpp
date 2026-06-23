@@ -12,8 +12,8 @@ using namespace ghassanpl;
 struct row_type
 {
 	const std::string id;
-	int a;
-	int b;
+	int a = 0;
+	int b = 0;
 };
 
 TEST(table_type, works)

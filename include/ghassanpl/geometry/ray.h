@@ -24,8 +24,8 @@ namespace ghassanpl::geometry
 
 		basic_line_t<T> line() const noexcept { return line_from_dir(dir); }
 
-		tray from_dir(tvec const& start, tvec const& dir) noexcept { return { start, glm::normalize(dir) }; }
-		tray from_points(tvec const& start, tvec const& second) noexcept { return from_dir(start, second - start); }
+		static tray from_dir(tvec const& start, tvec const& dir) noexcept { return { start, glm::normalize(dir) }; }
+		static tray from_points(tvec const& start, tvec const& second) noexcept { return from_dir(start, second - start); }
 		
 		tray& set_position(tvec const& pos) noexcept { start = pos; return *this; }
 		tray& operator+=(tvec const& offs) noexcept { start += offs; return *this; }

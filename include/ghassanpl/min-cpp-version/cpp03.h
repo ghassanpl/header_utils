@@ -1,5 +1,7 @@
 #pragma once
 
+#include <version>
+
 #if __cplusplus >= 199711L
 #define GHPL_CPP03 1
 #endif

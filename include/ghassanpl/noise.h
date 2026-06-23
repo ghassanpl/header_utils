@@ -99,8 +99,8 @@ namespace ghassanpl::noise
 	{
 		static_assert(std::is_floating_point_v<F>, "simplex_noise only works with floating point arguments");
 
-		int32_t i0 = detail::fastfloor(x);
-		int32_t i1 = i0 + 1;
+		const int32_t i0 = detail::fastfloor(x);
+		const int32_t i1 = i0 + 1;
 
 		F x0 = x - i0;
 		F x1 = x0 - F(1.0);
@@ -138,32 +138,24 @@ namespace ghassanpl::noise
 		const F x0 = x - X0;
 		const F y0 = y - Y0;
 
-		int32_t i1 = 0;
-		int32_t j1 =0;
-		if (x0 > y0) {
-			i1 = 1;
-			j1 = 0;
-		}
-		else {
-			i1 = 0;
-			j1 = 1;
-		}
+		const int32_t i1 = x0 > y0;
+		const int32_t j1 = !i1;
 
 		const F x1 = x0 - i1 + G2;
 		const F y1 = y0 - j1 + G2;
 		const F x2 = x0 - F(1.0) + F(2.0) * G2;
 		const F y2 = y0 - F(1.0) + F(2.0) * G2;
 
-		const int gi0 = hash(i + hash(j));
-		const int gi1 = hash(i + i1 + hash(j + j1));
-		const int gi2 = hash(i + 1 + hash(j + 1));
+		const int gi0 = detail::hash(i + detail::hash(j));
+		const int gi1 = detail::hash(i + i1 + detail::hash(j + j1));
+		const int gi2 = detail::hash(i + 1 + detail::hash(j + 1));
 
 		F n0;
 		if (F t0 = F(0.5) - x0 * x0 - y0 * y0; t0 < F(0.0))
 			n0 = F(0.0);
 		else {
 			t0 *= t0;
-			n0 = t0 * t0 * grad(gi0, x0, y0);
+			n0 = t0 * t0 * detail::grad(gi0, x0, y0);
 		}
 
 		F n1;
@@ -171,7 +163,7 @@ namespace ghassanpl::noise
 			n1 = F(0.0);
 		else {
 			t1 *= t1;
-			n1 = t1 * t1 * grad(gi1, x1, y1);
+			n1 = t1 * t1 * detail::grad(gi1, x1, y1);
 		}
 
 		F n2;
@@ -179,7 +171,7 @@ namespace ghassanpl::noise
 			n2 = F(0.0);
 		else {
 			t2 *= t2;
-			n2 = t2 * t2 * grad(gi2, x2, y2);
+			n2 = t2 * t2 * detail::grad(gi2, x2, y2);
 		}
 
 		return F(45.23065) * (n0 + n1 + n2);

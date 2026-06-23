@@ -69,21 +69,21 @@ namespace ghassanpl
 
 			typedef HINSTANCE HMODULE;
 
-			typedef struct _COORD {
+			typedef struct {
 				SHORT X;
 				SHORT Y;
 			} COORD, * PCOORD;
-			typedef struct _SMALL_RECT {
+			typedef struct {
 				SHORT Left;
 				SHORT Top;
 				SHORT Right;
 				SHORT Bottom;
 			} SMALL_RECT;
-			typedef struct _POINTFLOAT {
+			typedef struct {
 				FLOAT x;
 				FLOAT y;
 			} POINTFLOAT, * LPPOINTFLOAT;
-			typedef struct _RECT {
+			typedef struct {
 				LONG left;
 				LONG top;
 				LONG right;
@@ -213,7 +213,9 @@ namespace ghassanpl
 			GHPL_WINAPI void GHPL_APIENTRY CoUninitialize();
 		}
 
+#ifndef WINUSERAPI
 		inline constexpr auto LOWORD(DWORD_PTR l) { return ((WORD)(((DWORD_PTR)(l)) & 0xffff)); }
 		inline constexpr auto HIWORD(DWORD_PTR l) { return ((WORD)((((DWORD_PTR)(l)) >> 16) & 0xffff)); }
+#endif
 	}
 }

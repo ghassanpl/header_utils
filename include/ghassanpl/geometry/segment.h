@@ -103,7 +103,7 @@ namespace ghassanpl::geometry
 		using parent_type = tbasic_segment<glm::tvec2<T>, tsegment<T>>;
 		using parent_type::parent_type;
 		using typename parent_type::tvec;
-		using parent_type::value_type;
+		using typename parent_type::value_type;
 
 		basic_line_t<T> line() const noexcept { return line_crossing_points(this->start, this->end); }
 

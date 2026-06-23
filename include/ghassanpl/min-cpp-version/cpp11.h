@@ -1,6 +1,10 @@
 #pragma once
 #include "../min-cpp-version/cpp03.h"
 
+#if defined(__cpp_lib_type_identity) && __cpp_lib_type_identity >= 201806L
+#include <type_traits>
+#endif
+
 #if __cplusplus < 201103L && (!defined(_MSVC_LANG) || _MSVC_LANG < 201103L)
 #error "This file requires compiler and library support for the ISO C++ 2011 standard."
 #endif
@@ -21,5 +25,5 @@ namespace ghassanpl
 	template <typename T>
 	constexpr T default_value() noexcept { return T{}; }
 	template <>
-	constexpr void default_value<void>() noexcept { }
+	constexpr void default_value<void>() noexcept {}
 }

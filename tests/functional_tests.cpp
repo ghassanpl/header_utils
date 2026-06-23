@@ -2,6 +2,8 @@
 /// License, v. 2.0. If a copy of the MPL was not distributed with this
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <algorithm>
+
 #include "../include/ghassanpl/multicast.h"
 #include "../include/ghassanpl/functional.h"
 #include "tests_common.h"
@@ -14,6 +16,7 @@ using namespace std::string_literals;
 TEST(multicast_function, works)
 {
 	mutlticast_function<int(int)> delegate;
+	mutlticast_function<int(int)> delegate2 = delegate;
 
 	int called = 0;
 	bool called_a{}, called_b{}, called_c{};
@@ -87,20 +90,20 @@ TEST(multicast_function, doesnt_break_references)
 TEST(make_single_time_function, works)
 {
 	int called = 0;
-	auto f = make_single_time_function([&]() { called++; });
-	std::function<void()> meh = [&]() { called++; };
+	auto f = make_single_time_function([&](int p) { called += p; });
+	std::function<void(int)> meh = [&](int p) { called += p; };
 	auto f2 = make_single_time_function(meh);
 
 	for (int i = 0; i < 10; ++i)
 	{
-		f();
+		f(1);
 		EXPECT_EQ(called, 1);
 	}
 
 	for (int i = 0; i < 10; ++i)
 	{
-		f2();
-		EXPECT_EQ(called, 2);
+		f2(2);
+		EXPECT_EQ(called, 3);
 	}
 }
 
@@ -118,11 +121,6 @@ TEST(optional_transform, works)
 
 	auto res2 = i.transform([](int i) { return std::to_string(i); });
 	EXPECT_EQ(res2, "50");
-}
-
-TEST(predicates, work)
-{
-
 }
 
 template <typename... ARGS>
@@ -269,4 +267,20 @@ TEST(op_functions, work)
 	static_assert(!resulting_works<int const>());
 	static_assert(!resulting_works<>());
 	static_assert(!resulting_call_auto());
+}
+
+struct HierarchyBase { virtual ~HierarchyBase() noexcept = default; };
+struct A : HierarchyBase {};
+struct B : A {};
+
+
+TEST(predicates, work)
+{
+	std::vector<std::unique_ptr<HierarchyBase>> ptrs;
+	ptrs.push_back(std::make_unique<B>());
+	ptrs.push_back(std::make_unique<A>());
+	ptrs.push_back(std::make_unique<B>());
+
+	EXPECT_EQ(std::ranges::count_if(ptrs, ghassanpl::pred::of_type<B*>()), 2);
+	EXPECT_EQ(std::ranges::count_if(ptrs, ghassanpl::pred::of_type<A*>()), 3);
 }

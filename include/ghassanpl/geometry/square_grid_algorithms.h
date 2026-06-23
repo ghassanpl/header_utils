@@ -29,7 +29,7 @@ namespace ghassanpl::geometry::squares
 			std::vector<glm::ivec2> neighbors;
 			current_iteration.for_each_tile_in_rect(rect, [&](glm::ivec2 pos) {
 				neighbors.clear();
-				current_iteration.for_each_neighbor<neighbor_iteration_flags>(pos, op::push_back_to(neighbors));
+				current_iteration.template for_each_neighbor<neighbor_iteration_flags>(pos, op::push_back_to(neighbors));
 				func(previous_iteration[pos], std::span<glm::ivec2 const>{ neighbors });
 			});
 
@@ -78,7 +78,7 @@ namespace ghassanpl::geometry::squares
 		queue.push(start);
 		while (!queue.empty())
 		{
-			auto n = queue.front();
+			auto const n = queue.front();
 			queue.pop();
 
 			auto l = n, r = glm::ivec2{ n.x + 1, n.y };

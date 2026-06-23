@@ -33,30 +33,30 @@ namespace ghassanpl
 
 	/// Resolves to the destination element type of the buffer
 	template <typename BUFFER>
-	using buffer_element_type = typename decltype(detail::deduce_buffer_element_type<BUFFER>())::type;
+	using buffer_element_type = decltype(detail::deduce_buffer_element_type<BUFFER>())::type;
 
 	/// Primary function to append a value (preferably the buffer element type) to the buffer
 	template <typename BUFFER, typename T>
-	bool buffer_append(BUFFER&& buffer, T&& val)
+	bool buffer_append(BUFFER& buffer, T&& val)
 	{
-		if constexpr (requires { buffer.append(val); })
+		if constexpr (requires { buffer.append(std::forward<T>(val)); })
 		{
-			buffer.append(val);
+			buffer.append(std::forward<T>(val));
 			return true;
 		}
-		else if constexpr (requires { buffer.push_back(val); })
+		else if constexpr (requires { buffer.push_back(std::forward<T>(val)); })
 		{
-			buffer.push_back(val);
+			buffer.push_back(std::forward<T>(val));
 			return true;
 		}
-		else if constexpr (requires { buffer.insert(buffer.end(), val); })
+		else if constexpr (requires { buffer.insert(buffer.end(), std::forward<T>(val)); })
 		{
-			buffer.insert(buffer.end(), val);
+			buffer.insert(buffer.end(), std::forward<T>(val));
 			return true;
 		}
-		else if constexpr (requires { buffer.put(val); }) /// for ostreams
+		else if constexpr (requires { buffer.put(std::forward<T>(val)); }) /// for ostreams
 		{
-			buffer.put(val);
+			buffer.put(std::forward<T>(val)	);
 			return true;
 		}
 		else
@@ -196,7 +196,7 @@ namespace ghassanpl
 	/// \sa buffer_append_utf8(BUFFER& buffer, char32_t cp)
 	template <typename BUFFER, typename STRING_TYPE, typename ELEMENT_TYPE = buffer_element_type<BUFFER>>
 	requires output_buffer<BUFFER, ELEMENT_TYPE> && std::ranges::range<STRING_TYPE> && std::same_as<std::ranges::range_value_t<STRING_TYPE>, char32_t>
-	size_t buffer_append_utf8(BUFFER& buffer, STRING_TYPE&& str)
+	size_t buffer_append_utf8(BUFFER& buffer, STRING_TYPE const& str)
 	{
 		size_t count = 0;
 		for (auto cp : str)
@@ -296,7 +296,7 @@ namespace ghassanpl
 	{
 		//static_assert(compressor<COMPRESSOR>, "comp must be a compressor");
 		return compressor_restart(comp)
-			.and_then([&] { return compressor_compress_fragment(comp, input_range, buffer); })
+			.and_then([&] { return compressor_compress_fragment(comp, std::forward<RANGE>(input_range), buffer); })
 			.and_then([&] { return compressor_finalize(comp, buffer); });
 	}
 }

@@ -6,7 +6,6 @@
 
 #include "string_ops.h"
 #include "parsing.h"
-#include "ranges.h"
 #include <nlohmann/json.hpp>
 
 namespace ghassanpl::formats::sexpressions
@@ -51,7 +50,7 @@ namespace ghassanpl::formats::sexpressions
 
 		/// Try comma as a unique token
 		if (string_ops::consume(sexp_str, ','))
-			return nlohmann::json(",");
+			return ",";
 
 		/// Then, try everything else until whitespace, closing brace or comma
 		auto result = string_ops::consume_until_any(sexp_str, 

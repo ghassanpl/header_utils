@@ -346,7 +346,7 @@ namespace ghassanpl::random
 
 	/// Returns an pointer to a random element in `cont`.
 	template <typename RANDOM = std::default_random_engine, typename T>
-	[[nodiscard]] auto* element(T&& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto* element(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::end;
 		auto result = iterator(cont, rng);
@@ -355,7 +355,7 @@ namespace ghassanpl::random
 	
 	/// Returns an pointer to a random element in `cont` that matches `pred`.
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>
-	[[nodiscard]] auto* element_if(T&& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto* element_if(T& cont, PRED&& pred, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
 		using std::end;
 		auto result = iterator_if(cont, std::forward<PRED>(pred), rng);
@@ -376,7 +376,7 @@ namespace ghassanpl::random
 	template <typename RANDOM = std::default_random_engine, typename T>
 	[[nodiscard]] auto one_of(std::initializer_list<T> values, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
-		if (values.size() == 0) throw std::invalid_argument("values");
+		if (values.empty()) throw std::invalid_argument("values");
 		return *element(values, rng);
 	}
 

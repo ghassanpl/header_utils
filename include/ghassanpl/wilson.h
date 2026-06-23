@@ -104,7 +104,7 @@ namespace ghassanpl::formats::wilson
 	/// Outputs `value` formatted as a string to the `strm` output stream.
 	inline void output_to_stream(std::ostream& strm, wilson const& value, output_parameters const& parameters = {})
 	{
-		output([&](std::string_view val) { strm.write(val.data(), val.size()); }, value, parameters);
+		output([&](std::string_view val) { strm.write(val.data(), std::streamsize(val.size())); }, value, parameters);
 	}
 
 	/// Returns `value` formatted as a string.

@@ -58,3 +58,13 @@ TEST(optional_scoped_value_change, works)
 	EXPECT_EQ(v.data(), data);
 	free(data2);
 }
+
+TEST(scope_guard, works)
+{
+	bool booped = false;
+	{
+		scope_guard guard{ [&] { booped = true; } };
+		EXPECT_EQ(booped, false);
+	}
+	EXPECT_EQ(booped, true);
+}

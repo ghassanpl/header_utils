@@ -6,7 +6,7 @@
 
 #include <nlohmann/json.hpp>
 #include <fstream>
-#include "formats.h"
+//#include "formats.h"
 #include "unicode.h"
 #include "mmap.h"
 #include "expected.h"
@@ -240,34 +240,34 @@ namespace ghassanpl::formats
 
 		/// Gets the item in the json object `g` with the key `key`, or an empty json object if none found.
 		/// \param type the value must also be of this type
-		inline [[nodiscard]] nlohmann::json const& get(nlohmann::json const& g, std::string_view key, jtype type = jtype::discarded)
+		[[nodiscard]] inline nlohmann::json const& get(nlohmann::json const& g, std::string_view key, jtype type = jtype::discarded)
 		{
-			if (auto it = g.find(key); it != g.end() && (type == jtype::discarded || it->type() == type))
+			if (auto const it = g.find(key); it != g.end() && (type == jtype::discarded || it->type() == type))
 				return *it;
-			return json::empty_json;
+			return empty_json;
 		}
 
-		inline [[nodiscard]] nlohmann::json const* get_ptr(nlohmann::json const& g, std::string_view key, jtype type = jtype::discarded)
+		[[nodiscard]] inline nlohmann::json const* get_ptr(nlohmann::json const& g, std::string_view key, jtype type = jtype::discarded)
 		{
-			if (auto it = g.find(key); it != g.end() && (type == jtype::discarded || it->type() == type))
+			if (auto const it = g.find(key); it != g.end() && (type == jtype::discarded || it->type() == type))
 				return &*it;
 			return nullptr;
 		}
 
 		/// Gets the array value in the json object `g` with the key `key`, or an empty array if none found.
-		inline [[nodiscard]] nlohmann::json const& get_array(nlohmann::json const& g, std::string_view key)
+		[[nodiscard]] inline nlohmann::json const& get_array(nlohmann::json const& g, std::string_view key)
 		{
-			if (auto it = g.find(key); it != g.end() && it->type() == jtype::array)
+			if (auto const it = g.find(key); it != g.end() && it->type() == jtype::array)
 				return *it;
-			return json::empty_json_array;
+			return empty_json_array;
 		}
 
 		/// Gets the object value in the json object `g` with the key `key`, or an empty array if none found.
-		inline [[nodiscard]] nlohmann::json const& get_object(nlohmann::json const& g, std::string_view key)
+		[[nodiscard]] inline nlohmann::json const& get_object(nlohmann::json const& g, std::string_view key)
 		{
-			if (auto it = g.find(key); it != g.end() && it->type() == jtype::object)
+			if (auto const it = g.find(key); it != g.end() && it->type() == jtype::object)
 				return *it;
-			return json::empty_json_object;
+			return empty_json_object;
 		}
 
 		/// Gets the value from the item in json object `g` with key `key`, to `val`
@@ -275,21 +275,18 @@ namespace ghassanpl::formats
 		template <typename T>
 		inline void get_field(T& val, nlohmann::json const& g, std::string_view key)
 		{
+			auto const it = g.find(key);
+			if (it == g.end())
+				throw std::runtime_error(std::format("no key \"{}\" found", key));
 			try
 			{
-				auto it = g.find(key);
-				if (it != g.end())
-				{
-					val = *it;
-					return;
-				}
+				val = *it;
 			}
 			catch (...)
 			{
 				std::throw_with_nested(std::runtime_error{ std::format("while trying to convert value at key \"{}\" to type {}", key, typeid(T).name()) });
 			}
 
-			throw std::runtime_error(std::format("no key \"{}\" found", key));
 		}
 
 		/// Same as \c field() but returns false if it fails, instead of throwing.
@@ -298,20 +295,19 @@ namespace ghassanpl::formats
 		template <typename T>
 		inline bool get_field_opt(T& val, nlohmann::json const& g, std::string_view key)
 		{
+			auto const it = g.find(key);
+			if (it == g.end())
+				return false;
+
 			try
 			{
-				auto it = g.find(key);
-				if (it != g.end())
-				{
-					val = *it;
-					return true;
-				}
+				val = *it;
+				return true;
 			}
 			catch (...)
 			{
 				//std::throw_with_nested(std::runtime_error{ std::format("while trying to convert value at key \"{}\" to type {}", key, typeid(T).name()) });
 			}
-			return false;
 		}
 
 		/// \exception std::runtime_error on error (no key found, cannot convert json to `val` type, etc.)
@@ -320,7 +316,7 @@ namespace ghassanpl::formats
 		{
 			try
 			{
-				auto it = g.find(key);
+				auto const it = g.find(key);
 				if (it != g.end())
 					return *it;
 			}
@@ -332,20 +328,19 @@ namespace ghassanpl::formats
 			throw std::runtime_error(std::format("no key \"{}\" found", key));
 		}
 
-		/// \exception std::runtime_error on error (no key found, cannot convert json to `val` type, etc.)
 		template <typename T>
-		[[nodiscard]] T get_field_val_or_default(nlohmann::json const& g, std::string_view key, T default_val = {})
+		[[nodiscard]] T get_field_val_or_default(nlohmann::json const& g, std::string_view key, T&& default_val = T{})
 		{
 			try
 			{
-				auto it = g.find(key);
+				auto const it = g.find(key);
 				if (it != g.end())
-					return T{ *it };
+					return *it;
 			}
 			catch (...)
 			{
 			}
-			return default_val;
+			return std::forward<T>(default_val);
 		}
 
 		/// @}
@@ -357,7 +352,7 @@ namespace ghassanpl::formats
 		/// \ingroup Formats
 		/// @{
 
-		inline expected<nlohmann::json, std::error_code> load_file(std::filesystem::path const& from)
+		[[nodiscard]] inline expected<nlohmann::json, std::error_code> load_file(std::filesystem::path const& from)
 		{
 			std::error_code ec{};
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
@@ -366,25 +361,24 @@ namespace ghassanpl::formats
 			return nlohmann::json::from_ubjson(source);
 		}
 
-		inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json or_json)
+		[[nodiscard]] inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json or_json)
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
 			return ec ? std::move(or_json) : nlohmann::json::from_ubjson(source);
 		}
 
-		inline nlohmann::json try_load_file(std::filesystem::path const& from)
+		[[nodiscard]] inline nlohmann::json try_load_file(std::filesystem::path const& from)
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<char>(from, ec);
 			return ec ? json::empty_json : nlohmann::json::from_ubjson(source);
 		}
 
-		inline expected<void, std::error_code> save_file(std::filesystem::path const& to, nlohmann::json const& j)
+		[[nodiscard]] inline expected<void, std::error_code> save_file(std::filesystem::path const& to, nlohmann::json const& j)
 		{
 			std::ofstream out;
-			std::ios_base::iostate exceptionMask = out.exceptions() | std::ios::failbit;
-			out.exceptions(exceptionMask);
+			out.exceptions(out.exceptions() | std::ios::failbit);
 			try
 			{
 				out.open(to, std::ios::binary);
@@ -407,7 +401,7 @@ namespace ghassanpl::formats
 		/// \ingroup Formats
 		/// @{
 
-		inline expected<nlohmann::json, std::error_code> load_file(std::filesystem::path const& from)
+		[[nodiscard]] inline expected<nlohmann::json, std::error_code> load_file(std::filesystem::path const& from)
 		{
 			std::error_code ec{};
 			auto source = ghassanpl::make_mmap_source<uint8_t>(from, ec);
@@ -416,14 +410,14 @@ namespace ghassanpl::formats
 			return nlohmann::json::from_cbor(source);
 		}
 
-		inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json or_json)
+		[[nodiscard]] inline nlohmann::json try_load_file(std::filesystem::path const& from, nlohmann::json or_json)
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<uint8_t>(from, ec);
 			return ec ? std::move(or_json) : nlohmann::json::from_cbor(source);
 		}
 
-		inline nlohmann::json try_load_file(std::filesystem::path const& from)
+		[[nodiscard]] inline nlohmann::json try_load_file(std::filesystem::path const& from)
 		{
 			std::error_code ec;
 			auto source = ghassanpl::make_mmap_source<uint8_t>(from, ec);
@@ -499,7 +493,7 @@ namespace ghassanpl::formats
 				if constexpr (std::same_as<std::remove_cvref_t<T>, nlohmann::json>)
 				{
 					if (val.is_string())
-						return ensure_delimited_for_csv(val.get_ref<nlohmann::json::string_t const&>(), temp, raw);
+						return ensure_delimited_for_csv(val.template get_ref<nlohmann::json::string_t const&>(), temp, raw);
 					else if (val.is_primitive()) /// Bools, nulls and numbers will never be delimited, but still need to be strringified
 					{
 						temp = to_string(val);
@@ -534,13 +528,13 @@ namespace ghassanpl::formats
 				{
 					std::ofstream file{ output, std::ios::binary };
 					return outputter_for([file = std::move(file)](std::string_view value) mutable {
-						file.write(value.data(), value.size());
+						file.write(value.data(), std::streamsize(value.size()));
 					});
 				}
 				else if constexpr (std::is_lvalue_reference_v<OUTPUT_TYPE> && std::is_base_of_v<std::ostream, std::remove_cvref_t<OUTPUT_TYPE>>)
 				{
 					return outputter_for([&](std::string_view value) {
-						output.write(value.data(), value.size());
+						output.write(value.data(), std::streamsize(value.size()));
 					});
 				}
 				else if constexpr (std::invocable<OUTPUT_TYPE, std::string_view>)
@@ -563,13 +557,12 @@ namespace ghassanpl::formats
 		/// does the minimum amount of allocations reasonable
 		/// TODO: UNTESTED
 		template <typename OUTPUT_TYPE>
-		void json_to_csv(nlohmann::json const& j, OUTPUT_TYPE&& output, std::span<const std::string_view> column_names)
+		void json_to_csv(nlohmann::json const& j, OUTPUT_TYPE& output, std::span<const std::string_view> column_names)
 		{
 			if (!j.is_array())
 				throw std::invalid_argument("json must be an array of objects");
 
 			const nlohmann::json empty_string = "";
-			const size_t row_count = j.size();
 
 			auto outputter = detail::outputter_for(output);
 
@@ -614,7 +607,7 @@ namespace ghassanpl::formats
 					}
 				}
 
-				bool first = false;
+				first = false;
 				for (auto& cell : row)
 				{
 					if (std::exchange(first, true)) outputter(",", true);

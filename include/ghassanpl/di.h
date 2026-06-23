@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp20.h"
 #include <typeindex>
 #include <vector>
 #include <memory>
@@ -11,7 +12,6 @@
 #include <functional>
 #include <string>
 #include <thread>
-#include "min-cpp-version/cpp20.h"
 
 namespace ghassanpl::di
 {

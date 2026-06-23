@@ -29,6 +29,7 @@
 #include "../../include/ghassanpl/filesystem.h"
 //#include "../../include/ghassanpl/formats.h" /// ranges
 #include "../../include/ghassanpl/functional.h"
+#include "../../include/ghassanpl/hashes_basic.h"
 //#include "../../include/ghassanpl/hashes.h" /// span, string_view, <bit>
 #include "../../include/ghassanpl/interpolation.h"
 //#include "../../include/ghassanpl/json_helpers.h" /// charconv, optional, ranges, concepts
@@ -40,7 +41,7 @@
 #include "../../include/ghassanpl/platform.h"
 //#include "../../include/ghassanpl/random.h" /// requires
 //	#include "../../include/ghassanpl/random_geom.h" /// is_constant_evaluated
-//  #include "../../include/ghassanpl/random_seq.h"
+//  #include "../../include/ghassanpl/random_seq.h" /// complex constexpr
 //#include "../../include/ghassanpl/ranges.h" /// ranges
 //#include "../../include/ghassanpl/rec2.h" /// span
 #include "../../include/ghassanpl/regex.h"

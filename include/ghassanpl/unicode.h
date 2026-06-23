@@ -64,13 +64,13 @@ namespace ghassanpl::string_ops
 	/// \name Encodings
 	/// Values representing UTF encodings
 	/// @{
-	constexpr inline text_encoding utf8_encoding = { text_encoding_type::utf8, std::endian::native };
-	constexpr inline text_encoding utf16_le_encoding = { text_encoding_type::utf16, std::endian::little };
-	constexpr inline text_encoding utf16_be_encoding = { text_encoding_type::utf16, std::endian::big };
-	constexpr inline text_encoding utf32_le_encoding = { text_encoding_type::utf32, std::endian::little };
-	constexpr inline text_encoding utf32_be_encoding = { text_encoding_type::utf32, std::endian::big };
+	constexpr inline text_encoding utf8_encoding { text_encoding_type::utf8, std::endian::native };
+	constexpr inline text_encoding utf16_le_encoding { text_encoding_type::utf16, std::endian::little };
+	constexpr inline text_encoding utf16_be_encoding { text_encoding_type::utf16, std::endian::big };
+	constexpr inline text_encoding utf32_le_encoding { text_encoding_type::utf32, std::endian::little };
+	constexpr inline text_encoding utf32_be_encoding { text_encoding_type::utf32, std::endian::big };
 	/// Represents an unknown text encoding (e.g. when an encoding could not be determined)
-	constexpr inline text_encoding unknown_text_encoding = { text_encoding_type::unknown, std::endian::native };
+	constexpr inline text_encoding unknown_text_encoding { text_encoding_type::unknown, std::endian::native };
 	/// @}
 
 	/// \internal https://bjoern.hoehrmann.de/utf-8/decoder/dfa/
@@ -176,7 +176,7 @@ namespace ghassanpl::string_ops
 	/// \returns a UTF-8-encoded string of type T
 	/// TODO: Is this needed since we have `transcode_codepage_to_unicode`?
 	template <string8 RESULT = std::string>
-	[[nodiscard]] constexpr auto transcode_codepage_to_utf8(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> RESULT;
+	[[nodiscard]] constexpr auto transcode_codepage_to_utf8(stringable8 auto const& source, std::span<char32_t const, 128> codepage_map) -> RESULT;
 
 	/// @}
 
@@ -636,30 +636,30 @@ namespace ghassanpl::string_ops
 					break;
 				sv.remove_prefix(decoded.byte_count);
 				numBytes += decoded.byte_count;
-				stats.points++;
+				++stats.points;
 				if (decoded.status == text_decode_result::valid)
 				{
-					stats.valid_points++;
+					++stats.valid_points;
 					if (decoded.point < 32)
 					{
 						if (decoded.point == '\n' || decoded.point == '\t')
 						{
-							stats.plain_ascii++;
-							stats.whitespace++;
+							++stats.plain_ascii;
+							++stats.whitespace;
 						}
 						else if (decoded.point == '\r')
-							stats.plain_ascii++;
+							++stats.plain_ascii;
 						else
-							stats.control_points++;
+							++stats.control_points;
 					}
 					else if (decoded.point < 127)
 					{
-						stats.plain_ascii++;
+						++stats.plain_ascii;
 						if (decoded.point == ' ')
-							stats.whitespace++;
+							++stats.whitespace;
 					}
 					else if (decoded.point >= 65536)
-						stats.extended_codepoints++;
+						++stats.extended_codepoints;
 				}
 			}
 			if (stats.points > 0)
@@ -672,7 +672,7 @@ namespace ghassanpl::string_ops
 		if (sv.empty())
 			return unknown_text_encoding;
 
-		if (text_encoding encoding = consume_bom(sv); encoding != unknown_text_encoding)
+		if (const auto encoding = consume_bom(sv); encoding != unknown_text_encoding)
 			return encoding;
 
 		sv = sv.substr(0, 4096);
@@ -786,7 +786,7 @@ namespace ghassanpl::string_ops
 	[[gsl::suppress("type.1", "es.79")]]
 	[[nodiscard]] constexpr char32_t peek_utf8(string_view8 auto str)
 	{
-		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
+		using char_type = std::remove_cvref_t<decltype(str)>::value_type;
 		using unsigned_char_type = std::make_unsigned_t<char_type>;
 
 		if (str.empty()) return 0;
@@ -820,7 +820,7 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] constexpr size_t count_utf8_codepoints(stringable8 auto _str)
 	{
 		auto str = make_sv(_str);
-		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
+		using char_type = std::remove_cvref_t<decltype(str)>::value_type;
 		using unsigned_char_type = std::make_unsigned_t<char_type>;
 
 		auto it = std::to_address(str.begin());
@@ -829,7 +829,7 @@ namespace ghassanpl::string_ops
 		size_t result = 0;
 		while (it < end)
 		{
-			char32_t cp = static_cast<unsigned_char_type>(*it);
+			const char32_t cp = static_cast<unsigned_char_type>(*it);
 
 			int length = 1;
 			if ((cp >> 5) == 0x6)  length = 2;
@@ -845,7 +845,7 @@ namespace ghassanpl::string_ops
 	[[nodiscard]] constexpr size_t first_utf8_codepoint_size(stringable8 auto _str)
 	{
 		auto str = make_sv(_str);
-		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
+		using char_type = std::remove_cvref_t<decltype(str)>::value_type;
 		using unsigned_char_type = std::make_unsigned_t<char_type>;
 
 		auto it = std::to_address(str.begin());
@@ -853,7 +853,7 @@ namespace ghassanpl::string_ops
 
 		if (it < end)
 		{
-			char32_t cp = static_cast<unsigned_char_type>(*it);
+			const char32_t cp = static_cast<unsigned_char_type>(*it);
 
 			if ((cp >> 5) == 0x6) return 2;
 			else if ((cp >> 4) == 0xe) return 3;
@@ -896,7 +896,7 @@ namespace ghassanpl::string_ops
 	[[gsl::suppress("type.1")]]
 	constexpr size_t append_utf8(string8 auto& buffer, char32_t cp)
 	{
-		using char_type = typename std::remove_cvref_t<decltype(buffer)>::value_type;
+		using char_type = std::remove_cvref_t<decltype(buffer)>::value_type;
 #if 1
 		const size_t cp_bytes = codepoint_utf8_count(cp);
 		std::decay_t<decltype(buffer)> bytes(cp_bytes, 0);
@@ -945,7 +945,7 @@ namespace ghassanpl::string_ops
 	template <typename T>
 	constexpr void transcode_codepage_to_unicode(T& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
 	{
-		using dest_char = typename std::decay_t<decltype(dest)>::value_type;
+		using dest_char = std::decay_t<decltype(dest)>::value_type;
 		for (uint8_t cp : make_sv(source))
 		{
 			if (cp < 0x80)
@@ -958,7 +958,7 @@ namespace ghassanpl::string_ops
 	constexpr void transcode_codepage_to_utf8(string8 auto& dest, stringable8 auto source, std::span<char32_t const, 128> codepage_map)
 	{
 		/// TODO: Do this via transcode_codepage_to_unicode
-		using dest_char = typename std::decay_t<decltype(dest)>::value_type;
+		using dest_char = std::decay_t<decltype(dest)>::value_type;
 		for (uint8_t cp : make_sv(source))
 		{
 			if (cp < 0x80)
@@ -977,7 +977,7 @@ namespace ghassanpl::string_ops
 	}
 
 	template <string8 T>
-	constexpr auto transcode_codepage_to_utf8(stringable8 auto source, std::span<char32_t const, 128> codepage_map) -> T
+	constexpr auto transcode_codepage_to_utf8(stringable8 auto const& source, std::span<char32_t const, 128> codepage_map) -> T
 	{
 		/// TODO: Do this via transcode_codepage_to_unicode
 		T result{};
@@ -989,7 +989,7 @@ namespace ghassanpl::string_ops
 	[[gsl::suppress("type.1", "es.79")]]
 	[[nodiscard]] constexpr char32_t consume_utf16(string_view16 auto& str)
 	{
-		using char_type = typename std::remove_cvref_t<decltype(str)>::value_type;
+		using char_type = std::remove_cvref_t<decltype(str)>::value_type;
 		using unsigned_char_type = std::make_unsigned_t<char_type const>;
 
 		if (str.empty()) return 0;
@@ -1001,7 +1001,7 @@ namespace ghassanpl::string_ops
 		if (length == 2)
 		{
 			++it;
-			cp = ((cp - 0xD800) << 10) | (*it - 0xDC00);
+			cp = surrogate_pair_to_codepoint(cp, *it);
 		}
 		str.remove_prefix(length);
 		return cp;
@@ -1018,15 +1018,16 @@ namespace ghassanpl::string_ops
 	[[gsl::suppress("type.1")]]
 	constexpr size_t append_utf16(string16 auto& buffer, char32_t cp)
 	{
-		using char_type = typename std::remove_cvref_t<decltype(buffer)>::value_type;
+		using char_type = std::remove_cvref_t<decltype(buffer)>::value_type;
 		if (cp <= 0xFFFF)
 		{
 			buffer += static_cast<char_type>(cp);
 			return 1;
 		}
 
-		buffer += static_cast<char_type>((cp >> 10) + 0xD800);
-		buffer += static_cast<char_type>((cp & 0x3FF) + 0xDC00);
+		auto [first, second] = codepoint_to_surrogate_pair(cp);
+		buffer += static_cast<char_type>(first);
+		buffer += static_cast<char_type>(second);
 		return 2;
 	}
 
@@ -1040,7 +1041,7 @@ namespace ghassanpl::string_ops
 	[[gsl::suppress("type.1")]]
 	[[nodiscard]] constexpr T to_utf8(char32_t cp)
 	{
-		using char_type = typename T::value_type;
+		using char_type = T::value_type;
 		if (cp < 0x80)
 			return { static_cast<char_type>(cp) };
 		else if (cp < 0x800)
@@ -1058,7 +1059,7 @@ namespace ghassanpl::string_ops
 			return std::forward<STR>(str);
 		else
 		{
-			using char_type = typename RESULT::value_type;
+			using char_type = RESULT::value_type;
 			return RESULT{ string_view_cast<char_type>(make_sv(std::forward<STR>(str))) };
 		}
 	}

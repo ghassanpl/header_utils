@@ -5,7 +5,6 @@
 #pragma once
 
 #include <concepts>
-#include <compare>
 #include <string_view>
 #include <string>
 #include <map>
@@ -20,11 +19,11 @@ namespace ghassanpl
 	namespace detail
 	{
 		template <typename RESOLVER, typename PATH_TYPE, typename POINTER_TYPE, typename... TAGS>
-		concept resolver_can_resolve_path_from_pointer = requires (PATH_TYPE path, POINTER_TYPE pointer) {
+		concept resolver_can_resolve_path_from_pointer = requires (PATH_TYPE&& path, POINTER_TYPE && pointer) {
 			{ RESOLVER::template resolve_path_from_reference<POINTER_TYPE, TAGS...>(pointer, path) } -> std::same_as<bool>;
 		};
 		template <typename RESOLVER, typename PATH_TYPE, typename POINTER_TYPE, typename... TAGS>
-		concept resolver_can_validate_path = requires (PATH_TYPE path) {
+		concept resolver_can_validate_path = requires (PATH_TYPE && path) {
 			{ RESOLVER::template validate_path<POINTER_TYPE, TAGS...>(path) };
 		};
 		template <typename RESOLVER>
@@ -89,7 +88,7 @@ namespace ghassanpl
 	/// \tparam POINTER_TYPE the type to store the pointer in - must be copyable, so should be a pointer of some sort
 	/// \tparam PATH_TYPE (optional) the type to store the path in; if not given, will use `std::string`
 	/// \tparam RESOLVER_TYPE (optional) type used to resolve the pointer from the path; if not given, will use a thread-safe global storage for these pointer+path types
-	/// \tparam TAGS... a list of tags that modify the behavior of this type; currently none are available
+	/// \tparam TAGS a list of tags that modify the behavior of this type; currently none are available
 	template <
 		typename POINTER_TYPE,
 		typename PATH_TYPE = std::string,

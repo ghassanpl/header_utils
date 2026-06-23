@@ -36,7 +36,7 @@ namespace ghassanpl
 
 		template <typename T>
 		requires std::constructible_from<std::string_view, T> && (!std::same_as<std::remove_cvref_t<T>, symbol_base>)
-		symbol_base& operator=(T&& val) noexcept { value = symbol_provider::insert(std::forward<T>(val)); return *this; }
+		symbol_base& operator=(T&& val) { value = symbol_provider::insert(std::forward<T>(val)); return *this; }
 
 		symbol_base() noexcept = default;
 
@@ -48,7 +48,7 @@ namespace ghassanpl
 		[[nodiscard]] hash_type get_hash() const noexcept { return symbol_provider::hash_for(value); }
 		[[nodiscard]] std::string_view get_string() const noexcept { return symbol_provider::string_for(value); }
 		[[nodiscard]] operator std::string_view() const noexcept { return symbol_provider::string_for(value); }
-		[[nodiscard]] explicit operator std::string() const noexcept { return std::string{ get_string() }; }
+		[[nodiscard]] explicit operator std::string() const { return std::string{ get_string() }; }
 		[[nodiscard]] auto to_string() const noexcept { return std::string{ get_string() }; }
 
 		/// Only available if the internal value type is a pointer
@@ -130,6 +130,10 @@ namespace ghassanpl
 	template <typename TAG = void>
 	struct default_symbol_provider_t
 	{
+		default_symbol_provider_t() = default;
+		default_symbol_provider_t(default_symbol_provider_t const&) = delete;
+		default_symbol_provider_t& operator=(default_symbol_provider_t const&) = delete;
+
 		static default_symbol_provider_t& instance() noexcept
 		{
 			static default_symbol_provider_t inst;
@@ -177,10 +181,6 @@ namespace ghassanpl
 
 		std::set<std::string, std::less<>> m_values{ std::string{} };
 		std::string const* m_empty_string = &*m_values.begin();
-
-		default_symbol_provider_t() = default;
-		default_symbol_provider_t(default_symbol_provider_t const&) = delete;
-		default_symbol_provider_t& operator=(default_symbol_provider_t const&) = delete;
 	};
 
 	/// A basic `symbol_provider` suitable for most single-threaded uses.

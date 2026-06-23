@@ -68,12 +68,18 @@ namespace ghassanpl
 	static constexpr size_t map_entire_file = 0;
 
 #ifdef _WIN32
-	using file_handle_type = void*;
+	//using file_handle_type = void*;
+	enum class file_handle_type : intptr_t {};
+	constexpr inline auto invalid_file = (file_handle_type)(uint64_t)-1;
+	enum class file_mapping_handle_type : intptr_t {};
+	const inline auto invalid_mapping = file_mapping_handle_type{ (intptr_t)nullptr };
 #else
-	using file_handle_type = int;
+	enum class file_handle_type : intptr_t {};
+	const inline file_handle_type invalid_handle = (file_handle_type)-1;
+	enum class file_mapping_type : intptr_t {};
+	const inline file_mapping_type invalid_mapping = (file_mapping_type)-1;
 #endif
 
-	const inline file_handle_type invalid_handle = (file_handle_type)-1;
 
 	namespace detail
 	{
@@ -103,7 +109,7 @@ namespace ghassanpl
 		using reverse_iterator = std::reverse_iterator<iterator>;
 		using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 		using iterator_category = std::random_access_iterator_tag;
-		using handle_type = file_handle_type;
+		//using handle_type = file_handle_type;
 
 		basic_mmap_base() noexcept = default;
 		basic_mmap_base(basic_mmap_base const& other) noexcept = delete;
@@ -112,8 +118,8 @@ namespace ghassanpl
 			: data_(std::exchange(other.data_, nullptr))
 			, length_(std::exchange(other.length_, 0))
 			, mapped_length_(std::exchange(other.mapped_length_, 0))
-			, file_handle_(std::exchange(other.file_handle_, invalid_handle))
-			, file_mapping_handle_(std::exchange(other.file_mapping_handle_, invalid_handle))
+			, file_handle_(std::exchange(other.file_handle_, invalid_file))
+			, file_mapping_handle_(std::exchange(other.file_mapping_handle_, invalid_mapping))
 		{
 		}
 		basic_mmap_base& operator=(basic_mmap_base&& other) noexcept
@@ -121,22 +127,23 @@ namespace ghassanpl
 			this->data_ = std::exchange(other.data_, nullptr);
 			this->length_ = std::exchange(other.length_, 0);
 			this->mapped_length_ = std::exchange(other.mapped_length_, 0);
-			this->file_handle_ = std::exchange(other.file_handle_, invalid_handle);
-			this->file_mapping_handle_ = std::exchange(other.file_mapping_handle_, invalid_handle);
+			this->file_handle_ = std::exchange(other.file_handle_, invalid_file);
+			this->file_mapping_handle_ = std::exchange(other.file_mapping_handle_, invalid_mapping);
 			return *this;
 		}
 
-		[[nodiscard]] handle_type file_handle() const noexcept { return file_handle_; }
-		[[nodiscard]] handle_type mapping_handle() const noexcept { return file_mapping_handle_ == invalid_handle ? file_handle_ : file_mapping_handle_; }
+		[[nodiscard]] file_handle_type file_handle() const noexcept { return file_handle_; }
+		//[[nodiscard]] file_mapping_handle_type mapping_handle() const noexcept { return file_mapping_handle_ == invalid_mapping ? file_handle_ : file_mapping_handle_; }
+		[[nodiscard]] file_mapping_handle_type mapping_handle() const noexcept { return file_mapping_handle_; }
 
-		[[nodiscard]] bool is_open() const noexcept { return file_handle_ != invalid_handle; }
+		[[nodiscard]] bool is_open() const noexcept { return file_handle_ != invalid_file; }
 
 		[[nodiscard]] bool empty() const noexcept { return length() == 0; }
 
 		[[nodiscard]] bool is_mapped() const noexcept
 		{
 #ifdef _WIN32
-			return file_mapping_handle_ != invalid_handle;
+			return file_mapping_handle_ != invalid_mapping;
 #else // POSIX
 			return is_open();
 #endif
@@ -205,7 +212,7 @@ namespace ghassanpl
 			VALUE_TYPE* data;
 			int64_t length;
 			int64_t mapped_length;
-			file_handle_type file_mapping_handle;
+			file_mapping_handle_type file_mapping_handle;
 		};
 
 		pointer data_ = nullptr;
@@ -213,8 +220,8 @@ namespace ghassanpl
 		size_type length_ = 0;
 		size_type mapped_length_ = 0;
 
-		handle_type file_handle_ = invalid_handle;
-		handle_type file_mapping_handle_ = invalid_handle;
+		file_handle_type file_handle_ = invalid_file;
+		file_mapping_handle_type file_mapping_handle_ = invalid_mapping;
 
 		const_pointer get_mapping_start() const noexcept
 		{
@@ -227,7 +234,7 @@ namespace ghassanpl
 	struct basic_mmap : public basic_mmap_base<VALUE_TYPE>
 	{ 
 		using typename basic_mmap_base<VALUE_TYPE>::size_type;
-		using typename basic_mmap_base<VALUE_TYPE>::handle_type;
+		//using typename basic_mmap_base<VALUE_TYPE>::handle_type;
 		using typename basic_mmap_base<VALUE_TYPE>::pointer;
 
 		basic_mmap() noexcept = default;
@@ -237,7 +244,7 @@ namespace ghassanpl
 			map(path, offset, length, error);
 			if (error) { throw std::system_error{ error }; }
 		}
-		basic_mmap(const handle_type handle, const size_type offset = 0, const size_type length = map_entire_file)
+		basic_mmap(const file_handle_type handle, const size_type offset = 0, const size_type length = map_entire_file)
 		{
 			std::error_code error;
 			map(handle, offset, length, error);
@@ -256,8 +263,8 @@ namespace ghassanpl
 				this->data_ = std::exchange(other.data_, nullptr);
 				this->length_ = std::exchange(other.length_, 0);
 				this->mapped_length_ = std::exchange(other.mapped_length_, 0);
-				this->file_handle_ = std::exchange(other.file_handle_, invalid_handle);
-				this->file_mapping_handle_ = std::exchange(other.file_mapping_handle_, invalid_handle);
+				this->file_handle_ = std::exchange(other.file_handle_, invalid_file);
+				this->file_mapping_handle_ = std::exchange(other.file_mapping_handle_, invalid_mapping);
 			}
 			return *this;
 		}
@@ -271,7 +278,7 @@ namespace ghassanpl
 	/// TODO: Check why this was protected...
 	//protected:
 
-		void map(const std::filesystem::path& path, const size_type offset, const size_type length, std::error_code& error) noexcept
+		void map(const std::filesystem::path& path, const size_type offset, size_type length, std::error_code& error) noexcept
 		{
 			error.clear();
 			if (path.empty())
@@ -291,25 +298,28 @@ namespace ghassanpl
 				return;
 			}
 
+			length = length == map_entire_file ? (file_size - offset) : length;
+
 			error.clear();
 			const auto handle = static_cast<CRTP*>(this)->open_file(path, error);
 			if (error)
 				return;
 
 			error.clear();
-			if (handle == invalid_handle)
+			if (handle == invalid_file)
 			{
 				error = std::make_error_code(std::errc::bad_file_descriptor);
 				return;
 			}
 
-			if (offset + length > file_size)
+			if (offset > file_size || length > file_size - offset)
 			{
+				/// TODO: Leak here... and in other places
 				error = std::make_error_code(std::errc::invalid_argument);
 				return;
 			}
 
-			const auto ctx = static_cast<CRTP*>(this)->memory_map(handle, offset, length == map_entire_file ? (file_size - offset) : length, error);
+			const auto ctx = static_cast<CRTP*>(this)->memory_map(handle, offset, length, error);
 			if (!error)
 			{
 				/// We must unmap the previous mapping that may have existed prior to this call.

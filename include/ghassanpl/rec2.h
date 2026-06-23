@@ -5,6 +5,7 @@
 #pragma once
 
 #include "min-cpp-version/cpp20.h"
+#include "hashes_basic.h"
 #include <glm/common.hpp>
 #include <glm/vec2.hpp>
 #include <span>
@@ -17,9 +18,6 @@
 
 namespace ghassanpl
 {
-	template <template<typename> typename HASHER, typename FIRST, typename... T>
-	[[nodiscard]] constexpr size_t hash(FIRST&& first, T&&... values);
-
 	namespace geometry
 	{
 		static inline constexpr struct bounding_box_for_t {} bounding_box_for;
@@ -58,7 +56,7 @@ namespace ghassanpl
 			template <typename U>
 			constexpr explicit trec2(const trec2<U>& other) noexcept : p1(glm::tvec2<U>(other.p1)), p2(glm::tvec2<U>(other.p2)) {}
 			template <typename U>
-			constexpr explicit trec2(trec2<U>&& other) noexcept : p1(glm::tvec2<U>(other.p1)), p2(glm::tvec2<U>(other.p2)) {}
+			constexpr explicit trec2(trec2<U>&& other) noexcept : p1(glm::tvec2<U>(std::move(other.p1))), p2(glm::tvec2<U>(std::move(other.p2))) {}
 
 			constexpr trec2& operator=(const trec2&) noexcept = default;
 			constexpr trec2& operator=(trec2&&) noexcept = default;
@@ -66,15 +64,15 @@ namespace ghassanpl
 			static constexpr trec2 from_points(std::span<tvec const> points) noexcept { return trec2{ points }; }
 			template <GHPL_TYPENAME(std::same_as<tvec>)... ARGS>
 			static constexpr trec2 from_points(ARGS&&... args) noexcept { return trec2(bounding_box_for, std::forward<ARGS>(args)...); }
-			static constexpr trec2 from_size(tvec s) noexcept { return { tvec{}, s }; };
-			static constexpr trec2 from_size(tvec p, tvec s) noexcept { return { p, p + s }; };
-			static constexpr trec2 from_size(T x, T y, T w, T h) noexcept { return { x, y, x + w, y + h }; };
-			static constexpr trec2 from_center_and_size(tvec p, tvec s) noexcept { return { p - s / T(2), p + s / T(2) }; };
-			static constexpr trec2 from_center_and_size(T x, T y, T w, T h) noexcept { return { x - w / T(2), y - h / T(2), x + w / T(2), y + h / T(2) }; };
-			static constexpr trec2 from_center_and_half_size(tvec p, tvec s) noexcept { return { p - s, p + s }; };
-			static constexpr trec2 from_center_and_half_size(T x, T y, T w, T h) noexcept { return { x - w, y - h, x + w, y + h }; };
+			static constexpr trec2 from_size(tvec s) noexcept { return { tvec{}, s }; }
+			static constexpr trec2 from_size(tvec p, tvec s) noexcept { return { p, p + s }; }
+			static constexpr trec2 from_size(T x, T y, T w, T h) noexcept { return { x, y, x + w, y + h }; }
+			static constexpr trec2 from_center_and_size(tvec p, tvec s) noexcept { return { p - s / T(2), p + s / T(2) }; }
+			static constexpr trec2 from_center_and_size(T x, T y, T w, T h) noexcept { return { x - w / T(2), y - h / T(2), x + w / T(2), y + h / T(2) }; }
+			static constexpr trec2 from_center_and_half_size(tvec p, tvec s) noexcept { return { p - s, p + s }; }
+			static constexpr trec2 from_center_and_half_size(T x, T y, T w, T h) noexcept { return { x - w, y - h, x + w, y + h }; }
 
-			static constexpr trec2 invalid() noexcept { return { T{1}, T{1}, T{-1}, T{-1} }; };
+			static constexpr trec2 invalid() noexcept { return { T{1}, T{1}, T{-1}, T{-1} }; }
 			static constexpr trec2 exclusive() noexcept
 			{
 				if constexpr (std::numeric_limits<T>::has_infinity)
@@ -92,9 +90,9 @@ namespace ghassanpl
 			}
 
 			constexpr trec2 operator+(tvec op) const noexcept { return { p1 + op, p2 + op }; }
-			constexpr trec2& operator+=(tvec op) noexcept { p1 += op; p2 += op; return *this; };
+			constexpr trec2& operator+=(tvec op) noexcept { p1 += op; p2 += op; return *this; }
 			constexpr trec2 operator-(tvec op) const noexcept { return { p1 - op, p2 - op }; }
-			constexpr trec2& operator-=(tvec op) noexcept { p1 -= op; p2 -= op; return *this; };
+			constexpr trec2& operator-=(tvec op) noexcept { p1 -= op; p2 -= op; return *this; }
 			constexpr trec2 operator*(T op) const noexcept { return { p1 * op, p2 * op }; }
 			constexpr trec2 operator/(T op) const noexcept { return { p1 / op, p2 / op }; }
 			constexpr trec2 operator*(tvec op) const noexcept { return { p1 * op, p2 * op }; }
@@ -162,10 +160,10 @@ namespace ghassanpl
 			constexpr trec2 scaled(tvec op) const noexcept { return *this * op; }
 			constexpr trec2 scaled(T x, T y) const noexcept { return *this * tvec{ x, y }; }
 			constexpr trec2 scaled(T s) const noexcept { return *this * s; }
-			constexpr T width() const noexcept { return p2.x - p1.x; };
-			constexpr T height() const noexcept { return p2.y - p1.y; };
-			constexpr trec2& set_width(T w) noexcept { p2.x = p1.x + w; return *this; };
-			constexpr trec2& set_height(T h) noexcept { p2.y = p1.y + h; return *this; };
+			constexpr T width() const noexcept { return p2.x - p1.x; }
+			constexpr T height() const noexcept { return p2.y - p1.y; }
+			constexpr trec2& set_width(T w) noexcept { p2.x = p1.x + w; return *this; }
+			constexpr trec2& set_height(T h) noexcept { p2.y = p1.y + h; return *this; }
 			constexpr T x() const noexcept { return p1.x; }
 			constexpr T y() const noexcept { return p1.y; }
 			constexpr T left() const noexcept { return p1.x; }
@@ -190,11 +188,11 @@ namespace ghassanpl
 			constexpr glm::vec2 to_rect_space(tvec world_space) const noexcept { return glm::vec2{ world_space - p1 } / glm::vec2{ size() }; }
 			constexpr tvec to_world_space(glm::vec2 rect_space) const noexcept { return tvec{ rect_space * glm::vec2{ size() } } + p1; }
 
-			constexpr trec2& include(tvec pt) noexcept { this->p1 = glm::min(this->p1, pt); this->p2 = glm::max(this->p2, pt); return *this; };
-			constexpr trec2& include(trec2 const& rec) noexcept { return this->include(rec.p1).include(rec.p2); };
+			constexpr trec2& include(tvec pt) noexcept { this->p1 = glm::min(this->p1, pt); this->p2 = glm::max(this->p2, pt); return *this; }
+			constexpr trec2& include(trec2 const& rec) noexcept { return this->include(rec.p1).include(rec.p2); }
 
-			constexpr trec2 including(tvec pt) const noexcept { return { glm::min(this->p1, pt), glm::max(this->p2, pt) }; };
-			constexpr trec2 including(trec2 const& rec) const noexcept { return this->include(rec.p1).include(rec.p2); };
+			constexpr trec2 including(tvec pt) const noexcept { return { glm::min(this->p1, pt), glm::max(this->p2, pt) }; }
+			constexpr trec2 including(trec2 const& rec) const noexcept { return this->include(rec.p1).include(rec.p2); }
 
 			constexpr bool intersects(trec2 const& other) const noexcept
 			{
@@ -360,6 +358,7 @@ namespace ghassanpl
 				case 1: return std::make_pair(right_top(), right_bottom());
 				case 2: return std::make_pair(right_bottom(), left_bottom());
 				case 3: return std::make_pair(left_bottom(), left_top());
+				default: break;
 				}
 				return std::nullopt;
 			}
@@ -372,6 +371,7 @@ namespace ghassanpl
 				case 1: return right_top();
 				case 2: return right_bottom();
 				case 3: return left_bottom();
+				default: break;
 				}
 				return std::nullopt;
 			}
@@ -390,13 +390,12 @@ namespace ghassanpl
 	auto stringify(STRINGIFIER& str, trec2<T> const& b) { return str('[', b.p1.x, ',', b.p1.y, ',', b.p2.x, ',', b.p2.y, ']'); }
 }
 
-
 template <typename T>
 struct std::hash<ghassanpl::trec2<T>>
 {
 	std::size_t operator()(ghassanpl::trec2<T> const& s) const noexcept
 	{
-		return ghassanpl::hash(s.p1, s.p2);
+		return ghassanpl::hash64(s.p1.x, s.p1.y, s.p2.x, s.p2.y);
 	}
 };
 

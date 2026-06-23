@@ -318,7 +318,7 @@ namespace ghassanpl
 	{
 		inline bool IsNullOrEmpty(const char* str) { return str == nullptr || str[0] == 0; }
 		template <typename T>
-		inline bool IsNullOrEmpty(T&& str) { using std::empty; return empty(str); }
+		inline bool IsNullOrEmpty(T const& str) { using std::empty; return empty(str); }
 
 #if ASSUMING_DEBUG
 		/*
@@ -330,7 +330,7 @@ namespace ghassanpl
 		concept formattable = requires { { std::formatter<T>{} }; }; /// TODO: Use std::formattable
 
 		template <typename T>
-		concept streamable = requires (T val, std::stringstream & ss) { { ss << val }; };
+		concept streamable = requires (T&& val, std::stringstream & ss) { { ss << val }; };
 
 		template <typename T>
 		decltype(auto) GetFormattable(T&& val)
@@ -382,7 +382,7 @@ namespace ghassanpl
 		Continue, ///< Continue execution after reporting the assumption failure
 	};
 
-	inline auto DefaultReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
+	[[noreturn]] inline auto DefaultReportAssumptionFailure(std::string_view expectation, std::initializer_list<std::pair<std::string_view, std::string>> values, std::string data, source_location loc
 #if ASSUMING_USE_STACKTRACE
 		, std::stacktrace stacktrace
 #endif //  ASSUMING_USE_STACKTRACE

@@ -7,6 +7,8 @@
 
 int test_cpp11()
 {
+	ghassanpl::named<int, struct asd> asd{10};
+
 	ghassanpl::string_view v = "55asd";
 	v.find("s");
 	return stoi(v);

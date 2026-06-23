@@ -101,7 +101,7 @@ namespace ghassanpl::eval
 			e.assert_args(args, 0, 1);
 			e_break ex{};
 			if (args.size() == 2) ex.result = e.eval_arg(args, 1);
-			throw ex;
+			throw std::move(ex);
 		}
 
 		static inline value var_get(env_type& e, std::vector<value> args)
@@ -112,10 +112,11 @@ namespace ghassanpl::eval
 
 		static inline value var_set(env_type& e, std::vector<value> args)
 		{
-			auto var = e.eval_arg(args, 1);
+			value var = e.eval_arg(args, 1);
 			if (!var.is_lval())
-				return e.report_error("trying to assign to a non-variable");
-			var.lval() = e.eval_arg(args, 2).forward();
+				var = e.report_error("trying to assign to a non-variable");
+			else
+				var.lval() = e.eval_arg(args, 2).forward();
 			return var;
 		}
 
@@ -301,7 +302,7 @@ namespace ghassanpl::eval
 
 		static inline json prefix_macro_get(env_type const&, std::vector<value> args) {
 			return json{ "get", std::string_view{args[0].ref()}.substr(1)};
-		};
+		}
 
 		static inline void set_macro_prefix_get(env_type& e, std::string const& prefix = ".", std::string const& prefix_eval_func_name = "dot", std::string const& get_func_name = "get")
 		{

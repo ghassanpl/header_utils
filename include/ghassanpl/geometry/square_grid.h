@@ -41,8 +41,6 @@ namespace ghassanpl::geometry::squares
 	template <typename TILE_DATA, bool RESIZABLE = true>
 	struct grid
 	{
-	public:
-
 		static constexpr bool resizable = RESIZABLE;
 		using tile_data_type = TILE_DATA;
 
@@ -98,6 +96,8 @@ namespace ghassanpl::geometry::squares
 		
 		[[nodiscard]] TILE_DATA const& safe_at(glm::ivec2 pos, TILE_DATA const& outside) const noexcept { if (auto at = this->at(pos)) return *at; return outside; }
 		[[nodiscard]] TILE_DATA const& safe_at(int x, int y, TILE_DATA const& outside) const noexcept { return safe_at(glm::ivec2{ x, y }, outside); }
+		[[nodiscard]] TILE_DATA safe_at(glm::ivec2 pos, TILE_DATA&& outside) const noexcept { if (auto at = this->at(pos)) return std::move(*at); return std::move(outside); }
+		[[nodiscard]] TILE_DATA safe_at(int x, int y, TILE_DATA&& outside) const noexcept { return safe_at(glm::ivec2{ x, y }, std::move(outside)); }
 		[[nodiscard]] TILE_DATA& safe_at(glm::ivec2 pos, TILE_DATA& outside) noexcept { if (auto at = this->at(pos)) return *at; return outside; }
 		[[nodiscard]] TILE_DATA& safe_at(int x, int y, TILE_DATA& outside) noexcept { return safe_at(glm::ivec2{ x, y }, outside); }
 		
@@ -130,40 +130,40 @@ namespace ghassanpl::geometry::squares
 		auto for_each_neighbor(glm::ivec2 of, change_tile_callback<TILE_DATA> auto&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
-			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
+			using return_type = decltype(this->template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
 			if constexpr (std::is_void_v<return_type>)
 			{
 				if constexpr (FLAGS.contain(iteration_flags::with_self))
-					apply<ONLY_VALID>(of, func);
-				apply<ONLY_VALID>({ of.x - 1, of.y }, func);
-				apply<ONLY_VALID>({ of.x + 1, of.y }, func);
-				apply<ONLY_VALID>({ of.x, of.y - 1 }, func);
-				apply<ONLY_VALID>({ of.x, of.y + 1 }, func);
+					this->template apply<ONLY_VALID>(of, func);
+				this->template apply<ONLY_VALID>({ of.x - 1, of.y }, func);
+				this->template apply<ONLY_VALID>({ of.x + 1, of.y }, func);
+				this->template apply<ONLY_VALID>({ of.x, of.y - 1 }, func);
+				this->template apply<ONLY_VALID>({ of.x, of.y + 1 }, func);
 
 				if constexpr (FLAGS.contain(iteration_flags::diagonals))
 				{
-					apply<ONLY_VALID>({ of.x - 1, of.y - 1 }, func);
-					apply<ONLY_VALID>({ of.x + 1, of.y + 1 }, func);
-					apply<ONLY_VALID>({ of.x + 1, of.y - 1 }, func);
-					apply<ONLY_VALID>({ of.x - 1, of.y + 1 }, func);
+					this->template apply<ONLY_VALID>({ of.x - 1, of.y - 1 }, func);
+					this->template apply<ONLY_VALID>({ of.x + 1, of.y + 1 }, func);
+					this->template apply<ONLY_VALID>({ of.x + 1, of.y - 1 }, func);
+					this->template apply<ONLY_VALID>({ of.x - 1, of.y + 1 }, func);
 				}
 			}
 			else
 			{
 				if constexpr (FLAGS.contain(iteration_flags::with_self))
-					if (auto ret = apply<ONLY_VALID>(of, func)) return ret;
-				if (auto ret = apply<ONLY_VALID>({ of.x - 1, of.y }, func)) return ret;
-				if (auto ret = apply<ONLY_VALID>({ of.x + 1, of.y }, func)) return ret;
-				if (auto ret = apply<ONLY_VALID>({ of.x, of.y - 1 }, func)) return ret;
-				if (auto ret = apply<ONLY_VALID>({ of.x, of.y + 1 }, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>(of, func)) return ret;
+				if (auto ret = this->template apply<ONLY_VALID>({ of.x - 1, of.y }, func)) return ret;
+				if (auto ret = this->template apply<ONLY_VALID>({ of.x + 1, of.y }, func)) return ret;
+				if (auto ret = this->template apply<ONLY_VALID>({ of.x, of.y - 1 }, func)) return ret;
+				if (auto ret = this->template apply<ONLY_VALID>({ of.x, of.y + 1 }, func)) return ret;
 
 				if constexpr (FLAGS.contain(iteration_flags::diagonals))
 				{
-					if (auto ret = apply<ONLY_VALID>({ of.x - 1, of.y - 1 }, func)) return ret;
-					if (auto ret = apply<ONLY_VALID>({ of.x + 1, of.y + 1 }, func)) return ret;
-					if (auto ret = apply<ONLY_VALID>({ of.x + 1, of.y - 1 }, func)) return ret;
-					if (auto ret = apply<ONLY_VALID>({ of.x - 1, of.y + 1 }, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>({ of.x - 1, of.y - 1 }, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>({ of.x + 1, of.y + 1 }, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>({ of.x + 1, of.y - 1 }, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>({ of.x - 1, of.y + 1 }, func)) return ret;
 				}
 				return return_type{};
 			}
@@ -173,24 +173,24 @@ namespace ghassanpl::geometry::squares
 		auto for_each_selected_neighbor(glm::ivec2 of, direction_set neighbor_set, change_tile_callback<TILE_DATA> auto&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
-			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
+			using return_type = decltype(this->template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
 			if constexpr (std::is_void_v<return_type>)
 			{
 				if constexpr (FLAGS.contain(iteration_flags::with_self))
-					apply<ONLY_VALID>(of, func);
+					this->template apply<ONLY_VALID>(of, func);
 
 				neighbor_set.for_each([this, of, &func](direction d) {
-					apply<ONLY_VALID>(of + to_ivec(d), func);
+					this->template apply<ONLY_VALID>(of + to_ivec(d), func);
 				});
 			}
 			else
 			{
 				if constexpr (FLAGS.contain(iteration_flags::with_self))
-					if (auto ret = apply<ONLY_VALID>(of, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>(of, func)) return ret;
 
 				return neighbor_set.for_each([this, of, &func](direction d) {
-					return apply<ONLY_VALID>(of + to_ivec(d), func);
+					return this->template apply<ONLY_VALID>(of + to_ivec(d), func);
 				});
 			}
 		}
@@ -225,7 +225,7 @@ namespace ghassanpl::geometry::squares
 		auto for_each_tile_in_perimeter(irec2 const& tile_rect, change_tile_callback<TILE_DATA> auto&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
-			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
+			using return_type = decltype(this->template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
 			irec2 rect = tile_rect;
 			if constexpr (ONLY_VALID)
@@ -235,26 +235,26 @@ namespace ghassanpl::geometry::squares
 			{
 				for (int x = rect.left(); x < rect.right(); x++)
 				{
-					apply<ONLY_VALID>({ x, rect.top() }, func);
-					apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func);
+					this->template apply<ONLY_VALID>({ x, rect.top() }, func);
+					this->template apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func);
 				}
 				for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
 				{
-					apply<ONLY_VALID>({ rect.left(), y }, func);
-					apply<ONLY_VALID>({ rect.right() - 1, y }, func);
+					this->template apply<ONLY_VALID>({ rect.left(), y }, func);
+					this->template apply<ONLY_VALID>({ rect.right() - 1, y }, func);
 				}
 			}
 			else
 			{
 				for (int x = rect.left(); x < rect.right(); x++)
 				{
-					if (auto ret = apply<ONLY_VALID>({ x, rect.top() }, func)) return ret;
-					if (auto ret = apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>({ x, rect.top() }, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func)) return ret;
 				}
 				for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
 				{
-					if (auto ret = apply<ONLY_VALID>({ rect.left(), y }, func)) return ret;
-					if (auto ret = apply<ONLY_VALID>({ rect.right() - 1, y }, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>({ rect.left(), y }, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>({ rect.right() - 1, y }, func)) return ret;
 				}
 
 				return return_type{};
@@ -262,20 +262,20 @@ namespace ghassanpl::geometry::squares
 		}
 
 		template<enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename TILE_SET>
-		auto for_each_tile_in_set(TILE_SET&& tiles, change_tile_callback<TILE_DATA> auto&& func)
+		auto for_each_tile_in_set(TILE_SET const& tiles, change_tile_callback<TILE_DATA> auto&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
-			using return_type = decltype(this->apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
+			using return_type = decltype(this->template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
 			if constexpr (std::is_void_v<return_type>)
 			{
 				for (auto&& tile : tiles)
-					apply<ONLY_VALID>(tile, func);
+					this->template apply<ONLY_VALID>(tile, func);
 			}
 			else
 			{
 				for (auto&& tile : tiles)
-					if (auto ret = apply<ONLY_VALID>(tile, func)) return ret;
+					if (auto ret = this->template apply<ONLY_VALID>(tile, func)) return ret;
 				return return_type{};
 			}
 		}
@@ -300,17 +300,17 @@ namespace ghassanpl::geometry::squares
 		template <query_tile_callback<TILE_DATA> FUNC>
 		bool line_cast(glm::ivec2 start, glm::ivec2 end, FUNC&& blocks_func, bool ignore_start) const
 		{
-			int delta_x{ end.x - start.x };
+			int delta_x = end.x - start.x;
 			// if x1 == x2, then it does not matter what we set here
-			signed char const ix((delta_x > 0) - (delta_x < 0));
+			int const ix = (delta_x > 0) - (delta_x < 0);
 			delta_x = std::abs(delta_x) << 1;
 
-			int delta_y(end.y - start.y);
+			int delta_y = end.y - start.y;
 			// if y1 == y2, then it does not matter what we set here
-			signed char const iy((delta_y > 0) - (delta_y < 0));
+			int const iy = (delta_y > 0) - (delta_y < 0);
 			delta_y = std::abs(delta_y) << 1;
 
-			if (!ignore_start && apply(start, blocks_func))
+			if (!ignore_start && this->apply(start, blocks_func))
 				return false;
 
 			if (delta_x >= delta_y)
@@ -331,7 +331,7 @@ namespace ghassanpl::geometry::squares
 					error += delta_y;
 					start.x += ix;
 
-					if (apply(start, blocks_func))
+					if (this->apply(start, blocks_func))
 						return false;
 				}
 			}
@@ -353,7 +353,7 @@ namespace ghassanpl::geometry::squares
 					error += delta_x;
 					start.y += iy;
 
-					if (apply(start, blocks_func))
+					if (this->apply(start, blocks_func))
 						return false;
 				}
 			}
@@ -495,8 +495,7 @@ namespace ghassanpl::geometry::squares
 			mWidth = w;
 			mHeight = h;
 			mTiles.resize(w * h);
-			for_each_tile(tile_reset);
-			//for_each_tile([&tile_reset](glm::ivec2 t, TILE_DATA& tile) { tile_reset(); });
+			this->for_each_tile(std::forward<TILE_RESET_FUNC>(tile_reset));
 		}
 
 		void Reset(int w, int h)
@@ -559,7 +558,7 @@ namespace ghassanpl::geometry::squares
 
 				for (int yy = 0; yy < mHeight; ++yy)
 				{
-					auto y = mHeight - yy - 1;
+					const auto y = mHeight - yy - 1;
 					const auto begin_range = y * mWidth;
 					const auto end_range = begin_range + mWidth;
 					const auto new_end_range = y * new_x + mWidth;

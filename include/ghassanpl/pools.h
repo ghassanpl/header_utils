@@ -91,7 +91,7 @@ namespace ghassanpl
 			}
 		};
 
-		using pooled_ptr = std::unique_ptr<T, typename thread_local_pool::deleter>;
+		using pooled_ptr = std::unique_ptr<T, deleter>;
 
 		template <typename... ARGS>
 		static pooled_ptr make_pooled(ARGS&&... args)

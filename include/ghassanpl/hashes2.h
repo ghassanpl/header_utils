@@ -30,10 +30,10 @@ namespace ghassanpl
 
 		template <typename T>
 		requires 
-			(sizeof(T) <= sizeof(uint64_t)) 
+			((sizeof(T) <= sizeof(uint64_t)) 
 			&& ((sizeof(T) & (sizeof(T) - 1)) == 0) /// Power of 2
 			&& std::is_trivially_copyable_v<T> 
-			&& !std::is_pointer_v<T>
+			&& !std::is_pointer_v<T>)
 		constexpr void add(T val) noexcept
 		{
 			if consteval
@@ -85,7 +85,7 @@ namespace ghassanpl
 		[[nodiscard]] constexpr static uint64_t hash(T&&... values)
 		{
 			xxhash64_t hasher;
-			(hasher.add(values), ...);
+			(hasher.add(std::forward<T>(values)), ...);
 			return hasher.hash();
 		}
 
@@ -134,46 +134,7 @@ namespace ghassanpl
 		}
 
 		/// get current hash
-		[[nodiscard]] constexpr uint64_t hash() const
-		{
-			uint64_t result;
-			if (totalLength >= MaxBufferSize)
-			{
-				result = rotateLeft(state[0], 1) + rotateLeft(state[1], 7) + rotateLeft(state[2], 12) + rotateLeft(state[3], 18);
-				result = (result ^ processSingle(0, state[0])) * Prime1 + Prime4;
-				result = (result ^ processSingle(0, state[1])) * Prime1 + Prime4;
-				result = (result ^ processSingle(0, state[2])) * Prime1 + Prime4;
-				result = (result ^ processSingle(0, state[3])) * Prime1 + Prime4;
-			}
-			else
-			{
-				result = state[2] + Prime5;
-			}
-
-			result += totalLength;
-
-			const auto* data = buffer;
-			const auto* stop = data + bufferSize;
-
-			for (; data + 8 <= stop; data += 8)
-				result = rotateLeft(result ^ processSingle(0, endian64(data)), 27) * Prime1 + Prime4;
-
-			if (data + 4 <= stop)
-			{
-				result = rotateLeft(result ^ (endian32(data)) * Prime1, 23) * Prime2 + Prime3;
-				data += 4;
-			}
-
-			while (data != stop)
-				result = rotateLeft(result ^ (*data++) * Prime5, 11) * Prime1;
-
-			result ^= result >> 33;
-			result *= Prime2;
-			result ^= result >> 29;
-			result *= Prime3;
-			result ^= result >> 32;
-			return result;
-		}
+		[[nodiscard]] constexpr uint64_t hash() const;
 
 	private:
 
@@ -246,6 +207,47 @@ namespace ghassanpl
 			state3 = processSingle(state3, block[3]);
 		}
 	};
+
+	constexpr uint64_t xxhash64_t::hash() const
+	{
+		uint64_t result;
+		if (totalLength >= MaxBufferSize)
+		{
+			result = rotateLeft(state[0], 1) + rotateLeft(state[1], 7) + rotateLeft(state[2], 12) + rotateLeft(state[3], 18);
+			result = (result ^ processSingle(0, state[0])) * Prime1 + Prime4;
+			result = (result ^ processSingle(0, state[1])) * Prime1 + Prime4;
+			result = (result ^ processSingle(0, state[2])) * Prime1 + Prime4;
+			result = (result ^ processSingle(0, state[3])) * Prime1 + Prime4;
+		}
+		else
+		{
+			result = state[2] + Prime5;
+		}
+
+		result += totalLength;
+
+		const auto* data = buffer;
+		const auto* stop = data + bufferSize;
+
+		for (; data + 8 <= stop; data += 8)
+			result = rotateLeft(result ^ processSingle(0, endian64(data)), 27) * Prime1 + Prime4;
+
+		if (data + 4 <= stop)
+		{
+			result = rotateLeft(result ^ (endian32(data)) * Prime1, 23) * Prime2 + Prime3;
+			data += 4;
+		}
+
+		while (data != stop)
+			result = rotateLeft(result ^ (*data++) * Prime5, 11) * Prime1;
+
+		result ^= result >> 33;
+		result *= Prime2;
+		result ^= result >> 29;
+		result *= Prime3;
+		result ^= result >> 32;
+		return result;
+	}
 
 	[[nodiscard]] constexpr static uint64_t xxhash64(std::span<uint8_t const> input, uint64_t seed = 0)
 	{

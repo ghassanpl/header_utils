@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp20.h"
+
 #if defined(__cpp_lib_byteswap) && __cpp_lib_byteswap >= 202110L
 #include <bit>
 #endif
@@ -12,7 +14,6 @@
 #endif
 #include <memory>
 
-#include "min-cpp-version/cpp20.h"
 
 namespace ghassanpl
 {
@@ -30,52 +31,70 @@ namespace ghassanpl
 	template <class T>
 	concept is_complete_v = is_complete<T>::value;
 
-	template<class T, class U>
-	constexpr std::unique_ptr<T> dynamic_pointer_cast(std::unique_ptr<U>&& r) noexcept
+	/*
+	template<class T, class D, class U>
+	constexpr std::unique_ptr<T, D> dynamic_pointer_cast(std::unique_ptr<U, D> r) noexcept
 	{
-		if (auto p = dynamic_cast<T*>(r.get()))
+		if (auto p = dynamic_cast<std::unique_ptr<T, D>::pointer>(r.get()))
+			return (void)r.release(), std::unique_ptr<T, D>(p, std::move(r.get_deleter()));
+
+		return std::unique_ptr<T, D>(nullptr, std::move(r.get_deleter()));
+	}
+
+	template<class T, class D, class U>
+	constexpr std::unique_ptr<T, D> dynamic_steal_cast(std::unique_ptr<U, D>& r) noexcept
+	{
+		if (auto p = dynamic_cast<std::unique_ptr<T, D>::pointer>(r.get()))
+			return (void)r.release(), std::unique_ptr<T, D>(p, std::move(r.get_deleter()));
+
+		return std::unique_ptr<T, D>(nullptr, std::move(r.get_deleter()));
+	}
+	
+	template<class T, class D, class U>
+	constexpr std::unique_ptr<T, D> static_pointer_cast(std::unique_ptr<U, D> r) noexcept
+	{
+		return std::unique_ptr<T, D>(static_cast<std::unique_ptr<T, D>::pointer>(r.release()), std::move<D>(r.get_deleter()));
+	}
+
+	template<class T, class D, class U>
+	constexpr std::unique_ptr<T, D> static_steal_cast(std::unique_ptr<U, D>& r) noexcept
+	{
+		return static_pointer_cast(std::move(r));
+	}
+	*/
+
+	template<class T, class U>
+	constexpr std::unique_ptr<T> dynamic_pointer_cast(std::unique_ptr<U> r) noexcept
+	{
+		if (auto p = dynamic_cast<std::unique_ptr<T>::pointer>(r.get()))
 			return (void)r.release(), std::unique_ptr<T>(p);
-		else
-			return nullptr;
+
+		return std::unique_ptr<T>(nullptr);
 	}
 
 	template<class T, class U>
 	constexpr std::unique_ptr<T> dynamic_steal_cast(std::unique_ptr<U>& r) noexcept
 	{
-		if (auto p = dynamic_cast<T*>(r.get()))
-			return (void)r.release(), std::unique_ptr<T>(p);
-		else
-			return nullptr;
-	}
-
-	template<class T, class D, class U>
-	constexpr std::unique_ptr<T, D> dynamic_pointer_cast(std::unique_ptr<U, D>&& r) noexcept
-	{
-		if (auto p = dynamic_cast<std::unique_ptr<T, D>::pointer>(r.get()))
-			return (void)r.release(), std::unique_ptr<T, D>(p, std::forward<D>(r.get_deleter()));
-		else if constexpr (!std::is_pointer_v<D> && std::is_default_constructible_v<D>)
-			return nullptr;
-		else if constexpr (std::is_copy_constructible_v<D>)
-			return std::unique_ptr<T, D>(nullptr, r.get_deleter());
+		return dynamic_pointer_cast<T>(std::exchange(r, {}));
 	}
 
 	template<class T, class U>
-	constexpr std::unique_ptr<T> static_pointer_cast(std::unique_ptr<U>&& r) noexcept
+	constexpr std::unique_ptr<T> static_pointer_cast(std::unique_ptr<U> r) noexcept
 	{
-		return std::unique_ptr<T>(static_cast<T*>(r.release()));
+		return std::unique_ptr<T>(static_cast<std::unique_ptr<T>::pointer>(r.release()));
 	}
 
-	template<class T, class D, class U>
-	constexpr std::unique_ptr<T, D> static_pointer_cast(std::unique_ptr<U, D>&& r) noexcept
+	template<class T, class U>
+	constexpr std::unique_ptr<T> static_steal_cast(std::unique_ptr<U>& r) noexcept
 	{
-		return std::unique_ptr<T, D>(r.release(), std::forward<D>(r.get_deleter()));
+		return static_pointer_cast<T>(std::move(r));
 	}
 
-#if defined(__cpp_concepts)
+#ifdef __cpp_concepts
 	namespace detail
 	{
-		template <class _Ty>
-		using with_reference = _Ty&;
+		template <class T>
+		using with_reference = T&;
 
 		template <class T>
 		concept can_reference = requires { typename with_reference<T>; };
@@ -87,7 +106,7 @@ namespace ghassanpl
 	};
 #endif
 
-#if defined(__cpp_lib_forward_like)
+#ifdef __cpp_lib_forward_like
 	using std::forward_like;
 #else
 	template <class Ty, class Uty>
@@ -150,7 +169,7 @@ namespace ghassanpl
 	using std::byteswap;
 #endif
 	
-#if defined(__cpp_lib_unreachable)
+#ifdef __cpp_lib_unreachable
 	using std::unreachable;
 #else
 	[[noreturn]] inline void unreachable() noexcept
@@ -159,7 +178,7 @@ namespace ghassanpl
 	}
 #endif
 
-#if defined(__cpp_lib_start_lifetime_as)
+#ifdef __cpp_lib_start_lifetime_as
 	using std::start_lifetime_as;
 #else
 	template<class T>
@@ -176,4 +195,32 @@ namespace ghassanpl
 		return std::launder(static_cast<T*>(std::memmove(p, p, sizeof(T) * element_count)));
 	}
 #endif
+
+	template<class From, class To>
+	concept convertible_without_narrowing = std::is_convertible_v<From, To> &&
+		requires (From&& x) {
+			{ std::type_identity_t<To[]>{std::forward<From>(x)} } -> std::same_as<To[1]>;
+	};
+
+
+	template <typename T>
+	struct pointer_compare_wrapper
+	{
+		T pointer;
+
+		template <typename U>
+		bool operator==(U const& ptr) const noexcept
+		{
+			using std::to_address;
+			return to_address(pointer) == to_address(ptr);
+		}
+	};
+
+	template <class T> 
+	requires std::is_pointer_v<T> 
+	pointer_compare_wrapper(T) -> pointer_compare_wrapper<typename std::pointer_traits<T>::element_type*>;
+
+	template <class T> 
+	requires (!std::is_pointer_v<T>)
+	pointer_compare_wrapper(T) -> pointer_compare_wrapper<T const&>;
 }

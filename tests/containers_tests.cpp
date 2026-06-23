@@ -5,3 +5,10 @@
 #include <gtest/gtest.h>
 
 #include "../include/ghassanpl/containers.h"
+
+TEST(map_find_value, works)
+{
+	std::map<int, std::string> m;
+	auto [it, ins] = m.emplace(0, "hello");
+	EXPECT_NE(ghassanpl::map_find_value(m, &it->second), nullptr);
+}

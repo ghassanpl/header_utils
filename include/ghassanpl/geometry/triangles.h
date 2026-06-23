@@ -5,7 +5,7 @@
 #pragma once
 
 #include "geometry_common.h"
-#include "./segment.h"
+#include <array>
 
 namespace ghassanpl::geometry
 {
@@ -165,31 +165,35 @@ namespace ghassanpl::geometry
 	template <std::integral IDX_TYPE = size_t>
 	struct tindexed_triangle
 	{
-		/// TODO: These functions could probably be relaxed to take an `indexable_polygonlike` instead of a true range
-
 		std::array<IDX_TYPE, 3> indices{};
 
-		template <std::ranges::random_access_range T>
-		auto a(T&& range) const -> std::ranges::range_value_t<T>
+		template <typename T>
+		decltype(auto) a(T&& range) const
 		{
+			/// TODO: at(range, indices[0]) ???
 			return range[indices[0]];
 		}
-		template <std::ranges::random_access_range T>
-		auto b(T&& range) const -> std::ranges::range_value_t<T>
+
+		template <typename T>
+		decltype(auto) b(T&& range) const
 		{
 			return range[indices[1]];
 		}
-		template <std::ranges::random_access_range T>
-		auto c(T&& range) const -> std::ranges::range_value_t<T>
+
+		template <typename T>
+		decltype(auto) c(T&& range) const
 		{
 			return range[indices[2]];
 		}
 
-		template <std::ranges::random_access_range T>
-		auto as_triangle(T&& range) const -> ttriangle<typename std::ranges::range_value_t<T>::value_type> { return { at(range, indices[0]), at(range, indices[1]), at(range, indices[2]) }; }
+		template <typename T>
+		auto as_triangle(T&& range) const //-> ttriangle<typename std::ranges::range_value_t<T>::value_type>
+		{
+			return ttriangle{ a(range), b(range), c(range) };
+		}
 	};
 
-	using indexed_triangle = tindexed_triangle<size_t>;
+	using indexed_triangle = tindexed_triangle<>;
 
 	/// @}
 }

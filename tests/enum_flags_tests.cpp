@@ -12,6 +12,7 @@
 
 #include "tests_common.h"
 
+#include <version>
 #include <algorithm>
 #include <numeric>
 #include <ranges>

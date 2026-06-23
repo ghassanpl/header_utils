@@ -12,7 +12,7 @@ namespace ghassanpl
 	{
 		extern "C"
 		{
-			typedef struct _CONSOLE_SCREEN_BUFFER_INFO {
+			typedef struct {
 				COORD      dwSize;
 				COORD      dwCursorPosition;
 				WORD       wAttributes;
@@ -20,7 +20,7 @@ namespace ghassanpl
 				COORD      dwMaximumWindowSize;
 			} CONSOLE_SCREEN_BUFFER_INFO;
 
-			typedef struct _CONSOLE_SCREEN_BUFFER_INFOEX {
+			typedef struct {
 				ULONG      cbSize;
 				COORD      dwSize;
 				COORD      dwCursorPosition;

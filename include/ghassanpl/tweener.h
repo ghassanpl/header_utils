@@ -35,11 +35,12 @@ namespace ghassanpl
 		{
 			virtual ~ITween() noexcept = default;
 
-			ITween(GETTER&& getter, SETTER&& setter, TYPE_TWEEN&& to, DURATION_TYPE&& duration, tween_options options)
+			template <typename G = GETTER, typename S = SETTER, typename TT = TYPE_TWEEN, typename D = DURATION_TYPE>
+			ITween(G&& getter, S&& setter, TT&& to, D&& duration, tween_options options)
 				: m_start_value(getter())
-				, m_end_value(std::forward<TYPE_TWEEN>(to))
-				, m_getter(std::forward<GETTER>(getter))
-				, m_setter(std::forward<SETTER>(setter))
+				, m_end_value(std::forward<TT>(to))
+				, m_getter(std::forward<G>(getter))
+				, m_setter(std::forward<S>(setter))
 				, m_options(options)
 			{
 			}

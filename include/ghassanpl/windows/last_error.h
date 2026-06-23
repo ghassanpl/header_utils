@@ -36,7 +36,7 @@ namespace ghassanpl
 		if (le != 0)
 		{
 			char* messageBuffer = nullptr;
-			size_t size = detail::FormatMessageA(0x00000100 | 0x00001000 | 0x00000200 | 0xFF, nullptr, le, 0, (char*)&messageBuffer, 0, nullptr);
+			const size_t size = detail::FormatMessageA(0x00000100 | 0x00001000 | 0x00000200 | 0xFF, nullptr, le, 0, (char*)&messageBuffer, 0, nullptr);
 			result.formatted = std::string{ messageBuffer, size };
 			detail::LocalFree(messageBuffer);
 		}

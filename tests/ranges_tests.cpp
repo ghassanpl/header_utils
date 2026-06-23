@@ -86,6 +86,17 @@ TEST(ranges_array_functions, work)
 	constexpr auto a7 = join(a1, 40, 50, 60);
 	static_assert(a7 == (std::array{ 10, 20, 30, 40, 50, 60 }));
 }
+
+TEST(range_predicate, works)
+{
+	///concept range_predicate = requires (FUNC func, RANGE range) { { func(*std::ranges::begin(range)) } -> std::convertible_to<bool>; };)
+	int arr[100]{0,1,2,3,4,5};
+	auto pred = [](int const& a) { return a == 5; };
+	//static_assert(range_predicate<decltype(arr), decltype(pred)>);
+	static_assert(requires (decltype(arr)&& range) { { pred(*std::ranges::begin(range)) } -> std::convertible_to<bool>; });
+	EXPECT_EQ(find_ptr(arr, pred), arr+5);
+}
+
 /*
 TEST(ranges_test, fold_works)
 {

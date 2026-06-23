@@ -161,6 +161,41 @@ namespace ghassanpl::constexpr_math
 
 	// TODO: round
 
+
+	template <std::floating_point T, typename RESULT = long>
+	[[nodiscard]] constexpr RESULT round(T num)
+	{
+		if (std::is_constant_evaluated())
+		{
+			if (!::ghassanpl::cem::isfinite(num))
+				return RESULT(num);
+
+			if (num >= 0.0)
+			{
+				T t = ::ghassanpl::cem::ceil(num);
+				if (t - num > T(0.5))
+					t -= T(1.0);
+				return RESULT(t);
+			}
+			else
+			{
+				T t = ::ghassanpl::cem::ceil(-num);
+				if (t + num > T(0.5))
+					t -= T(1.0);
+				return RESULT(-t);
+			}
+		}
+		else if constexpr (std::is_signed_v<T>)
+		{
+			if constexpr (sizeof(T) > sizeof(long))
+				return std::llround(num);
+			else
+				return std::lround(num);
+		}
+		else
+			return RESULT(num);
+	}
+
 	template <arithmetic T>
 	[[nodiscard]] constexpr auto abs(T num)
 	{

@@ -61,7 +61,7 @@ TEST(xxhash64, compile_time_same_as_runtime)
 TEST(regression_msvc_ice_11047635, hash64_works)
 {
 	int world = 16;
-	hash64(std::string{ "hello" }, world);
+	std::ignore = hash64(std::string{ "hello" }, world);
 }
 
 TEST(constexpr_hashes, work_for_all_supported_types)

@@ -47,3 +47,18 @@ TEST(rec2, bounding_box_for_overload_works)
 	rec2 r2{ bounding_box_for, vec2{-100,100}, vec2{-300,3}, vec2{302,544} };
 	EXPECT_EQ(r2, rec2(-300.0f, 3.0f, 302.0f, 544.0f));
 }
+
+TEST(rec2, is_hashable)
+{
+	EXPECT_EQ(std::hash<rec2>{}(rec2{ 1, 2, 3, 4 }), std::hash<rec2>{}(rec2{ 1, 2, 3, 4 }));
+	EXPECT_EQ(std::hash<rec2>{}(rec2{}), std::hash<rec2>{}(rec2{}));
+	EXPECT_EQ(std::hash<rec2>{}(rec2::exclusive()), std::hash<rec2>{}(rec2::exclusive()));
+	EXPECT_NE(std::hash<rec2>{}(rec2{}), std::hash<rec2>{}(rec2::exclusive()));
+	EXPECT_NE(std::hash<rec2>{}(rec2{ 1, 2, 3, 4 }), std::hash<rec2>{}(rec2{ 5, 6, 7, 8 }));
+	EXPECT_NE(std::hash<rec2>{}(rec2{ 1, 2, 3, 4 }), std::hash<rec2>{}(rec2{ 1, 2, 4, 3 }));
+	EXPECT_NE(std::hash<rec2>{}(rec2{ 1, 2, 3, 4 }), std::hash<rec2>{}(rec2{ 1.0001f, 2, 3, 4 }));
+	EXPECT_NE(std::hash<rec2>{}(rec2{ 1, 2, 3, 4 }), std::hash<rec2>{}(rec2{ 1, 2.0001f, 3, 4 }));
+	EXPECT_NE(std::hash<rec2>{}(rec2{ 1, 2, 3, 4 }), std::hash<rec2>{}(rec2{ 1, 2, 3.0001f, 4.0001f }));
+	EXPECT_NE(std::hash<rec2>{}(rec2{ 1, 2, 3, 4 }), std::hash<rec2>{}(rec2{ 1, 2, 3, 4.0001f }));
+}
+

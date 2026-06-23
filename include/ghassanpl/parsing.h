@@ -149,11 +149,11 @@ namespace ghassanpl::parsing
 
 		std::pair<std::string_view, double> result;
 
-		const auto from_chars_result = from_chars(str, result.second);
-		if (from_chars_result.ec != std::errc{})
+		auto const [end, ec] = from_chars(str, result.second);
+		if (ec != std::errc{})
 			return { {}, std::numeric_limits<double>::quiet_NaN() };
 
-		result.first = make_sv(str.data(), from_chars_result.ptr);
+		result.first = make_sv(str.data(), end);
 		str.remove_prefix(result.first.size());
 		return result;
 	}
@@ -165,11 +165,11 @@ namespace ghassanpl::parsing
 
 		std::pair<std::string_view, int64_t> result;
 
-		const auto from_chars_result = from_chars(str, result.second, base);
-		if (from_chars_result.ec != std::errc{})
+		auto const [end, ec] = from_chars(str, result.second, base);
+		if (ec != std::errc{})
 			return { {}, 0 };
 
-		result.first = make_sv(str.data(), from_chars_result.ptr);
+		result.first = make_sv(str.data(), end);
 		str.remove_prefix(result.first.size());
 		return result;
 	}
@@ -181,11 +181,11 @@ namespace ghassanpl::parsing
 
 		std::pair<std::string_view, uint64_t> result;
 
-		const auto from_chars_result = std::from_chars(str.data(), str.data() + str.size(), result.second, base);
-		if (from_chars_result.ec != std::errc{})
+		auto const [end, ec] = std::from_chars(str.data(), str.data() + str.size(), result.second, base);
+		if (ec != std::errc{})
 			return { {}, 0 };
 
-		result.first = make_sv(str.data(), from_chars_result.ptr);
+		result.first = make_sv(str.data(), end);
 		str.remove_prefix(result.first.size());
 		return result;
 	}
@@ -196,7 +196,7 @@ namespace ghassanpl::parsing
 		if (str.empty())
 			return {};
 
-		if (auto first_char = str[0]; first_char == '-')
+		if (auto const first_char = str[0]; first_char == '-')
 		{
 			/// We need to parse then complement the integer
 			/// TODO: this

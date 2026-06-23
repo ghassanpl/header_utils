@@ -5,7 +5,6 @@
 #pragma once
 
 #include <cstddef>
-#include <string_view>
 #include <array>
 #include <bit>
 #include <memory>
@@ -129,7 +128,7 @@ namespace ghassanpl
 		if (n >= range.size() * CHAR_BIT)
 			return;
 		auto u8range = as_u8s(range);
-		auto byte = u8range[n / CHAR_BIT];
+		auto& byte = u8range[n / CHAR_BIT];
 		if (value)
 			byte |= (1 << (n % CHAR_BIT));
 		else
@@ -170,7 +169,7 @@ namespace ghassanpl
 		if (N >= range.size() * CHAR_BIT)
 			return;
 		auto u8range = as_u8s(range);
-		auto byte = u8range[N / CHAR_BIT];
+		auto& byte = u8range[N / CHAR_BIT];
 		if (value)
 			byte |= (1 << (N % CHAR_BIT));
 		else
@@ -196,16 +195,23 @@ namespace ghassanpl
 	/// A constexpr function that converts an integral value to its constituent bytelikes
 	/// TODO: This is NOT like a reinterpret_/bit_cast to u8s, because it's not endian-aware
 	template <bytelike B, std::integral T>
-	[[nodiscard]] constexpr auto to_bytelike_array(T value_)
+	[[nodiscard]] constexpr auto to_bytelike_array(T value_) -> std::array<B, sizeof(T)>
 	{
-		auto value = std::bit_cast<std::make_unsigned_t<T>>(value_);
-		std::array<B, sizeof(T)> result;
-		for (size_t i = 0; i < sizeof(T); ++i)
+		if constexpr (sizeof(T) == 1)
 		{
-			result[i] = static_cast<B>(value & 0xFF);
-			value >>= 8;
+			return { std::bit_cast<B>(value_) };
 		}
-		return result;
+		else
+		{
+			std::array<B, sizeof(T)> result;
+			auto value = std::bit_cast<std::make_unsigned_t<T>>(value_);
+			for (size_t i = 0; i < sizeof(T); ++i)
+			{
+				result[i] = static_cast<B>(value & 0xFF);
+				value >>= CHAR_BIT;
+			}
+			return result;
+		}
 	}
 
 	template <std::integral T> constexpr auto to_u8_array(T value) { return to_bytelike_array<uint8_t>(value); }
@@ -234,7 +240,7 @@ namespace ghassanpl
 			if (!ptr)
 				return { bytes, {} };
 			
-			return { { bytes.data(), bytes.size() - size}, { const_cast<T*>(reinterpret_cast<std::remove_const_t<T>*>(ptr)), size }};
+			return { { bytes.data(), bytes.size() - size}, { const_cast<T*>(static_cast<std::remove_const_t<T>*>(ptr)), size }};
 		}
 	}
 
@@ -296,8 +302,8 @@ namespace ghassanpl
 			const auto aligned_size = size - (size % ALIGN);
 			return { 
 				{ bytes.data(), bytes.size() - size}, 
-				{ const_cast<T*>(reinterpret_cast<std::remove_const_t<T>*>(ptr)), aligned_size }, 
-				{ const_cast<T*>(reinterpret_cast<std::remove_const_t<T>*>(ptr)) + aligned_size, size % ALIGN }
+				{ const_cast<T*>(static_cast<std::remove_const_t<T>*>(ptr)), aligned_size }, 
+				{ const_cast<T*>(static_cast<std::remove_const_t<T>*>(ptr)) + aligned_size, size % ALIGN }
 			};
 		}
 	}

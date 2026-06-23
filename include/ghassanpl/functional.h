@@ -23,8 +23,8 @@ namespace ghassanpl
 	template <typename... ARGS>
 	[[nodiscard]] constexpr auto make_single_time_function(std::function<void(ARGS...)> func)
 	{
-		return[func = std::move(func)](auto&&... args) mutable {
-			if (func) std::exchange(func, {})(std::forward<decltype(args)>(args)...);
+		return[func = std::move(func)](ARGS&&... args) mutable {
+			if (func) std::exchange(func, {})(std::forward<ARGS>(args)...);
 		};
 	}
 
@@ -56,9 +56,9 @@ namespace ghassanpl
 	std::optional<T> move_to_optional(T* value) noexcept { return value ? std::move(*value) : std::nullopt; }
 
 	///
-	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<std::optional<T>>&& value) { return value ? flatten(std::move(value).value()) : std::nullopt; }
-	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<T>&& value) { return value; }
-	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<std::optional<T>> const& value) { return value ? flatten(value.value()) : std::nullopt; }
+	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<std::optional<T>>&& value) { return value ? flattened(std::move(value).value()) : std::nullopt; }
+	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<T>&& value) { return std::move(value); }
+	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<std::optional<T>> const& value) { return value ? flattened(value.value()) : std::nullopt; }
 	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<T> const& value) { return value; }
 
 	/// Can be used to create an object with an overload set of `operator()` if constructed from multiple lambdas.
@@ -105,6 +105,16 @@ namespace ghassanpl
 		                      [[nodiscard]] constexpr auto is_true() noexcept { return [](auto&& other) { return !!other; }; }
 		                      [[nodiscard]] constexpr auto is_false() noexcept { return [](auto&& other) { return !other; }; }
 		template <typename T> [[nodiscard]] constexpr auto is_in(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return std::find(std::begin(val), std::end(val), other) != std::end(val); }; }
+
+#if __cpp_lib_to_address
+		template <typename T> [[nodiscard]] constexpr auto of_type() { return [](auto&& other) {
+			static_assert(std::is_pointer_v<T> || std::is_reference_v<T>, "Type must be reference or pointer to choose the appropriate cast type");
+			if constexpr (std::is_pointer_v<T>)
+				return dynamic_cast<T>(std::to_address(other)) != nullptr;
+			else
+				return dynamic_cast<std::remove_reference_t<T>*>(std::addressof(other)) != nullptr;
+		}; }
+#endif
 
 		template <typename... FUNCS>
 		[[nodiscard]] constexpr auto when_any(FUNCS&&... funcs) {
@@ -256,7 +266,18 @@ namespace ghassanpl
 		                                    constexpr auto identity_l = [] (auto&& val) noexcept { return std::forward<decltype(val)>(val); };
 
 		template <typename T> [[nodiscard]] constexpr auto cast_to() noexcept { return [](auto&& val) { return (T)std::forward<decltype(val)>(val); }; }
-		template <typename T> [[nodiscard]] constexpr auto dynamic_cast_to() noexcept { return [](auto&& val) { return dynamic_cast<T>(std::forward<decltype(val)>(val)); }; }
+#if __cpp_lib_to_address
+		template <typename T> [[nodiscard]] constexpr auto dynamic_cast_to() noexcept { return [](auto&& val) {
+			static_assert(std::is_pointer_v<T> || std::is_reference_v<T>, "Type must be reference or pointer to choose the appropriate cast type");
+			if constexpr (std::is_pointer_v<T>)
+				return dynamic_cast<T>(std::to_address(val));
+			else
+				return dynamic_cast<T>(*std::addressof(val));
+		}; }
+		
+		                      [[nodiscard]] constexpr auto to_address() noexcept { return [](auto&& val) { return std::to_address(val); }; }
+#endif
+
 #if defined(__cpp_lib_bit_cast)
 		template <typename T> [[nodiscard]] constexpr auto bit_cast_to() noexcept { return [](auto&& val) { return std::bit_cast<T>(std::forward<decltype(val)>(val)); }; }
 #endif

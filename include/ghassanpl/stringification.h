@@ -17,7 +17,7 @@ namespace ghassanpl
 	{
 		const auto len = static_cast<size_t>(::snprintf(nullptr, 0, "%g", floating_point));
 		std::string str(len, '\0');
-		::sprintf_s(&str[0], len + 1, "%g", floating_point);
+		::sprintf_s(str.data(), len + 1, "%g", floating_point);
 		return str;
 	}
 
@@ -119,7 +119,7 @@ namespace ghassanpl
 	};
 
 	template <typename T, template<bool> typename STRINGIFIER = string_stringifier>
-	requires requires (STRINGIFIER<true> str, T val) { stringify(str, val); }
+	requires requires (STRINGIFIER<true> str, T&& val) { stringify(str, val); }
 	[[nodiscard]] std::string to_string(T&& val)
 	{
 		std::string result;
@@ -129,7 +129,7 @@ namespace ghassanpl
 	}
 
 	template <typename T, template<bool> typename STRINGIFIER = string_stringifier>
-	requires requires (STRINGIFIER<false> str, T val) { stringify(str, val); }
+	requires requires (STRINGIFIER<false> str, T&& val) { stringify(str, val); }
 	bool from_string(std::string_view val, T& target)
 	{
 		STRINGIFIER<false> str{val};
@@ -139,7 +139,7 @@ namespace ghassanpl
 	}
 
 	template <typename T, template<bool> typename STRINGIFIER = string_stringifier>
-	requires requires (STRINGIFIER<false> str, T val) { stringify(str, val); }
+	requires requires (STRINGIFIER<false> str, T&& val) { stringify(str, val); }
 	[[nodiscard]] T from_string(std::string_view val)
 	{
 		T result{};
@@ -159,7 +159,7 @@ namespace ghassanpl
 }
 
 template <typename T>
-requires requires (ghassanpl::string_stringifier<true> str, T val) { stringify(str, val); }
+requires requires (ghassanpl::string_stringifier<true> str, T&& val) { stringify(str, val); }
 struct std::formatter<T> : std::formatter<std::string>
 {
 	template<typename U, class FormatContext>
@@ -173,7 +173,7 @@ struct std::formatter<T> : std::formatter<std::string>
 };
 
 template <typename T>
-requires requires (T val) { { (std::string_view)val } -> std::same_as<std::string_view>; } && (!std::convertible_to<T, std::string_view>)
+requires requires (T&& val) { { (std::string_view)val } -> std::same_as<std::string_view>; } && (!std::convertible_to<T, std::string_view>)
 struct std::formatter<T> : std::formatter<std::string_view>
 {
 	template<typename U, class FormatContext>
@@ -185,7 +185,7 @@ struct std::formatter<T> : std::formatter<std::string_view>
 
 /*
 template <typename T>
-requires (requires (T val) { ghassanpl::to_string(val); }) && (!requires (T val) { std::to_string(val); })
+requires (requires (T&& val) { ghassanpl::to_string(val); }) && (!requires (T val) { std::to_string(val); })
 struct std::formatter<T> : std::formatter<std::string>
 {
 	template<typename U, class FormatContext>

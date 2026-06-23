@@ -218,22 +218,22 @@ namespace ghassanpl
 
 		template <typename U>
 		requires has_trait<traits::implicitly_constructible> && std::is_same_v<std::remove_cvref_t<U>, T>
-		constexpr named(U&& arg) noexcept(std::is_nothrow_move_constructible_v<T>) 
+		constexpr explicit(false) named(U&& arg) noexcept(std::is_nothrow_move_constructible_v<T>)
 			: value(std::forward<U>(arg))
 		{
 		}
 
 		template <typename U>
 		requires has_trait<traits::implicitly_constructible_from<U>>
-		constexpr named(U&& arg) noexcept(std::is_nothrow_move_constructible_v<T>)
+		constexpr explicit(false) named(U&& arg) noexcept(std::is_nothrow_move_constructible_v<T>)
 			: value((T)std::forward<U>(arg))
 		{
 		}
 
 		template <typename U>
 		requires (!std::is_same_v<concrete_trait_type_of<traits::constructible_using, std::remove_cvref_t<U>>, void>)
-		constexpr named(U&& arg) noexcept(std::is_nothrow_move_constructible_v<T>)
-			: value(typename concrete_trait_type_of<traits::constructible_using, std::remove_cvref_t<U>>::convertor{}(arg))
+		constexpr explicit(false) named(U&& arg) noexcept(std::is_nothrow_move_constructible_v<T>)
+			: value(typename concrete_trait_type_of<traits::constructible_using, std::remove_cvref_t<U>>::convertor{}(std::forward<U>(arg)))
 		{
 		}
 
@@ -245,7 +245,7 @@ namespace ghassanpl
 
 		template <typename U>
 		requires requires(U&& val) { { named_cast<self_type>(std::forward<U>(val)) } -> std::same_as<self_type>; }
-		constexpr named(U&& arg)
+		constexpr explicit(false) named(U&& arg)
 			: named(named_cast<self_type>(std::forward<U>(arg)))
 		{
 
@@ -269,7 +269,7 @@ namespace ghassanpl
 
 		template <typename U, detail::FixedString OTHER_PARAMETER, typename... OTHER_CAPABILITIES>
 		requires requires(self_type const& self) { { named_cast<named<U, OTHER_PARAMETER, OTHER_CAPABILITIES...>>(self) } -> std::same_as<named<U, OTHER_PARAMETER, OTHER_CAPABILITIES...>>; }
-		constexpr operator named<U, OTHER_PARAMETER, OTHER_CAPABILITIES...>() const
+		constexpr explicit(false) operator named<U, OTHER_PARAMETER, OTHER_CAPABILITIES...>() const
 		{
 			return named_cast<named<U, OTHER_PARAMETER, OTHER_CAPABILITIES...>>(*this);
 		}
@@ -282,7 +282,7 @@ namespace ghassanpl
 		}
 
 		constexpr explicit operator bool() const noexcept { return value; }
-		constexpr operator base_type() const noexcept requires has_trait<traits::implicitly_convertible> { return value; }
+		constexpr explicit(false) operator base_type() const noexcept requires has_trait<traits::implicitly_convertible> { return value; }
 		
 		constexpr auto operator<=>(named const&) const = default;
 
@@ -387,26 +387,23 @@ namespace ghassanpl
 		{
 			return this->value / val.value;
 		}
-
-	private:
-
 	};
 
 	/// Creates a user-defined string literal which will result in a given `named` type
 #define ghassanpl_named_string_literal(named_name, suffix) \
-	inline named_name operator "" suffix(const char* str, std::size_t len) { \
+	inline named_name operator ""##suffix(const char* str, std::size_t len) { \
 		return named_name{named_name::base_type{str,len}}; \
 	}
 
 	/// Creates a user-defined integer literal which will result in a given `named` type
 #define ghassanpl_named_integer_literal(named_name, suffix) \
-	inline named_name operator "" suffix(unsigned long long int val) { \
+	inline named_name operator ""##suffix(unsigned long long int val) { \
 		return named_name{named_name::base_type(val)}; \
 	}
 
 	/// Creates a user-defined floating-point literal which will result in a given `named` type
 #define ghassanpl_named_float_literal(named_name, suffix) \
-	inline named_name operator "" suffix(long double val) { \
+	inline named_name operator ""##suffix(long double val) { \
 		return named_name{named_name::base_type(val)}; \
 	}
 

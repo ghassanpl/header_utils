@@ -5,10 +5,9 @@
 #pragma once
 
 #include "min-cpp-version/cpp17.h"
+#include "flat_map.h"
 #include <functional>
-#include <optional>
 #include <utility>
-#include <map>
 
 // Shamelessly stolen from https://github.com/klmr/multifunction
 namespace ghassanpl
@@ -51,11 +50,17 @@ namespace ghassanpl
 
 		enum class handle : size_t {};
 
-		mutlticast_function() noexcept = default;
 		mutlticast_function(mutlticast_function const&) noexcept = default;
 		mutlticast_function(mutlticast_function&&) noexcept = default;
 		mutlticast_function& operator =(mutlticast_function const&) noexcept = default;
 		mutlticast_function& operator =(mutlticast_function&&) noexcept = default;
+
+		template <typename... F>
+		requires (std::is_invocable_r_v<R, F, ARGS...> && ...)
+		explicit(false) mutlticast_function(F&&... listeners)
+		{
+			(this->add(std::function<F>(listeners)), ...);
+		}
 
 		/// Adds a new invocable to the list
 		/// \returns A handle that can be used to remove the added invocable
@@ -105,12 +110,12 @@ namespace ghassanpl
 		struct call_helper
 		{
 			template <typename... CALL_ARGS>
-			static std::vector<RET> call(std::map<handle, std::function<RET(ARGS...)>> const& listeners, CALL_ARGS&&... args)
+			static std::vector<RET> call(flat_map_preferred<handle, std::function<RET(ARGS...)>> const& listeners, CALL_ARGS&&... args)
 			{
 				std::vector<RET> ret;
 				ret.reserve(listeners.size());
-				for (auto& [handle, listener] : listeners)
-					ret.push_back(listener(std::forward<CALL_ARGS>(args)...));
+				for (auto&& [handle, listener] : listeners)
+					ret.push_back(listener(args...));
 				return ret;
 			}
 		};
@@ -119,14 +124,14 @@ namespace ghassanpl
 		struct call_helper<void>
 		{
 			template <typename... CALL_ARGS>
-			static void call(std::map<handle, std::function<void(ARGS...)>> const& listeners, CALL_ARGS&&... args)
+			static void call(flat_map_preferred<handle, std::function<void(ARGS...)>> const& listeners, CALL_ARGS&&... args)
 			{
-				for (auto& [handle, listener] : listeners)
-					listener(std::forward<CALL_ARGS>(args)...);
+				for (auto&& [handle, listener] : listeners)
+					listener(args...);
 			}
 		};
 
-		std::map<handle, std::function<R(ARGS...)>> m_listeners;
+		flat_map_preferred<handle, std::function<R(ARGS...)>> m_listeners;
 		size_t m_last_id = {};
 	};
 }

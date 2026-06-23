@@ -112,3 +112,21 @@ TEST(uri, uri_decompose_handles_windows_file_uris)
 	EXPECT_EQ(std::filesystem::weakly_canonical(known_schemes::file.filesystem_path(uri)), std::filesystem::path{ "c:path\\to\\the file.txt" });
 	EXPECT_TRUE(uri.query_elements.empty());
 }
+
+TEST(uri, regression_authority_elements_parsed_incorrectly)
+{
+	auto uri = decompose_uri("http://1.2.3.43:300a/");
+	ASSERT_FALSE(uri.has_value());
+	EXPECT_EQ(int(uri.error()), int(uri_error_code::port_malformed));
+	/*
+	EXPECT_EQ(uri.port, "300");
+	EXPECT_EQ(uri.host, "1.2.3.43");
+	EXPECT_EQ(uri.path, "/");
+	*/
+}
+
+TEST(uri, whole_authority)
+{
+	auto scheme = query_uri_scheme("http");
+	EXPECT_TRUE(scheme->validate("http://:80/").has_value());
+}

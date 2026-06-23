@@ -57,11 +57,11 @@ namespace ghassanpl
 	/// Calls the given function with `args` and an `std::error_code` as the last argument
 	/// \returns an `expected` with the result of the function call if the `std::error_code` is `0`, otherwise an `unexpected` with the error code
 	template <typename FUNC, typename... ARGS>
-	inline auto call_with_expected_ec(FUNC&& func, ARGS&&... args) noexcept(noexcept(func(std::forward<ARGS>(args)...)))
-		-> expected<std::invoke_result_t<FUNC, ARGS&&...>, std::error_code>
+	auto call_with_expected_ec(FUNC&& func, ARGS&&... args) noexcept(noexcept(func(std::forward<ARGS>(args)...)))
+		-> expected<std::invoke_result_t<FUNC, ARGS&&..., std::add_lvalue_reference_t<std::error_code>>, std::error_code>
 	{
 		std::error_code ec{};
-		if constexpr (std::is_void_v<std::invoke_result_t<FUNC, ARGS&&...>>)
+		if constexpr (std::is_void_v<std::invoke_result_t<FUNC, ARGS&&..., std::add_lvalue_reference_t<std::error_code>>>)
 		{
 			func(std::forward<ARGS>(args)..., ec);
 			if (ec)

@@ -4,9 +4,7 @@
 
 #pragma once
 
-#include "random.h"
-//#include "hashes.h"
-#include "noise.h"
+#include "min-cpp-version/cpp17.h"
 
 namespace ghassanpl::noise
 {
@@ -17,9 +15,9 @@ namespace ghassanpl::noise
 
 	[[nodiscard]] constexpr uint64_t seeded_noise64(uint64_t position, uint64_t seed)
 	{
-		const uint64_t BIT_NOISE1 = 0xB5297A4DB5297A4D;
-		const uint64_t BIT_NOISE2 = 0x68E31DA468E31DA4;
-		const uint64_t BIT_NOISE3 = 0x1B56C4E91B56C4E9;
+		constexpr uint64_t BIT_NOISE1 = 0xB5297A4DB5297A4D;
+		constexpr uint64_t BIT_NOISE2 = 0x68E31DA468E31DA4;
+		constexpr uint64_t BIT_NOISE3 = 0x1B56C4E91B56C4E9;
 
 		uint64_t mangled = position;
 		mangled *= BIT_NOISE1;
@@ -120,10 +118,10 @@ namespace ghassanpl::random
 
 	constexpr uint64_t philox64(uint64_t sequence_index, uint32_t sequence_key)
 	{
-		constexpr auto _philox2x32round = [](std::pair<uint32_t, uint32_t> ctr, uint32_t key) -> std::pair<uint32_t, uint32_t> {
-			uint64_t product = (((uint64_t)0xd256d193)) * ctr.first;
-			uint32_t hi = (uint32_t)(product >> 32);
-			uint32_t lo = (uint32_t)product;
+		constexpr auto _philox2x32round = [] (std::pair<uint32_t, uint32_t> ctr, uint32_t key) -> std::pair<uint32_t, uint32_t> {
+			const uint64_t product = (((uint64_t)0xd256d193)) * ctr.first;
+			const uint32_t hi = (uint32_t)(product >> 32);
+			const uint32_t lo = (uint32_t)product;
 			return { hi ^ key ^ ctr.second, lo };
 		};
 		auto ctrPair = std::pair<uint32_t, uint32_t>{ (uint32_t)sequence_index, (uint32_t)(sequence_index >> 32) };
@@ -146,7 +144,7 @@ namespace ghassanpl::random
 		using result_type = uint64_t;
 
 		[[nodiscard]] constexpr result_type operator()() noexcept { return philox64(m_index + n++, m_key); }
-		constexpr philox64_engine(uint64_t index = 0, uint32_t key = 0) noexcept : m_index(index), m_key(key), n(0) { }
+		explicit constexpr philox64_engine(uint64_t index = 0, uint32_t key = 0) noexcept : m_index(index), m_key(key), n(0) { }
 
 		static constexpr result_type min() { return 0; }
 		static constexpr result_type max() { return ~((result_type)0); }

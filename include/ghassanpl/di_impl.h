@@ -3,6 +3,7 @@
 /// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #pragma once
+#include <stdexcept>
 
 namespace ghassanpl::di
 {
@@ -81,6 +82,9 @@ namespace ghassanpl::di
 
 		template <typename T>
 		concept IsSupportedArgument = requires (Container& cnt) { { ArgumentResolver<T>::Resolve(cnt) }; };
+
+		template <class TParent>
+		struct ArgumentResolverInvoker;
 
 		template <class T, class... TAnyArgument>
 		struct ConstructorDescriptor<T, std::tuple<TAnyArgument...>>
@@ -305,7 +309,7 @@ namespace ghassanpl::di
 		void RegisterImplementationType(ARGS&&... args)
 		{
 			if (mImplementations.contains(typeid(IMPLEMENTATION)))
-				throw "already registered";
+				throw std::runtime_error{ "already registered" };
 
 			auto& impl = mImplementations[typeid(IMPLEMENTATION)];
 			if constexpr (is_any_of_v<DefaultImplementationStruct, ARGS...>)
@@ -361,7 +365,7 @@ namespace ghassanpl::di
 	template <typename INTERFACE>
 	bool Container::HasAnyImplementationsOf() const
 	{
-		if (auto it = mContainers.find(typeid(INTERFACE)); it != mContainers.end())
+		if (auto const it = mContainers.find(typeid(INTERFACE)); it != mContainers.end())
 			return it->second->HasAnyImplementations();
 		return false;
 	}
@@ -451,8 +455,8 @@ namespace ghassanpl::di
 	template<typename INTERFACE, typename T>
 	std::shared_ptr<INTERFACE> Container::Instantiate(T& factory)
 	{
-		if (find(mResolutionStack.begin(), mResolutionStack.end(), typeid(INTERFACE)) != mResolutionStack.end())
-			throw "circular dependency";
+		if (std::ranges::find(mResolutionStack, typeid(INTERFACE)) != mResolutionStack.end())
+			throw std::runtime_error{ "circular dependency" };
 		mResolutionStack.push_back(typeid(INTERFACE));
 
 		auto result = factory(*this);

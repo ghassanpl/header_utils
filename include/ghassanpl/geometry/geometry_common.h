@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include "../align.h"
 #include "../constexpr_math.h"
 #include "../enum_flags.h"
 #include "../named.h"
@@ -238,8 +237,8 @@ namespace ghassanpl::geometry
 		constexpr std::pair<degrees, degrees> get_circle_slice(size_t nth_slice, size_t slice_count, degrees starting_at = degrees{ 0.0f }) noexcept
 		{
 			return {
-				ensure_positive(degrees{nth_slice * (360.0f / slice_count)} + starting_at),
-				ensure_positive(degrees{(nth_slice + 1) * (360.0f / slice_count)} + starting_at)
+				ensure_positive(degrees{float(nth_slice) * (360.0f / float(slice_count))} + starting_at),
+				ensure_positive(degrees{float(nth_slice + 1) * (360.0f / float(slice_count))} + starting_at)
 			};
 		}
 

@@ -284,8 +284,8 @@ namespace ghassanpl
 
 		struct iterator
 		{
-			self_type::value_type bits;
-			using bitset_type = std::make_unsigned_t<self_type::value_type>;
+			enum_flags::value_type bits;
+			using bitset_type = std::make_unsigned_t<enum_flags::value_type>;
 
 			using difference_type = int;
 			using value_type = enum_type;

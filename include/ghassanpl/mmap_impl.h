@@ -13,7 +13,7 @@ namespace ghassanpl
 		typedef struct _SECURITY_ATTRIBUTES SECURITY_ATTRIBUTES, * PSECURITY_ATTRIBUTES, * LPSECURITY_ATTRIBUTES;
 	}
 
-	extern "C" typedef union _LARGE_INTEGER {
+	extern "C" typedef union /* _LARGE_INTEGER */ {
 		struct {
 			unsigned int LowPart;
 			long HighPart;
@@ -109,8 +109,8 @@ namespace ghassanpl
 		inline bool create_file(std::filesystem::path const& path, size_t size, std::error_code& error) noexcept
 		{
 #ifdef _WIN32
-			auto file = CreateFileW(path.c_str(), (0x40000000L), 0x00000001 | 0x00000002, 0, 4, 0x00000080, 0);
-			if (file == nullptr)
+			const auto file = CreateFileW(path.c_str(), (0x40000000L), 0x00000001 | 0x00000002, 0, 4, 0x00000080, 0);
+			if (file == (const void*)(uint64_t)-1)
 			{
 				error = last_error();
 				return false;
@@ -170,15 +170,15 @@ namespace ghassanpl
 		if (path.empty())
 		{
 			error = std::make_error_code(std::errc::invalid_argument);
-			return invalid_handle;
+			return invalid_file;
 		}
 
 #ifdef _WIN32
-		const auto handle = CreateFileW(path.c_str(), (0x80000000L) | (0x40000000L), 0x00000001 | 0x00000002, 0, 3, 0x00000080, 0);
+		const auto handle = (file_handle_type)(intptr_t)CreateFileW(path.c_str(), (0x80000000L) | (0x40000000L), 0x00000001 | 0x00000002, nullptr, 3, 0x00000080, nullptr);
 #else // POSIX
-		const auto handle = ::open(c_str(path), O_RDWR);
+		const auto handle = (file_handle_type)(intptr_t)::open(c_str(path), O_RDWR);
 #endif
-		if (handle == invalid_handle)
+		if (handle == invalid_file)
 			error = last_error();
 
 		return handle;
@@ -191,16 +191,16 @@ namespace ghassanpl
 		const int64_t length_to_map = offset - aligned_offset + length;
 #ifdef _WIN32
 		const int64_t max_file_size = offset + length;
-		const auto file_mapping_handle = CreateFileMappingW(file_handle, 0, 0x04, int64_high(max_file_size), int64_low(max_file_size), 0);
-		if (file_mapping_handle == invalid_handle)
+		const auto file_mapping_handle = (file_mapping_handle_type)(intptr_t)CreateFileMappingW((void*)file_handle, nullptr, 0x04, int64_high(max_file_size), int64_low(max_file_size), nullptr);
+		if (file_mapping_handle == invalid_mapping)
 		{
 			error = last_error();
 			return {};
 		}
-		VALUE_TYPE* mapping_start = static_cast<VALUE_TYPE*>(MapViewOfFile(file_mapping_handle, 0x0002, int64_high(aligned_offset), int64_low(aligned_offset), length_to_map));
+		VALUE_TYPE* mapping_start = static_cast<VALUE_TYPE*>(MapViewOfFile((void*)file_mapping_handle, 0x0002, int64_high(aligned_offset), int64_low(aligned_offset), length_to_map));
 		if (mapping_start == nullptr)
 		{
-			CloseHandle(file_mapping_handle);
+			CloseHandle((void*)file_mapping_handle);
 			error = last_error();
 			return {};
 		}
@@ -230,14 +230,14 @@ namespace ghassanpl
 		if (this->is_mapped())
 		{
 			UnmapViewOfFile(this->get_mapping_start());
-			CloseHandle(this->file_mapping_handle_);
+			CloseHandle((void*)this->file_mapping_handle_);
 		}
 #else // POSIX
 		if (data_) { ::munmap(const_cast<pointer>(get_mapping_start()), mapped_length_); }
 #endif
 
 #ifdef _WIN32
-		CloseHandle(this->file_handle_);
+		CloseHandle((void*)this->file_handle_);
 #else // POSIX
 		::close(file_handle_);
 #endif
@@ -245,8 +245,8 @@ namespace ghassanpl
 		// Reset fields to their default values.
 		this->data_ = nullptr;
 		this->length_ = this->mapped_length_ = 0;
-		this->file_handle_ = invalid_handle;
-		this->file_mapping_handle_ = invalid_handle;
+		this->file_handle_ = invalid_file;
+		this->file_mapping_handle_ = invalid_mapping;
 	}
 
 	template <typename VALUE_TYPE>
@@ -256,14 +256,14 @@ namespace ghassanpl
 		if (path.empty())
 		{
 			error = std::make_error_code(std::errc::invalid_argument);
-			return invalid_handle;
+			return invalid_file;
 		}
 #ifdef _WIN32
-		const auto handle = CreateFileW(path.c_str(), (0x80000000L), 0x00000001 | 0x00000002, 0, 3, 0x00000080, 0);
+		const auto handle = (file_handle_type)(intptr_t)CreateFileW(path.c_str(), (0x80000000L), 0x00000001 | 0x00000002, 0, 3, 0x00000080, 0);
 #else // POSIX
 		const auto handle = ::open(c_str(path), O_RDONLY);
 #endif
-		if (handle == invalid_handle)
+		if (handle == invalid_file)
 		{
 			error = last_error();
 		}
@@ -277,17 +277,17 @@ namespace ghassanpl
 		const int64_t length_to_map = offset - aligned_offset + length;
 #ifdef _WIN32
 		const int64_t max_file_size = offset + length;
-		const auto file_mapping_handle = CreateFileMappingW(file_handle, 0, 0x02, int64_high(max_file_size), int64_low(max_file_size), 0);
-		if (file_mapping_handle == invalid_handle)
+		const auto file_mapping_handle = (file_mapping_handle_type)(intptr_t)CreateFileMappingW((void*)file_handle, nullptr, 0x02, int64_high(max_file_size), int64_low(max_file_size), nullptr);
+		if (file_mapping_handle == invalid_mapping)
 		{
 			error = last_error();
 			return {};
 		}
-		auto mapping_start = static_cast<VALUE_TYPE*>(MapViewOfFile(file_mapping_handle, 0x0004, int64_high(aligned_offset), int64_low(aligned_offset), length_to_map));
+		auto mapping_start = static_cast<VALUE_TYPE*>(MapViewOfFile((void*)file_mapping_handle, 0x0004, int64_high(aligned_offset), int64_low(aligned_offset), length_to_map));
 		if (mapping_start == nullptr)
 		{
 			// Close file handle if mapping it failed.
-			CloseHandle(file_mapping_handle);
+			CloseHandle((void*)file_mapping_handle);
 			error = last_error();
 			return {};
 		}

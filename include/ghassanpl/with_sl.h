@@ -41,8 +41,8 @@ namespace ghassanpl
 
 		template <typename U>
 		requires (!std::same_as<std::remove_cvref_t<U>, with_sl<T>>)
-		with_sl(U&& u, source_location loc EQ_SOURCE_LOCATION)
-			: Object(std::forward<U>(u)), Location(std::move(loc))
+		explicit(false) with_sl(U&& u, source_location loc EQ_SOURCE_LOCATION)
+			: Object(std::forward<U>(u)), Location(loc)
 		{
 		}
 
@@ -66,9 +66,9 @@ namespace ghassanpl
 		template <typename U>
 		requires (!std::same_as<std::remove_cvref_t<U>, with_slh<T, HASH_FUNC>>)
 #ifdef __INTELLISENSE__
-		with_slh(U&& t, hash_type loc = {})
+		explicit(false) with_slh(U&& t, hash_type loc = {})
 #else
-		with_slh(U&& t, hash_type loc = HASH_FUNC{}(source_location::current()))
+		explicit(false) with_slh(U&& t, hash_type loc = HASH_FUNC{}(source_location::current()))
 #endif
 			: Object(std::forward<U>(t)), LocationHash(loc)
 		{
