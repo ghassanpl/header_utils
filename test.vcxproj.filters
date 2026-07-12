@@ -433,6 +433,9 @@
     <ClCompile Include="tests\hashes_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tests\interpolation_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="tests\cpp98_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

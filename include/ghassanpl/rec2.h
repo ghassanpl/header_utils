@@ -97,6 +97,8 @@ namespace ghassanpl
 			constexpr trec2 operator/(T op) const noexcept { return { p1 / op, p2 / op }; }
 			constexpr trec2 operator*(tvec op) const noexcept { return { p1 * op, p2 * op }; }
 			constexpr trec2 operator/(tvec op) const noexcept { return { p1 / op, p2 / op }; }
+			constexpr trec2 operator-(trec2 const& op) const noexcept { return { p1 - op.p1, p2 - op.p2 }; }
+			constexpr trec2 operator+(trec2 const& op) const noexcept { return { p1 + op.p1, p2 + op.p2 }; }
 
 			constexpr bool operator==(trec2 const& other) const noexcept { return p1 == other.p1 && p2 == other.p2; }
 			/// TODO: Write this manually (what does it even mean to compare two rectangles?)
@@ -213,19 +215,21 @@ namespace ghassanpl
 				return intersection(other);
 			}
 
-			constexpr trec2 constrained_to(trec2 const& other) const noexcept; /// translated by the minimum offset so that it fits inside other
-
+			constexpr trec2 constrained_to(trec2 const& other) const noexcept /// translated by the minimum offset so that it fits inside other
+			{
+				return *this + glm::clamp(tvec{}, other.p1 - p1, other.p2 - p2);
+			}
 			/// TODO: CSS Background-size-style funcs: cover, contain
 
 			constexpr bool contains(glm::vec<2, T> const& other) const noexcept
 			{
-				return other.x >= p1.x && other.y >= p1.y && other.x <= p2.x && other.y <= p2.y;
+				return other.x >= p1.x && other.y >= p1.y && other.x < p2.x && other.y < p2.y;
 			}
 
 			/// \pre `other` must be valid
 			constexpr bool contains(trec2 const& other) const noexcept
 			{
-				return other.p1.x >= p1.x && other.p1.y >= p1.y && other.p2.x <= p2.x && other.p2.y <= p2.y;
+				return other.p1.x >= p1.x && other.p1.y >= p1.y && other.p2.x < p2.x && other.p2.y < p2.y;
 			}
 
 			constexpr bool is_valid() const noexcept
@@ -245,6 +249,17 @@ namespace ghassanpl
 			{
 				if (p1.x > p2.x) std::swap(p1.x, p2.x);
 				if (p1.y > p2.y) std::swap(p1.y, p2.y);
+				return *this;
+			}
+
+			constexpr trec2 nonnegative() const noexcept
+			{
+				return { p1, glm::max(p1, p2) };
+			}
+
+			constexpr trec2& make_nonnegative() noexcept
+			{
+				p2 = glm::max(p1, p2);
 				return *this;
 			}
 

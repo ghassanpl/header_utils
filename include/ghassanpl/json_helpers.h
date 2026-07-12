@@ -15,7 +15,6 @@
 namespace ghassanpl::formats
 {
 	
-	/*
 	namespace text
 	{
 		/// \defgroup Text Text
@@ -26,7 +25,7 @@ namespace ghassanpl::formats
 		/// \param ec is filled with the error if any happens
 		inline std::string load_file(std::filesystem::path const& from, std::error_code& ec)
 		{
-			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			auto const source = ghassanpl::make_mmap_source<char>(from, ec);
 			return ec ? std::string{} : std::string{ source.begin(), source.end() };
 		}
 
@@ -35,7 +34,7 @@ namespace ghassanpl::formats
 		inline std::string load_file(std::filesystem::path const& from)
 		{
 			std::error_code ec;
-			auto source = ghassanpl::make_mmap_source<char>(from, ec);
+			auto const source = ghassanpl::make_mmap_source<char>(from, ec);
 			if (ec == std::errc::file_too_large) /// zero-sized file
 				return {};
 			if (ec)
@@ -68,6 +67,7 @@ namespace ghassanpl::formats
 		/// @}
 	}
 
+	/*
 	namespace text_lines
 	{
 
@@ -329,8 +329,8 @@ namespace ghassanpl::formats
 			throw std::runtime_error(std::format("no key \"{}\" found", key));
 		}
 
-		template <typename T>
-		[[nodiscard]] T get_field_val_or_default(nlohmann::json const& g, std::string_view key, T&& default_val = T{})
+		template <typename T, typename U = T>
+		[[nodiscard]] T get_field_val_or_default(nlohmann::json const& g, std::string_view key, U&& default_val = U{})
 		{
 			try
 			{
@@ -341,7 +341,7 @@ namespace ghassanpl::formats
 			catch (...)
 			{
 			}
-			return std::forward<T>(default_val);
+			return std::forward<U>(default_val);
 		}
 
 		/// @}

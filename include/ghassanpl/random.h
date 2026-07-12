@@ -372,8 +372,9 @@ namespace ghassanpl::random
 
 	/// Returns an pointer to a random element in `cont`.
 	template <typename RANDOM = std::default_random_engine, typename T>
-	[[nodiscard]] auto* element(T& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	[[nodiscard]] auto* element(T&& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
 	{
+		static_assert(!std::is_rvalue_reference_v<T>, "Cannot take rvalue reference as container");
 		using std::end;
 		auto result = iterator(cont, rng);
 		return (result != end(cont)) ? std::addressof(*result) : nullptr;

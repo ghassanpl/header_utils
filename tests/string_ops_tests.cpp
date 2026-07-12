@@ -503,6 +503,427 @@ TEST(string_ops, any_versions)
 	EXPECT_FALSE(isany(char32_t(500), -1));
 }
 
+TEST(consume_until, char_delimiter)
+{
+	/// Delimiter in the middle: stops before it and leaves it at the front of the view.
+	{
+		auto sv = "abc,def"sv;
+		auto ret = consume_until(sv, ',');
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_EQ(sv, ",def"sv);
+	}
+	/// Delimiter absent: consumes the whole string.
+	{
+		auto sv = "abcdef"sv;
+		auto ret = consume_until(sv, ',');
+		EXPECT_EQ(ret, "abcdef"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// Delimiter at the very start: consumes nothing.
+	{
+		auto sv = ",abc"sv;
+		auto ret = consume_until(sv, ',');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, ",abc"sv);
+	}
+	/// Empty input.
+	{
+		auto sv = ""sv;
+		auto ret = consume_until(sv, ',');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_TRUE(sv.empty());
+	}
+}
+
+TEST(consume_until, string_delimiter)
+{
+	/// Needle in the middle: stops before it and leaves it at the front of the view.
+	{
+		auto sv = "abcXYdef"sv;
+		auto ret = consume_until(sv, "XY"sv);
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_EQ(sv, "XYdef"sv);
+	}
+	/// Needle absent: consumes the whole string.
+	{
+		auto sv = "abcdef"sv;
+		auto ret = consume_until(sv, "XY"sv);
+		EXPECT_EQ(ret, "abcdef"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// Needle at the start: consumes nothing.
+	{
+		auto sv = "XYabc"sv;
+		auto ret = consume_until(sv, "XY"sv);
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, "XYabc"sv);
+	}
+	/// A partial match ("X") must not trigger; only the full needle does.
+	{
+		auto sv = "aXbXYc"sv;
+		auto ret = consume_until(sv, "XY"sv);
+		EXPECT_EQ(ret, "aXb"sv);
+		EXPECT_EQ(sv, "XYc"sv);
+	}
+	/// Empty needle: consumes nothing.
+	{
+		auto sv = "abc"sv;
+		auto ret = consume_until(sv, ""sv);
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, "abc"sv);
+	}
+}
+
+TEST(consume_until, predicate)
+{
+	const auto is_digit = [](char c) { return c >= '0' && c <= '9'; };
+
+	/// Predicate matches in the middle: stops before the first matching char.
+	{
+		auto sv = "abc123"sv;
+		auto ret = consume_until(sv, is_digit);
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_EQ(sv, "123"sv);
+	}
+	/// No char matches: consumes the whole string.
+	{
+		auto sv = "abc"sv;
+		auto ret = consume_until(sv, is_digit);
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// First char already matches: consumes nothing.
+	{
+		auto sv = "123"sv;
+		auto ret = consume_until(sv, is_digit);
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, "123"sv);
+	}
+	/// Empty input.
+	{
+		auto sv = ""sv;
+		auto ret = consume_until(sv, is_digit);
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_TRUE(sv.empty());
+	}
+}
+
+TEST(consume_while, char_run)
+{
+	/// Run at the start: consumed up to the first non-matching char.
+	{
+		auto sv = "aaabbb"sv;
+		auto ret = consume_while(sv, 'a');
+		EXPECT_EQ(ret, "aaa"sv);
+		EXPECT_EQ(sv, "bbb"sv);
+	}
+	/// First char doesn't match: consumes nothing.
+	{
+		auto sv = "bbb"sv;
+		auto ret = consume_while(sv, 'a');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, "bbb"sv);
+	}
+	/// All chars match: consumes the whole string.
+	{
+		auto sv = "aaa"sv;
+		auto ret = consume_while(sv, 'a');
+		EXPECT_EQ(ret, "aaa"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// Empty input.
+	{
+		auto sv = ""sv;
+		auto ret = consume_while(sv, 'a');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_TRUE(sv.empty());
+	}
+}
+
+TEST(consume_while, predicate)
+{
+	const auto is_digit = [](char c) { return c >= '0' && c <= '9'; };
+
+	{
+		auto sv = "123abc"sv;
+		auto ret = consume_while(sv, is_digit);
+		EXPECT_EQ(ret, "123"sv);
+		EXPECT_EQ(sv, "abc"sv);
+	}
+	{
+		auto sv = "abc"sv;
+		auto ret = consume_while(sv, is_digit);
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, "abc"sv);
+	}
+	{
+		auto sv = "123"sv;
+		auto ret = consume_while(sv, is_digit);
+		EXPECT_EQ(ret, "123"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	{
+		auto sv = ""sv;
+		auto ret = consume_while(sv, is_digit);
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_TRUE(sv.empty());
+	}
+}
+
+TEST(consume_while_any, char_fast_path)
+{
+	/// All-`char` arguments take the find_first_not_of fast path.
+	{
+		auto sv = "abba c"sv;
+		auto ret = consume_while_any(sv, 'a', 'b');
+		EXPECT_EQ(ret, "abba"sv);
+		EXPECT_EQ(sv, " c"sv);
+	}
+	{
+		auto sv = "xyz"sv;
+		auto ret = consume_while_any(sv, 'a', 'b');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, "xyz"sv);
+	}
+	{
+		auto sv = "abab"sv;
+		auto ret = consume_while_any(sv, 'a', 'b');
+		EXPECT_EQ(ret, "abab"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	{
+		auto sv = ""sv;
+		auto ret = consume_while_any(sv, 'a', 'b');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_TRUE(sv.empty());
+	}
+}
+
+TEST(consume_while_any, general_path)
+{
+	/// A string-like argument takes the isany-based general path.
+	{
+		auto sv = "abba c"sv;
+		auto ret = consume_while_any(sv, "ab"sv);
+		EXPECT_EQ(ret, "abba"sv);
+		EXPECT_EQ(sv, " c"sv);
+	}
+	/// Mixed string and char arguments.
+	{
+		auto sv = "hello"sv;
+		auto ret = consume_while_any(sv, "eh", 'l');
+		EXPECT_EQ(ret, "hell"sv);
+		EXPECT_EQ(sv, "o"sv);
+	}
+}
+
+TEST(consume_until_any, char_fast_path)
+{
+	/// All-`char` arguments take the find_first_of fast path.
+	{
+		auto sv = "abc;def"sv;
+		auto ret = consume_until_any(sv, ',', ';');
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_EQ(sv, ";def"sv);
+	}
+	/// No delimiter found: consumes the whole string.
+	{
+		auto sv = "abc"sv;
+		auto ret = consume_until_any(sv, ',', ';');
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// Delimiter at the start: consumes nothing.
+	{
+		auto sv = ";abc"sv;
+		auto ret = consume_until_any(sv, ',', ';');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, ";abc"sv);
+	}
+	/// Empty input.
+	{
+		auto sv = ""sv;
+		auto ret = consume_until_any(sv, ',', ';');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_TRUE(sv.empty());
+	}
+}
+
+TEST(consume_until_any, general_path)
+{
+	/// A string-like argument takes the isany-based general path.
+	{
+		auto sv = "abc;def"sv;
+		auto ret = consume_until_any(sv, ",;"sv);
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_EQ(sv, ";def"sv);
+	}
+	/// Mixed string and char arguments.
+	{
+		auto sv = "abc,def"sv;
+		auto ret = consume_until_any(sv, ";"sv, ',');
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_EQ(sv, ",def"sv);
+	}
+}
+
+TEST(consume_until_delim, works)
+{
+	/// The delimiter is consumed AND included in the result.
+	{
+		auto sv = "abc,def"sv;
+		auto ret = consume_until_delim(sv, ',');
+		EXPECT_EQ(ret, "abc,"sv);
+		EXPECT_EQ(sv, "def"sv);
+	}
+	/// No delimiter: consumes and returns the whole string.
+	{
+		auto sv = "abcdef"sv;
+		auto ret = consume_until_delim(sv, ',');
+		EXPECT_EQ(ret, "abcdef"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// Delimiter at the start: result is just the delimiter.
+	{
+		auto sv = ",abc"sv;
+		auto ret = consume_until_delim(sv, ',');
+		EXPECT_EQ(ret, ","sv);
+		EXPECT_EQ(sv, "abc"sv);
+	}
+	/// Delimiter at the end.
+	{
+		auto sv = "abc,"sv;
+		auto ret = consume_until_delim(sv, ',');
+		EXPECT_EQ(ret, "abc,"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// Empty input.
+	{
+		auto sv = ""sv;
+		auto ret = consume_until_delim(sv, ',');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_TRUE(sv.empty());
+	}
+}
+
+TEST(consume_until_delim_ex, works)
+{
+	/// The delimiter is consumed but NOT included in the result.
+	{
+		auto sv = "abc,def"sv;
+		auto ret = consume_until_delim_ex(sv, ',');
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_EQ(sv, "def"sv);
+	}
+	/// No delimiter: consumes and returns the whole string.
+	{
+		auto sv = "abcdef"sv;
+		auto ret = consume_until_delim_ex(sv, ',');
+		EXPECT_EQ(ret, "abcdef"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// Delimiter at the start: empty result, delimiter skipped.
+	{
+		auto sv = ",abc"sv;
+		auto ret = consume_until_delim_ex(sv, ',');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, "abc"sv);
+	}
+	/// Delimiter at the end.
+	{
+		auto sv = "abc,"sv;
+		auto ret = consume_until_delim_ex(sv, ',');
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// Empty input.
+	{
+		auto sv = ""sv;
+		auto ret = consume_until_delim_ex(sv, ',');
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// The result aliases the source buffer (it's a subview, not a copy).
+	{
+		auto src = "abc,def"sv;
+		auto sv = src;
+		auto ret = consume_until_delim_ex(sv, ',');
+		EXPECT_EQ(ret.data(), src.data());
+		EXPECT_EQ(sv.data(), src.data() + 4);
+	}
+}
+
+TEST(consume_n, unconditional)
+{
+	{
+		auto sv = "abcdef"sv;
+		auto ret = consume_n(sv, 3);
+		EXPECT_EQ(ret, "abc"sv);
+		EXPECT_EQ(sv, "def"sv);
+	}
+	/// n greater than size: consumes everything available.
+	{
+		auto sv = "ab"sv;
+		auto ret = consume_n(sv, 5);
+		EXPECT_EQ(ret, "ab"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// n == 0: consumes nothing.
+	{
+		auto sv = "abc"sv;
+		auto ret = consume_n(sv, 0);
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, "abc"sv);
+	}
+	{
+		auto sv = ""sv;
+		auto ret = consume_n(sv, 3);
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_TRUE(sv.empty());
+	}
+}
+
+TEST(consume_n, with_predicate)
+{
+	const auto is_digit = [](char c) { return c >= '0' && c <= '9'; };
+
+	/// Stops at n even though more chars match.
+	{
+		auto sv = "12345abc"sv;
+		auto ret = consume_n(sv, 3, is_digit);
+		EXPECT_EQ(ret, "123"sv);
+		EXPECT_EQ(sv, "45abc"sv);
+	}
+	/// Predicate stops before n is exhausted.
+	{
+		auto sv = "12ab"sv;
+		auto ret = consume_n(sv, 3, is_digit);
+		EXPECT_EQ(ret, "12"sv);
+		EXPECT_EQ(sv, "ab"sv);
+	}
+	/// n greater than size, all matching.
+	{
+		auto sv = "12"sv;
+		auto ret = consume_n(sv, 5, is_digit);
+		EXPECT_EQ(ret, "12"sv);
+		EXPECT_TRUE(sv.empty());
+	}
+	/// First char doesn't match: consumes nothing.
+	{
+		auto sv = "ab"sv;
+		auto ret = consume_n(sv, 3, is_digit);
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_EQ(sv, "ab"sv);
+	}
+	/// Empty input.
+	{
+		auto sv = ""sv;
+		auto ret = consume_n(sv, 3, is_digit);
+		EXPECT_EQ(ret, ""sv);
+		EXPECT_TRUE(sv.empty());
+	}
+}
+
 TEST(string_ops, substr_functions_work)
 {
 	auto sv = "0123456789"sv;

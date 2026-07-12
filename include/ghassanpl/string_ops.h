@@ -552,8 +552,11 @@ namespace ghassanpl::string_ops
 			};
 		}
 
-		/// A version of the `sv` suffix that returns a special type allowing for case-insensitive comparisons (e.g. `if (str == "hello"_i)`)
-		[[nodiscard]] consteval detail::string_view_case_insensitive operator""_i(const char* str, size_t size) noexcept { return detail::string_view_case_insensitive{ std::string_view{str, str + size} }; }
+		inline namespace operators
+		{
+			/// A version of the `sv` suffix that returns a special type allowing for case-insensitive comparisons (e.g. `if (str == "hello"_i)`)
+			[[nodiscard]] consteval detail::string_view_case_insensitive operator""_i(const char* str, size_t size) noexcept { return detail::string_view_case_insensitive{ std::string_view{str, str + size} }; }
+		}
 
 		struct less_case_insensitive
 		{
@@ -699,8 +702,21 @@ namespace ghassanpl::string_ops
 	/// These functions do nothing (or the maximum safe amount) if there is nothing appropriate available to consume.
 	/// @{
 
+	namespace detail
+	{
+		/// Splits `str` at `pos` (npos = whole string): returns the prefix [0, pos),
+		/// and advances `str` past the prefix plus `skip` extra characters (clamped).
+		constexpr std::string_view consume_split(std::string_view& str, size_t pos, size_t skip = 0)
+		{
+			const auto n = std::min(pos, str.size());
+			const auto result = str.substr(0, n);
+			str.remove_prefix(std::min(n + skip, str.size()));
+			return result;
+		}
+	}
+
 	/// Consumes and returns the first character in the str, or \0 if no more characters.
-	[[nodiscard]] inline char consume(std::string_view& str)
+	[[nodiscard]] constexpr char consume(std::string_view& str)
 	{
 		if (str.empty())
 			return {};
@@ -711,7 +727,7 @@ namespace ghassanpl::string_ops
 
 	/// Consumes the character `val` if it's at the beginning of `str`
 	/// \returns whether it actually consumed
-	[[nodiscard]] inline bool consume(std::string_view& str, char val)
+	[[nodiscard]] constexpr bool consume(std::string_view& str, char val)
 	{
 		if (str.starts_with(val))
 		{
@@ -723,7 +739,7 @@ namespace ghassanpl::string_ops
 
 	/// Consumes the string `val` if it's at the beginning of `str`. 
 	/// \returns whether it actually consumed
-	[[nodiscard]] inline bool consume(std::string_view& str, std::string_view val)
+	[[nodiscard]] constexpr bool consume(std::string_view& str, std::string_view val)
 	{
 		if (str.starts_with(val))
 		{
@@ -736,7 +752,8 @@ namespace ghassanpl::string_ops
 	/// Consumes any of the characters in 'chars' if it's the first char of `str`. 
 	/// \returns the consumed character, or \0 if none found
 	template <typename... ARGS>
-	[[nodiscard]] inline char consume_any(std::string_view& str, ARGS const&... args)
+	requires (sizeof...(ARGS) > 0)
+	[[nodiscard]] constexpr char consume_any(std::string_view& str, ARGS const&... args)
 	{
 		if (!str.empty() && (isany(str[0], args) || ...))
 		{
@@ -751,7 +768,7 @@ namespace ghassanpl::string_ops
 	/// \returns the matched character, or \0 if no match
 	template <typename PRED>
 	requires std::is_invocable_r_v<bool, PRED, char>
-	[[nodiscard]] inline char consume(std::string_view& str, PRED&& pred)
+	[[nodiscard]] constexpr char consume(std::string_view& str, PRED&& pred)
 	{
 		if (!str.empty() && pred(str[0]))
 		{
@@ -763,7 +780,7 @@ namespace ghassanpl::string_ops
 	}
 
 	/// Consumes the first character from `str`, returning it, or `or_else` if string is empty.
-	[[nodiscard]] inline char consume_or(std::string_view& str, char or_else)
+	[[nodiscard]] constexpr char consume_or(std::string_view& str, char or_else)
 	{
 		if (str.empty())
 			return or_else;
@@ -775,7 +792,7 @@ namespace ghassanpl::string_ops
 	/// Consumes the last character from `str` if it matches `val`.
 	/// \returns whether it consumed
 	/// \see consume(std::string_view&, char)
-	[[nodiscard]] inline bool consume_at_end(std::string_view& str, char val)
+	[[nodiscard]] constexpr bool consume_at_end(std::string_view& str, char val)
 	{
 		if (str.ends_with(val))
 		{
@@ -789,7 +806,7 @@ namespace ghassanpl::string_ops
 	/// Consumes the string `val` from the end `str`
 	/// \returns whether it consumed
 	/// \see consume(std::string_view&, char)
-	[[nodiscard]] inline bool consume_at_end(std::string_view& str, std::string_view val)
+	[[nodiscard]] constexpr bool consume_at_end(std::string_view& str, std::string_view val)
 	{
 		if (str.ends_with(val))
 		{
@@ -803,60 +820,66 @@ namespace ghassanpl::string_ops
 	/// \returns the consumed prefix as a string_view
 	template <typename FUNC>
 	requires std::is_invocable_r_v<bool, FUNC, char>
-	[[nodiscard]] inline std::string_view consume_while(std::string_view& str, FUNC&& pred)
+	[[nodiscard]] constexpr std::string_view consume_while(std::string_view& str, FUNC&& pred)
 	{
-		const auto start = str.begin();
-		while (!str.empty() && pred(str[0]))
-			str.remove_prefix(1);
-		return make_sv(start, str.begin());
+		const auto it = std::ranges::find_if_not(str, pred);
+		return detail::consume_split(str, size_t(it - str.begin()));
 	}
 
 	/// Consumes characters from the beginning of `str` while they are equal to `c`.
 	/// \returns the consumed prefix as a string_view
-	[[nodiscard]] inline std::string_view consume_while(std::string_view& str, char c)
+	[[nodiscard]] constexpr std::string_view consume_while(std::string_view& str, char c)
 	{
-		const auto start = str.begin();
-		while (str.starts_with(c))
-			str.remove_prefix(1);
-		return make_sv(start, str.begin());
+		return detail::consume_split(str, str.find_first_not_of(c));
 	}
 
 	/// Consumes a run of any of the characters in 'chars' at the beginning of str
-	/// \returns the consumed character, or \0 if none found
+	/// \returns the consumed substring, or \0 if none found
 	template <typename... ARGS>
-	[[nodiscard]] inline std::string_view consume_while_any(std::string_view& str, ARGS const&... args)
+	requires (sizeof...(ARGS) > 0)
+	[[nodiscard]] constexpr std::string_view consume_while_any(std::string_view& str, ARGS const&... args)
 	{
-		const auto start = str.begin();
-		while (!str.empty() && (isany(str[0], args) || ...))
-			str.remove_prefix(1);
-		return make_sv(start, str.begin());
+		if constexpr ((std::same_as<std::remove_cvref_t<ARGS>, char> && ...)) /// If we're looking only for characters, we can use find_first_not_of for better performance
+		{
+			const char set[] = { args... };
+			return detail::consume_split(str, str.find_first_not_of(std::string_view{ set, sizeof...(ARGS) }));
+		}
+		else
+		{
+			const auto it = std::ranges::find_if(str, [&](char c) { return !(isany(c, args) || ...); });
+			return detail::consume_split(str, size_t(it - str.begin()));
+		}
 	}
 
 	/// Consumes characters from the beginning of `str` until one matches `pred(str[0])`, exclusive.
 	/// \returns the consumed prefix as a string_view
 	template <typename FUNC>
 	requires std::is_invocable_r_v<bool, FUNC, char>
-	[[nodiscard]] inline std::string_view consume_until(std::string_view& str, FUNC&& pred)
+	[[nodiscard]] constexpr std::string_view consume_until(std::string_view& str, FUNC&& pred)
 	{
 		const auto start = str.begin();
-		while (!str.empty() && !pred(str[0]))
-			str.remove_prefix(1);
+		if (const auto it = std::ranges::find_if(str, pred); it != str.end())
+			str.remove_prefix(it - start);
+		else
+			str.remove_prefix(str.size());
 		return make_sv(start, str.begin());
 	}
 
 	/// Consumes characters from the beginning of `str` until one is equal to `c`, exclusive.
 	/// \returns the consumed prefix as a string_view
-	[[nodiscard]] inline std::string_view consume_until(std::string_view& str, char c)
+	[[nodiscard]] constexpr std::string_view consume_until(std::string_view& str, char c)
 	{
 		const auto start = str.begin();
-		while (!str.empty() && str[0] != c)
-			str.remove_prefix(1);
+		if (const auto pos = str.find(c); pos != std::string_view::npos)
+			str.remove_prefix(pos);
+		else
+			str.remove_prefix(str.size());
 		return make_sv(start, str.begin());
 	}
 
 	/// Consumes characters from the beginning of `str` until the string starts with `end`, exclusive.
 	/// \returns the consumed prefix as a string_view
-	[[nodiscard]] inline std::string_view consume_until(std::string_view& str, std::string_view end)
+	[[nodiscard]] constexpr std::string_view consume_until(std::string_view& str, std::string_view end)
 	{
 		const auto it = std::ranges::search(str, end).begin();
 		const auto result = make_sv(str.begin(), it);
@@ -882,42 +905,45 @@ namespace ghassanpl::string_ops
 	/// Consumes characters from the beginning of `str` until one is equal to any in the parameter pack, exclusive.
 	/// \returns the consumed prefix as a string_view
 	template <typename... ARGS>
-	[[nodiscard]] inline std::string_view consume_until_any(std::string_view& str, ARGS const&... args)
+	requires (sizeof...(ARGS) > 0)
+	[[nodiscard]] constexpr std::string_view consume_until_any(std::string_view& str, ARGS const&... args)
 	{
-		const auto start = str.begin();
-		while (!str.empty() && !(isany(str[0], args) || ...))
-			str.remove_prefix(1);
-		return make_sv(start, str.begin());
+		if constexpr ((std::same_as<std::remove_cvref_t<ARGS>, char> && ...))
+		{
+			const char set[] = { args... };
+			return detail::consume_split(str, str.find_first_of(std::string_view{ set, sizeof...(ARGS) }));
+		}
+		else
+		{
+
+			const auto it = std::ranges::find_if(str, [&](char c) { return (isany(c, args) || ...); });
+			return detail::consume_split(str, size_t(it - str.begin()));
+		}
 	}
 
 	/// Consumes characters from the beginning of `str` until one is equal to `c`, consuming `c` and including it as part of the result.
 	/// \returns the consumed prefix as a string_view
-	[[nodiscard]] inline std::string_view consume_until_delim(std::string_view& str, char c)
+	[[nodiscard]] constexpr std::string_view consume_until_delim(std::string_view& str, char c)
 	{
 		/// TODO: Should this return a sv including the delimiter?
-
-		const auto start = str.begin();
-		while (!str.empty() && str[0] != c)
-			str.remove_prefix(1);
-		std::ignore = consume(str, c);
-		return make_sv(start, str.begin());
+		const auto pos = str.find(c);
+		if (pos == std::string_view::npos)
+			return detail::consume_split(str, pos);
+		const auto result = str.substr(0, pos + 1);
+		str.remove_prefix(pos + 1);
+		return result;
 	}
 
 	/// Consumes characters from the beginning of `str` until one is equal to `c`, consuming `c` but not including it as part of the result.
 	/// \returns the consumed prefix as a string_view
-	[[nodiscard]] inline std::string_view consume_until_delim_ex(std::string_view& str, char c)
+	[[nodiscard]] constexpr std::string_view consume_until_delim_ex(std::string_view& str, char c)
 	{
-		const auto start = str.begin();
-		while (!str.empty() && str[0] != c)
-			str.remove_prefix(1);
-		auto const result = make_sv(start, str.begin());
-		std::ignore = consume(str, c);
-		return result;
+		return detail::consume_split(str, str.find(c), 1);
 	}
 
 	/// Consumes at most `n` characters from the beginning of `str`.
 	/// \returns the consumed prefix as a string_view
-	[[nodiscard]] inline std::string_view consume_n(std::string_view& str, size_t n)
+	[[nodiscard]] constexpr std::string_view consume_n(std::string_view& str, size_t n)
 	{
 		n = std::min(str.size(), n);
 		auto const result = str.substr(0, n);
@@ -929,13 +955,11 @@ namespace ghassanpl::string_ops
 	/// \returns the consumed prefix as a string_view
 	template <typename FUNC>
 	requires std::is_invocable_r_v<bool, FUNC, char>
-	[[nodiscard]] inline std::string_view consume_n(std::string_view& str, size_t n, FUNC&& pred)
+	[[nodiscard]] constexpr std::string_view consume_n(std::string_view& str, size_t n, FUNC&& pred)
 	{
-		n = std::min(str.size(), n);
-		const auto start = str.begin();
-		while (n-- && !str.empty() && pred(str[0]))
-			str.remove_prefix(1);
-		return make_sv(start, str.begin());
+		const auto window = str.substr(0, std::min(n, str.size()));
+		const auto it = std::ranges::find_if_not(window, pred);
+		return detail::consume_split(str, size_t(it - window.begin()));
 	}
 
 	/// Consumes a list of `delimiter`-delimited strings, calling `callback(str)` each time; whitespaces before and after items are trimmed.
@@ -955,7 +979,7 @@ namespace ghassanpl::string_ops
 	/// \returns `true` if consumption ended, either by making the string empty, or encountering a non-delimiter after callback; `false` if callback returned false at any point
 	template <typename CALLBACK_TYPE>
 	requires std::is_invocable_r_v<bool, CALLBACK_TYPE, std::string_view&>
-	[[nodiscard]] inline bool consume_delimited_list_non_empty(std::string_view& str, std::string_view delimiter, CALLBACK_TYPE callback)
+	[[nodiscard]] constexpr bool consume_delimited_list_non_empty(std::string_view& str, std::string_view delimiter, CALLBACK_TYPE callback)
 	{
 		do
 		{
@@ -984,7 +1008,7 @@ namespace ghassanpl::string_ops
 	/// \returns `true` if closer is consumed; `false` if callback returned false at any point or if end-of-string is encountered before `closer` is consumed
 	template <typename CALLBACK_TYPE>
 	requires std::is_invocable_r_v<bool, CALLBACK_TYPE, std::string_view>
-	[[nodiscard]] inline bool consume_delimited_list(std::string_view& str, std::string_view delimiter, std::string_view closer, CALLBACK_TYPE callback)
+	[[nodiscard]] constexpr bool consume_delimited_list(std::string_view& str, std::string_view delimiter, std::string_view closer, CALLBACK_TYPE callback)
 	{
 		trim_whitespace_left(str);
 		while (!str.empty())
@@ -1928,6 +1952,12 @@ namespace ghassanpl::string_ops
 	}
 
 
+namespace operators
+{
+	using ascii::operator""_i;
+}
+
+
 /// \showinitializer
 #define GHPL_FORMAT_TEMPLATE typename... GHPL_ARGS
 /// \showinitializer
@@ -1940,6 +1970,11 @@ namespace ghassanpl::string_ops
 #define GHPL_PRINT_CALL std::print_unicode(ghpl_fmt, std::forward<GHPL_ARGS>(ghpl_args)...)
 
 	/// @}
+}
+
+namespace ghassanpl::operators
+{
+	using namespace ghassanpl::string_ops::operators;
 }
 
 /// \page CommonDefs Common Definitions

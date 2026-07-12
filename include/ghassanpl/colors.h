@@ -13,6 +13,7 @@
 //#include <glm/ext/vector_float4.hpp>
 #include "named.h"
 #include "constexpr_math.h"
+#include "flat_map.h"
 
 namespace ghassanpl
 {
@@ -44,40 +45,6 @@ namespace ghassanpl
 	using color_rgba_u32_t = named<uint32_t, "color_rgba_u32">;
 	/// Represent a packed ABGR color with 8 bits per pixel
 	using color_abgr_u32_t = named<uint32_t, "color_abgr_u32">;
-
-	/// Contains the basic colors as variables and functions. The functions take an `alpha` argument that determines the alpha of the returned color.
-	/// \ingroup Colors
-	namespace colors
-	{
-#define DEF_COLOR(name, r, g, b) \
-	[[nodiscard]] constexpr color_t get_##name(float alpha) { return color_t{ float(r), float(g), float(b), alpha }; } \
-	constexpr inline color_t name = get_##name(1.0f); 
-#define DEF_COLORS(name, r, g, b) \
-	DEF_COLOR(name, r, g, b) \
-	[[nodiscard]] constexpr color_t get_dark_##name(float alpha) { return color_t{ float(r) * 0.5f, float(g) * 0.5f, float(b) * 0.5f, alpha }; } \
-	constexpr inline color_t dark_##name = get_dark_##name(1.0f); \
-	[[nodiscard]] constexpr color_t get_light_##name(float alpha) { return color_t{ r + float(1.0f-r) * 0.5f, g + float(1.0f-g) * 0.5f, b + float(1.0f-b) * 0.5f, alpha }; } \
-	constexpr inline color_t light_##name = get_light_##name(1.0f);
-
-		DEF_COLORS(red, 1, 0, 0)
-		DEF_COLORS(green, 0, 1, 0)
-		DEF_COLORS(blue, 0, 0, 1)
-		DEF_COLORS(yellow, 1, 1, 0)
-		DEF_COLORS(magenta, 1, 0, 1)
-		DEF_COLORS(cyan, 0, 1, 1)
-		DEF_COLORS(gray, 0.5f, 0.5f, 0.5f)
-		DEF_COLORS(grey, 0.5f, 0.5f, 0.5f)
-
-		DEF_COLORS(orange, 1, 0.65f, 0)
-		DEF_COLORS(brown, 0.59f, 0.29f, 0)
-		
-		DEF_COLOR(black, 0, 0, 0)
-		DEF_COLOR(white, 1, 1, 1)
-		constexpr inline color_t transparent = get_black(0.0f);
-
-		#undef DEF_COLOR
-		#undef DEF_COLORS
-	}
 
 	/// Returns the color multiplied by its own alpha
 	[[nodiscard]] constexpr color_t premultiplied(color_t const& color)
@@ -146,7 +113,7 @@ namespace ghassanpl
 	{
 		constexpr float gamma = 2.2f;
 		const float L = 0.2126f * cem::pow(color.r, gamma) + 0.7152f * cem::pow(color.g, gamma) + 0.0722f * cem::pow(color.b, gamma);
-		return (L > cem::pow(0.5f, gamma)) ? colors::black : colors::white;
+		return (L > cem::pow(0.5f, gamma)) ? color_t{ 0, 0, 0, 1 } : color_t{ 1.0f };
 	}
 	
 	/// Get brightness of color
@@ -176,9 +143,9 @@ namespace ghassanpl
 	}
 
 	/// Gets a color from an RGB 8bpp integer, with R being most significant
-	[[nodiscard]] constexpr color_t from_u32_rgb(uint32_t rgb) { return { detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), 1.0f }; }
+	[[nodiscard]] constexpr color_t from_u32_rgb(uint32_t rgb, float alpha = 1.0f) { return { detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb), alpha }; }
 	/// Gets a color from an BGR 8bpp integer, with R being least significant
-	[[nodiscard]] constexpr color_t from_u32_bgr(uint32_t rgb) { return { detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), 1.0f }; }
+	[[nodiscard]] constexpr color_t from_u32_bgr(uint32_t rgb, float alpha = 1.0f) { return { detail::b2f(rgb), detail::b2f(rgb >> 8), detail::b2f(rgb >> 16), alpha }; }
 	/// Gets a color from an RGBA 8bpp integer, with R being most significant
 	[[nodiscard]] constexpr color_t from_u32_rgba(uint32_t rgb) { return { detail::b2f(rgb >> 24), detail::b2f(rgb >> 16), detail::b2f(rgb >> 8), detail::b2f(rgb) }; }
 	/// Gets a color from an BGRA 8bpp integer, with A being least significant, and B being most significant
@@ -335,6 +302,186 @@ namespace ghassanpl
 	[[nodiscard]] GHPL_CONSTEVAL23 color_rgba_t operator ""_rgb(const char* str, size_t n)
 	{
 		return from_html({ str, n });
+	}
+
+	/// Contains the basic colors as variables and functions. The functions take an `alpha` argument that determines the alpha of the returned color.
+	/// \ingroup Colors
+	namespace colors
+	{
+#define DEF_COLOR(name, r, g, b) \
+	[[nodiscard]] constexpr color_t get_##name(float alpha) { return color_t{ float(r), float(g), float(b), alpha }; } \
+	constexpr inline color_t name = get_##name(1.0f); 
+#define DEF_COLORS(name, r, g, b) \
+	DEF_COLOR(name, r, g, b) \
+	[[nodiscard]] constexpr color_t get_dark_##name(float alpha) { return color_t{ float(r) * 0.5f, float(g) * 0.5f, float(b) * 0.5f, alpha }; } \
+	constexpr inline color_t dark_##name = get_dark_##name(1.0f); \
+	[[nodiscard]] constexpr color_t get_light_##name(float alpha) { return color_t{ r + float(1.0f-r) * 0.5f, g + float(1.0f-g) * 0.5f, b + float(1.0f-b) * 0.5f, alpha }; } \
+	constexpr inline color_t light_##name = get_light_##name(1.0f);
+#define DEF_COLOR_RGB(name, rgb) \
+	[[nodiscard]] constexpr color_t get_##name(float alpha) { return from_u32_rgb(rgb, alpha); } \
+	constexpr inline color_t name = get_##name(1.0f); 
+
+#define DEF_ALL_COLORS() \
+		DEF_COLORS(red, 1, 0, 0) \
+		DEF_COLORS(green, 0, 1, 0) \
+		DEF_COLORS(blue, 0, 0, 1) \
+		DEF_COLORS(yellow, 1, 1, 0) \
+		DEF_COLORS(magenta, 1, 0, 1) \
+		DEF_COLORS(cyan, 0, 1, 1) \
+		DEF_COLORS(gray, 0.5f, 0.5f, 0.5f) \
+		DEF_COLORS(grey, 0.5f, 0.5f, 0.5f) \
+		DEF_COLOR(black, 0, 0, 0) \
+		DEF_COLOR(white, 1, 1, 1) \
+		DEF_COLOR_RGB(alice_blue, 0xf0f8ff) \
+		DEF_COLOR_RGB(antique_white, 0xfaebd7) \
+		DEF_COLOR_RGB(aquamarine, 0x7fffd4) \
+		DEF_COLOR_RGB(azure, 0xf0ffff) \
+		DEF_COLOR_RGB(beige, 0xf5f5dc) \
+		DEF_COLOR_RGB(bisque, 0xffe4c4) \
+		DEF_COLOR_RGB(blanched_almond, 0xffebcd) \
+		DEF_COLOR_RGB(blue_violet, 0x8a2be2) \
+		DEF_COLOR_RGB(brown, 0xa52a2a) \
+		DEF_COLOR_RGB(burly_wood, 0xdeb887) \
+		DEF_COLOR_RGB(cadet_blue, 0x5f9ea0) \
+		DEF_COLOR_RGB(chartreuse, 0x7fff00) \
+		DEF_COLOR_RGB(chocolate, 0xd2691e) \
+		DEF_COLOR_RGB(coral, 0xff7f50) \
+		DEF_COLOR_RGB(cornflower_blue, 0x6495ed) \
+		DEF_COLOR_RGB(cornsilk, 0xfff8dc) \
+		DEF_COLOR_RGB(crimson, 0xdc143c) \
+		DEF_COLOR_RGB(dark_goldenrod, 0xb8860b) \
+		DEF_COLOR_RGB(dark_khaki, 0xbdb76b) \
+		DEF_COLOR_RGB(dark_olive_green, 0x556b2f) \
+		DEF_COLOR_RGB(dark_orange, 0xff8c00) \
+		DEF_COLOR_RGB(dark_orchid, 0x9932cc) \
+		DEF_COLOR_RGB(dark_salmon, 0xe9967a) \
+		DEF_COLOR_RGB(dark_sea_green, 0x8fbc8f) \
+		DEF_COLOR_RGB(dark_slate_blue, 0x483d8b) \
+		DEF_COLOR_RGB(dark_slate_gray, 0x2f4f4f) \
+		DEF_COLOR_RGB(dark_slate_grey, 0x2f4f4f) \
+		DEF_COLOR_RGB(dark_turquoise, 0x00ced1) \
+		DEF_COLOR_RGB(dark_violet, 0x9400d3) \
+		DEF_COLOR_RGB(deep_pink, 0xff1493) \
+		DEF_COLOR_RGB(deep_sky_blue, 0x00bfff) \
+		DEF_COLOR_RGB(dim_gray, 0x696969) \
+		DEF_COLOR_RGB(dim_grey, 0x696969) \
+		DEF_COLOR_RGB(dodger_blue, 0x1e90ff) \
+		DEF_COLOR_RGB(fire_brick, 0xb22222) \
+		DEF_COLOR_RGB(floral_white, 0xfffaf0) \
+		DEF_COLOR_RGB(forest_green, 0x228b22) \
+		DEF_COLOR_RGB(fuchsia, 0xff00ff) \
+		DEF_COLOR_RGB(gainsboro, 0xdcdcdc) \
+		DEF_COLOR_RGB(ghost_white, 0xf8f8ff) \
+		DEF_COLOR_RGB(gold, 0xffd700) \
+		DEF_COLOR_RGB(goldenrod, 0xdaa520) \
+		DEF_COLOR_RGB(green_yellow, 0xadff2f) \
+		DEF_COLOR_RGB(honeydew, 0xf0fff0) \
+		DEF_COLOR_RGB(hot_pink, 0xff69b4) \
+		DEF_COLOR_RGB(indian_red, 0xcd5c5c) \
+		DEF_COLOR_RGB(indigo, 0x4b0082) \
+		DEF_COLOR_RGB(ivory, 0xfffff0) \
+		DEF_COLOR_RGB(khaki, 0xf0e68c) \
+		DEF_COLOR_RGB(lavender, 0xe6e6fa) \
+		DEF_COLOR_RGB(lavender_blush, 0xfff0f5) \
+		DEF_COLOR_RGB(lawn_green, 0x7cfc00) \
+		DEF_COLOR_RGB(lemon_chiffon, 0xfffacd) \
+		DEF_COLOR_RGB(light_coral, 0xf08080) \
+		DEF_COLOR_RGB(light_goldenrod_yellow, 0xfafad2) \
+		DEF_COLOR_RGB(light_pink, 0xffb6c1) \
+		DEF_COLOR_RGB(light_salmon, 0xffa07a) \
+		DEF_COLOR_RGB(light_sea_green, 0x20b2aa) \
+		DEF_COLOR_RGB(light_sky_blue, 0x87cefa) \
+		DEF_COLOR_RGB(light_slate_gray, 0x778899) \
+		DEF_COLOR_RGB(light_slate_grey, 0x778899) \
+		DEF_COLOR_RGB(light_steel_blue, 0xb0c4de) \
+		DEF_COLOR_RGB(lime, 0x00ff00) \
+		DEF_COLOR_RGB(lime_green, 0x32cd32) \
+		DEF_COLOR_RGB(linen, 0xfaf0e6) \
+		DEF_COLOR_RGB(maroon, 0x800000) \
+		DEF_COLOR_RGB(medium_aquamarine, 0x66cdaa) \
+		DEF_COLOR_RGB(medium_blue, 0x0000cd) \
+		DEF_COLOR_RGB(medium_orchid, 0xba55d3) \
+		DEF_COLOR_RGB(medium_purple, 0x9370db) \
+		DEF_COLOR_RGB(medium_sea_green, 0x3cb371) \
+		DEF_COLOR_RGB(medium_slate_blue, 0x7b68ee) \
+		DEF_COLOR_RGB(medium_spring_green, 0x00fa9a) \
+		DEF_COLOR_RGB(medium_turquoise, 0x48d1cc) \
+		DEF_COLOR_RGB(medium_violet_red, 0xc71585) \
+		DEF_COLOR_RGB(midnight_blue, 0x191970) \
+		DEF_COLOR_RGB(mint_cream, 0xf5fffa) \
+		DEF_COLOR_RGB(misty_rose, 0xffe4e1) \
+		DEF_COLOR_RGB(moccasin, 0xffe4b5) \
+		DEF_COLOR_RGB(navajo_white, 0xffdead) \
+		DEF_COLOR_RGB(navy, 0x000080) \
+		DEF_COLOR_RGB(old_lace, 0xfdf5e6) \
+		DEF_COLOR_RGB(olive, 0x808000) \
+		DEF_COLOR_RGB(olive_drab, 0x6b8e23) \
+		DEF_COLOR_RGB(orange, 0xffa500) \
+		DEF_COLOR_RGB(orange_red, 0xff4500) \
+		DEF_COLOR_RGB(orchid, 0xda70d6) \
+		DEF_COLOR_RGB(pale_goldenrod, 0xeee8aa) \
+		DEF_COLOR_RGB(pale_green, 0x98fb98) \
+		DEF_COLOR_RGB(pale_turquoise, 0xafeeee) \
+		DEF_COLOR_RGB(pale_violet_red, 0xdb7093) \
+		DEF_COLOR_RGB(papaya_whip, 0xffefd5) \
+		DEF_COLOR_RGB(peach_puff, 0xffdab9) \
+		DEF_COLOR_RGB(peru, 0xcd853f) \
+		DEF_COLOR_RGB(pink, 0xffc0cb) \
+		DEF_COLOR_RGB(plum, 0xdda0dd) \
+		DEF_COLOR_RGB(powder_blue, 0xb0e0e6) \
+		DEF_COLOR_RGB(purple, 0x800080) \
+		DEF_COLOR_RGB(rebecca_purple, 0x663399) \
+		DEF_COLOR_RGB(rosy_brown, 0xbc8f8f) \
+		DEF_COLOR_RGB(royal_blue, 0x4169e1) \
+		DEF_COLOR_RGB(saddle_brown, 0x8b4513) \
+		DEF_COLOR_RGB(salmon, 0xfa8072) \
+		DEF_COLOR_RGB(sandy_brown, 0xf4a460) \
+		DEF_COLOR_RGB(sea_green, 0x2e8b57) \
+		DEF_COLOR_RGB(sea_shell, 0xfff5ee) \
+		DEF_COLOR_RGB(sienna, 0xa0522d) \
+		DEF_COLOR_RGB(silver, 0xc0c0c0) \
+		DEF_COLOR_RGB(sky_blue, 0x87ceeb) \
+		DEF_COLOR_RGB(slate_blue, 0x6a5acd) \
+		DEF_COLOR_RGB(slate_gray, 0x708090) \
+		DEF_COLOR_RGB(slate_grey, 0x708090) \
+		DEF_COLOR_RGB(snow, 0xfffafa) \
+		DEF_COLOR_RGB(spring_green, 0x00ff7f) \
+		DEF_COLOR_RGB(steel_blue, 0x4682b4) \
+		DEF_COLOR_RGB(tan, 0xd2b48c) \
+		DEF_COLOR_RGB(teal, 0x008080) \
+		DEF_COLOR_RGB(thistle, 0xd8bfd8) \
+		DEF_COLOR_RGB(tomato, 0xff6347) \
+		DEF_COLOR_RGB(turquoise, 0x40e0d0) \
+		DEF_COLOR_RGB(violet, 0xee82ee) \
+		DEF_COLOR_RGB(wheat, 0xf5deb3) \
+		DEF_COLOR_RGB(white_smoke, 0xf5f5f5) \
+		DEF_COLOR_RGB(yellow_green, 0x9acd32)
+
+		constexpr inline color_t transparent{ 0 };
+
+		DEF_ALL_COLORS()
+
+#undef DEF_COLOR
+#undef DEF_COLORS
+#undef DEF_COLOR_RGB
+
+			const inline flat_map_preferred<std::string_view, color_t, std::less<>> by_name = {
+
+	#define DEF_COLOR(name, r, g, b) \
+				{ #name, colors::name },
+	#define DEF_COLOR_RGB(name, rgb) \
+				{ #name, colors::name },
+	#define DEF_COLORS(name, r, g, b) \
+		DEF_COLOR(name, r, g, b) \
+		{ "dark_" #name, colors::dark_##name }, \
+		{ "light_" #name, colors::light_##name }, 
+
+				DEF_ALL_COLORS()
+		};
+
+#undef DEF_COLOR
+#undef DEF_COLORS
+#undef DEF_COLOR_RGB
 	}
 
 	///@}

@@ -197,23 +197,23 @@ namespace ghassanpl::geometry::squares
 
 		/// TODO: deduce thos
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }>
-		auto for_each_tile_in_rect(irec2 const& tile_rect, change_tile_callback<TILE_DATA> auto&& func)
+		auto for_each_tile_in_rect(this auto&& self, irec2 const& tile_rect, change_tile_callback<TILE_DATA> auto&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
-			using return_type = decltype(this->template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
+			using return_type = decltype(self.template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
 			irec2 rect = tile_rect;
 			if constexpr (ONLY_VALID)
-				rect = tile_rect.clipped_to(this->bounds());
+				rect = tile_rect.clipped_to(self.bounds());
 
 			for (int y = rect.top(); y < rect.bottom(); y++)
 				for (int x = rect.left(); x < rect.right(); x++)
 				{
 					if constexpr (std::is_void_v<return_type>)
-						this->template apply<ONLY_VALID>({ x, y }, func);
+						self.template apply<ONLY_VALID>({ x, y }, func);
 					else
 					{
-						if (auto ret = this->template apply<ONLY_VALID>({ x, y }, func))
+						if (auto ret = self.template apply<ONLY_VALID>({ x, y }, func))
 							return ret;
 					}
 				}
@@ -273,29 +273,29 @@ namespace ghassanpl::geometry::squares
 		}
 
 		template<enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }, typename TILE_SET>
-		auto for_each_tile_in_set(TILE_SET const& tiles, change_tile_callback<TILE_DATA> auto&& func)
+		auto for_each_tile_in_set(this auto&& self, TILE_SET const& tiles, change_tile_callback<TILE_DATA> auto&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
-			using return_type = decltype(this->template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
+			using return_type = decltype(self.template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
 			if constexpr (std::is_void_v<return_type>)
 			{
 				for (auto&& tile : tiles)
-					this->template apply<ONLY_VALID>(tile, func);
+					self.template apply<ONLY_VALID>(tile, func);
 			}
 			else
 			{
 				for (auto&& tile : tiles)
-					if (auto ret = this->template apply<ONLY_VALID>(tile, func)) return ret;
+					if (auto ret = self.template apply<ONLY_VALID>(tile, func)) return ret;
 				return return_type{};
 			}
 		}
 
 		template <change_tile_callback<TILE_DATA> FUNC>
-		auto for_each_tile(FUNC&& func)
+		auto for_each_tile(this auto&& self, FUNC&& func)
 		{
-			irec2 rect = { 0, 0, this->mWidth, this->mHeight };
-			return this->template for_each_tile_in_rect<enum_flags<iteration_flags>{}>(rect, std::forward<FUNC>(func));
+			irec2 rect = { 0, 0, self.mWidth, self.mHeight };
+			return self.template for_each_tile_in_rect<enum_flags<iteration_flags>{}>(rect, std::forward<FUNC>(func));
 		}
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }>

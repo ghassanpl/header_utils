@@ -9,6 +9,7 @@
 #include <optional>
 #include <type_traits>
 #include <variant>
+#include <algorithm>
 #if defined(__cpp_lib_bit_cast)
 #include <bit>
 #endif
@@ -91,6 +92,8 @@ namespace ghassanpl
 		template <typename T> [[nodiscard]] constexpr auto greater_than(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other > val; }; }
 		template <typename T> [[nodiscard]] constexpr auto greater_than_or_equal_to(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other >= val; }; }
 		
+		template <typename T> [[nodiscard]] constexpr auto same(T& val) { return [ptr = std::addressof(val)](auto&& other) { return std::addressof(other) == ptr; }; }
+
 		template <typename T> [[nodiscard]] constexpr auto eq(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other == val; }; }
 		template <typename T> [[nodiscard]] constexpr auto ne(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other != val; }; }
 		template <typename T> [[nodiscard]] constexpr auto lt(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return other < val; }; }
@@ -107,6 +110,9 @@ namespace ghassanpl
 		template <typename T> [[nodiscard]] constexpr auto is_in(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return std::find(std::begin(val), std::end(val), other) != std::end(val); }; }
 
 #if __cpp_lib_to_address
+		
+		template <typename T> [[nodiscard]] constexpr auto ptr_eq(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return std::to_address(other) == std::to_address(val); }; }
+
 		template <typename T> [[nodiscard]] constexpr auto of_type() { return [](auto&& other) {
 			static_assert(std::is_pointer_v<T> || std::is_reference_v<T>, "Type must be reference or pointer to choose the appropriate cast type");
 			if constexpr (std::is_pointer_v<T>)
@@ -165,7 +171,7 @@ namespace ghassanpl
 		template <typename T> [[nodiscard]] constexpr auto insert_to(T& to) noexcept { return [&to](auto&& val) { to.insert(std::forward<decltype(val)>(val)); }; }
 		
 		template <typename T, GHPL_TYPENAME(std::output_iterator<T>) IT>
-		[[nodiscard]] constexpr auto output_to(IT&& to) { return [to = std::forward<IT>(to)](auto&& val) { *to++ = std::forward<decltype(val)>(val); }; }
+		[[nodiscard]] constexpr auto output_to(IT&& to) { return [to = std::forward<IT>(to)](auto&& val) mutable { *to++ = std::forward<decltype(val)>(val); }; }
 
 		template <typename T> [[nodiscard]] constexpr auto assign_to(T& to) noexcept { return [&to](auto&& val) { to = std::forward<decltype(val)>(val); }; }
 		template <typename T> [[nodiscard]] constexpr auto add_to(T& to) noexcept { return [&to](auto&& val) { to += std::forward<decltype(val)>(val); }; }
@@ -231,12 +237,12 @@ namespace ghassanpl
 			return [predicate = std::forward<IF>(predicate), op = std::forward<THEN>(op), elseval = std::forward<ELSE_VAL>(elseval)](auto&&... args)
 				-> std::common_type_t<
 					decltype(op(std::forward<decltype(args)>(args)...)),
-					decltype(std::forward<ELSE_VAL>(elseval))
+					remove_cvref_t<ELSE_VAL>
 				>
 			{
 				if (predicate(args...))
 					return op(std::forward<decltype(args)>(args)...);
-				return std::forward<ELSE_VAL>(elseval);
+				return elseval; /// copied, not forwarded: the captured value is const here, and the functor may be invoked more than once
 			};
 		}
 
@@ -267,7 +273,7 @@ namespace ghassanpl
 
 		template <typename T> [[nodiscard]] constexpr auto cast_to() noexcept { return [](auto&& val) { return (T)std::forward<decltype(val)>(val); }; }
 #if __cpp_lib_to_address
-		template <typename T> [[nodiscard]] constexpr auto dynamic_cast_to() noexcept { return [](auto&& val) {
+		template <typename T> [[nodiscard]] constexpr auto dynamic_cast_to() noexcept { return [](auto&& val) -> T {
 			static_assert(std::is_pointer_v<T> || std::is_reference_v<T>, "Type must be reference or pointer to choose the appropriate cast type");
 			if constexpr (std::is_pointer_v<T>)
 				return dynamic_cast<T>(std::to_address(val));
@@ -282,6 +288,8 @@ namespace ghassanpl
 		template <typename T> [[nodiscard]] constexpr auto bit_cast_to() noexcept { return [](auto&& val) { return std::bit_cast<T>(std::forward<decltype(val)>(val)); }; }
 #endif
 		template <typename T> [[nodiscard]] constexpr auto constructed_as() noexcept { return [](auto&& val) { return T{ std::forward<decltype(val)>(val) }; }; }
+		template <typename T> [[nodiscard]] constexpr auto brace_constructed_as() noexcept { return [](auto&& val) { return T{ std::forward<decltype(val)>(val) }; }; }
+		template <typename T> [[nodiscard]] constexpr auto paren_constructed_as() noexcept { return [](auto&& val) { return T(std::forward<decltype(val)>(val)); }; }
 		                      [[nodiscard]] constexpr auto called() noexcept { return [](auto&& val) { return std::forward<decltype(val)>(val)(); }; }
 
 		template <typename T> [[nodiscard]] constexpr auto added_to(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) + other; }; }

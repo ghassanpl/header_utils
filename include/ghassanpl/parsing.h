@@ -144,7 +144,7 @@ namespace ghassanpl::parsing
 #if __cpp_lib_to_chars || defined(DOXYGEN)
 	[[nodiscard]] inline std::pair<std::string_view, double> consume_c_float(std::string_view& str)
 	{
-		if (str.empty() || !(ascii::isdigit(str[0]) || str[0] == '-'))
+		if (str.empty() || !(ascii::isdigit(str[0]) || str[0] == '-')) /// TODO: what about .5 ?
 			return {};
 
 		std::pair<std::string_view, double> result;

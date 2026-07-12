@@ -114,7 +114,7 @@ namespace ghassanpl
 	/// Find a value in `range` that matches `pred`, and returns a pointer to it, or null if none found
 	template <std::ranges::range RANGE, typename FUNC>
 	requires range_predicate<std::remove_cvref_t<RANGE>, FUNC>
-	[[nodiscard]] constexpr auto find_ptr(RANGE& range, FUNC&& pred)
+	[[nodiscard]] constexpr auto find_ptr(RANGE&& range, FUNC&& pred)
 	{
 		const auto it = std::ranges::find_if(range, std::forward<FUNC>(pred));
 		return it == std::ranges::end(range) ? nullptr : std::to_address(it);
@@ -123,7 +123,7 @@ namespace ghassanpl
 	/// Find a value in `range` that matches `pred`, and returns it, or `default_value` if none found
 	template <random_access_range RANGE, typename FUNC, typename DEF_TYPE = range_value<RANGE>>
 	requires range_predicate<std::remove_cvref_t<RANGE>, FUNC>
-	[[nodiscard]] auto find_if_or_default(RANGE& range, FUNC&& pred, DEF_TYPE&& default_value = DEF_TYPE{})
+	[[nodiscard]] auto find_if_or_default(RANGE&& range, FUNC&& pred, DEF_TYPE&& default_value = DEF_TYPE{})
 	{
 		auto it = std::ranges::find_if(range, std::forward<FUNC>(pred));
 		if (it == std::ranges::end(range))

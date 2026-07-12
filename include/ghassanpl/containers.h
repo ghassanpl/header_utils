@@ -174,7 +174,7 @@ namespace ghassanpl
 
 	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
 	template <typename DEF, typename KEY, typename MAP>
-	[[nodiscard]] auto map_at_or_default(MAP& map, KEY&& key, DEF&& def)
+	[[nodiscard]] auto map_at_or_default(MAP&& map, KEY&& key, DEF&& def)
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
@@ -184,7 +184,7 @@ namespace ghassanpl
 
 	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
 	template <typename DEF, typename KEY, typename SET>
-	[[nodiscard]] auto set_at_or_default(SET& set, KEY&& key, DEF&& def)
+	[[nodiscard]] auto set_at_or_default(SET&& set, KEY&& key, DEF&& def)
 	{
 		auto it = set.find(std::forward<KEY>(key));
 		if (it != set.end())
@@ -194,7 +194,7 @@ namespace ghassanpl
 
 	/// Finds the value associated with `key` in the `map` and retuns it, or `def` if none found
 	template <typename KEY, typename MAP>
-	[[nodiscard]] auto map_at_or_default(MAP& map, KEY&& key)
+	[[nodiscard]] auto map_at_or_default(MAP&& map, KEY&& key)
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())
@@ -204,7 +204,7 @@ namespace ghassanpl
 
 	/// Basically map.at() but works with heterogenous key types
 	template <typename KEY, typename MAP>
-	[[nodiscard]] decltype(auto) map_at(MAP& map, KEY&& key)
+	[[nodiscard]] decltype(auto) map_at(MAP&& map, KEY&& key)
 	{
 		auto it = map.find(std::forward<KEY>(key));
 		if (it != map.end())

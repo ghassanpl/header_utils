@@ -256,6 +256,13 @@
 			{ #_key, std::format("{}", _assuming_key) }, \
 		}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
 
+/// Assumes the `_key` term DOES NOT evaluate to a valid index to the `_container` term. This is checked via `.contains()`
+#define AssumingDoesNotContain(_key, _container, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
+	if ((_assuming_container.contains(_assuming_key))) [[unlikely]] { \
+		ASSUMING_REPORT(#_key " will be a valid key to " #_container, { \
+			{ #_key, std::format("{}", _assuming_key) }, \
+		}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
+
 /// Assumes the `_index` term evaluates to a valid iterator to the `_container` term. This is checked via `end(_container)`
 #define AssumingValidIterator(_iterator, _container, ...) do { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); \
 	if (_assuming_iterator == _assuming_end) [[unlikely]] { \
