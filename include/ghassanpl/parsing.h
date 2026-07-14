@@ -282,7 +282,7 @@ namespace ghassanpl::parsing
 					auto [consumed, value] = consume_c_integer(num, 16);
 					if (consumed.empty() || !num.empty()) throw std::runtime_error("malformed hex escape character");
 
-					//append_utf8(result.second, (char32_t)parsed.second);
+					//append_codepoint(result.second, (char32_t)parsed.second);
 					result.second += (char)value;
 					break;
 				}
@@ -294,7 +294,7 @@ namespace ghassanpl::parsing
 					auto [consumed, value] = consume_c_integer(num, 16);
 					if (consumed.empty() || !num.empty()) throw std::runtime_error("malformed unicode escape character");
 
-					append_utf8(result.second, (char32_t)value);
+					utf8::append_codepoint(result.second, (char32_t)value);
 					break;
 				}
 				case 'U':
@@ -305,7 +305,7 @@ namespace ghassanpl::parsing
 					auto [consumed, value] = consume_c_integer(num, 16);
 					if (consumed.empty() || !num.empty()) throw std::runtime_error("malformed unicode escape character");
 
-					append_utf8(result.second, (char32_t)value);
+					utf8::append_codepoint(result.second, (char32_t)value);
 					break;
 				}
 				default:
@@ -467,12 +467,12 @@ namespace ghassanpl::parsing
 
 	inline char32_t try_eat_utf8_codepoint(std::string_view& str)
 	{
-		return string_ops::consume_utf8(str);
+		return utf8::consume_codepoint(str);
 	}
 
 	inline char32_t eat_utf8_codepoint(std::string_view& str)
 	{
-		if (const auto cp = string_ops::consume_utf8(str))
+		if (const auto cp = utf8::consume_codepoint(str))
 			return cp;
 		throw parse_error(str, "expected UTF-8 codepoint");
 	}

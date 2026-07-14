@@ -13,6 +13,13 @@ namespace ghassanpl
 	}
 
 	template <typename T>
+	requires (not std::is_rvalue_reference_v<T>)
+	auto single_span(T& obj)
+	{
+		return std::span<T>{&obj, &obj + 1};
+	}
+
+	template <typename T>
 	[[nodiscard]] std::span<T> consume_n(std::span<T>& s, size_t n)
 	{
 		auto result = s.subspan(0, n);

@@ -292,8 +292,8 @@ TEST(predicates, work)
 	ptrs.push_back(std::make_unique<A>());
 	ptrs.push_back(std::make_unique<B>());
 
-	EXPECT_EQ(std::ranges::count_if(ptrs, ghassanpl::pred::of_type<B*>()), 2);
-	EXPECT_EQ(std::ranges::count_if(ptrs, ghassanpl::pred::of_type<A*>()), 3);
+	EXPECT_EQ(std::ranges::count_if(ptrs, ghassanpl::pred::of_type<B>()), 2);
+	EXPECT_EQ(std::ranges::count_if(ptrs, ghassanpl::pred::of_type<A>()), 3);
 }
 
 TEST(pred_functions, comparison_predicates_work)

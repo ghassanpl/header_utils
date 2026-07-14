@@ -8,7 +8,9 @@
 #include <type_traits>
 #include <glm/fwd.hpp>
 #include <glm/geometric.hpp>
+#ifndef GLM_ENABLE_EXPERIMENTAL
 #define GLM_ENABLE_EXPERIMENTAL
+#endif
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/spline.hpp>
 #undef GLM_ENABLE_EXPERIMENTAL
@@ -19,12 +21,49 @@
 ///	- splines
 ///	- easing functions 
 /// - approach
-/// - blink/square wave
-/// - triangle wave
-/// - sawtooth
 
 namespace ghassanpl
 {
+#if GHPL_CPP20
+#define GHPL_CONSTRAINT(constraint) constraint
+#else
+#define GHPL_CONSTRAINT(constraint) typename
+#endif
+	template <GHPL_CONSTRAINT(std::floating_point) C, GHPL_CONSTRAINT(std::floating_point) D, typename A>
+	auto approach_constant(C cur, D dest, A amount)
+	{
+		using T = decltype(cur);
+		return (cur < dest) ? std::min(T(cur + amount), T(dest)) : std::max(T(cur - amount), T(dest));
+	}
+
+	template <GHPL_CONSTRAINT(std::floating_point) C, GHPL_CONSTRAINT(std::floating_point) D, typename S>
+	auto approach_soft(C cur, D dest, S speed)
+	{
+		return approach_constant(cur, dest, std::abs(dest - cur) * speed);
+	}
+
+	template <size_t N, typename T, typename S>
+	auto approach_soft(glm::vec<N, T> const& cur, glm::vec<N, T> dest, S speed) -> glm::vec<N, T>
+	{
+		for (int i=0;i<int(N); ++i)
+			dest[i] = approach_soft(cur[i], dest[i], speed);
+		return dest;
+	}
+	
+	template <GHPL_CONSTRAINT(std::floating_point) C, GHPL_CONSTRAINT(std::floating_point) D, typename S, typename P = int>
+	auto approach_fast(C cur, D dest, S speed, P power = 2)
+	{
+		return approach_constant(cur, dest, std::pow(dest - cur, power) * speed);
+	}
+
+	template <size_t N, typename T, typename S, typename P = int>
+	auto approach_fast(glm::vec<N, T> const& cur, glm::vec<N, T> dest, S speed, P power = 2) -> glm::vec<N, T>
+	{
+		for (int i = 0; i<int(N); ++i)
+			dest[i] = approach_fast(cur[i], dest[i], speed, power);
+		return dest;
+	}
+
 	namespace splines
 	{
 		template <typename P, typename T>
@@ -40,6 +79,10 @@ namespace ghassanpl
 
 	namespace waves
 	{
+		/// TODO:
+		/// - blink/square wave
+		/// - sawtooth
+
 		template <typename T = double>
 		struct wave_properties
 		{
@@ -69,6 +112,11 @@ namespace ghassanpl
 				return (v / period) + phase_in_cycles;
 			}
 		};
+
+		template <typename T> constexpr wave_properties<T> with_cycle_phase(T ph) { wave_properties<T> result = {}; result.phase_in_cycles = ph; return result; }
+		template <typename T> constexpr wave_properties<T> with_frequency(T freq) { wave_properties<T> result = {}; result.period = 1 / freq; return result; }
+		template <typename T> constexpr wave_properties<T> with_period(T period) { wave_properties<T> result = {}; result.period = period; return result; }
+		template <typename T> constexpr wave_properties<T> between(T min, T max) { wave_properties<T> result = {}; result.min_val = min; result.max_val = max; return result; }
 
 		template <typename T = double>
 		inline T triangle(T t, wave_properties<T> properties = {})

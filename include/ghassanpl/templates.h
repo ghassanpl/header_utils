@@ -136,9 +136,7 @@ namespace ghassanpl
 	}
 
 	template< typename C >
-	[[nodiscard]] auto as(...) -> auto {
-		return nullptr;
-	}
+	[[nodiscard]] auto as(...) -> auto = delete;
 
 	template< typename C, typename X >
 	requires std::is_same_v<C, X>
@@ -181,6 +179,13 @@ namespace ghassanpl
 	requires (std::is_base_of_v<X, C> && !std::is_same_v<C, X>)
 	[[nodiscard]] auto as(X const* x) -> C const* {
 		return dynamic_cast<C const*>(x);
+	}
+
+	template< typename T, typename F >
+	requires (std::is_polymorphic_v<T> && std::is_polymorphic_v<F> && std::is_base_of_v<F, T>)
+	[[nodiscard]] auto as(std::shared_ptr<F> const& p)
+	{
+		return dynamic_pointer_cast<copy_const_t<F, T>>(p);
 	}
 
 

@@ -227,7 +227,7 @@ TEST_F(assuming_test, assumings_evaluate_arguments_only_once)
 	std::string empty_string{};
 	EXPECT_EVAL_COUNT(1, AssumingNotNullOrEmpty(single_eval_check(null_string)));
 
-	EXPECT_EVAL_COUNT(2, AssumingValidIndex(single_eval_check(1), single_eval_check(empty_string)));
+	EXPECT_EVAL_COUNT(2, AssumingValidIndex(single_eval_check(empty_string), single_eval_check(1)));
 }
 
 template <class CharT>

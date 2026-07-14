@@ -155,6 +155,37 @@ namespace ghassanpl
 		return result;
 	}
 
+	template <typename T, typename U, typename FUNC>
+	auto transfer_if(std::vector<T>& from, std::vector<U>& to, FUNC&& pred)
+	{
+		const auto p = std::stable_partition(from.begin(), from.end(), [&](const auto& x) { return !pred(x); });
+		auto result = to.insert(to.end(), std::make_move_iterator(p), std::make_move_iterator(from.end()));
+		from.erase(p, from.end());
+		return result;
+	}
+
+	/// Moves the element at `it` to the end of the vector, preserving the relative order of the other elements.
+	/// Does nothing if `it` is the end iterator (and therefore also if `vector` is empty).
+	template <typename T>
+	constexpr void move_to_end(std::vector<T>& vector, typename std::vector<T>::iterator it)
+	{
+		if (it == std::end(vector))
+			return;
+
+		std::rotate(it, std::next(it), std::end(vector));
+	}
+
+	/// Moves the element at `it` to the start of the vector, preserving the relative order of the other elements.
+	/// Does nothing if `it` is the end iterator (and therefore also if `vector` is empty).
+	template <typename T>
+	constexpr void move_to_start(std::vector<T>& vector, typename std::vector<T>::iterator it)
+	{
+		if (it == std::end(vector))
+			return;
+
+		std::rotate(std::begin(vector), it, std::next(it));
+	}
+
 	/// Finds the value associated with `key` in the `map` and retuns a pointer to it, or nullptr if none found
 	template <typename KEY, typename MAP>
 	[[nodiscard]] auto map_find(MAP& map, KEY&& key)
@@ -214,11 +245,35 @@ namespace ghassanpl
 
 	/// Finds the first `value` of a map element, and returns a pointer to its key, or nullptr if none found
 	template <typename MAP, typename VAL>
-	[[nodiscard]] auto map_find_value(MAP& map, VAL const* value)
+	[[nodiscard]] auto map_find_value(MAP& map, VAL* value)
 	{
 		for (auto& [k, v] : map)
 		{
 			if (&v == value)
+				return &k;
+		}
+		using map_key_type = std::remove_cvref_t<decltype(std::begin(map)->first)>;
+		return (map_key_type const*)nullptr;
+	}
+
+	template <typename MAP, typename VAL>
+	[[nodiscard]] auto map_find_value(MAP& map, VAL const& value)
+	{
+		for (auto& [k, v] : map)
+		{
+			if (v == value)
+				return &k;
+		}
+		using map_key_type = std::remove_cvref_t<decltype(std::begin(map)->first)>;
+		return (map_key_type const*)nullptr;
+	}
+
+	template <typename MAP, typename FUNC>
+	[[nodiscard]] auto map_find_value_if(MAP& map, FUNC&& pred)
+	{
+		for (auto& [k, v] : map)
+		{
+			if (pred(v))
 				return &k;
 		}
 		using map_key_type = std::remove_cvref_t<decltype(std::begin(map)->first)>;

@@ -403,6 +403,13 @@ namespace ghassanpl
 	auto stringify(STRINGIFIER& str, trec2<T>& b) { return str('[', b.p1.x, ',', b.p1.y, ',', b.p2.x, ',', b.p2.y, ']'); }
 	template <typename T, typename STRINGIFIER>
 	auto stringify(STRINGIFIER& str, trec2<T> const& b) { return str('[', b.p1.x, ',', b.p1.y, ',', b.p2.x, ',', b.p2.y, ']'); }
+
+	template <typename T>
+	trec2<T> round(trec2<T> const& rect)
+	{
+		/// ADL!
+		return { round(rect.p1), round(rect.p2) };
+	}
 }
 
 template <typename T>

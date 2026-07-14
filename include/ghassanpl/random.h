@@ -379,6 +379,17 @@ namespace ghassanpl::random
 		auto result = iterator(cont, rng);
 		return (result != end(cont)) ? std::addressof(*result) : nullptr;
 	}
+
+	template <typename RANDOM = std::default_random_engine, typename T>
+	[[nodiscard]] auto& element_ref(T&& cont, RANDOM& rng = ::ghassanpl::random::default_random_engine)
+	{
+		static_assert(!std::is_rvalue_reference_v<T>, "Cannot take rvalue reference as container");
+		using std::end;
+		auto result = iterator(cont, rng);
+		if (result == end(cont))
+			throw std::runtime_error("empty container");
+		return *result;
+	}
 	
 	/// Returns an pointer to a random element in `cont` that matches `pred`.
 	template <typename RANDOM = std::default_random_engine, typename T, typename PRED>

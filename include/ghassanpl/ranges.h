@@ -76,7 +76,7 @@ namespace ghassanpl
 
 	/// Returns a reference to the value at \ref modulo_index of `range`
 	/// \pre range must not be empty
-	[[nodiscard]] constexpr decltype(auto) modulo_at(random_access_range auto& range, std::integral auto index)
+	[[nodiscard]] constexpr decltype(auto) modulo_at(random_access_range auto&& range, std::integral auto index)
 	{
 		return at(range, modulo_index(range, index)); /// TODO: make sure this is inlined properly 'cause we're quering size a couple of times, for example
 	}

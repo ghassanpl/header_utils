@@ -270,6 +270,35 @@ namespace ghassanpl::formats
 			return empty_json_object;
 		}
 
+
+		template <typename T>
+		inline void get_field(T& val, nlohmann::json const& g, std::string_view key);
+		template <typename T>
+		inline bool try_get_field(T& val, nlohmann::json const& g, std::string_view key);
+
+		template <typename T>
+		inline T get_field(nlohmann::json const& g, std::string_view key);
+		template <typename T, typename U>
+		inline T get_field(nlohmann::json const& g, std::string_view key, U&& default_val);
+
+		template <typename T>
+		inline std::optional<T> try_get_field(nlohmann::json const& g, std::string_view key)
+		{
+			auto const it = g.find(key);
+			if (it == g.end())
+				return std::nullopt;
+
+			try
+			{
+				return (T)*it;
+			}
+			catch (...)
+			{
+				return std::nullopt;
+			}
+		}
+
+#if 0
 		/// Gets the value from the item in json object `g` with key `key`, to `val`
 		/// \exception std::runtime_error on error (no key found, cannot convert json to `val` type, etc.)
 		template <typename T>
@@ -343,7 +372,7 @@ namespace ghassanpl::formats
 			}
 			return std::forward<U>(default_val);
 		}
-
+#endif
 		/// @}
 	}
 

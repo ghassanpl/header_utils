@@ -351,7 +351,7 @@ TEST(string_ops_test, transcode)
 	const std::string str { (char)0x5A, (char)0x41, (char)0xAF, (char)0xD3, (char)0xA3, (char)0xC6, (char)0x20, (char)0x47, (char)0xCA, (char)0x8C, 
 		(char)0x4C, (char)0xA5, (char)0x20, (char)0x4A, (char)0x41, (char)0x8F, (char)0xD1 };
 
-	EXPECT_EQ(transcode_codepage_to_utf8<std::string>(str, win1250), to_string(u8"ZAŻÓŁĆ GĘŚLĄ JAŹŃ"));
+	EXPECT_EQ(utf8::transcode_codepage<std::string>(str, win1250), to_string(u8"ZAŻÓŁĆ GĘŚLĄ JAŹŃ"));
 }
 
 

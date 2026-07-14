@@ -39,13 +39,13 @@ TEST(assuming, works_under_ndebug)
 	const char* test = nullptr;
 	AssumingNullOrEmpty(test);
 	AssumingNotNullOrEmpty("hello");
-	AssumingValidIndex(2, meh);
-	AssumingValidIterator(meh.begin() + 2, meh);
+	AssumingValidIndex(meh, 2);
+	AssumingValidIterator(meh, meh.begin() + 2);
 	AssumingBetween(5, 0, 10);
 	AssumingBetweenInclusive(10, 0, 10);
 	AssumingContainsBits(4, 0xFF);
 	std::set<int> set{ 0, 10, 20 };
-	AssumingContains(10, set);
+	AssumingContains(set, 10);
 
 	return;
 

@@ -49,7 +49,7 @@ namespace ghassanpl
 
 		return std::unique_ptr<T, D>(nullptr, std::move(r.get_deleter()));
 	}
-	
+
 	template<class T, class D, class U>
 	constexpr std::unique_ptr<T, D> static_pointer_cast(std::unique_ptr<U, D> r) noexcept
 	{
@@ -168,7 +168,7 @@ namespace ghassanpl
 #else
 	using std::byteswap;
 #endif
-	
+
 #ifdef __cpp_lib_unreachable
 	using std::unreachable;
 #else
@@ -202,6 +202,16 @@ namespace ghassanpl
 			{ std::type_identity_t<To[]>{std::forward<From>(x)} } -> std::same_as<To[1]>;
 	};
 
+	template <typename T>
+	concept has_to_address = requires(const T& val) {
+		typename std::pointer_traits<T>;
+		std::pointer_traits<T>::to_address(val);
+	};
+
+	template <typename T>
+	concept pointerlike = std::is_pointer_v<T> or has_to_address<T> or requires(const T & val) {
+		val.operator->();
+	};
 
 	template <typename T>
 	struct pointer_compare_wrapper
@@ -223,4 +233,16 @@ namespace ghassanpl
 	template <class T> 
 	requires (!std::is_pointer_v<T>)
 	pointer_compare_wrapper(T) -> pointer_compare_wrapper<T const&>;
+
+	template<typename S, typename D>
+	using copy_const_t = std::conditional_t<std::is_const_v<S>, std::add_const_t<D>, std::remove_const_t<D>>;
+
+	template <typename T> T& const_away(const T& v) noexcept { return const_cast<T&>(v); }
+	template <typename T> T* const_away(const T* v) noexcept { return const_cast<T*>(v); }
+
+	template <typename T>
+	std::shared_ptr<T> make_unmanaged_shared(T* ptr)
+	{
+		return std::shared_ptr<T>(std::shared_ptr<T>{}, ptr);
+	}
 }

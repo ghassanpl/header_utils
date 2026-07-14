@@ -174,6 +174,7 @@ namespace ghassanpl::geometry::squares
 		vec2 tile_size{ F(1), F(1) };
 
 		constexpr vec2 to_world_pos(ivec2 tile_pos) const noexcept { return tile_pos_to_world_pos(tile_pos, tile_size); }
+		constexpr rec2 to_world_rect(irec2 const& tile_rect) const noexcept { return { to_world_pos(tile_rect.p1), to_world_pos(tile_rect.p2) } ; }
 		constexpr rec2 world_rect_for_tile(ivec2 tile_pos) const noexcept { return ghassanpl::geometry::squares::world_rect_for_tile(tile_pos, tile_size); }
 		constexpr ivec2 to_tile_pos(vec2 world_pos) const noexcept { return world_pos_to_tile_pos(world_pos, tile_size); }
 		constexpr irec2 to_tile_rect(rec2 const& world_rect) const noexcept { return world_rect_to_tile_rect(world_rect, tile_size); }

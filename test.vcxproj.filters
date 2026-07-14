@@ -339,6 +339,12 @@
     <ClInclude Include="include\ghassanpl\flat_map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\ghassanpl\checks.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ghassanpl\encoding.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="vcpkg.json" />
@@ -359,6 +365,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\di_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\encoding_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\enum_flags_tests.cpp">
@@ -422,6 +431,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\geometry_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\geometry_direction_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\uri_tests.cpp">
@@ -524,6 +536,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\cpp_version_tests\cpp23_tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\unicode_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

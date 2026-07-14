@@ -37,7 +37,15 @@ namespace ghassanpl::geometry::squares
 		std::invocable<FUNC, glm::ivec2> ||
 		std::invocable<FUNC, T&, glm::ivec2>;
 
+	enum class iteration_flags
+	{
+		with_self,
+		only_valid,
+		diagonals
+	};
+
 	/// A container for squares in a 2D square grid
+	/// TODO: <typename TILE_DATA, bool RESIZABLE = true, typename TILE_SPACE_TYPE = manhattan_tile_space/void_t> struct grid : TILE_SPACE_TYPE
 	template <typename TILE_DATA, bool RESIZABLE = true>
 	struct grid
 	{
@@ -78,6 +86,8 @@ namespace ghassanpl::geometry::squares
 		[[nodiscard]] bool is_valid(glm::ivec2 pos) const noexcept { return is_valid(pos.x, pos.y); }
 		[[nodiscard]] bool is_index_valid(int index) const noexcept { return index >= 0 && index < (int)mTiles.size(); }
 		
+		[[nodiscard]] glm::ivec2 tile_pos(int index) const noexcept { return { index % this->mWidth, index / this->mWidth }; }
+
 		[[nodiscard]] bool is_valid(int x, int y, int edge_width) const noexcept { return x >= edge_width && y >= edge_width && x < mWidth - edge_width && y < mHeight - edge_width; }
 		[[nodiscard]] bool is_valid(glm::vec2 world_pos, glm::vec2 tile_size, int edge_width) const noexcept { return is_valid(world_pos_to_tile_pos(world_pos, tile_size), edge_width); }
 		[[nodiscard]] bool is_valid(glm::ivec2 pos, int edge_width) const noexcept { return is_valid(pos.x, pos.y, edge_width); }
@@ -117,53 +127,46 @@ namespace ghassanpl::geometry::squares
 		bool IsReachable(glm::ivec2 src_tile, glm::ivec2 dest_tile);
 		*/
 
-		enum class iteration_flags
-		{
-			with_self,
-			only_valid,
-			diagonals
-		};
-
 		/// TODO: set_* functions that mirror for_each_*, e.g. set_rect(rect, tile);
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::with_self, iteration_flags::only_valid }>
-		auto for_each_neighbor(glm::ivec2 of, change_tile_callback<TILE_DATA> auto&& func)
+		auto for_each_neighbor(this auto&& self, glm::ivec2 of, change_tile_callback<TILE_DATA> auto func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
-			using return_type = decltype(this->template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
+			using return_type = decltype(self.template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
 			if constexpr (std::is_void_v<return_type>)
 			{
 				if constexpr (FLAGS.contain(iteration_flags::with_self))
-					this->template apply<ONLY_VALID>(of, func);
-				this->template apply<ONLY_VALID>({ of.x - 1, of.y }, func);
-				this->template apply<ONLY_VALID>({ of.x + 1, of.y }, func);
-				this->template apply<ONLY_VALID>({ of.x, of.y - 1 }, func);
-				this->template apply<ONLY_VALID>({ of.x, of.y + 1 }, func);
+					self.template apply<ONLY_VALID>(of, func);
+				self.template apply<ONLY_VALID>({ of.x - 1, of.y }, func);
+				self.template apply<ONLY_VALID>({ of.x + 1, of.y }, func);
+				self.template apply<ONLY_VALID>({ of.x, of.y - 1 }, func);
+				self.template apply<ONLY_VALID>({ of.x, of.y + 1 }, func);
 
 				if constexpr (FLAGS.contain(iteration_flags::diagonals))
 				{
-					this->template apply<ONLY_VALID>({ of.x - 1, of.y - 1 }, func);
-					this->template apply<ONLY_VALID>({ of.x + 1, of.y + 1 }, func);
-					this->template apply<ONLY_VALID>({ of.x + 1, of.y - 1 }, func);
-					this->template apply<ONLY_VALID>({ of.x - 1, of.y + 1 }, func);
+					self.template apply<ONLY_VALID>({ of.x - 1, of.y - 1 }, func);
+					self.template apply<ONLY_VALID>({ of.x + 1, of.y + 1 }, func);
+					self.template apply<ONLY_VALID>({ of.x + 1, of.y - 1 }, func);
+					self.template apply<ONLY_VALID>({ of.x - 1, of.y + 1 }, func);
 				}
 			}
 			else
 			{
 				if constexpr (FLAGS.contain(iteration_flags::with_self))
-					if (auto ret = this->template apply<ONLY_VALID>(of, func)) return ret;
-				if (auto ret = this->template apply<ONLY_VALID>({ of.x - 1, of.y }, func)) return ret;
-				if (auto ret = this->template apply<ONLY_VALID>({ of.x + 1, of.y }, func)) return ret;
-				if (auto ret = this->template apply<ONLY_VALID>({ of.x, of.y - 1 }, func)) return ret;
-				if (auto ret = this->template apply<ONLY_VALID>({ of.x, of.y + 1 }, func)) return ret;
+					if (auto ret = self.template apply<ONLY_VALID>(of, func)) return ret;
+				if (auto ret = self.template apply<ONLY_VALID>({ of.x - 1, of.y }, func)) return ret;
+				if (auto ret = self.template apply<ONLY_VALID>({ of.x + 1, of.y }, func)) return ret;
+				if (auto ret = self.template apply<ONLY_VALID>({ of.x, of.y - 1 }, func)) return ret;
+				if (auto ret = self.template apply<ONLY_VALID>({ of.x, of.y + 1 }, func)) return ret;
 
 				if constexpr (FLAGS.contain(iteration_flags::diagonals))
 				{
-					if (auto ret = this->template apply<ONLY_VALID>({ of.x - 1, of.y - 1 }, func)) return ret;
-					if (auto ret = this->template apply<ONLY_VALID>({ of.x + 1, of.y + 1 }, func)) return ret;
-					if (auto ret = this->template apply<ONLY_VALID>({ of.x + 1, of.y - 1 }, func)) return ret;
-					if (auto ret = this->template apply<ONLY_VALID>({ of.x - 1, of.y + 1 }, func)) return ret;
+					if (auto ret = self.template apply<ONLY_VALID>({ of.x - 1, of.y - 1 }, func)) return ret;
+					if (auto ret = self.template apply<ONLY_VALID>({ of.x + 1, of.y + 1 }, func)) return ret;
+					if (auto ret = self.template apply<ONLY_VALID>({ of.x + 1, of.y - 1 }, func)) return ret;
+					if (auto ret = self.template apply<ONLY_VALID>({ of.x - 1, of.y + 1 }, func)) return ret;
 				}
 				return return_type{};
 			}

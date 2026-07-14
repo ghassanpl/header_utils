@@ -262,6 +262,7 @@
     <ClInclude Include="include\ghassanpl\bit_view.h" />
     <ClInclude Include="include\ghassanpl\buffers.h" />
     <ClInclude Include="include\ghassanpl\bytes.h" />
+    <ClInclude Include="include\ghassanpl\checks.h" />
     <ClInclude Include="include\ghassanpl\colors.h" />
     <ClInclude Include="include\ghassanpl\configs.h" />
     <ClInclude Include="include\ghassanpl\constexpr_math.h" />
@@ -273,6 +274,7 @@
     <ClInclude Include="include\ghassanpl\cpp98\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\di.h" />
     <ClInclude Include="include\ghassanpl\di_impl.h" />
+    <ClInclude Include="include\ghassanpl\encoding.h" />
     <ClInclude Include="include\ghassanpl\enums.h" />
     <ClInclude Include="include\ghassanpl\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\error_context.h" />
@@ -398,6 +400,7 @@
     </ClCompile>
     <ClCompile Include="tests\cpp_version_tests\cpp23_tests.cpp" />
     <ClCompile Include="tests\di_tests.cpp" />
+    <ClCompile Include="tests\encoding_tests.cpp" />
     <ClCompile Include="tests\enum_flags_tests.cpp" />
     <ClCompile Include="tests\eval_tests.cpp" />
     <ClCompile Include="tests\expected_tests.cpp" />
@@ -406,6 +409,7 @@
       <ConformanceMode Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ConformanceMode>
     </ClCompile>
     <ClCompile Include="tests\functional_tests.cpp" />
+    <ClCompile Include="tests\geometry_direction_tests.cpp" />
     <ClCompile Include="tests\geometry_tests.cpp" />
     <ClCompile Include="tests\hashes_tests.cpp" />
     <ClCompile Include="tests\interpolation_tests.cpp" />
@@ -443,6 +447,7 @@
     </ClCompile>
     <ClCompile Include="tests\threading_tests.cpp" />
     <ClCompile Include="tests\tweener_tests.cpp" />
+    <ClCompile Include="tests\unicode_tests.cpp" />
     <ClCompile Include="tests\unique_handle_tests.cpp" />
     <ClCompile Include="tests\uri_tests.cpp" />
     <ClCompile Include="tests\windows_tests.cpp" />

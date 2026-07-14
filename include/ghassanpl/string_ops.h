@@ -22,7 +22,23 @@ namespace ghassanpl::string_ops
 	/// \defgroup StringOps String Operations
 	/// Adds a few utility functions that deal with strings and string_views.
 	/// @{
-	
+
+	template <typename A, typename B>
+	concept same_size_and_alignment = sizeof(A) == sizeof(B) && alignof(A) == alignof(B);
+
+	/// Can a type be bit-cast to a native/utf char type?
+	template <typename T>
+	concept charable = (std::is_trivial_v<T> && ( /// Specifying all char types because they can have different sizes than implied
+		same_size_and_alignment<T, wchar_t> ||
+		same_size_and_alignment<T, char> ||
+		same_size_and_alignment<T, char8_t> ||
+		same_size_and_alignment<T, char16_t> ||
+		same_size_and_alignment<T, char32_t>
+	));
+
+	template <typename TO, typename FROM>
+	concept convertible_or_constructible = std::constructible_from<TO, FROM> || std::convertible_to<std::remove_cvref_t<FROM>, TO>;
+
 	/// The type is a stringable or a character
 	/// \tparam CHAR_TYPE the base char type, char by default
 	template <typename T, typename CHAR_TYPE = char>
@@ -31,34 +47,40 @@ namespace ghassanpl::string_ops
 	/// The type is "stringable", that is, a continuous range of characters
 	/// \tparam CHAR_TYPE the character type, char by default
 	template <typename T, typename CHAR_TYPE = char>
-	concept stringable = (std::ranges::contiguous_range<T> && std::is_convertible_v<std::ranges::range_value_t<T>, CHAR_TYPE>);
+	concept stringable = (std::ranges::contiguous_range<T> && same_size_and_alignment<std::ranges::range_value_t<T>, CHAR_TYPE>);
 
 	/// The type is a string with an 8-bit char type
 	template <typename T>
-	concept string8 = std::same_as<T, std::string> || std::same_as<T, std::u8string>;
+	concept string8 = std::same_as<std::remove_cvref_t<T>, std::string> || std::same_as<std::remove_cvref_t<T>, std::u8string>;
 	/// The type is convertible to a string view with an 8-bit char type
 	template <typename T>
-	concept stringable8 = std::convertible_to<T, std::string_view> || std::convertible_to<T, std::u8string_view>;
+	concept stringable8 = stringable<T, uint8_t> || convertible_or_constructible<std::string_view, T>;
+
 	/// The type is a string view with an 8-bit char type
 	template <typename T>
-	concept string_view8 = std::same_as<T, std::string_view> || std::same_as<T, std::u8string_view>;
+	concept string_view8 = std::same_as<std::remove_cvref_t<T>, std::string_view> || std::same_as<std::remove_cvref_t<T>, std::u8string_view>;
 
 	/// The type is a string with a 16-bit char type
 	template <typename T>
-	concept string16 = (sizeof(wchar_t) == sizeof(char16_t) && std::same_as<T, std::wstring>) || std::same_as<T, std::u16string>;
+	concept string16 = (sizeof(wchar_t) == sizeof(char16_t) && std::same_as<std::remove_cvref_t<T>, std::wstring>) || std::same_as<std::remove_cvref_t<T>, std::u16string>;
 	/// The type is convertible to a string view with a 16-bit char type
 	template <typename T>
-	concept stringable16 = (sizeof(wchar_t) == sizeof(char16_t) && std::convertible_to<T, std::wstring_view>) || std::convertible_to<T, std::u16string_view>;
+	concept stringable16 = stringable<T, uint16_t>
+		|| (sizeof(wchar_t) == sizeof(char16_t) && convertible_or_constructible<std::wstring_view, T>)
+		|| convertible_or_constructible<std::u16string_view, T>;
 	/// The type is a string view with a 16-bit char type
 	template <typename T>
-	concept string_view16 = (sizeof(wchar_t) == sizeof(char16_t) && std::same_as<T, std::wstring_view>) || std::same_as<T, std::u16string_view>;
+	concept string_view16 = (sizeof(wchar_t) == sizeof(char16_t) && std::same_as<std::remove_cvref_t<T>, std::wstring_view>) || std::same_as<std::remove_cvref_t<T>, std::u16string_view>;
 
 	/// The type is a string with an 32-bit char type
 	template <typename T>
 	concept string32 = (sizeof(wchar_t) == sizeof(char32_t) && std::same_as<T, std::wstring>) || std::same_as<T, std::u32string>;
 	/// The type is convertible to a string view with a 32-bit char type
 	template <typename T>
-	concept stringable32 = (sizeof(wchar_t) == sizeof(char32_t) && std::convertible_to<T, std::wstring_view>) || std::convertible_to<T, std::u32string_view>;
+	//concept stringable32 = (sizeof(wchar_t) == sizeof(char32_t) && std::constructible_from<std::wstring_view, T>) || std::constructible_from<std::u32string_view, T>;
+	concept stringable32 = stringable<T, uint32_t>
+		|| (sizeof(wchar_t) == sizeof(char32_t) && convertible_or_constructible<std::wstring_view, T>)
+		|| convertible_or_constructible<std::u32string_view, T>;
 	/// The type is a string view with a 32-bit char type
 	template <typename T>
 	concept string_view32 = (sizeof(wchar_t) == sizeof(char32_t) && std::same_as<T, std::wstring_view>) || std::same_as<T, std::u32string_view>;
@@ -68,19 +90,6 @@ namespace ghassanpl::string_ops
 
 	/// The default 32-bit char type for the current platform (wchar_t if it is 32-bit, char32_t otherwise)
 	using wide_char32_t = std::conditional_t<sizeof(wchar_t) == sizeof(char32_t), wchar_t, char32_t>;
-
-	template <typename A, typename B>
-	concept same_size_and_alignment = sizeof(A) == sizeof(B) && alignof(A) == alignof(B);
-
-	/// Can a type be bit-cast to a native/utf char type?
-	template <typename T>
-	concept charable = (std::is_trivially_copyable_v<T> && ( /// Specifying all char types because they can have different sizes than implied
-		same_size_and_alignment<T, wchar_t> ||
-		same_size_and_alignment<T, char> ||
-		same_size_and_alignment<T, char8_t> ||
-		same_size_and_alignment<T, char16_t> ||
-		same_size_and_alignment<T, char32_t>
-	));
 
 	/// Whether the type is a native char type
 	template <typename T>
@@ -478,7 +487,7 @@ namespace ghassanpl::string_ops
 		/// \name Case-invariant Comparisons
 		/// \internal TODO: Add rfind, find_first_of, find_last_of, find_first_not_of, find_last_not_of
 		/// @{
-		[[nodiscard]] constexpr bool strings_equal_ignore_case(std::string_view sa, std::string_view sb)
+		[[nodiscard]] constexpr bool strings_equal_ignore_case(std::string_view sa, std::string_view sb) noexcept
 		{
 			return std::ranges::equal(sa, sb, [](char a, char b) { return ::ghassanpl::string_ops::ascii::toupper(a) == ::ghassanpl::string_ops::ascii::toupper(b); });
 		}
@@ -802,6 +811,19 @@ namespace ghassanpl::string_ops
 		return false;
 	}
 
+	/// Consumes the last character from `str` if it matches `val`.
+	/// \returns whether it consumed
+	/// \see consume(std::string_view&, char)
+	[[nodiscard]] constexpr bool consume_at_end(std::string& str, char val)
+	{
+		if (str.ends_with(val))
+		{
+			str.pop_back();
+			return true;
+		}
+		return false;
+	}
+
 
 	/// Consumes the string `val` from the end `str`
 	/// \returns whether it consumed
@@ -811,6 +833,19 @@ namespace ghassanpl::string_ops
 		if (str.ends_with(val))
 		{
 			str.remove_suffix(val.size());
+			return true;
+		}
+		return false;
+	}
+
+	/// Consumes the string `val` from the end `str`
+	/// \returns whether it consumed
+	/// \see consume(std::string_view&, char)
+	[[nodiscard]] constexpr bool consume_at_end(std::string& str, std::string_view val)
+	{
+		if (str.ends_with(val))
+		{
+			str.erase(str.size() - val.size(), val.size());
 			return true;
 		}
 		return false;
@@ -1388,10 +1423,10 @@ namespace ghassanpl::string_ops
 	{
 		std::stringstream strm;
 		bool first = true;
-		for (auto&& p : source)
+		for (auto&& p : std::forward<T>(source))
 		{
 			if (!first) strm << delim;
-			strm << transform_func(p);
+			strm << transform_func(std::forward<decltype(p)>(p));
 			first = false;
 		}
 		return strm.str();

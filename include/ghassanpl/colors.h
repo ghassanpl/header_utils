@@ -4,12 +4,13 @@
 
 #pragma once
 
+#include "min-cpp-version/cpp20.h"
 #include <charconv>
 #include <stdexcept>
 #include <string_view>
+#include <format>
 #include <glm/common.hpp>
 #include <glm/fwd.hpp>
-#include "min-cpp-version/cpp20.h"
 //#include <glm/ext/vector_float4.hpp>
 #include "named.h"
 #include "constexpr_math.h"
@@ -298,6 +299,13 @@ namespace ghassanpl
 		throw std::invalid_argument("Invalid HTML color string length");
 	}
 
+	[[nodiscard]] inline std::string to_html(color_rgba_t const& color, bool force_alpha = false)
+	{
+		if (color.a != 1.0f || force_alpha)
+			return std::format("#{:02X}{:02X}{:02X}{:02X}", detail::f2b(color.r), detail::f2b(color.g), detail::f2b(color.b), detail::f2b(color.a));
+		return std::format("#{:02X}{:02X}{:02X}", detail::f2b(color.r), detail::f2b(color.g), detail::f2b(color.b));
+	}
+
 	/// Converts a HTML color string (like \#FBA or fafafa) to an RGBA color
 	[[nodiscard]] GHPL_CONSTEVAL23 color_rgba_t operator ""_rgb(const char* str, size_t n)
 	{
@@ -475,7 +483,7 @@ namespace ghassanpl
 		DEF_COLOR(name, r, g, b) \
 		{ "dark_" #name, colors::dark_##name }, \
 		{ "light_" #name, colors::light_##name }, 
-
+				///  TODO: consteval string_view remove_underscores(string_view)
 				DEF_ALL_COLORS()
 		};
 

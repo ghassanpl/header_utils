@@ -13,6 +13,9 @@
 #if defined(__cpp_lib_bit_cast)
 #include <bit>
 #endif
+#if GHPL_CPP20
+#include "cpp23.h"
+#endif
 
 namespace ghassanpl
 {
@@ -55,6 +58,12 @@ namespace ghassanpl
 
 	template <typename T>
 	std::optional<T> move_to_optional(T* value) { return value ? std::move(*value) : std::nullopt; }
+
+	template <typename T>
+	[[nodiscard]] constexpr auto get_if(std::optional<T>& value) -> T*
+	{
+		return value ? std::addressof(*value) : nullptr;
+	}
 
 	///
 	template <typename T> [[nodiscard]] constexpr auto flattened(std::optional<std::optional<T>>&& value) { return value ? flattened(std::move(value).value()) : std::nullopt; }
@@ -114,9 +123,9 @@ namespace ghassanpl
 		template <typename T> [[nodiscard]] constexpr auto ptr_eq(T&& val) { return [val = std::forward<T>(val)](auto&& other) { return std::to_address(other) == std::to_address(val); }; }
 
 		template <typename T> [[nodiscard]] constexpr auto of_type() { return [](auto&& other) {
-			static_assert(std::is_pointer_v<T> || std::is_reference_v<T>, "Type must be reference or pointer to choose the appropriate cast type");
-			if constexpr (std::is_pointer_v<T>)
-				return dynamic_cast<T>(std::to_address(other)) != nullptr;
+			//static_assert(pointerlike<T> || std::is_reference_v<T>, "Type must be reference or pointer to choose the appropriate cast type");
+			if constexpr (pointerlike<std::remove_cvref_t<decltype(other)>>)
+				return dynamic_cast<T*>(std::to_address(other)) != nullptr;
 			else
 				return dynamic_cast<std::remove_reference_t<T>*>(std::addressof(other)) != nullptr;
 		}; }
@@ -274,8 +283,8 @@ namespace ghassanpl
 		template <typename T> [[nodiscard]] constexpr auto cast_to() noexcept { return [](auto&& val) { return (T)std::forward<decltype(val)>(val); }; }
 #if __cpp_lib_to_address
 		template <typename T> [[nodiscard]] constexpr auto dynamic_cast_to() noexcept { return [](auto&& val) -> T {
-			static_assert(std::is_pointer_v<T> || std::is_reference_v<T>, "Type must be reference or pointer to choose the appropriate cast type");
-			if constexpr (std::is_pointer_v<T>)
+			static_assert(pointerlike<T> || std::is_reference_v<T>, "Type must be reference or pointer to choose the appropriate cast type");
+			if constexpr (pointerlike<T>)
 				return dynamic_cast<T>(std::to_address(val));
 			else
 				return dynamic_cast<T>(*std::addressof(val));

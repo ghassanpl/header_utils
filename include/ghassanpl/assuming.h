@@ -242,7 +242,7 @@
 	ASSUMING_REPORT(#exp " will not be null or empty", { { #exp, _assuming_exp_v ? std::format("'{}'", _assuming_exp_v) : "(null)" } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the `_index` term evaluates to a valid index to the `_container` term. This is checked via `size(_container)`
-#define AssumingValidIndex(_index, _container, ...) do { using std::size; auto&& _assuming_index = (_index); auto&& _assuming_container = (_container); const auto _assuming_container_size = size(_assuming_container); \
+#define AssumingValidIndex(_container, _index, ...) do { using std::size; auto&& _assuming_index = (_index); auto&& _assuming_container = (_container); const auto _assuming_container_size = size(_assuming_container); \
 	if (!(_assuming_index >= 0 && size_t(_assuming_index) < _assuming_container_size)) [[unlikely]] { \
 		ASSUMING_REPORT(#_index " will be a valid index to " #_container, { \
 			{ #_index, std::format("{}", _assuming_index) }, \
@@ -250,21 +250,21 @@
 		}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
 
 /// Assumes the `_key` term evaluates to a valid index to the `_container` term. This is checked via `.contains()`
-#define AssumingContains(_key, _container, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
+#define AssumingContains(_container, _key, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
 	if (!(_assuming_container.contains(_assuming_key))) [[unlikely]] { \
 		ASSUMING_REPORT(#_key " will be a valid key to " #_container, { \
 			{ #_key, std::format("{}", _assuming_key) }, \
 		}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
 
 /// Assumes the `_key` term DOES NOT evaluate to a valid index to the `_container` term. This is checked via `.contains()`
-#define AssumingDoesNotContain(_key, _container, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
+#define AssumingDoesNotContain(_container, _key, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
 	if ((_assuming_container.contains(_assuming_key))) [[unlikely]] { \
 		ASSUMING_REPORT(#_key " will be a valid key to " #_container, { \
 			{ #_key, std::format("{}", _assuming_key) }, \
 		}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
 
 /// Assumes the `_index` term evaluates to a valid iterator to the `_container` term. This is checked via `end(_container)`
-#define AssumingValidIterator(_iterator, _container, ...) do { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); \
+#define AssumingValidIterator(_container, _iterator, ...) do { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); \
 	if (_assuming_iterator == _assuming_end) [[unlikely]] { \
 		ASSUMING_REPORT(#_iterator " will be a valid iterator to " #_container, {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } } while (false)
 
@@ -283,6 +283,17 @@
 		{ #a, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_a_v)) }, \
 		{ #b, std::format("{}", ::ghassanpl::detail::GetFormattable(_assuming_b_v)) } \
 	}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
+
+
+#define AssumingType(exp, type, ...) do { auto&& _assuming_ref = (exp); if (dynamic_cast<type*>(std::addressof(_assuming_ref)) == nullptr) [[unlikely]] \
+	ASSUMING_REPORT(#exp " will be of type " #type, { { #exp " type", std::format("{}", typeid(_assuming_ref).name()) }, { "expected type", std::format("{}", typeid(type).name()) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
+
+#define AssumingWillNotThrow(exp, ...) do { try { std::ignore = (exp); } \
+	catch (std::exception& e) { ASSUMING_REPORT(#exp " will not throw", { { "exception", std::format("{}", e.what()) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } \
+	catch (...) { ASSUMING_REPORT(#exp " will not throw", {}, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } \
+	} while (false)
+
+
 #else
 
 #define Assuming(exp, ...) GHPL_ASSUME(!!(exp))
@@ -309,14 +320,14 @@
 #define AssumingNotEmpty(exp, ...) do { using std::empty; using std::size; GHPL_ASSUME(!empty(exp)); } while (false)
 #define AssumingNullOrEmpty(exp, ...) do { using std::empty; using std::size; GHPL_ASSUME(::ghassanpl::detail::IsNullOrEmpty(exp));  } while (false)
 #define AssumingNotNullOrEmpty(exp, ...) do { using std::empty; using std::size; GHPL_ASSUME(!::ghassanpl::detail::IsNullOrEmpty(exp)); } while (false)
-#define AssumingValidIndex(_index, _container, ...) do { using std::size; auto&& _assuming_index = (_index); GHPL_ASSUME(((_assuming_index) >= 0 && size_t(_assuming_index) < size(_container))); } while (false)
-#define AssumingValidIterator(_iterator, _container, ...) do { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); GHPL_ASSUME(!(_assuming_iterator == _assuming_end)); } while (false)
+#define AssumingValidIndex(_container, _index, ...) do { using std::size; auto&& _assuming_index = (_index); GHPL_ASSUME(((_assuming_index) >= 0 && size_t(_assuming_index) < size(_container))); } while (false)
+#define AssumingValidIterator(_container, _iterator, ...) do { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); GHPL_ASSUME(!(_assuming_iterator == _assuming_end)); } while (false)
 #define AssumingBetween(v, a, b, ...) do { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v < _assuming_b_v); } while (false)
 #define AssumingBetweenInclusive(v, a, b, ...) do { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v); } while (false)
 
-#define AssumingContainsBits(bits_to_find, bit_container, ...) do { auto&& _assuming_a_v = (bit_container); auto&& _assuming_b_v = (bits_to_find); GHPL_ASSUME(!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)); } while (false)
+#define AssumingContainsBits(bit_container, bits_to_find, ...) do { auto&& _assuming_a_v = (bit_container); auto&& _assuming_b_v = (bits_to_find); GHPL_ASSUME(!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)); } while (false)
 
-#define AssumingContains(_key, _container, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
+#define AssumingContains(_container, _key, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
 	GHPL_ASSUME(_assuming_container.contains(_assuming_key)); } while (false)
 
 
