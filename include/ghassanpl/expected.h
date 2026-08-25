@@ -43,16 +43,16 @@ namespace ghassanpl
 		constexpr auto expected_error_type(type_identity<expected<V, E>> e) { return type_identity<E>{}; }
 
 		template <typename T>
-		using error_type_t = typename decltype(expected_error_type(type_identity<T>{}))::type;
+		using error_type_t = typename decltype(expected_error_type(type_identity<remove_cvref_t<T>>{}))::type;
 		static_assert(std::is_same_v<error_type_t<expected<int, bool>>, bool>);
 	}
 
 	template <typename T>
 	constexpr bool is_expected = detail::is_expected_f(type_identity<remove_cvref_t<T>>{});
 	template <typename E, typename T>
-	constexpr bool is_expected_with_error = detail::is_expected_f(type_identity<T>{}) && std::is_same_v<detail::error_type_t<T>, E>;
+	constexpr bool is_expected_with_error = detail::is_expected_f(type_identity<remove_cvref_t<T>>{}) && std::is_same_v<detail::error_type_t<T>, E>;
 	static_assert(is_expected<expected<bool, int>>);
-	static_assert(is_expected_with_error<int, expected<bool, int>>);
+	static_assert(is_expected_with_error<int, expected<bool, int> const&>);
 
 	/// Calls the given function with `args` and an `std::error_code` as the last argument
 	/// \returns an `expected` with the result of the function call if the `std::error_code` is `0`, otherwise an `unexpected` with the error code

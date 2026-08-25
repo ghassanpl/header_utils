@@ -153,6 +153,23 @@ TEST(unicode_trim, trimmed_overload_does_not_touch_its_argument)
 	EXPECT_EQ(result, A);
 }
 
+TEST(utf8_count_codepoints, counts_codepoints_not_octets)
+{
+	EXPECT_EQ(utf8::count_codepoints(""sv), 0u);
+	EXPECT_EQ(utf8::count_codepoints(A), 1u);
+	EXPECT_EQ(utf8::count_codepoints(e_acute), 1u);
+	EXPECT_EQ(utf8::count_codepoints(euro), 1u);
+	EXPECT_EQ(utf8::count_codepoints(grin), 1u);
+	EXPECT_EQ(utf8::count_codepoints(string_view{ U8_A U8_E_ACUTE U8_EURO U8_GRIN }), 4u);
+	EXPECT_EQ(utf8::count_codepoints(string{ U8_GRIN U8_GRIN }), 2u) << "works on std::string too";
+	EXPECT_EQ(utf8::count_codepoints(std::u8string_view{ u8"za\u017C\u00F3\u0142\u0107" }), 6u) << "works on char8_t strings too";
+}
+
+TEST(utf8_count_codepoints, is_constexpr)
+{
+	static_assert(utf8::count_codepoints(string_view{ U8_A U8_EURO }) == 2);
+}
+
 #undef U8_A
 #undef U8_E_ACUTE
 #undef U8_EURO

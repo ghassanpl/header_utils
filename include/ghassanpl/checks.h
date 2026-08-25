@@ -6,6 +6,8 @@
 
 #include <source_location>
 #include "assuming.h"
+#include "expected.h"
+#include "cpp23.h"
 
 namespace ghassanpl
 {
@@ -19,21 +21,39 @@ namespace ghassanpl
 
 		}
 		template <typename T>
-		T operator+(T&& val) const
+		auto operator+(T&& val) const
 		{
 			using U = std::remove_cvref_t<T>;
 			if constexpr (std::is_pointer_v<U>)
+			{
 				AssumingNotNull(val, "Unexpected null pointer in function `{}` at file `{}`, line {}", mLoc.function_name(), mLoc.file_name(), mLoc.line());
+				return std::forward<T>(val);
+			}
 			else if constexpr (std::is_floating_point_v<U>)
+			{
 				Assuming(!isnan(val), "Unexpected nan in function `{}` at file `{}`, line {}", mLoc.function_name(), mLoc.file_name(), mLoc.line());
+				return std::forward<T>(val);
+			}
+			else if constexpr (is_expected<U>)
+			{
+				AssumingExpected(val, "Unexpected: {}", val.error());
+				return std::forward<T>(val).value();
+			}
+			else if constexpr (is_optional<U>)
+			{
+				Assuming(val.has_value(), "Expected value, got nullopt");
+				return std::forward<T>(val).value();
+			}
 			else if constexpr (requires (T val) { bool{ val }; })
+			{
 				Assuming(bool{ val }, "Unexpected value in function `{}` at file `{}`, line {}", mLoc.function_name(), mLoc.file_name(), mLoc.line());
+				return std::forward<T>(val);
+			}
 			else
 			{
 				static_assert(!std::is_same_v<void, std::void_t<U>>, "Don't know how to ensure this type is valid");
 				AssumingNotReachable("Don't know how to ensure this type is valid: {} in function `{}` at file `{}`, line {}", typeid(T).name(), mLoc.function_name(), mLoc.file_name(), mLoc.line());
 			}
-			return std::forward<T>(val);
 		}
 
 	};

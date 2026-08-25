@@ -13,6 +13,7 @@
 #include <utility>
 #endif
 #include <memory>
+#include <optional>
 
 
 namespace ghassanpl
@@ -30,6 +31,29 @@ namespace ghassanpl
 
 	template <class T>
 	concept is_complete_v = is_complete<T>::value;
+
+	namespace detail
+	{
+		template <typename T>
+		constexpr bool is_optional_f(type_identity<T>) { return false; }
+		template <typename V>
+		constexpr bool is_optional_f(type_identity<std::optional<V>>) { return true; }
+
+		template <typename T>
+		constexpr auto optional_value_type(type_identity<T>) { return type_identity<void>{}; }
+		template <typename V>
+		constexpr auto optional_value_type(type_identity<std::optional<V>>) { return type_identity<V>{}; }
+
+		template <typename T>
+		using optional_value_type_t = typename decltype(optional_value_type(type_identity<T>{}))::type;
+		static_assert(std::is_same_v<optional_value_type_t<std::optional<int>>, int>);
+	}
+
+	template <typename T>
+	constexpr bool is_optional = detail::is_optional_f(type_identity<remove_cvref_t<T>>{});
+	static_assert(is_optional<std::optional<bool>>);
+	static_assert(is_optional<std::optional<bool> const&>);
+	static_assert(!is_optional<bool>);
 
 	/*
 	template<class T, class D, class U>
@@ -245,4 +269,12 @@ namespace ghassanpl
 	{
 		return std::shared_ptr<T>(std::shared_ptr<T>{}, ptr);
 	}
+
+	template <typename T>
+	void turn_unique(std::shared_ptr<T>& ptr)
+	{
+		if (!ptr || ptr.use_count() == 1) return;
+		ptr = std::make_shared<T>(*ptr);
+	}
+
 }

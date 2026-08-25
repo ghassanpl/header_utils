@@ -61,16 +61,26 @@ namespace ghassanpl
 			constexpr trec2& operator=(const trec2&) noexcept = default;
 			constexpr trec2& operator=(trec2&&) noexcept = default;
 
-			static constexpr trec2 from_points(std::span<tvec const> points) noexcept { return trec2{ points }; }
-			template <GHPL_TYPENAME(std::same_as<tvec>)... ARGS>
-			static constexpr trec2 from_points(ARGS&&... args) noexcept { return trec2(bounding_box_for, std::forward<ARGS>(args)...); }
 			static constexpr trec2 from_size(tvec s) noexcept { return { tvec{}, s }; }
 			static constexpr trec2 from_size(tvec p, tvec s) noexcept { return { p, p + s }; }
 			static constexpr trec2 from_size(T x, T y, T w, T h) noexcept { return { x, y, x + w, y + h }; }
-			static constexpr trec2 from_center_and_size(tvec p, tvec s) noexcept { return { p - s / T(2), p + s / T(2) }; }
-			static constexpr trec2 from_center_and_size(T x, T y, T w, T h) noexcept { return { x - w / T(2), y - h / T(2), x + w / T(2), y + h / T(2) }; }
+			static constexpr trec2 from_center_and_size(tvec p, tvec s) noexcept { return from_size(p - s / T(2), s); }
+			static constexpr trec2 from_center_and_size(T x, T y, T w, T h) noexcept { return from_size(x - w / T(2), y - h / T(2), w, h); }
 			static constexpr trec2 from_center_and_half_size(tvec p, tvec s) noexcept { return { p - s, p + s }; }
 			static constexpr trec2 from_center_and_half_size(T x, T y, T w, T h) noexcept { return { x - w, y - h, x + w, y + h }; }
+			static constexpr trec2 from_points(std::span<tvec const> points) noexcept { return trec2{ points }; }
+			template <GHPL_TYPENAME(std::same_as<tvec>)... ARGS>
+			static constexpr trec2 from_points(ARGS&&... args) noexcept { return trec2(bounding_box_for, std::forward<ARGS>(args)...); }
+			
+			/// Returns the smallest rect that `contains()` every one of `points` — one past the far extent, because a
+			/// rect is half-open. Integral only: "one past" is meaningless on a continuous lattice.
+			template <GHPL_TYPENAME(std::same_as<tvec>)... ARGS>
+			static constexpr trec2 covering(ARGS&&... args) noexcept GHPL_REQUIRES(std::integral<T>)
+			{
+				auto result = trec2::exclusive();
+				(result.include(std::forward<ARGS>(args)), ...);
+				return { result.p1, result.p2 + tvec{ T(1), T(1) } };
+			}
 
 			static constexpr trec2 invalid() noexcept { return { T{1}, T{1}, T{-1}, T{-1} }; }
 			static constexpr trec2 exclusive() noexcept
@@ -215,10 +225,15 @@ namespace ghassanpl
 				return intersection(other);
 			}
 
-			constexpr trec2 constrained_to(trec2 const& other) const noexcept /// translated by the minimum offset so that it fits inside other
+			/// Translated by the minimum offset so that it fits inside `other`. If it is too big to fit on an axis,
+			/// that axis pins to `other`'s near edge.
+			constexpr trec2 constrained_to(trec2 const& other) const noexcept
 			{
-				return *this + glm::clamp(tvec{}, other.p1 - p1, other.p2 - p2);
+				const auto to_near_edge = other.p1 - p1;
+				const auto to_far_edge = other.p2 - p2;
+				return *this + glm::clamp(tvec{}, to_near_edge, glm::max(to_near_edge, to_far_edge));
 			}
+
 			/// TODO: CSS Background-size-style funcs: cover, contain
 
 			constexpr bool contains(glm::vec<2, T> const& other) const noexcept

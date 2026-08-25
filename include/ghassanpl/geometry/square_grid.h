@@ -225,50 +225,50 @@ namespace ghassanpl::geometry::squares
 		}
 
 		template <enum_flags<iteration_flags> FLAGS = enum_flags<iteration_flags>{ iteration_flags::only_valid }>
-		auto for_each_tile_in_perimeter(irec2 const& tile_rect, change_tile_callback<TILE_DATA> auto&& func)
+		auto for_each_tile_in_perimeter(this auto&& self, irec2 const& tile_rect, change_tile_callback<TILE_DATA> auto&& func)
 		{
 			static constexpr auto ONLY_VALID = FLAGS.contain(iteration_flags::only_valid);
-			using return_type = decltype(this->template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
+			using return_type = decltype(self.template apply<ONLY_VALID>(glm::ivec2{ 0, 0 }, func));
 
 			irec2 rect = tile_rect;
 			if constexpr (ONLY_VALID)
-				rect = tile_rect.clipped_to(bounds());
+				rect = tile_rect.clipped_to(self.bounds());
 
 			if constexpr (std::is_void_v<return_type>)
 			{
 				for (int x = rect.left(); x < rect.right(); x++)
-					this->template apply<ONLY_VALID>({ x, rect.top() }, func);
+					self.template apply<ONLY_VALID>({ x, rect.top() }, func);
 				if (rect.height() > 1)
 				{
 					for (int x = rect.left(); x < rect.right(); x++)
-						this->template apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func);
+						self.template apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func);
 				}
 				for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
-					this->template apply<ONLY_VALID>({ rect.left(), y }, func);
+					self.template apply<ONLY_VALID>({ rect.left(), y }, func);
 				if (rect.width() > 1)
 				{
 					for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
-						this->template apply<ONLY_VALID>({ rect.right() - 1, y }, func);
+						self.template apply<ONLY_VALID>({ rect.right() - 1, y }, func);
 				}
 			}
 			else
 			{
 				for (int x = rect.left(); x < rect.right(); x++)
-					if (auto ret = this->template apply<ONLY_VALID>({ x, rect.top() }, func)) return ret;
+					if (auto ret = self.template apply<ONLY_VALID>({ x, rect.top() }, func)) return ret;
 
 				if (rect.height() > 1)
 				{
 					for (int x = rect.left(); x < rect.right(); x++)
-						if (auto ret = this->template apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func)) return ret;
+						if (auto ret = self.template apply<ONLY_VALID>({ x, rect.bottom() - 1 }, func)) return ret;
 				}
 
 				for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
-					if (auto ret = this->template apply<ONLY_VALID>({ rect.left(), y }, func)) return ret;
+					if (auto ret = self.template apply<ONLY_VALID>({ rect.left(), y }, func)) return ret;
 
 				if (rect.width() > 1)
 				{
 					for (int y = rect.top() + 1; y < rect.bottom() - 1; y++)
-						if (auto ret = this->template apply<ONLY_VALID>({ rect.right() - 1, y }, func)) return ret;
+						if (auto ret = self.template apply<ONLY_VALID>({ rect.right() - 1, y }, func)) return ret;
 				}
 
 				return return_type{};

@@ -62,3 +62,12 @@ TEST(rec2, is_hashable)
 	EXPECT_NE(std::hash<rec2>{}(rec2{ 1, 2, 3, 4 }), std::hash<rec2>{}(rec2{ 1, 2, 3, 4.0001f }));
 }
 
+using namespace glm;
+
+TEST(rec2, from_center_and_size_keeps_size)
+{
+	EXPECT_EQ(rec2::from_center_and_size(vec2(0), vec2(3)).size(), vec2(3));
+	EXPECT_EQ(rec2::from_center_and_size(vec2(0), vec2(3)).center(), vec2(0));
+	EXPECT_EQ(irec2::from_center_and_size(ivec2(0), ivec2(3)).size(), ivec2(3));
+	EXPECT_EQ(irec2::from_center_and_size(ivec2(0), ivec2(3)).center(), ivec2(0));
+}

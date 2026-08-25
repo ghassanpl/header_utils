@@ -35,3 +35,37 @@ namespace ghassanpl
 
 #endif
 
+
+#if defined(__cpp_lib_flat_set)
+#include <flat_set>
+namespace ghassanpl
+{
+	template <typename K, typename C = std::less<K>>
+	using flat_set = std::flat_set<K, C>;
+	template <typename K, typename C = std::less<K>>
+	using flat_set_preferred = std::flat_set<K, C>;
+}
+#else
+
+#include <set>
+
+namespace ghassanpl
+{
+	template <typename K, typename C = std::less<K>>
+	using flat_set_preferred = std::set<K, C>;
+
+#define GHPL_FLAT_SET_IS_SET 1
+}
+
+#if __has_include(<boost/container/flat_set.hpp>)
+
+#include <boost/container/flat_set.hpp>
+namespace ghassanpl
+{
+	using boost::flat_set;
+}
+#endif
+
+
+#endif
+

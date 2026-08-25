@@ -230,7 +230,7 @@
 	ASSUMING_REPORT(#exp " will not be empty", { { "size of " #exp, std::format("{}", size(_assuming_exp_v)) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the term evaluates to an non-empty container (tested via `empty(container)`)
-#define AssumingExpected(exp, ...) do { using std::empty; using std::size; if (auto&& _assuming_exp_v = (exp); !(_assuming_exp_v)) [[unlikely]] \
+#define AssumingExpected(exp, ...) do { if (auto&& _assuming_exp_v = (exp); !(_assuming_exp_v)) [[unlikely]] \
 	ASSUMING_REPORT(#exp " will not be unexpected", { { #exp, std::format("{}", _assuming_exp_v.error()) } }, ::ghassanpl::detail::AdditionalDataToString(__VA_ARGS__)); } while (false)
 
 /// Assumes the term evaluates to either a null value or an empty string
@@ -296,8 +296,8 @@
 
 #else
 
-#define Assuming(exp, ...) GHPL_ASSUME(!!(exp))
-#define AssumingNotReachable(...) GHPL_ASSUME(false)
+#define Assuming(exp, ...) do { GHPL_ASSUME(!!(exp)); } while (false)
+#define AssumingNotReachable(...) do { GHPL_ASSUME(false); std::abort(); } while (false)
 
 // NOTE: The three macros below have a significant codegen overhead, so we do not assume what they check. I don't think the compiler can infer any useful information from it anyway.
 #define AssumingNotRecursive(...) do {} while (false)
@@ -306,9 +306,9 @@
 		std::ignore = (thread_to_check); \
 	} while (false)
 
-#define AssumingNull(exp, ...) GHPL_ASSUME(!((const void*)std::to_address(exp) != nullptr))
-#define AssumingNotNull(exp, ...) GHPL_ASSUME(!((const void*)std::to_address(exp) == nullptr))
-#define AssumingBinOp(a, b, op, text, ...) GHPL_ASSUME(((a) op (b)))
+#define AssumingNull(exp, ...) do { GHPL_ASSUME(!((const void*)std::to_address(exp) != nullptr)); } while (false)
+#define AssumingNotNull(exp, ...) do { GHPL_ASSUME(!((const void*)std::to_address(exp) == nullptr)); } while (false)
+#define AssumingBinOp(a, b, op, text, ...) do { GHPL_ASSUME(((a) op (b))); } while (false)
 #define AssumingEqual(a, b, ...) AssumingBinOp(a, b, ==, "be equal to", __VA_ARGS__)
 #define AssumingZero(a, ...) AssumingBinOp(a, 0, ==, "be equal to", __VA_ARGS__)
 #define AssumingNotEqual(a, b, ...) AssumingBinOp(a, b, !=, "not be equal to", __VA_ARGS__)
@@ -324,7 +324,11 @@
 #define AssumingValidIterator(_container, _iterator, ...) do { using std::end; auto&& _assuming_iterator = (_iterator); auto&& _assuming_container = (_container); const auto _assuming_end = end(_assuming_container); GHPL_ASSUME(!(_assuming_iterator == _assuming_end)); } while (false)
 #define AssumingBetween(v, a, b, ...) do { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v < _assuming_b_v); } while (false)
 #define AssumingBetweenInclusive(v, a, b, ...) do { auto&& _assuming_v_v = (v); auto&& _assuming_a_v = (a); auto&& _assuming_b_v = (b); GHPL_ASSUME(_assuming_v_v >= _assuming_a_v && _assuming_v_v <= _assuming_b_v); } while (false)
-
+#define AssumingExpected(exp, ...) do { auto&& _assuming_exp_v = (exp); GHPL_ASSUME(_assuming_exp_v); } while (false)
+#define AssumingType(exp, type, ...) do { auto&& _assuming_ref = (exp); GHPL_ASSUME(dynamic_cast<type*>(std::addressof(_assuming_ref)) != nullptr); } while (false)
+#define AssumingDoesNotContain(_container, _key, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \
+	GHPL_ASSUME(!(_assuming_container.contains(_assuming_key))); } while (false)
+#define AssumingWillNotThrow(exp, ...) do { [&]()noexcept { std::ignore = (exp); }(); } while (false)
 #define AssumingContainsBits(bit_container, bits_to_find, ...) do { auto&& _assuming_a_v = (bit_container); auto&& _assuming_b_v = (bits_to_find); GHPL_ASSUME(!((_assuming_a_v & _assuming_b_v) == _assuming_b_v)); } while (false)
 
 #define AssumingContains(_container, _key, ...) do { auto&& _assuming_key = (_key); auto&& _assuming_container = (_container); \

@@ -614,6 +614,8 @@ namespace ghassanpl::string_ops
 		return str.substr(start, count);
 	}
 
+	/// TODO: A version of substr, prefix, suffix, without_prefix, and without_suffix that takes a `std::string` and returns a `std::string`, manipulating the string in place
+
 	/// Returns a substring containing the `count` leftmost characters of `str`. Always valid, clamped to the bounds of `str` (or empty).
 	[[nodiscard]] inline std::string_view prefix(std::string_view str, size_t count) noexcept {
 		return str.substr(0, count);
@@ -1375,10 +1377,13 @@ namespace ghassanpl::string_ops
 		auto&& beginit = begin(source);
 		for (auto it = beginit; it != endit; ++it)
 		{
-			if (next(it) == endit)
-				strm << std::forward<LAST_DELIM>(last_delim);
-			else if (it != beginit)
-				strm << delim;
+			if (it != beginit)
+			{
+				if (next(it) == endit)
+					strm << std::forward<LAST_DELIM>(last_delim);
+				else
+					strm << delim;
+			}
 
 			strm << *it;
 		}
@@ -1982,6 +1987,46 @@ namespace ghassanpl::string_ops
 				callback(aid, std::string_view{ fmt_clause_str }, result);
 				++aid;
 			}
+		}
+		return result;
+	}
+
+	/// Formats `fmt` by handing the contents of every `{…}` clause, verbatim, to
+	/// `callback(clause, result)`, which appends whatever the clause stands for to `result`.
+	/// `{{` and `}}` are literal braces; everything else is copied through.
+	/// \throws std::format_error if a `{` has no `}` after it, or a `}` stands on its own
+	template <typename CALLBACK_TYPE>
+	requires std::invocable<CALLBACK_TYPE, std::string_view, std::string&>
+	std::string callback_format(std::string_view fmt, CALLBACK_TYPE&& callback)
+	{
+		std::string result;
+		while (!fmt.empty())
+		{
+			result += consume_until_any(fmt, '{', '}');
+			if (fmt.empty())
+				break;
+
+			/// A clause's own closing brace is consumed below, so a `}` reaching here is outside one and
+			/// has to be the first half of an escaped brace
+			if (consume(fmt, '}'))
+			{
+				if (!consume(fmt, '}'))
+					throw std::format_error("unmatched '}' in format string");
+				result += '}';
+				continue;
+			}
+
+			std::ignore = consume(fmt, '{');
+			if (consume(fmt, '{'))
+			{
+				result += '{';
+				continue;
+			}
+
+			const auto clause = consume_until(fmt, '}');
+			if (!consume(fmt, '}'))
+				throw std::format_error("missing '}' in format string");
+			callback(clause, result);
 		}
 		return result;
 	}

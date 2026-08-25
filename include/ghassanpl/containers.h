@@ -194,6 +194,65 @@ namespace ghassanpl
 		return (it != map.end()) ? &it->second : nullptr;
 	}
 
+	template <typename KEY, typename MAP, typename BY>
+	requires std::is_member_object_pointer_v<BY>
+	[[nodiscard]] auto map_find_by(MAP& map, KEY&& key, BY const& by)
+	{
+		const auto it = std::ranges::find(map, std::forward<KEY>(key), [&by](const auto& pair) {
+			if constexpr (std::is_pointer_v<decltype(pair.first)>)
+				return pair.first ->* by;
+			else
+				return pair.first.* by;
+		});
+		return (it != map.end()) ? &it->second : nullptr;
+	}
+
+	template <typename KEY, typename MAP, typename BY>
+	requires std::is_member_function_pointer_v<BY>
+	[[nodiscard]] auto map_find_by(MAP& map, KEY&& key, BY const& by)
+	{
+		const auto it = std::ranges::find(map, std::forward<KEY>(key), [&by](const auto& pair) {
+			if constexpr (std::is_pointer_v<decltype(pair.first)>)
+				return (pair.first ->* by)();
+			else
+				return (pair.first.*by)();
+			});
+		return (it != map.end()) ? &it->second : nullptr;
+	}
+
+	template <typename KEY, typename MAP, typename BY>
+	requires std::is_member_object_pointer_v<BY>
+	[[nodiscard]] auto map_find_value_by(MAP& map, KEY&& key, BY const& by)
+	{
+		const auto it = std::ranges::find(map, std::forward<KEY>(key), [&by](const auto& pair) {
+			if constexpr (std::is_pointer_v<decltype(pair.second)>)
+				return pair.second->*by;
+			else
+				return pair.second.*by;
+			});
+		return (it != map.end()) ? &it->second : nullptr;
+	}
+
+	template <typename KEY, typename MAP, typename BY>
+	requires std::is_member_function_pointer_v<BY>
+	[[nodiscard]] auto map_find_value_by(MAP& map, KEY&& key, BY const& by)
+	{
+		const auto it = std::ranges::find(map, std::forward<KEY>(key), [&by](const auto& pair) {
+			if constexpr (std::is_pointer_v<decltype(pair.second)>)
+				return (pair.second->*by)();
+			else
+				return (pair.second.*by)();
+			});
+		return (it != map.end()) ? &it->second : nullptr;
+	}
+
+	template <typename KEY, typename MAP>
+	[[nodiscard]] auto map_find_opt(MAP& map, KEY&& key)
+	{
+		auto it = map.find(std::forward<KEY>(key));
+		return (it != map.end()) ? std::optional{ it->second } : std::nullopt;
+	}
+
 	/// Finds the value associated with `key` in the `set` and retuns a pointer to it, or nullptr if none found
 	template <typename KEY, typename SET>
 	[[nodiscard]] auto set_find(SET& set, KEY&& key)

@@ -271,6 +271,7 @@
     <ClInclude Include="include\ghassanpl\cpp11\string_view.h" />
     <ClInclude Include="include\ghassanpl\cpp17\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\cpp23.h" />
+    <ClInclude Include="include\ghassanpl\cpp26.h" />
     <ClInclude Include="include\ghassanpl\cpp98\enum_flags.h" />
     <ClInclude Include="include\ghassanpl\di.h" />
     <ClInclude Include="include\ghassanpl\di_impl.h" />
@@ -336,6 +337,7 @@
     <ClInclude Include="include\ghassanpl\source_location.h" />
     <ClInclude Include="include\ghassanpl\stringification.h" />
     <ClInclude Include="include\ghassanpl\string_ops.h" />
+    <ClInclude Include="include\ghassanpl\strong_types.h" />
     <ClInclude Include="include\ghassanpl\symbol.h" />
     <ClInclude Include="include\ghassanpl\table.h" />
     <ClInclude Include="include\ghassanpl\templates.h" />

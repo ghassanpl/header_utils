@@ -274,7 +274,23 @@ namespace ghassanpl::formats
 		template <typename T>
 		inline void get_field(T& val, nlohmann::json const& g, std::string_view key);
 		template <typename T>
-		inline bool try_get_field(T& val, nlohmann::json const& g, std::string_view key);
+		inline bool try_get_field(T& val, nlohmann::json const& g, std::string_view key)
+		{
+			auto const it = g.find(key);
+			if (it == g.end())
+				return false;
+
+			try
+			{
+				auto v = (T)*it;
+				val = std::move(v);
+				return true;
+			}
+			catch (...)
+			{
+				return false;
+			}
+		}
 
 		template <typename T>
 		inline T get_field(nlohmann::json const& g, std::string_view key);

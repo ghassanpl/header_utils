@@ -823,7 +823,8 @@ namespace ghassanpl::string_ops
 
 	[[nodiscard]] constexpr size_t utf8::count_codepoints(stringable8 auto const& _str) noexcept
 	{
-		return std::ranges::count_if(make_sv(_str), is_introducer);
+		/// `is_introducer` is a function template, so it can't be passed to `count_if` by name
+		return static_cast<size_t>(std::ranges::count_if(make_sv(_str), [](auto b) { return is_introducer(b); }));
 	}
 
 	[[nodiscard]] constexpr size_t utf8::first_codepoint_size(stringable8 auto const& _str) noexcept

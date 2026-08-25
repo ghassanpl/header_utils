@@ -328,6 +328,16 @@ namespace ghassanpl
 					return (std::forward<decltype(val)>(val).*field_ptr);
 			}; 
 		}
+
+		template <typename T> [[nodiscard]] constexpr auto property(T&& property_ptr) noexcept {
+			return [property_ptr = std::forward<T>(property_ptr)](auto&& val) {
+				using arg_type = remove_cvref_t<decltype(val)>;
+				if constexpr (std::is_pointer_v<arg_type>)
+					return (std::forward<decltype(val)>(val)->*property_ptr)();
+				else
+					return (std::forward<decltype(val)>(val).*property_ptr)();
+			};
+		}
 		
 #ifdef __cpp_impl_three_way_comparison
 		template <typename T> [[nodiscard]] constexpr auto compared_with(T&& other) noexcept { return [other = std::forward<T>(other)](auto&& val) { return std::forward<decltype(val)>(val) <=> other; }; }

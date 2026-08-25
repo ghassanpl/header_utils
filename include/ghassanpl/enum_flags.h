@@ -238,6 +238,7 @@ namespace ghassanpl
 			return *this;
 		}
 
+
 		/// Sets the flags in the `other` set to `val`
 		constexpr self_type& set_to(bool val, self_type other) noexcept
 		{
@@ -356,8 +357,10 @@ namespace ghassanpl
 
 		using flag_changes = enum_flag_changes<enum_type, value_type>;
 
-		constexpr void apply(flag_changes changes) noexcept 
+		/// Returns which bits changed
+		constexpr self_type apply(flag_changes changes) noexcept 
 		{
+			const auto old_bits = bits;
 			const auto bits_to_xor = changes.bits_to_set.bits & changes.bits_to_unset.bits;
 			bits ^= bits_to_xor; /// toggle only bits set in both sets
 
@@ -368,6 +371,13 @@ namespace ghassanpl
 			/// only bits left are bits in one or zero sets
 			bits &= ~changes.bits_to_unset.bits;
 			bits |= changes.bits_to_set.bits;
+
+			return self_type::from_bits(old_bits ^ bits);
+		}
+
+		constexpr self_type would_change(flag_changes changes) const noexcept
+		{
+			return self_type(*this).apply(changes);
 		}
 
 		constexpr self_type operator+(flag_changes changes) const noexcept

@@ -995,6 +995,21 @@ TEST(join_and, works_for_mutating_views)
 	EXPECT_EQ(join_and(sv | std::views::filter(ascii::islower), ", ", ", and "), "h, e, l, l, and o");
 }
 
+TEST(join_and, puts_delimiters_only_between_elements)
+{
+	EXPECT_EQ(join_and(std::vector<string_view>{}, ", ", " and "), "");
+	EXPECT_EQ(join_and(std::vector{ "a"sv }, ", ", " and "), "a");
+	EXPECT_EQ(join_and(std::vector{ "a"sv, "b"sv }, ", ", " and "), "a and b");
+	EXPECT_EQ(join_and(std::vector{ "a"sv, "b"sv, "c"sv }, ", ", " and "), "a, b and c");
+}
+
+TEST(join_and, agrees_with_the_transforming_overload)
+{
+	const auto same = [](auto x) { return x; };
+	for (auto const& words : { std::vector<string_view>{}, std::vector{ "a"sv }, std::vector{ "a"sv, "b"sv }, std::vector{ "a"sv, "b"sv, "c"sv } })
+		EXPECT_EQ(join_and(words, ", ", " and "), join_and(words, ", ", " and ", same)) << join(words, " ");
+}
+
 TEST(to_utf16, works_for_surrogates)
 {
 	EXPECT_EQ(to_utf16(char32_t(0x1F603)), (std::wstring{ 0xD83D, 0xDE03 }));

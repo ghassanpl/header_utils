@@ -56,4 +56,11 @@ namespace ghassanpl
 		return (std::addressof(val) >= s.data() && std::addressof(val) < s.data() + s.size());
 	}
 
+	template <typename T, size_t EXTENT = std::dynamic_extent>
+	[[nodiscard]] T& span_at(std::span<T, EXTENT> const& s, size_t index)
+	{
+		if (index >= s.size())
+			throw std::out_of_range{ "index out of range for span" };
+		return s[index];
+	}
 }
